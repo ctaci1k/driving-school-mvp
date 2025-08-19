@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// MVP Schema - Phase 1
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  studentBookings    Booking[] @relation("StudentBookings")
+  instructorBookings Booking[] @relation("InstructorBookings")
+  instructorSchedule InstructorSchedule[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model InstructorSchedule {
+  id           String   @id @default(cuid())
+  instructorId String
+  instructor   User     @relation(fields: [instructorId], references: [id])
+  dayOfWeek    Int      // 0 = Sunday, 6 = Saturday
+  startTime    String   // "09:00"
+  endTime      String   // "17:00"
+  isAvailable  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([instructorId, dayOfWeek])
+  @@index([instructorId])
+}
+
+model Booking {
+  id           String         @id @default(cuid())
+  studentId    String
+  student      User           @relation("StudentBookings", fields: [studentId], references: [id])
+  instructorId String
+  instructor   User           @relation("InstructorBookings", fields: [instructorId], references: [id])
+  startTime    DateTime
+  endTime      DateTime
+  status       BookingStatus  @default(CONFIRMED)
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([studentId])
+  @@index([instructorId])
+  @@index([startTime])
+  @@index([status])
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}

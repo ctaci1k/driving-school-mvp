@@ -1,0 +1,18 @@
+
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: driving-school-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: driving_school
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

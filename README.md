@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Driving School Management System - Phase 1 MVP
 
-## Getting Started
+## 🚀 Quick Start
 
-First, run the development server:
+### Prerequisites
+- Node.js 20+ 
+- Docker (for database) or PostgreSQL
+- Git
 
-```bash
+### Installation
+
+1. Clone the repository:
+\`\`\`bash
+git clone <your-repo-url>
+cd driving-school-mvp
+\`\`\`
+
+2. Install dependencies:
+\`\`\`bash
+npm install
+\`\`\`
+
+3. Set up database:
+
+**Option A: Using Docker (Recommended)**
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+**Option B: Using external PostgreSQL**
+Update DATABASE_URL in .env.local
+
+4. Set up environment variables:
+\`\`\`bash
+cp .env.example .env.local
+# Edit .env.local with your database credentials
+\`\`\`
+
+5. Run database migrations:
+\`\`\`bash
+npm run db:push
+\`\`\`
+
+6. Seed the database:
+\`\`\`bash
+npm run db:seed
+\`\`\`
+
+7. Start the development server:
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📝 Test Credentials
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@driving-school.com | admin123 |
+| Instructor | john.instructor@driving-school.com | instructor123 |
+| Student | alice.student@example.com | student123 |
 
-## Learn More
+## 🎯 Features (Phase 1 - MVP)
 
-To learn more about Next.js, take a look at the following resources:
+### Implemented ✅
+- User registration and login
+- Role-based access (Student, Instructor, Admin)
+- Instructor schedule management
+- Lesson booking system
+- Booking cancellation
+- Student dashboard
+- Instructor dashboard
+- Admin dashboard
+- Basic user management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Not Implemented in MVP ❌
+- Real payments (mock only)
+- Chat system
+- Geolocation
+- Mobile app
+- Analytics
+- External integrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Stack
 
-## Deploy on Vercel
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, tRPC
+- **Database**: PostgreSQL, Prisma ORM
+- **Auth**: NextAuth.js
+- **Deployment**: Vercel (app), Docker (database)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📂 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+\`\`\`
+driving-school-mvp/
+├── app/              # Next.js app router pages
+├── components/       # React components
+├── lib/             # Utilities and configurations
+├── prisma/          # Database schema and migrations
+├── types/           # TypeScript type definitions
+└── public/          # Static assets
+\`\`\`
+
+## 🔧 Available Scripts
+
+\`\`\`bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run db:push      # Push schema to database
+npm run db:seed      # Seed database with test data
+npm run db:studio    # Open Prisma Studio
+\`\`\`
+
+## 🚢 Deployment
+
+### Vercel
+1. Push to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy
+
+### Docker
+\`\`\`bash
+docker-compose up -d
+\`\`\`
+
+## 📄 License
+
+MIT
+
+## 👥 Support
+
+For issues and questions, please create an issue in the repository.
