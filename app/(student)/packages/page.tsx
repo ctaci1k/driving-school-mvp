@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Package, CreditCard, Clock, TrendingUp } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
 
 export default function PackagesPage() {
   const router = useRouter()
@@ -118,7 +118,7 @@ export default function PackagesPage() {
             
             <CardContent>
               <div className="mb-4">
-                <div className="text-3xl font-bold">{pkg.price} PLN</div>
+                <div className="text-3xl font-bold">{pkg.price.toString()} PLN</div>
                 <div className="text-gray-600">{pkg.credits} уроків</div>
               </div>
               
@@ -130,7 +130,7 @@ export default function PackagesPage() {
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingUp className="w-4 h-4 text-gray-400" />
                   <span className="text-green-600 font-medium">
-                    {(pkg.price / pkg.credits).toFixed(0)} PLN за урок
+                    {(Number(pkg.price) / pkg.credits).toFixed(0)} PLN за урок
                   </span>
                 </div>
               </div>

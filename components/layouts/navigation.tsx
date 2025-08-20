@@ -23,7 +23,7 @@ export function Navigation({ userRole }: { userRole?: string }) {
   const isActive = (path: string) => pathname === path
 
   const studentLinks = [
-    { href: '/dashboard', label: 'Панель', icon: Home },
+    { href: '/student-dashboard', label: 'Панель', icon: Home },
     { href: '/student-book', label: 'Забронювати урок', icon: Calendar },
     { href: '/student-bookings', label: 'Мої бронювання', icon: FileText },
     { href: '/packages', label: 'Пакети', icon: Package },
@@ -31,16 +31,16 @@ export function Navigation({ userRole }: { userRole?: string }) {
   ]
 
   const instructorLinks = [
-    { href: '/dashboard', label: 'Панель', icon: Home },
+    { href: '/instructor-dashboard', label: 'Панель', icon: Home },
     { href: '/instructor-schedule', label: 'Розклад', icon: Calendar },
     { href: '/instructor-students', label: 'Студенти', icon: Users },
   ]
 
   const adminLinks = [
-    { href: '/dashboard', label: 'Панель', icon: Home },
-    { href: '/bookings', label: 'Всі бронювання', icon: Calendar },
-    { href: '/users', label: 'Користувачі', icon: Users },
-    { href: '/vehicles', label: 'Автомобілі', icon: Car },
+    { href: '/admin-dashboard', label: 'Панель', icon: Home },
+    { href: '/admin-bookings', label: 'Всі бронювання', icon: Calendar },
+    { href: '/admin-users', label: 'Користувачі', icon: Users },
+    { href: '/admin-vehicles', label: 'Автомобілі', icon: Car },
     { href: '/packages-admin', label: 'Управління пакетами', icon: Package },
     { href: '/reports', label: 'Звіти', icon: FileText },
     { href: '/settings', label: 'Налаштування', icon: Settings },

@@ -8,7 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Car, Plus, Edit, Trash2, Wrench } from 'lucide-react'
 import Link from 'next/link'
 
+import { Navigation } from '@/components/layouts/navigation'
+import { useSession } from 'next-auth/react'
+
 export default function VehiclesPage() {
+  const { data: session } = useSession()
   const { data: vehicles, isLoading, refetch } = trpc.vehicle.list.useQuery()
   const [selectedStatus, setSelectedStatus] = useState<string>('')
 
@@ -25,7 +29,9 @@ export default function VehiclesPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
+      {session && <Navigation userRole={session.user.role} />}
+      <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold">Управління автомобілями</h1>
@@ -163,6 +169,7 @@ export default function VehiclesPage() {
           </CardContent>
         </Card>
       )}
-    </div>
+      </div>
+    </>
   )
 }

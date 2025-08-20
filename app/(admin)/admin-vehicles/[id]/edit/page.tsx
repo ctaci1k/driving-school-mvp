@@ -236,7 +236,7 @@ export default function EditVehiclePage({ params }: { params: { id: string } }) 
                 <input
                   type="date"
                   name="insuranceExpiry"
-                  defaultValue={vehicle.insuranceExpiry.split('T')[0]}
+                  defaultValue={new Date(vehicle.insuranceExpiry).toISOString().split('T')[0]}
                   required
                   min={new Date().toISOString().split('T')[0]}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -250,7 +250,7 @@ export default function EditVehiclePage({ params }: { params: { id: string } }) 
                 <input
                   type="date"
                   name="inspectionExpiry"
-                  defaultValue={vehicle.inspectionExpiry.split('T')[0]}
+                  defaultValue={new Date(vehicle.inspectionExpiry).toISOString().split('T')[0]}
                   required
                   min={new Date().toISOString().split('T')[0]}
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

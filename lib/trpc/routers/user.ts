@@ -3,21 +3,22 @@ import { z } from 'zod'
 
 export const userRouter = router({
   getInstructors: protectedProcedure
-    .query(async ({ ctx }) => {
-      const instructors = await ctx.db.user.findMany({
-        where: {
-          role: 'INSTRUCTOR',
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-        },
-      })
+  .query(async ({ ctx }) => {
+    const instructors = await ctx.db.user.findMany({
+      where: {
+        role: 'INSTRUCTOR',
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phone: true,  // <-- Додайте це поле
+      },
+    })
 
-      return instructors
-    }),
+    return instructors
+  }),
 
   getAllUsers: adminProcedure
     .query(async ({ ctx }) => {

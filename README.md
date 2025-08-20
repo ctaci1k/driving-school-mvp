@@ -57,10 +57,15 @@ Open [http://localhost:3000](http://localhost:3000)
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@driving-school.com | admin123 |
-| Instructor | john.instructor@driving-school.com | instructor123 |
-| Student | alice.student@example.com | student123 |
-
+  Test accounts:
+  -------------------------
+  Admin:       admin@test.com / Test123!
+  Instructor1: instructor1@test.com / Test123!
+  Instructor2: instructor2@test.com / Test123!
+  Student:     student@test.com / Test123!
+  Student2:    student2@test.com / Test123!
+  -------------------------
+  `
 ## 🎯 Features (Phase 1 - MVP)
 
 ### Implemented ✅
