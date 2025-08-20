@@ -1,168 +1,104 @@
+// components/layouts/navigation.tsx
 'use client'
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
-import { Button } from '@/components/ui/button'
-import { Home, Calendar, BookOpen, Users, LogOut, Menu } from 'lucide-react'
-import { useState } from 'react'
+import { signOut, useSession } from 'next-auth/react'
+import { 
+  Home, 
+  Calendar, 
+  Car, 
+  Package, 
+  Users, 
+  Settings, 
+  LogOut,
+  CreditCard,
+  FileText
+} from 'lucide-react'
 
-interface NavItem {
-  href: string
-  label: string
-  icon: React.ReactNode
-  roles: string[]
-}
-
-const navItems: NavItem[] = [
-  // Student navigation
-  { 
-    href: '/student-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  { 
-    href: '/student-book', 
-    label: 'Book Lesson', 
-    icon: <Calendar className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  { 
-    href: '/student-bookings', 
-    label: 'My Bookings', 
-    icon: <BookOpen className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  
-  // Instructor navigation
-  { 
-    href: '/instructor-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  { 
-    href: '/instructor-schedule', 
-    label: 'My Schedule', 
-    icon: <Calendar className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  { 
-    href: '/instructor-students', 
-    label: 'My Students', 
-    icon: <Users className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  
-  // Admin navigation
-  { 
-    href: '/admin-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-  { 
-    href: '/admin-users', 
-    label: 'Manage Users', 
-    icon: <Users className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-  { 
-    href: '/admin-bookings', 
-    label: 'All Bookings', 
-    icon: <BookOpen className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-]
-
-export function Navigation({ userRole }: { userRole: string }) {
+export function Navigation({ userRole }: { userRole?: string }) {
   const pathname = usePathname()
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { data: session } = useSession()
+  
+  const isActive = (path: string) => pathname === path
 
-  const filteredItems = navItems.filter(item => item.roles.includes(userRole))
+  const studentLinks = [
+    { href: '/dashboard', label: 'Панель', icon: Home },
+    { href: '/student-book', label: 'Забронювати урок', icon: Calendar },
+    { href: '/student-bookings', label: 'Мої бронювання', icon: FileText },
+    { href: '/packages', label: 'Пакети', icon: Package },
+    { href: '/payments', label: 'Платежі', icon: CreditCard },
+  ]
+
+  const instructorLinks = [
+    { href: '/dashboard', label: 'Панель', icon: Home },
+    { href: '/instructor-schedule', label: 'Розклад', icon: Calendar },
+    { href: '/instructor-students', label: 'Студенти', icon: Users },
+  ]
+
+  const adminLinks = [
+    { href: '/dashboard', label: 'Панель', icon: Home },
+    { href: '/bookings', label: 'Всі бронювання', icon: Calendar },
+    { href: '/users', label: 'Користувачі', icon: Users },
+    { href: '/vehicles', label: 'Автомобілі', icon: Car },
+    { href: '/packages-admin', label: 'Управління пакетами', icon: Package },
+    { href: '/reports', label: 'Звіти', icon: FileText },
+    { href: '/settings', label: 'Налаштування', icon: Settings },
+  ]
+
+  const links = 
+    userRole === 'ADMIN' ? adminLinks :
+    userRole === 'INSTRUCTOR' ? instructorLinks :
+    studentLinks
 
   return (
-    <nav className="bg-white shadow-sm border-b">
+    <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-8">
             <Link href="/dashboard" className="text-xl font-bold text-blue-600">
-              DrivingSchool
+              Автошкола
             </Link>
             
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4 ml-10">
-              {filteredItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    pathname === item.href
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
-                >
-                  {item.icon}
-                  {item.label}
-                </Link>
-              ))}
+            <div className="hidden md:flex space-x-4">
+              {links.map((link) => {
+                const Icon = link.icon
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActive(link.href)
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {link.label}
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              Role: <span className="font-medium">{userRole}</span>
-            </span>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => signOut({ callbackUrl: '/login' })}
-              className="hidden md:flex items-center gap-2"
-            >
-              <LogOut className="w-4 h-4" />
-              Logout
-            </Button>
-
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+          <div className="flex items-center space-x-4">
+            {session?.user && (
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-right">
+                  <p className="font-medium">{session.user.email}</p>
+                  <p className="text-gray-500 text-xs">{userRole}</p>
+                </div>
+                <button
+                  onClick={() => signOut({ callbackUrl: '/login' })}
+                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Вийти
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-2 border-t">
-            {filteredItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium ${
-                  pathname === item.href
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }`}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
-            ))}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => signOut({ callbackUrl: '/login' })}
-              className="w-full justify-start mt-2"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        )}
       </div>
     </nav>
   )

@@ -42,6 +42,10 @@ export const vehicleRouter = router({
         include: {
           assignedInstructor: true,
           baseLocation: true,
+          maintenanceLogs: {
+            orderBy: { performedAt: 'desc' },
+            take: 5,
+          },
         },
       })
 
@@ -69,8 +73,8 @@ export const vehicleRouter = router({
       fuelType: z.string(),
       assignedInstructorId: z.string().optional(),
       baseLocationId: z.string(),
-      insuranceExpiry: z.string().transform(str => new Date(str)),
-      inspectionExpiry: z.string().transform(str => new Date(str)),
+      insuranceExpiry: z.string(),
+      inspectionExpiry: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
       // Перевірка чи номер вже існує
@@ -87,7 +91,17 @@ export const vehicleRouter = router({
 
       return ctx.db.vehicle.create({
         data: {
-          ...input,
+          registrationNumber: input.registrationNumber,
+          vin: input.vin,
+          make: input.make,
+          model: input.model,
+          year: input.year,
+          color: input.color,
+          category: input.category,
+          transmission: input.transmission,
+          fuelType: input.fuelType,
+          assignedInstructorId: input.assignedInstructorId,
+          baseLocationId: input.baseLocationId,
           insuranceExpiry: new Date(input.insuranceExpiry),
           inspectionExpiry: new Date(input.inspectionExpiry),
         },
@@ -108,8 +122,20 @@ export const vehicleRouter = router({
       }),
     }))
     .mutation(async ({ ctx, input }) => {
-      const updateData: any = { ...input.data }
+      const updateData: any = {}
       
+      if (input.data.assignedInstructorId !== undefined) {
+        updateData.assignedInstructorId = input.data.assignedInstructorId
+      }
+      if (input.data.baseLocationId) {
+        updateData.baseLocationId = input.data.baseLocationId
+      }
+      if (input.data.status) {
+        updateData.status = input.data.status
+      }
+      if (input.data.currentMileage !== undefined) {
+        updateData.currentMileage = input.data.currentMileage
+      }
       if (input.data.insuranceExpiry) {
         updateData.insuranceExpiry = new Date(input.data.insuranceExpiry)
       }
@@ -123,11 +149,36 @@ export const vehicleRouter = router({
       })
     }),
 
+  // Видалити автомобіль (тільки адмін)
+  delete: adminProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      // Перевірити чи немає активних бронювань
+      const activeBookings = await ctx.db.booking.count({
+        where: {
+          vehicleId: input,
+          status: 'CONFIRMED',
+          startTime: { gte: new Date() }
+        }
+      })
+
+      if (activeBookings > 0) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Cannot delete vehicle with active bookings',
+        })
+      }
+
+      return ctx.db.vehicle.delete({
+        where: { id: input }
+      })
+    }),
+
   // Отримати доступні автомобілі для бронювання
   getAvailable: protectedProcedure
     .input(z.object({
-      startTime: z.string().transform(str => new Date(str)),
-      endTime: z.string().transform(str => new Date(str)),
+      startTime: z.string(),
+      endTime: z.string(),
       locationId: z.string().optional(),
       category: z.string().optional(),
     }))
@@ -156,8 +207,8 @@ export const vehicleRouter = router({
       // Отримати бронювання які перетинаються з запитаним часом
       const bookings = await ctx.db.booking.findMany({
         where: {
-          vehicleId: { in: vehicles.map(v => v.id) },
-          status: { in: ['CONFIRMED', 'COMPLETED'] },
+          vehicleId: { in: vehicles.map(v => v.id).filter(Boolean) as string[] },
+          status: 'CONFIRMED',
           OR: [
             {
               AND: [
@@ -182,8 +233,70 @@ export const vehicleRouter = router({
         select: { vehicleId: true },
       })
 
-      const bookedVehicleIds = new Set(bookings.map(b => b.vehicleId))
+      const bookedVehicleIds = new Set(bookings.map(b => b.vehicleId).filter(Boolean))
       
       return vehicles.filter(v => !bookedVehicleIds.has(v.id))
+    }),
+
+  // Отримати історію обслуговування
+  getMaintenanceHistory: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      return ctx.db.maintenanceLog.findMany({
+        where: { vehicleId: input },
+        orderBy: { performedAt: 'desc' }
+      })
+    }),
+
+  // Записати обслуговування
+  logMaintenance: adminProcedure
+    .input(z.object({
+      vehicleId: z.string(),
+      type: z.string(),
+      description: z.string(),
+      cost: z.number().optional(),
+      mileage: z.number(),
+      performedAt: z.string(),
+      performedBy: z.string().optional(),
+      nextDueDate: z.string().optional(),
+      nextDueMileage: z.number().optional(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Створити запис обслуговування
+      const log = await ctx.db.maintenanceLog.create({
+        data: {
+          vehicleId: input.vehicleId,
+          type: input.type,
+          description: input.description,
+          cost: input.cost,
+          mileage: input.mileage,
+          performedAt: new Date(input.performedAt),
+          performedBy: input.performedBy,
+          nextDueDate: input.nextDueDate ? new Date(input.nextDueDate) : null,
+          nextDueMileage: input.nextDueMileage,
+        }
+      })
+
+      // Оновити автомобіль якщо це сервіс
+      if (input.type === 'SERVICE') {
+        await ctx.db.vehicle.update({
+          where: { id: input.vehicleId },
+          data: {
+            lastServiceDate: new Date(input.performedAt),
+            nextServiceDate: input.nextDueDate ? new Date(input.nextDueDate) : null,
+            currentMileage: Math.max(input.mileage, 0),
+          }
+        })
+      } else {
+        // Для інших типів просто оновлюємо пробіг
+        await ctx.db.vehicle.update({
+          where: { id: input.vehicleId },
+          data: {
+            currentMileage: Math.max(input.mileage, 0),
+          }
+        })
+      }
+
+      return log
     }),
 })
