@@ -1,3 +1,4 @@
+// lib\trpc\server.ts
 import { initTRPC, TRPCError } from '@trpc/server'
 import { getServerSession } from "next-auth"
 import { authOptions } from '@/lib/auth'

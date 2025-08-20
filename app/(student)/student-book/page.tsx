@@ -1,3 +1,5 @@
+// app\(student)\student-book\page.tsx
+
 'use client'
 
 import { useState } from 'react'

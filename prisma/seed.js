@@ -1,208 +1,271 @@
+// prisma/seed.js
+
 const { PrismaClient } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Seeding database...')
+  console.log('🌱 Starting seed...')
 
-  // Clean existing data
-  await prisma.booking.deleteMany()
-  await prisma.instructorSchedule.deleteMany()
-  await prisma.user.deleteMany()
+  // Створити тестових користувачів
+  const hashedPassword = await bcrypt.hash('Test123!', 10)
 
-  // Create admin
-  const adminPassword = await bcrypt.hash('admin123', 10)
-  const admin = await prisma.user.create({
-    data: {
-      email: 'admin@driving-school.com',
-      passwordHash: adminPassword,
+  // Створити адміна
+  const admin = await prisma.user.upsert({
+    where: { email: 'admin@test.com' },
+    update: {},
+    create: {
+      email: 'admin@test.com',
+      passwordHash: hashedPassword,
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
+      phone: '+48123456789',
+      status: 'ACTIVE',
     },
   })
-  console.log('✅ Created admin:', admin.email)
 
-  // Create instructors
-  const instructorPassword = await bcrypt.hash('instructor123', 10)
-  const instructors = await Promise.all([
-    prisma.user.create({
-      data: {
-        email: 'john.instructor@driving-school.com',
-        passwordHash: instructorPassword,
-        firstName: 'John',
-        lastName: 'Smith',
-        role: 'INSTRUCTOR',
-      },
-    }),
-    prisma.user.create({
-      data: {
-        email: 'jane.instructor@driving-school.com',
-        passwordHash: instructorPassword,
-        firstName: 'Jane',
-        lastName: 'Doe',
-        role: 'INSTRUCTOR',
-      },
-    }),
-    prisma.user.create({
-      data: {
-        email: 'mike.instructor@driving-school.com',
-        passwordHash: instructorPassword,
-        firstName: 'Mike',
-        lastName: 'Johnson',
-        role: 'INSTRUCTOR',
-      },
-    }),
-  ])
-  console.log('✅ Created', instructors.length, 'instructors')
+  console.log('✅ Admin created:', admin.email)
 
-  // Create instructor schedules (Monday to Friday, 9-17)
-  for (const instructor of instructors) {
-    for (let day = 1; day <= 5; day++) {
-      await prisma.instructorSchedule.create({
-        data: {
-          instructorId: instructor.id,
+  // Створити інструкторів
+  const instructor1 = await prisma.user.upsert({
+    where: { email: 'instructor1@test.com' },
+    update: {},
+    create: {
+      email: 'instructor1@test.com',
+      passwordHash: hashedPassword,
+      firstName: 'Jan',
+      lastName: 'Kowalski',
+      role: 'INSTRUCTOR',
+      phone: '+48123456790',
+      status: 'ACTIVE',
+    },
+  })
+
+  const instructor2 = await prisma.user.upsert({
+    where: { email: 'instructor2@test.com' },
+    update: {},
+    create: {
+      email: 'instructor2@test.com',
+      passwordHash: hashedPassword,
+      firstName: 'Anna',
+      lastName: 'Nowak',
+      role: 'INSTRUCTOR',
+      phone: '+48123456791',
+      status: 'ACTIVE',
+    },
+  })
+
+  console.log('✅ Instructors created')
+
+  // Створити студентів
+  const student1 = await prisma.user.upsert({
+    where: { email: 'student@test.com' },
+    update: {},
+    create: {
+      email: 'student@test.com',
+      passwordHash: hashedPassword,
+      firstName: 'Piotr',
+      lastName: 'Wiśniewski',
+      role: 'STUDENT',
+      phone: '+48123456792',
+      status: 'ACTIVE',
+    },
+  })
+
+  const student2 = await prisma.user.upsert({
+    where: { email: 'student2@test.com' },
+    update: {},
+    create: {
+      email: 'student2@test.com',
+      passwordHash: hashedPassword,
+      firstName: 'Maria',
+      lastName: 'Dąbrowska',
+      role: 'STUDENT',
+      phone: '+48123456793',
+      status: 'ACTIVE',
+    },
+  })
+
+  console.log('✅ Students created')
+
+  // Створити розклад для інструкторів
+  for (let day = 1; day <= 5; day++) { // Понеділок - П'ятниця
+    await prisma.instructorSchedule.upsert({
+      where: {
+        instructorId_dayOfWeek: {
+          instructorId: instructor1.id,
           dayOfWeek: day,
-          startTime: '09:00',
-          endTime: '17:00',
-          isAvailable: true,
         },
-      })
-    }
-  }
-  console.log('✅ Created instructor schedules')
+      },
+      update: {},
+      create: {
+        instructorId: instructor1.id,
+        dayOfWeek: day,
+        startTime: '08:00',
+        endTime: '18:00',
+        isAvailable: true,
+      },
+    })
 
-  // Create students
-  const studentPassword = await bcrypt.hash('student123', 10)
-  const students = await Promise.all([
-    prisma.user.create({
-      data: {
-        email: 'alice.student@example.com',
-        passwordHash: studentPassword,
-        firstName: 'Alice',
-        lastName: 'Johnson',
-        role: 'STUDENT',
+    await prisma.instructorSchedule.upsert({
+      where: {
+        instructorId_dayOfWeek: {
+          instructorId: instructor2.id,
+          dayOfWeek: day,
+        },
       },
-    }),
-    prisma.user.create({
-      data: {
-        email: 'bob.student@example.com',
-        passwordHash: studentPassword,
-        firstName: 'Bob',
-        lastName: 'Williams',
-        role: 'STUDENT',
-      },
-    }),
-    prisma.user.create({
-      data: {
-        email: 'charlie.student@example.com',
-        passwordHash: studentPassword,
-        firstName: 'Charlie',
-        lastName: 'Brown',
-        role: 'STUDENT',
-      },
-    }),
-    prisma.user.create({
-      data: {
-        email: 'diana.student@example.com',
-        passwordHash: studentPassword,
-        firstName: 'Diana',
-        lastName: 'Davis',
-        role: 'STUDENT',
-      },
-    }),
-  ])
-  console.log('✅ Created', students.length, 'students')
-
-  // Create sample bookings
-  const now = new Date()
-  const bookingsData = [
-    // Today's bookings
-    {
-      studentId: students[0].id,
-      instructorId: instructors[0].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0),
-      status: 'CONFIRMED',
-      notes: 'Parallel parking practice',
-    },
-    {
-      studentId: students[1].id,
-      instructorId: instructors[0].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 0),
-      status: 'CONFIRMED',
-      notes: 'Highway driving',
-    },
-    // Tomorrow's bookings
-    {
-      studentId: students[2].id,
-      instructorId: instructors[1].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0),
-      status: 'CONFIRMED',
-      notes: 'First lesson',
-    },
-    {
-      studentId: students[0].id,
-      instructorId: instructors[1].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 11, 0),
-      status: 'CONFIRMED',
-      notes: 'City driving',
-    },
-    // Future bookings
-    {
-      studentId: students[3].id,
-      instructorId: instructors[2].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 3, 13, 0),
-      status: 'CONFIRMED',
-      notes: 'Pre-test practice',
-    },
-    // Past bookings
-    {
-      studentId: students[0].id,
-      instructorId: instructors[0].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7, 10, 0),
-      status: 'COMPLETED',
-      notes: 'Basic maneuvers',
-    },
-    {
-      studentId: students[1].id,
-      instructorId: instructors[1].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5, 14, 0),
-      status: 'COMPLETED',
-      notes: 'Traffic rules',
-    },
-    // Cancelled booking
-    {
-      studentId: students[2].id,
-      instructorId: instructors[2].id,
-      startTime: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 11, 0),
-      status: 'CANCELLED',
-      notes: 'Student was sick',
-    },
-  ]
-
-  for (const booking of bookingsData) {
-    await prisma.booking.create({
-      data: {
-        ...booking,
-        endTime: new Date(booking.startTime.getTime() + 2 * 60 * 60 * 1000), // +2 hours
+      update: {},
+      create: {
+        instructorId: instructor2.id,
+        dayOfWeek: day,
+        startTime: '09:00',
+        endTime: '17:00',
+        isAvailable: true,
       },
     })
   }
-  console.log('✅ Created', bookingsData.length, 'sample bookings')
 
-  console.log('\n📋 Test credentials:')
-  console.log('================================')
-  console.log('Admin:      admin@driving-school.com / admin123')
-  console.log('Instructor: john.instructor@driving-school.com / instructor123')
-  console.log('Student:    alice.student@example.com / student123')
-  console.log('================================')
-  console.log('\n✅ Seeding completed!')
+  console.log('✅ Schedules created')
+
+  // Створити локації (Phase 2)
+  const location1 = await prisma.location.upsert({
+    where: { code: 'MAIN' },
+    update: {},
+    create: {
+      name: 'Główna Szkoła',
+      code: 'MAIN',
+      address: 'ul. Główna 1',
+      city: 'Warszawa',
+      postalCode: '00-001',
+      isActive: true,
+      isPrimary: true,
+    },
+  })
+
+  const location2 = await prisma.location.upsert({
+    where: { code: 'NORTH' },
+    update: {},
+    create: {
+      name: 'Filia Północ',
+      code: 'NORTH',
+      address: 'ul. Północna 10',
+      city: 'Warszawa',
+      postalCode: '01-001',
+      isActive: true,
+      isPrimary: false,
+    },
+  })
+
+  console.log('✅ Locations created')
+
+  // Створити автомобілі (Phase 2)
+  try {
+    const vehicle1 = await prisma.vehicle.create({
+      data: {
+        registrationNumber: 'WX 12345',
+        make: 'Toyota',
+        model: 'Corolla',
+        year: 2022,
+        color: 'Silver',
+        category: 'B',
+        transmission: 'MANUAL',
+        fuelType: 'PETROL',
+        assignedInstructorId: instructor1.id,
+        baseLocationId: location1.id,
+        insuranceExpiry: new Date('2025-12-31'),
+        inspectionExpiry: new Date('2025-06-30'),
+        status: 'ACTIVE',
+      },
+    })
+
+    const vehicle2 = await prisma.vehicle.create({
+      data: {
+        registrationNumber: 'WX 67890',
+        make: 'Volkswagen',
+        model: 'Golf',
+        year: 2023,
+        color: 'Blue',
+        category: 'B_AUTOMATIC',
+        transmission: 'AUTOMATIC',
+        fuelType: 'DIESEL',
+        assignedInstructorId: instructor2.id,
+        baseLocationId: location1.id,
+        insuranceExpiry: new Date('2025-12-31'),
+        inspectionExpiry: new Date('2025-06-30'),
+        status: 'ACTIVE',
+      },
+    })
+
+    console.log('✅ Vehicles created')
+  } catch (error) {
+    console.log('⚠️ Vehicles might already exist, skipping...')
+  }
+
+  // Створити пакети (Phase 2)
+  try {
+    await prisma.package.create({
+      data: {
+        name: 'Pakiet Startowy',
+        description: '5 lekcji na dobry początek',
+        credits: 5,
+        price: 900,
+        validityDays: 90,
+        isActive: true,
+        isPopular: false,
+        sortOrder: 1,
+      },
+    })
+
+    await prisma.package.create({
+      data: {
+        name: 'Pakiet Standard',
+        description: '10 lekcji - najpopularniejszy wybór',
+        credits: 10,
+        price: 1700,
+        validityDays: 120,
+        isActive: true,
+        isPopular: true,
+        sortOrder: 2,
+      },
+    })
+
+    await prisma.package.create({
+      data: {
+        name: 'Pakiet Premium',
+        description: '20 lekcji - najlepsza cena za lekcję',
+        credits: 20,
+        price: 3200,
+        validityDays: 180,
+        isActive: true,
+        isPopular: false,
+        sortOrder: 3,
+      },
+    })
+
+    console.log('✅ Packages created')
+  } catch (error) {
+    console.log('⚠️ Packages might already exist, skipping...')
+  }
+
+  console.log(`
+  🎉 Seed completed successfully!
+  
+  Test accounts:
+  -------------------------
+  Admin:       admin@test.com / Test123!
+  Instructor1: instructor1@test.com / Test123!
+  Instructor2: instructor2@test.com / Test123!
+  Student:     student@test.com / Test123!
+  Student2:    student2@test.com / Test123!
+  -------------------------
+  `)
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seeding failed:', e)
+    console.error('❌ Seed error:', e)
     process.exit(1)
   })
   .finally(async () => {

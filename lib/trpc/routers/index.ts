@@ -1,3 +1,4 @@
+// lib\trpc\routers\index.ts
 import { router } from '../server'
 import { authRouter } from './auth'
 import { bookingRouter } from './booking'

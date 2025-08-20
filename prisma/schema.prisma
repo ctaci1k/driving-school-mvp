@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,26 +9,235 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// MVP Schema - Phase 1
+// ============= USERS & AUTH =============
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String    @id @default(cuid())
+  email        String    @unique
+  phone        String?   @unique
   passwordHash String
   firstName    String
   lastName     String
   role         UserRole
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  // Phase 2 additions
+  language     String    @default("pl")
+  avatar       String?
+  dateOfBirth  DateTime? // Fixed: DateTime instead of Date
+  licenseNumber String?
+  address      String?
+  city         String?
+  postalCode   String?
+  status       String    @default("ACTIVE") // Will use UserStatus enum later
+  emailVerified DateTime?
+  phoneVerified DateTime?
+  lastLoginAt  DateTime?
+  
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
 
   // Relations
   studentBookings    Booking[] @relation("StudentBookings")
   instructorBookings Booking[] @relation("InstructorBookings")
   instructorSchedule InstructorSchedule[]
+  assignedVehicles   Vehicle[]
+  payments          Payment[]
+  userPackages      UserPackage[]
+  notifications     Notification[]
 
   @@index([email])
+  @@index([phone])
   @@index([role])
 }
 
+// ============= LOCATIONS =============
+model Location {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  address     String
+  city        String
+  postalCode  String
+  latitude    Float?
+  longitude   Float?
+  maxInstructors Int   @default(5)
+  maxVehicles    Int   @default(10)
+  isActive    Boolean  @default(true)
+  isPrimary   Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  bookings    Booking[]
+  vehicles    Vehicle[]
+
+  @@index([code])
+  @@index([city])
+}
+
+// ============= VEHICLES =============
+model Vehicle {
+  id                 String    @id @default(cuid())
+  registrationNumber String    @unique
+  vin                String?   @unique
+  make               String
+  model              String
+  year               Int
+  color              String?
+  category           String    // Will be VehicleCategory enum
+  transmission       String    // Will be Transmission enum
+  fuelType           String    // Will be FuelType enum
+  
+  assignedInstructorId String?
+  assignedInstructor   User?     @relation(fields: [assignedInstructorId], references: [id])
+  baseLocationId       String
+  baseLocation         Location  @relation(fields: [baseLocationId], references: [id])
+  
+  currentMileage      Int       @default(0)
+  lastServiceDate     DateTime?
+  nextServiceDate     DateTime?
+  insuranceExpiry     DateTime  // Fixed: DateTime
+  inspectionExpiry    DateTime  // Fixed: DateTime
+  
+  status             String    @default("ACTIVE")
+  
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  // Relations
+  bookings           Booking[]
+  maintenanceLogs    MaintenanceLog[]
+
+  @@index([registrationNumber])
+  @@index([assignedInstructorId])
+  @@index([baseLocationId])
+}
+
+// ============= PACKAGES =============
+model Package {
+  id           String   @id @default(cuid())
+  name         String
+  description  String?
+  credits      Int
+  price        Decimal  @db.Decimal(10, 2)
+  currency     String   @default("PLN")
+  validityDays Int
+  isActive     Boolean  @default(true)
+  isPopular    Boolean  @default(false)
+  sortOrder    Int      @default(0)
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  userPackages UserPackage[]
+
+  @@index([isActive])
+}
+
+// ============= USER PACKAGES =============
+model UserPackage {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  packageId       String
+  package         Package  @relation(fields: [packageId], references: [id])
+  
+  creditsTotal    Int
+  creditsUsed     Int      @default(0)
+  creditsRemaining Int
+  
+  purchasedAt     DateTime @default(now())
+  expiresAt       DateTime
+  
+  paymentId       String?  @unique
+  payment         Payment?
+  
+  status          String   @default("PENDING")
+
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+// ============= PAYMENTS =============
+model Payment {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  
+  bookingId       String?   @unique
+  booking         Booking?
+  userPackageId   String?   @unique
+  userPackage     UserPackage? @relation(fields: [userPackageId], references: [id])
+  
+  amount          Decimal   @db.Decimal(10, 2)
+  currency        String    @default("PLN")
+  
+  p24SessionId    String?   @unique
+  p24OrderId      String?   @unique
+  p24Token        String?
+  
+  status          String    @default("PENDING")
+  method          String    @default("P24")
+  
+  description     String?
+  metadata        Json?
+  
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+  failedAt        DateTime?
+  
+  @@index([userId])
+  @@index([status])
+  @@index([p24SessionId])
+}
+
+// ============= BOOKINGS (Updated) =============
+model Booking {
+  id           String         @id @default(cuid())
+  studentId    String
+  student      User           @relation("StudentBookings", fields: [studentId], references: [id])
+  instructorId String
+  instructor   User           @relation("InstructorBookings", fields: [instructorId], references: [id])
+  
+  // Phase 2 additions
+  vehicleId    String?
+  vehicle      Vehicle?       @relation(fields: [vehicleId], references: [id])
+  locationId   String?
+  location     Location?      @relation(fields: [locationId], references: [id])
+  
+  startTime    DateTime
+  endTime      DateTime
+  duration     Int            @default(120) // minutes
+  
+  lessonType   String         @default("STANDARD")
+  status       BookingStatus  @default(CONFIRMED)
+  
+  price        Decimal?       @db.Decimal(10, 2)
+  isPaid       Boolean        @default(false)
+  paymentId    String?        @unique
+  payment      Payment?       @relation(fields: [paymentId], references: [id])
+  usedCredits  Int           @default(0)
+  
+  notes        String?
+  cancelledAt  DateTime?
+  cancelledBy  String?
+  cancellationReason String?
+  
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([studentId])
+  @@index([instructorId])
+  @@index([vehicleId])
+  @@index([locationId])
+  @@index([startTime])
+  @@index([status])
+}
+
+// ============= INSTRUCTOR SCHEDULES =============
 model InstructorSchedule {
   id           String   @id @default(cuid())
   instructorId String
@@ -34,33 +245,68 @@ model InstructorSchedule {
   dayOfWeek    Int      // 0 = Sunday, 6 = Saturday
   startTime    String   // "09:00"
   endTime      String   // "17:00"
+  
+  // Phase 2 addition
+  specificDate DateTime?
+  
   isAvailable  Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   @@unique([instructorId, dayOfWeek])
   @@index([instructorId])
+  @@index([specificDate])
 }
 
-model Booking {
-  id           String         @id @default(cuid())
-  studentId    String
-  student      User           @relation("StudentBookings", fields: [studentId], references: [id])
-  instructorId String
-  instructor   User           @relation("InstructorBookings", fields: [instructorId], references: [id])
-  startTime    DateTime
-  endTime      DateTime
-  status       BookingStatus  @default(CONFIRMED)
-  notes        String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+// ============= NOTIFICATIONS =============
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  type        String   // NotificationType
+  channel     String   // NotificationChannel
+  
+  subject     String?
+  content     String
+  metadata    Json?
+  
+  status      String   @default("PENDING")
+  sentAt      DateTime?
+  readAt      DateTime?
+  failedAt    DateTime?
+  errorMessage String?
+  
+  createdAt   DateTime @default(now())
 
-  @@index([studentId])
-  @@index([instructorId])
-  @@index([startTime])
+  @@index([userId])
+  @@index([type])
   @@index([status])
 }
 
+// ============= MAINTENANCE LOGS =============
+model MaintenanceLog {
+  id          String   @id @default(cuid())
+  vehicleId   String
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  
+  type        String   // MaintenanceType
+  description String
+  cost        Decimal? @db.Decimal(10, 2)
+  mileage     Int
+  
+  performedAt DateTime
+  performedBy String?
+  nextDueDate DateTime?
+  nextDueMileage Int?
+  
+  createdAt   DateTime @default(now())
+
+  @@index([vehicleId])
+  @@index([type])
+}
+
+// ============= ENUMS =============
 enum UserRole {
   STUDENT
   INSTRUCTOR
