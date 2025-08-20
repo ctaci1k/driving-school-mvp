@@ -71,7 +71,7 @@ export default function StudentDashboard() {
         <div>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Upcoming Lessons</h2>
-            <Link href="/student/book">
+            <Link href="student-book">
               <Button>Book New Lesson</Button>
             </Link>
           </div>
@@ -80,7 +80,7 @@ export default function StudentDashboard() {
             <Card>
               <CardContent className="text-center py-8">
                 <p className="text-gray-500 mb-4">No upcoming lessons</p>
-                <Link href="/student/book">
+                <Link href="student-book">
                   <Button>Book Your First Lesson</Button>
                 </Link>
               </CardContent>
@@ -112,7 +112,7 @@ export default function StudentDashboard() {
                           </span>
                         </div>
                       </div>
-                      <Link href="/student/bookings">
+                      <Link href="student-bookings">
                         <Button variant="outline" size="sm">View Details</Button>
                       </Link>
                     </div>
@@ -126,10 +126,10 @@ export default function StudentDashboard() {
         <div>
           <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
           <div className="space-y-3">
-            <Link href="/student/book" className="block">
+            <Link href="student-book" className="block">
               <Button className="w-full" size="lg">Book a Lesson</Button>
             </Link>
-            <Link href="/student/bookings" className="block">
+            <Link href="student-bookings" className="block">
               <Button className="w-full" variant="outline" size="lg">View All Bookings</Button>
             </Link>
           </div>

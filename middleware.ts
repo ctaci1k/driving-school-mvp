@@ -26,33 +26,42 @@ export async function middleware(request: NextRequest) {
     )
   }
 
-  // Role-based access control для специфічних шляхів
   const userRole = token.role as string
   const path = request.nextUrl.pathname
 
-  // Студенти можуть доступитись до /book, /bookings
-  if ((path === '/book' || path === '/bookings') && userRole !== 'STUDENT' && userRole !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Student routes
+  if (path.startsWith('/student-')) {
+    if (userRole !== 'STUDENT' && userRole !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
 
-  // Інструктори можуть доступитись до /schedule, /students
-  if ((path === '/schedule' || path === '/students') && userRole !== 'INSTRUCTOR' && userRole !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Instructor routes
+  if (path.startsWith('/instructor-')) {
+    if (userRole !== 'INSTRUCTOR' && userRole !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
 
-  // Тільки адміни можуть доступитись до /users та адмін /bookings
-  if (path === '/users' && userRole !== 'ADMIN') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Admin routes
+  if (path.startsWith('/admin-')) {
+    if (userRole !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    }
   }
 }
 
 export const config = {
   matcher: [
     '/dashboard',
-    '/book',
-    '/bookings', 
-    '/schedule',
-    '/students',
-    '/users',
+    '/student-dashboard',
+    '/student-book',
+    '/student-bookings',
+    '/instructor-dashboard',
+    '/instructor-schedule',
+    '/instructor-students',
+    '/admin-dashboard',
+    '/admin-users',
+    '/admin-bookings',
   ],
 }

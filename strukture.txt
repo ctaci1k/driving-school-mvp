@@ -1,18 +1,18 @@
 driving-school-mvp/
 ├── app/
-│   ├── (auth)/
+│   ├── (auth)/ 
 │   │   ├── login/
 │   │   │   └── page.tsx 1
 │   │   └── register/
 │   │       └── page.tsx 1
-│   ├── (student)/
+│   ├── (student)/ 
 │   │   ├── dashboard/ +1
 │   │   │   └── page.tsx 1
 │   │   ├── book/
 │   │   │   └── page.tsx 1
 │   │   └── bookings/
 │   │       └── page.tsx 1
-│   ├── (instructor)/
+│   ├── (instructor)/ 
 │   │   ├── dashboard/ +1
 │   │   │   └── page.tsx 1
 │   │   ├── schedule/
@@ -38,13 +38,13 @@ driving-school-mvp/
 │   ├── layout.tsx 1
 │   ├── page.tsx 1
 │   └── globals.css 1
-        +1
+        +3
 ├── components/
-│   ├── ui/ +1
-│   ├── forms/
-│   ├── layouts/ +2
+│   ├── ui/ +11
+│   ├── forms/ +2
+│   ├── layouts/ +3
 │   └── providers/ +1
-├── lib/
+├── lib/ +4
 │   ├── trpc/ +2
 │   │   └── routers/ +5
 │   ├── auth.ts 1
@@ -57,7 +57,7 @@ driving-school-mvp/
 ├── .env.local 1
 ├── package.json 1
 └── tsconfig.json
-    +2
+    +3
 
 
 

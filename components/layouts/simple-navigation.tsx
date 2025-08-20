@@ -2,85 +2,49 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { signOut } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import { Home, Calendar, BookOpen, Users, LogOut, Menu } from 'lucide-react'
 import { useState } from 'react'
+import { signOut } from 'next-auth/react'
 
-interface NavItem {
-  href: string
-  label: string
-  icon: React.ReactNode
-  roles: string[]
-}
-
-const navItems: NavItem[] = [
-  // Student navigation
-  { 
-    href: '/student-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  { 
-    href: '/student-book', 
-    label: 'Book Lesson', 
-    icon: <Calendar className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  { 
-    href: '/student-bookings', 
-    label: 'My Bookings', 
-    icon: <BookOpen className="w-4 h-4" />, 
-    roles: ['STUDENT'] 
-  },
-  
-  // Instructor navigation
-  { 
-    href: '/instructor-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  { 
-    href: '/instructor-schedule', 
-    label: 'My Schedule', 
-    icon: <Calendar className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  { 
-    href: '/instructor-students', 
-    label: 'My Students', 
-    icon: <Users className="w-4 h-4" />, 
-    roles: ['INSTRUCTOR'] 
-  },
-  
-  // Admin navigation
-  { 
-    href: '/admin-dashboard', 
-    label: 'Dashboard', 
-    icon: <Home className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-  { 
-    href: '/admin-users', 
-    label: 'Manage Users', 
-    icon: <Users className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-  { 
-    href: '/admin-bookings', 
-    label: 'All Bookings', 
-    icon: <BookOpen className="w-4 h-4" />, 
-    roles: ['ADMIN'] 
-  },
-]
-
-export function Navigation({ userRole }: { userRole: string }) {
+export function SimpleNavigation() {
   const pathname = usePathname()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  const filteredItems = navItems.filter(item => item.roles.includes(userRole))
+  // Визначаємо роль по URL
+  const isStudent = pathname.startsWith('/student-')
+  const isInstructor = pathname.startsWith('/instructor-')
+  const isAdmin = pathname.startsWith('/admin-')
+
+  // Визначаємо текст ролі для відображення
+  let roleText = ''
+  if (isStudent) roleText = 'STUDENT'
+  else if (isInstructor) roleText = 'INSTRUCTOR'
+  else if (isAdmin) roleText = 'ADMIN'
+
+  const navItems = []
+
+  if (isStudent) {
+    navItems.push(
+      { href: '/student-dashboard', label: 'Dashboard', icon: <Home className="w-4 h-4" /> },
+      { href: '/student-book', label: 'Book Lesson', icon: <Calendar className="w-4 h-4" /> },
+      { href: '/student-bookings', label: 'My Bookings', icon: <BookOpen className="w-4 h-4" /> }
+    )
+  } else if (isInstructor) {
+    navItems.push(
+      { href: '/instructor-dashboard', label: 'Dashboard', icon: <Home className="w-4 h-4" /> },
+      { href: '/instructor-schedule', label: 'My Schedule', icon: <Calendar className="w-4 h-4" /> },
+      { href: '/instructor-students', label: 'My Students', icon: <Users className="w-4 h-4" /> }
+    )
+  } else if (isAdmin) {
+    navItems.push(
+      { href: '/admin-dashboard', label: 'Dashboard', icon: <Home className="w-4 h-4" /> },
+      { href: '/admin-users', label: 'Manage Users', icon: <Users className="w-4 h-4" /> },
+      { href: '/admin-bookings', label: 'All Bookings', icon: <BookOpen className="w-4 h-4" /> }
+    )
+  }
+
+  if (navItems.length === 0) return null
 
   return (
     <nav className="bg-white shadow-sm border-b">
@@ -91,9 +55,8 @@ export function Navigation({ userRole }: { userRole: string }) {
               DrivingSchool
             </Link>
             
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4 ml-10">
-              {filteredItems.map((item) => (
+              {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
@@ -111,9 +74,13 @@ export function Navigation({ userRole }: { userRole: string }) {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600">
-              Role: <span className="font-medium">{userRole}</span>
-            </span>
+            {/* Показуємо роль користувача */}
+            {roleText && (
+              <span className="text-sm text-gray-600">
+                Role: <span className="font-medium">{roleText}</span>
+              </span>
+            )}
+            
             <Button
               variant="ghost"
               size="sm"
@@ -124,7 +91,6 @@ export function Navigation({ userRole }: { userRole: string }) {
               Logout
             </Button>
 
-            {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2"
@@ -134,10 +100,16 @@ export function Navigation({ userRole }: { userRole: string }) {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden py-2 border-t">
-            {filteredItems.map((item) => (
+            {/* Показуємо роль в мобільному меню */}
+            {roleText && (
+              <div className="px-3 py-2 text-sm text-gray-600 border-b">
+                Role: <span className="font-medium">{roleText}</span>
+              </div>
+            )}
+            
+            {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

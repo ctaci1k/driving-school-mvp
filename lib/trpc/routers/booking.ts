@@ -1,7 +1,8 @@
 import { router, protectedProcedure } from '../server'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { addHours } from 'date-fns'
+import { addHours, format } from 'date-fns'
+import { sendEmail, bookingConfirmationEmail } from '@/lib/email'
 
 export const bookingRouter = router({
   create: protectedProcedure
@@ -56,7 +57,21 @@ export const bookingRouter = router({
           student: true,
         },
       })
-
+      
+      // В методі create після створення booking:
+      if (booking) {
+        // Send confirmation email (mock for MVP)
+        await sendEmail(bookingConfirmationEmail(
+          ctx.session.user.email,
+          {
+            studentName: `${booking.student.firstName} ${booking.student.lastName}`,
+            instructorName: `${booking.instructor.firstName} ${booking.instructor.lastName}`,
+            date: format(booking.startTime, 'EEEE, MMMM d, yyyy'),
+            time: `${format(booking.startTime, 'HH:mm')} - ${format(booking.endTime, 'HH:mm')}`
+          }
+        ))
+      }
+      
       return booking
     }),
 
