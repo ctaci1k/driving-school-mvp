@@ -50,9 +50,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
-          <div className="bg-primary text-white p-4 rounded-lg">
-  Tailwind працює!
-</div>
+
 
         </CardHeader>
         <form onSubmit={handleSubmit}>

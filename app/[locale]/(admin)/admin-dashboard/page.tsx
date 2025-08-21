@@ -1,5 +1,4 @@
-// app\(admin)\dashboard\page.tsx
-
+// app\(admin)\admin-dashboard\page.tsx
 'use client'
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'

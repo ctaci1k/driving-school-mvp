@@ -1,3 +1,4 @@
+// app\(admin)\admin-bookings\page.tsx
 'use client'
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'

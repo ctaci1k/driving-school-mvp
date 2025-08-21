@@ -13,8 +13,11 @@ import {
   Settings, 
   LogOut,
   CreditCard,
-  FileText
+  FileText,
+  TrendingUp
 } from 'lucide-react'
+import { LanguageSwitcher } from '@/components/ui/language-switcher'
+import { useParams } from 'next/navigation'
 
 export function Navigation({ userRole }: { userRole?: string }) {
   const pathname = usePathname()
@@ -22,10 +25,14 @@ export function Navigation({ userRole }: { userRole?: string }) {
   
   const isActive = (path: string) => pathname === path
 
+  const params = useParams()
+const locale = params.locale as string
+
   const studentLinks = [
     { href: '/student-dashboard', label: 'Панель', icon: Home },
     { href: '/student-book', label: 'Забронювати урок', icon: Calendar },
     { href: '/student-bookings', label: 'Мої бронювання', icon: FileText },
+    { href: '/student-reports', label: 'Мої звіти', icon: TrendingUp },
     { href: '/packages', label: 'Пакети', icon: Package },
     { href: '/payments', label: 'Платежі', icon: CreditCard },
   ]
@@ -34,6 +41,7 @@ export function Navigation({ userRole }: { userRole?: string }) {
     { href: '/instructor-dashboard', label: 'Панель', icon: Home },
     { href: '/instructor-schedule', label: 'Розклад', icon: Calendar },
     { href: '/instructor-students', label: 'Студенти', icon: Users },
+    { href: '/instructor-reports', label: 'Мої звіти', icon: TrendingUp },
   ]
 
   const adminLinks = [
@@ -41,6 +49,7 @@ export function Navigation({ userRole }: { userRole?: string }) {
     { href: '/admin-bookings', label: 'Всі бронювання', icon: Calendar },
     { href: '/admin-users', label: 'Користувачі', icon: Users },
     { href: '/admin-vehicles', label: 'Автомобілі', icon: Car },
+    { href: '/admin-reports', label: 'Звіти', icon: TrendingUp },
     { href: '/packages-admin', label: 'Управління пакетами', icon: Package },
     { href: '/reports', label: 'Звіти', icon: FileText },
     { href: '/settings', label: 'Налаштування', icon: Settings },
@@ -82,22 +91,26 @@ export function Navigation({ userRole }: { userRole?: string }) {
           </div>
 
           <div className="flex items-center space-x-4">
-            {session?.user && (
-              <div className="flex items-center gap-4">
-                <div className="text-sm text-right">
-                  <p className="font-medium">{session.user.email}</p>
-                  <p className="text-gray-500 text-xs">{userRole}</p>
-                </div>
-                <button
-                  onClick={() => signOut({ callbackUrl: '/login' })}
-                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Вийти
-                </button>
-              </div>
-            )}
-          </div>
+  {session?.user && (
+    <div className="flex items-center gap-4">
+      <div className="text-sm text-right">
+        <p className="font-medium">{session.user.email}</p>
+        <p className="text-gray-500 text-xs">{userRole}</p>
+      </div>
+      
+      {/* ВСТАВИТИ ТУТ */}
+      <LanguageSwitcher currentLocale={locale} />
+      
+      <button
+        onClick={() => signOut({ callbackUrl: '/login' })}
+        className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+      >
+        <LogOut className="w-4 h-4" />
+        Вийти
+      </button>
+    </div>
+  )}
+</div>
         </div>
       </div>
     </nav>

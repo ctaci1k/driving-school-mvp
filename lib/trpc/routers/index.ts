@@ -9,6 +9,9 @@ import { vehicleRouter } from './vehicle'
 import { paymentRouter } from './payment'
 import { packageRouter } from './package'
 import { locationRouter } from './location'
+import { studentReportsRouter } from './studentReports'
+import { instructorReportsRouter } from './instructorReports'
+import { adminReportsRouter } from './adminReports'
 
 export const appRouter = router({
   auth: authRouter,
@@ -19,6 +22,9 @@ export const appRouter = router({
   payment: paymentRouter,
   package: packageRouter,
   location: locationRouter,
+  studentReports: studentReportsRouter,
+  instructorReports: instructorReportsRouter,
+  adminReports: adminReportsRouter,
 })
 
 export type AppRouter = typeof appRouter
