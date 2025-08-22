@@ -1,4 +1,4 @@
-// lib/trpc/routers/booking.ts - ПОВНА ВЕРСІЯ З УСІМА ЗВ'ЯЗКАМИ
+// lib/trpc/routers/booking.ts 
 
 import { router, protectedProcedure } from '../server'
 import { z } from 'zod'

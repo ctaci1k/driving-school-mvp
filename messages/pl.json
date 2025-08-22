@@ -211,7 +211,27 @@
     "revenue": "Przychód",
     "mock": "Testowy",
     "perLesson": "200 PLN za lekcję",
-    "recentBookings": "Ostatnie rezerwacje"
+    "recentBookings": "Ostatnie rezerwacje",
+    "tabs": {
+    "overview": "Przegląd",
+    "calendar": "Kalendarz",
+    "analytics": "Analityka"
+  },
+  "todayBookings": "Dzisiejsze rezerwacje",
+  "vehicles": "Pojazdy",
+  "activeVehicles": "{count} aktywnych",
+  "todayRevenue": "Przychód dziś",
+  "bookingStats": "Statystyki rezerwacji",
+  "topInstructors": "Najlepsi instruktorzy",
+  "lessonsCount": "{count} lekcji",
+  "schoolCalendar": "Kalendarz szkoły",
+  "revenueToday": "Przychód dziś",
+  "revenueWeek": "Przychód tydzień",
+  "revenueMonth": "Przychód miesiąc",
+  "resourceUtilization": "Wykorzystanie zasobów",
+  "conversionRate": "Wskaźniki konwersji",
+  "completionRate": "Wskaźnik ukończenia",
+  "cancellationRate": "Wskaźnik anulacji"
   },
   "adminBookings": {
     "subtitle": "Zarządzaj wszystkimi rezerwacjami w systemie",
