@@ -20,6 +20,8 @@ import { DayView } from '@/components/calendar/day-view'
 import { WeekView } from '@/components/calendar/week-view'
 import { MonthView } from '@/components/calendar/month-view'
 import { CalendarNavigation } from '@/components/calendar/calendar-navigation'
+import { RecurringBookingModal, type RecurringSettings } from '@/components/booking/recurring-booking-modal'
+import { Repeat } from 'lucide-react'
 
 
 
@@ -39,6 +41,10 @@ export default function BookLessonPage() {
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'online' | 'package'>('online')
   const [notes, setNotes] = useState('')
   const [calendarView, setCalendarView] = useState<'day' | 'week' | 'month'>('week')
+  const [isRecurring, setIsRecurring] = useState(false)
+const [showRecurringModal, setShowRecurringModal] = useState(false)
+const [recurringSettings, setRecurringSettings] = useState<RecurringSettings | null>(null)
+
 
   // Запити даних
   const { data: locations } = trpc.location.list.useQuery()
@@ -73,37 +79,41 @@ export default function BookLessonPage() {
   const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
 
   // Мутація для створення бронювання
-  const bookingMutation = trpc.booking.create.useMutation({
-    onSuccess: (data) => {
+const bookingMutation = trpc.booking.createRecurring.useMutation({
+  onSuccess: (data) => {
+    if (Array.isArray(data)) {
+      toast.success(t('booking.recurringBooking.successMultiple', { count: data.length }))
+    } else {
       toast.success(t('booking.bookingCreated'))
-
-      // Якщо оплата онлайн - перенаправляємо на оплату
-      if (paymentMethod === 'online' && data.id) {
-        fetch('/api/payments/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            bookingId: data.id,
-            amount: 200,
-            description: `${t('booking.title')} - ${format(new Date(data.startTime), 'dd.MM.yyyy HH:mm')}`
-          })
-        })
-          .then(res => res.json())
-          .then(payment => {
-            if (payment.redirectUrl) {
-              window.location.href = payment.redirectUrl
-            } else {
-              router.push(`/${locale}/student-bookings`)
-            }
-          })
-      } else {
-        router.push(`/${locale}/student-bookings`)
-      }
-    },
-    onError: (error) => {
-      toast.error(`${t('messages.error')}: ${error.message}`)
     }
-  })
+
+    // Якщо оплата онлайн і це не серія
+    if (paymentMethod === 'online' && !Array.isArray(data) && data.id) {
+      fetch('/api/payments/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookingId: data.id,
+          amount: 200,
+          description: `${t('booking.title')} - ${format(new Date(data.startTime), 'dd.MM.yyyy HH:mm')}`
+        })
+      })
+        .then(res => res.json())
+        .then(payment => {
+          if (payment.redirectUrl) {
+            window.location.href = payment.redirectUrl
+          } else {
+            router.push(`/${locale}/student-bookings`)
+          }
+        })
+    } else {
+      router.push(`/${locale}/student-bookings`)
+    }
+  },
+  onError: (error) => {
+    toast.error(`${t('messages.error')}: ${error.message}`)
+  }
+})
 
   // Мутація для використання кредитів
   const useCredits = trpc.package.useCredits.useMutation({
@@ -117,29 +127,55 @@ export default function BookLessonPage() {
   })
 
   // Функція бронювання
-  const handleBook = async () => {
-    if (!selectedSlot || !selectedInstructor || !selectedLocation) {
-      toast.error(t('studentBook.fillAllFields'))
-      return
-    }
+// Замініть handleBook на:
+const handleBook = async () => {
+  if (!selectedSlot || !selectedInstructor || !selectedLocation) {
+    toast.error(t('studentBook.fillAllFields'))
+    return
+  }
 
-    // Створюємо бронювання
-    const booking = await bookingMutation.mutateAsync({
-      instructorId: selectedInstructor,
-      startTime: selectedSlot.startTime,
-      vehicleId: selectedVehicle || undefined,
-      locationId: selectedLocation,
-      notes: notes || undefined,
-    })
+  // Якщо це повторювані уроки і ще не налаштовано - показуємо модалку
+  if (isRecurring && !recurringSettings) {
+    setShowRecurringModal(true)
+    return
+  }
 
-    // Якщо оплата кредитами
-    if (paymentMethod === 'package' && booking.id) {
+  // Створюємо бронювання
+  const bookingData = {
+    instructorId: selectedInstructor,
+    startTime: selectedSlot.startTime,
+    vehicleId: selectedVehicle || undefined,
+    locationId: selectedLocation,
+    notes: notes || undefined,
+    isRecurring: isRecurring,
+    recurringSettings: recurringSettings || undefined
+  }
+
+  const result = await bookingMutation.mutateAsync(bookingData)
+
+  // Якщо оплата кредитами і це серія
+  if (paymentMethod === 'package' && Array.isArray(result)) {
+    for (const booking of result) {
       await useCredits.mutateAsync({
         bookingId: booking.id,
         creditsToUse: 1,
       })
     }
+  } else if (paymentMethod === 'package' && !Array.isArray(result) && result.id) {
+    await useCredits.mutateAsync({
+      bookingId: result.id,
+      creditsToUse: 1,
+    })
   }
+}
+
+// Додайте нову функцію для обробки налаштувань повторення
+const handleRecurringConfirm = (settings: RecurringSettings) => {
+  setRecurringSettings(settings)
+  setShowRecurringModal(false)
+  // Автоматично починаємо бронювання після налаштування
+  setTimeout(() => handleBook(), 100)
+}
 
   // Перевіряємо чи достатньо кредитів
   const hasCredits = userCredits && userCredits.totalCredits > 0
@@ -542,7 +578,53 @@ return (
           placeholder={t('studentBook.notesPlaceholder')}
         />
       </div>
-
+{/* Додайте після блоку з нотатками (приблизно рядок 440) */}
+{/* Повторювані уроки */}
+<div className="mb-6 p-4 border rounded-lg">
+  <label className="flex items-center gap-3 cursor-pointer">
+    <input
+      type="checkbox"
+      checked={isRecurring}
+      onChange={(e) => {
+        setIsRecurring(e.target.checked)
+        if (!e.target.checked) {
+          setRecurringSettings(null)
+        }
+      }}
+      className="w-4 h-4"
+    />
+    <div className="flex items-center gap-2">
+      <Repeat className="w-5 h-5 text-gray-600" />
+      <div>
+        <p className="font-medium">{t('booking.recurringBooking.makeRecurring')}</p>
+        <p className="text-xs text-gray-500">{t('booking.recurringBooking.description')}</p>
+      </div>
+    </div>
+  </label>
+  
+  {isRecurring && recurringSettings && (
+    <div className="mt-3 p-3 bg-blue-50 rounded">
+      <p className="text-sm">
+        {t('booking.recurringBooking.configured')}: {' '}
+        {recurringSettings.pattern === 'daily' && t('booking.recurringBooking.daily')}
+        {recurringSettings.pattern === 'weekly' && t('booking.recurringBooking.weekly')}
+        {recurringSettings.pattern === 'biweekly' && t('booking.recurringBooking.biweekly')}
+        {recurringSettings.endType === 'count' 
+          ? ` - ${recurringSettings.count} ${t('booking.recurringBooking.lessons')}`
+          : ` - ${t('booking.recurringBooking.until')} ${format(recurringSettings.endDate!, 'dd.MM.yyyy')}`
+        }
+      </p>
+      <Button 
+        size="sm" 
+        variant="link" 
+        onClick={() => setShowRecurringModal(true)}
+        className="p-0 h-auto"
+      >
+        {t('common.edit')}
+      </Button>
+    </div>
+  )}
+</div>
       {/* Спосіб оплати */}
       <div className="mb-6">
         <p className="text-sm font-medium mb-3">{t('booking.paymentMethod')}:</p>
@@ -622,6 +704,17 @@ return (
   </Card>
 )}
     </div>
+    {/* Додайте перед останнім закриваючим </div> */}
+{/* Модалка для налаштування повторюваних уроків */}
+{selectedSlot && (
+  <RecurringBookingModal
+    open={showRecurringModal}
+    onOpenChange={setShowRecurringModal}
+    startDate={new Date(selectedSlot.startTime)}
+    startTime={format(new Date(selectedSlot.startTime), 'HH:mm')}
+    onConfirm={handleRecurringConfirm}
+  />
+)}
   </div>
 )
 }

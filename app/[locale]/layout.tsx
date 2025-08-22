@@ -2,9 +2,12 @@
 
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
+import { PWAInstallPrompt } from '@/components/pwa/pwa-install-prompt'
+import React from 'react'
 
 const locales = ['pl', 'uk', 'en', 'ru']
 
+// ТІЛЬКИ ОДИН export default!
 export default async function LocaleLayout({
   children,
   params: { locale }
@@ -26,6 +29,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       {children}
+      <PWAInstallPrompt />
     </NextIntlClientProvider>
   )
 }

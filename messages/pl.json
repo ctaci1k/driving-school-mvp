@@ -412,6 +412,13 @@
     "sun": "Ndz"
   },
     "scheduleTemplates": {
+          "willSaveCurrentSchedule": "Zapisze twój obecny harmonogram jako nowy szablon",
+    "noScheduleToSave": "Najpierw ustaw swój harmonogram w sekcji powyżej",
+    "editHint": "Szablon zastosowany. Edytuj harmonogram powyżej i zapisz jako nowy szablon",
+        "addDay": "Dodaj dzień",
+    "saveChanges": "Zapisz zmiany",
+    "templateUpdated": "Szablon zaktualizowany"
+ ,
     "title": "Szablony harmonogramu",
     "createTemplate": "Utwórz szablon",
     "templateName": "Nazwa szablonu",
@@ -428,9 +435,24 @@
     "applyTemplate": "Zastosuj szablon",
     "editTemplate": "Edytuj szablon",
     "deleteTemplate": "Usuń szablon",
-    "activeTemplate": "Aktywny szablon"
+    "activeTemplate": "Aktywny szablon",
+    "cancel": "Anuluj",
+    "saveCurrentAsTemplate": "Zapisz obecny harmonogram jako szablon",
+    "templateNamePlaceholder": "np. Harmonogram zimowy",
+    "save": "Zapisz",
+    "saving": "Zapisywanie...",
+    "days": "dni",
+    "applying": "Stosowanie...",
+    "templateApplied": "Szablon został zastosowany",
+    "templateSaved": "Szablon został zapisany",
+    "nameRequired": "Nazwa szablonu jest wymagana",
+    "confirmApply": "Czy na pewno chcesz zastosować ten szablon? Obecny harmonogram zostanie nadpisany."
   },
     "scheduleExceptions": {
+      "reasonPlaceholder": "np. Urlop wypoczynkowy",
+      "descriptionPlaceholder": "Dodatkowe informacje...",
+      "activeExceptions": "Aktywne wyjątki (dzisiaj)",
+    "saving": "Zapisywanie...",
     "title": "Wyjątki w harmonogramie",
     "addException": "Dodaj wyjątek",
     "exceptionType": "Typ wyjątku",
@@ -513,6 +535,27 @@
     "allBookings": "Wszystkie rezerwacje"
   },
   "booking": {
+      "recurringBooking": {
+            "description": "Zarezerwuj serię lekcji jednym kliknięciem",
+    "configured": "Skonfigurowano",
+    "until": "do",
+    "successMultiple": "Zarezerwowano {count} lekcji",
+    "title": "Ustawienia lekcji cyklicznych",
+    "pattern": "Częstotliwość",
+    "daily": "Codziennie",
+    "weekly": "Co tydzień",
+    "biweekly": "Co dwa tygodnie",
+    "skipWeekends": "Pomiń weekendy",
+    "endType": "Zakończenie",
+    "afterLessons": "Po liczbie lekcji:",
+    "untilDate": "Do daty:",
+    "preview": "Podgląd terminów",
+    "lessons": "lekcji",
+    "warning": "Ważne",
+    "warningText": "System sprawdzi dostępność każdego terminu. Niektóre mogą być niedostępne.",
+    "confirm": "Zarezerwuj {count} lekcji",
+    "makeRecurring": "Lekcje cykliczne"
+  },
       "noLocation": "Brak lokalizacji",
   "noVehicle": "Brak pojazdu",
     "today": "DZISIAJ",

@@ -3,8 +3,9 @@
 import { router, protectedProcedure } from '../server'
 import { z } from 'zod'
 import { TRPCError } from '@trpc/server'
-import { addHours, format } from 'date-fns'
 import { BookingStatus } from '@prisma/client'
+import { addHours, addDays, addWeeks, format, addMinutes  } from 'date-fns'
+
 
 export const bookingRouter = router({
   // Створити бронювання
@@ -52,7 +53,7 @@ export const bookingRouter = router({
       if (instructorConflict) {
         throw new TRPCError({
           code: 'CONFLICT',
-          message: 'Інструктор зайнятий в цей час',
+          message: 'Instruktor jest zajęty w tym czasie',
         })
       }
 
@@ -88,7 +89,7 @@ export const bookingRouter = router({
         if (vehicleConflict) {
           throw new TRPCError({
             code: 'CONFLICT',
-            message: 'Автомобіль зайнятий в цей час',
+            message: 'Pojazd jest zajęty w tym czasie',
           })
         }
 
@@ -100,7 +101,7 @@ export const bookingRouter = router({
         if (!vehicle || vehicle.status !== 'ACTIVE') {
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: 'Автомобіль недоступний',
+            message: 'Pojazd niedostępny',
           })
         }
       }
@@ -113,7 +114,7 @@ export const bookingRouter = router({
       if (!location || !location.isActive) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Локація недоступна',
+          message: 'Lokalizacja niedostępna',
         })
       }
 
@@ -146,18 +147,242 @@ export const bookingRouter = router({
           userId: ctx.session.user.id,
           type: 'BOOKING_CONFIRMATION',
           channel: 'EMAIL',
-          subject: 'Підтвердження бронювання',
-          content: `Ваш урок заброньовано на ${format(startTime, 'dd.MM.yyyy HH:mm')}`,
-metadata: {
-  bookingId: booking.id,
-  instructorName: `${booking.instructor.firstName} ${booking.instructor.lastName}`,
-  locationName: booking.location?.name || 'Не вказано',
-},
+          subject: 'Potwierdzenie rezerwacji',
+          content: `Twoja lekcja zarezerwowana na ${format(startTime, 'dd.MM.yyyy HH:mm')}`,
+          metadata: {
+            bookingId: booking.id,
+            instructorName: `${booking.instructor.firstName} ${booking.instructor.lastName}`,
+            locationName: booking.location?.name || 'Nie określono',
+          },
           status: 'PENDING',
         },
       })
 
       return booking
+    }),
+
+  // Створити повторювані бронювання
+  createRecurring: protectedProcedure
+    .input(z.object({
+      instructorId: z.string(),
+      startTime: z.date().or(z.string()).transform(val => new Date(val)),
+      vehicleId: z.string().optional(),
+      locationId: z.string(),
+      notes: z.string().optional(),
+      isRecurring: z.boolean().optional(),
+      recurringSettings: z.object({
+        pattern: z.enum(['daily', 'weekly', 'biweekly']),
+        endType: z.enum(['count', 'date']),
+        count: z.number().optional(),
+        endDate: z.date().or(z.string()).transform(val => new Date(val)).optional(),
+        skipWeekends: z.boolean()
+      }).optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      // Якщо не повторювані - створюємо одне бронювання
+      if (!input.isRecurring || !input.recurringSettings) {
+        const startTime = new Date(input.startTime)
+        const endTime = addHours(startTime, 2)
+
+        // Перевірка конфлікту з інструктором
+        const instructorConflict = await ctx.db.booking.findFirst({
+          where: {
+            instructorId: input.instructorId,
+            status: { not: 'CANCELLED' },
+            OR: [
+              {
+                AND: [
+                  { startTime: { lte: startTime } },
+                  { endTime: { gt: startTime } },
+                ],
+              },
+              {
+                AND: [
+                  { startTime: { lt: endTime } },
+                  { endTime: { gte: endTime } },
+                ],
+              },
+            ],
+          },
+        })
+
+        if (instructorConflict) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Instruktor jest zajęty w tym czasie',
+          })
+        }
+
+        // Створення одиночного бронювання
+        return await ctx.db.booking.create({
+          data: {
+            studentId: ctx.session.user.id,
+            instructorId: input.instructorId,
+            vehicleId: input.vehicleId,
+            locationId: input.locationId,
+            startTime,
+            endTime,
+            duration: 120,
+            status: 'CONFIRMED',
+            notes: input.notes,
+            price: 200,
+            isPaid: false,
+          },
+          include: {
+            instructor: true,
+            student: true,
+            vehicle: true,
+            location: true,
+          },
+        })
+      }
+
+      // Створення повторюваних бронювань
+      const { recurringSettings } = input
+      const conflicts = []
+      
+      let currentDate = new Date(input.startTime)
+      const dates: Date[] = []
+      
+      // Генерація дат для серії
+      if (recurringSettings.endType === 'count' && recurringSettings.count) {
+        for (let i = 0; i < recurringSettings.count; i++) {
+          // Пропускаємо вихідні якщо потрібно
+          if (recurringSettings.skipWeekends && recurringSettings.pattern === 'daily') {
+            while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+              currentDate = addDays(currentDate, 1)
+            }
+          }
+          
+          dates.push(new Date(currentDate))
+          
+          // Наступна дата
+          if (recurringSettings.pattern === 'daily') {
+            currentDate = addDays(currentDate, 1)
+          } else if (recurringSettings.pattern === 'weekly') {
+            currentDate = addWeeks(currentDate, 1)
+          } else if (recurringSettings.pattern === 'biweekly') {
+            currentDate = addWeeks(currentDate, 2)
+          }
+        }
+      } else if (recurringSettings.endType === 'date' && recurringSettings.endDate) {
+        const endDate = new Date(recurringSettings.endDate)
+        
+        while (currentDate <= endDate) {
+          // Пропускаємо вихідні якщо потрібно
+          if (recurringSettings.skipWeekends && recurringSettings.pattern === 'daily') {
+            while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+              currentDate = addDays(currentDate, 1)
+            }
+          }
+          
+          if (currentDate <= endDate) {
+            dates.push(new Date(currentDate))
+          }
+          
+          // Наступна дата
+          if (recurringSettings.pattern === 'daily') {
+            currentDate = addDays(currentDate, 1)
+          } else if (recurringSettings.pattern === 'weekly') {
+            currentDate = addWeeks(currentDate, 1)
+          } else if (recurringSettings.pattern === 'biweekly') {
+            currentDate = addWeeks(currentDate, 2)
+          }
+        }
+      }
+
+      // Перевірка конфліктів для всіх дат
+      for (const date of dates) {
+        const startTime = new Date(date)
+        const endTime = addHours(startTime, 2)
+        
+        const conflict = await ctx.db.booking.findFirst({
+          where: {
+            instructorId: input.instructorId,
+            status: { not: 'CANCELLED' },
+            OR: [
+              {
+                AND: [
+                  { startTime: { lte: startTime } },
+                  { endTime: { gt: startTime } },
+                ],
+              },
+              {
+                AND: [
+                  { startTime: { lt: endTime } },
+                  { endTime: { gte: endTime } },
+                ],
+              },
+            ],
+          },
+        })
+        
+        if (conflict) {
+          conflicts.push(format(startTime, 'dd.MM.yyyy HH:mm'))
+        }
+      }
+
+      // Якщо є конфлікти - повідомляємо
+      if (conflicts.length > 0) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: `Niedostępne daty: ${conflicts.join(', ')}. Spróbuj inny czas lub zmniejsz liczbę lekcji.`,
+        })
+      }
+
+      // Створюємо всі бронювання в транзакції
+      const createdBookings = await ctx.db.$transaction(async (tx) => {
+        const results = []
+        
+        for (const date of dates) {
+          const startTime = new Date(date)
+          const endTime = addHours(startTime, 2)
+          
+          const booking = await tx.booking.create({
+            data: {
+              studentId: ctx.session.user.id,
+              instructorId: input.instructorId,
+              vehicleId: input.vehicleId,
+              locationId: input.locationId,
+              startTime,
+              endTime,
+              duration: 120,
+              status: 'CONFIRMED',
+              notes: input.notes,
+              price: 200,
+              isPaid: false,
+            },
+            include: {
+              instructor: true,
+              student: true,
+              vehicle: true,
+              location: true,
+            },
+          })
+          
+          results.push(booking)
+        }
+        
+        return results
+      })
+
+      // Створюємо повідомлення
+      await ctx.db.notification.create({
+        data: {
+          userId: ctx.session.user.id,
+          type: 'BOOKING_CONFIRMATION',
+          channel: 'EMAIL',
+          subject: 'Potwierdzenie serii rezerwacji',
+          content: `Zarezerwowano ${createdBookings.length} lekcji. Pierwsza lekcja: ${format(createdBookings[0].startTime, 'dd.MM.yyyy HH:mm')}`,
+          metadata: {
+            bookingIds: createdBookings.map(b => b.id),
+            count: createdBookings.length,
+          },
+          status: 'PENDING',
+        },
+      })
+
+      return createdBookings
     }),
 
   // Отримати список бронювань
@@ -216,7 +441,7 @@ metadata: {
       if (!booking) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Бронювання не знайдено',
+          message: 'Rezerwacja nie znaleziona',
         })
       }
 
@@ -228,7 +453,7 @@ metadata: {
       ) {
         throw new TRPCError({
           code: 'FORBIDDEN',
-          message: 'Ви не можете скасувати це бронювання',
+          message: 'Nie możesz anulować tej rezerwacji',
         })
       }
 
@@ -237,7 +462,7 @@ metadata: {
       if (hoursUntilLesson < 24 && ctx.session.user.role !== 'ADMIN') {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'Не можна скасувати менше ніж за 24 години до уроку',
+          message: 'Nie można anulować mniej niż 24 godziny przed lekcją',
         })
       }
 
@@ -260,8 +485,8 @@ metadata: {
             userId: booking.studentId,
             type: 'BOOKING_CANCELLED',
             channel: 'EMAIL',
-            subject: 'Скасування бронювання',
-            content: 'Ваше бронювання скасовано. Кошти будуть повернені протягом 3-5 робочих днів.',
+            subject: 'Anulowanie rezerwacji',
+            content: 'Twoja rezerwacja została anulowana. Środki zostaną zwrócone w ciągu 3-5 dni roboczych.',
             metadata: {
               bookingId: booking.id,
             },
@@ -272,110 +497,168 @@ metadata: {
 
       return updated
     }),
+// Отримати доступні слоти
+// lib/trpc/routers/booking.ts
+// Знайдіть метод getAvailableSlots і замініть генерацію слотів:
 
-  // Отримати доступні слоти
-  getAvailableSlots: protectedProcedure
-    .input(z.object({
-      instructorId: z.string(),
-      date: z.date().or(z.string()).transform(val => new Date(val)),
-      vehicleId: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const date = new Date(input.date)
-      const dayOfWeek = date.getDay()
-      
-      // Отримати розклад інструктора
-      const schedule = await ctx.db.instructorSchedule.findFirst({
-        where: {
-          instructorId: input.instructorId,
-          OR: [
-            { dayOfWeek, specificDate: null },
-            { specificDate: date },
-          ],
-        },
-        orderBy: {
-          specificDate: 'desc', // Пріоритет конкретній даті над загальним розкладом
-        },
-      })
+// Otrimati dostupni sloty
+getAvailableSlots: protectedProcedure
+  .input(z.object({
+    instructorId: z.string(),
+    date: z.date().or(z.string()).transform(val => new Date(val)),
+    vehicleId: z.string().optional(),
+  }))
+  .query(async ({ ctx, input }) => {
+    const date = new Date(input.date)
+    const dayOfWeek = date.getDay()
+    
+    // Otrimati rozklad instruktora
+    const schedule = await ctx.db.instructorSchedule.findFirst({
+      where: {
+        instructorId: input.instructorId,
+        OR: [
+          { dayOfWeek, specificDate: null },
+          { specificDate: date },
+        ],
+      },
+      orderBy: {
+        specificDate: 'desc',
+      },
+    })
 
-      if (!schedule || !schedule.isAvailable) {
-        return []
+    if (!schedule || !schedule.isAvailable) {
+      return []
+    }
+
+    // Wyciągamy wartości bufora z bazy danych
+    const BUFFER_BEFORE = schedule.bufferBefore || 15
+    const BUFFER_AFTER = schedule.bufferAfter || 15
+
+    // Sprawdzenie wyjątków
+    const exceptions = await ctx.db.scheduleException.findMany({
+      where: {
+        instructorId: input.instructorId,
+        startDate: { lte: date },
+        endDate: { gte: date }
       }
+    })
 
-      // Отримати існуючі бронювання на день
-      const startOfDay = new Date(date)
-      startOfDay.setHours(0, 0, 0, 0)
-      
-      const endOfDay = new Date(date)
-      endOfDay.setHours(23, 59, 59, 999)
+    if (exceptions.some(e => e.allDay)) {
+      return []
+    }
 
-      const bookings = await ctx.db.booking.findMany({
-        where: {
-          OR: [
-            // Бронювання інструктора
-            {
-              instructorId: input.instructorId,
-              status: { not: 'CANCELLED' },
-              startTime: {
-                gte: startOfDay,
-                lte: endOfDay,
-              },
+    // Otrimati isnujuchi bronuvannia
+    const startOfDay = new Date(date)
+    startOfDay.setHours(0, 0, 0, 0)
+    
+    const endOfDay = new Date(date)
+    endOfDay.setHours(23, 59, 59, 999)
+
+    const bookings = await ctx.db.booking.findMany({
+      where: {
+        OR: [
+          {
+            instructorId: input.instructorId,
+            status: { not: 'CANCELLED' },
+            startTime: {
+              gte: startOfDay,
+              lte: endOfDay,
             },
-            // Бронювання автомобіля якщо вказано
-...(input.vehicleId ? [{
-  vehicleId: input.vehicleId,
-  status: { not: BookingStatus.CANCELLED }, // <-- Використовуйте enum
-  startTime: {
-    gte: startOfDay,
-    lte: endOfDay,
-  },
-}] : []),
-          ],
-        },
+          },
+          ...(input.vehicleId ? [{
+            vehicleId: input.vehicleId,
+            status: { not: BookingStatus.CANCELLED },
+            startTime: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+          }] : []),
+        ],
+      },
+    })
+
+    // Generacja slotów
+    const slots = []
+    const [startHour, startMinute] = schedule.startTime.split(':').map(Number)
+    const [endHour, endMinute] = schedule.endTime.split(':').map(Number)
+    
+    let currentTime = new Date(date)
+    currentTime.setHours(startHour, startMinute, 0, 0)
+    
+    const dayEnd = new Date(date)
+    dayEnd.setHours(endHour, endMinute, 0, 0)
+
+    const now = new Date()
+
+    while (currentTime < dayEnd) {
+      const slotEnd = addHours(currentTime, 2)
+      
+      // Dodajemy bufor
+      const slotStartWithBuffer = addMinutes(currentTime, -BUFFER_BEFORE)
+      const slotEndWithBuffer = addMinutes(slotEnd, BUFFER_AFTER)
+      
+      // Sprawdzamy czy slot z buforem mieści się w godzinach pracy
+      const workStart = new Date(date)
+      workStart.setHours(startHour, startMinute, 0, 0)
+      
+      if (slotStartWithBuffer < workStart || slotEndWithBuffer > dayEnd) {
+        // Przesuwamy czas i próbujemy następny slot
+        currentTime = addMinutes(currentTime, 30)
+        continue
+      }
+      
+      // Sprawdzenie konfliktów Z BUFOREM
+      const isBooked = bookings.some(booking => {
+        const bookingStart = new Date(booking.startTime)
+        const bookingEnd = new Date(booking.endTime)
+        
+        // Dodajemy bufor do istniejących rezerwacji
+        const bookingStartWithBuffer = addMinutes(bookingStart, -BUFFER_BEFORE)
+        const bookingEndWithBuffer = addMinutes(bookingEnd, BUFFER_AFTER)
+        
+        // Sprawdzamy nakładanie się
+        return (
+          (slotStartWithBuffer < bookingEndWithBuffer && slotEndWithBuffer > bookingStartWithBuffer)
+        )
       })
 
-      // Генерація доступних слотів
-      const slots = []
-      const [startHour, startMinute] = schedule.startTime.split(':').map(Number)
-      const [endHour, endMinute] = schedule.endTime.split(':').map(Number)
-      
-      let currentTime = new Date(date)
-      currentTime.setHours(startHour, startMinute, 0, 0)
-      
-      const dayEnd = new Date(date)
-      dayEnd.setHours(endHour, endMinute, 0, 0)
-
-      const now = new Date()
-
-      while (currentTime < dayEnd) {
-        const slotEnd = addHours(currentTime, 2) // 2-годинні слоти
+      // Sprawdzenie wyjątków czasowych
+      const hasTimeException = exceptions.some(e => {
+        if (e.allDay) return true
+        if (!e.startTime || !e.endTime) return false
         
-        // Перевірка чи слот не зайнятий
-        const isBooked = bookings.some(booking => {
-          const bookingStart = new Date(booking.startTime)
-          const bookingEnd = new Date(booking.endTime)
-          return (
-            (currentTime >= bookingStart && currentTime < bookingEnd) ||
-            (slotEnd > bookingStart && slotEnd <= bookingEnd) ||
-            (currentTime <= bookingStart && slotEnd >= bookingEnd)
-          )
+        const [excStartHour, excStartMin] = e.startTime.split(':').map(Number)
+        const [excEndHour, excEndMin] = e.endTime.split(':').map(Number)
+        
+        const excStart = new Date(date)
+        excStart.setHours(excStartHour, excStartMin, 0, 0)
+        
+        const excEnd = new Date(date)
+        excEnd.setHours(excEndHour, excEndMin, 0, 0)
+        
+        return (
+          (currentTime >= excStart && currentTime < excEnd) ||
+          (slotEnd > excStart && slotEnd <= excEnd)
+        )
+      })
+
+      if (!isBooked && !hasTimeException && slotEndWithBuffer <= dayEnd && currentTime > now) {
+        slots.push({
+          startTime: new Date(currentTime),
+          endTime: new Date(slotEnd),
+          available: true,
+          // Informacja o buforze dla UI
+          bufferBefore: BUFFER_BEFORE,
+          bufferAfter: BUFFER_AFTER,
         })
-
-        // Додаємо слот якщо він вільний і в майбутньому
-        if (!isBooked && slotEnd <= dayEnd && currentTime > now) {
-          slots.push({
-            startTime: new Date(currentTime),
-            endTime: new Date(slotEnd),
-            available: true,
-          })
-        }
-
-        currentTime = new Date(slotEnd)
       }
 
-      return slots
-    }),
+      // Następny slot zaczyna się PO buforze
+      currentTime = slotEndWithBuffer
+    }
 
+    return slots
+  }),
   // Отримати деталі бронювання
   getById: protectedProcedure
     .input(z.string())
@@ -394,7 +677,7 @@ metadata: {
       if (!booking) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Бронювання не знайдено',
+          message: 'Rezerwacja nie znaleziona',
         })
       }
 
@@ -406,7 +689,7 @@ metadata: {
       ) {
         throw new TRPCError({
           code: 'FORBIDDEN',
-          message: 'Немає доступу до цього бронювання',
+          message: 'Brak dostępu do tej rezerwacji',
         })
       }
 

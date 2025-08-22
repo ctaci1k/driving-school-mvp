@@ -49,6 +49,9 @@ model User {
   userPackages      UserPackage[]
   notifications     Notification[]
 
+scheduleTemplates  ScheduleTemplate[]
+scheduleExceptions  ScheduleException[]
+
   @@index([email])
   @@index([phone])
   @@index([role])
@@ -253,6 +256,10 @@ model InstructorSchedule {
   // Phase 2 addition
   specificDate DateTime?
   
+  // Buffer Time - DODAJ TE LINIE!
+  bufferBefore Int     @default(15) // minuty przed lekcją
+  bufferAfter  Int     @default(15) // minuty po lekcji
+  
   isAvailable  Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -261,7 +268,6 @@ model InstructorSchedule {
   @@index([instructorId])
   @@index([specificDate])
 }
-
 // ============= NOTIFICATIONS =============
 model Notification {
   id          String   @id @default(cuid())
@@ -308,6 +314,42 @@ model MaintenanceLog {
 
   @@index([vehicleId])
   @@index([type])
+}
+// Додайте цю модель після InstructorSchedule:
+
+model ScheduleTemplate {
+  id            String   @id @default(cuid())
+  instructorId  String
+  instructor    User     @relation(fields: [instructorId], references: [id])
+  name          String
+  description   String?
+  weekPattern   Json     // Зберігаємо як JSON масив
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([instructorId])
+}
+
+model ScheduleException {
+  id            String   @id @default(cuid())
+  instructorId  String
+  instructor    User     @relation(fields: [instructorId], references: [id])
+  
+  type          String   // vacation, sickLeave, holiday, etc.
+  startDate     DateTime
+  endDate       DateTime
+  allDay        Boolean  @default(true)
+  startTime     String?  // "14:00" якщо не allDay
+  endTime       String?  // "18:00" якщо не allDay
+  
+  reason        String
+  description   String?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([instructorId])
+  @@index([startDate, endDate])
 }
 
 // ============= ENUMS =============
