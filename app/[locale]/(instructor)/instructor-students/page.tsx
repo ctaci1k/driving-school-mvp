@@ -1,3 +1,5 @@
+// app/[locale]/(instructor)/instructor-students/page.tsx
+
 'use client'
 
 import { useSession } from 'next-auth/react'
@@ -5,10 +7,19 @@ import { Navigation } from '@/components/layouts/navigation'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { trpc } from '@/lib/trpc/client'
 import { format } from 'date-fns'
+import { pl, uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 export default function InstructorStudentsPage() {
+  const t = useTranslations()
+  const params = useParams()
+  const locale = params.locale as string
   const { data: session } = useSession()
   const { data: bookings, isLoading } = trpc.booking.list.useQuery({})
+
+  // Визначаємо локаль для date-fns
+  const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
 
   // Get unique students from bookings
   const students = bookings?.reduce((acc: any[], booking) => {
@@ -33,7 +44,7 @@ export default function InstructorStudentsPage() {
       <div className="min-h-screen bg-gray-50">
         {session && <Navigation userRole={session.user.role} />}
         <div className="flex items-center justify-center min-h-[400px]">
-          <p>Loading...</p>
+          <p>{t('common.loading')}</p>
         </div>
       </div>
     )
@@ -45,14 +56,14 @@ export default function InstructorStudentsPage() {
       
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">My Students</h1>
-          <p className="text-gray-600">Students you have taught or will teach</p>
+          <h1 className="text-3xl font-bold">{t('navigation.students')}</h1>
+          <p className="text-gray-600">{t('instructorStudents.subtitle')}</p>
         </div>
 
         {students.length === 0 ? (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-gray-500">No students yet</p>
+              <p className="text-gray-500">{t('instructorStudents.noStudents')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -66,10 +77,10 @@ export default function InstructorStudentsPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2 text-sm">
-                    <p className="text-gray-600">Email: {student.email}</p>
-                    <p className="text-gray-600">Total Lessons: {student.lessonsCount}</p>
+                    <p className="text-gray-600">{t('auth.email')}: {student.email}</p>
+                    <p className="text-gray-600">{t('instructorStudents.totalLessons')}: {student.lessonsCount}</p>
                     <p className="text-gray-600">
-                      Last Lesson: {format(new Date(student.lastLesson), 'MMM d, yyyy')}
+                      {t('instructorStudents.lastLesson')}: {format(new Date(student.lastLesson), 'd MMM yyyy', { locale: dateLocale })}
                     </p>
                   </div>
                 </CardContent>

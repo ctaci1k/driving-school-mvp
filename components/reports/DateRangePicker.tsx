@@ -6,15 +6,24 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react'
 import { format, startOfMonth, endOfMonth, subMonths, addMonths } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl, uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 interface DateRangePickerProps {
   onDateChange: (start: Date, end: Date) => void
 }
 
 export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
+  const t = useTranslations()
+  const params = useParams()
+  const locale = params.locale as string
+  
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedRange, setSelectedRange] = useState<'month' | 'all'>('month')
+  
+  // Визначаємо локаль для date-fns
+  const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
 
   const handlePreviousMonth = () => {
     const newMonth = subMonths(currentMonth, 1)
@@ -49,14 +58,14 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
           onClick={handleCurrentMonth}
         >
           <Calendar className="w-4 h-4 mr-2" />
-          Поточний місяць
+          {t('reports.currentMonth')}
         </Button>
         <Button
           variant={selectedRange === 'all' ? 'default' : 'outline'}
           size="sm"
           onClick={handleAllTime}
         >
-          Весь час
+          {t('reports.allTime')}
         </Button>
       </div>
 
@@ -70,7 +79,7 @@ export function DateRangePicker({ onDateChange }: DateRangePickerProps) {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <span className="text-sm font-medium min-w-[120px] text-center">
-            {format(currentMonth, 'LLLL yyyy', { locale: uk })}
+            {format(currentMonth, 'LLLL yyyy', { locale: dateLocale })}
           </span>
           <Button
             variant="outline"

@@ -1,19 +1,26 @@
-// app\(auth)\login\page.tsx
-
+// app/[locale]/(auth)/login/page.tsx
 
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useParams, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useTranslations } from 'next-intl'
 
 export default function LoginPage() {
   const router = useRouter()
+  const params = useParams()
+  const searchParams = useSearchParams()
+  const locale = params.locale as string || 'pl'
+  
+  const t = useTranslations('auth')
+  const tCommon = useTranslations('common')
+  
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -32,13 +39,19 @@ export default function LoginPage() {
       })
 
       if (result?.error) {
-        setError('Invalid email or password')
+        setError(t('loginError'))
       } else {
-        router.push('/dashboard')
+        // Динамічний редірект з локаллю
+        const from = searchParams.get('from')
+        if (from) {
+          router.push(from)
+        } else {
+          router.push(`/${locale}/dashboard`)
+        }
         router.refresh()
       }
     } catch (error) {
-      setError('An error occurred. Please try again.')
+      setError(t('loginError'))
     } finally {
       setLoading(false)
     }
@@ -48,10 +61,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account</CardDescription>
-
-
+          <CardTitle>{t('login')}</CardTitle>
+          <CardDescription>{t('loginDescription')}</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -61,18 +72,18 @@ export default function LoginPage() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="john@example.com"
+                placeholder="jan@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -84,12 +95,12 @@ export default function LoginPage() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-2">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? tCommon('loading') : t('login')}
             </Button>
             <p className="text-sm text-center text-gray-600">
-              Don't have an account?{' '}
-              <Link href="/register" className="text-blue-600 hover:underline">
-                Register
+              {t('noAccount')}{' '}
+              <Link href={`/${locale}/register`} className="text-blue-600 hover:underline">
+                {t('register')}
               </Link>
             </p>
           </CardFooter>

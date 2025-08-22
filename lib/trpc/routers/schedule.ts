@@ -1,3 +1,6 @@
+// lib\trpc\routers\schedule.ts
+
+
 import { router, instructorProcedure, protectedProcedure } from '../server'
 import { z } from 'zod'
 

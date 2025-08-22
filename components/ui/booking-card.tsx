@@ -1,7 +1,13 @@
+// components/ui/booking-card.tsx
+
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Calendar, Clock, User, MapPin, AlertCircle } from 'lucide-react'
 import { format } from 'date-fns'
+import { pl, uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
+import { cn } from '@/lib/utils'
 
 interface BookingCardProps {
   booking: {
@@ -32,6 +38,13 @@ export function BookingCard({
   onCancel,
   onComplete 
 }: BookingCardProps) {
+  const t = useTranslations()
+  const params = useParams()
+  const locale = params.locale as string
+  
+  // Визначаємо локаль для date-fns
+  const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
+  
   const startTime = new Date(booking.startTime)
   const endTime = new Date(booking.endTime)
   const isPast = startTime < new Date()
@@ -50,11 +63,11 @@ export function BookingCard({
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="w-4 h-4 text-gray-500" />
               <span className="font-medium">
-                {format(startTime, 'EEEE, MMMM d, yyyy')}
+                {format(startTime, 'EEEE, d MMMM yyyy', { locale: dateLocale })}
               </span>
               {isToday && (
                 <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
-                  TODAY
+                  {t('booking.today')}
                 </span>
               )}
             </div>
@@ -64,7 +77,7 @@ export function BookingCard({
               <span>
                 {format(startTime, 'HH:mm')} - {format(endTime, 'HH:mm')}
               </span>
-              <span className="text-gray-500">(2 hours)</span>
+              <span className="text-gray-500">({t('booking.twoHours')})</span>
             </div>
 
             {/* Person Info */}
@@ -72,12 +85,12 @@ export function BookingCard({
               <User className="w-4 h-4 text-gray-500" />
               {userRole === 'STUDENT' && booking.instructor && (
                 <span>
-                  Instructor: {booking.instructor.firstName} {booking.instructor.lastName}
+                  {t('booking.instructor')}: {booking.instructor.firstName} {booking.instructor.lastName}
                 </span>
               )}
               {userRole === 'INSTRUCTOR' && booking.student && (
                 <span>
-                  Student: {booking.student.firstName} {booking.student.lastName}
+                  {t('booking.student')}: {booking.student.firstName} {booking.student.lastName}
                 </span>
               )}
             </div>
@@ -100,7 +113,7 @@ export function BookingCard({
               booking.status === 'COMPLETED' && "bg-blue-100 text-blue-800",
               booking.status === 'NO_SHOW' && "bg-orange-100 text-orange-800"
             )}>
-              {booking.status}
+              {t(`booking.status.${booking.status.toLowerCase()}`)}
             </span>
 
             {booking.status === 'CONFIRMED' && !isPast && onCancel && (
@@ -109,7 +122,7 @@ export function BookingCard({
                 variant="destructive"
                 onClick={() => onCancel(booking.id)}
               >
-                Cancel
+                {t('common.cancel')}
               </Button>
             )}
 
@@ -119,7 +132,7 @@ export function BookingCard({
                 variant="default"
                 onClick={() => onComplete(booking.id)}
               >
-                Mark Complete
+                {t('booking.markComplete')}
               </Button>
             )}
           </div>
@@ -127,8 +140,4 @@ export function BookingCard({
       </CardContent>
     </Card>
   )
-}
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
 }

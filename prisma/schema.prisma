@@ -10,6 +10,8 @@ datasource db {
 }
 
 // ============= USERS & AUTH =============
+
+
 model User {
   id           String    @id @default(cuid())
   email        String    @unique
@@ -20,17 +22,19 @@ model User {
   role         UserRole
   
   // Phase 2 additions
-  language     String    @default("pl")
-  avatar       String?
-  dateOfBirth  DateTime? // Fixed: DateTime instead of Date
-  licenseNumber String?
-  address      String?
-  city         String?
-  postalCode   String?
-  status       String    @default("ACTIVE") // Will use UserStatus enum later
-  emailVerified DateTime?
-  phoneVerified DateTime?
-  lastLoginAt  DateTime?
+  language           String    @default("pl")
+  emailNotifications Boolean   @default(true)
+  smsNotifications   Boolean   @default(true)
+  avatar             String?
+  dateOfBirth        DateTime?
+  licenseNumber      String?
+  address            String?
+  city               String?
+  postalCode         String?
+  status             String    @default("ACTIVE")
+  emailVerified      DateTime?
+  phoneVerified      DateTime?
+  lastLoginAt        DateTime?
   
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

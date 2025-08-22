@@ -2,7 +2,8 @@
 
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
-import { locales } from '@/lib/i18n/config'
+
+const locales = ['pl', 'uk', 'en', 'ru']
 
 export default async function LocaleLayout({
   children,
@@ -11,7 +12,7 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale)) {
     notFound()
   }
 

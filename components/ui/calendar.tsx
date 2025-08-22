@@ -1,7 +1,8 @@
-// components\ui\calendar.tsx
+// components/ui/calendar.tsx
 
 'use client'
 
+import * as React from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -18,6 +19,9 @@ import {
   subMonths,
   isToday
 } from 'date-fns'
+import { pl, uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 interface CalendarProps {
   selectedDate?: Date
@@ -32,7 +36,13 @@ export function Calendar({
   disabledDates = [],
   className 
 }: CalendarProps) {
+  const t = useTranslations()
+  const params = useParams()
+  const locale = params.locale as string
   const [currentMonth, setCurrentMonth] = React.useState(new Date())
+  
+  // Визначаємо локаль для date-fns
+  const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
 
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(monthStart)
@@ -45,6 +55,17 @@ export function Calendar({
     return disabledDates.some(d => isSameDay(d, date)) || date < new Date()
   }
 
+  // Дні тижня
+  const weekDays = [
+    t('calendar.monday'),
+    t('calendar.tuesday'),
+    t('calendar.wednesday'),
+    t('calendar.thursday'),
+    t('calendar.friday'),
+    t('calendar.saturday'),
+    t('calendar.sunday')
+  ]
+
   return (
     <div className={cn("p-3", className)}>
       <div className="flex justify-between items-center mb-4">
@@ -56,7 +77,7 @@ export function Calendar({
           <ChevronLeft className="h-4 w-4" />
         </Button>
         <h2 className="text-lg font-semibold">
-          {format(currentMonth, 'MMMM yyyy')}
+          {format(currentMonth, 'LLLL yyyy', { locale: dateLocale })}
         </h2>
         <Button
           variant="outline"
@@ -68,7 +89,7 @@ export function Calendar({
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
+        {weekDays.map((day) => (
           <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
             {day}
           </div>

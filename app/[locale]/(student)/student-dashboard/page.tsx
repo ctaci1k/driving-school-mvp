@@ -1,4 +1,4 @@
-// app\(student)\dashboard\page.tsx
+// app/[locale]/(student)/student-dashboard/page.tsx
 
 'use client'
 
@@ -7,10 +7,17 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Calendar, Clock, User, MapPin } from 'lucide-react'
 import { format } from 'date-fns'
+import { pl } from 'date-fns/locale'
 import { trpc } from '@/lib/trpc/client'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 export default function StudentDashboard() {
+  const t = useTranslations()
+  const params = useParams()
+  const locale = params.locale as string
+  
   const { data: bookings, isLoading } = trpc.booking.list.useQuery({
     status: 'CONFIRMED',
   })
@@ -26,22 +33,29 @@ export default function StudentDashboard() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       </div>
     )
   }
 
+  // Визначаємо локаль для date-fns
+  const dateLocale = locale === 'pl' ? pl : undefined
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Student Dashboard</h1>
-        <p className="text-gray-600">Welcome back! Here are your upcoming lessons.</p>
+        <h1 className="text-3xl font-bold">{t('navigation.dashboard')}</h1>
+        <p className="text-gray-600">
+          {t('studentDashboard.welcomeMessage', { 
+            count: upcomingBookings.length 
+          })}
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Total Lessons</CardTitle>
+            <CardTitle className="text-lg">{t('reports.totalLessons')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{bookings?.length || 0}</p>
@@ -50,7 +64,7 @@ export default function StudentDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Upcoming</CardTitle>
+            <CardTitle className="text-lg">{t('reports.upcomingLessons')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{upcomingBookings.length}</p>
@@ -59,7 +73,7 @@ export default function StudentDashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Completed</CardTitle>
+            <CardTitle className="text-lg">{t('reports.completedLessons')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{pastBookings.length}</p>
@@ -70,18 +84,18 @@ export default function StudentDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold">Upcoming Lessons</h2>
-            <Link href="student-book">
-              <Button>Book New Lesson</Button>
+            <h2 className="text-xl font-semibold">{t('reports.upcomingLessons')}</h2>
+            <Link href={`/${locale}/student-book`}>
+              <Button>{t('studentDashboard.bookNewLesson')}</Button>
             </Link>
           </div>
 
           {upcomingBookings.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-gray-500 mb-4">No upcoming lessons</p>
-                <Link href="student-book">
-                  <Button>Book Your First Lesson</Button>
+                <p className="text-gray-500 mb-4">{t('studentDashboard.noUpcomingLessons')}</p>
+                <Link href={`/${locale}/student-book`}>
+                  <Button>{t('studentDashboard.bookFirstLesson')}</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -95,7 +109,7 @@ export default function StudentDashboard() {
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-gray-500" />
                           <span className="font-medium">
-                            {format(new Date(booking.startTime), 'EEEE, MMMM d, yyyy')}
+                            {format(new Date(booking.startTime), 'EEEE, d MMMM yyyy', { locale: dateLocale })}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -112,8 +126,8 @@ export default function StudentDashboard() {
                           </span>
                         </div>
                       </div>
-                      <Link href="student-bookings">
-                        <Button variant="outline" size="sm">View Details</Button>
+                      <Link href={`/${locale}/student-bookings`}>
+                        <Button variant="outline" size="sm">{t('common.details')}</Button>
                       </Link>
                     </div>
                   </CardContent>
@@ -124,13 +138,15 @@ export default function StudentDashboard() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <h2 className="text-xl font-semibold mb-4">{t('studentDashboard.quickActions')}</h2>
           <div className="space-y-3">
-            <Link href="student-book" className="block">
-              <Button className="w-full" size="lg">Book a Lesson</Button>
+            <Link href={`/${locale}/student-book`} className="block">
+              <Button className="w-full" size="lg">{t('navigation.bookLesson')}</Button>
             </Link>
-            <Link href="student-bookings" className="block">
-              <Button className="w-full" variant="outline" size="lg">View All Bookings</Button>
+            <Link href={`/${locale}/student-bookings`} className="block">
+              <Button className="w-full" variant="outline" size="lg">
+                {t('studentDashboard.viewAllBookings')}
+              </Button>
             </Link>
           </div>
         </div>

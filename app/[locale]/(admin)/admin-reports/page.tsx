@@ -1,4 +1,4 @@
-// app/(admin)/admin-reports/page.tsx
+// app/[locale]/(admin)/admin-reports/page.tsx
 
 'use client'
 
@@ -25,7 +25,7 @@ import {
     UserX
 } from 'lucide-react'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl, uk } from 'date-fns/locale'
 import { trpc } from '@/lib/trpc/client'
 import Link from 'next/link'
 import {
@@ -33,13 +33,22 @@ import {
     formatStudentReportForExport,
     formatInstructorReportForExport
 } from '@/lib/utils/export'
+import { useTranslations } from 'next-intl'
+import { useParams } from 'next/navigation'
 
 export default function AdminReportsPage() {
+    const t = useTranslations()
+    const params = useParams()
+    const locale = params.locale as string
     const { data: session } = useSession()
+    
     const [dateRange, setDateRange] = useState({
         start: startOfMonth(new Date()),
         end: endOfMonth(new Date())
     })
+
+    // Визначаємо локаль для date-fns
+    const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
 
     // Запити даних
     const { data: stats } = trpc.adminReports.getOverallStats.useQuery({
@@ -76,38 +85,37 @@ export default function AdminReportsPage() {
     // Функції експорту
     const handleExportOverall = () => {
         const data = {
-            'Дата звіту': new Date().toLocaleDateString('uk-UA'),
-            'Період': `${format(dateRange.start, 'dd.MM.yyyy')} - ${format(dateRange.end, 'dd.MM.yyyy')}`,
-            'Всього студентів': stats?.students.total || 0,
-            'Нових студентів': stats?.students.new || 0,
-            'Активних студентів': stats?.students.active || 0,
-            'Всього інструкторів': stats?.instructors.total || 0,
-            'Активних інструкторів': stats?.instructors.active || 0,
-            'Всього уроків': stats?.lessons.total || 0,
-            'Завершено уроків': stats?.lessons.completed || 0,
-            'Скасовано уроків': stats?.lessons.cancelled || 0,
-            'Дохід (PLN)': stats?.finance.revenue || 0,
-            'Очікується (PLN)': stats?.finance.pending || 0,
-            'Всього автомобілів': stats?.vehicles.total || 0,
-            'Активних автомобілів': stats?.vehicles.active || 0
+            [t('adminReports.reportDate')]: new Date().toLocaleDateString(locale === 'pl' ? 'pl-PL' : 'uk-UA'),
+            [t('adminReports.period')]: `${format(dateRange.start, 'dd.MM.yyyy')} - ${format(dateRange.end, 'dd.MM.yyyy')}`,
+            [t('adminReports.totalStudents')]: stats?.students.total || 0,
+            [t('adminReports.newStudents')]: stats?.students.new || 0,
+            [t('adminReports.activeStudents')]: stats?.students.active || 0,
+            [t('adminReports.totalInstructors')]: stats?.instructors.total || 0,
+            [t('adminReports.activeInstructors')]: stats?.instructors.active || 0,
+            [t('adminReports.totalLessons')]: stats?.lessons.total || 0,
+            [t('adminReports.completedLessons')]: stats?.lessons.completed || 0,
+            [t('adminReports.cancelledLessons')]: stats?.lessons.cancelled || 0,
+            [t('adminReports.revenue')]: stats?.finance.revenue || 0,
+            [t('adminReports.pending')]: stats?.finance.pending || 0,
+            [t('adminReports.totalVehicles')]: stats?.vehicles.total || 0,
+            [t('adminReports.activeVehicles')]: stats?.vehicles.active || 0
         }
-        exportToCSV([data], 'zagalnyj_zvit')
+        exportToCSV([data], t('adminReports.overallReportFile'))
     }
 
     const handleExportStudents = () => {
         if (studentsReport?.students) {
             const formatted = formatStudentReportForExport(studentsReport.students)
-            exportToCSV(formatted, 'zvit_studenty')
+            exportToCSV(formatted, t('adminReports.studentsReportFile'))
         }
     }
 
     const handleExportInstructors = () => {
         if (instructorsReport?.instructors) {
             const formatted = formatInstructorReportForExport(instructorsReport.instructors)
-            exportToCSV(formatted, 'zvit_instruktory')
+            exportToCSV(formatted, t('adminReports.instructorsReportFile'))
         }
     }
-
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -116,8 +124,8 @@ export default function AdminReportsPage() {
             <div className="container mx-auto px-4 py-8">
                 <div className="mb-8 flex justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">Звіти адміністратора</h1>
-                        <p className="text-gray-600">Повний огляд роботи автошколи</p>
+                        <h1 className="text-3xl font-bold mb-2">{t('adminReports.title')}</h1>
+                        <p className="text-gray-600">{t('adminReports.subtitle')}</p>
                     </div>
                     <Button
                         variant="outline"
@@ -125,7 +133,7 @@ export default function AdminReportsPage() {
                         onClick={handleExportOverall}
                     >
                         <Download className="w-4 h-4" />
-                        Експорт звіту
+                        {t('adminReports.exportReport')}
                     </Button>
                 </div>
 
@@ -139,27 +147,36 @@ export default function AdminReportsPage() {
                 {/* Основні метрики */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                     <StatsCard
-                        title="Студенти"
+                        title={t('reports.students')}
                         value={stats?.students.total || 0}
-                        subtitle={`${stats?.students.new || 0} нових • ${stats?.students.active || 0} активних`}
+                        subtitle={t('adminReports.studentsSubtitle', { 
+                            new: stats?.students.new || 0, 
+                            active: stats?.students.active || 0 
+                        })}
                         icon={GraduationCap}
                     />
                     <StatsCard
-                        title="Інструктори"
+                        title={t('reports.instructors')}
                         value={stats?.instructors.total || 0}
-                        subtitle={`${stats?.instructors.active || 0} активних • ${stats?.instructors.utilization || 0}% завантаженість`}
+                        subtitle={t('adminReports.instructorsSubtitle', { 
+                            active: stats?.instructors.active || 0, 
+                            utilization: stats?.instructors.utilization || 0 
+                        })}
                         icon={Users}
                     />
                     <StatsCard
-                        title="Уроки"
+                        title={t('adminReports.lessons')}
                         value={stats?.lessons.total || 0}
-                        subtitle={`${stats?.lessons.completed || 0} завершено • ${stats?.lessons.upcoming || 0} заплановано`}
+                        subtitle={t('adminReports.lessonsSubtitle', { 
+                            completed: stats?.lessons.completed || 0, 
+                            upcoming: stats?.lessons.upcoming || 0 
+                        })}
                         icon={Calendar}
                     />
                     <StatsCard
-                        title="Дохід"
+                        title={t('adminReports.revenue')}
                         value={`${stats?.finance.revenue || 0} PLN`}
-                        subtitle={`Очікується: ${stats?.finance.pending || 0} PLN`}
+                        subtitle={t('adminReports.revenueSubtitle', { amount: stats?.finance.pending || 0 })}
                         icon={DollarSign}
                     />
                 </div>
@@ -169,7 +186,7 @@ export default function AdminReportsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <Card>
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-medium">Завершеність уроків</CardTitle>
+                                <CardTitle className="text-sm font-medium">{t('adminReports.lessonCompletionRate')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-green-600">
@@ -186,7 +203,7 @@ export default function AdminReportsPage() {
 
                         <Card>
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-medium">Скасування уроків</CardTitle>
+                                <CardTitle className="text-sm font-medium">{t('adminReports.lessonCancellationRate')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-red-600">
@@ -203,7 +220,7 @@ export default function AdminReportsPage() {
 
                         <Card>
                             <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-medium">Використання автомобілів</CardTitle>
+                                <CardTitle className="text-sm font-medium">{t('adminReports.vehicleUtilization')}</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-blue-600">
@@ -223,16 +240,16 @@ export default function AdminReportsPage() {
                 {/* Таби з детальними звітами */}
                 <Tabs defaultValue="students" className="space-y-4">
                     <TabsList>
-                        <TabsTrigger value="students">Студенти</TabsTrigger>
-                        <TabsTrigger value="instructors">Інструктори</TabsTrigger>
-                        <TabsTrigger value="operations">Операції</TabsTrigger>
-                        <TabsTrigger value="top">Топ рейтинги</TabsTrigger>
+                        <TabsTrigger value="students">{t('reports.students')}</TabsTrigger>
+                        <TabsTrigger value="instructors">{t('reports.instructors')}</TabsTrigger>
+                        <TabsTrigger value="operations">{t('adminReports.operations')}</TabsTrigger>
+                        <TabsTrigger value="top">{t('adminReports.topRatings')}</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="students">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
-                                <CardTitle>Звіт по студентах</CardTitle>
+                                <CardTitle>{t('adminReports.studentsReport')}</CardTitle>
                                 <div className="flex gap-2">
                                     <Button
                                         variant="outline"
@@ -241,21 +258,15 @@ export default function AdminReportsPage() {
                                         className="flex items-center gap-2"
                                     >
                                         <Download className="w-4 h-4" />
-                                        Експорт CSV
+                                        {t('reports.export')}
                                     </Button>
-                                    <Link href="/admin-reports/students">
+                                    <Link href={`/${locale}/admin-reports/students`}>
                                         <Button variant="outline" size="sm">
-                                            Детальний звіт
+                                            {t('adminReports.detailedReport')}
                                             <ChevronRight className="w-4 h-4 ml-2" />
                                         </Button>
                                     </Link>
                                 </div>
-                                <Link href="/admin-reports/students">
-                                    <Button variant="outline" size="sm">
-                                        Детальний звіт
-                                        <ChevronRight className="w-4 h-4 ml-2" />
-                                    </Button>
-                                </Link>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
@@ -267,12 +278,12 @@ export default function AdminReportsPage() {
                                                     {student.isActive ? (
                                                         <span className="flex items-center gap-1 text-xs text-green-600">
                                                             <UserCheck className="w-3 h-3" />
-                                                            Активний
+                                                            {t('reports.active')}
                                                         </span>
                                                     ) : (
                                                         <span className="flex items-center gap-1 text-xs text-gray-400">
                                                             <UserX className="w-3 h-3" />
-                                                            Неактивний
+                                                            {t('reports.inactive')}
                                                         </span>
                                                     )}
                                                 </div>
@@ -281,15 +292,15 @@ export default function AdminReportsPage() {
                                                     {student.phone && <span>{student.phone}</span>}
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
-                                                    <span>Стадія: {student.stage}</span>
-                                                    <span>Прогрес: {student.progress}%</span>
+                                                    <span>{t('reports.stage')}: {t(`reports.${student.stage.toLowerCase()}`)}</span>
+                                                    <span>{t('reports.progress')}: {student.progress}%</span>
                                                 </div>
                                             </div>
                                             <div className="text-right">
-                                                <p className="font-medium">{student.completedLessons} уроків</p>
+                                                <p className="font-medium">{student.completedLessons} {t('adminReports.lessons')}</p>
                                                 <p className="text-sm text-gray-600">{student.totalPaid} PLN</p>
                                                 {student.totalCredits > 0 && (
-                                                    <p className="text-xs text-blue-600">{student.totalCredits} кредитів</p>
+                                                    <p className="text-xs text-blue-600">{student.totalCredits} {t('package.credits')}</p>
                                                 )}
                                             </div>
                                         </div>
@@ -302,7 +313,7 @@ export default function AdminReportsPage() {
                     <TabsContent value="instructors">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
-                                <CardTitle>Звіт по інструкторах</CardTitle>
+                                <CardTitle>{t('adminReports.instructorsReport')}</CardTitle>
                                 <div className="flex gap-2">
                                     <Button
                                         variant="outline"
@@ -311,21 +322,15 @@ export default function AdminReportsPage() {
                                         className="flex items-center gap-2"
                                     >
                                         <Download className="w-4 h-4" />
-                                        Експорт CSV
+                                        {t('reports.export')}
                                     </Button>
-                                    <Link href="/admin-reports/instructors">
+                                    <Link href={`/${locale}/admin-reports/instructors`}>
                                         <Button variant="outline" size="sm">
-                                            Детальний звіт
+                                            {t('adminReports.detailedReport')}
                                             <ChevronRight className="w-4 h-4 ml-2" />
                                         </Button>
                                     </Link>
                                 </div>
-                                <Link href="/admin-reports/instructors">
-                                    <Button variant="outline" size="sm">
-                                        Детальний звіт
-                                        <ChevronRight className="w-4 h-4 ml-2" />
-                                    </Button>
-                                </Link>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
@@ -338,15 +343,15 @@ export default function AdminReportsPage() {
                                                     {instructor.phone && <span>{instructor.phone}</span>}
                                                 </div>
                                                 <div className="flex items-center gap-4 text-xs text-gray-500 mt-1">
-                                                    <span>Завантаженість: {instructor.utilization}%</span>
-                                                    <span>Студентів: {instructor.uniqueStudents}</span>
-                                                    <span>Рейтинг: ⭐ {instructor.rating.toFixed(1)}</span>
+                                                    <span>{t('reports.utilization')}: {instructor.utilization}%</span>
+                                                    <span>{t('reports.students')}: {instructor.uniqueStudents}</span>
+                                                    <span>{t('reports.rating')}: ⭐ {instructor.rating.toFixed(1)}</span>
                                                 </div>
                                             </div>
                                             <div className="text-right">
-                                                <p className="font-medium">{instructor.completedLessons} уроків</p>
-                                                <p className="text-sm text-gray-600">{instructor.totalHours} год</p>
-                                                <p className="text-xs text-green-600">{instructor.revenue} PLN дохід</p>
+                                                <p className="font-medium">{instructor.completedLessons} {t('adminReports.lessons')}</p>
+                                                <p className="text-sm text-gray-600">{instructor.totalHours} {t('instructorReports.hours')}</p>
+                                                <p className="text-xs text-green-600">{instructor.revenue} PLN {t('adminReports.revenue')}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -360,7 +365,7 @@ export default function AdminReportsPage() {
                             {/* Автомобілі */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Використання автомобілів</CardTitle>
+                                    <CardTitle>{t('adminReports.vehicleUsage')}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-3">
@@ -380,8 +385,8 @@ export default function AdminReportsPage() {
                                                     )}
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="font-medium">{vehicle.lessonsCount} уроків</p>
-                                                    <p className="text-xs text-gray-500">{vehicle.hoursUsed.toFixed(1)} год</p>
+                                                    <p className="font-medium">{vehicle.lessonsCount} {t('adminReports.lessons')}</p>
+                                                    <p className="text-xs text-gray-500">{vehicle.hoursUsed.toFixed(1)} {t('instructorReports.hours')}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -392,7 +397,7 @@ export default function AdminReportsPage() {
                             {/* Локації */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Використання локацій</CardTitle>
+                                    <CardTitle>{t('adminReports.locationUsage')}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-3">
@@ -406,8 +411,8 @@ export default function AdminReportsPage() {
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="font-medium">{location.bookingsCount} бронювань</p>
-                                                    <p className="text-xs text-gray-500">{location.utilization}% завантаженість</p>
+                                                    <p className="font-medium">{location.bookingsCount} {t('adminReports.bookings')}</p>
+                                                    <p className="text-xs text-gray-500">{location.utilization}% {t('reports.utilization')}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -418,7 +423,7 @@ export default function AdminReportsPage() {
                             {/* Популярні часи */}
                             <Card>
                                 <CardHeader>
-                                    <CardTitle>Популярні часи для уроків</CardTitle>
+                                    <CardTitle>{t('adminReports.popularLessonTimes')}</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-2">
@@ -449,7 +454,7 @@ export default function AdminReportsPage() {
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
                                         <TrendingUp className="w-5 h-5 text-green-500" />
-                                        Топ студентів
+                                        {t('reports.topStudents')}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
@@ -463,7 +468,7 @@ export default function AdminReportsPage() {
                                                     <div>
                                                         <p className="font-medium">{student.name}</p>
                                                         <p className="text-xs text-gray-500">
-                                                            {student.completedLessons} уроків • {student.totalPaid} PLN
+                                                            {student.completedLessons} {t('adminReports.lessons')} • {student.totalPaid} PLN
                                                         </p>
                                                     </div>
                                                 </div>
@@ -481,7 +486,7 @@ export default function AdminReportsPage() {
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2">
                                         <TrendingUp className="w-5 h-5 text-blue-500" />
-                                        Топ інструкторів
+                                        {t('reports.topInstructors')}
                                     </CardTitle>
                                 </CardHeader>
                                 <CardContent>
@@ -495,7 +500,7 @@ export default function AdminReportsPage() {
                                                     <div>
                                                         <p className="font-medium">{instructor.name}</p>
                                                         <p className="text-xs text-gray-500">
-                                                            {instructor.completedLessons} уроків • {instructor.revenue} PLN дохід
+                                                            {instructor.completedLessons} {t('adminReports.lessons')} • {instructor.revenue} PLN {t('adminReports.revenue')}
                                                         </p>
                                                     </div>
                                                 </div>

@@ -1,8 +1,11 @@
+// components/ui/time-slot-picker.tsx
+
 'use client'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
+import { useTranslations } from 'next-intl'
 
 interface TimeSlot {
   startTime: Date
@@ -23,6 +26,8 @@ export function TimeSlotPicker({
   onSelectSlot,
   loading = false
 }: TimeSlotPickerProps) {
+  const t = useTranslations()
+  
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -34,7 +39,7 @@ export function TimeSlotPicker({
   if (slots.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
-        No available time slots for this date
+        {t('booking.noAvailableSlots')}
       </div>
     )
   }
@@ -60,12 +65,12 @@ export function TimeSlotPicker({
             <span className="font-medium">
               {format(slot.startTime, 'HH:mm')}
             </span>
-            <span className="text-xs opacity-75">to</span>
+            <span className="text-xs opacity-75">{t('common.to')}</span>
             <span className="font-medium">
               {format(slot.endTime, 'HH:mm')}
             </span>
             {!isAvailable && (
-              <span className="text-xs text-red-500 mt-1">Booked</span>
+              <span className="text-xs text-red-500 mt-1">{t('timeSlot.booked')}</span>
             )}
           </Button>
         )

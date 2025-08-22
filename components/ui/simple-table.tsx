@@ -1,3 +1,8 @@
+// components/ui/simple-table.tsx
+
+import { useTranslations } from 'next-intl'
+import { cn } from '@/lib/utils'
+
 interface Column<T> {
   key: string
   header: string
@@ -15,10 +20,12 @@ export function SimpleTable<T extends Record<string, any>>({
   columns,
   onRowClick 
 }: SimpleTableProps<T>) {
+  const t = useTranslations()
+  
   if (data.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500">
-        No data available
+        {t('messages.noData')}
       </div>
     )
   }
@@ -62,8 +69,4 @@ export function SimpleTable<T extends Record<string, any>>({
       </table>
     </div>
   )
-}
-
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
 }

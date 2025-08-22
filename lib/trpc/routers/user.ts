@@ -13,7 +13,7 @@ export const userRouter = router({
         email: true,
         firstName: true,
         lastName: true,
-        phone: true,  // <-- Додайте це поле
+        phone: true,
       },
     })
 
@@ -60,5 +60,36 @@ export const userRouter = router({
       })
 
       return user
+    }),
+
+  getSettings: protectedProcedure
+    .query(async ({ ctx }) => {
+      const user = await ctx.db.user.findUnique({
+        where: { id: ctx.session.user.id },
+        select: {
+          language: true,
+          emailNotifications: true,
+          smsNotifications: true
+        }
+      })
+      return user
+    }),
+
+  updateSettings: protectedProcedure
+    .input(z.object({
+      language: z.string(),
+      emailNotifications: z.boolean(),
+      smsNotifications: z.boolean()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const updated = await ctx.db.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          language: input.language,
+          emailNotifications: input.emailNotifications,
+          smsNotifications: input.smsNotifications
+        }
+      })
+      return updated
     }),
 })
