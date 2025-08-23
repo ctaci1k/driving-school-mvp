@@ -88,16 +88,19 @@ export class P24Client {
     this.config = { ...P24Config, ...config }
   }
 
-  // Generate CRC checksum
-  private generateSign(data: Record<string, any>): string {
-    const { sessionId, merchantId, amount, currency, crc } = data
-    const signString = `${sessionId}|${merchantId}|${amount}|${currency}|${crc}`
-    
-    return crypto
-      .createHash('sha384')
-      .update(signString)
-      .digest('hex')
-  }
+
+// Generate CRC checksum
+private generateSign(data: Record<string, any>): string {
+  const { sessionId, merchantId, amount, currency, crc } = data
+  
+  // ДЛЯ РЕЄСТРАЦІЇ - використовуємо JSON формат
+  const signString = `{"sessionId":"${sessionId}","merchantId":${merchantId},"amount":${amount},"currency":"${currency}","crc":"${crc}"}`
+  
+  return crypto
+    .createHash('sha384')
+    .update(signString)
+    .digest('hex')
+}
 
   // Verify webhook signature
   verifyWebhookSignature(payload: P24WebhookPayload): boolean {
@@ -121,7 +124,14 @@ export class P24Client {
       currency: params.currency,
       crc: this.config.crc,
     })
-
+  console.log('P24 Config:', {
+    merchantId: this.config.merchantId,
+    posId: this.config.posId,
+    sandbox: this.config.sandbox,
+    baseUrl: this.config.baseUrl,
+    crcLength: this.config.crc?.length,
+    apiKeyLength: this.config.apiKey?.length
+  })
     const requestData = {
       merchantId: parseInt(this.config.merchantId),
       posId: parseInt(this.config.posId),
@@ -142,7 +152,9 @@ export class P24Client {
       timeLimit: params.timeLimit || 15,
       sign,
     }
-
+ console.log('P24 Request URL:', `${this.config.baseUrl}/api/v1/transaction/register`)
+  console.log('P24 Auth:', `${this.config.posId}:${this.config.apiKey?.substring(0, 4)}...`)
+  
     try {
       const response = await fetch(`${this.config.baseUrl}/api/v1/transaction/register`, {
         method: 'POST',

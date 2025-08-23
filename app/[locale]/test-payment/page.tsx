@@ -20,7 +20,7 @@ export default function TestPaymentPage() {
     setResult(null)
 
     try {
-      const response = await fetch('/api/payments/create', {
+      const response = await fetch('/api/payments/p24/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

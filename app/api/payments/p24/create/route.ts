@@ -70,8 +70,8 @@ export async function POST(req: NextRequest) {
       city: user.city || undefined,
       country: 'PL',
       language: user.language === 'pl' ? 'pl' : 'en',
-      urlReturn: `${baseUrl}/payments/return?sessionId=${sessionId}`,
-      urlStatus: `${baseUrl}/api/webhooks/p24`,
+urlReturn: `${baseUrl}/pl/payments/return?sessionId=${sessionId}`,
+urlStatus: `${baseUrl}/api/webhooks/p24`,
       timeLimit: 15,
     })
 

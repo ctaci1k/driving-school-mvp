@@ -138,3 +138,109 @@ MIT
 ## 👥 Support
 
 For issues and questions, please create an issue in the repository.
+
+
+
+
+
+
+Instrukcja konfiguracji Przelewy24
+1. Konfiguracja w panelu Przelewy24
+Sandbox (środowisko testowe)
+
+Zaloguj się do panelu sandbox: https://sandbox.przelewy24.pl/panel
+Przejdź do Ustawienia → Dane dostępowe API
+Skopiuj:
+
+Merchant ID
+CRC key
+Wygeneruj API Key
+
+
+
+Produkcja
+
+Zaloguj się do panelu: https://panel.przelewy24.pl
+Przejdź do Ustawienia → Dane dostępowe API
+Skopiuj dane jak wyżej
+
+2. Konfiguracja URL-i powrotnych
+W panelu Przelewy24 ustaw:
+URL statusu (webhook):
+https://twoja-domena.pl/api/webhooks/p24
+URL powrotu:
+https://twoja-domena.pl/api/payments/p24/return
+Dla developmentu (ngrok):
+Jeśli testujesz lokalnie, użyj ngrok:
+bashngrok http 3000
+Następnie użyj URL z ngrok:
+
+Status URL: https://xxx.ngrok.io/api/webhooks/p24
+Return URL: https://xxx.ngrok.io/api/payments/p24/return
+
+3. Zmienne środowiskowe
+W pliku .env.local:
+env# Przelewy24 - SANDBOX
+P24_MERCHANT_ID=27290
+P24_POS_ID=27290
+P24_CRC=b36103b3f74181c8
+P24_API_KEY=test
+P24_SANDBOX=true
+
+# Przelewy24 - PRODUKCJA (odkomentuj gdy będziesz gotowy)
+# P24_MERCHANT_ID=twój_merchant_id
+# P24_POS_ID=twój_pos_id
+# P24_CRC=twój_crc
+# P24_API_KEY=twój_api_key
+# P24_SANDBOX=false
+4. Testowanie
+Karty testowe (sandbox):
+
+Karta sukces: 4444 3333 2222 1111
+CVV: 123
+Data: dowolna przyszła
+
+Test flow:
+
+Utwórz rezerwację
+Kliknij "Zapłać"
+Zostaniesz przekierowany do Przelewy24
+Użyj karty testowej
+Po płatności wrócisz na stronę sukcesu
+
+5. Weryfikacja webhooka
+Przelewy24 wysyła webhook na URL statusu. Upewnij się że:
+
+URL jest publiczny (nie localhost)
+Endpoint zwraca status 200 OK
+Weryfikujesz podpis (sign)
+
+6. Logi i debugowanie
+Sprawdzaj logi w:
+
+Konsoli przeglądarki
+Konsoli serwera (terminal)
+Panelu Przelewy24 → Historia transakcji
+
+7. Częste problemy
+"Invalid CRC"
+
+Sprawdź czy CRC w .env zgadza się z panelem P24
+Upewnij się że nie ma spacji na końcu
+
+"Merchant not found"
+
+Sprawdź Merchant ID
+Upewnij się że używasz właściwego środowiska (sandbox/prod)
+
+Webhook nie działa
+
+URL musi być publiczny
+Sprawdź logi w panelu P24
+Użyj ngrok dla lokalnego testowania
+
+8. Wsparcie
+
+Dokumentacja API: https://developers.przelewy24.pl
+Wsparcie techniczne: tech@przelewy24.pl
+Panel sandbox: https://sandbox.przelewy24.pl

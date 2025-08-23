@@ -2,48 +2,139 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { p24Client, P24WebhookSchema } from '@/lib/payment/p24-client'
+import { p24Client } from '@/lib/payment/p24-client'
+import { P24WebhookSchema } from '@/lib/payment/p24-client'
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json()
+    const body = await request.json()
     console.log('P24 Webhook received:', body)
-
-    // Validate webhook payload
-    const payload = P24WebhookSchema.parse(body)
-
-    // Verify signature
-    if (!p24Client.verifyWebhookSignature(payload)) {
+    
+    // Валідація даних
+    const webhookData = P24WebhookSchema.parse(body)
+    
+    // Перевірка підпису
+    const isValidSignature = p24Client.verifyWebhookSignature(webhookData)
+    
+    if (!isValidSignature) {
       console.error('Invalid P24 webhook signature')
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Invalid signature' },
+        { status: 400 }
+      )
     }
-
-    // Get payment from database
+    
+    // Знайти платіж
     const payment = await db.payment.findUnique({
-      where: { p24SessionId: payload.sessionId },
+      where: { p24SessionId: webhookData.sessionId },
       include: {
         booking: true,
         userPackage: {
-          include: { package: true },
-        },
-        user: true,
-      },
+          include: {
+            package: true
+          }
+        }
+      }
     })
-
+    
     if (!payment) {
-      console.error('Payment not found for session:', payload.sessionId)
-      return NextResponse.json({ error: 'Payment not found' }, { status: 404 })
+      console.error('Payment not found:', webhookData.sessionId)
+      return NextResponse.json(
+        { error: 'Payment not found' },
+        { status: 404 }
+      )
     }
-
-    // Verify transaction with P24
-    const isValid = await p24Client.verifyTransaction({
-      sessionId: payload.sessionId,
-      amount: payload.amount,
-      currency: 'PLN',
-      orderId: payload.orderId,
+    
+    // Якщо платіж вже оброблений
+    if (payment.status === 'COMPLETED') {
+      return NextResponse.json({ status: 'OK' })
+    }
+    
+    // Верифікація транзакції
+    const isVerified = await p24Client.verifyTransaction({
+      sessionId: webhookData.sessionId,
+      amount: webhookData.amount,
+      currency: 'PLN' as const,
+      orderId: webhookData.orderId
     })
-
-    if (!isValid) {
+    
+    if (isVerified) {
+      // Оновити платіж
+      await db.payment.update({
+        where: { id: payment.id },
+        data: {
+          status: 'COMPLETED',
+          p24OrderId: webhookData.orderId.toString(),
+          completedAt: new Date(),
+          metadata: {
+            ...payment.metadata as any,
+            p24MethodId: webhookData.methodId,
+            p24Statement: webhookData.statement
+          }
+        }
+      })
+      
+      // Якщо це платіж за бронювання
+      if (payment.booking) {
+        await db.booking.update({
+          where: { id: payment.booking.id },
+          data: { 
+            isPaid: true,
+            paymentId: payment.id
+          }
+        })
+        
+        // Створити повідомлення
+        await db.notification.create({
+          data: {
+            userId: payment.userId,
+            type: 'PAYMENT_COMPLETED',
+            channel: 'EMAIL',
+            subject: 'Potwierdzenie płatności za lekcję',
+            content: `Płatność za lekcję ${new Date(payment.booking.startTime).toLocaleDateString('pl-PL')} została zarejestrowana.`,
+            metadata: {
+              paymentId: payment.id,
+              bookingId: payment.bookingId,
+              orderId: webhookData.orderId
+            },
+            status: 'PENDING'
+          }
+        })
+      }
+      
+      // Якщо це платіж за пакет
+      if (payment.userPackage) {
+        await db.userPackage.update({
+  where: { id: payment.userPackage.id },
+  data: {
+    status: 'ACTIVE'
+  }
+})
+        
+        
+        // Створити повідомлення
+        await db.notification.create({
+          data: {
+            userId: payment.userId,
+            type: 'PACKAGE_ACTIVATED',
+            channel: 'EMAIL',
+            subject: 'Pakiet został aktywowany',
+            content: `Twój pakiet "${payment.userPackage.package.name}" został aktywowany. Masz ${payment.userPackage.creditsTotal} kredytów do wykorzystania.`,
+            metadata: {
+              paymentId: payment.id,
+              packageId: payment.userPackage.packageId,
+              orderId: webhookData.orderId
+            },
+            status: 'PENDING'
+          }
+        })
+      }
+      
+      console.log('Payment verified and updated:', payment.id)
+      return NextResponse.json({ status: 'OK' })
+      
+    } else {
+      // Верифікація не вдалась
       await db.payment.update({
         where: { id: payment.id },
         data: {
@@ -51,85 +142,23 @@ export async function POST(req: NextRequest) {
           failedAt: new Date(),
           metadata: {
             ...payment.metadata as any,
-            webhookData: payload,
-          },
-        },
+            failureReason: 'Verification failed',
+            orderId: webhookData.orderId
+          }
+        }
       })
-      return NextResponse.json({ error: 'Transaction verification failed' }, { status: 400 })
+      
+      console.error('Payment verification failed:', payment.id)
+      return NextResponse.json(
+        { error: 'Verification failed' },
+        { status: 400 }
+      )
     }
-
-    // Update payment status
-    await db.$transaction(async (tx) => {
-      // Update payment
-      await tx.payment.update({
-        where: { id: payment.id },
-        data: {
-          status: 'COMPLETED',
-          p24OrderId: payload.orderId.toString(),
-          completedAt: new Date(),
-          metadata: {
-            ...payment.metadata as any,
-            webhookData: payload,
-          },
-        },
-      })
-
-      // Update booking if exists
-      if (payment.booking) {
-        await tx.booking.update({
-          where: { id: payment.booking.id },
-          data: { isPaid: true },
-        })
-
-        // Create notification
-        await tx.notification.create({
-          data: {
-            userId: payment.userId,
-            type: 'BOOKING_CONFIRMATION',
-            channel: 'EMAIL',
-            subject: 'Potwierdzenie rezerwacji',
-            content: `Twoja rezerwacja na ${payment.booking.startTime.toLocaleDateString('pl-PL')} została opłacona.`,
-            metadata: {
-              bookingId: payment.booking.id,
-              paymentId: payment.id,
-            },
-          },
-        })
-      }
-
-      // Activate package if exists
-      if (payment.userPackage) {
-        await tx.userPackage.update({
-          where: { id: payment.userPackage.id },
-          data: { status: 'ACTIVE' },
-        })
-
-        // Create notification
-        await tx.notification.create({
-          data: {
-            userId: payment.userId,
-            type: 'PAYMENT_SUCCESS',
-            channel: 'EMAIL',
-            subject: 'Pakiet aktywowany',
-            content: `Twój pakiet "${payment.userPackage.package.name}" został aktywowany.`,
-            metadata: {
-              packageId: payment.userPackage.id,
-              paymentId: payment.id,
-            },
-          },
-        })
-      }
-    })
-
-    // Send confirmation email (you'll implement this with your email service)
-    // await sendPaymentConfirmation(payment)
-
-    return NextResponse.json({ success: true })
+    
   } catch (error) {
     console.error('P24 webhook error:', error)
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Webhook processing failed' },
-      { status: 500 }
-    )
+    
+    // Zwróć OK żeby P24 nie powtarzało webhooka
+    return NextResponse.json({ status: 'OK' })
   }
 }
