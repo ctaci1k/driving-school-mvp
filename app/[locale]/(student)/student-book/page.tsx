@@ -89,7 +89,7 @@ const bookingMutation = trpc.booking.createRecurring.useMutation({
 
     // Якщо оплата онлайн і це не серія
     if (paymentMethod === 'online' && !Array.isArray(data) && data.id) {
-      fetch('/api/payments/create', {
+      fetch('/api/payments/p24/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
