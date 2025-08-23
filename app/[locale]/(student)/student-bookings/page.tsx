@@ -1,3 +1,6 @@
+// app\[locale]\(student)\student-bookings\page.tsx
+
+
 'use client'
 
 import { useState } from 'react'
@@ -17,6 +20,8 @@ import { MonthView } from '@/components/calendar/month-view'
 import { CalendarNavigation } from '@/components/calendar/calendar-navigation'
 import { cn } from '@/lib/utils'
 import { format, startOfWeek, addDays } from 'date-fns'
+import { PaymentButton } from '@/components/payments/PaymentButton'
+import { CreditCard, CheckCircle } from 'lucide-react'
 
 export default function StudentBookingsPage() {
   const t = useTranslations()
@@ -229,27 +234,64 @@ export default function StudentBookingsPage() {
                           <p className="text-sm text-gray-600">{t('booking.notes')}: {booking.notes}</p>
                         )}
                       </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <span className={cn(
-                          "px-2 py-1 rounded text-xs font-medium",
-                          booking.status === 'CONFIRMED' && 'bg-green-100 text-green-800',
-                          booking.status === 'CANCELLED' && 'bg-red-100 text-red-800',
-                          booking.status === 'COMPLETED' && 'bg-blue-100 text-blue-800',
-                          booking.status === 'NO_SHOW' && 'bg-gray-100 text-gray-800'
-                        )}>
-                          {t(`booking.status.${booking.status.toLowerCase()}`)}
-                        </span>
-                        {booking.status === 'CONFIRMED' && new Date(booking.startTime) > new Date() && (
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleCancel(booking.id)}
-                            disabled={cancelMutation.isLoading}
-                          >
-                            {t('common.cancel')}
-                          </Button>
-                        )}
-                      </div>
+<div className="flex flex-col items-end gap-2">
+  {/* Status rezerwacji */}
+  <span className={cn(
+    "px-2 py-1 rounded text-xs font-medium",
+    booking.status === 'CONFIRMED' && 'bg-green-100 text-green-800',
+    booking.status === 'CANCELLED' && 'bg-red-100 text-red-800',
+    booking.status === 'COMPLETED' && 'bg-blue-100 text-blue-800',
+    booking.status === 'NO_SHOW' && 'bg-gray-100 text-gray-800'
+  )}>
+    {t(`booking.status.${booking.status.toLowerCase()}`)}
+  </span>
+  
+{/* Status płatności */}
+{booking.isPaid ? (
+  <span className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+    <CheckCircle className="w-3 h-3" />
+    Opłacone
+  </span>
+) : booking.price && Number(booking.price) > 0 ? (
+  <span className="flex items-center gap-1 px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+    <CreditCard className="w-3 h-3" />
+    Do zapłaty: {booking.price.toString()} PLN
+  </span>
+) : null}
+  {/* Przyciski akcji */}
+  <div className="flex gap-2 mt-2">
+{/* Przycisk płatności */}
+{!booking.isPaid && 
+ booking.price && 
+ Number(booking.price) > 0 && 
+ booking.status === 'CONFIRMED' && 
+ new Date(booking.startTime) > new Date() && (
+  <PaymentButton
+    bookingId={booking.id}
+    amount={Number(booking.price)}
+    description={`Lekcja jazdy - ${format(new Date(booking.startTime), 'dd.MM.yyyy HH:mm')}`}
+    className="text-sm px-3 py-1 h-9"
+  >
+    <CreditCard className="w-3 h-3 mr-1" />
+    Opłać
+  </PaymentButton>
+)}
+    
+    {/* Przycisk anulowania */}
+    {booking.status === 'CONFIRMED' && 
+     new Date(booking.startTime) > new Date() && 
+     !booking.isPaid && (
+      <Button
+        variant="destructive"
+        size="sm"
+        onClick={() => handleCancel(booking.id)}
+        disabled={cancelMutation.isLoading}
+      >
+        {t('common.cancel')}
+      </Button>
+    )}
+  </div>
+</div>
                     </div>
                   </CardContent>
                 </Card>
