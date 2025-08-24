@@ -18,22 +18,36 @@ export default function StudentDashboard() {
   const params = useParams()
   const locale = params.locale as string
   
-  const { data: bookings, isLoading } = trpc.booking.list.useQuery({
+  const { data, isLoading, error } = trpc.booking.list.useQuery({
     status: 'CONFIRMED',
   })
 
-  const upcomingBookings = bookings?.filter(
-    (booking) => new Date(booking.startTime) > new Date()
-  ) || []
+  // Отримуємо масив bookings з поля items
+  const bookings = data?.items || []
 
-  const pastBookings = bookings?.filter(
+  const upcomingBookings = bookings.filter(
+    (booking) => new Date(booking.startTime) > new Date()
+  )
+
+  const pastBookings = bookings.filter(
     (booking) => new Date(booking.startTime) <= new Date()
-  ) || []
+  )
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p>{t('common.loading')}</p>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">{t('common.error')}</p>
+          <p className="text-gray-600">{error.message}</p>
+        </div>
       </div>
     )
   }
@@ -58,7 +72,7 @@ export default function StudentDashboard() {
             <CardTitle className="text-lg">{t('reports.totalLessons')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{bookings?.length || 0}</p>
+            <p className="text-3xl font-bold">{data?.totalCount || bookings.length || 0}</p>
           </CardContent>
         </Card>
 
@@ -122,7 +136,7 @@ export default function StudentDashboard() {
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-gray-500" />
                           <span>
-                            {booking.instructor.firstName} {booking.instructor.lastName}
+                            {booking.instructor?.firstName} {booking.instructor?.lastName}
                           </span>
                         </div>
                       </div>

@@ -11,8 +11,6 @@ datasource db {
 
 // ============= USERS & AUTH =============
 
-// Додайте ці поля в модель User у файлі prisma/schema.prisma
-
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -30,7 +28,11 @@ model User {
   emergencyPhone   String?
 
   role   UserRole @default(STUDENT)
-  status String   @default("ACTIVE")
+  status UserStatus   @default(ACTIVE)
+
+  // LOCATION RELATIONSHIP - CRITICAL FOR MULTI-BRANCH
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
 
   // Address
   address    String?
@@ -38,31 +40,29 @@ model User {
   postalCode String?
 
   // Для студентів
-  completedLessons      Int? // Завершені уроки
-  examAttempts          Int? // Спроби екзамену
-  preferredInstructorId String? // Улюблений інструктор
-  examPassed            Boolean? // Чи здав екзамен
-  examPassedDate        DateTime? // Дата здачі екзамену
-  notes                 String? // Нотатки
-
-
+  completedLessons      Int?
+  examAttempts          Int?
+  preferredInstructorId String?
+  examPassed            Boolean?
+  examPassedDate        DateTime?
+  notes                 String?
 
   // License info (для всіх)
   licenseNumber String?
 
-  // ДОДАТИ ЦІ ПОЛЯ ДЛЯ ІНСТРУКТОРІВ:
-  licenseCategories String[] // Категорії прав (B, B1, C, etc)
-  licenseIssuedDate DateTime? // Дата видачі прав
-  licenseExpiryDate DateTime? // Дата закінчення прав
+  // Для інструкторів
+  licenseCategories String[]
+  licenseIssuedDate DateTime?
+  licenseExpiryDate DateTime?
 
   // Instructor specific
-  instructorLicenseNumber String? // Номер ліцензії інструктора
-  instructorLicenseDate   DateTime? // Дата отримання ліцензії інструктора
-  yearsOfExperience       Int? // Років досвіду
-  specializations         String[] // Спеціалізації
-  rating                  Float? // Рейтинг (4.5, 4.8, etc)
-  totalLessons            Int? // Всього проведених уроків
-  successRate             Float? // Відсоток успішних учнів
+  instructorLicenseNumber String?
+  instructorLicenseDate   DateTime?
+  yearsOfExperience       Int?
+  specializations         String[]
+  rating                  Float?
+  totalLessons            Int?
+  successRate             Float?
 
   // Settings
   language           String  @default("pl")
@@ -75,7 +75,7 @@ model User {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
 
-  // Relations (не змінювати)
+  // Relations
   studentBookings    Booking[]            @relation("StudentBookings")
   instructorBookings Booking[]            @relation("InstructorBookings")
   instructorSchedule InstructorSchedule[]
@@ -88,6 +88,7 @@ model User {
 
   @@index([email])
   @@index([role])
+  @@index([locationId])
 }
 
 // ============= LOCATIONS =============
@@ -113,6 +114,7 @@ model Location {
   // Relations
   bookings Booking[]
   vehicles Vehicle[]
+  users    User[]    // NEW: Users assigned to this location
 
   @@index([code])
   @@index([city])
@@ -127,21 +129,19 @@ model Vehicle {
   model              String
   year               Int
   color              String?
-  category           String // Will be VehicleCategory enum
-  transmission       String // Will be Transmission enum
-  fuelType           String // Will be FuelType enum
+  category           VehicleCategory
+  transmission       Transmission
+  fuelType           FuelType
 
-
-  ownershipType         String?   // OWNED, LEASED, RENTED
-  lastServiceMileage    Int?      // Пробіг при останньому сервісі
-  nextServiceMileage    Int?      // Пробіг наступного сервісу
-  insuranceCompany      String?   // Страхова компанія
-  insurancePolicyNumber String?   // Номер страхового полісу
-  purchaseDate          DateTime? // Дата покупки
-  purchasePrice         Float?    // Ціна покупки
-  features              String[]  // Особливості авто
-  notes                 String?   // Нотатки
-
+  ownershipType         OwnershipType?
+  lastServiceMileage    Int?
+  nextServiceMileage    Int?
+  insuranceCompany      String?
+  insurancePolicyNumber String?
+  purchaseDate          DateTime?
+  purchasePrice         Float?
+  features              String[]
+  notes                 String?
 
   assignedInstructorId String?
   assignedInstructor   User?   @relation("AssignedInstructor", fields: [assignedInstructorId], references: [id])
@@ -152,10 +152,10 @@ model Vehicle {
   currentMileage   Int       @default(0)
   lastServiceDate  DateTime?
   nextServiceDate  DateTime?
-  insuranceExpiry  DateTime // Fixed: DateTime
-  inspectionExpiry DateTime // Fixed: DateTime
+  insuranceExpiry  DateTime
+  inspectionExpiry DateTime
 
-  status String @default("ACTIVE")
+  status VehicleStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -193,29 +193,31 @@ model Package {
 
 // ============= USER PACKAGES =============
 model UserPackage {
-  id               String    @id @default(cuid())
+  id               String        @id @default(cuid())
   userId           String
   packageId        String
   creditsTotal     Int
-  creditsUsed      Int       @default(0)
+  creditsUsed      Int           @default(0)
   creditsRemaining Int
-  purchasedAt      DateTime  @default(now())
+  purchasedAt      DateTime      @default(now())
   expiresAt        DateTime
   status           PackageStatus @default(ACTIVE)
   purchasePrice    Float
-  paymentId        String? @unique
-  
-  // ДОДАТИ ЦІ ПОЛЯ:
-  isGift           Boolean?  @default(false)
-  giftFrom         String?   // "Jan i Anna Kowalski"
-  giftMessage      String?   // "Wszystkiego najlepszego!"
-  metadata         Json?     // Для додаткових даних
-  
-  notes            String?
-  
+  paymentId        String?       @unique
+
+  // Gift fields
+  isGift      Boolean? @default(false)
+  giftFrom    String?
+  giftMessage String?
+  metadata    Json?
+
+  notes String?
+
   // Relations
-  user             User      @relation(fields: [userId], references: [id])
-  package          Package   @relation(fields: [packageId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  package Package @relation(fields: [packageId], references: [id])
+  payment Payment? @relation(fields: [paymentId], references: [id])
+
   @@index([userId])
   @@index([packageId])
 }
@@ -226,9 +228,10 @@ model Payment {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  bookingId     String?      @unique
+  bookingId     String?  @unique
   booking       Booking?
-  userPackageId String?      @unique
+  userPackageId String?  @unique
+  userPackage   UserPackage?
 
   amount   Decimal @db.Decimal(10, 2)
   currency String  @default("PLN")
@@ -237,8 +240,8 @@ model Payment {
   p24OrderId   String? @unique
   p24Token     String?
 
-  status String @default("PENDING")
-  method String @default("P24")
+  status PaymentStatus @default(PENDING)
+  method PaymentMethod @default(P24)
 
   description String?
   metadata    Json?
@@ -252,7 +255,7 @@ model Payment {
   @@index([p24SessionId])
 }
 
-// ============= BOOKINGS (Updated) =============
+// ============= BOOKINGS =============
 model Booking {
   id           String @id @default(cuid())
   studentId    String
@@ -260,7 +263,6 @@ model Booking {
   instructorId String
   instructor   User   @relation("InstructorBookings", fields: [instructorId], references: [id])
 
-  // Phase 2 additions
   vehicleId  String?
   vehicle    Vehicle?  @relation(fields: [vehicleId], references: [id])
   locationId String?
@@ -270,7 +272,7 @@ model Booking {
   endTime   DateTime
   duration  Int      @default(120) // minutes
 
-  lessonType String        @default("STANDARD")
+  lessonType LessonType    @default(STANDARD)
   status     BookingStatus @default(CONFIRMED)
 
   price       Decimal? @db.Decimal(10, 2)
@@ -304,24 +306,21 @@ model InstructorSchedule {
   startTime    String // "09:00"
   endTime      String // "17:00"
 
-
-
-  locationId        String?
-  location          Location? @relation(fields: [locationId], references: [id])
-  maxBookings       Int?      // Макс бронювань на день
-  breakStart        String?   // Початок перерви
-  breakDuration     Int?      // Тривалість перерви в хвилинах
-  nightDriving      Boolean?  @default(false)
-  earlyMorning      Boolean?  @default(false)
-  notes             String?
-
+  locationId    String?
+  location      Location? @relation(fields: [locationId], references: [id])
+  maxBookings   Int?
+  breakStart    String?
+  breakDuration Int?
+  nightDriving  Boolean?  @default(false)
+  earlyMorning  Boolean?  @default(false)
+  notes         String?
 
   // Phase 2 addition
   specificDate DateTime?
 
-  // Buffer Time - DODAJ TE LINIE!
-  bufferBefore Int @default(15) // minuty przed lekcją
-  bufferAfter  Int @default(15) // minuty po lekcji
+  // Buffer Time
+  bufferBefore Int @default(15) // minutes before lesson
+  bufferAfter  Int @default(15) // minutes after lesson
 
   isAvailable Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -338,21 +337,19 @@ model Notification {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  type    String // NotificationType
-  channel String // NotificationChannel
+  type    NotificationType
+  channel NotificationChannel
 
   subject  String?
-  content  String
+  message  String
   metadata Json?
 
-  title           String?
-  message         String    // Замість content якщо його немає
-  priority        String?   @default("MEDIUM")
-  scheduledFor    DateTime?
-  isBroadcast     Boolean?  @default(false)
+  title        String?
+  priority     NotificationPriority @default(MEDIUM)
+  scheduledFor DateTime?
+  isBroadcast  Boolean?             @default(false)
 
-
-  status       String    @default("PENDING")
+  status       NotificationStatus @default(PENDING)
   sentAt       DateTime?
   readAt       DateTime?
   failedAt     DateTime?
@@ -367,66 +364,65 @@ model Notification {
 
 // ============= MAINTENANCE LOGS =============
 model MaintenanceLog {
-  id                    String    @id @default(cuid())
-  vehicleId             String
-  vehicle               Vehicle   @relation(fields: [vehicleId], references: [id])
+  id                 String    @id @default(cuid())
+  vehicleId          String
+  vehicle            Vehicle   @relation(fields: [vehicleId], references: [id])
   
-  type                  String
-  status                String    @default("SCHEDULED")
-  scheduledDate         DateTime?
-  completedDate         DateTime?
-  mileageAtService      Int?
-  nextServiceMileage    Int?
-  description           String?
-  performedTasks        String[]
-  servicedBy            String?
-  serviceLocation       String?
-  cost                  Float?
-  invoiceNumber         String?
-  notes                 String?
-  partsReplaced         String[]
-  warranty              Int?      // місяці
-  warrantyExpiresAt     DateTime?
-  isUnderWarranty       Boolean?  @default(false)
-  vehicleDowntime       Int?      // дні
-  estimatedCost         Float?
-  metadata              Json?
+  type               MaintenanceType
+  status             MaintenanceStatus @default(SCHEDULED)
+  scheduledDate      DateTime?
+  completedDate      DateTime?
+  mileageAtService   Int?
+  nextServiceMileage Int?
+  description        String?
+  performedTasks     String[]
+  servicedBy         String?
+  serviceLocation    String?
+  cost               Float?
+  invoiceNumber      String?
+  notes              String?
+  partsReplaced      String[]
+  warranty           Int? // months
+  warrantyExpiresAt  DateTime?
+  isUnderWarranty    Boolean?  @default(false)
+  vehicleDowntime    Int? // days
+  estimatedCost      Float?
+  metadata           Json?
   
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   
   @@index([vehicleId])
   @@index([type])
   @@index([status])
 }
 
-// Додайте цю модель після InstructorSchedule:
-
+// ============= SCHEDULE TEMPLATES =============
 model ScheduleTemplate {
   id           String   @id @default(cuid())
   instructorId String
   instructor   User     @relation(fields: [instructorId], references: [id])
   name         String
   description  String?
-  weekPattern  Json // Зберігаємо як JSON масив
+  weekPattern  Json // JSON array of schedule patterns
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   @@index([instructorId])
 }
 
+// ============= SCHEDULE EXCEPTIONS =============
 model ScheduleException {
   id           String @id @default(cuid())
   instructorId String
   instructor   User   @relation(fields: [instructorId], references: [id])
 
-  type      String // vacation, sickLeave, holiday, etc.
+  type      ScheduleExceptionType
   startDate DateTime
   endDate   DateTime
   allDay    Boolean  @default(true)
-  startTime String? // "14:00" якщо не allDay
-  endTime   String? // "18:00" якщо не allDay
-
+  startTime String? // "14:00" if not allDay
+  endTime   String? // "18:00" if not allDay
 
   isApproved                Boolean?  @default(false)
   approvedBy                String?
@@ -445,7 +441,6 @@ model ScheduleException {
   estimatedCost             Float?
   metadata                  Json?
 
-
   reason      String
   description String?
 
@@ -456,7 +451,8 @@ model ScheduleException {
   @@index([startDate, endDate])
 }
 
-// ============= ENUMS =============
+// ============= ENUMS (unchanged) =============
+
 enum UserRole {
   STUDENT
   INSTRUCTOR
@@ -465,19 +461,173 @@ enum UserRole {
   DISPATCHER
 }
 
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
 enum BookingStatus {
   PENDING
   CONFIRMED
-  COMPLETED     // ← додати якщо немає
+  IN_PROGRESS
+  COMPLETED
   CANCELLED
   NO_SHOW
-  IN_PROGRESS   // ← додати
-  RESCHEDULED   // ← додати якщо використовується
+  RESCHEDULED
 }
+
 enum PackageStatus {
   PENDING
   ACTIVE
   DEPLETED
   EXPIRED
   CANCELLED
+}
+
+enum LessonType {
+  STANDARD
+  CITY_TRAFFIC
+  HIGHWAY
+  PARKING
+  EXAM_PREPARATION
+  NIGHT_DRIVING
+  MANEUVERS
+  THEORY
+  EMERGENCY_BRAKING
+  HILL_START
+  COUNTRY_ROADS
+  ROUNDABOUTS
+  FIRST_LESSON
+}
+
+enum VehicleCategory {
+  B
+  B1
+  B_AUTOMATIC
+  C
+  C1
+  D
+  D1
+  BE
+  CE
+  C1E
+  DE
+  D1E
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+  SEMI_AUTOMATIC
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+  HYBRID_PLUGIN
+  LPG
+  CNG
+}
+
+enum VehicleStatus {
+  ACTIVE
+  MAINTENANCE
+  REPAIR
+  INACTIVE
+  RESERVED
+}
+
+enum OwnershipType {
+  OWNED
+  LEASED
+  RENTED
+  SUBSCRIPTION
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentMethod {
+  P24
+  CARD
+  TRANSFER
+  CASH
+  PACKAGE
+  CREDITS
+}
+
+enum NotificationType {
+  BOOKING_CONFIRMATION
+  BOOKING_REMINDER
+  BOOKING_CANCELLED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  SCHEDULE_CHANGE
+  LESSON_FEEDBACK
+  EXAM_REMINDER
+  SYSTEM_NOTIFICATION
+  PROMOTIONAL
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  CANCELLED
+}
+
+enum NotificationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum MaintenanceType {
+  REGULAR_SERVICE
+  OIL_CHANGE
+  TIRE_CHANGE
+  BRAKE_SERVICE
+  INSPECTION
+  REPAIR
+  CLEANING
+  OTHER
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  OVERDUE
+}
+
+enum ScheduleExceptionType {
+  VACATION
+  SICK_LEAVE
+  PERSONAL_LEAVE
+  TRAINING
+  HOLIDAY
+  COMPANY_EVENT
+  OTHER
 }

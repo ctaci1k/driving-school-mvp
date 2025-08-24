@@ -57,14 +57,27 @@ Open [http://localhost:3000](http://localhost:3000)
 
 | Role | Email | Password |
 |------|-------|----------|
-  Test accounts:
-  -------------------------
-  Admin:       admin@test.com / Test123!
-  Instructor1: instructor1@test.com / Test123!
-  Instructor2: instructor2@test.com / Test123!
-  Student:     student@test.com / Test123!
-  Student2:    student2@test.com / Test123!
-  -------------------------
+🔑 Пароль для ВСІХ: Test123!
+👨‍💼 Адміни:
+
+admin@drivingschool.pl - головний адмін
+manager@drivingschool.pl - менеджер філії
+
+👨‍🏫 Інструктори:
+
+piotr.instructor@drivingschool.pl
+katarzyna.instructor@drivingschool.pl
+tomasz.instructor@drivingschool.pl
+
+👨‍🎓 Студенти:
+
+jan.kowalczyk@gmail.com
+anna.wojcik@gmail.com
+marcin.zielinski@outlook.com
+
+📋 Диспетчер:
+
+dispatcher@drivingschool.pl
   `
 ## 🎯 Features (Phase 1 - MVP)
 

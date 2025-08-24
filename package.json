@@ -2,41 +2,44 @@
   "name": "driving-school-mvp",
   "version": "0.1.0",
   "private": true,
- "scripts": {
-    "// ========== DEVELOPMENT ==========": "",
+  "prisma": {
+    "seed": "node prisma/seed/index.js"
+  },
+  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     
-    "// ========== DATABASE BASIC ==========": "",
+    "// Database Scripts": "===================",
     "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:migrate:prod": "prisma migrate deploy",
-    "db:studio": "prisma studio",
+    "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
-    
-    "// ========== DATABASE SEED (PHASE 2) ==========": "",
+    "db:studio": "prisma studio",
     "db:seed": "node prisma/seed/index.js",
     "db:seed:fresh": "node prisma/seed/index.js --fresh",
     "db:seed:minimal": "node prisma/seed/index.js --minimal",
-    "db:seed:stats": "node prisma/seed/index.js --no-stats",
     
-    "// ========== DATABASE RESET ==========": "",
-    "db:reset": "prisma migrate reset --force",
-    "db:reset:seed": "npm run db:reset && npm run db:seed",
-    "db:reset:minimal": "npm run db:reset && npm run db:seed:minimal",
+    "// Reset & Migration": "===================",
+    "db:reset": "prisma migrate reset --force --skip-seed && npm run db:seed",
+    "db:reset:fresh": "rm -rf prisma/migrations && prisma migrate reset --force --skip-seed && prisma db push && npm run db:seed:fresh",
+    "db:reset:windows": "scripts\\reset-database.bat",
+    "db:reset:unix": "sh scripts/reset-database.sh",
     
-    "// ========== TESTING (PHASE 3) ==========": "",
-    "test": "echo 'Tests will be added in Phase 3'",
-    "test:unit": "echo 'Unit tests - Phase 3'",
-    "test:e2e": "echo 'E2E tests - Phase 3'",
+    "// Quick Setup": "===================",
+    "setup": "npm install && npm run db:reset:fresh",
+    "setup:docker": "docker-compose up -d && sleep 10 && npm run db:reset:fresh",
     
-    "// ========== BUILD & DEPLOY ==========": "",
-    "prebuild": "npm run db:generate",
-    "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && next build"
+    "// Development Helpers": "===================",
+    "clean": "rm -rf .next node_modules package-lock.json && npm install",
+    "clean:windows": "rmdir /s /q .next node_modules && del package-lock.json && npm install",
+    "update:deps": "npm update && npm audit fix",
+    
+    "// Testing": "===================",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

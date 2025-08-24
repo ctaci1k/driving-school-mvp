@@ -1,347 +1,574 @@
-// prisma/seed/data/users.js - ПОВНИЙ НАБІР КОРИСТУВАЧІВ
+// prisma/seed/data/users.ts
+
+const { UserRole, UserStatus } = require('@prisma/client')
 const bcrypt = require('bcryptjs')
-const { faker } = require('@faker-js/faker')
 
-// Польські імена та прізвища для реалістичності
-const polishFirstNames = {
-  male: ['Piotr', 'Krzysztof', 'Andrzej', 'Tomasz', 'Paweł', 'Jan', 'Michał', 'Marcin', 'Marek', 'Grzegorz', 'Adam', 'Łukasz', 'Zbigniew', 'Jerzy', 'Tadeusz', 'Mateusz', 'Dariusz', 'Mariusz', 'Wojciech', 'Ryszard'],
-  female: ['Anna', 'Maria', 'Katarzyna', 'Małgorzata', 'Agnieszka', 'Barbara', 'Ewa', 'Krystyna', 'Elżbieta', 'Magdalena', 'Joanna', 'Aleksandra', 'Monika', 'Teresa', 'Danuta', 'Karolina', 'Marta', 'Dorota', 'Jadwiga', 'Janina']
-}
+const passwordHash = bcrypt.hashSync('password123', 10)
 
-const polishLastNames = ['Nowak', 'Kowalski', 'Wiśniewski', 'Wójcik', 'Kowalczyk', 'Kamiński', 'Lewandowski', 'Zieliński', 'Szymański', 'Woźniak', 'Dąbrowski', 'Kozłowski', 'Jankowski', 'Mazur', 'Kwiatkowski', 'Krawczyk', 'Piotrowski', 'Grabowski', 'Pawłowski', 'Michalski']
+const users = [
+  // ADMIN - no location needed (sees all)
+  {
+    id: 'admin-1',
+    email: 'admin@drivingschool.pl',
+    passwordHash,
+    firstName: 'Admin',
+    lastName: 'Główny',
+    phone: '+48123456789',
+    role: UserRole.ADMIN,
+    status: UserStatus.ACTIVE,
+    locationId: null, // Admin sees all locations
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date(),
+  },
 
-const warsawDistricts = ['Mokotów', 'Praga-Południe', 'Wola', 'Ursynów', 'Bielany', 'Śródmieście', 'Targówek', 'Bemowo', 'Ochota', 'Żoliborz']
-
-function generatePolishPhone() {
-  // Polish mobile numbers: +48 5XX XXX XXX, 6XX XXX XXX, 7XX XXX XXX, 8XX XXX XXX
-  const prefix = faker.helpers.arrayElement(['50', '51', '53', '57', '60', '66', '69', '72', '73', '78', '79', '88'])
-  return `+48${prefix}${faker.string.numeric(7)}`
-}
-
-function generatePolishAddress() {
-  const streets = ['Marszałkowska', 'Puławska', 'Aleje Jerozolimskie', 'Świętokrzyska', 'Nowy Świat', 'Krakowskie Przedmieście', 'Grójecka', 'Wołoska', 'Wilanowska', 'Sobieskiego']
-  const street = faker.helpers.arrayElement(streets)
-  const number = faker.number.int({ min: 1, max: 200 })
-  const apartment = faker.datatype.boolean() ? `/${faker.number.int({ min: 1, max: 50 })}` : ''
-  
-  return {
-    street: `ul. ${street} ${number}${apartment}`,
-    district: faker.helpers.arrayElement(warsawDistricts),
+  // BRANCH MANAGERS - must have locationId
+  {
+    id: 'branch-manager-1',
+    email: 'manager.warsaw@drivingschool.pl',
+    passwordHash,
+    firstName: 'Marek',
+    lastName: 'Kierownik',
+    phone: '+48111222333',
+    role: UserRole.BRANCH_MANAGER,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Warszawa Centrum
+    address: 'ul. Marszałkowska 100',
     city: 'Warszawa',
-    postalCode: `0${faker.number.int({ min: 1, max: 9 })}-${faker.string.numeric(3)}`
-  }
-}
+    postalCode: '00-001',
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date(),
+  },
 
-async function seedUsers(prisma, logger, options = {}) {
-  const isMinimal = options.minimal || false
-  const hashedPassword = await bcrypt.hash('Test123!', 10)
-  
-  // Zawsze tworzymy podstawowych użytkowników dla łatwego testowania
-  const coreUsers = [
-    // ADMINI (2)
-    {
-      email: 'admin@drivingschool.pl',
-      passwordHash: hashedPassword,
-      firstName: 'Mariusz',
-      lastName: 'Kowalski',
-      phone: '+48501234567',
-      role: 'ADMIN',
-      dateOfBirth: new Date('1975-03-15'),
-      language: 'pl',
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Marszałkowska 100/45',
-      city: 'Warszawa',
-      postalCode: '00-001',
-      emergencyContact: 'Anna Kowalska',
-      emergencyPhone: '+48501234568'
-    },
-    {
-      email: 'manager@drivingschool.pl',
-      passwordHash: hashedPassword,
-      firstName: 'Anna',
-      lastName: 'Nowak',
-      phone: '+48509876543',
-      role: 'BRANCH_MANAGER',
-      dateOfBirth: new Date('1980-07-22'),
-      language: 'pl',
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Puławska 25',
-      city: 'Warszawa',
-      postalCode: '02-508'
-    },
-    
-    // INSTRUKTORZY (5 głównych)
-    {
-      email: 'piotr.instructor@drivingschool.pl',
-      passwordHash: hashedPassword,
-      firstName: 'Piotr',
-      lastName: 'Wiśniewski',
-      phone: '+48602345678',
-      role: 'INSTRUCTOR',
-      dateOfBirth: new Date('1985-11-10'),
-      language: 'pl',
-      licenseNumber: 'WAW123456',
-      licenseCategories: ['B', 'B1'],
-      licenseIssuedDate: new Date('2010-05-15'),
-      licenseExpiryDate: new Date('2030-05-15'),
-      instructorLicenseNumber: 'INST/WAW/2015/0123',
-      instructorLicenseDate: new Date('2015-09-01'),
-      yearsOfExperience: 8,
-      specializations: ['Początkujący', 'Egzamin', 'Jazda miejska'],
-      rating: 4.8,
-      totalLessons: 2456,
-      successRate: 0.87,
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Grójecka 45/12',
-      city: 'Warszawa',
-      postalCode: '02-031'
-    },
-    {
-      email: 'katarzyna.instructor@drivingschool.pl',
-      passwordHash: hashedPassword,
-      firstName: 'Katarzyna',
-      lastName: 'Lewandowska',
-      phone: '+48603456789',
-      role: 'INSTRUCTOR',
-      dateOfBirth: new Date('1990-04-18'),
-      language: 'pl',
-      licenseNumber: 'WAW234567',
-      licenseCategories: ['B', 'B1', 'BE'],
-      licenseIssuedDate: new Date('2012-08-20'),
-      licenseExpiryDate: new Date('2032-08-20'),
-      instructorLicenseNumber: 'INST/WAW/2017/0234',
-      instructorLicenseDate: new Date('2017-03-15'),
-      yearsOfExperience: 6,
-      specializations: ['Kobiety', 'Automatyczna skrzynia', 'Parking'],
-      rating: 4.9,
-      totalLessons: 1834,
-      successRate: 0.91,
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. KEN 15/8',
-      city: 'Warszawa',
-      postalCode: '02-797'
-    },
-    {
-      email: 'tomasz.instructor@drivingschool.pl',
-      passwordHash: hashedPassword,
-      firstName: 'Tomasz',
-      lastName: 'Kamiński',
-      phone: '+48604567890',
-      role: 'INSTRUCTOR',
-      dateOfBirth: new Date('1988-09-05'),
-      language: 'pl',
-      licenseNumber: 'WAW345678',
-      licenseCategories: ['B', 'C', 'CE'],
-      licenseIssuedDate: new Date('2009-03-10'),
-      licenseExpiryDate: new Date('2029-03-10'),
-      instructorLicenseNumber: 'INST/WAW/2014/0345',
-      instructorLicenseDate: new Date('2014-06-20'),
-      yearsOfExperience: 9,
-      specializations: ['Jazda nocna', 'Autostrada', 'Manewry'],
-      rating: 4.7,
-      totalLessons: 3102,
-      successRate: 0.85,
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Sobieskiego 100',
-      city: 'Warszawa',
-      postalCode: '00-764'
-    },
-    
-    // STUDENCI (10 podstawowych)
-    {
-      email: 'jan.kowalczyk@gmail.com',
-      passwordHash: hashedPassword,
-      firstName: 'Jan',
-      lastName: 'Kowalczyk',
-      phone: '+48701234567',
-      role: 'STUDENT',
-      dateOfBirth: new Date('2005-03-20'),
-      language: 'pl',
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Mokotowska 25/3',
-      city: 'Warszawa',
-      postalCode: '00-551',
-      totalLessons: 15,
-      completedLessons: 12,
-      examAttempts: 0,
-      preferredInstructorId: null // Will be set later
-    },
-    {
-      email: 'anna.wojcik@gmail.com',
-      passwordHash: hashedPassword,
-      firstName: 'Anna',
-      lastName: 'Wójcik',
-      phone: '+48702345678',
-      role: 'STUDENT',
-      dateOfBirth: new Date('2004-07-15'),
-      language: 'pl',
-      emailNotifications: true,
-      smsNotifications: true,
-      address: 'ul. Racławicka 99',
-      city: 'Warszawa',
-      postalCode: '02-634',
-      totalLessons: 25,
-      completedLessons: 25,
-      examAttempts: 1,
-      examPassed: true,
-      examPassedDate: new Date('2024-01-15')
-    },
-    {
-      email: 'marcin.zielinski@outlook.com',
-      passwordHash: hashedPassword,
-      firstName: 'Marcin',
-      lastName: 'Zieliński',
-      phone: '+48703456789',
-      role: 'STUDENT',
-      dateOfBirth: new Date('2006-01-10'),
-      language: 'pl',
-      emailNotifications: true,
-      smsNotifications: false,
-      address: 'ul. Wilanowska 45',
-      city: 'Warszawa',
-      postalCode: '02-765',
-      totalLessons: 8,
-      completedLessons: 6,
-      examAttempts: 0
-    }
-  ]
-  
-  // Dodajemy podstawowych użytkowników
-  for (const userData of coreUsers) {
-    const user = await prisma.user.upsert({
-      where: { email: userData.email },
-      update: userData,
-      create: userData
+  // DISPATCHERS - should have locationId
+  {
+    id: 'dispatcher-1',
+    email: 'dispatcher@drivingschool.pl',
+    passwordHash,
+    firstName: 'Ewa',
+    lastName: 'Dyspozytorka',
+    phone: '+48222333444',
+    role: UserRole.DISPATCHER,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Warszawa Centrum
+    address: 'ul. Nowy Świat 15',
+    city: 'Warszawa',
+    postalCode: '00-002',
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date(),
+  },
+
+  // INSTRUCTORS - with locationId
+  {
+    id: 'instructor-1',
+    email: 'jan.kowalski@drivingschool.pl',
+    passwordHash,
+    firstName: 'Jan',
+    lastName: 'Kowalski',
+    phone: '+48501234567',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Warszawa Centrum
+    address: 'ul. Złota 44',
+    city: 'Warszawa',
+    postalCode: '00-120',
+    licenseCategories: ['B', 'B1'],
+    licenseNumber: 'INS001',
+    instructorLicenseNumber: 'WAW/INS/001',
+    instructorLicenseDate: new Date('2015-03-15'),
+    yearsOfExperience: 9,
+    specializations: ['Jazda miejska', 'Egzaminy'],
+    rating: 4.8,
+    totalLessons: 450,
+    successRate: 92.5,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-10'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-2',
+    email: 'anna.nowak@drivingschool.pl',
+    passwordHash,
+    firstName: 'Anna',
+    lastName: 'Nowak',
+    phone: '+48502345678',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Warszawa Centrum
+    address: 'ul. Wspólna 50',
+    city: 'Warszawa',
+    postalCode: '00-125',
+    licenseCategories: ['B', 'B_AUTOMATIC'],
+    licenseNumber: 'INS002',
+    instructorLicenseNumber: 'WAW/INS/002',
+    instructorLicenseDate: new Date('2018-06-20'),
+    yearsOfExperience: 6,
+    specializations: ['Automatyczna skrzynia', 'Jazda nocna'],
+    rating: 4.9,
+    totalLessons: 320,
+    successRate: 94.1,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: false,
+    createdAt: new Date('2024-01-11'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-3',
+    email: 'piotr.wisniewski@drivingschool.pl',
+    passwordHash,
+    firstName: 'Piotr',
+    lastName: 'Wiśniewski',
+    phone: '+48503456789',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-krakow-1', // Kraków
+    address: 'ul. Długa 20',
+    city: 'Kraków',
+    postalCode: '30-001',
+    licenseCategories: ['B', 'C', 'C1'],
+    licenseNumber: 'INS003',
+    instructorLicenseNumber: 'KRK/INS/001',
+    instructorLicenseDate: new Date('2010-09-10'),
+    yearsOfExperience: 14,
+    specializations: ['Pojazdy ciężarowe', 'Manewry'],
+    rating: 4.7,
+    totalLessons: 780,
+    successRate: 89.3,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-12'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-4',
+    email: 'katarzyna.lewandowska@drivingschool.pl',
+    passwordHash,
+    firstName: 'Katarzyna',
+    lastName: 'Lewandowska',
+    phone: '+48504567890',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-wroclaw-1', // Wrocław
+    address: 'ul. Ruska 15',
+    city: 'Wrocław',
+    postalCode: '50-001',
+    licenseCategories: ['B', 'B1'],
+    licenseNumber: 'INS004',
+    instructorLicenseNumber: 'WRO/INS/001',
+    instructorLicenseDate: new Date('2017-11-25'),
+    yearsOfExperience: 7,
+    specializations: ['Jazda w ruchu miejskim', 'Parkowanie'],
+    rating: 4.6,
+    totalLessons: 290,
+    successRate: 91.0,
+    language: 'pl',
+    emailNotifications: false,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-13'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-5',
+    email: 'tomasz.kaminski@drivingschool.pl',
+    passwordHash,
+    firstName: 'Tomasz',
+    lastName: 'Kamiński',
+    phone: '+48505678901',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-2', // Warszawa Mokotów
+    address: 'ul. Puławska 100',
+    city: 'Warszawa',
+    postalCode: '02-500',
+    licenseCategories: ['B', 'BE'],
+    licenseNumber: 'INS005',
+    instructorLicenseNumber: 'WAW/INS/003',
+    instructorLicenseDate: new Date('2014-04-30'),
+    yearsOfExperience: 10,
+    specializations: ['Jazda z przyczepą', 'Jazda autostradowa'],
+    rating: 4.8,
+    totalLessons: 520,
+    successRate: 93.5,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-14'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-6',
+    email: 'magdalena.wojcik@drivingschool.pl',
+    passwordHash,
+    firstName: 'Magdalena',
+    lastName: 'Wójcik',
+    phone: '+48506789012',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-poznan-1', // Poznań
+    address: 'ul. Święty Marcin 30',
+    city: 'Poznań',
+    postalCode: '60-001',
+    licenseCategories: ['B', 'B_AUTOMATIC'],
+    licenseNumber: 'INS006',
+    instructorLicenseNumber: 'POZ/INS/001',
+    instructorLicenseDate: new Date('2019-02-14'),
+    yearsOfExperience: 5,
+    specializations: ['Pierwszy egzamin', 'Jazda dla początkujących'],
+    rating: 4.9,
+    totalLessons: 210,
+    successRate: 95.2,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: false,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-7',
+    email: 'robert.mazur@drivingschool.pl',
+    passwordHash,
+    firstName: 'Robert',
+    lastName: 'Mazur',
+    phone: '+48507890123',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-gdansk-1', // Gdańsk
+    address: 'ul. Długa 45',
+    city: 'Gdańsk',
+    postalCode: '80-001',
+    licenseCategories: ['B', 'C', 'D'],
+    licenseNumber: 'INS007',
+    instructorLicenseNumber: 'GDA/INS/001',
+    instructorLicenseDate: new Date('2012-07-18'),
+    yearsOfExperience: 12,
+    specializations: ['Autobusy', 'Transport publiczny'],
+    rating: 4.5,
+    totalLessons: 650,
+    successRate: 88.0,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-01-16'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'instructor-8',
+    email: 'agnieszka.krawczyk@drivingschool.pl',
+    passwordHash,
+    firstName: 'Agnieszka',
+    lastName: 'Krawczyk',
+    phone: '+48508901234',
+    role: UserRole.INSTRUCTOR,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Warszawa Centrum
+    address: 'ul. Nowy Świat 30',
+    city: 'Warszawa',
+    postalCode: '00-373',
+    licenseCategories: ['B'],
+    licenseNumber: 'INS008',
+    instructorLicenseNumber: 'WAW/INS/004',
+    instructorLicenseDate: new Date('2020-05-22'),
+    yearsOfExperience: 4,
+    specializations: ['Jazda ekologiczna', 'Eco-driving'],
+    rating: 4.7,
+    totalLessons: 180,
+    successRate: 90.5,
+    language: 'pl',
+    emailNotifications: false,
+    smsNotifications: false,
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date(),
+  },
+
+  // STUDENTS - with optional locationId (their preferred branch)
+  {
+    id: 'student-1',
+    email: 'michal.student@gmail.com',
+    passwordHash,
+    firstName: 'Michał',
+    lastName: 'Zieliński',
+    phone: '+48600111222',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Preferred location
+    dateOfBirth: new Date('2005-03-15'),
+    address: 'ul. Prosta 10',
+    city: 'Warszawa',
+    postalCode: '00-838',
+    completedLessons: 12,
+    examAttempts: 0,
+    preferredInstructorId: 'instructor-1',
+    examPassed: false,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-01'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-2',
+    email: 'kasia.student@gmail.com',
+    passwordHash,
+    firstName: 'Katarzyna',
+    lastName: 'Dąbrowska',
+    phone: '+48600222333',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-2', // Preferred location
+    dateOfBirth: new Date('2004-07-22'),
+    address: 'ul. Wołoska 20',
+    city: 'Warszawa',
+    postalCode: '02-675',
+    completedLessons: 20,
+    examAttempts: 1,
+    preferredInstructorId: 'instructor-2',
+    examPassed: false,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: false,
+    createdAt: new Date('2024-02-02'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-3',
+    email: 'pawel.student@gmail.com',
+    passwordHash,
+    firstName: 'Paweł',
+    lastName: 'Jankowski',
+    phone: '+48600333444',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-krakow-1', // Preferred location
+    dateOfBirth: new Date('2003-11-10'),
+    address: 'ul. Floriańska 15',
+    city: 'Kraków',
+    postalCode: '31-021',
+    completedLessons: 30,
+    examAttempts: 2,
+    preferredInstructorId: 'instructor-3',
+    examPassed: true,
+    examPassedDate: new Date('2024-06-15'),
+    language: 'pl',
+    emailNotifications: false,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-03'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-4',
+    email: 'ania.student@gmail.com',
+    passwordHash,
+    firstName: 'Anna',
+    lastName: 'Wróbel',
+    phone: '+48600444555',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-wroclaw-1', // Preferred location
+    dateOfBirth: new Date('2005-01-25'),
+    address: 'ul. Świdnicka 10',
+    city: 'Wrocław',
+    postalCode: '50-066',
+    completedLessons: 8,
+    examAttempts: 0,
+    preferredInstructorId: 'instructor-4',
+    examPassed: false,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-04'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-5',
+    email: 'marek.student@gmail.com',
+    passwordHash,
+    firstName: 'Marek',
+    lastName: 'Kaczmarek',
+    phone: '+48600555666',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1', // Preferred location
+    dateOfBirth: new Date('2004-09-08'),
+    address: 'ul. Chmielna 25',
+    city: 'Warszawa',
+    postalCode: '00-020',
+    completedLessons: 15,
+    examAttempts: 1,
+    preferredInstructorId: 'instructor-5',
+    examPassed: false,
+    notes: 'Potrzebuje dodatkowych lekcji parkowania',
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-05'),
+    updatedAt: new Date(),
+  },
+
+  // More students with various locations
+  {
+    id: 'student-6',
+    email: 'julia.student@gmail.com',
+    passwordHash,
+    firstName: 'Julia',
+    lastName: 'Pawlak',
+    phone: '+48600666777',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-poznan-1',
+    dateOfBirth: new Date('2005-05-12'),
+    address: 'ul. Półwiejska 5',
+    city: 'Poznań',
+    postalCode: '61-888',
+    completedLessons: 5,
+    examAttempts: 0,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-06'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-7',
+    email: 'tomasz.student@gmail.com',
+    passwordHash,
+    firstName: 'Tomasz',
+    lastName: 'Grabowski',
+    phone: '+48600777888',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-gdansk-1',
+    dateOfBirth: new Date('2004-12-30'),
+    address: 'ul. Szeroka 20',
+    city: 'Gdańsk',
+    postalCode: '80-835',
+    completedLessons: 25,
+    examAttempts: 1,
+    examPassed: true,
+    examPassedDate: new Date('2024-07-20'),
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: false,
+    createdAt: new Date('2024-02-07'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-8',
+    email: 'monika.student@gmail.com',
+    passwordHash,
+    firstName: 'Monika',
+    lastName: 'Szymańska',
+    phone: '+48600888999',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-warsaw-1',
+    dateOfBirth: new Date('2005-02-18'),
+    address: 'ul. Bracka 15',
+    city: 'Warszawa',
+    postalCode: '00-501',
+    completedLessons: 18,
+    examAttempts: 0,
+    preferredInstructorId: 'instructor-8',
+    language: 'pl',
+    emailNotifications: false,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-08'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-9',
+    email: 'adam.student@gmail.com',
+    passwordHash,
+    firstName: 'Adam',
+    lastName: 'Kozłowski',
+    phone: '+48600999000',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-krakow-1',
+    dateOfBirth: new Date('2003-08-05'),
+    address: 'ul. Grodzka 30',
+    city: 'Kraków',
+    postalCode: '31-006',
+    completedLessons: 35,
+    examAttempts: 3,
+    examPassed: true,
+    examPassedDate: new Date('2024-08-10'),
+    notes: 'Zdał za trzecim razem',
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-09'),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'student-10',
+    email: 'ewa.student@gmail.com',
+    passwordHash,
+    firstName: 'Ewa',
+    lastName: 'Mazurek',
+    phone: '+48601000111',
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: 'location-wroclaw-1',
+    dateOfBirth: new Date('2004-04-14'),
+    address: 'ul. Oławska 8',
+    city: 'Wrocław',
+    postalCode: '50-123',
+    completedLessons: 10,
+    examAttempts: 0,
+    language: 'pl',
+    emailNotifications: true,
+    smsNotifications: true,
+    createdAt: new Date('2024-02-10'),
+    updatedAt: new Date(),
+  },
+
+  // Additional students to make total 33
+  ...Array.from({ length: 23 }, (_, i) => ({
+    id: `student-${11 + i}`,
+    email: `student${11 + i}@gmail.com`,
+    passwordHash,
+    firstName: ['Jakub', 'Aleksandra', 'Piotr', 'Natalia', 'Krzysztof', 'Magdalena', 'Łukasz', 'Karolina', 'Maciej', 'Agata'][i % 10],
+    lastName: ['Nowicki', 'Sadowski', 'Duda', 'Włodarczyk', 'Borkowski', 'Chmielewski', 'Sokołowski', 'Wilk', 'Lis', 'Krajewski'][i % 10],
+    phone: `+4860${2000000 + i}`,
+    role: UserRole.STUDENT,
+    status: UserStatus.ACTIVE,
+    locationId: ['location-warsaw-1', 'location-warsaw-2', 'location-krakow-1', 'location-wroclaw-1', 'location-poznan-1', 'location-gdansk-1'][i % 6],
+    dateOfBirth: new Date(2004 + (i % 2), i % 12, (i % 28) + 1),
+    completedLessons: Math.floor(Math.random() * 30),
+    examAttempts: Math.floor(Math.random() * 3),
+    examPassed: i % 4 === 0,
+    examPassedDate: i % 4 === 0 ? new Date('2024-0' + ((i % 8) + 1) + '-15') : null,
+    language: 'pl',
+    emailNotifications: i % 2 === 0,
+    smsNotifications: i % 3 !== 0,
+    createdAt: new Date('2024-03-' + String((i % 28) + 1).padStart(2, '0')),
+    updatedAt: new Date(),
+  })),
+]
+
+module.exports = async function seedUsers(prisma, logger, options = {}) {
+  try {
+    const created = await prisma.user.createMany({
+      data: users,
+      skipDuplicates: true
     })
-    logger.success(`Created ${user.role}: ${user.firstName} ${user.lastName} (${user.email})`)
+    
+    logger.success(`✓ Created ${created.count} users`)
+    return created
+  } catch (error) {
+    logger.error('✗ Failed to seed users:', error.message)
+    throw error
   }
-  
-  // Jeśli nie minimal, dodajemy więcej użytkowników
-  if (!isMinimal) {
-    // Dodatkowi instruktorzy (5)
-    for (let i = 1; i <= 5; i++) {
-      const isMale = faker.datatype.boolean()
-      const firstName = faker.helpers.arrayElement(isMale ? polishFirstNames.male : polishFirstNames.female)
-      const lastName = faker.helpers.arrayElement(polishLastNames)
-      const address = generatePolishAddress()
-      
-      const instructor = await prisma.user.create({
-        data: {
-          email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i}@drivingschool.pl`,
-          passwordHash: hashedPassword,
-          firstName,
-          lastName,
-          phone: generatePolishPhone(),
-          role: 'INSTRUCTOR',
-          dateOfBirth: faker.date.birthdate({ min: 30, max: 55, mode: 'age' }),
-          language: 'pl',
-          licenseNumber: `WAW${faker.string.numeric(6)}`,
-          licenseCategories: faker.helpers.arrayElements(['B', 'B1', 'BE', 'C', 'CE'], { min: 1, max: 3 }),
-          licenseIssuedDate: faker.date.past({ years: 15 }),
-          licenseExpiryDate: faker.date.future({ years: 10 }),
-          instructorLicenseNumber: `INST/WAW/${2015 + i}/${faker.string.numeric(4)}`,
-          instructorLicenseDate: faker.date.past({ years: 8 }),
-          yearsOfExperience: faker.number.int({ min: 3, max: 15 }),
-          specializations: faker.helpers.arrayElements(
-            ['Początkujący', 'Egzamin', 'Jazda miejska', 'Autostrada', 'Parking', 'Jazda nocna', 'Manewry'],
-            { min: 2, max: 4 }
-          ),
-          rating: faker.number.float({ min: 4.0, max: 5.0, precision: 0.1 }),
-          totalLessons: faker.number.int({ min: 500, max: 5000 }),
-          successRate: faker.number.float({ min: 0.75, max: 0.95, precision: 0.01 }),
-          emailNotifications: true,
-          smsNotifications: faker.datatype.boolean(),
-          address: address.street,
-          city: address.city,
-          postalCode: address.postalCode
-        }
-      })
-      logger.info(`Created additional instructor: ${instructor.firstName} ${instructor.lastName}`)
-    }
-    
-    // Dodatkowi studenci (30)
-    for (let i = 1; i <= 30; i++) {
-      const isMale = faker.datatype.boolean()
-      const firstName = faker.helpers.arrayElement(isMale ? polishFirstNames.male : polishFirstNames.female)
-      const lastName = faker.helpers.arrayElement(polishLastNames)
-      const address = generatePolishAddress()
-      const totalLessons = faker.number.int({ min: 0, max: 40 })
-      const completedLessons = faker.number.int({ min: 0, max: totalLessons })
-      const examAttempts = completedLessons >= 20 ? faker.number.int({ min: 0, max: 3 }) : 0
-      const examPassed = examAttempts > 0 && faker.datatype.boolean({ probability: 0.7 })
-      
-      const student = await prisma.user.create({
-        data: {
-          email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${faker.string.numeric(3)}@${faker.helpers.arrayElement(['gmail.com', 'outlook.com', 'wp.pl', 'onet.pl'])}`,
-          passwordHash: hashedPassword,
-          firstName,
-          lastName,
-          phone: generatePolishPhone(),
-          role: 'STUDENT',
-          dateOfBirth: faker.date.birthdate({ min: 18, max: 45, mode: 'age' }),
-          language: faker.helpers.arrayElement(['pl', 'pl', 'pl', 'en']), // 75% Polish
-          emailNotifications: faker.datatype.boolean({ probability: 0.8 }),
-          smsNotifications: faker.datatype.boolean({ probability: 0.6 }),
-          address: address.street,
-          city: address.city,
-          postalCode: address.postalCode,
-          emergencyContact: faker.datatype.boolean() ? `${faker.person.firstName()} ${lastName}` : null,
-          emergencyPhone: faker.datatype.boolean() ? generatePolishPhone() : null,
-          totalLessons,
-          completedLessons,
-          examAttempts,
-          examPassed,
-          examPassedDate: examPassed ? faker.date.recent({ days: 90 }) : null,
-          notes: faker.helpers.arrayElement([
-            null,
-            'Preferuje jazdę po południu',
-            'Uczy się szybko',
-            'Potrzebuje więcej praktyki z parkowaniem',
-            'Świetnie radzi sobie w ruchu miejskim',
-            'Nerwowy podczas egzaminów'
-          ])
-        }
-      })
-      logger.info(`Created student ${i}/30: ${student.firstName} ${student.lastName}`)
-    }
-    
-    // Dispatcher (1)
-    await prisma.user.create({
-      data: {
-        email: 'dispatcher@drivingschool.pl',
-        passwordHash: hashedPassword,
-        firstName: 'Magdalena',
-        lastName: 'Dąbrowska',
-        phone: '+48605678901',
-        role: 'DISPATCHER',
-        dateOfBirth: new Date('1992-06-12'),
-        language: 'pl',
-        emailNotifications: true,
-        smsNotifications: true,
-        address: 'ul. Złota 44',
-        city: 'Warszawa',
-        postalCode: '00-120'
-      }
-    })
-    
-    logger.success('Created dispatcher account')
-  }
-  
-  // Podsumowanie
-  const userCounts = await prisma.user.groupBy({
-    by: ['role'],
-    _count: true
-  })
-  
-  logger.info('\n📊 User Statistics:')
-  userCounts.forEach(stat => {
-    logger.info(`   ${stat.role}: ${stat._count} users`)
-  })
 }
-module.exports = seedUsers

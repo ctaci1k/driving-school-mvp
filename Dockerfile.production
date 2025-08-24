@@ -1,0 +1,67 @@
+# Dockerfile.production
+# Multi-stage build для мінімального розміру
+
+# ============ Stage 1: Dependencies ============
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Копіюємо тільки package files
+COPY package.json package-lock.json* ./
+# Встановлюємо ТІЛЬКИ production залежності
+RUN npm ci --only=production
+
+# ============ Stage 2: Builder ============
+FROM node:20-alpine AS builder
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Копіюємо package files і встановлюємо ВСІ залежності (для build)
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Копіюємо source code
+COPY . .
+
+# Копіюємо Prisma client з deps stage
+COPY --from=deps /app/node_modules/.prisma /app/node_modules/.prisma
+
+# Build Next.js в standalone режимі (мінімальний розмір)
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV production
+RUN npm run build
+
+# ============ Stage 3: Runner (FINAL) ============
+FROM node:20-alpine AS runner
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Створюємо непривілейованого користувача
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Копіюємо ТІЛЬКИ необхідні файли з builder stage
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# Копіюємо Prisma схему і клієнт
+COPY --from=builder /app/prisma/schema.prisma ./prisma/schema.prisma
+COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
+
+# Встановлюємо права
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE 3000
+ENV PORT 3000
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node healthcheck.js || exit 1
+
+CMD ["node", "server.js"]

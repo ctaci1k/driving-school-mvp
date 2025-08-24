@@ -1,5 +1,5 @@
 // lib/auth.ts
-import "server-only"; // не дасть випадково імпортувати це на клієнт
+import "server-only";
 
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -15,9 +15,7 @@ const loginSchema = z.object({
 });
 
 export const authOptions: NextAuthOptions = {
-  // обхід суворих типів адаптера для v4 + @next-auth/prisma-adapter
   adapter: PrismaAdapter(db) as unknown as NextAuthOptions["adapter"],
-
   session: { strategy: "jwt" },
 
   providers: [
@@ -33,7 +31,11 @@ export const authOptions: NextAuthOptions = {
 
         const { email, password } = parsed.data;
 
-        const user = await db.user.findUnique({ where: { email } });
+        const user = await db.user.findUnique({ 
+          where: { email },
+          include: { location: true } // Include location data
+        });
+        
         if (!user || !user.passwordHash) return null;
 
         const ok = await bcrypt.compare(password, user.passwordHash);
@@ -43,7 +45,9 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: `${user.firstName} ${user.lastName}`,
-          role: user.role, // кастомне поле
+          role: user.role,
+          locationId: user.locationId,
+          locationName: user.location?.name,
         };
       },
     }),
@@ -53,20 +57,21 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-
         token.role = (user as any).role;
         token.email = user.email;
+        token.locationId = (user as any).locationId;
+        token.locationName = (user as any).locationName;
       }
       return token;
     },
+    
     async session({ session, token }) {
       if (session.user) {
-
         session.user.id = token.id as string;
-
         session.user.role = token.role as string;
-
         session.user.email = token.email as string;
+        session.user.locationId = token.locationId as string | null;
+        session.user.locationName = token.locationName as string | null;
       }
       return session;
     },
@@ -78,7 +83,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// ЗРУЧНИЙ ХЕЛПЕР для серверних місць (layouts, RSC, tRPC ctx тощо)
 export async function auth() {
   return getServerSession(authOptions);
 }

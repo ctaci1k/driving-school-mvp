@@ -117,12 +117,12 @@ async function seedAll() {
   // ПОВНИЙ ПРОФЕСІЙНИЙ НАБІР ДАНИХ
   
   // 1. БАЗОВІ СУТНОСТІ
-  logger.section('1. USERS & AUTHENTICATION')
-  await seedUsers(prisma, logger)
-  
-  logger.section('2. LOCATIONS & BRANCHES')
+  logger.section('1. LOCATIONS & BRANCHES')
   await seedLocations(prisma, logger)
-  
+
+  logger.section('2. USERS & AUTHENTICATION')
+  await seedUsers(prisma, logger)
+    
   // 2. ТРАНСПОРТ
   logger.section('3. VEHICLES & FLEET')
   await seedVehicles(prisma, logger)

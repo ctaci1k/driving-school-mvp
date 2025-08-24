@@ -1,18 +1,118 @@
-
-
+# docker-compose.yml
 services:
+  # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
     container_name: driving-school-db
-    restart: always
-    ports:
-      - "5432:5432"
+    restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
       POSTGRES_DB: driving_school
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - driving-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: driving-school-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - driving-network
+
+  # Next.js Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: driving-school-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
+      DIRECT_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
+      REDIS_URL: redis://redis:6379
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXTAUTH_SECRET: development-secret-key-change-in-production
+      # Przelewy24 Test
+      P24_MERCHANT_ID: 27290
+      P24_POS_ID: 27290
+      P24_CRC: b36103b3f74181c8
+      P24_API_KEY: test
+      P24_SANDBOX: "true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      # Mount source code for hot reload
+      - ./app:/app/app
+      - ./components:/app/components
+      - ./lib:/app/lib
+      - ./prisma:/app/prisma
+      - ./public:/app/public
+      # Prevent node_modules from being overwritten
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - driving-network
+    command: >
+      sh -c "
+        echo '⏳ Waiting for database...' &&
+        sleep 10 &&
+        echo '📊 Creating database schema...' &&
+        npx prisma db push &&
+        echo '🌱 Seeding database with demo data...' &&
+        node prisma/seed/index.js --fresh &&
+        echo '✅ Database ready with demo data!' &&
+        echo '🚀 Starting application...' &&
+        npm run dev
+      "
+
+  # Adminer для управління БД
+  adminer:
+    image: adminer:latest
+    container_name: driving-school-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      - postgres
+    networks:
+      - driving-network
+
+networks:
+  driving-network:
+    driver: bridge
 
 volumes:
-  postgres_data:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
