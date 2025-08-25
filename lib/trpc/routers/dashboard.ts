@@ -1,540 +1,446 @@
-// lib/trpc/routers/dashboard.ts - ШВИДКЕ ВИПРАВЛЕННЯ
+// lib/trpc/routers/dashboard.ts
 
-import { z } from "zod";
-import { router, protectedProcedure } from "../server";
-import { TRPCError } from "@trpc/server";
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfDay, endOfDay } from "date-fns";
-import { UserRole } from "@prisma/client";
+import { z } from 'zod'
+import { router, protectedProcedure } from '../server'
+import { TRPCError } from '@trpc/server'
+import { 
+  BookingStatus, 
+  UserRole,
+  ExamType,
+  PackageStatus
+} from '@prisma/client'
 
 export const dashboardRouter = router({
-  // Get dashboard statistics
-  getStats: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id;
+  /**
+   * Get complete dashboard data for student
+   * Combines multiple queries into one for optimal performance
+   */
+  getStudentDashboard: protectedProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id
 
-      // Get user info
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: {
-          id: true,
-          role: true,
-          firstName: true,
-          lastName: true,
-        }
-      });
+      // Verify user is a student
+const user = await ctx.db.user.findUnique({
+  where: { id: userId },
+  select: { 
+    role: true,
+    locationId: true 
+  }
+})
 
-      if (!user) {
+      if (user?.role !== UserRole.STUDENT) {
         throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
+          code: 'FORBIDDEN',
+          message: 'Access denied. Student role required.'
+        })
       }
 
-      // Base stats
-      let stats: any = {
+      // Parallel queries for better performance
+      const [
+        userProfile,
+        nextBooking,
+        upcomingBookings,
+        studentProgress,
+        activePackages,
+        recentAchievements,
+        unreadMessages,
+        recentExamResults,
+        instructorsList
+      ] = await Promise.all([
+        // 1. User Profile with Student Profile
+        ctx.db.user.findUnique({
+          where: { id: userId },
+          include: {
+            studentProfile: true,
+            location: true,
+            studentPreferences: true
+          }
+        }),
+
+// 2. Next Booking
+ctx.db.booking.findFirst({
+  where: {
+    studentId: userId,
+    status: BookingStatus.CONFIRMED,
+    date: { gte: new Date() }
+  },
+  orderBy: { date: 'asc' },
+  include: {
+    instructor: {
+      include: {
+        instructorProfile: true
+      }
+    },
+    vehicle: true,
+    location: true
+  }
+}),
+
+// 3. Upcoming Bookings (next 5)
+ctx.db.booking.findMany({
+  where: {
+    studentId: userId,
+    status: BookingStatus.CONFIRMED,
+    date: { gte: new Date() }
+  },
+  orderBy: { date: 'asc' },
+  take: 5,
+  include: {
+    instructor: {
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        avatar: true
+      }
+    },
+    vehicle: {
+      select: {
+        make: true,
+        model: true,
+        registrationNumber: true
+      }
+    }
+  }
+}),
+
+        // 4. Student Progress
+ctx.db.studentProgress.findUnique({
+  where: { userId },
+  include: {
+    user: {
+      include: {
+        studentBookings: {
+          where: {
+            status: BookingStatus.COMPLETED
+          },
+          select: {
+            id: true,
+            rating: true
+          }
+        }
+      }
+    }
+  }
+}),
+
+
+        // 5. Active Packages & Credits
+        ctx.db.userPackage.findMany({
+          where: {
+            userId,
+            status: PackageStatus.ACTIVE,
+            expiresAt: { gte: new Date() }
+          },
+          include: {
+            package: true
+          },
+          orderBy: { expiresAt: 'asc' }
+        }),
+
+        // 6. Recent Achievements
+        ctx.db.userAchievement.findMany({
+          where: {
+            userId,
+            unlockedAt: { not: null }
+          },
+          orderBy: { unlockedAt: 'desc' },
+          take: 3,
+          include: {
+            achievement: true
+          }
+        }),
+
+        // 7. Unread Messages Count
+        ctx.db.message.count({
+          where: {
+            receiverId: userId,
+            isRead: false
+          }
+        }),
+
+        // 8. Recent Exam Results
+        ctx.db.examResult.findMany({
+          where: { userId },
+          orderBy: { takenAt: 'desc' },
+          take: 2
+        }),
+
+        // 9. Available Instructors
+        ctx.db.user.findMany({
+          where: {
+            role: UserRole.INSTRUCTOR,
+            status: 'ACTIVE',
+            locationId: user?.locationId
+          },
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            avatar: true,
+            instructorProfile: {
+              select: {
+                rating: true,
+                specializations: true,
+                totalStudents: true
+              }
+            }
+          },
+          take: 5
+        })
+      ])
+
+      // Calculate statistics
+      const completedLessons = await ctx.db.booking.count({
+        where: {
+          studentId: userId,
+          status: BookingStatus.COMPLETED
+        }
+      })
+
+      const totalCredits = activePackages.reduce(
+        (sum, pkg) => sum + pkg.creditsRemaining, 
+        0
+      )
+
+      const averageRating = studentProgress?.user?.studentBookings
+        .filter(b => b.rating)
+        .reduce((sum, b, _, arr) => 
+          sum + (b.rating || 0) / arr.length, 0
+        ) || 0
+
+      // Calculate exam readiness (simplified formula)
+let examReadiness = 0
+if (studentProgress) {
+  const factors = [
+    studentProgress.overallProgress || 50,  // Використовуй існуюче поле
+    studentProgress.currentLevel * 10 || 0,  // Використовуй існуюче поле
+    completedLessons >= 20 ? 100 : (completedLessons / 20) * 100,
+    averageRating * 20
+  ]
+  examReadiness = Math.round(
+    factors.reduce((a, b) => a + b, 0) / factors.length
+  )
+}
+
+      // Format the response
+      return {
         user: {
-          id: user.id,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          role: user.role,
-        }
-      }
-
-      if (user.role === UserRole.STUDENT) {
-        // Student dashboard stats
-        const [
-          completedLessons,
-          upcomingLessons,
-          totalLessons,
-          activePackage
-        ] = await Promise.all([
-          ctx.db.booking.count({
-            where: {
-              studentId: userId,
-              status: "COMPLETED",
-            },
-          }),
-          ctx.db.booking.count({
-            where: {
-              studentId: userId,
-              status: "CONFIRMED",
-              // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-              startTime: { gte: new Date().toISOString() },
-            },
-          }),
-          ctx.db.booking.count({
-            where: {
-              studentId: userId,
-            },
-          }),
-          ctx.db.userPackage.findFirst({
-            where: {
-              userId: userId,
-              status: "ACTIVE",
-              expiresAt: { gte: new Date() },
-            },
-            include: {
-              package: true,
-            },
-            orderBy: {
-              expiresAt: 'desc'
-            }
-          }),
-        ]);
-
-        // Calculate exam readiness (simple formula)
-        const examReadiness = totalLessons > 0 
-          ? Math.min(Math.round((completedLessons / 30) * 100), 100) // Assuming 30 lessons for full readiness
-          : 0;
-
-        // Calculate remaining lessons from active packages
-        const remainingLessons = activePackage ? 
-          Math.floor(activePackage.creditsRemaining / 2) : 0; // Assuming 2 credits per lesson
-
-        stats = {
-          ...stats,
-          completedLessons,
-          remainingLessons,
-          upcomingLessons,
-          examReadiness,
-          activePackage: activePackage?.package?.name || null,
-          nextPayment: null, // Will be implemented when payment system is ready
-        };
-
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        // Instructor dashboard stats
-        const [
-          todayBookings,
-          monthlyBookings,
-          totalStudents,
-          rating
-        ] = await Promise.all([
-          ctx.db.booking.count({
-            where: {
-              instructorId: userId,
-              startTime: {
-                // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-                gte: startOfDay(new Date()).toISOString(),
-                lte: endOfDay(new Date()).toISOString(),
-              },
-              status: "CONFIRMED",
-            },
-          }),
-          ctx.db.booking.count({
-            where: {
-              instructorId: userId,
-              startTime: {
-                // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-                gte: startOfMonth(new Date()).toISOString(),
-                lte: endOfMonth(new Date()).toISOString(),
-              },
-              status: { in: ["COMPLETED", "CONFIRMED"] },
-            },
-          }),
-          ctx.db.booking.findMany({
-            where: {
-              instructorId: userId,
-              status: "COMPLETED",
-            },
-            select: { studentId: true },
-            distinct: ['studentId'],
-          }),
-          ctx.db.user.findUnique({
-            where: { id: userId },
-            select: { 
-            }
-          })
-        ]);
-
-        stats = {
-          ...stats,
-          todayBookings,
-          monthlyBookings,
-          totalStudents: totalStudents.length,
-        };
-      }
-
-      return stats;
-    }),
-
-  // Get upcoming lessons
-  getUpcomingLessons: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-      limit: z.number().min(1).max(10).default(5),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id;
-
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: { role: true }
-      });
-
-      if (!user) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
-      }
-
-      // Build where clause based on user role
-      const where: any = {
-        // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-        startTime: { gte: new Date().toISOString() },
-        status: "CONFIRMED",
-      };
-
-      if (user.role === UserRole.STUDENT) {
-        where.studentId = userId;
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        where.instructorId = userId;
-      }
-
-      const lessons = await ctx.db.booking.findMany({
-        where,
-        include: {
-          instructor: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              avatar: true,
-            }
-          },
-          student: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-            }
-          },
-          vehicle: {
-            select: {
-              id: true,
-              make: true,
-              model: true,
-              registrationNumber: true,
-            }
-          },
-          location: {
-            select: {
-              id: true,
-              name: true,
-              address: true,
-            }
-          }
+          id: userProfile?.id,
+          firstName: userProfile?.firstName,
+          lastName: userProfile?.lastName,
+          email: userProfile?.email,
+          avatar: userProfile?.avatar,
+          role: userProfile?.role,
+          joinDate: userProfile?.createdAt,
+          phone: userProfile?.phone,
+          locationId: userProfile?.locationId,
+          location: userProfile?.location
         },
-        orderBy: { startTime: "asc" },
-        take: input.limit,
-      });
+        
+stats: {
+  completedLessons,
+  totalCredits,
+  averageRating: Math.round(averageRating * 10) / 10,
+  examReadiness,
+  totalHours: Math.round(completedLessons * 1.5),
+  theoryProgress: studentProgress?.overallProgress || 0,
+  practicalProgress: (studentProgress?.currentLevel || 0) * 10,
+  nextLessonIn: nextBooking ? 
+    Math.ceil((nextBooking.date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : 
+    null
+},
 
-      return lessons.map((lesson) => ({
-        id: lesson.id,
-        startTime: lesson.startTime,
-        endTime: lesson.endTime,
-        lessonType: lesson.lessonType,
-        status: lesson.status,
-        instructor: user.role === UserRole.STUDENT ? lesson.instructor : null,
-        student: user.role === UserRole.INSTRUCTOR ? lesson.student : null,
-        vehicle: lesson.vehicle,
-        location: lesson.location,
-      }));
-    }),
-
-  // Get recent activity
-  getRecentActivity: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-      limit: z.number().min(1).max(20).default(10),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id;
-
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: { role: true }
-      });
-
-      if (!user) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
-      }
-
-      const activities: any[] = [];
-
-      // Get recent bookings
-      const bookingWhere: any = {};
-      if (user.role === UserRole.STUDENT) {
-        bookingWhere.studentId = userId;
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        bookingWhere.instructorId = userId;
-      }
-
-      const recentBookings = await ctx.db.booking.findMany({
-        where: bookingWhere,
-        include: {
+        nextLesson: nextBooking ? {
+          id: nextBooking.id,
+          date: nextBooking.date,
+          startTime: nextBooking.startTime,
+          endTime: nextBooking.endTime,
+          duration: nextBooking.duration,
+          type: nextBooking.type,
           instructor: {
-            select: { firstName: true, lastName: true }
+            id: nextBooking.instructor.id,
+            name: `${nextBooking.instructor.firstName} ${nextBooking.instructor.lastName}`,
+            avatar: nextBooking.instructor.avatar,
+            rating: nextBooking.instructor.instructorProfile?.rating,
+            phone: nextBooking.instructor.phone
           },
-          student: {
-            select: { firstName: true, lastName: true }
-          }
-        },
-        orderBy: { updatedAt: "desc" },
-        take: Math.ceil(input.limit / 2),
-      });
+          vehicle: nextBooking.vehicle ? {
+            id: nextBooking.vehicle.id,
+            make: nextBooking.vehicle.make,
+            model: nextBooking.vehicle.model,
+            registration: nextBooking.vehicle.registrationNumber,
+            transmission: nextBooking.vehicle.transmission
+          } : null,
+          location: nextBooking.location ? {
+            id: nextBooking.location.id,
+            name: nextBooking.location.name,
+            address: nextBooking.location.address,
+            city: nextBooking.location.city
+          } : {
+            address: nextBooking.pickupLocation
+          },
+          pickupLocation: nextBooking.pickupLocation,
+          status: nextBooking.status,
+          notes: nextBooking.notes
+        } : null,
 
-      // Add booking activities
-      activities.push(
-        ...recentBookings.map((booking) => ({
+        upcomingLessons: upcomingBookings.map(booking => ({
           id: booking.id,
-          type: "lesson" as const,
-          date: booking.updatedAt,
-          title: `Lesson ${booking.status.toLowerCase()}`,
-          description: user.role === UserRole.STUDENT 
-            ? `${booking.lessonType} with ${booking.instructor?.firstName} ${booking.instructor?.lastName}`
-            : `${booking.lessonType} with ${booking.student?.firstName} ${booking.student?.lastName}`,
-          status: booking.status,
-          icon: "calendar" as const,
-        }))
-      );
-
-      // Get recent payments (for students)
-      if (user.role === UserRole.STUDENT) {
-        const recentPayments = await ctx.db.payment.findMany({
-          where: { userId: userId },
-          orderBy: { createdAt: "desc" },
-          take: Math.floor(input.limit / 2),
-        });
-
-        activities.push(
-          ...recentPayments.map((payment) => ({
-            id: payment.id,
-            type: "payment" as const,
-            date: payment.createdAt,
-            title: `Payment ${payment.status.toLowerCase()}`,
-            description: `Amount: PLN ${payment.amount}`,
-            status: payment.status,
-            icon: "credit-card" as const,
-          }))
-        );
-      }
-
-      // Sort by date and limit
-      return activities
-        .sort((a, b) => b.date.getTime() - a.date.getTime())
-        .slice(0, input.limit);
-    }),
-
-  // Get progress (for students)
-  getProgress: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id;
-
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: { 
-          role: true,
-        }
-      });
-
-      if (!user) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "User not found",
-        });
-      }
-
-      if (user.role !== UserRole.STUDENT) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Progress is only available for students",
-        });
-      }
-
-      // Get lesson statistics by type
-      const lessonStats = await ctx.db.booking.groupBy({
-        by: ["lessonType", "status"],
-        where: { studentId: userId },
-        _count: true,
-      });
-
-      // Mock skills data (this would come from a separate progress tracking system)
-      const skills = [
-        { 
-          name: "Parking", 
-          value: 45,
-          color: "#3B82F6" 
-        },
-        { 
-          name: "Traffic Rules", 
-          value: 65,
-          color: "#10B981" 
-        },
-        { 
-          name: "City Driving", 
-          value: 35,
-          color: "#F59E0B" 
-        },
-        { 
-          name: "Highway Driving", 
-          value: 85,
-          color: "#8B5CF6" 
-        },
-        { 
-          name: "Night Driving", 
-          value: 45,
-          color: "#EF4444" 
-        },
-        { 
-          name: "Emergency", 
-          value: 12,
-          color: "#06B6D4" 
-        },
-      ];
-
-      // Weekly progress
-      const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-      const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
-      
-      const weeklyLessons = await ctx.db.booking.count({
-        where: {
-          studentId: userId,
-          status: "COMPLETED",
-          startTime: {
-            // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-            gte: weekStart.toISOString(),
-            lte: weekEnd.toISOString(),
-          },
-        },
-      });
-
-      // Monthly progress
-      const monthStart = startOfMonth(new Date());
-      const monthEnd = endOfMonth(new Date());
-      
-      const monthlyLessons = await ctx.db.booking.count({
-        where: {
-          studentId: userId,
-          status: "COMPLETED",
-          startTime: {
-            // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-            gte: monthStart.toISOString(),
-            lte: monthEnd.toISOString(),
-          },
-        },
-      });
-
-      return {
-        skills,
-        lessonStats: lessonStats.map((stat) => ({
-          type: stat.lessonType,
-          status: stat.status,
-          count: stat._count,
+          date: booking.date,
+          startTime: booking.startTime,
+          type: booking.type,
+          instructorName: `${booking.instructor.firstName} ${booking.instructor.lastName}`,
+          vehicle: booking.vehicle ? 
+            `${booking.vehicle.make} ${booking.vehicle.model}` : 
+            'Do ustalenia'
         })),
-        weeklyProgress: {
-          completed: weeklyLessons,
-          target: 3,
-        },
-        monthlyProgress: {
-          completed: monthlyLessons,
-          target: 12,
-        },
-        overallProgress: 95,
-      };
+
+        packages: activePackages.map(pkg => ({
+          id: pkg.id,
+          name: pkg.package.name,
+          creditsRemaining: pkg.creditsRemaining,
+          creditsTotal: pkg.creditsTotal,
+          expiresAt: pkg.expiresAt,
+          daysRemaining: Math.ceil(
+            (pkg.expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+          ),
+          progress: Math.round(
+            ((pkg.creditsTotal - pkg.creditsRemaining) / pkg.creditsTotal) * 100
+          )
+        })),
+
+        achievements: recentAchievements.map(ua => ({
+          id: ua.achievement.id,
+          name: ua.achievement.name,
+          description: ua.achievement.description,
+          icon: ua.achievement.icon,
+          category: ua.achievement.category,
+          points: ua.achievement.points,
+          unlockedAt: ua.unlockedAt
+        })),
+
+        examResults: recentExamResults.map(exam => ({
+          id: exam.id,
+          type: exam.type,
+          passed: exam.passed,
+          score: exam.score,
+          percentage: exam.percentage,
+          takenAt: exam.takenAt,
+          attemptNumber: exam.attemptNumber
+        })),
+
+        instructors: instructorsList.map(instructor => ({
+          id: instructor.id,
+          name: `${instructor.firstName} ${instructor.lastName}`,
+          avatar: instructor.avatar,
+          rating: instructor.instructorProfile?.rating,
+          specializations: instructor.instructorProfile?.specializations,
+          totalStudents: instructor.instructorProfile?.totalStudents
+        })),
+
+notifications: {
+  unreadMessages,
+  upcomingLessons: upcomingBookings.length,
+  expiringCredits: activePackages.filter(pkg => {
+    const daysRemaining = Math.ceil(
+      (pkg.expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+    );
+    return daysRemaining <= 7;
+  }).length
+},
+
+        progress: {
+          currentSkill: studentProgress?.currentSkill || 'Podstawy jazdy',
+          weakPoints: studentProgress?.weakPoints || [],
+          strongPoints: studentProgress?.strongPoints || [],
+          lastUpdate: studentProgress?.lastUpdatedAt
+        }
+      }
     }),
 
-  // Get next lesson
-  getNextLesson: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id;
+  /**
+   * Get quick stats for dashboard widgets
+   */
+  getQuickStats: protectedProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id
 
-      const user = await ctx.db.user.findUnique({
-        where: { id: userId },
-        select: { role: true }
-      });
-
-      if (!user) {
-        return null;
-      }
-
-      const where: any = {
-        status: "CONFIRMED",
-        // ВИПРАВЛЕНО: Конвертуємо Date в ISO string
-        startTime: { gte: new Date().toISOString() },
-      };
-
-      if (user.role === UserRole.STUDENT) {
-        where.studentId = userId;
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        where.instructorId = userId;
-      }
-
-      const nextLesson = await ctx.db.booking.findFirst({
-        where,
-        include: {
-          instructor: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              avatar: true,
-              phone: true,
-            }
-          },
-          student: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-            }
-          },
-          vehicle: {
-            select: {
-              id: true,
-              make: true,
-              model: true,
-              registrationNumber: true,
-              category: true,
-            }
-          },
-          location: {
-            select: {
-              id: true,
-              name: true,
-              address: true,
+      const [
+        todayBookings,
+        weekBookings,
+        totalSpent,
+        hoursThisMonth
+      ] = await Promise.all([
+        // Today's bookings
+        ctx.db.booking.count({
+          where: {
+            studentId: userId,
+            date: {
+              gte: new Date(new Date().setHours(0, 0, 0, 0)),
+              lt: new Date(new Date().setHours(23, 59, 59, 999))
             }
           }
-        },
-        orderBy: { startTime: "asc" },
-      });
+        }),
 
-      if (!nextLesson) {
-        return null;
-      }
+        // This week's bookings
+        ctx.db.booking.count({
+          where: {
+            studentId: userId,
+            date: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 7))
+            }
+          }
+        }),
 
-      return {
-        id: nextLesson.id,
-        startTime: nextLesson.startTime,
-        endTime: nextLesson.endTime,
-        lessonType: nextLesson.lessonType,
-        status: nextLesson.status,
-        instructor: user.role === UserRole.STUDENT ? nextLesson.instructor : null,
-        student: user.role === UserRole.INSTRUCTOR ? nextLesson.student : null,
-        vehicle: nextLesson.vehicle,
-        location: nextLesson.location,
-      };
+        // Total spent
+        ctx.db.payment.aggregate({
+          where: {
+            userId,
+            status: 'COMPLETED'
+          },
+          _sum: {
+            amount: true
+          }
+        }),
+
+        // Hours this month
+        ctx.db.booking.aggregate({
+          where: {
+            studentId: userId,
+            status: BookingStatus.COMPLETED,
+            date: {
+              gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+            }
+          },
+          _sum: {
+            duration: true
+          }
+        })
+      ])
+
+return {
+  todayBookings,
+  weekBookings,
+  totalSpent: totalSpent._sum.amount ? Number(totalSpent._sum.amount) : 0,
+  hoursThisMonth: Math.round((hoursThisMonth._sum.duration || 0) / 60)
+}
     }),
-});
+
+  /**
+   * Mark dashboard as viewed (for analytics)
+   */
+  markDashboardViewed: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      const userId = ctx.session.user.id
+
+      await ctx.db.user.update({
+        where: { id: userId },
+        data: {
+          lastActivityAt: new Date()
+        }
+      })
+
+      return { success: true }
+    })
+})

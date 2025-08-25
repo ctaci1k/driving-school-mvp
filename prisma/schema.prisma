@@ -1,6 +1,6 @@
 // ============================================
 // AUTO-GENERATED PRISMA SCHEMA
-// Generated at: 2025-08-24T19:25:34.142Z
+// Generated at: 2025-08-25T10:05:30.370Z
 // DO NOT EDIT DIRECTLY
 // ============================================
 
@@ -608,6 +608,7 @@ enum PaymentGateway {
 enum PaymentMethod {
   CARD
   BANK_TRANSFER
+  TRANSFER
   P24
   PAYPAL
   CASH
@@ -1245,6 +1246,14 @@ model Booking {
   updatedAt DateTime @updatedAt
   createdBy String? // userId who created booking
   updatedBy String? // userId who last updated
+
+  // Add rating field for completed lessons
+  rating        Float? // Student's rating of the lesson (1-5)
+  ratingComment String? // Optional comment with rating
+  ratedAt       DateTime? // When the rating was given
+
+  type  String? @default("STANDARD")
+  notes String?
 
   @@index([studentId])
   @@index([instructorId])
@@ -2715,7 +2724,11 @@ model Notification {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  link String? // Optional link to redirect
+  read Boolean @default(false)
 
+  @@index([userId, createdAt])
+  @@index([userId, read])
   @@index([userId])
   @@index([type])
   @@index([status])
@@ -3716,6 +3729,13 @@ model StudentProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Statistics
+  totalLessonsCompleted Int    @default(0)
+  averageRating         Float? @default(0)
+
+  // Preferences
+  preferredInstructorId String? // Most preferred instructor
+
   @@index([studentNumber])
   @@map("student_profiles")
 }
@@ -3810,6 +3830,18 @@ model StudentProgress {
   longestStreak Int @default(0) // Days
   totalPoints   Int @default(0)
   currentLevel  Int @default(1)
+
+  // Overall statistics
+  overallRating      Float? @default(0) // Average rating from all lessons
+  examReadinessScore Int?   @default(0) // Calculated exam readiness (0-100)
+
+  // Skills tracking
+  weakPoints   Json? // Array of weak skills/areas
+  strongPoints Json? // Array of strong skills/areas
+  currentSkill String? // Current skill being focused on
+
+  // Last activity
+  lastUpdatedAt DateTime @updatedAt
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

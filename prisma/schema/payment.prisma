@@ -627,6 +627,7 @@ enum PaymentStatus {
 enum PaymentMethod {
  CARD
  BANK_TRANSFER
+ TRANSFER
  P24
  PAYPAL
  CASH

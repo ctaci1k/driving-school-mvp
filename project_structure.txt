@@ -9,7 +9,9 @@
 ├── .env.production
 ├── .gitignore
 ├── .npmrc
+├── .prisma-merge.json
 ├── deploy.sh
+├── dev-start.bat
 ├── docker-compose.prod.yml
 ├── docker-compose.yml
 ├── Dockerfile
@@ -20,21 +22,26 @@
 ├── i18n.ts
 ├── manifest.json
 ├── middleware.ts
-├── next.config vs.js
 ├── next.config.js
-├── next.config.ts
 ├── next-env.d.ts
 ├── package.json
 ├── package-lock.json
 ├── postcss.config.js
+├── prisma-merge.config.json
 ├── project_structure.txt
 ├── README.md
 ├── README_DEV.md
 ├── start-docker.ps1
 ├── tailwind.config.ts
+├── temp_schema.txt
 ├── tsconfig.json
 ├── tsconfig.tsbuildinfo
 ├── vercel.json
+├── .github
+│   └── workflows
+│       └── prisma.yml
+├── .husky
+│   └── pre-commit
 ├── app
 │   ├── error.tsx
 │   ├── favicon.ico
@@ -65,6 +72,7 @@
 │       └── return
 │           └── page.tsx
 ├── components
+│   ├── client-theme-provider.tsx
 │   ├── theme-provider.tsx
 │   ├── booking
 │   │   └── recurring-booking-modal.tsx
@@ -87,6 +95,7 @@
 │   ├── payments
 │   │   └── PaymentButton.tsx
 │   ├── providers
+│   │   ├── dashboard-provider.tsx
 │   │   ├── session-provider.tsx
 │   │   └── trpc-provider.tsx
 │   ├── pwa
@@ -97,9 +106,12 @@
 │   │   ├── SimpleChart.tsx
 │   │   └── StatsCard.tsx
 │   ├── student
-│   │   └── navigation.tsx
+│   │   ├── navigation.tsx
+│   │   └── student-sidebar.tsx
 │   └── ui
+│       ├── accordion.tsx
 │       ├── alert.tsx
+│       ├── alert-dialog.tsx
 │       ├── avatar.tsx
 │       ├── badge.tsx
 │       ├── booking-card.tsx
@@ -107,6 +119,7 @@
 │       ├── calendar.tsx
 │       ├── calendar-view-switcher.tsx
 │       ├── card.tsx
+│       ├── carousel.tsx
 │       ├── checkbox.tsx
 │       ├── credits-display.tsx
 │       ├── date-range-picker.tsx
@@ -177,6 +190,7 @@
 │   │       ├── adminReports.ts
 │   │       ├── auth.ts
 │   │       ├── booking.ts
+│   │       ├── dashboard.ts
 │   │       ├── index.ts
 │   │       ├── instructorReports.ts
 │   │       ├── location.ts
@@ -203,12 +217,28 @@
 │   ├── pl.json
 │   ├── ru.json
 │   └── uk.json
+├── postcss.config.mjs
 ├── prisma
+│   ├── client.ts
+│   ├── readme.md
 │   ├── schema.prisma
 │   ├── migrations
 │   │   ├── migration_lock.toml
 │   │   └── 20250823194017_init
 │   │       └── migration.sql
+│   ├── schema
+│   │   ├── auth.prisma
+│   │   ├── base.prisma
+│   │   ├── booking.prisma
+│   │   ├── enums.prisma
+│   │   ├── instructor.prisma
+│   │   ├── location.prisma
+│   │   ├── notification.prisma
+│   │   ├── payment.prisma
+│   │   ├── relations.prisma
+│   │   ├── student.prisma
+│   │   ├── user.prisma
+│   │   └── vehicle.prisma
 │   └── seed
 │       ├── index.js
 │       ├── data
@@ -259,9 +289,13 @@
 │   └── screenshots
 ├── scripts
 │   ├── convert-icons.js
+│   ├── fix-prisma-relations.js
 │   ├── generate-pwa-icons.js
+│   ├── merge-prisma-schemas.js
+│   ├── merge-schemas.js
 │   ├── migration-health-check.js
 │   ├── reset-database.bat
-│   └── reset-database.sh
+│   ├── reset-database.sh
+│   └── setup-prisma.js
 └── types
     └── next-auth.d.ts

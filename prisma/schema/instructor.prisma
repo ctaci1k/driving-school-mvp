@@ -87,6 +87,7 @@ model InstructorProfile {
  
  createdAt DateTime @default(now())
  updatedAt DateTime @updatedAt
+  
  
  @@index([instructorLicenseNumber])
  @@index([rating])

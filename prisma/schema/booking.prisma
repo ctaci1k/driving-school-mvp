@@ -31,6 +31,8 @@ model Booking {
  dropoffLatitude  Float?
  dropoffLongitude Float?
  
+
+ 
  // ===== DATE & TIME =====
  date          DateTime
  startTime     String   // "09:00"
@@ -144,6 +146,15 @@ model Booking {
  createdBy String?  // userId who created booking
  updatedBy String?  // userId who last updated
  
+  // Add rating field for completed lessons
+  rating          Float?    // Student's rating of the lesson (1-5)
+  ratingComment   String?   // Optional comment with rating
+  ratedAt         DateTime? // When the rating was given
+  
+    type   String?  @default("STANDARD")
+  notes  String?
+
+
  @@index([studentId])
  @@index([instructorId])
  @@index([vehicleId])

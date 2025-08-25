@@ -1,5 +1,4 @@
 // next.config.js
-
 const createNextIntlPlugin = require('next-intl/plugin');
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
@@ -11,6 +10,9 @@ const nextConfig = {
   },
   experimental: {
     outputFileTracingRoot: require('path').join(__dirname, '../../'),
+  },
+    env: {
+    _next_intl_trailing_slash: '' // ДОДАЙТЕ ЦЕ
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
@@ -25,20 +27,22 @@ const nextConfig = {
   },
 }
 
-// PWA конфігурація
+// PWA тільки для production
 let finalConfig = withNextIntl(nextConfig);
 
-try {
-  const withPWA = require('next-pwa')({
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
-    disable: process.env.NODE_ENV === 'development' ? false : false,
-  });
-  
-  finalConfig = withPWA(finalConfig);
-} catch (e) {
-  console.log('PWA not installed, using only next-intl');
+if (process.env.NODE_ENV === 'production') {
+  try {
+    const withPWA = require('next-pwa')({
+      dest: 'public',
+      register: true,
+      skipWaiting: true,
+      disable: false,
+    });
+    
+    finalConfig = withPWA(finalConfig);
+  } catch (e) {
+    console.log('PWA not installed, using only next-intl');
+  }
 }
 
 module.exports = finalConfig;

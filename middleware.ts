@@ -7,11 +7,11 @@ import createIntlMiddleware from 'next-intl/middleware'
 const locales = ['pl', 'uk', 'en']
 const publicPages = [
   '/',
-  '/login',           // Змінено з /auth/login
-  '/register',        // Змінено з /auth/register
-  '/forgot-password', // Змінено з /auth/forgot-password
-  '/reset-password',  // Змінено з /auth/reset-password
-  '/verify',          // Змінено з /auth/verify
+  '/auth/login',           // Змінено з /auth/login
+  '/auth/register',        // Змінено з /auth/register
+  '/auth/forgot-password', // Змінено з /auth/forgot-password
+  '/auth/reset-password',  // Змінено з /auth/reset-password
+  '/auth/verify',          // Змінено з /auth/verify
   '/about',
   '/contact',
   '/pricing',
@@ -71,8 +71,8 @@ const authMiddleware = withAuth(
       }
     },
     pages: {
-      signIn: '/login',  // Змінено з /auth/login
-      error: '/error'    // Змінено з /auth/error
+      signIn: '/auth/login',  // Змінено з /auth/login
+      error: '/auth/error'    // Змінено з /auth/error
     }
   }
 )

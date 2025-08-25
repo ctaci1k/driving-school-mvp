@@ -1,642 +1,299 @@
 // lib/trpc/routers/user.ts
 
 import { z } from 'zod'
-import { router, protectedProcedure, adminProcedure } from '../server'
+import { router, protectedProcedure } from '../server'
 import { TRPCError } from '@trpc/server'
-import {
-  UserRole,
-  UserStatus,
-  PackageStatus
-} from '@prisma/client'
-import { hash, compare } from 'bcryptjs'
-import { 
-  startOfMonth, 
-  endOfMonth, 
-  subMonths,
-  differenceInYears
-} from 'date-fns'
-
-// ====== VALIDATION SCHEMAS ======
-const CreateUserSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8).max(100),
-  firstName: z.string().min(1).max(50),
-  lastName: z.string().min(1).max(50),
-  phone: z.string().min(9).max(15).optional(),
-  role: z.nativeEnum(UserRole).default(UserRole.STUDENT),
-  dateOfBirth: z.string().datetime().optional(),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  postalCode: z.string().optional(),
-  emergencyContact: z.string().optional(),
-  emergencyPhone: z.string().optional(),
-  licenseNumber: z.string().optional(),
-  locationId: z.string().optional(),
-  language: z.string().default('pl'),
-})
-
-const UpdateProfileSchema = z.object({
-  firstName: z.string().min(1).max(50).optional(),
-  lastName: z.string().min(1).max(50).optional(),
-  phone: z.string().min(9).max(15).optional(),
-  dateOfBirth: z.string().datetime().optional(),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  postalCode: z.string().optional(),
-  emergencyContact: z.string().optional(),
-  emergencyPhone: z.string().optional(),
-  avatar: z.string().url().optional(),
-  language: z.string().optional(),
-  emailNotifications: z.boolean().optional(),
-  smsNotifications: z.boolean().optional(),
-})
-
-const ChangePasswordSchema = z.object({
-  currentPassword: z.string(),
-  newPassword: z.string().min(8).max(100),
-})
-
-// Helper functions
-async function hashPassword(password: string): Promise<string> {
-  return hash(password, 12)
-}
-
-async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return compare(password, hash)
-}
-
-function calculateAge(dateOfBirth: Date): number {
-  return differenceInYears(new Date(), dateOfBirth)
-}
+import { UserRole } from '@prisma/client'
 
 export const userRouter = router({
-  // Get current user profile
-  getMe: protectedProcedure
+  /**
+   * Get current user profile
+   */
+  getProfile: protectedProcedure
     .query(async ({ ctx }) => {
-      const user = await ctx.db.user.findUnique({
-        where: { id: ctx.session.user.id },
-        include: {
-          location: true,
-          userPackages: {
-            where: {
-              status: PackageStatus.ACTIVE,
-              expiresAt: { gte: new Date() },
-            },
-            include: {
-              package: true,
-            },
-          },
-          _count: {
-            select: {
-              studentBookings: {
-                where: { status: 'COMPLETED' }
-              },
-              instructorBookings: {
-                where: { status: 'COMPLETED' }
-              },
-              payments: {
-                where: { status: 'COMPLETED' }
-              },
-              notifications: {
-                where: { readAt: null }
-              }
-            },
-          },
-        },
-      })
-
-      if (!user) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        })
-      }
-
-      // Calculate role-specific stats
-      let additionalStats = {}
-
-      if (user.role === UserRole.STUDENT) {
-        const upcomingBookings = await ctx.db.booking.count({
-          where: {
-            studentId: user.id,
-            startTime: { gte: new Date() },
-            status: 'CONFIRMED',
-          },
-        })
-
-        additionalStats = {
-          completedLessons: user._count.studentBookings,
-          upcomingLessons: upcomingBookings,
-          totalCredits: user.userPackages.reduce(
-            (sum, pkg) => sum + pkg.creditsRemaining, 
-            0
-          ),
-        }
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        const todayBookings = await ctx.db.booking.count({
-          where: {
-            instructorId: user.id,
-            startTime: {
-              gte: new Date(new Date().setHours(0, 0, 0, 0)),
-              lt: new Date(new Date().setHours(23, 59, 59, 999)),
-            },
-            status: 'CONFIRMED',
-          },
-        })
-
-        additionalStats = {
-          todayBookings,
-          totalLessons: user.totalLessons || 0,
-          rating: user.rating || 0,
-          successRate: user.successRate || 0,
-        }
-      }
-
-      return {
-        ...user,
-        ...additionalStats,
-        age: user.dateOfBirth ? calculateAge(user.dateOfBirth) : null,
-      }
-    }),
-
-  // Update profile
-  updateProfile: protectedProcedure
-    .input(UpdateProfileSchema)
-    .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.update({
-        where: { id: ctx.session.user.id },
-        data: {
-          ...input,
-          dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : undefined,
-        },
-        include: {
-          location: true,
-        }
-      })
-
-      return user
-    }),
-
-  // Change password
-  changePassword: protectedProcedure
-    .input(ChangePasswordSchema)
-    .mutation(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({
-        where: { id: ctx.session.user.id },
-        select: { passwordHash: true },
-      })
-
-      if (!user || !user.passwordHash) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        })
-      }
-
-      const isValid = await verifyPassword(input.currentPassword, user.passwordHash)
-      
-      if (!isValid) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Current password is incorrect',
-        })
-      }
-
-      const newPasswordHash = await hashPassword(input.newPassword)
-
-      await ctx.db.user.update({
-        where: { id: ctx.session.user.id },
-        data: { passwordHash: newPasswordHash },
-      })
-
-      return { success: true }
-    }),
-
-  // Admin: Get all users
-  getAll: adminProcedure
-    .input(z.object({
-      role: z.nativeEnum(UserRole).optional(),
-      status: z.nativeEnum(UserStatus).optional(),
-      search: z.string().optional(),
-      locationId: z.string().optional(),
-      limit: z.number().min(1).max(100).default(50),
-      cursor: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const where: any = {
-        deletedAt: null,
-      }
-
-      if (input.role) {
-        where.role = input.role
-      }
-
-      if (input.status) {
-        where.status = input.status
-      }
-
-      if (input.locationId) {
-        where.locationId = input.locationId
-      }
-
-      if (input.search) {
-        where.OR = [
-          { firstName: { contains: input.search, mode: 'insensitive' } },
-          { lastName: { contains: input.search, mode: 'insensitive' } },
-          { email: { contains: input.search, mode: 'insensitive' } },
-          { phone: { contains: input.search } },
-        ]
-      }
-
-      const [users, totalCount] = await Promise.all([
-        ctx.db.user.findMany({
-          where,
-          take: input.limit + 1,
-          cursor: input.cursor ? { id: input.cursor } : undefined,
-          orderBy: { createdAt: 'desc' },
-          include: {
-            location: true,
-            _count: {
-              select: {
-                studentBookings: true,
-                instructorBookings: true,
-              },
-            },
-          },
-        }),
-        ctx.db.user.count({ where })
-      ])
-
-      let nextCursor: string | undefined = undefined
-      if (users.length > input.limit) {
-        const nextItem = users.pop()
-        nextCursor = nextItem!.id
-      }
-
-      return {
-        items: users,
-        nextCursor,
-        totalCount,
-      }
-    }),
-
-  // Get user by ID
-  getById: protectedProcedure
-    .input(z.string())
-    .query(async ({ ctx, input }) => {
-      // Check permissions
-      if (input !== ctx.session.user.id && 
-          !['ADMIN', 'BRANCH_MANAGER', 'DISPATCHER'].includes(ctx.session.user.role)) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Not authorized to view this user',
-        })
-      }
-
-      const user = await ctx.db.user.findUnique({
-        where: { id: input },
-        include: {
-          location: true,
-          userPackages: {
-            include: {
-              package: true,
-              payment: true,
-            },
-            orderBy: { purchasedAt: 'desc' },
-            take: 10,
-          },
-          studentBookings: {
-            take: 10,
-            orderBy: { startTime: 'desc' },
-            include: {
-              instructor: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  rating: true,
-                }
-              },
-              vehicle: {
-                select: {
-                  id: true,
-                  make: true,
-                  model: true,
-                  registrationNumber: true,
-                }
-              },
-              location: {
-                select: {
-                  id: true,
-                  name: true,
-                  address: true,
-                }
-              }
-            },
-          },
-          instructorBookings: {
-            take: 10,
-            orderBy: { startTime: 'desc' },
-            include: {
-              student: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                }
-              },
-              vehicle: {
-                select: {
-                  id: true,
-                  make: true,
-                  model: true,
-                  registrationNumber: true,
-                }
-              },
-            },
-          },
-          _count: {
-            select: {
-              studentBookings: true,
-              instructorBookings: true,
-              payments: true,
-              notifications: true,
-            },
-          },
-        },
-      })
-
-      if (!user) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        })
-      }
-
-      return {
-        ...user,
-        age: user.dateOfBirth ? calculateAge(user.dateOfBirth) : null,
-      }
-    }),
-
-  // Get instructors
-  getInstructors: protectedProcedure
-    .input(z.object({
-      locationId: z.string().optional(),
-      availableOnly: z.boolean().default(true),
-      limit: z.number().min(1).max(100).default(50),
-    }))
-    .query(async ({ ctx, input }) => {
-      const where: any = {
-        role: UserRole.INSTRUCTOR,
-        deletedAt: null,
-      }
-
-      if (input.availableOnly) {
-        where.status = UserStatus.ACTIVE
-      }
-
-      if (input.locationId) {
-        where.locationId = input.locationId
-      }
-
-      const instructors = await ctx.db.user.findMany({
-        where,
-        take: input.limit,
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          avatar: true,
-          rating: true,
-          totalLessons: true,
-          successRate: true,
-          specializations: true,
-          licenseCategories: true,
-          yearsOfExperience: true,
-          phone: true,
-          email: true,
-          location: {
-            select: {
-              id: true,
-              name: true,
-              address: true,
-            }
-          },
-          instructorSchedule: {
-            where: {
-              isAvailable: true,
-            },
-            select: {
-              dayOfWeek: true,
-              startTime: true,
-              endTime: true,
-            },
-          },
-          _count: {
-            select: {
-              instructorBookings: {
-                where: {
-                  status: 'COMPLETED',
-                },
-              },
-            },
-          },
-        },
-        orderBy: [
-          { rating: 'desc' },
-          { totalLessons: 'desc' },
-        ],
-      })
-
-      return instructors
-    }),
-
-  // Admin: Create user
-  create: adminProcedure
-    .input(CreateUserSchema)
-    .mutation(async ({ ctx, input }) => {
-      // Check if email already exists
-      const existing = await ctx.db.user.findUnique({
-        where: { email: input.email },
-      })
-
-      if (existing) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'User with this email already exists',
-        })
-      }
-
-      const passwordHash = await hashPassword(input.password)
-
-      const user = await ctx.db.user.create({
-        data: {
-          email: input.email,
-          passwordHash,
-          firstName: input.firstName,
-          lastName: input.lastName,
-          phone: input.phone,
-          role: input.role,
-          status: UserStatus.ACTIVE,
-          dateOfBirth: input.dateOfBirth ? new Date(input.dateOfBirth) : undefined,
-          address: input.address,
-          city: input.city,
-          postalCode: input.postalCode,
-          emergencyContact: input.emergencyContact,
-          emergencyPhone: input.emergencyPhone,
-          licenseNumber: input.licenseNumber,
-          locationId: input.locationId,
-          language: input.language,
-          emailVerified: new Date(), // Auto-verify for admin-created users
-        },
-        include: {
-          location: true,
-        }
-      })
-
-      return user
-    }),
-
-  // Get user statistics
-  getStats: protectedProcedure
-    .input(z.object({
-      userId: z.string().optional(),
-      from: z.string().datetime().optional(),
-      to: z.string().datetime().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const userId = input.userId || ctx.session.user.id
-
-      // Check permissions
-      if (userId !== ctx.session.user.id && 
-          !['ADMIN', 'BRANCH_MANAGER'].includes(ctx.session.user.role)) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Not authorized to view these statistics',
-        })
-      }
+      const userId = ctx.session.user.id
 
       const user = await ctx.db.user.findUnique({
         where: { id: userId },
+        include: {
+          studentProfile: true,
+          instructorProfile: true,
+          location: true
+        }
       })
 
       if (!user) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'User not found',
+          message: 'User not found'
         })
       }
 
-      const dateFilter = input.from || input.to ? {
-        gte: input.from ? new Date(input.from) : undefined,
-        lte: input.to ? new Date(input.to) : undefined,
-      } : undefined
-
-      let stats: any = {
+      return {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        avatar: user.avatar,
         role: user.role,
-        memberSince: user.createdAt,
-        lastActive: user.lastLoginAt,
+        status: user.status,
+        dateOfBirth: user.dateOfBirth,
+        address: user.address,
+        city: user.city,
+        postalCode: user.postalCode,
+        country: user.country,
+        language: user.language,
+        timezone: user.timezone,
+        location: user.location,
+        studentProfile: user.studentProfile,
+        instructorProfile: user.instructorProfile,
+        createdAt: user.createdAt,
+        lastLoginAt: user.lastLoginAt
       }
-
-      if (user.role === UserRole.STUDENT) {
-        const [bookingStats, activePackages, totalSpent] = await Promise.all([
-          ctx.db.booking.aggregate({
-            where: {
-              studentId: userId,
-              startTime: dateFilter,
-            },
-            _count: true,
-            _sum: { duration: true },
-          }),
-          ctx.db.userPackage.findMany({
-            where: {
-              userId,
-              status: PackageStatus.ACTIVE,
-              expiresAt: { gte: new Date() },
-            },
-            include: { package: true },
-          }),
-          ctx.db.payment.aggregate({
-            where: {
-              userId,
-              status: 'COMPLETED',
-              createdAt: dateFilter,
-            },
-            _sum: { amount: true },
-          })
-        ])
-
-        const completedLessons = await ctx.db.booking.count({
-          where: {
-            studentId: userId,
-            status: 'COMPLETED',
-            startTime: dateFilter,
-          },
-        })
-
-        stats = {
-          ...stats,
-          totalLessons: bookingStats._count,
-          totalHours: (bookingStats._sum.duration || 0) / 60,
-          completedLessons,
-          totalSpent: Number(totalSpent._sum.amount || 0),
-          activePackages: activePackages.length,
-          totalCredits: activePackages.reduce(
-            (sum, pkg) => sum + pkg.creditsRemaining, 
-            0
-          ),
-        }
-      } else if (user.role === UserRole.INSTRUCTOR) {
-        const bookingStats = await ctx.db.booking.aggregate({
-          where: {
-            instructorId: userId,
-            status: 'COMPLETED',
-            startTime: dateFilter,
-          },
-          _count: true,
-          _sum: {
-            duration: true,
-            price: true,
-          },
-        })
-
-        const studentCount = await ctx.db.booking.findMany({
-          where: {
-            instructorId: userId,
-            startTime: dateFilter,
-          },
-          select: { studentId: true },
-          distinct: ['studentId'],
-        })
-
-        stats = {
-          ...stats,
-          totalLessons: bookingStats._count,
-          totalHours: (bookingStats._sum.duration || 0) / 60,
-          totalRevenue: Number(bookingStats._sum.price || 0),
-          uniqueStudents: studentCount.length,
-          rating: user.rating || 0,
-          successRate: user.successRate || 0,
-        }
-      }
-
-      return stats
     }),
 
-  // Check email availability
-  checkEmail: protectedProcedure
+  /**
+   * Update user profile
+   */
+  updateProfile: protectedProcedure
     .input(z.object({
-      email: z.string().email(),
+      firstName: z.string().min(2).optional(),
+      lastName: z.string().min(2).optional(),
+      phone: z.string().optional(),
+      dateOfBirth: z.date().optional(),
+      address: z.string().optional(),
+      city: z.string().optional(),
+      postalCode: z.string().optional(),
+      emergencyContact: z.string().optional(),
+      emergencyPhone: z.string().optional()
     }))
-    .query(async ({ ctx, input }) => {
-      const user = await ctx.db.user.findUnique({
-        where: { email: input.email },
-        select: { id: true },
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id
+
+      const updatedUser = await ctx.db.user.update({
+        where: { id: userId },
+        data: input
+      })
+
+      return updatedUser
+    }),
+
+  /**
+   * Get user preferences
+   */
+  getPreferences: protectedProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id
+
+      const preferences = await ctx.db.studentPreferences.findUnique({
+        where: { userId }
+      })
+
+      // Return default preferences if none exist
+      if (!preferences) {
+        return {
+          preferredDays: [],
+          preferredTimeSlots: [],
+          weekendAvailability: false,
+          preferredInstructorIds: [],
+          avoidInstructorIds: [],
+          preferredGender: null,
+          preferredVehicleIds: [],
+          preferredTransmission: null,
+          preferredLocationId: null,
+          maxDistanceKm: null,
+          communicationStyle: 'DETAILED',
+          lessonReminders: true,
+          reminderTime: 24,
+          emailNotifications: true,
+          smsNotifications: false,
+          pushNotifications: true
+        }
+      }
+
+      return preferences
+    }),
+
+  /**
+   * Update user preferences
+   */
+  updatePreferences: protectedProcedure
+    .input(z.object({
+      preferredDays: z.array(z.string()).optional(),
+      preferredTimeSlots: z.array(z.string()).optional(),
+      weekendAvailability: z.boolean().optional(),
+      preferredInstructorIds: z.array(z.string()).optional(),
+      avoidInstructorIds: z.array(z.string()).optional(),
+      preferredGender: z.enum(['MALE', 'FEMALE']).nullable().optional(),
+      preferredVehicleIds: z.array(z.string()).optional(),
+      preferredTransmission: z.enum(['MANUAL', 'AUTOMATIC', 'SEMI_AUTOMATIC', 'CVT', 'DSG']).nullable().optional(),
+      preferredLocationId: z.string().nullable().optional(),
+      maxDistanceKm: z.number().nullable().optional(),
+      communicationStyle: z.enum(['BRIEF', 'DETAILED', 'VISUAL', 'ENCOURAGING']).optional(),
+      lessonReminders: z.boolean().optional(),
+      reminderTime: z.number().optional(),
+      emailNotifications: z.boolean().optional(),
+      smsNotifications: z.boolean().optional(),
+      pushNotifications: z.boolean().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id
+
+      // Prepare data with proper types
+      const updateData: any = { ...input }
+      
+      const preferences = await ctx.db.studentPreferences.upsert({
+        where: { userId },
+        update: updateData,
+        create: {
+          userId,
+          ...updateData
+        }
+      })
+
+      return preferences
+    }),
+
+  /**
+   * Get user statistics
+   */
+  getStats: protectedProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id
+
+      const [
+        completedLessons,
+        totalHours,
+        totalSpent,
+        achievements,
+        studentProfile
+      ] = await Promise.all([
+        // Completed lessons count
+        ctx.db.booking.count({
+          where: {
+            studentId: userId,
+            status: 'COMPLETED'
+          }
+        }),
+
+        // Total hours
+        ctx.db.booking.aggregate({
+          where: {
+            studentId: userId,
+            status: 'COMPLETED'
+          },
+          _sum: {
+            duration: true
+          }
+        }),
+
+        // Total spent
+        ctx.db.payment.aggregate({
+          where: {
+            userId,
+            status: 'COMPLETED'
+          },
+          _sum: {
+            amount: true
+          }
+        }),
+
+        // Achievements count
+        ctx.db.userAchievement.count({
+          where: {
+            userId,
+            unlockedAt: { not: null }
+          }
+        }),
+
+        // Get student profile for rating (if exists)
+        ctx.db.studentProfile.findUnique({
+          where: { userId },
+          select: {
+            averageRating: true
+          }
+        })
+      ])
+
+      return {
+        completedLessons,
+        totalHours: Math.round((totalHours._sum.duration || 0) / 60),
+        totalSpent: totalSpent._sum.amount || 0,
+        achievementsUnlocked: achievements,
+        averageRating: studentProfile?.averageRating || 4.5 // Default rating if not exists
+      }
+    }),
+
+  /**
+   * Upload avatar
+   */
+  uploadAvatar: protectedProcedure
+    .input(z.object({
+      avatarUrl: z.string().url()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id
+
+      const updatedUser = await ctx.db.user.update({
+        where: { id: userId },
+        data: {
+          avatar: input.avatarUrl
+        }
       })
 
       return {
-        available: !user,
+        success: true,
+        avatarUrl: updatedUser.avatar
       }
     }),
+
+  /**
+   * Get notification settings
+   */
+  getNotificationSettings: protectedProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id
+
+      const user = await ctx.db.user.findUnique({
+        where: { id: userId },
+        select: {
+          emailNotifications: true,
+          smsNotifications: true,
+          pushNotifications: true,
+          marketingConsent: true
+        }
+      })
+
+      return user
+    }),
+
+  /**
+   * Update notification settings
+   */
+  updateNotificationSettings: protectedProcedure
+    .input(z.object({
+      emailNotifications: z.boolean().optional(),
+      smsNotifications: z.boolean().optional(),
+      pushNotifications: z.boolean().optional(),
+      marketingConsent: z.boolean().optional()
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id
+
+      const updatedUser = await ctx.db.user.update({
+        where: { id: userId },
+        data: input
+      })
+
+      return {
+        success: true,
+        settings: {
+          emailNotifications: updatedUser.emailNotifications,
+          smsNotifications: updatedUser.smsNotifications,
+          pushNotifications: updatedUser.pushNotifications,
+          marketingConsent: updatedUser.marketingConsent
+        }
+      }
+    })
 })

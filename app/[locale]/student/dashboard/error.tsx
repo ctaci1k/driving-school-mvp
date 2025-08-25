@@ -1,4 +1,4 @@
-// app/[locale]/(student)/student/dashboard/error.tsx
+// app/[locale]/student/dashboard/error.tsx
 
 'use client';
 

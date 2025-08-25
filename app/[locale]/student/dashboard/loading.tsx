@@ -1,4 +1,4 @@
-// app/[locale]/(student)/student/dashboard/loading.tsx
+// app/[locale]/student/dashboard/loading.tsx
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';

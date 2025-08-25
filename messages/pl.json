@@ -28,7 +28,37 @@
     "warning": "Ostrzeżenie",
     "info": "Informacja"
   },
+  "auth": {
+    "login": {
+      "title": "Zaloguj się",
+      "description": "Wprowadź swoje dane",
+      "email": "Email",
+      "emailPlaceholder": "twoj@email.pl",
+      "password": "Hasło",
+      "passwordPlaceholder": "••••••••",
+      "rememberMe": "Zapamiętaj mnie",
+      "forgotPassword": "Zapomniałeś hasła?",
+      "login": "Zaloguj",
+      "loggingIn": "Logowanie...",
+      "or": "lub",
+      "dontHaveAccount": "Nie masz konta?",
+      "signUp": "Zarejestruj się",
+      "invalidCredentials": "Nieprawidłowe dane logowania",
+      "somethingWentWrong": "Coś poszło nie tak",
+      "loginSuccess": "Zalogowano pomyślnie"
+    }
+  },
   "navigation": {
+    "newBooking": "Nowa rezerwacja",
+    "calendar": "Kalendarz",
+    "myCredits": "Moje kredyty",
+    "history": "Historia",
+    "darkTheme": "Ciemny motyw",
+    "lightTheme": "Jasny motyw",
+    "logout": "Wyloguj",
+    "bookings": "Rezerwacje",
+    "progress": "Postęp nauki",
+    "profile": "Profil",
     "dashboard": "Panel główny",
     "bookLesson": "Zarezerwuj lekcję",
     "myBookings": "Moje rezerwacje",
@@ -46,6 +76,22 @@
     "allBookings": "Wszystkie rezerwacje"
   },
   "student": {
+    "navigation": {
+      "dashboard": "Dashboard",
+      "bookings": "Rezerwacje",
+      "newBooking": "Nowa rezerwacja",
+      "myBookings": "Moje rezerwacje",
+      "calendar": "Kalendarz",
+      "progress": "Postęp nauki",
+      "payments": "Płatności",
+      "packages": "Pakiety",
+      "myCredits": "Moje kredyty",
+      "history": "Historia",
+      "profile": "Profil",
+      "darkTheme": "Ciemny motyw",
+      "lightTheme": "Jasny motyw",
+      "logout": "Wyloguj"
+    },
     "dashboard": {
       "welcome": "Witaj",
       "subtitle": "Sprawdź swoje nadchodzące lekcje i postępy",
@@ -175,7 +221,6 @@
       "personal": "Dane osobowe",
       "security": "Bezpieczeństwo",
       "preferences": "Preferencje",
-      "documents": "Dokumenty",
       "personalInfo": "Informacje osobowe",
       "save": "Zapisz",
       "edit": "Edytuj",
