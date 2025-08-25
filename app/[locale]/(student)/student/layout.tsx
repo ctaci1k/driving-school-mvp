@@ -1,4 +1,4 @@
-// File: /app/(student)/layout.tsx
+// app\[locale]\(student)\student\layout.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -452,9 +452,9 @@ useEffect(() => {
       </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-64 mt-16 min-h-[calc(100vh-64px)]">
-        {children}
-      </main>
+<main className="pt-16 min-h-[calc(100vh-64px)] lg:ml-64">
+  {children}
+</main>
 
       {/* Mobile Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 lg:hidden z-40">

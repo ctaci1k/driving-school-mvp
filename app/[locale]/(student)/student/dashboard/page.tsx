@@ -155,116 +155,9 @@ const handleCancel = () => {
 
   return (
     <div className={`min-h-screen bg-gray-50 ${darkMode ? 'dark' : ''}`}>
-      {/* Top Navigation */}
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-b border-gray-200 z-40">
-        <div className="h-full px-4 flex items-center justify-between">
-          {/* Left Section */}
-          <div className="flex items-center space-x-4">
-            {/* Mobile Menu Toggle */}
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                <Car className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-bold text-xl hidden sm:block">AutoSzkoła</span>
-            </div>
-          </div>
-
-          {/* Right Section */}
-          <div className="flex items-center space-x-4">
-            {/* Credits Badge */}
-            <div className="hidden sm:flex items-center space-x-2 px-3 py-1.5 bg-green-100 rounded-full">
-              <Coins className="w-4 h-4 text-green-600" />
-              <span className="font-semibold text-green-800">{userCredits} kredytów</span>
-            </div>
-
-            {/* Notifications */}
-            <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
-              <Bell className="w-5 h-5 text-gray-600" />
-              {notifications > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {notifications}
-                </span>
-              )}
-            </button>
-
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              {darkMode ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-gray-600" />}
-            </button>
-
-            {/* User Profile */}
-            <div className="flex items-center space-x-3 pl-3 border-l border-gray-200">
-              <img src={user.avatar} className="w-9 h-9 rounded-full" alt="User" />
-              <div className="hidden md:block">
-                <p className="text-sm font-semibold text-gray-800">{user.name}</p>
-                <p className="text-xs text-gray-500">{user.role}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Sidebar */}
-      <aside className={`fixed left-0 top-16 bottom-0 w-64 bg-white border-r border-gray-200 z-30 transform transition-transform lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}>
-        <div className="p-4 h-full flex flex-col">
-          {/* Navigation Menu */}
-          <nav className="space-y-1 flex-1">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentPage === item.id;
-
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    setCurrentPage(item.id);
-                    setSidebarOpen(false);
-                  }}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${isActive
-                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg'
-                    : 'hover:bg-gray-100 text-gray-700'
-                    }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
-
-          {/* Promo Box */}
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-4 text-white">
-            <div className="flex items-center space-x-2 mb-2">
-              <Users className="w-5 h-5" />
-              <span className="font-semibold">Zdobądź bonus!</span>
-            </div>
-            <p className="text-xs mb-3 opacity-90">Poleć znajomemu i otrzymaj darmową lekcję</p>
-            <button className="w-full bg-white text-blue-600 text-sm font-semibold py-2 rounded-lg hover:bg-gray-100 transition-colors">
-              Dowiedz się więcej
-            </button>
-          </div>
-        </div>
-      </aside>
 
       {/* Main Content */}
-      <main className="lg:ml-64 mt-16 p-4 lg:p-6">
+      <div className="p-4 lg:p-6">
         {/* Welcome Section */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -319,7 +212,7 @@ const handleCancel = () => {
           })}
         </div>
 
-        {/* Next Lesson Card */}
+{/* Next Lesson Card */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 mb-6 text-white shadow-xl">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
             <div className="mb-4 lg:mb-0">
@@ -356,49 +249,50 @@ const handleCancel = () => {
                   <span className="text-sm">{nextLesson.location}</span>
                 </div>
               </div>
-            </div>
-            {/* Weather Widget */}
-            <div className="flex items-center gap-2 mt-3 p-2 bg-white/10 rounded-lg">
-              <Cloud className="w-4 h-4" />
-              <span className="text-sm">Pochmurno, 18°C</span>
-              <span className="text-xs opacity-75">• Dobra widoczność</span>
+
+              {/* Weather Widget */}
+              <div className="flex items-center gap-2 mt-3 p-2 bg-white/10 rounded-lg">
+                <Cloud className="w-4 h-4" />
+                <span className="text-sm">Pochmurno, 18°C</span>
+                <span className="text-xs opacity-75">• Dobra widoczność</span>
+              </div>
             </div>
 
-{/* Action Buttons */}
-<div className="flex flex-col space-y-2">
-  <div className="flex gap-2">
-    <button 
-      onClick={handleShowMap}
-      className="flex-1 px-4 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
-    >
-      <MapPin className="w-4 h-4 mr-2" />
-      Pokaż na mapie
-    </button>
-    <button 
-      onClick={handleContact}
-      className="flex-1 px-4 py-2 bg-white/90 text-blue-600 rounded-lg font-semibold hover:bg-white transition-colors flex items-center justify-center border border-white/50"
-    >
-      <Phone className="w-4 h-4 mr-2" />
-      Kontakt
-    </button>
-  </div>
-  <div className="flex gap-2">
-    <button 
-      onClick={handleReschedule}
-      className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center"
-    >
-      <Calendar className="w-4 h-4 mr-2" />
-      Przełóż
-    </button>
-    <button 
-      onClick={handleCancel}
-      className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center"
-    >
-      <X className="w-4 h-4 mr-2" />
-      Anuluj
-    </button>
-  </div>
-</div>
+            {/* Action Buttons */}
+            <div className="flex flex-col space-y-2">
+              <div className="flex gap-2">
+                <button 
+                  onClick={handleShowMap}
+                  className="flex-1 px-4 py-2 bg-white text-blue-600 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center"
+                >
+                  <MapPin className="w-4 h-4 mr-2" />
+                  Pokaż na mapie
+                </button>
+                <button 
+                  onClick={handleContact}
+                  className="flex-1 px-4 py-2 bg-white/90 text-blue-600 rounded-lg font-semibold hover:bg-white transition-colors flex items-center justify-center border border-white/50"
+                >
+                  <Phone className="w-4 h-4 mr-2" />
+                  Kontakt
+                </button>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={handleReschedule}
+                  className="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center justify-center"
+                >
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Przełóż
+                </button>
+                <button 
+                  onClick={handleCancel}
+                  className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors flex items-center justify-center"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Anuluj
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* Countdown Timer */}
@@ -422,7 +316,6 @@ const handleCancel = () => {
             </div>
           </div>
         </div>
-
         {/* Progress & Activity Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Learning Progress */}
@@ -550,107 +443,111 @@ const handleCancel = () => {
             </div>
           </Link>
         </div>
-      </main>
+      </div>
 
-{/* Floating Action Button with Menu */}
-<div className="fixed bottom-6 right-6 z-50">
-  {fabOpen && (
-    <div className="absolute bottom-16 right-0 space-y-2">
-      <button 
-        onClick={() => window.location.href = 'tel:112'}
-        className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white shadow-lg rounded-lg hover:bg-red-600 transition-all whitespace-nowrap"
-      >
-        <Phone className="w-4 h-4" />
-        <span className="text-sm font-medium">Kontakt awaryjny</span>
-      </button>
-      <button 
-        onClick={() => window.location.href = '/student/calendar'}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white shadow-lg rounded-lg hover:bg-blue-600 transition-all whitespace-nowrap"
-      >
-        <Calendar className="w-4 h-4" />
-        <span className="text-sm font-medium">Kalendarz</span>
-      </button>
-      <button 
-        onClick={() => window.location.href = '/student/booking'}
-        className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white shadow-lg rounded-lg hover:bg-green-600 transition-all whitespace-nowrap"
-      >
-        <CalendarPlus className="w-4 h-4" />
-        <span className="text-sm font-medium">Rezerwuj</span>
-      </button>
-    </div>
-  )}
-  <button 
-    onClick={() => setFabOpen(!fabOpen)}
-    className={`w-14 h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all duration-200 ${fabOpen ? 'rotate-45' : ''}`}
-  >
-    <Plus className="w-6 h-6" />
-  </button>
-</div>
-      {/* Reschedule Modal - ДОДАТИ ТУТ, ПЕРЕД ЗАКРИВАЮЧИМ </div> */}
-{showRescheduleModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-xl p-6 max-w-md w-full">
-      <h3 className="text-xl font-semibold mb-4 text-gray-800">Przełóż lekcję</h3>
-      <p className="text-gray-600 mb-4">Wybierz nowy termin dla swojej lekcji</p>
-      <div className="space-y-3">
-        <input type="date" className="w-full p-2 border border-gray-300 rounded-lg text-gray-800" />
-        <input type="time" className="w-full p-2 border border-gray-300 rounded-lg text-gray-800" />
-      </div>
-      <div className="flex gap-3 mt-6">
+
+      {/* Floating Action Button with Menu */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {fabOpen && (
+          <div className="absolute bottom-16 right-0 space-y-2">
+            <button 
+              onClick={() => window.location.href = 'tel:112'}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white shadow-lg rounded-lg hover:bg-red-600 transition-all whitespace-nowrap"
+            >
+              <Phone className="w-4 h-4" />
+              <span className="text-sm font-medium">Kontakt awaryjny</span>
+            </button>
+            <button 
+              onClick={() => window.location.href = '/student/calendar'}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white shadow-lg rounded-lg hover:bg-blue-600 transition-all whitespace-nowrap"
+            >
+              <Calendar className="w-4 h-4" />
+              <span className="text-sm font-medium">Kalendarz</span>
+            </button>
+            <button 
+              onClick={() => window.location.href = '/student/booking'}
+              className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white shadow-lg rounded-lg hover:bg-green-600 transition-all whitespace-nowrap"
+            >
+              <CalendarPlus className="w-4 h-4" />
+              <span className="text-sm font-medium">Rezerwuj</span>
+            </button>
+          </div>
+        )}
         <button 
-          onClick={() => setShowRescheduleModal(false)}
-          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+          onClick={() => setFabOpen(!fabOpen)}
+          className={`w-14 h-14 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full shadow-lg flex items-center justify-center text-white hover:scale-110 transition-all duration-200 ${fabOpen ? 'rotate-45' : ''}`}
         >
-          Anuluj
-        </button>
-        <button 
-          onClick={() => {
-            alert('Lekcja została przełożona!');
-            setShowRescheduleModal(false);
-          }}
-          className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          Potwierdź
+          <Plus className="w-6 h-6" />
         </button>
       </div>
-    </div>
-  </div>
-)}
-{showCancelModal && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-xl p-6 max-w-md w-full">
-      <h3 className="text-xl font-semibold mb-4 text-red-600">Anuluj lekcję</h3>
-      <p className="text-gray-600 mb-4">
-        Czy na pewno chcesz anulować lekcję? 
-        <br />
-        <span className="text-sm text-orange-600 mt-2 block">
-          ⚠️ Anulowanie mniej niż 24h przed lekcją może skutkować utratą kredytów
-        </span>
-      </p>
-      <textarea 
-        placeholder="Powód anulowania (opcjonalnie)"
-        className="w-full p-3 border border-gray-300 rounded-lg h-24 resize-none text-gray-800"
-      />
-      <div className="flex gap-3 mt-6">
-        <button 
-          onClick={() => setShowCancelModal(false)}
-          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          Wróć
-        </button>
-        <button 
-          onClick={() => {
-            alert('Lekcja została anulowana');
-            setShowCancelModal(false);
-          }}
-          className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-        >
-          Anuluj lekcję
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+
+      {/* Reschedule Modal */}
+      {showRescheduleModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Przełóż lekcję</h3>
+            <p className="text-gray-600 mb-4">Wybierz nowy termin dla swojej lekcji</p>
+            <div className="space-y-3">
+              <input type="date" className="w-full p-2 border border-gray-300 rounded-lg text-gray-800" />
+              <input type="time" className="w-full p-2 border border-gray-300 rounded-lg text-gray-800" />
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button 
+                onClick={() => setShowRescheduleModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Anuluj
+              </button>
+              <button 
+                onClick={() => {
+                  alert('Lekcja została przełożona!');
+                  setShowRescheduleModal(false);
+                }}
+                className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Potwierdź
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full">
+            <h3 className="text-xl font-semibold mb-4 text-red-600">Anuluj lekcję</h3>
+            <p className="text-gray-600 mb-4">
+              Czy na pewno chcesz anulować lekcję? 
+              <br />
+              <span className="text-sm text-orange-600 mt-2 block">
+                ⚠️ Anulowanie mniej niż 24h przed lekcją może skutkować utratą kredytów
+              </span>
+            </p>
+            <textarea 
+              placeholder="Powód anulowania (opcjonalnie)"
+              className="w-full p-3 border border-gray-300 rounded-lg h-24 resize-none text-gray-800"
+            />
+            <div className="flex gap-3 mt-6">
+              <button 
+                onClick={() => setShowCancelModal(false)}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Wróć
+              </button>
+              <button 
+                onClick={() => {
+                  alert('Lekcja została anulowana');
+                  setShowCancelModal(false);
+                }}
+                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                Anuluj lekcję
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
