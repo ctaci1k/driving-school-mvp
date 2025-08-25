@@ -1,34 +1,68 @@
-// components\providers\trpc-provider.tsx
+// components/providers/trpc-provider.tsx
 
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { httpBatchLink } from '@trpc/client'
+import { httpBatchLink, loggerLink } from '@trpc/client'
+import { createTRPCReact } from '@trpc/react-query'
 import { useState } from 'react'
-import { trpc } from '@/lib/trpc/client'
+import { type AppRouter } from '@/lib/trpc/routers'
 import superjson from 'superjson'
-import { SessionProvider } from 'next-auth/react'
+
+export const trpc = createTRPCReact<AppRouter>()
+
+function getBaseUrl() {
+  if (typeof window !== 'undefined') {
+    // browser should use relative url
+    return ''
+  }
+  if (process.env.VERCEL_URL) {
+    // SSR should use vercel url
+    return `https://${process.env.VERCEL_URL}`
+  }
+  // dev SSR should use localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`
+}
 
 export function TRPCProvider({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 1000,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  )
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: superjson,
       links: [
+        loggerLink({
+          enabled: (opts) =>
+            process.env.NODE_ENV === 'development' ||
+            (opts.direction === 'down' && opts.result instanceof Error),
+        }),
         httpBatchLink({
-          url: `${process.env.NEXT_PUBLIC_APP_URL}/api/trpc`,
+          url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            return {
+              'x-trpc-source': 'react',
+            }
+          },
         }),
       ],
     })
   )
 
   return (
-    <SessionProvider>
-      <trpc.Provider client={trpcClient} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </trpc.Provider>
-    </SessionProvider>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        {children}
+      </QueryClientProvider>
+    </trpc.Provider>
   )
 }

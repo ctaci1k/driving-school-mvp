@@ -1,0 +1,267 @@
+﻿PROJECT STRUCTURE
+==================================================
+
+├── .dockerignore
+├── .env
+├── .env.docker
+├── .env.example
+├── .env.local
+├── .env.production
+├── .gitignore
+├── .npmrc
+├── deploy.sh
+├── docker-compose.prod.yml
+├── docker-compose.yml
+├── Dockerfile
+├── Dockerfile.production
+├── docker-quick-start.bat
+├── docker-start-with-seed.bat
+├── eslint.config.mjs
+├── i18n.ts
+├── manifest.json
+├── middleware.ts
+├── next.config vs.js
+├── next.config.js
+├── next.config.ts
+├── next-env.d.ts
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── project_structure.txt
+├── README.md
+├── README_DEV.md
+├── start-docker.ps1
+├── tailwind.config.ts
+├── tsconfig.json
+├── tsconfig.tsbuildinfo
+├── vercel.json
+├── app
+│   ├── error.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── loading.tsx
+│   ├── not-found.tsx
+│   ├── [locale]
+│   ├── api
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   ├── payments
+│   │   │   ├── create
+│   │   │   │   └── route.ts
+│   │   │   ├── p24
+│   │   │   │   ├── create
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── verify
+│   │   │   │       └── route.ts
+│   │   │   └── status
+│   │   │       └── route.ts
+│   │   ├── trpc
+│   │   │   └── [trpc]
+│   │   └── webhooks
+│   │       └── p24
+│   │           └── route.ts
+│   └── payments
+│       └── return
+│           └── page.tsx
+├── components
+│   ├── theme-provider.tsx
+│   ├── booking
+│   │   └── recurring-booking-modal.tsx
+│   ├── calendar
+│   │   ├── calendar-filters.tsx
+│   │   ├── calendar-navigation.tsx
+│   │   ├── conflict-detection.tsx
+│   │   ├── day-view.tsx
+│   │   ├── month-view.tsx
+│   │   ├── recurring-bookings.tsx
+│   │   ├── schedule-exceptions.tsx
+│   │   ├── schedule-template.tsx
+│   │   └── week-view.tsx
+│   ├── forms
+│   │   ├── booking-form.tsx
+│   │   └── schedule-form.tsx
+│   ├── layouts
+│   │   ├── dashboard-layout.tsx
+│   │   └── navigation.tsx
+│   ├── payments
+│   │   └── PaymentButton.tsx
+│   ├── providers
+│   │   ├── session-provider.tsx
+│   │   └── trpc-provider.tsx
+│   ├── pwa
+│   │   ├── push-notifications.tsx
+│   │   └── pwa-install-prompt.tsx
+│   ├── reports
+│   │   ├── DateRangePicker.tsx
+│   │   ├── SimpleChart.tsx
+│   │   └── StatsCard.tsx
+│   ├── student
+│   │   └── navigation.tsx
+│   └── ui
+│       ├── alert.tsx
+│       ├── avatar.tsx
+│       ├── badge.tsx
+│       ├── booking-card.tsx
+│       ├── button.tsx
+│       ├── calendar.tsx
+│       ├── calendar-view-switcher.tsx
+│       ├── card.tsx
+│       ├── checkbox.tsx
+│       ├── credits-display.tsx
+│       ├── date-range-picker.tsx
+│       ├── dialog.tsx
+│       ├── dropdown-menu.tsx
+│       ├── input.tsx
+│       ├── label.tsx
+│       ├── language-switcher.tsx
+│       ├── lesson-type-selector.tsx
+│       ├── location-selector.tsx
+│       ├── popover.tsx
+│       ├── progress.tsx
+│       ├── radio-group.tsx
+│       ├── scroll-area.tsx
+│       ├── select.tsx
+│       ├── separator.tsx
+│       ├── simple-table.tsx
+│       ├── skeleton.tsx
+│       ├── stats-card.tsx
+│       ├── switch.tsx
+│       ├── table.tsx
+│       ├── tabs.tsx
+│       ├── textarea.tsx
+│       ├── time-slot-picker.tsx
+│       ├── toast.tsx
+│       ├── toaster.tsx
+│       ├── tooltip.tsx
+│       └── use-toast.ts
+├── docker
+│   ├── nginx
+│   │   └── nginx.conf
+│   ├── postgres
+│   │   └── init.sql
+│   ├── redis
+│   │   └── redis.conf
+│   └── scripts
+│       └── backup.sh
+├── favicon_io
+│   ├── about.txt
+│   ├── apple-touch-icon.png
+│   ├── favicon.ico
+│   ├── favicon-16x16.png
+│   ├── favicon-32x32.png
+│   └── site.webmanifest
+├── i18n
+│   └── request.ts
+├── lib
+│   ├── auth.ts
+│   ├── booking-utils.ts
+│   ├── constants.ts
+│   ├── db.ts
+│   ├── email.ts
+│   ├── mock-payment.ts
+│   ├── toast.ts
+│   ├── utils.ts
+│   ├── i18n
+│   │   ├── client.ts
+│   │   └── config.ts
+│   ├── payment
+│   │   ├── p24-client.ts
+│   │   └── przelewy24.ts
+│   ├── pwa
+│   │   └── offline-manager.ts
+│   ├── trpc
+│   │   ├── client.ts
+│   │   ├── server.ts
+│   │   └── routers
+│   │       ├── adminReports.ts
+│   │       ├── auth.ts
+│   │       ├── booking.ts
+│   │       ├── index.ts
+│   │       ├── instructorReports.ts
+│   │       ├── location.ts
+│   │       ├── notification.ts
+│   │       ├── package.ts
+│   │       ├── payment.ts
+│   │       ├── schedule.ts
+│   │       ├── studentReports.ts
+│   │       ├── user.ts
+│   │       └── vehicle.ts
+│   ├── utils
+│   │   ├── export.ts
+│   │   └── schedule.ts
+│   └── validations
+│       ├── booking.ts
+│       ├── package.ts
+│       ├── payment.ts
+│       ├── report.ts
+│       ├── schedule.ts
+│       ├── user.ts
+│       └── vehicle.ts
+├── messages
+│   ├── en.json
+│   ├── pl.json
+│   ├── ru.json
+│   └── uk.json
+├── prisma
+│   ├── schema.prisma
+│   ├── migrations
+│   │   ├── migration_lock.toml
+│   │   └── 20250823194017_init
+│   │       └── migration.sql
+│   └── seed
+│       ├── index.js
+│       ├── data
+│       │   ├── bookings.js
+│       │   ├── locations.js
+│       │   ├── maintenanceLogs.js
+│       │   ├── notifications.js
+│       │   ├── packages.js
+│       │   ├── payments.js
+│       │   ├── scheduleExceptions.js
+│       │   ├── schedules.js
+│       │   ├── userPackages.js
+│       │   ├── users.js
+│       │   └── vehicles.js
+│       └── utils
+│           ├── logger.js
+│           └── stats.js
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── icon-192x192.png
+│   ├── icon-512x512.png
+│   ├── manifest.json
+│   ├── next.svg
+│   ├── sw.js
+│   ├── sw.js.map
+│   ├── vercel.svg
+│   ├── window.svg
+│   ├── workbox-e43f5367.js
+│   ├── workbox-e43f5367.js.map
+│   ├── icons
+│   │   ├── icon-128x128.png
+│   │   ├── icon-128x128.svg
+│   │   ├── icon-144x144.png
+│   │   ├── icon-144x144.svg
+│   │   ├── icon-152x152.png
+│   │   ├── icon-152x152.svg
+│   │   ├── icon-192x192.png
+│   │   ├── icon-192x192.svg
+│   │   ├── icon-384x384.png
+│   │   ├── icon-384x384.svg
+│   │   ├── icon-512x512.png
+│   │   ├── icon-512x512.svg
+│   │   ├── icon-72x72.png
+│   │   ├── icon-72x72.svg
+│   │   ├── icon-96x96.png
+│   │   └── icon-96x96.svg
+│   └── screenshots
+├── scripts
+│   ├── convert-icons.js
+│   ├── generate-pwa-icons.js
+│   ├── migration-health-check.js
+│   ├── reset-database.bat
+│   └── reset-database.sh
+└── types
+    └── next-auth.d.ts

@@ -504,86 +504,174 @@ export const packageRouter = router({
     }),
 
   // Get user's packages
-  getMyPackages: protectedProcedure
-    .input(z.object({
-      includeExpired: z.boolean().default(false),
-      status: z.nativeEnum(PackageStatus).optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      const where: any = {
-        userId: ctx.session.user.id,
-      }
+  // getMyPackages: protectedProcedure
+  //   .input(z.object({
+  //     includeExpired: z.boolean().default(false),
+  //     status: z.nativeEnum(PackageStatus).optional(),
+  //   }))
+  //   .query(async ({ ctx, input }) => {
+  //     const where: any = {
+  //       userId: ctx.session.user.id,
+  //     }
 
-      if (!input.includeExpired) {
-        where.expiresAt = { gte: new Date() }
-      }
+  //     if (!input.includeExpired) {
+  //       where.expiresAt = { gte: new Date() }
+  //     }
 
-      if (input.status) {
-        where.status = input.status
-      }
+  //     if (input.status) {
+  //       where.status = input.status
+  //     }
 
-      const userPackages = await ctx.db.userPackage.findMany({
-        where,
-        include: {
-          package: true,
-          payment: true,
-        },
-        orderBy: [
-          { status: 'asc' },
-          { expiresAt: 'asc' },
-        ],
-      })
+  //     const userPackages = await ctx.db.userPackage.findMany({
+  //       where,
+  //       include: {
+  //         package: true,
+  //         payment: true,
+  //       },
+  //       orderBy: [
+  //         { status: 'asc' },
+  //         { expiresAt: 'asc' },
+  //       ],
+  //     })
 
-      // Add computed fields
-      return userPackages.map(up => ({
-        ...up,
-        daysRemaining: differenceInDays(new Date(up.expiresAt), new Date()),
-        isExpiring: differenceInDays(new Date(up.expiresAt), new Date()) <= 7,
-        usagePercentage: up.creditsTotal > 0 
-          ? (up.creditsUsed / up.creditsTotal) * 100 
-          : 0,
-      }))
-    }),
+  //     // Add computed fields
+  //     return userPackages.map(up => ({
+  //       ...up,
+  //       daysRemaining: differenceInDays(new Date(up.expiresAt), new Date()),
+  //       isExpiring: differenceInDays(new Date(up.expiresAt), new Date()) <= 7,
+  //       usagePercentage: up.creditsTotal > 0 
+  //         ? (up.creditsUsed / up.creditsTotal) * 100 
+  //         : 0,
+  //     }))
+  //   }),
+
 
   // Get user packages (admin view)
-  getUserPackages: protectedProcedure
-    .input(z.object({
-      userId: z.string(),
-      includeExpired: z.boolean().default(false),
-    }))
-    .query(async ({ ctx, input }) => {
-      // Check permissions
-      if (ctx.session.user.role !== UserRole.ADMIN && 
-          ctx.session.user.role !== UserRole.BRANCH_MANAGER &&
-          ctx.session.user.role !== UserRole.DISPATCHER) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Not authorized to view user packages',
-        })
-      }
 
-      const where: any = {
-        userId: input.userId,
+getUserPackages: protectedProcedure
+  .input(z.object({
+    status: z.enum(['PENDING', 'ACTIVE', 'DEPLETED', 'EXPIRED', 'CANCELLED']).optional()
+  }).optional())
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const where: any = {
+      userId
+    }
+    
+    if (input?.status) {
+      where.status = input.status
+    }
+    
+    const userPackages = await ctx.db.userPackage.findMany({
+      where,
+      include: {
+        package: true,
+        payment: true
+      },
+      orderBy: {
+        purchasedAt: 'desc'
       }
+    })
+    
+    return userPackages
+  }),
 
-      if (!input.includeExpired) {
-        where.expiresAt = { gte: new Date() }
-      }
+getAvailable: protectedProcedure
+  .query(async ({ ctx }) => {
+    const packages = await ctx.db.package.findMany({
+      where: {
+        isActive: true
+      },
+      orderBy: [
+        { sortOrder: 'asc' },
+        { price: 'asc' }
+      ]
+    })
+    
+    return packages
+  }),
 
-      const userPackages = await ctx.db.userPackage.findMany({
-        where,
-        include: {
-          package: true,
-          payment: true,
-        },
-        orderBy: [
-          { status: 'asc' },
-          { purchasedAt: 'desc' },
-        ],
+gift: protectedProcedure
+  .input(z.object({
+    packageId: z.string(),
+    recipientEmail: z.string().email(),
+    recipientName: z.string().optional(),
+    message: z.string().optional()
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    // Перевірка чи існує пакет
+    const pkg = await ctx.db.package.findUnique({
+      where: { id: input.packageId }
+    })
+    
+    if (!pkg || !pkg.isActive) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Package not found or inactive'
       })
-
-      return userPackages
-    }),
+    }
+    
+    // Знаходимо або створюємо користувача-отримувача
+    let recipient = await ctx.db.user.findUnique({
+      where: { email: input.recipientEmail }
+    })
+    
+    if (!recipient) {
+      // Створюємо неактивного користувача який активується при першому вході
+      recipient = await ctx.db.user.create({
+        data: {
+          email: input.recipientEmail,
+          firstName: input.recipientName || 'Gift',
+          lastName: 'Recipient',
+          role: 'STUDENT',
+          status: 'PENDING',
+          passwordHash: '' // Буде встановлено при активації
+        }
+      })
+    }
+    
+    // Створюємо платіж
+    const payment = await ctx.db.payment.create({
+      data: {
+        userId,
+        amount: pkg.price,
+        currency: pkg.currency,
+        status: 'PENDING',
+        method: 'P24',
+        description: `Gift package: ${pkg.name} for ${recipient.email}`
+      }
+    })
+    
+    // Створюємо пакет для отримувача
+    const userPackage = await ctx.db.userPackage.create({
+      data: {
+        userId: recipient.id,
+        packageId: pkg.id,
+        creditsTotal: pkg.credits,
+        creditsUsed: 0,
+        creditsRemaining: pkg.credits,
+        expiresAt: new Date(Date.now() + pkg.validityDays * 24 * 60 * 60 * 1000),
+        status: 'PENDING',
+        purchasePrice: Number(pkg.price),
+        paymentId: payment.id,
+        isGift: true,
+        giftFrom: `${ctx.session.user.email}`,
+        giftMessage: input.message
+      }
+    })
+    
+    // Генеруємо URL для оплати
+    const paymentUrl = `/api/payments/p24/create?paymentId=${payment.id}&type=gift`
+    
+    return {
+      userPackage,
+      payment,
+      paymentUrl
+    }
+  }),
 
   // Use credits
   useCredits: protectedProcedure
@@ -979,6 +1067,70 @@ export const packageRouter = router({
         ...up,
         daysRemaining: differenceInDays(new Date(up.expiresAt), new Date()),
         message: `Your ${up.package.name} package expires in ${differenceInDays(new Date(up.expiresAt), new Date())} days with ${up.creditsRemaining} credits remaining`,
+      }))
+    }),
+
+    // Додайте цей метод в кінець packageRouter в файлі lib/trpc/routers/package.ts:
+
+  // Get user's packages
+  getMyPackages: protectedProcedure
+    .input(z.object({
+      status: z.enum(['ACTIVE', 'EXPIRED', 'DEPLETED', 'ALL']).optional(),
+    }).optional())
+    .query(async ({ ctx, input }) => {
+      const where: any = {
+        userId: ctx.session.user.id,
+      }
+
+      // Filter by status if provided
+      if (input?.status && input.status !== 'ALL') {
+        where.status = input.status
+      }
+
+      const packages = await ctx.db.userPackage.findMany({
+        where,
+        include: {
+          package: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+              credits: true,
+              price: true,
+              validityDays: true,
+            }
+          },
+          payment: {
+            select: {
+              id: true,
+              status: true,
+              completedAt: true,
+            }
+          }
+        },
+        orderBy: [
+          { status: 'asc' },
+          { expiresAt: 'asc' }
+        ],
+      })
+
+      // Transform the data
+      return packages.map(pkg => ({
+        id: pkg.id,
+        packageId: pkg.packageId,
+        packageName: pkg.package.name,
+        packageDescription: pkg.package.description,
+        creditsTotal: pkg.creditsTotal,
+        creditsUsed: pkg.creditsUsed,
+        creditsRemaining: pkg.creditsRemaining,
+        purchasedAt: pkg.purchasedAt,
+        expiresAt: pkg.expiresAt,
+        status: pkg.status,
+        purchasePrice: pkg.purchasePrice,
+        isGift: pkg.isGift,
+        giftFrom: pkg.giftFrom,
+        paymentStatus: pkg.payment?.status,
+        paymentCompletedAt: pkg.payment?.completedAt,
       }))
     }),
 })

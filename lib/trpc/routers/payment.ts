@@ -545,4 +545,295 @@ export const paymentRouter = router({
         byStatus,
       }
     }),
+
+
+    
+
+getUserPayments: protectedProcedure
+  .input(z.object({
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
+    status: z.enum(['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED', 'REFUNDED', 'CANCELLED', 'EXPIRED']).optional(),
+    method: z.enum(['P24', 'CARD', 'TRANSFER', 'CASH', 'PACKAGE', 'CREDITS']).optional()
+  }).optional())
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const where: any = {
+      userId
+    }
+    
+    if (input?.startDate && input?.endDate) {
+      where.createdAt = {
+        gte: input.startDate,
+        lte: input.endDate
+      }
+    }
+    
+    if (input?.status) {
+      where.status = input.status
+    }
+    
+    if (input?.method) {
+      where.method = input.method
+    }
+    
+    const payments = await ctx.db.payment.findMany({
+      where,
+      include: {
+        booking: {
+          include: {
+            instructor: true,
+            vehicle: true,
+            location: true
+          }
+        },
+        userPackage: {
+          include: {
+            package: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+    
+    return payments
+  }),
+
+getStatistics: protectedProcedure
+  .input(z.object({
+    startDate: z.date().optional(),
+    endDate: z.date().optional()
+  }).optional())
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const where: any = {
+      userId
+    }
+    
+    if (input?.startDate && input?.endDate) {
+      where.createdAt = {
+        gte: input.startDate,
+        lte: input.endDate
+      }
+    }
+    
+    const [totalAmount, completedCount, pendingCount, failedCount] = await Promise.all([
+      ctx.db.payment.aggregate({
+        where: {
+          ...where,
+          status: 'COMPLETED'
+        },
+        _sum: {
+          amount: true
+        }
+      }),
+      ctx.db.payment.count({
+        where: {
+          ...where,
+          status: 'COMPLETED'
+        }
+      }),
+      ctx.db.payment.count({
+        where: {
+          ...where,
+          status: 'PENDING'
+        }
+      }),
+      ctx.db.payment.count({
+        where: {
+          ...where,
+          status: 'FAILED'
+        }
+      })
+    ])
+    
+    return {
+      totalAmount: totalAmount._sum.amount || 0,
+      completedCount,
+      pendingCount,
+      failedCount
+    }
+  }),
+
+exportPayments: protectedProcedure
+  .input(z.object({
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
+    format: z.enum(['csv', 'json']).default('csv')
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const where: any = {
+      userId
+    }
+    
+    if (input.startDate && input.endDate) {
+      where.createdAt = {
+        gte: input.startDate,
+        lte: input.endDate
+      }
+    }
+    
+    const payments = await ctx.db.payment.findMany({
+      where,
+      include: {
+        booking: true,
+        userPackage: {
+          include: {
+            package: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+    
+    if (input.format === 'csv') {
+      // Генерація CSV
+      const headers = ['Date', 'Amount', 'Status', 'Method', 'Description', 'Transaction ID']
+      const rows = payments.map(p => [
+        p.createdAt.toISOString(),
+        p.amount.toString(),
+        p.status,
+        p.method,
+        p.description || '',
+        p.p24OrderId || p.id
+      ])
+      
+      const csv = [
+        headers.join(','),
+        ...rows.map(row => row.join(','))
+      ].join('\n')
+      
+      return {
+        content: csv,
+        filename: `payments-${new Date().toISOString().split('T')[0]}.csv`
+      }
+    }
+    
+    return {
+      content: JSON.stringify(payments, null, 2),
+      filename: `payments-${new Date().toISOString().split('T')[0]}.json`
+    }
+  }),
+
+retry: protectedProcedure
+  .input(z.object({
+    paymentId: z.string()
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const payment = await ctx.db.payment.findUnique({
+      where: {
+        id: input.paymentId,
+        userId,
+        status: 'FAILED'
+      },
+      include: {
+        booking: true,
+        userPackage: true
+      }
+    })
+    
+    if (!payment) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Payment not found or cannot be retried'
+      })
+    }
+    
+    // Створюємо новий платіж
+    const newPayment = await ctx.db.payment.create({
+      data: {
+        userId,
+        bookingId: payment.bookingId,
+        userPackageId: payment.userPackageId,
+        amount: payment.amount,
+        currency: payment.currency,
+        status: 'PENDING',
+        method: payment.method,
+        description: payment.description
+      }
+    })
+    
+    const paymentUrl = `/api/payments/p24/create?paymentId=${newPayment.id}`
+    
+    return {
+      payment: newPayment,
+      paymentUrl
+    }
+  }),
+
+downloadInvoice: protectedProcedure
+  .input(z.object({
+    paymentId: z.string()
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const payment = await ctx.db.payment.findUnique({
+      where: {
+        id: input.paymentId,
+        userId,
+        status: 'COMPLETED'
+      },
+      include: {
+        user: true,
+        booking: {
+          include: {
+            instructor: true,
+            location: true
+          }
+        },
+        userPackage: {
+          include: {
+            package: true
+          }
+        }
+      }
+    })
+    
+    if (!payment) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Payment not found'
+      })
+    }
+    
+    // Генерація простого текстового invoice (в production використати PDF бібліотеку)
+    const invoiceNumber = `INV-${payment.createdAt.getFullYear()}-${payment.id.slice(-6).toUpperCase()}`
+    
+    const invoice = `
+INVOICE #${invoiceNumber}
+Date: ${payment.completedAt?.toLocaleDateString()}
+
+BILL TO:
+${payment.user.firstName} ${payment.user.lastName}
+${payment.user.email}
+${payment.user.phone || ''}
+
+DESCRIPTION:
+${payment.description}
+
+AMOUNT: ${payment.amount} ${payment.currency}
+STATUS: PAID
+PAYMENT METHOD: ${payment.method}
+TRANSACTION ID: ${payment.p24OrderId || payment.id}
+
+Thank you for your payment!
+    `.trim()
+    
+    return {
+      content: invoice,
+      invoiceNumber,
+      filename: `invoice-${invoiceNumber}.txt`
+    }
+  }),
 })

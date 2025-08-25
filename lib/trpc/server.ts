@@ -2,44 +2,36 @@
 
 import { initTRPC, TRPCError } from '@trpc/server'
 import { type Session } from 'next-auth'
-import superjson from 'superjson'
-import { ZodError } from 'zod'
-import { db } from '@/lib/db'
-import { UserRole } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { ZodError } from 'zod'
+import { UserRole } from '@prisma/client'
+import superjson from 'superjson'
 
+/**
+ * Context for tRPC procedures
+ */
 interface CreateContextOptions {
   session: Session | null
 }
 
-export const createInnerTRPCContext = (opts: CreateContextOptions) => {
+/**
+ * Create context for tRPC
+ */
+export const createTRPCContext = async (opts?: CreateContextOptions) => {
+  const session = opts?.session ?? (await getServerSession(authOptions))
+  
   return {
-    session: opts.session,
     db,
-  }
-}
-
-export const createTRPCContext = async (opts?: { 
-  req?: Request
-}) => {
-  let session: Session | null = null
-  
-  try {
-    session = await getServerSession(authOptions)
-  } catch (error) {
-    console.error('Error getting session in TRPC context:', error)
-  }
-  
-  return createInnerTRPCContext({
     session,
-  })
+  }
 }
 
-// Export type for use in routers
-export type Context = Awaited<ReturnType<typeof createTRPCContext>>
-
-const t = initTRPC.context<Context>().create({
+/**
+ * Initialize tRPC backend with superjson transformer
+ */
+const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -47,35 +39,45 @@ const t = initTRPC.context<Context>().create({
       data: {
         ...shape.data,
         zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+          error.cause instanceof ZodError
+            ? error.cause.flatten()
+            : null,
       },
     }
   },
 })
 
+/**
+ * Export reusable router and procedure helpers
+ */
 export const router = t.router
 export const publicProcedure = t.procedure
 
-// Protected procedure - requires authentication
-const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+/**
+ * Protected procedure - requires authentication
+ */
+const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ 
       code: 'UNAUTHORIZED',
       message: 'You must be logged in to perform this action'
     })
   }
+  
   return next({
     ctx: {
       ...ctx,
-      session: ctx.session as Session, // Type assertion since we checked above
+      session: ctx.session as Session,
     },
   })
 })
 
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
 
-// Admin procedure - requires admin role
-const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
+/**
+ * Admin procedure - requires admin role
+ */
+const enforceUserIsAdmin = t.middleware(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ 
       code: 'UNAUTHORIZED',
@@ -102,8 +104,10 @@ const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
 
 export const adminProcedure = t.procedure.use(enforceUserIsAdmin)
 
-// Instructor procedure - requires instructor role
-const enforceUserIsInstructor = t.middleware(({ ctx, next }) => {
+/**
+ * Instructor procedure - requires instructor role
+ */
+const enforceUserIsInstructor = t.middleware(async ({ ctx, next }) => {
   if (!ctx.session?.user) {
     throw new TRPCError({ 
       code: 'UNAUTHORIZED',
@@ -131,3 +135,35 @@ const enforceUserIsInstructor = t.middleware(({ ctx, next }) => {
 })
 
 export const instructorProcedure = t.procedure.use(enforceUserIsInstructor)
+
+/**
+ * Dispatcher procedure - requires dispatcher role
+ */
+const enforceUserIsDispatcher = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ 
+      code: 'UNAUTHORIZED',
+      message: 'You must be logged in to perform this action'
+    })
+  }
+  
+  const userRole = ctx.session.user.role as UserRole
+  
+  if (userRole !== UserRole.DISPATCHER && 
+      userRole !== UserRole.ADMIN && 
+      userRole !== UserRole.BRANCH_MANAGER) {
+    throw new TRPCError({ 
+      code: 'FORBIDDEN',
+      message: 'Dispatcher access required' 
+    })
+  }
+  
+  return next({
+    ctx: {
+      ...ctx,
+      session: ctx.session as Session,
+    },
+  })
+})
+
+export const dispatcherProcedure = t.procedure.use(enforceUserIsDispatcher)

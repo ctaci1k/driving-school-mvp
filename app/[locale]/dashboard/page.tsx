@@ -17,7 +17,7 @@ export default async function DashboardRedirectPage() {
     case "INSTRUCTOR":
       return redirect("/instructor-dashboard")
     case "STUDENT":
-      return redirect("/student-dashboard")
+      return redirect("/student/dashboard")
     default:
       return redirect("/login")
   }

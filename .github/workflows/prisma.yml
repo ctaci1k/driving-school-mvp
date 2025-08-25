@@ -1,0 +1,30 @@
+# .github/workflows/prisma.yml
+
+name: Prisma CI
+
+on:
+  push:
+    paths:
+      - 'prisma/schema/**'
+      - 'package.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Merge Prisma schemas
+        run: npm run prisma:merge
+        
+      - name: Validate Prisma schema
+        run: npm run prisma:validate
+        
+      - name: Generate Prisma Client
+        run: npx prisma generate

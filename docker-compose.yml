@@ -1,4 +1,5 @@
 # docker-compose.yml
+
 services:
   # PostgreSQL Database
   postgres:
@@ -13,7 +14,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -74,7 +74,14 @@ services:
       - ./components:/app/components
       - ./lib:/app/lib
       - ./prisma:/app/prisma
+      - ./scripts:/app/scripts
       - ./public:/app/public
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./tsconfig.json:/app/tsconfig.json
+      # - ./next.config.mjs:/app/next.config.mjs
+      - ./tailwind.config.ts:/app/tailwind.config.ts
+      - ./postcss.config.mjs:/app/postcss.config.mjs
       # Prevent node_modules from being overwritten
       - /app/node_modules
       - /app/.next
@@ -82,14 +89,21 @@ services:
       - driving-network
     command: >
       sh -c "
-        echo '⏳ Waiting for database...' &&
-        sleep 10 &&
-        echo '📊 Creating database schema...' &&
-        npx prisma db push &&
-        echo '🌱 Seeding database with demo data...' &&
-        node prisma/seed/index.js --fresh &&
-        echo '✅ Database ready with demo data!' &&
-        echo '🚀 Starting application...' &&
+        echo '⏳ Waiting for database connection...' &&
+        until nc -z postgres 5432; do
+          echo 'Waiting for PostgreSQL...'
+          sleep 2
+        done &&
+        echo '✅ Database is reachable!' &&
+        echo '🔍 Checking if tables exist...' &&
+        npx prisma db push --skip-generate --accept-data-loss &&
+        echo '✅ Database schema synchronized!' &&
+        if [ -f prisma/seed/index.js ]; then
+          echo '🌱 Checking if seeding needed...' &&
+          node prisma/seed/index.js &&
+          echo '✅ Database seeded!'
+        fi &&
+        echo '🚀 Starting Next.js application...' &&
         npm run dev
       "
 
@@ -102,6 +116,7 @@ services:
       - "8080:8080"
     environment:
       ADMINER_DEFAULT_SERVER: postgres
+      ADMINER_DESIGN: pepa-linha
     depends_on:
       - postgres
     networks:

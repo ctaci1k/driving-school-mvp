@@ -1,0 +1,23 @@
+// prisma/schema/relations.prisma
+
+// ============================================
+// CROSS-MODULE RELATIONS
+// This file contains all relations between modules
+// Must be merged AFTER all model definitions
+// ============================================
+
+// Note: This file is processed by prisma-merge to add
+// relations to existing models after they are all defined.
+
+// ============================================
+// USER MODEL EXTENSIONS
+// ============================================
+
+// These relations will be added to User model:
+// - examsConducted: ExamResult[] @relation("ExamInstructor")  
+// - feedbacksGiven: LessonFeedback[] @relation("InstructorFeedback")
+
+// ============================================
+// IMPORTANT: Relations are defined in the models
+// where both sides of the relation are available
+// ============================================

@@ -1,0 +1,381 @@
+// prisma/schema/enums.prisma - ОНОВЛЕНА ВЕРСІЯ БЕЗ ДУБЛІКАТІВ
+
+// ============================================
+// GLOBAL ENUMS
+// Shared enumerations across all modules
+// NOTE: Енуми які вже визначені в інших файлах видалені
+// ============================================
+
+// ============================================
+// USER & AUTH ENUMS (вже в user.prisma)
+// ============================================
+// UserRole - вже в user.prisma
+// UserStatus - вже в user.prisma
+
+// ============================================
+// STUDENT ENUMS (вже в student.prisma)
+// ============================================
+// LearningStyle - вже в student.prisma
+// ExperienceLevel - вже в student.prisma
+// EnrollmentStatus - вже в student.prisma
+// PaymentPlan - вже в student.prisma
+// AchievementCategory - вже в student.prisma
+// ExamType - вже в student.prisma
+// LearningPace - вже в student.prisma
+// Gender - вже в student.prisma
+// CommunicationStyle - вже в student.prisma
+
+// ============================================
+// INSTRUCTOR ENUMS (вже в instructor.prisma)
+// ============================================
+// ScheduleType - вже в instructor.prisma
+// ScheduleExceptionType - вже в instructor.prisma
+// ExceptionStatus - вже в instructor.prisma
+// ExceptionPriority - вже в instructor.prisma
+// PeriodType - вже в instructor.prisma
+// DocumentType - вже в instructor.prisma
+
+// ============================================
+// BOOKING ENUMS (вже в booking.prisma)
+// ============================================
+// BookingStatus - вже в booking.prisma
+// LessonType - вже в booking.prisma
+// BookingSource - вже в booking.prisma
+// RequestStatus - вже в booking.prisma
+// WaitlistStatus - вже в booking.prisma
+// UsageType - вже в booking.prisma
+// RuleCategory - вже в booking.prisma
+// RuleType - вже в booking.prisma
+// ConflictType - вже в booking.prisma
+// ConflictSeverity - вже в booking.prisma
+// ConflictStatus - вже в booking.prisma
+// CalendarProvider - вже в booking.prisma
+// SyncDirection - вже в booking.prisma
+
+// ============================================
+// PAYMENT ENUMS (вже в payment.prisma)
+// ============================================
+// PackageType - вже в payment.prisma
+// PackageCategory - вже в payment.prisma
+// ValidityType - вже в payment.prisma
+// PackageStatus - вже в payment.prisma
+// PaymentStatus - вже в payment.prisma
+// PaymentMethod - вже в payment.prisma
+// PaymentGateway - вже в payment.prisma
+// InvoiceStatus - вже в payment.prisma
+// DiscountType - вже в payment.prisma
+
+// ============================================
+// VEHICLE ENUMS (вже в vehicle.prisma)
+// ============================================
+// VehicleCategory - вже в vehicle.prisma
+// Transmission - вже в vehicle.prisma
+// FuelType - вже в vehicle.prisma
+// VehicleStatus - вже в vehicle.prisma
+// VehicleCondition - вже в vehicle.prisma
+// OwnershipType - вже в vehicle.prisma
+// MaintenanceType - вже в vehicle.prisma
+// MaintenanceCategory - вже в vehicle.prisma
+// MaintenancePriority - вже в vehicle.prisma
+// MaintenanceStatus - вже в vehicle.prisma
+// IssueCategory - вже в vehicle.prisma
+// IssueSeverity - вже в vehicle.prisma
+// IssueStatus - вже в vehicle.prisma
+// VehicleDocumentType - вже в vehicle.prisma
+// InspectionType - вже в vehicle.prisma
+
+// ============================================
+// LOCATION ENUMS (вже в location.prisma)
+// ============================================
+// LocationType - вже в location.prisma
+// LocationStatus - вже в location.prisma
+// RoomType - вже в location.prisma
+// RoomBookingPurpose - вже в location.prisma
+// RoomBookingStatus - вже в location.prisma
+// TheoryClassStatus - вже в location.prisma
+// AmenityType - вже в location.prisma
+// HolidayType - вже в location.prisma
+// NearbyPlaceType - вже в location.prisma
+
+// ============================================
+// NOTIFICATION ENUMS (вже в notification.prisma)
+// ============================================
+// NotificationType - вже в notification.prisma
+// NotificationChannel - вже в notification.prisma
+// NotificationStatus - вже в notification.prisma
+// NotificationPriority - вже в notification.prisma
+// MessagePriority - вже в notification.prisma
+// TicketCategory - вже в notification.prisma
+// TicketPriority - вже в notification.prisma
+// TicketStatus - вже в notification.prisma
+
+// ============================================
+// ГЛОБАЛЬНІ ЕНУМИ ЯКІ НЕ ВИЗНАЧЕНІ В ІНШИХ ФАЙЛАХ
+// Тільки ті що використовуються в кількох модулях
+// ============================================
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum TimeSlot {
+  EARLY_MORNING  // 06:00-09:00
+  MORNING        // 09:00-12:00
+  AFTERNOON      // 12:00-15:00
+  LATE_AFTERNOON // 15:00-18:00
+  EVENING        // 18:00-21:00
+  NIGHT          // 21:00-24:00
+}
+
+enum Currency {
+  PLN
+  EUR
+  USD
+  GBP
+  CZK
+  UAH
+}
+
+enum TaxRate {
+  ZERO        // 0%
+  REDUCED_5   // 5%
+  REDUCED_8   // 8%
+  STANDARD    // 23%
+  EXEMPT      // Tax exempt
+}
+
+enum Priority {
+  LOWEST
+  LOW
+  NORMAL
+  HIGH
+  HIGHEST
+  CRITICAL
+}
+
+enum Severity {
+  TRIVIAL
+  MINOR
+  MODERATE
+  MAJOR
+  CRITICAL
+  BLOCKER
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REVISION_REQUIRED
+  CANCELLED
+  EXPIRED
+}
+
+enum VisibilityLevel {
+  PUBLIC
+  PRIVATE
+  RESTRICTED
+  INTERNAL
+  CONFIDENTIAL
+}
+
+enum Environment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+  TEST
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  EXPORT
+  IMPORT
+  APPROVE
+  REJECT
+  CANCEL
+  RESTORE
+}
+
+enum SystemRole {
+  USER
+  MODERATOR
+  ADMIN
+  DEVELOPER
+  SYSTEM
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  RETRY
+}
+
+enum ReportType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+  CUSTOM
+}
+
+enum MetricType {
+  COUNT
+  SUM
+  AVERAGE
+  PERCENTAGE
+  RATIO
+  TREND
+}
+
+enum IntegrationType {
+  CALENDAR
+  PAYMENT
+  SMS
+  EMAIL
+  CRM
+  ACCOUNTING
+  ANALYTICS
+  SOCIAL_MEDIA
+  MAPPING
+  GOVERNMENT
+}
+
+enum ApiStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  DEPRECATED
+  ERROR
+  RATE_LIMITED
+}
+
+enum WebhookEvent {
+  BOOKING_CREATED
+  BOOKING_UPDATED
+  BOOKING_CANCELLED
+  PAYMENT_RECEIVED
+  PAYMENT_FAILED
+  USER_REGISTERED
+  USER_UPDATED
+  LESSON_COMPLETED
+  EXAM_PASSED
+  PACKAGE_PURCHASED
+}
+
+enum SyncStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  PARTIAL
+  SKIPPED
+}
+
+enum ConsentType {
+  TERMS_OF_SERVICE
+  PRIVACY_POLICY
+  MARKETING
+  DATA_PROCESSING
+  COOKIES
+  PHOTOGRAPHY
+  EMERGENCY_CONTACT
+}
+
+enum DataRetentionPeriod {
+  DAYS_30
+  DAYS_90
+  MONTHS_6
+  YEAR_1
+  YEARS_2
+  YEARS_5
+  YEARS_7
+  PERMANENT
+}
+
+enum LegalBasis {
+  CONSENT
+  CONTRACT
+  LEGAL_OBLIGATION
+  VITAL_INTERESTS
+  PUBLIC_TASK
+  LEGITIMATE_INTERESTS
+}
+
+enum VerificationStatus {
+  PENDING
+  IN_PROGRESS
+  VERIFIED
+  FAILED
+  EXPIRED
+  NOT_REQUIRED
+}
+
+enum DocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+  ARCHIVED
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+  AWAY
+  DO_NOT_DISTURB
+  OFFLINE
+  BREAK
+  IN_LESSON
+}
+
+enum RatingCategory {
+  OVERALL
+  TEACHING
+  COMMUNICATION
+  PUNCTUALITY
+  PATIENCE
+  VEHICLE
+  VALUE
+  SAFETY
+}
+
+enum FeedbackType {
+  LESSON
+  INSTRUCTOR
+  VEHICLE
+  FACILITY
+  SERVICE
+  GENERAL
+}
+
+enum ComplaintStatus {
+  SUBMITTED
+  ACKNOWLEDGED
+  INVESTIGATING
+  RESOLVED
+  REJECTED
+  ESCALATED
+}

@@ -1,0 +1,16 @@
+{
+  "inputs": [
+    "prisma/schema/base.prisma",
+    "prisma/schema/enums.prisma",
+    "prisma/schema/user.prisma",
+    "prisma/schema/auth.prisma",
+    "prisma/schema/notification.prisma",
+    "prisma/schema/student.prisma",
+    "prisma/schema/instructor.prisma",
+    "prisma/schema/booking.prisma",
+    "prisma/schema/payment.prisma",
+    "prisma/schema/vehicle.prisma",
+    "prisma/schema/location.prisma"
+  ],
+  "output": "prisma/schema.prisma"
+}

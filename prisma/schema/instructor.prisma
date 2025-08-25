@@ -1,0 +1,457 @@
+// prisma/schema/instructor.prisma
+
+// ============================================
+// INSTRUCTOR MODULE MODELS
+// All instructor-specific tables and relations
+// ============================================
+
+// ============================================
+// INSTRUCTOR PROFILE - Extended info for instructors
+// ============================================
+model InstructorProfile {
+ id            String   @id @default(cuid())
+ userId        String   @unique
+ user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+ // ===== LICENSING & CERTIFICATION =====
+ instructorLicenseNumber String   @unique
+ instructorLicenseDate   DateTime
+ instructorLicenseExpiry DateTime
+ licenseCategories       String[] // ["B", "B1", "C", "D"]
+ 
+ // Additional Certifications
+ certifications          String[]
+ firstAidCertified       Boolean  @default(false)
+ firstAidExpiryDate      DateTime?
+ defensiveDrivingCertified Boolean @default(false)
+ 
+ // ===== EXPERIENCE & SKILLS =====
+ yearsOfExperience       Int
+ previousSchools         String[]
+ specializations         String[] // ["night_driving", "highway", "parking"]
+ languagesSpoken         String[] @default(["pl"])
+ 
+ // Teaching Preferences
+ preferredLessonTypes    String[]
+ preferredStudentLevel   ExperienceLevel[]
+ maxStudentsPerDay       Int      @default(5)
+ 
+ // ===== PERFORMANCE METRICS =====
+ rating                  Float    @default(0)    // 0-5
+ totalRatings            Int      @default(0)
+ totalLessons            Int      @default(0)
+ totalStudents           Int      @default(0)
+ 
+ // Success Metrics
+ studentsPassedTheory    Int      @default(0)
+ studentsPassedPractical Int      @default(0)
+ successRate             Float    @default(0)    // percentage
+ averageLessonsPerStudent Float   @default(0)
+ 
+ // Feedback Stats
+ punctualityRating       Float    @default(0)    // 0-5
+ teachingRating          Float    @default(0)    // 0-5
+ communicationRating     Float    @default(0)    // 0-5
+ patienceRating          Float    @default(0)    // 0-5
+ 
+ // ===== AVAILABILITY =====
+ isActive                Boolean  @default(true)
+ isAcceptingStudents     Boolean  @default(true)
+ maxWeeklyHours          Int      @default(40)
+ 
+ // ===== COMPENSATION =====
+ hourlyRate              Decimal  @db.Decimal(10, 2)
+ overtimeRate            Decimal? @db.Decimal(10, 2)
+ weekendRate             Decimal? @db.Decimal(10, 2)
+ nightRate               Decimal? @db.Decimal(10, 2)
+ 
+ // Commission
+ commissionRate          Float?   // percentage
+ bonusEligible           Boolean  @default(true)
+ 
+ // ===== PROFILE DETAILS =====
+ bio                     String?
+ teachingPhilosophy      String?
+ profilePhoto            String?
+ introVideoUrl           String?
+ 
+ // Social Proof
+ testimonials            Json?    // Array of testimonials
+ badges                  String[] // ["top_rated", "patient", "punctual"]
+ 
+ // ===== METADATA =====
+ onboardingCompleted     Boolean  @default(false)
+ backgroundCheckDate     DateTime?
+ contractStartDate       DateTime
+ contractEndDate         DateTime?
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ 
+ @@index([instructorLicenseNumber])
+ @@index([rating])
+ @@index([isActive])
+ @@map("instructor_profiles")
+}
+
+// ============================================
+// INSTRUCTOR SCHEDULE - Working hours
+// ============================================
+model InstructorSchedule {
+ id            String   @id @default(cuid())
+ instructorId  String
+ instructor    User     @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+ 
+ // ===== SCHEDULE TYPE =====
+ scheduleType  ScheduleType @default(WEEKLY)  // WEEKLY, SPECIFIC_DATE, RECURRING
+ 
+ // For WEEKLY schedules
+ dayOfWeek     Int?     // 0 = Sunday, 6 = Saturday
+ 
+ // For SPECIFIC_DATE schedules
+ specificDate  DateTime?
+ 
+ // For RECURRING schedules
+ recurrenceRule String?  // RRULE format
+ 
+ // ===== TIME SLOTS =====
+ startTime     String   // "09:00"
+ endTime       String   // "17:00"
+ 
+ // Break Time
+ breakStart    String?  // "13:00"
+ breakEnd      String?  // "14:00"
+ 
+ // Buffer Time
+ bufferBefore  Int      @default(15) // minutes before lesson
+ bufferAfter   Int      @default(15) // minutes after lesson
+ 
+ // ===== LOCATION =====
+ locationId    String?
+ location      Location? @relation(fields: [locationId], references: [id])
+ workFromHome  Boolean   @default(false)
+ 
+ // ===== CAPACITY =====
+ maxBookings   Int       @default(5)
+ currentBookings Int     @default(0)
+ 
+ // ===== LESSON PREFERENCES =====
+ availableLessonTypes String[]
+ nightDriving  Boolean   @default(false)
+ earlyMorning  Boolean   @default(false)
+ weekend       Boolean   @default(false)
+ 
+ // ===== STATUS =====
+ isAvailable   Boolean   @default(true)
+ isPublished   Boolean   @default(true)  // Visible to students
+ 
+ // Temporary Changes
+ tempUnavailable Boolean @default(false)
+ tempReason      String?
+ tempStartDate   DateTime?
+ tempEndDate     DateTime?
+ 
+ // ===== METADATA =====
+ notes         String?
+ color         String?   // For calendar display
+ 
+ createdAt     DateTime  @default(now())
+ updatedAt     DateTime  @updatedAt
+ 
+ @@unique([instructorId, dayOfWeek])
+ @@unique([instructorId, specificDate])
+ @@index([instructorId])
+ @@index([dayOfWeek])
+ @@index([specificDate])
+ @@index([isAvailable])
+ @@map("instructor_schedules")
+}
+
+// ============================================
+// SCHEDULE TEMPLATE - Reusable schedule patterns
+// ============================================
+model ScheduleTemplate {
+ id            String   @id @default(cuid())
+ instructorId  String
+ instructor    User     @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+ 
+ // Template Info
+ name          String   // "Summer Schedule", "Winter Schedule"
+ description   String?
+ isActive      Boolean  @default(false)
+ isDefault     Boolean  @default(false)
+ 
+ // Schedule Pattern (JSON)
+ weekPattern   Json     // Array of daily schedules
+// Example:
+//  {
+//    "monday": { "start": "09:00", "end": "17:00", "break": "13:00-14:00" },
+//    "tuesday": { "start": "10:00", "end": "18:00", "break": "14:00-15:00" },
+//    ...
+//  }
+
+ 
+ // Settings
+ bufferBefore  Int      @default(15)
+ bufferAfter   Int      @default(15)
+ maxBookingsPerDay Int  @default(5)
+ 
+ // Validity Period
+ validFrom     DateTime?
+ validTo       DateTime?
+ 
+ createdAt     DateTime @default(now())
+ updatedAt     DateTime @updatedAt
+ 
+ @@index([instructorId])
+ @@index([isActive])
+ @@map("schedule_templates")
+}
+
+// ============================================
+// SCHEDULE EXCEPTION - Time off, holidays, etc.
+// ============================================
+model ScheduleException {
+ id            String   @id @default(cuid())
+ instructorId  String
+ instructor    User     @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+ 
+ // ===== EXCEPTION TYPE =====
+ type          ScheduleExceptionType
+ 
+ // ===== DATE/TIME RANGE =====
+ startDate     DateTime
+ endDate       DateTime
+ allDay        Boolean  @default(true)
+ startTime     String?  // "14:00" if not allDay
+ endTime       String?  // "18:00" if not allDay
+ 
+ // ===== REASON & DETAILS =====
+ reason        String
+ description   String?
+ 
+ // ===== APPROVAL WORKFLOW =====
+ status        ExceptionStatus @default(PENDING)
+ requestedAt   DateTime        @default(now())
+ 
+ // Approval
+ isApproved    Boolean?
+ approvedBy    String?
+ approvedAt    DateTime?
+ approvalNotes String?
+ 
+ // Rejection
+ rejectedBy    String?
+ rejectedAt    DateTime?
+ rejectionReason String?
+ 
+ // ===== AFFECTED BOOKINGS =====
+ affectsBookings     Boolean  @default(true)
+ bookingsCount       Int      @default(0)
+ bookingsReassigned  Int      @default(0)
+ bookingsCancelled   Int      @default(0)
+ 
+ // ===== SUBSTITUTE INSTRUCTOR =====
+ substituteInstructorId String?
+ substituteConfirmed    Boolean @default(false)
+ 
+ // ===== NOTIFICATIONS =====
+ notificationSent    Boolean  @default(false)
+ studentsNotified    Int      @default(0)
+ 
+ // ===== DOCUMENTATION =====
+ attachmentUrl       String?  // Medical certificate, etc.
+ certificateNumber   String?
+ certificateExpected Boolean  @default(false)
+ 
+ // ===== COMPENSATION =====
+ isPaid              Boolean  @default(false)
+ compensationRate    Float?   // Percentage of normal rate
+ additionalCompensation Float?
+ 
+ // ===== METADATA =====
+ isRecurring         Boolean  @default(false)
+ recurrenceRule      String?  // RRULE format
+ isCompanyWide       Boolean  @default(false)  // Holiday for all
+ priority            ExceptionPriority @default(NORMAL)
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ 
+ @@index([instructorId])
+ @@index([startDate, endDate])
+ @@index([type])
+ @@index([status])
+ @@map("schedule_exceptions")
+}
+
+// ============================================
+// INSTRUCTOR PERFORMANCE - Monthly/Yearly stats
+// ============================================
+model InstructorPerformance {
+ id            String   @id @default(cuid())
+ instructorId  String
+ userId        String
+ 
+ // Period
+ periodType    PeriodType // MONTHLY, QUARTERLY, YEARLY
+ periodStart   DateTime
+ periodEnd     DateTime
+ 
+ // ===== LESSON METRICS =====
+ totalLessons          Int
+ completedLessons      Int
+ cancelledLessons      Int
+ noShowLessons         Int
+ 
+ // Hours
+ totalHours            Float
+ regularHours          Float
+ overtimeHours         Float
+ weekendHours          Float
+ nightHours            Float
+ 
+ // ===== STUDENT METRICS =====
+ uniqueStudents        Int
+ newStudents           Int
+ returningStudents     Int
+ 
+ // Success Rates
+ studentsPassedTheory  Int
+ studentsPassedPractical Int
+ passRate              Float
+ 
+ // ===== FINANCIAL METRICS =====
+ totalEarnings         Decimal @db.Decimal(10, 2)
+ baseEarnings          Decimal @db.Decimal(10, 2)
+ overtimeEarnings      Decimal @db.Decimal(10, 2)
+ bonusEarnings         Decimal @db.Decimal(10, 2)
+ 
+ // Deductions
+ deductions            Decimal @db.Decimal(10, 2)
+ netEarnings           Decimal @db.Decimal(10, 2)
+ 
+ // ===== RATINGS =====
+ averageRating         Float
+ totalReviews          Int
+ fiveStarReviews       Int
+ 
+ // ===== ATTENDANCE =====
+ scheduledDays         Int
+ workedDays            Int
+ sickDays              Int
+ vacationDays          Int
+ 
+ // Punctuality
+ onTimeLessons         Int
+ lateLessons           Int
+ punctualityRate       Float
+ 
+ // ===== GOALS & TARGETS =====
+ lessonTarget          Int?
+ lessonTargetMet       Boolean @default(false)
+ revenueTarget         Decimal? @db.Decimal(10, 2)
+ revenueTargetMet      Boolean @default(false)
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ 
+ @@unique([instructorId, periodType, periodStart])
+ @@index([instructorId])
+ @@index([periodType])
+ @@index([periodStart])
+ @@map("instructor_performance")
+}
+
+// ============================================
+// INSTRUCTOR DOCUMENTS - Certificates, contracts
+// ============================================
+model InstructorDocument {
+ id            String   @id @default(cuid())
+ instructorId  String
+ 
+ // Document Info
+ type          DocumentType
+ name          String
+ description   String?
+ 
+ // File Details
+ fileUrl       String
+ fileSize      Int      // bytes
+ mimeType      String
+ 
+ // Validity
+ issueDate     DateTime
+ expiryDate    DateTime?
+ isExpired     Boolean  @default(false)
+ 
+ // Verification
+ isVerified    Boolean  @default(false)
+ verifiedBy    String?
+ verifiedAt    DateTime?
+ 
+ // Reminders
+ reminderDays  Int?     // Days before expiry
+ reminderSent  Boolean  @default(false)
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ 
+ @@index([instructorId])
+ @@index([type])
+ @@index([expiryDate])
+ @@map("instructor_documents")
+}
+
+// ============================================
+// ENUMS FOR INSTRUCTOR MODULE
+// ============================================
+
+enum ScheduleType {
+ WEEKLY
+ SPECIFIC_DATE
+ RECURRING
+}
+
+enum ScheduleExceptionType {
+ VACATION
+ SICK_LEAVE
+ PERSONAL_LEAVE
+ TRAINING
+ HOLIDAY
+ COMPANY_EVENT
+ EMERGENCY
+ OTHER
+}
+
+enum ExceptionStatus {
+ PENDING
+ APPROVED
+ REJECTED
+ CANCELLED
+}
+
+enum ExceptionPriority {
+ LOW
+ NORMAL
+ HIGH
+ URGENT
+}
+
+enum PeriodType {
+ DAILY
+ WEEKLY
+ MONTHLY
+ QUARTERLY
+ YEARLY
+}
+
+enum DocumentType {
+ LICENSE
+ CERTIFICATE
+ CONTRACT
+ INSURANCE
+ MEDICAL
+ BACKGROUND_CHECK
+ OTHER
+}

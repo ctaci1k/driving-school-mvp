@@ -791,6 +791,7 @@ export const bookingRouter = router({
       return booking
     }),
 
+    
   // Update booking
   update: protectedProcedure
     .input(UpdateBookingSchema)
@@ -1107,48 +1108,140 @@ export const bookingRouter = router({
     }),
 
   // Keep the old getMyBookings for backward compatibility
-  getMyBookings: protectedProcedure
-    .input(z.object({
-      status: z.nativeEnum(BookingStatus).optional(),
-      from: z.string().datetime().optional(),
-      to: z.string().datetime().optional(),
-      limit: z.number().min(1).max(100).default(20),
-      cursor: z.string().optional(),
-    }))
-    .query(async ({ ctx, input }) => {
-      // Redirect to getMy method
-      return ctx.db.booking.findMany({
-        where: {
-          ...(ctx.session.user.role === UserRole.STUDENT && { studentId: ctx.session.user.id }),
-          ...(ctx.session.user.role === UserRole.INSTRUCTOR && { instructorId: ctx.session.user.id }),
-          ...(input.status && { status: input.status }),
-          ...(input.from || input.to ? {
-            startTime: {
-              ...(input.from && { gte: new Date(input.from) }),
-              ...(input.to && { lte: new Date(input.to) })
-            }
-          } : {})
+// lib/trpc/routers/booking.ts
+// Додати ці методи в існуючий роутер:
+
+getMyBookings: protectedProcedure
+  .input(z.object({
+    status: z.enum(['PENDING', 'CONFIRMED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'NO_SHOW', 'RESCHEDULED']).optional(),
+    upcoming: z.boolean().optional(),
+    past: z.boolean().optional(),
+    lessonType: z.string().optional(),
+    instructorId: z.string().optional()
+  }).optional())
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    const now = new Date()
+    
+    const where: any = {
+      studentId: userId
+    }
+    
+    if (input?.status) {
+      where.status = input.status
+    }
+    
+    if (input?.upcoming) {
+      where.startTime = { gte: now }
+      where.status = where.status || 'CONFIRMED'
+    }
+    
+    if (input?.past) {
+      where.startTime = { lt: now }
+    }
+    
+    if (input?.lessonType) {
+      where.lessonType = input.lessonType
+    }
+    
+    if (input?.instructorId) {
+      where.instructorId = input.instructorId
+    }
+    
+    const bookings = await ctx.db.booking.findMany({
+      where,
+      include: {
+        instructor: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            phone: true,
+            avatar: true,
+            rating: true
+          }
         },
-        take: input.limit + 1,
-        cursor: input.cursor ? { id: input.cursor } : undefined,
-        orderBy: { startTime: 'asc' },
-        include: {
-          instructor: true,
-          student: true,
-          vehicle: true,
-          location: true,
-          payment: true,
+        vehicle: {
+          select: {
+            id: true,
+            make: true,
+            model: true,
+            registrationNumber: true,
+            category: true,
+            transmission: true,
+            fuelType: true
+          }
         },
-      }).then(bookings => {
-        let nextCursor: typeof input.cursor | undefined = undefined
-        if (bookings.length > input.limit) {
-          const nextItem = bookings.pop()
-          nextCursor = nextItem!.id
+        location: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
+            address: true,
+            city: true,
+            postalCode: true
+          }
+        },
+        payment: {
+          select: {
+            id: true,
+            amount: true,
+            status: true,
+            method: true,
+            completedAt: true
+          }
         }
-        return {
-          items: bookings,
-          nextCursor,
-        }
+      },
+      orderBy: {
+        startTime: 'asc'
+      }
+    })
+    
+    return bookings
+  }),
+
+getStudentBookings: protectedProcedure
+  .input(z.object({
+    studentId: z.string(),
+    startDate: z.date().optional(),
+    endDate: z.date().optional()
+  }))
+  .query(async ({ ctx, input }) => {
+    // Перевірка що це інструктор або адмін
+    const userRole = ctx.session.user.role
+    if (userRole !== 'INSTRUCTOR' && userRole !== 'ADMIN') {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: 'Only instructors and admins can access this'
       })
-    }),
+    }
+    
+    const where: any = {
+      studentId: input.studentId
+    }
+    
+    if (input.startDate && input.endDate) {
+      where.startTime = {
+        gte: input.startDate,
+        lte: input.endDate
+      }
+    }
+    
+    const bookings = await ctx.db.booking.findMany({
+      where,
+      include: {
+        student: true,
+        instructor: true,
+        vehicle: true,
+        location: true,
+        payment: true
+      },
+      orderBy: {
+        startTime: 'desc'
+      }
+    })
+    
+    return bookings
+  }),
 })

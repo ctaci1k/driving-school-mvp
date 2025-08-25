@@ -1,0 +1,151 @@
+// prisma/schema/user.prisma
+
+// ============================================
+// USER & AUTHENTICATION MODELS
+// Core user model and authentication related tables
+// ============================================
+
+model User {
+    id            String    @id @default(cuid())
+    email         String    @unique
+    emailVerified DateTime?
+    passwordHash  String?
+
+    // Personal Information
+    firstName     String
+    lastName      String
+    phone         String?
+    phoneVerified DateTime?
+    avatar        String?
+    dateOfBirth   DateTime?
+
+    // Emergency Contacts
+    emergencyContact String?
+    emergencyPhone   String?
+
+    // Role & Status
+    role   UserRole   @default(STUDENT)
+    status UserStatus @default(ACTIVE)
+
+    // Location (Multi-branch support)
+    locationId String?
+    location   Location? @relation(fields: [locationId], references: [id])
+
+    // Address
+    address    String?
+    city       String?
+    postalCode String?
+    country    String? @default("PL")
+
+    // Document Numbers
+    nationalId     String?
+    licenseNumber  String?
+    passportNumber String?
+
+    // Settings & Preferences
+    language           String  @default("pl")
+    timezone           String  @default("Europe/Warsaw")
+    emailNotifications Boolean @default(true)
+    smsNotifications   Boolean @default(true)
+    pushNotifications  Boolean @default(true)
+    marketingConsent   Boolean @default(false)
+
+    // Security
+    twoFactorEnabled    Boolean   @default(false)
+    twoFactorSecret     String?
+    lastPasswordChange  DateTime?
+    failedLoginAttempts Int       @default(0)
+    accountLockedUntil  DateTime?
+
+    // Activity Tracking
+    lastLoginAt    DateTime?
+    lastActivityAt DateTime?
+    loginCount     Int       @default(0)
+
+    // Timestamps
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    deletedAt DateTime? // Soft delete
+
+    // ============ RELATIONS ============
+
+    // Student Relations
+    studentProfile     StudentProfile?
+    studentProgress    StudentProgress?
+    studentPreferences StudentPreferences?
+    enrollments        Enrollment[]
+    studentBookings    Booking[]           @relation("StudentBookings")
+    examResults        ExamResult[]
+    userAchievements   UserAchievement[]
+    bookingRequests    BookingRequest[]
+    bookingWaitlists   BookingWaitlist[]
+    calendarSyncs      CalendarSync[]
+
+    // Instructor Relations
+    instructorProfile   InstructorProfile?
+    instructorBookings  Booking[]            @relation("InstructorBookings")
+    instructorSchedules InstructorSchedule[]
+    scheduleTemplates   ScheduleTemplate[]
+    scheduleExceptions  ScheduleException[]
+    examsConducted      ExamResult[]         @relation("ExamInstructor")
+    feedbacksGiven      LessonFeedback[]     @relation("InstructorFeedback")
+
+    // examsConducted and feedbacksGiven are defined in the target models
+
+    // Vehicle Relations
+    assignedVehicles Vehicle[] @relation("AssignedInstructor")
+
+    // Payment Relations
+    payments     Payment[]
+    userPackages UserPackage[]
+
+    // Auth Relations (from auth.prisma)
+    sessions           Session[]
+    refreshTokens      RefreshToken[]
+    passwordResets     PasswordReset[]
+    loginHistory       LoginHistory[]
+    emailVerifications EmailVerification[]
+    twoFactorAuth      TwoFactorAuth?
+    twoFactorTokens    TwoFactorToken[]
+    oauthAccounts      OAuthAccount[]
+    apiKeys            ApiKey[]
+    securityLogs       SecurityLog[]
+
+    // Communication Relations (from notification.prisma)
+    notifications        Notification[]
+    sentMessages         Message[]       @relation("SentMessages")
+    receivedMessages     Message[]       @relation("ReceivedMessages")
+    supportTickets       SupportTicket[]
+    supportTicketReplies TicketReply[]
+
+    // ============ INDEXES ============
+    @@index([email])
+    @@index([phone])
+    @@index([role])
+    @@index([status])
+    @@index([locationId])
+    @@index([deletedAt])
+    @@map("users")
+}
+
+// ============================================
+// ENUMS FOR USER MODULE
+// ============================================
+
+enum UserRole {
+    STUDENT
+    INSTRUCTOR
+    ADMIN
+    BRANCH_MANAGER
+    DISPATCHER
+    ACCOUNTANT
+    SUPPORT
+}
+
+enum UserStatus {
+    ACTIVE
+    INACTIVE
+    SUSPENDED
+    PENDING
+    BANNED
+}

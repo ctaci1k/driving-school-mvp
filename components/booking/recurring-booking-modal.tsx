@@ -1,61 +1,86 @@
 // components/booking/recurring-booking-modal.tsx
-
 'use client'
 
 import { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
+import { useTranslations } from 'next-intl'
+import { format, addDays, addWeeks, isBefore, isWeekend } from 'date-fns'
+import { pl, uk } from 'date-fns/locale'
+import { Calendar, AlertCircle, CheckCircle, Clock } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Input } from '@/components/ui/input'
-import { Calendar, AlertCircle } from 'lucide-react'
-import { format, addWeeks, addDays } from 'date-fns'
-import { pl, uk } from 'date-fns/locale'
-import { useTranslations } from 'next-intl'
-import { useParams } from 'next/navigation'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Switch } from '@/components/ui/switch'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { trpc } from '@/lib/trpc/client'
+import { toast } from '@/lib/toast'
+import { useLocale } from 'next-intl'
 
 interface RecurringBookingModalProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  startDate: Date
-  startTime: string
-  onConfirm: (settings: RecurringSettings) => void
-}
-
-export interface RecurringSettings {
-  pattern: 'weekly' | 'biweekly' | 'daily'
-  endType: 'count' | 'date'
-  count?: number
-  endDate?: Date
-  skipWeekends: boolean
+  baseBooking: {
+    instructorId: string
+    locationId: string
+    startTime: Date
+    duration: number
+    lessonType: string
+  }
+  onSuccess?: () => void
 }
 
 export function RecurringBookingModal({
   open,
   onOpenChange,
-  startDate,
-  startTime,
-  onConfirm
+  baseBooking,
+  onSuccess
 }: RecurringBookingModalProps) {
-  const t = useTranslations()
-  const params = useParams()
-  const locale = params.locale as string
-  const dateLocale = locale === 'pl' ? pl : locale === 'uk' ? uk : undefined
+  const t = useTranslations('booking.recurringBooking')
+  const locale = useLocale()
+  const dateLocale = locale === 'pl' ? pl : uk
   
-  const [pattern, setPattern] = useState<'weekly' | 'biweekly' | 'daily'>('weekly')
-  const [endType, setEndType] = useState<'count' | 'date'>('count')
-  const [count, setCount] = useState(4)
-  const [endDate, setEndDate] = useState(addWeeks(startDate, 8))
+  const [pattern, setPattern] = useState<'daily' | 'weekly' | 'biweekly'>('weekly')
+  const [endType, setEndType] = useState<'after' | 'until'>('after')
+  const [afterLessons, setAfterLessons] = useState(5)
+  const [untilDate, setUntilDate] = useState(
+    format(addDays(new Date(), 30), 'yyyy-MM-dd')
+  )
   const [skipWeekends, setSkipWeekends] = useState(true)
   
-  // Generowanie preview dat
-  const generatePreviewDates = () => {
-    const dates: Date[] = [startDate]
-    let currentDate = new Date(startDate)
-    const maxDates = endType === 'count' ? count : 20
-    const finalDate = endType === 'date' ? endDate : addWeeks(startDate, 52)
+  const createRecurringBookings = trpc.booking.createRecurring.useMutation({
+    onSuccess: (data) => {
+      toast.success(t('successMultiple', { count: data.created }))
+      onOpenChange(false)
+      onSuccess?.()
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+  
+  const generateDates = () => {
+    const dates: Date[] = []
+    let currentDate = new Date(baseBooking.startTime)
+    const maxDate = endType === 'until' 
+      ? new Date(untilDate)
+      : addDays(currentDate, 365) // Max 1 year
+    const maxCount = endType === 'after' ? afterLessons : 52 // Max 52 lessons
     
-    for (let i = 1; i < maxDates; i++) {
+    while (dates.length < maxCount && isBefore(currentDate, maxDate)) {
+      if (!skipWeekends || !isWeekend(currentDate)) {
+        dates.push(new Date(currentDate))
+      }
+      
       if (pattern === 'daily') {
         currentDate = addDays(currentDate, 1)
       } else if (pattern === 'weekly') {
@@ -63,35 +88,34 @@ export function RecurringBookingModal({
       } else if (pattern === 'biweekly') {
         currentDate = addWeeks(currentDate, 2)
       }
-      
-      // Pomiń weekendy jeśli zaznaczono
-      if (skipWeekends && pattern === 'daily') {
-        while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
-          currentDate = addDays(currentDate, 1)
-        }
-      }
-      
-      if (currentDate <= finalDate) {
-        dates.push(new Date(currentDate))
-      } else {
-        break
-      }
     }
     
     return dates
   }
   
-  const previewDates = generatePreviewDates()
+  const previewDates = generateDates()
   
   const handleConfirm = () => {
-    onConfirm({
+    if (previewDates.length === 0) {
+      toast.error(t('noDatesGenerated'))
+      return
+    }
+    
+    createRecurringBookings.mutate({
+      baseBooking: {
+        instructorId: baseBooking.instructorId,
+        locationId: baseBooking.locationId,
+        startTime: baseBooking.startTime.toISOString(),
+        duration: baseBooking.duration,
+        lessonType: baseBooking.lessonType,
+      },
       pattern,
       endType,
-      count: endType === 'count' ? count : undefined,
-      endDate: endType === 'date' ? endDate : undefined,
-      skipWeekends
+      afterLessons: endType === 'after' ? afterLessons : undefined,
+      untilDate: endType === 'until' ? untilDate : undefined,
+      skipWeekends,
+      dates: previewDates.map(d => d.toISOString())
     })
-    onOpenChange(false)
   }
   
   return (
@@ -99,122 +123,165 @@ export function RecurringBookingModal({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            {t('booking.recurringBooking.title')}
+            <Calendar className="h-5 w-5" />
+            {t('title')}
           </DialogTitle>
+          <DialogDescription>
+            {t('description')}
+          </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-6">
-          {/* Pattern wyboru */}
-          <div>
-            <Label>{t('booking.recurringBooking.pattern')}</Label>
+        <div className="space-y-6 py-4">
+          <div className="space-y-3">
+            <Label>{t('pattern')}</Label>
             <RadioGroup value={pattern} onValueChange={(v) => setPattern(v as any)}>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="daily" id="daily" />
-                <Label htmlFor="daily">{t('booking.recurringBooking.daily')}</Label>
+                <Label htmlFor="daily">{t('daily')}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="weekly" id="weekly" />
-                <Label htmlFor="weekly">{t('booking.recurringBooking.weekly')}</Label>
+                <Label htmlFor="weekly">{t('weekly')}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="biweekly" id="biweekly" />
-                <Label htmlFor="biweekly">{t('booking.recurringBooking.biweekly')}</Label>
+                <Label htmlFor="biweekly">{t('biweekly')}</Label>
               </div>
             </RadioGroup>
           </div>
           
-          {/* Skip weekends (tylko dla daily) */}
           {pattern === 'daily' && (
             <div className="flex items-center space-x-2">
-              <input
-                type="checkbox"
+              <Switch
                 id="skipWeekends"
                 checked={skipWeekends}
-                onChange={(e) => setSkipWeekends(e.target.checked)}
-                className="w-4 h-4"
+                onCheckedChange={setSkipWeekends}
               />
-              <Label htmlFor="skipWeekends">{t('booking.recurringBooking.skipWeekends')}</Label>
+              <Label htmlFor="skipWeekends">{t('skipWeekends')}</Label>
             </div>
           )}
           
-          {/* End type */}
-          <div>
-            <Label>{t('booking.recurringBooking.endType')}</Label>
+          <div className="space-y-3">
+            <Label>{t('endType')}</Label>
             <RadioGroup value={endType} onValueChange={(v) => setEndType(v as any)}>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="count" id="count" />
-                <Label htmlFor="count" className="flex items-center gap-2">
-                  {t('booking.recurringBooking.afterLessons')}
+                <RadioGroupItem value="after" id="after" />
+                <Label htmlFor="after" className="flex items-center gap-2">
+                  {t('afterLessons')}
                   <Input
                     type="number"
-                    value={count}
-                    onChange={(e) => setCount(parseInt(e.target.value) || 1)}
-                    min={2}
-                    max={20}
-                    className="w-20"
-                    disabled={endType !== 'count'}
+                    min="2"
+                    max="52"
+                    value={afterLessons}
+                    onChange={(e) => setAfterLessons(parseInt(e.target.value) || 5)}
+                    className="w-20 ml-2"
+                    disabled={endType !== 'after'}
                   />
+                  {t('lessons')}
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="date" id="date" />
-                <Label htmlFor="date" className="flex items-center gap-2">
-                  {t('booking.recurringBooking.untilDate')}
+                <RadioGroupItem value="until" id="until" />
+                <Label htmlFor="until" className="flex items-center gap-2">
+                  {t('untilDate')}
                   <Input
                     type="date"
-                    value={format(endDate, 'yyyy-MM-dd')}
-                    onChange={(e) => setEndDate(new Date(e.target.value))}
-                    min={format(addDays(startDate, 1), 'yyyy-MM-dd')}
-                    className="w-40"
-                    disabled={endType !== 'date'}
+                    value={untilDate}
+                    onChange={(e) => setUntilDate(e.target.value)}
+                    className="w-40 ml-2"
+                    min={format(addDays(new Date(), 1), 'yyyy-MM-dd')}
+                    max={format(addDays(new Date(), 365), 'yyyy-MM-dd')}
+                    disabled={endType !== 'until'}
                   />
                 </Label>
               </div>
             </RadioGroup>
           </div>
           
-          {/* Preview */}
-          <div>
-            <Label className="flex items-center gap-2 mb-2">
-              {t('booking.recurringBooking.preview')}
-              <span className="text-sm text-gray-500">
-                ({previewDates.length} {t('booking.recurringBooking.lessons')})
-              </span>
-            </Label>
-            <div className="max-h-40 overflow-y-auto border rounded-lg p-3 bg-gray-50">
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {previewDates.map((date, idx) => (
-                  <div 
-                    key={idx}
-                    className={`text-sm p-2 rounded ${idx === 0 ? 'bg-blue-100' : 'bg-white'} border`}
-                  >
-                    <div className="font-medium">
-                      {format(date, 'EEE, d MMM', { locale: dateLocale })}
-                    </div>
-                    <div className="text-xs text-gray-600">{startTime}</div>
-                  </div>
-                ))}
-              </div>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <Label>{t('preview')}</Label>
+              <Badge variant="secondary">
+                {previewDates.length} {t('lessons')}
+              </Badge>
             </div>
+            
+            <ScrollArea className="h-48 w-full rounded-md border p-4">
+              <div className="space-y-2">
+                {previewDates.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-4">
+                    {t('noDatesGenerated')}
+                  </p>
+                ) : (
+                  previewDates.map((date, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium">
+                          {index + 1}.
+                        </span>
+                        <div>
+                          <p className="text-sm font-medium">
+                            {format(date, 'EEEE, d MMMM yyyy', { locale: dateLocale })}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {format(date, 'HH:mm')} - {format(addDays(date, 0), 'HH:mm')}
+                          </p>
+                        </div>
+                      </div>
+                      {index === 0 && (
+                        <Badge variant="outline" className="text-xs">
+                          {t('first')}
+                        </Badge>
+                      )}
+                      {index === previewDates.length - 1 && (
+                        <Badge variant="outline" className="text-xs">
+                          {t('last')}
+                        </Badge>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            </ScrollArea>
           </div>
           
-          {/* Ostrzeżenie */}
-          <div className="flex items-start gap-2 p-3 bg-yellow-50 rounded-lg">
-            <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
-            <div className="text-sm">
-              <p className="font-medium text-yellow-900">{t('booking.recurringBooking.warning')}</p>
-              <p className="text-yellow-700">{t('booking.recurringBooking.warningText')}</p>
-            </div>
-          </div>
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              <div className="space-y-1">
+                <p className="font-medium">{t('warning')}</p>
+                <p className="text-sm">{t('warningText')}</p>
+              </div>
+            </AlertDescription>
+          </Alert>
         </div>
         
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {t('common.cancel')}
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={createRecurringBookings.isLoading}
+          >
+            {t('cancel')}
           </Button>
-          <Button onClick={handleConfirm}>
-            {t('booking.recurringBooking.confirm', { count: previewDates.length })}
+          <Button
+            onClick={handleConfirm}
+            disabled={createRecurringBookings.isLoading || previewDates.length === 0}
+          >
+            {createRecurringBookings.isLoading ? (
+              <>
+                <Clock className="mr-2 h-4 w-4 animate-spin" />
+                {t('creating')}
+              </>
+            ) : (
+              <>
+                <CheckCircle className="mr-2 h-4 w-4" />
+                {t('confirm', { count: previewDates.length })}
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

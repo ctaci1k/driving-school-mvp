@@ -43,3 +43,11 @@ next-env.d.ts
 .idea/
 *.swp
 *.swo
+
+/PROJECT_FLAT_COPY
+
+# Generated Prisma schema
+/prisma/schema.prisma
+
+# Keep only source schemas
+!/prisma/schema/

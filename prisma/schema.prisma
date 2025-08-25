@@ -1,4 +1,12 @@
-// prisma/schema.prisma
+// ============================================
+// AUTO-GENERATED PRISMA SCHEMA
+// Generated at: 2025-08-24T19:25:34.142Z
+// DO NOT EDIT DIRECTLY
+// ============================================
+
+// ============================================
+// CONFIGURATION
+// ============================================
 
 generator client {
   provider = "prisma-client-js"
@@ -9,463 +17,89 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============= USERS & AUTH =============
+// ============================================
+// ENUMS
+// ============================================
 
-model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  emailVerified DateTime?
-  passwordHash  String?
-  firstName     String
-  lastName      String
-  phone         String?
-  phoneVerified DateTime?
-  avatar        String?
-  dateOfBirth   DateTime?
-
-  // Emergency contacts
-  emergencyContact String?
-  emergencyPhone   String?
-
-  role   UserRole @default(STUDENT)
-  status UserStatus   @default(ACTIVE)
-
-  // LOCATION RELATIONSHIP - CRITICAL FOR MULTI-BRANCH
-  locationId String?
-  location   Location? @relation(fields: [locationId], references: [id])
-
-  // Address
-  address    String?
-  city       String?
-  postalCode String?
-
-  // Для студентів
-  completedLessons      Int?
-  examAttempts          Int?
-  preferredInstructorId String?
-  examPassed            Boolean?
-  examPassedDate        DateTime?
-  notes                 String?
-
-  // License info (для всіх)
-  licenseNumber String?
-
-  // Для інструкторів
-  licenseCategories String[]
-  licenseIssuedDate DateTime?
-  licenseExpiryDate DateTime?
-
-  // Instructor specific
-  instructorLicenseNumber String?
-  instructorLicenseDate   DateTime?
-  yearsOfExperience       Int?
-  specializations         String[]
-  rating                  Float?
-  totalLessons            Int?
-  successRate             Float?
-
-  // Settings
-  language           String  @default("pl")
-  emailNotifications Boolean @default(true)
-  smsNotifications   Boolean @default(true)
-
-  // Dates
-  lastLoginAt DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-
-  // Relations
-  studentBookings    Booking[]            @relation("StudentBookings")
-  instructorBookings Booking[]            @relation("InstructorBookings")
-  instructorSchedule InstructorSchedule[]
-  assignedVehicles   Vehicle[]            @relation("AssignedInstructor")
-  payments           Payment[]
-  userPackages       UserPackage[]
-  notifications      Notification[]
-  scheduleTemplates  ScheduleTemplate[]
-  scheduleExceptions ScheduleException[]
-
-  @@index([email])
-  @@index([role])
-  @@index([locationId])
+enum AchievementCategory {
+  MILESTONE
+  SKILL
+  STREAK
+  SPECIAL
+  SOCIAL
+  EXAM
 }
 
-// ============= LOCATIONS =============
-model Location {
-  id             String  @id @default(cuid())
-  name           String
-  code           String  @unique
-  address        String
-  city           String
-  postalCode     String
-  latitude       Float?
-  longitude      Float?
-  maxInstructors Int     @default(5)
-  maxVehicles    Int     @default(10)
-  isActive       Boolean @default(true)
-  isPrimary      Boolean @default(false)
-
-  instructorSchedules InstructorSchedule[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  bookings Booking[]
-  vehicles Vehicle[]
-  users    User[]    // NEW: Users assigned to this location
-
-  @@index([code])
-  @@index([city])
+enum AmenityType {
+  PARKING
+  WIFI
+  RESTROOM
+  KITCHEN
+  WAITING_AREA
+  STUDY_AREA
+  SIMULATOR
+  VENDING_MACHINE
+  COFFEE_MACHINE
+  WATER_FOUNTAIN
+  LOCKERS
+  BIKE_RACK
+  ACCESSIBILITY
+  FIRST_AID
+  SECURITY
+  OTHER
 }
 
-// ============= VEHICLES =============
-model Vehicle {
-  id                 String  @id @default(cuid())
-  registrationNumber String  @unique
-  vin                String? @unique
-  make               String
-  model              String
-  year               Int
-  color              String?
-  category           VehicleCategory
-  transmission       Transmission
-  fuelType           FuelType
-
-  ownershipType         OwnershipType?
-  lastServiceMileage    Int?
-  nextServiceMileage    Int?
-  insuranceCompany      String?
-  insurancePolicyNumber String?
-  purchaseDate          DateTime?
-  purchasePrice         Float?
-  features              String[]
-  notes                 String?
-
-  assignedInstructorId String?
-  assignedInstructor   User?   @relation("AssignedInstructor", fields: [assignedInstructorId], references: [id])
-
-  baseLocationId String
-  baseLocation   Location @relation(fields: [baseLocationId], references: [id])
-
-  currentMileage   Int       @default(0)
-  lastServiceDate  DateTime?
-  nextServiceDate  DateTime?
-  insuranceExpiry  DateTime
-  inspectionExpiry DateTime
-
-  status VehicleStatus @default(ACTIVE)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  bookings        Booking[]
-  maintenanceLogs MaintenanceLog[]
-
-  @@index([registrationNumber])
-  @@index([assignedInstructorId])
-  @@index([baseLocationId])
-}
-
-// ============= PACKAGES =============
-model Package {
-  id           String  @id @default(cuid())
-  name         String
-  description  String?
-  credits      Int
-  price        Decimal @db.Decimal(10, 2)
-  currency     String  @default("PLN")
-  validityDays Int
-  isActive     Boolean @default(true)
-  isPopular    Boolean @default(false)
-  sortOrder    Int     @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  userPackages UserPackage[]
-
-  @@index([isActive])
-}
-
-// ============= USER PACKAGES =============
-model UserPackage {
-  id               String        @id @default(cuid())
-  userId           String
-  packageId        String
-  creditsTotal     Int
-  creditsUsed      Int           @default(0)
-  creditsRemaining Int
-  purchasedAt      DateTime      @default(now())
-  expiresAt        DateTime
-  status           PackageStatus @default(ACTIVE)
-  purchasePrice    Float
-  paymentId        String?       @unique
-
-  // Gift fields
-  isGift      Boolean? @default(false)
-  giftFrom    String?
-  giftMessage String?
-  metadata    Json?
-
-  notes String?
-
-  // Relations
-  user    User    @relation(fields: [userId], references: [id])
-  package Package @relation(fields: [packageId], references: [id])
-  payment Payment? @relation(fields: [paymentId], references: [id])
-
-  @@index([userId])
-  @@index([packageId])
-}
-
-// ============= PAYMENTS =============
-model Payment {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  bookingId     String?  @unique
-  booking       Booking?
-  userPackageId String?  @unique
-  userPackage   UserPackage?
-
-  amount   Decimal @db.Decimal(10, 2)
-  currency String  @default("PLN")
-
-  p24SessionId String? @unique
-  p24OrderId   String? @unique
-  p24Token     String?
-
-  status PaymentStatus @default(PENDING)
-  method PaymentMethod @default(P24)
-
-  description String?
-  metadata    Json?
-
-  createdAt   DateTime  @default(now())
-  completedAt DateTime?
-  failedAt    DateTime?
-
-  @@index([userId])
-  @@index([status])
-  @@index([p24SessionId])
-}
-
-// ============= BOOKINGS =============
-model Booking {
-  id           String @id @default(cuid())
-  studentId    String
-  student      User   @relation("StudentBookings", fields: [studentId], references: [id])
-  instructorId String
-  instructor   User   @relation("InstructorBookings", fields: [instructorId], references: [id])
-
-  vehicleId  String?
-  vehicle    Vehicle?  @relation(fields: [vehicleId], references: [id])
-  locationId String?
-  location   Location? @relation(fields: [locationId], references: [id])
-
-  startTime DateTime
-  endTime   DateTime
-  duration  Int      @default(120) // minutes
-
-  lessonType LessonType    @default(STANDARD)
-  status     BookingStatus @default(CONFIRMED)
-
-  price       Decimal? @db.Decimal(10, 2)
-  isPaid      Boolean  @default(false)
-  paymentId   String?  @unique
-  payment     Payment? @relation(fields: [paymentId], references: [id])
-  usedCredits Int      @default(0)
-
-  notes              String?
-  cancelledAt        DateTime?
-  cancelledBy        String?
-  cancellationReason String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([studentId])
-  @@index([instructorId])
-  @@index([vehicleId])
-  @@index([locationId])
-  @@index([startTime])
-  @@index([status])
-}
-
-// ============= INSTRUCTOR SCHEDULES =============
-model InstructorSchedule {
-  id           String @id @default(cuid())
-  instructorId String
-  instructor   User   @relation(fields: [instructorId], references: [id])
-  dayOfWeek    Int // 0 = Sunday, 6 = Saturday
-  startTime    String // "09:00"
-  endTime      String // "17:00"
-
-  locationId    String?
-  location      Location? @relation(fields: [locationId], references: [id])
-  maxBookings   Int?
-  breakStart    String?
-  breakDuration Int?
-  nightDriving  Boolean?  @default(false)
-  earlyMorning  Boolean?  @default(false)
-  notes         String?
-
-  // Phase 2 addition
-  specificDate DateTime?
-
-  // Buffer Time
-  bufferBefore Int @default(15) // minutes before lesson
-  bufferAfter  Int @default(15) // minutes after lesson
-
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@unique([instructorId, dayOfWeek])
-  @@index([instructorId])
-  @@index([specificDate])
-}
-
-// ============= NOTIFICATIONS =============
-model Notification {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-
-  type    NotificationType
-  channel NotificationChannel
-
-  subject  String?
-  message  String
-  metadata Json?
-
-  title        String?
-  priority     NotificationPriority @default(MEDIUM)
-  scheduledFor DateTime?
-  isBroadcast  Boolean?             @default(false)
-
-  status       NotificationStatus @default(PENDING)
-  sentAt       DateTime?
-  readAt       DateTime?
-  failedAt     DateTime?
-  errorMessage String?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([type])
-  @@index([status])
-}
-
-// ============= MAINTENANCE LOGS =============
-model MaintenanceLog {
-  id                 String    @id @default(cuid())
-  vehicleId          String
-  vehicle            Vehicle   @relation(fields: [vehicleId], references: [id])
-  
-  type               MaintenanceType
-  status             MaintenanceStatus @default(SCHEDULED)
-  scheduledDate      DateTime?
-  completedDate      DateTime?
-  mileageAtService   Int?
-  nextServiceMileage Int?
-  description        String?
-  performedTasks     String[]
-  servicedBy         String?
-  serviceLocation    String?
-  cost               Float?
-  invoiceNumber      String?
-  notes              String?
-  partsReplaced      String[]
-  warranty           Int? // months
-  warrantyExpiresAt  DateTime?
-  isUnderWarranty    Boolean?  @default(false)
-  vehicleDowntime    Int? // days
-  estimatedCost      Float?
-  metadata           Json?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@index([vehicleId])
-  @@index([type])
-  @@index([status])
-}
-
-// ============= SCHEDULE TEMPLATES =============
-model ScheduleTemplate {
-  id           String   @id @default(cuid())
-  instructorId String
-  instructor   User     @relation(fields: [instructorId], references: [id])
-  name         String
-  description  String?
-  weekPattern  Json // JSON array of schedule patterns
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([instructorId])
-}
-
-// ============= SCHEDULE EXCEPTIONS =============
-model ScheduleException {
-  id           String @id @default(cuid())
-  instructorId String
-  instructor   User   @relation(fields: [instructorId], references: [id])
-
-  type      ScheduleExceptionType
-  startDate DateTime
-  endDate   DateTime
-  allDay    Boolean  @default(true)
-  startTime String? // "14:00" if not allDay
-  endTime   String? // "18:00" if not allDay
-
-  isApproved                Boolean?  @default(false)
-  approvedBy                String?
-  approvedAt                DateTime?
-  affectsBookings           Boolean?  @default(true)
-  bookingsReassigned        Int?      @default(0)
-  notificationSent          Boolean?  @default(false)
-  medicalCertificateNumber  String?
-  isCompanyWide             Boolean?  @default(false)
-  location                  String?
-  compensationRate          Float?
-  substitutingForId         String?
-  additionalCompensation    Float?
-  certificateExpected       Boolean?  @default(false)
-  reminderSent              Boolean?  @default(false)
-  estimatedCost             Float?
-  metadata                  Json?
-
-  reason      String
-  description String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([instructorId])
-  @@index([startDate, endDate])
-}
-
-// ============= ENUMS (unchanged) =============
-
-enum UserRole {
-  STUDENT
-  INSTRUCTOR
-  ADMIN
-  BRANCH_MANAGER
-  DISPATCHER
-}
-
-enum UserStatus {
+enum ApiStatus {
   ACTIVE
   INACTIVE
-  SUSPENDED
+  MAINTENANCE
+  DEPRECATED
+  ERROR
+  RATE_LIMITED
+}
+
+enum ApprovalStatus {
   PENDING
+  APPROVED
+  REJECTED
+  REVISION_REQUIRED
+  CANCELLED
+  EXPIRED
+}
+
+enum AuditAction {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  EXPORT
+  IMPORT
+  APPROVE
+  REJECT
+  CANCEL
+  RESTORE
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  BUSY
+  AWAY
+  DO_NOT_DISTURB
+  OFFLINE
+  BREAK
+  IN_LESSON
+}
+
+enum BookingSource {
+  ONLINE
+  MOBILE_APP
+  PHONE
+  IN_PERSON
+  ADMIN
+  SYSTEM
+  IMPORT
 }
 
 enum BookingStatus {
@@ -478,12 +112,288 @@ enum BookingStatus {
   RESCHEDULED
 }
 
-enum PackageStatus {
+enum CalendarProvider {
+  GOOGLE
+  OUTLOOK
+  APPLE
+  CALDAV
+}
+
+enum CommunicationStyle {
+  BRIEF
+  DETAILED
+  VISUAL
+  ENCOURAGING
+}
+
+enum ComplaintStatus {
+  SUBMITTED
+  ACKNOWLEDGED
+  INVESTIGATING
+  RESOLVED
+  REJECTED
+  ESCALATED
+}
+
+enum ConflictSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ConflictStatus {
+  UNRESOLVED
+  RESOLVED
+  IGNORED
+  ESCALATED
+}
+
+enum ConflictType {
+  DOUBLE_BOOKING
+  INSTRUCTOR_OVERLAP
+  VEHICLE_OVERLAP
+  LOCATION_OVERLAP
+  BREAK_TIME_VIOLATION
+}
+
+enum ConsentType {
+  TERMS_OF_SERVICE
+  PRIVACY_POLICY
+  MARKETING
+  DATA_PROCESSING
+  COOKIES
+  PHOTOGRAPHY
+  EMERGENCY_CONTACT
+}
+
+enum Currency {
+  PLN
+  EUR
+  USD
+  GBP
+  CZK
+  UAH
+}
+
+enum DataRetentionPeriod {
+  DAYS_30
+  DAYS_90
+  MONTHS_6
+  YEAR_1
+  YEARS_2
+  YEARS_5
+  YEARS_7
+  PERMANENT
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum DocumentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+  ARCHIVED
+}
+
+enum DocumentType {
+  LICENSE
+  CERTIFICATE
+  CONTRACT
+  INSURANCE
+  MEDICAL
+  BACKGROUND_CHECK
+  OTHER
+}
+
+enum EnrollmentStatus {
   PENDING
   ACTIVE
-  DEPLETED
+
+  PAUSED
+  COMPLETED
   EXPIRED
   CANCELLED
+}
+
+enum Environment {
+  DEVELOPMENT
+  STAGING
+  PRODUCTION
+  TEST
+}
+
+enum ExamType {
+  THEORY_MOCK
+  THEORY_OFFICIAL
+  PRACTICAL_MOCK
+  PRACTICAL_OFFICIAL
+  INTERNAL_ASSESSMENT
+}
+
+enum ExceptionPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum ExceptionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+}
+
+enum ExperienceLevel {
+  BEGINNER
+  SOME_EXPERIENCE
+  REFRESHER
+  ADVANCED
+}
+
+enum FeedbackType {
+  LESSON
+  INSTRUCTOR
+  VEHICLE
+  FACILITY
+  SERVICE
+  GENERAL
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  ELECTRIC
+  HYBRID
+  HYBRID_PLUGIN
+  LPG
+  CNG
+  HYDROGEN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  ANY
+}
+
+enum HolidayType {
+  NATIONAL
+  REGIONAL
+  LOCAL
+  COMPANY
+  SPECIAL
+}
+
+enum InspectionType {
+  TECHNICAL
+  SAFETY
+  EMISSIONS
+  PRE_PURCHASE
+  ANNUAL
+  ROADWORTHY
+}
+
+enum IntegrationType {
+  CALENDAR
+  PAYMENT
+  SMS
+  EMAIL
+  CRM
+  ACCOUNTING
+  ANALYTICS
+  SOCIAL_MEDIA
+  MAPPING
+  GOVERNMENT
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  SENT
+  PAID
+  UNPAID
+  OVERDUE
+  CANCELLED
+}
+
+enum IssueCategory {
+  ENGINE
+  TRANSMISSION
+  BRAKES
+  SUSPENSION
+  ELECTRICAL
+  BODY
+  INTERIOR
+  TIRES
+  LIGHTS
+  FLUIDS
+  OTHER
+}
+
+enum IssueSeverity {
+  MINOR
+  MODERATE
+  MAJOR
+  CRITICAL
+  SAFETY
+}
+
+enum IssueStatus {
+  REPORTED
+  ACKNOWLEDGED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  REOPENED
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+  RETRY
+}
+
+enum LearningPace {
+  SLOW
+  MODERATE
+  FAST
+  INTENSIVE
+}
+
+enum LearningStyle {
+  VISUAL
+  AUDITORY
+  KINESTHETIC
+  READING_WRITING
+  MIXED
+}
+
+enum LegalBasis {
+  CONSENT
+  CONTRACT
+  LEGAL_OBLIGATION
+  VITAL_INTERESTS
+  PUBLIC_TASK
+  LEGITIMATE_INTERESTS
 }
 
 enum LessonType {
@@ -500,6 +410,483 @@ enum LessonType {
   COUNTRY_ROADS
   ROUNDABOUTS
   FIRST_LESSON
+  ASSESSMENT
+  REFRESHER
+}
+
+enum LocationStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+  CLOSED_TEMPORARILY
+  CLOSED_PERMANENTLY
+  COMING_SOON
+}
+
+enum LocationType {
+  HEADQUARTERS
+  BRANCH
+  SATELLITE
+  ONLINE
+  PRACTICE_AREA
+  EXAM_CENTER
+  ADMINISTRATIVE
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARNING
+  ERROR
+  CRITICAL
+}
+
+enum MaintenanceCategory {
+  PREVENTIVE
+  CORRECTIVE
+  PREDICTIVE
+  EMERGENCY
+}
+
+enum MaintenancePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+  CRITICAL
+}
+
+enum MaintenanceStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  OVERDUE
+  POSTPONED
+}
+
+enum MaintenanceType {
+  REGULAR_SERVICE
+  OIL_CHANGE
+  TIRE_CHANGE
+  BRAKE_SERVICE
+  INSPECTION
+  REPAIR
+  CLEANING
+  BATTERY
+  FILTERS
+  FLUIDS
+  OTHER
+}
+
+enum MessagePriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum MetricType {
+  COUNT
+  SUM
+  AVERAGE
+  PERCENTAGE
+  RATIO
+  TREND
+}
+
+enum NearbyPlaceType {
+  PUBLIC_TRANSPORT
+  PARKING
+  RESTAURANT
+  CAFE
+  SHOPPING
+  SCHOOL
+  HOSPITAL
+  LANDMARK
+  PRACTICE_AREA
+  EXAM_CENTER
+  GAS_STATION
+  OTHER
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  PUSH
+  IN_APP
+  WHATSAPP
+  TELEGRAM
+  PHONE
+}
+
+enum NotificationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  CRITICAL
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+  CANCELLED
+  BOUNCED
+  QUEUED
+}
+
+enum NotificationType {
+  BOOKING_CONFIRMATION
+  BOOKING_REMINDER
+  BOOKING_CANCELLED
+  BOOKING_RESCHEDULED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  PAYMENT_REMINDER
+  SCHEDULE_CHANGE
+  LESSON_FEEDBACK
+  EXAM_REMINDER
+  EXAM_RESULT
+  PACKAGE_EXPIRING
+  ACHIEVEMENT_UNLOCKED
+  SYSTEM_NOTIFICATION
+  PROMOTIONAL
+  BIRTHDAY
+  DOCUMENT_EXPIRING
+  MAINTENANCE_REMINDER
+  NEWS_UPDATE
+}
+
+enum OwnershipType {
+  OWNED
+  LEASED
+  RENTED
+  SUBSCRIPTION
+  LOANED
+}
+
+enum PackageCategory {
+  DRIVING_LESSONS
+  THEORY_COURSE
+  EXAM_PACKAGE
+  REFRESHER_COURSE
+  SPECIAL_TRAINING
+}
+
+enum PackageStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  DEPLETED
+  EXPIRED
+  CANCELLED
+}
+
+enum PackageType {
+  STANDARD
+  INTENSIVE
+  EXAM_PREP
+  REFRESHER
+  THEORY_ONLY
+  PRACTICAL_ONLY
+  COMPLETE
+  CUSTOM
+}
+
+enum PaymentGateway {
+  PRZELEWY24
+  STRIPE
+  PAYPAL
+  MANUAL
+  CASH
+}
+
+enum PaymentMethod {
+  CARD
+  BANK_TRANSFER
+  P24
+  PAYPAL
+  CASH
+  PACKAGE
+  CREDITS
+  BLIK
+  GOOGLE_PAY
+  APPLE_PAY
+}
+
+enum PaymentPlan {
+  FULL
+  INSTALLMENTS
+  MONTHLY
+  PAY_AS_YOU_GO
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+  EXPIRED
+  PARTIALLY_REFUNDED
+}
+
+enum PeriodType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum Priority {
+  LOWEST
+  LOW
+  NORMAL
+  HIGH
+  HIGHEST
+  CRITICAL
+}
+
+enum RatingCategory {
+  OVERALL
+  TEACHING
+  COMMUNICATION
+  PUNCTUALITY
+  PATIENCE
+  VEHICLE
+  VALUE
+  SAFETY
+}
+
+enum ReportType {
+  DAILY
+  WEEKLY
+  MONTHLY
+  QUARTERLY
+  YEARLY
+  CUSTOM
+}
+
+enum RequestStatus {
+  PENDING
+  PROCESSING
+  MATCHED
+  PARTIALLY_MATCHED
+  NO_MATCH
+  EXPIRED
+  CANCELLED
+}
+
+enum RoomBookingPurpose {
+  THEORY_CLASS
+  EXAM
+  MEETING
+  TRAINING
+  EVENT
+  MAINTENANCE
+  OTHER
+}
+
+enum RoomBookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum RoomType {
+  CLASSROOM
+  EXAM_ROOM
+  PRACTICE_ROOM
+  MEETING_ROOM
+  WAITING_AREA
+  SIMULATOR_ROOM
+  OFFICE
+  STORAGE
+}
+
+enum RuleCategory {
+  SCHEDULING
+  CANCELLATION
+  PAYMENT
+  ELIGIBILITY
+  CAPACITY
+  SAFETY
+}
+
+enum RuleType {
+  ADVANCE_BOOKING
+  CANCELLATION_WINDOW
+  MAX_BOOKINGS
+  MIN_INTERVAL
+  BLACKOUT_DATES
+  INSTRUCTOR_AVAILABILITY
+}
+
+enum ScheduleExceptionType {
+  VACATION
+  SICK_LEAVE
+  PERSONAL_LEAVE
+  TRAINING
+  HOLIDAY
+  COMPANY_EVENT
+  EMERGENCY
+  OTHER
+}
+
+enum ScheduleType {
+  WEEKLY
+  SPECIFIC_DATE
+  RECURRING
+}
+
+enum Severity {
+  TRIVIAL
+  MINOR
+  MODERATE
+  MAJOR
+  CRITICAL
+  BLOCKER
+}
+
+enum SyncDirection {
+  TO_EXTERNAL
+  FROM_EXTERNAL
+  BOTH
+}
+
+enum SyncStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  PARTIAL
+  SKIPPED
+}
+
+enum SystemRole {
+  USER
+  MODERATOR
+  ADMIN
+  DEVELOPER
+  SYSTEM
+}
+
+enum TaxRate {
+  ZERO // 0%
+  REDUCED_5 // 5%
+  REDUCED_8 // 8%
+  STANDARD // 23%
+  EXEMPT // Tax exempt
+}
+
+enum TheoryClassStatus {
+  SCHEDULED
+  OPEN_FOR_ENROLLMENT
+  FULL
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  POSTPONED
+}
+
+enum TheoryEnrollmentStatus {
+  PENDING
+
+  CONFIRMED
+  WAITLIST
+  ATTENDED
+  ABSENT
+  CANCELLED
+}
+
+enum TicketCategory {
+  TECHNICAL
+  BILLING
+  SCHEDULING
+  INSTRUCTOR
+  VEHICLE
+  COMPLAINT
+  SUGGESTION
+  GENERAL
+  URGENT
+  OTHER
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  CRITICAL
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_RESPONSE
+  ON_HOLD
+  ESCALATED
+  RESOLVED
+  CLOSED
+  REOPENED
+}
+
+enum TimeSlot {
+  EARLY_MORNING // 06:00-09:00
+  MORNING // 09:00-12:00
+  AFTERNOON // 12:00-15:00
+  LATE_AFTERNOON // 15:00-18:00
+  EVENING // 18:00-21:00
+  NIGHT // 21:00-24:00
+}
+
+enum Transmission {
+  MANUAL
+  AUTOMATIC
+  SEMI_AUTOMATIC
+  CVT
+  DSG
+}
+
+enum UsageType {
+  LESSON
+  CANCELLATION_FEE
+  NO_SHOW_FEE
+  EXAM
+  ADJUSTMENT
+}
+
+enum UserRole {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+  BRANCH_MANAGER
+  DISPATCHER
+  ACCOUNTANT
+  SUPPORT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+  BANNED
+}
+
+enum ValidityType {
+  FROM_PURCHASE
+  FROM_ACTIVATION
+  FROM_FIRST_USE
+  FIXED_DATE
 }
 
 enum VehicleCategory {
@@ -515,22 +902,32 @@ enum VehicleCategory {
   C1E
   DE
   D1E
+  T
+  AM
+  A1
+  A2
+  A
 }
 
-enum Transmission {
-  MANUAL
-  AUTOMATIC
-  SEMI_AUTOMATIC
+enum VehicleCondition {
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
+  DAMAGED
 }
 
-enum FuelType {
-  PETROL
-  DIESEL
-  ELECTRIC
-  HYBRID
-  HYBRID_PLUGIN
-  LPG
-  CNG
+enum VehicleDocumentType {
+  REGISTRATION
+  INSURANCE_OC
+  INSURANCE_AC
+  INSPECTION
+  ROAD_TAX
+  LEASE_CONTRACT
+  PURCHASE_INVOICE
+  SERVICE_BOOK
+  WARRANTY
+  OTHER
 }
 
 enum VehicleStatus {
@@ -539,95 +936,3791 @@ enum VehicleStatus {
   REPAIR
   INACTIVE
   RESERVED
+  DISPOSED
+  ACCIDENT
 }
 
-enum OwnershipType {
-  OWNED
-  LEASED
-  RENTED
-  SUBSCRIPTION
-}
-
-enum PaymentStatus {
+enum VerificationStatus {
   PENDING
-  PROCESSING
-  COMPLETED
-  FAILED
-  REFUNDED
-  CANCELLED
-  EXPIRED
-}
-
-enum PaymentMethod {
-  P24
-  CARD
-  TRANSFER
-  CASH
-  PACKAGE
-  CREDITS
-}
-
-enum NotificationType {
-  BOOKING_CONFIRMATION
-  BOOKING_REMINDER
-  BOOKING_CANCELLED
-  PAYMENT_SUCCESS
-  PAYMENT_FAILED
-  SCHEDULE_CHANGE
-  LESSON_FEEDBACK
-  EXAM_REMINDER
-  SYSTEM_NOTIFICATION
-  PROMOTIONAL
-}
-
-enum NotificationChannel {
-  EMAIL
-  SMS
-  PUSH
-  IN_APP
-}
-
-enum NotificationStatus {
-  PENDING
-  SENT
-  DELIVERED
-  READ
-  FAILED
-  CANCELLED
-}
-
-enum NotificationPriority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-}
-
-enum MaintenanceType {
-  REGULAR_SERVICE
-  OIL_CHANGE
-  TIRE_CHANGE
-  BRAKE_SERVICE
-  INSPECTION
-  REPAIR
-  CLEANING
-  OTHER
-}
-
-enum MaintenanceStatus {
-  SCHEDULED
   IN_PROGRESS
-  COMPLETED
-  CANCELLED
-  OVERDUE
+  VERIFIED
+  FAILED
+  EXPIRED
+  NOT_REQUIRED
 }
 
-enum ScheduleExceptionType {
-  VACATION
-  SICK_LEAVE
-  PERSONAL_LEAVE
-  TRAINING
-  HOLIDAY
-  COMPANY_EVENT
-  OTHER
+enum VisibilityLevel {
+  PUBLIC
+  PRIVATE
+  RESTRICTED
+  INTERNAL
+  CONFIDENTIAL
+}
+
+enum WaitlistStatus {
+  WAITING
+  NOTIFIED
+  ACCEPTED
+  EXPIRED
+  CANCELLED
+}
+
+enum WebhookEvent {
+  BOOKING_CREATED
+  BOOKING_UPDATED
+  BOOKING_CANCELLED
+  PAYMENT_RECEIVED
+  PAYMENT_FAILED
+  USER_REGISTERED
+  USER_UPDATED
+  LESSON_COMPLETED
+  EXAM_PASSED
+  PACKAGE_PURCHASED
+}
+
+// ============================================
+// MODELS
+// ============================================
+
+model Achievement {
+  id String @id @default(cuid())
+
+  // Basic Info
+  name        String              @unique
+  description String
+  icon        String
+  category    AchievementCategory
+
+  // Points & Rewards
+  points     Int
+  badgeColor String  @default("#3B82F6")
+  isSecret   Boolean @default(false)
+
+  // Unlock Criteria
+  criteriaType  String // lessons_completed, hours_driven, skills_mastered, etc
+  criteriaValue Int
+  criteriaData  Json? // Additional criteria configuration
+
+  // Display
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  // Relations
+  userAchievements UserAchievement[]
+
+  @@index([category])
+  @@index([isActive])
+  @@map("achievements")
+}
+
+model Announcement {
+  id String @id @default(cuid())
+
+  // ===== CONTENT =====
+  title       String
+  content     String
+  contentHtml String?
+
+  // ===== TYPE =====
+  type     String  @default("info") // info, warning, success, error
+  category String? // maintenance, feature, policy, etc.
+
+  // ===== TARGETING =====
+  targetRoles     UserRole[]
+  targetUserIds   String[]
+  targetLocations String[]
+
+  // ===== DISPLAY =====
+  displayLocation String[] @default(["dashboard"]) // dashboard, login, header
+
+  // ===== PRIORITY =====
+  priority Int     @default(0)
+  isPinned Boolean @default(false)
+
+  // ===== SCHEDULING =====
+  publishAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  // ===== STATUS =====
+  isActive Boolean @default(true)
+  isDraft  Boolean @default(false)
+
+  // ===== DISMISSAL =====
+  isDismissible Boolean  @default(true)
+  dismissedBy   String[] // User IDs who dismissed
+
+  // ===== ACTIONS =====
+  actionUrl   String?
+  actionLabel String?
+
+  // ===== STATS =====
+  viewCount    Int @default(0)
+  clickCount   Int @default(0)
+  dismissCount Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([isActive])
+  @@index([publishAt])
+  @@index([expiresAt])
+  @@map("announcements")
+}
+
+model ApiKey {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Key Info
+  name      String
+  key       String @unique
+  hashedKey String @unique
+
+  // Permissions
+  scopes String[] // read, write, delete, etc.
+
+  // Rate Limiting
+  rateLimit Int? // requests per hour
+
+  // Validity
+  expiresAt DateTime?
+
+  // Usage
+  lastUsedAt DateTime?
+  usageCount Int       @default(0)
+
+  // Status
+  isActive      Boolean   @default(true)
+  revokedAt     DateTime?
+  revokedReason String?
+
+  // IP Restrictions
+  allowedIps String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([key])
+  @@index([hashedKey])
+  @@map("api_keys")
+}
+
+model Booking {
+  id String @id @default(cuid())
+
+  // ===== PARTICIPANTS =====
+  studentId    String
+  student      User   @relation("StudentBookings", fields: [studentId], references: [id])
+  instructorId String
+  instructor   User   @relation("InstructorBookings", fields: [instructorId], references: [id])
+
+  // ===== VEHICLE & LOCATION =====
+  vehicleId  String?
+  vehicle    Vehicle?  @relation(fields: [vehicleId], references: [id])
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
+
+  // Pickup/Dropoff
+  pickupLocation   String?
+  pickupLatitude   Float?
+  pickupLongitude  Float?
+  dropoffLocation  String?
+  dropoffLatitude  Float?
+  dropoffLongitude Float?
+
+  // ===== DATE & TIME =====
+  date      DateTime
+  startTime String // "09:00"
+  endTime   String // "11:00"
+  duration  Int      @default(120) // minutes
+
+  // Time Tracking
+  actualStartTime String?
+  actualEndTime   String?
+  actualDuration  Int? // minutes
+
+  // ===== LESSON DETAILS =====
+  lessonType    LessonType @default(STANDARD)
+  lessonNumber  Int? // Lesson number in sequence
+  isFirstLesson Boolean    @default(false)
+  isLastLesson  Boolean    @default(false)
+
+  // Exam Preparation
+  isExamPrep Boolean   @default(false)
+  examType   ExamType?
+
+  // ===== STATUS =====
+  status BookingStatus @default(PENDING)
+
+  // Status History
+  confirmedAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  // Cancellation
+  cancelledBy        String? // userId who cancelled
+  cancellationReason String?
+  cancellationFee    Decimal? @db.Decimal(10, 2)
+  isLateCancellation Boolean  @default(false)
+
+  // No-show
+  noShowReason String?
+  noShowFee    Decimal? @db.Decimal(10, 2)
+
+  // ===== FINANCIAL =====
+  price         Decimal        @db.Decimal(10, 2)
+  isPaid        Boolean        @default(false)
+  paymentMethod PaymentMethod?
+
+  // Package/Credits
+  enrollmentId String?
+  enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
+  usedCredits  Int         @default(0)
+
+  // Payment
+  paymentId String?  @unique
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+
+  // Discounts
+  discountCode   String?
+  discountAmount Decimal? @db.Decimal(10, 2)
+  finalPrice     Decimal? @db.Decimal(10, 2)
+
+  // ===== LESSON CONTENT =====
+  objectives String[] // Lesson objectives
+  topics     String[] // Topics to cover
+
+  // Route Planning
+  plannedRoute String?
+  actualRoute  String?
+  kmDriven     Float?
+  fuelUsed     Float?
+
+  // ===== ASSESSMENT =====
+  feedback      LessonFeedback?
+  packageUsages PackageUsage[]
+
+  // Progress Tracking
+  skillsPracticed String[]
+  skillsImproved  String[]
+
+  // ===== WEATHER & CONDITIONS =====
+  weatherConditions String?
+  trafficConditions String?
+  roadConditions    String?
+  visibility        String?
+
+  // ===== NOTES =====
+  studentNotes    String? // Notes from student
+  instructorNotes String? // Notes from instructor
+  internalNotes   String? // Admin notes
+
+  // ===== REMINDERS =====
+  reminderSent     Boolean   @default(false)
+  reminderSentAt   DateTime?
+  confirmationSent Boolean   @default(false)
+
+  // ===== METADATA =====
+  source     BookingSource @default(ONLINE)
+  deviceType String? // mobile, desktop, tablet
+  ipAddress  String?
+  userAgent  String?
+
+  // Recurring
+  isRecurring   Boolean @default(false)
+  recurringId   String? // Group recurring bookings
+  recurringRule String? // RRULE format
+
+  // Integration
+  externalId    String? // ID from external system
+  googleEventId String? // Google Calendar event ID
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String? // userId who created booking
+  updatedBy String? // userId who last updated
+
+  @@index([studentId])
+  @@index([instructorId])
+  @@index([vehicleId])
+  @@index([locationId])
+  @@index([date])
+  @@index([startTime])
+  @@index([status])
+  @@index([enrollmentId])
+  @@index([recurringId])
+  @@map("bookings")
+}
+
+model BookingConflict {
+  id String @id @default(cuid())
+
+  // Conflicting Bookings
+  bookingId1 String
+  bookingId2 String
+
+  // Conflict Details
+  conflictType ConflictType
+  severity     ConflictSeverity
+
+  // Resolution
+  status     ConflictStatus @default(UNRESOLVED)
+  resolution String?
+  resolvedBy String?
+  resolvedAt DateTime?
+
+  // Auto-resolution attempted
+  autoResolved Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([bookingId1])
+  @@index([bookingId2])
+  @@index([status])
+  @@map("booking_conflicts")
+}
+
+model BookingRequest {
+  id        String @id @default(cuid())
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id])
+
+  // ===== PREFERENCES =====
+  preferredInstructorId String?
+  preferredVehicleId    String?
+  preferredLocationId   String?
+
+  // Date/Time Preferences
+  preferredDates     DateTime[]
+  preferredTimeSlots String[] // ["morning", "afternoon", "evening"]
+  flexibleDates      Boolean    @default(false)
+
+  // ===== LESSON DETAILS =====
+  lessonType      LessonType
+  duration        Int        @default(120)
+  numberOfLessons Int        @default(1)
+
+  // ===== STATUS =====
+  status RequestStatus @default(PENDING)
+
+  // Processing
+  processedAt DateTime?
+  processedBy String?
+
+  // Matching
+  matchedBookingIds String[]
+  partiallyMatched  Boolean  @default(false)
+
+  // ===== URGENCY =====
+  isUrgent      Boolean @default(false)
+  urgencyReason String?
+  priority      Int     @default(0)
+
+  // ===== NOTES =====
+  studentMessage String?
+  adminNotes     String?
+
+  // ===== EXPIRY =====
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentId])
+  @@index([status])
+  @@index([priority])
+  @@index([expiresAt])
+  @@map("booking_requests")
+}
+
+model BookingRule {
+  id String @id @default(cuid())
+
+  // Rule Info
+  name        String
+  description String
+  category    RuleCategory
+
+  // Conditions
+  ruleType   RuleType
+  conditions Json // Complex conditions in JSON
+
+  // Actions
+  actions Json // What happens when rule matches
+
+  // Application
+  appliesToRole       UserRole[]
+  appliesToLessonType LessonType[]
+
+  // Priority & Status
+  priority Int     @default(0)
+  isActive Boolean @default(true)
+
+  // Validity
+  validFrom DateTime?
+  validTo   DateTime?
+
+  // Examples of rules:
+  // - Minimum 24h advance booking
+  // - Maximum 2 bookings per week for new students
+  // - No bookings on holidays
+  // - Instructor break time enforcement
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([isActive])
+  @@map("booking_rules")
+}
+
+model BookingWaitlist {
+  id        String @id @default(cuid())
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id])
+
+  // Desired Slot
+  instructorId String?
+  date         DateTime
+  startTime    String
+  endTime      String
+
+  // Preferences
+  alternativeInstructorOk Boolean @default(false)
+  alternativeDateOk       Boolean @default(false)
+  alternativeTimeOk       Boolean @default(false)
+
+  // Status
+  status   WaitlistStatus @default(WAITING)
+  position Int
+
+  // Notification
+  notified         Boolean   @default(false)
+  notifiedAt       DateTime?
+  responseDeadline DateTime?
+
+  // Outcome
+  bookingId   String? // If converted to booking
+  expiredAt   DateTime?
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([studentId])
+  @@index([instructorId])
+  @@index([date])
+  @@index([status])
+  @@map("booking_waitlist")
+}
+
+model CalendarSync {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Calendar Provider
+  provider CalendarProvider
+
+  // Authentication
+  accessToken  String?
+  refreshToken String?
+  tokenExpiry  DateTime?
+
+  // Calendar Details
+  calendarId   String
+  calendarName String?
+
+  // Sync Settings
+  syncDirection SyncDirection @default(BOTH)
+  syncEnabled   Boolean       @default(true)
+
+  // Last Sync
+  lastSyncAt     DateTime?
+  lastSyncStatus String?
+  syncErrors     Int       @default(0)
+
+  // Webhook (for real-time updates)
+  webhookUrl    String?
+  webhookSecret String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, provider, calendarId])
+  @@index([userId])
+  @@map("calendar_syncs")
+}
+
+model EmailTemplate {
+  id String @id @default(cuid())
+
+  // ===== IDENTIFICATION =====
+  code        String  @unique // booking_confirmation, payment_success, etc.
+  name        String
+  description String?
+
+  // ===== CONTENT =====
+  subject  String
+  bodyHtml String
+  bodyText String
+
+  // ===== VARIABLES =====
+  variables    String[] // Available template variables
+  requiredVars String[] // Required variables
+
+  // ===== LOCALIZATION =====
+  language String @default("pl")
+
+  // ===== CATEGORY =====
+  category String // transactional, marketing, system
+
+  // ===== SENDER =====
+  fromName  String?
+  fromEmail String?
+  replyTo   String?
+
+  // ===== HEADERS =====
+  headers Json?
+
+  // ===== ATTACHMENTS =====
+  defaultAttachments Json?
+
+  // ===== STATUS =====
+  isActive Boolean @default(true)
+  isDraft  Boolean @default(false)
+
+  // ===== TESTING =====
+  testData Json? // Sample data for testing
+
+  // ===== USAGE =====
+  usageCount Int       @default(0)
+  lastUsedAt DateTime?
+
+  // ===== VERSION =====
+  version Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([code])
+  @@index([category])
+  @@index([language])
+  @@map("email_templates")
+}
+
+model EmailVerification {
+  id     String @id @default(cuid())
+  token  String @unique
+  email  String
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Token Info
+  expiresAt DateTime
+
+  // Usage
+  verified   Boolean   @default(false)
+  verifiedAt DateTime?
+
+  // Attempts
+  attempts      Int       @default(0)
+  lastAttemptAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([email])
+  @@index([token])
+  @@map("email_verifications")
+}
+
+model Enrollment {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id])
+
+  // Status
+  status EnrollmentStatus @default(ACTIVE)
+
+  // Dates
+  startDate   DateTime  @default(now())
+  endDate     DateTime?
+  expiresAt   DateTime
+  pausedAt    DateTime?
+  resumedAt   DateTime?
+  completedAt DateTime?
+
+  // Credits & Lessons
+  creditsTotal     Int
+  creditsUsed      Int @default(0)
+  creditsRemaining Int
+  lessonsTotal     Int
+  lessonsCompleted Int @default(0)
+  lessonsRemaining Int
+  lessonsCancelled Int @default(0)
+
+  // Financial
+  totalPrice     Decimal     @db.Decimal(10, 2)
+  discountAmount Decimal     @default(0) @db.Decimal(10, 2)
+  finalPrice     Decimal     @db.Decimal(10, 2)
+  totalPaid      Decimal     @default(0) @db.Decimal(10, 2)
+  paymentPlan    PaymentPlan @default(FULL)
+
+  // Progress
+  progressPercentage  Int       @default(0)
+  estimatedCompletion DateTime?
+
+  // Metadata
+  notes              String?
+  cancellationReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  bookings      Booking[]
+  payments      Payment[]
+  packageUsages PackageUsage[]
+
+  @@unique([userId, packageId, status])
+  @@index([userId])
+  @@index([packageId])
+  @@index([status])
+  @@index([expiresAt])
+  @@map("enrollments")
+}
+
+model ExamResult {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Exam Info
+  type          ExamType
+  attemptNumber Int      @default(1)
+
+  // Results
+  score      Int
+  maxScore   Int
+  percentage Float
+  passed     Boolean
+
+  // ===== THEORY EXAM DETAILS =====
+  totalQuestions   Int?
+  correctAnswers   Int?
+  wrongAnswers     Int?
+  skippedQuestions Int?
+  timeSpent        Int? // seconds
+  categoryScores   Json? // Score breakdown by category
+
+  // ===== PRACTICAL EXAM DETAILS =====
+  instructorId String?
+  instructor   User?   @relation("ExamInstructor", fields: [instructorId], references: [id])
+
+  // Route & Conditions
+  routeTaken        String?
+  examinerName      String?
+  vehicleUsed       String?
+  weatherConditions String?
+  trafficConditions String?
+
+  // Faults
+  minorFaults     Int?
+  majorFaults     Int?
+  dangerousFaults Int?
+  faultDetails    Json? // Detailed breakdown of faults
+
+  // ===== COMMON FIELDS =====
+  feedback          String?
+  nextAttemptDate   DateTime?
+  certificateNumber String?
+  certificateUrl    String?
+
+  takenAt   DateTime @default(now())
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@index([passed])
+  @@map("exam_results")
+}
+
+model FuelLog {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  // ===== REFUELING DETAILS =====
+  date    DateTime @default(now())
+  mileage Int
+
+  // Fuel
+  fuelType      FuelType
+  liters        Float
+  pricePerLiter Decimal  @db.Decimal(10, 2)
+  totalCost     Decimal  @db.Decimal(10, 2)
+
+  // Station
+  gasStation String?
+  location   String?
+
+  // ===== CONSUMPTION =====
+  kmSinceLastFill Int?
+  consumption     Float? // l/100km
+
+  // ===== TANK =====
+  isFillUp  Boolean @default(true)
+  tankLevel Int? // percentage before fill
+
+  // ===== PAYMENT =====
+  paymentMethod String?
+  receiptNumber String?
+  receiptUrl    String?
+
+  // ===== DRIVER =====
+  driverId String? // userId
+
+  // ===== NOTES =====
+  notes String?
+
+  createdAt DateTime @default(now())
+  createdBy String?
+
+  @@index([vehicleId])
+  @@index([date])
+  @@index([driverId])
+  @@map("fuel_logs")
+}
+
+model InstructorDocument {
+  id           String @id @default(cuid())
+  instructorId String
+
+  // Document Info
+  type        DocumentType
+  name        String
+  description String?
+
+  // File Details
+  fileUrl  String
+  fileSize Int // bytes
+  mimeType String
+
+  // Validity
+  issueDate  DateTime
+  expiryDate DateTime?
+  isExpired  Boolean   @default(false)
+
+  // Verification
+  isVerified Boolean   @default(false)
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  // Reminders
+  reminderDays Int? // Days before expiry
+  reminderSent Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([instructorId])
+  @@index([type])
+  @@index([expiryDate])
+  @@map("instructor_documents")
+}
+
+model InstructorPerformance {
+  id           String @id @default(cuid())
+  instructorId String
+  userId       String
+
+  // Period
+  periodType  PeriodType // MONTHLY, QUARTERLY, YEARLY
+  periodStart DateTime
+  periodEnd   DateTime
+
+  // ===== LESSON METRICS =====
+  totalLessons     Int
+  completedLessons Int
+  cancelledLessons Int
+  noShowLessons    Int
+
+  // Hours
+  totalHours    Float
+  regularHours  Float
+  overtimeHours Float
+  weekendHours  Float
+  nightHours    Float
+
+  // ===== STUDENT METRICS =====
+  uniqueStudents    Int
+  newStudents       Int
+  returningStudents Int
+
+  // Success Rates
+  studentsPassedTheory    Int
+  studentsPassedPractical Int
+  passRate                Float
+
+  // ===== FINANCIAL METRICS =====
+  totalEarnings    Decimal @db.Decimal(10, 2)
+  baseEarnings     Decimal @db.Decimal(10, 2)
+  overtimeEarnings Decimal @db.Decimal(10, 2)
+  bonusEarnings    Decimal @db.Decimal(10, 2)
+
+  // Deductions
+  deductions  Decimal @db.Decimal(10, 2)
+  netEarnings Decimal @db.Decimal(10, 2)
+
+  // ===== RATINGS =====
+  averageRating   Float
+  totalReviews    Int
+  fiveStarReviews Int
+
+  // ===== ATTENDANCE =====
+  scheduledDays Int
+  workedDays    Int
+  sickDays      Int
+  vacationDays  Int
+
+  // Punctuality
+  onTimeLessons   Int
+  lateLessons     Int
+  punctualityRate Float
+
+  // ===== GOALS & TARGETS =====
+  lessonTarget     Int?
+  lessonTargetMet  Boolean  @default(false)
+  revenueTarget    Decimal? @db.Decimal(10, 2)
+  revenueTargetMet Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([instructorId, periodType, periodStart])
+  @@index([instructorId])
+  @@index([periodType])
+  @@index([periodStart])
+  @@map("instructor_performance")
+}
+
+model InstructorProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ===== LICENSING & CERTIFICATION =====
+  instructorLicenseNumber String   @unique
+  instructorLicenseDate   DateTime
+  instructorLicenseExpiry DateTime
+  licenseCategories       String[] // ["B", "B1", "C", "D"]
+
+  // Additional Certifications
+  certifications            String[]
+  firstAidCertified         Boolean   @default(false)
+  firstAidExpiryDate        DateTime?
+  defensiveDrivingCertified Boolean   @default(false)
+
+  // ===== EXPERIENCE & SKILLS =====
+  yearsOfExperience Int
+  previousSchools   String[]
+  specializations   String[] // ["night_driving", "highway", "parking"]
+  languagesSpoken   String[] @default(["pl"])
+
+  // Teaching Preferences
+  preferredLessonTypes  String[]
+  preferredStudentLevel ExperienceLevel[]
+  maxStudentsPerDay     Int               @default(5)
+
+  // ===== PERFORMANCE METRICS =====
+  rating        Float @default(0) // 0-5
+  totalRatings  Int   @default(0)
+  totalLessons  Int   @default(0)
+  totalStudents Int   @default(0)
+
+  // Success Metrics
+  studentsPassedTheory     Int   @default(0)
+  studentsPassedPractical  Int   @default(0)
+  successRate              Float @default(0) // percentage
+  averageLessonsPerStudent Float @default(0)
+
+  // Feedback Stats
+  punctualityRating   Float @default(0) // 0-5
+  teachingRating      Float @default(0) // 0-5
+  communicationRating Float @default(0) // 0-5
+  patienceRating      Float @default(0) // 0-5
+
+  // ===== AVAILABILITY =====
+  isActive            Boolean @default(true)
+  isAcceptingStudents Boolean @default(true)
+  maxWeeklyHours      Int     @default(40)
+
+  // ===== COMPENSATION =====
+  hourlyRate   Decimal  @db.Decimal(10, 2)
+  overtimeRate Decimal? @db.Decimal(10, 2)
+  weekendRate  Decimal? @db.Decimal(10, 2)
+  nightRate    Decimal? @db.Decimal(10, 2)
+
+  // Commission
+  commissionRate Float? // percentage
+  bonusEligible  Boolean @default(true)
+
+  // ===== PROFILE DETAILS =====
+  bio                String?
+  teachingPhilosophy String?
+  profilePhoto       String?
+  introVideoUrl      String?
+
+  // Social Proof
+  testimonials Json? // Array of testimonials
+  badges       String[] // ["top_rated", "patient", "punctual"]
+
+  // ===== METADATA =====
+  onboardingCompleted Boolean   @default(false)
+  backgroundCheckDate DateTime?
+  contractStartDate   DateTime
+  contractEndDate     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([instructorLicenseNumber])
+  @@index([rating])
+  @@index([isActive])
+  @@map("instructor_profiles")
+}
+
+model InstructorSchedule {
+  id           String @id @default(cuid())
+  instructorId String
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  // ===== SCHEDULE TYPE =====
+  scheduleType ScheduleType @default(WEEKLY) // WEEKLY, SPECIFIC_DATE, RECURRING
+
+  // For WEEKLY schedules
+  dayOfWeek Int? // 0 = Sunday, 6 = Saturday
+
+  // For SPECIFIC_DATE schedules
+  specificDate DateTime?
+
+  // For RECURRING schedules
+  recurrenceRule String? // RRULE format
+
+  // ===== TIME SLOTS =====
+  startTime String // "09:00"
+  endTime   String // "17:00"
+
+  // Break Time
+  breakStart String? // "13:00"
+  breakEnd   String? // "14:00"
+
+  // Buffer Time
+  bufferBefore Int @default(15) // minutes before lesson
+  bufferAfter  Int @default(15) // minutes after lesson
+
+  // ===== LOCATION =====
+  locationId   String?
+  location     Location? @relation(fields: [locationId], references: [id])
+  workFromHome Boolean   @default(false)
+
+  // ===== CAPACITY =====
+  maxBookings     Int @default(5)
+  currentBookings Int @default(0)
+
+  // ===== LESSON PREFERENCES =====
+  availableLessonTypes String[]
+  nightDriving         Boolean  @default(false)
+  earlyMorning         Boolean  @default(false)
+  weekend              Boolean  @default(false)
+
+  // ===== STATUS =====
+  isAvailable Boolean @default(true)
+  isPublished Boolean @default(true) // Visible to students
+
+  // Temporary Changes
+  tempUnavailable Boolean   @default(false)
+  tempReason      String?
+  tempStartDate   DateTime?
+  tempEndDate     DateTime?
+
+  // ===== METADATA =====
+  notes String?
+  color String? // For calendar display
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([instructorId, dayOfWeek])
+  @@unique([instructorId, specificDate])
+  @@index([instructorId])
+  @@index([dayOfWeek])
+  @@index([specificDate])
+  @@index([isAvailable])
+  @@map("instructor_schedules")
+}
+
+model Invoice {
+  id String @id @default(cuid())
+
+  // Invoice Number
+  invoiceNumber String @unique
+  invoiceSeries String @default("FV")
+
+  // ===== PARTIES =====
+  // Seller (Driving School)
+  sellerName    String
+  sellerAddress String
+  sellerTaxId   String
+  sellerEmail   String?
+  sellerPhone   String?
+
+  // Buyer
+  buyerId      String
+  buyerName    String
+  buyerAddress String
+  buyerTaxId   String?
+  buyerEmail   String?
+  buyerPhone   String?
+
+  // ===== DATES =====
+  issueDate DateTime @default(now())
+  dueDate   DateTime
+  saleDate  DateTime
+
+  // ===== AMOUNTS =====
+  netAmount   Decimal @db.Decimal(10, 2)
+  taxAmount   Decimal @db.Decimal(10, 2)
+  grossAmount Decimal @db.Decimal(10, 2)
+  currency    String  @default("PLN")
+
+  // ===== ITEMS =====
+  items InvoiceItem[]
+
+  // ===== PAYMENT =====
+  paymentMethod String
+  paymentStatus InvoiceStatus @default(UNPAID)
+  paidAt        DateTime?
+
+  // Related Payment
+  payments Payment[]
+
+  // ===== NOTES =====
+  notes         String?
+  internalNotes String?
+
+  // ===== FILES =====
+  pdfUrl String?
+  xmlUrl String?
+
+  // ===== STATUS =====
+  status   InvoiceStatus @default(DRAFT)
+  sentAt   DateTime?
+  viewedAt DateTime?
+
+  // Corrections
+  isCorrective      Boolean @default(false)
+  correctsInvoiceId String?
+  correctionReason  String?
+
+  // Cancellation
+  isCancelled Boolean   @default(false)
+  cancelledAt DateTime?
+  cancelledBy String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([invoiceNumber])
+  @@index([buyerId])
+  @@index([status])
+  @@index([issueDate])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id        String  @id @default(cuid())
+  invoiceId String
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  // Item Details
+  position    Int
+  name        String
+  description String?
+
+  // Quantities
+  quantity Float
+  unit     String @default("szt")
+
+  // Pricing
+  unitPrice   Decimal @db.Decimal(10, 2)
+  netAmount   Decimal @db.Decimal(10, 2)
+  taxRate     Float
+  taxAmount   Decimal @db.Decimal(10, 2)
+  grossAmount Decimal @db.Decimal(10, 2)
+
+  // Discount
+  discountRate   Float?
+  discountAmount Decimal? @db.Decimal(10, 2)
+
+  // Classification
+  pkwiu String? // Polish classification
+  gtu   String? // GTU code
+
+  @@index([invoiceId])
+  @@map("invoice_items")
+}
+
+model LessonFeedback {
+  id        String  @id @default(cuid())
+  bookingId String  @unique
+  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  // ===== FROM INSTRUCTOR =====
+  instructorId String
+  instructor   User   @relation("InstructorFeedback", fields: [instructorId], references: [id])
+
+  // Performance Rating
+  overallPerformance Int? // 1-5
+  technicalSkills    Int? // 1-5
+  trafficAwareness   Int? // 1-5
+  confidence         Int? // 1-5
+  improvement        Int? // 1-5
+
+  // Detailed Assessment
+  instructorComments String?
+  skillsAssessed     Json? // Detailed JSON of skill scores
+
+  // Areas of Focus
+  strengths          String[]
+  areasOfImprovement String[]
+  nextLessonFocus    String[]
+
+  // Objectives
+  objectivesSet       String[]
+  objectivesCompleted String[]
+
+  // Safety
+  dangerousSituations Int @default(0)
+  minorErrors         Int @default(0)
+  majorErrors         Int @default(0)
+
+  // ===== FROM STUDENT =====
+
+  // Ratings
+  studentRating    Int? // 1-5 overall satisfaction
+  instructorRating Int? // 1-5 rate instructor
+  vehicleRating    Int? // 1-5 rate vehicle condition
+
+  // Feedback
+  studentComments String?
+  wouldRecommend  Boolean?
+
+  // ===== METADATA =====
+  isExamPrep        Boolean @default(false)
+  kmDriven          Float?
+  routeTaken        String?
+  weatherConditions String?
+  trafficConditions String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bookingId])
+  @@index([instructorId])
+  @@map("lesson_feedbacks")
+}
+
+model Location {
+  id String @id @default(cuid())
+
+  // ===== BASIC INFO =====
+  name String
+  code String       @unique // SHORT_CODE like "WAW01", "KRK01"
+  type LocationType @default(BRANCH)
+
+  // ===== ADDRESS =====
+  address      String
+  streetNumber String?
+  city         String
+  state        String?
+  postalCode   String
+  country      String  @default("PL")
+
+  // Geo Coordinates
+  latitude  Float?
+  longitude Float?
+  plusCode  String? // Google Plus Code
+
+  // ===== CONTACT =====
+  phone          String
+  alternatePhone String?
+  email          String
+  website        String?
+
+  // ===== OPERATING HOURS =====
+  operatingHours Json // Structured hours per day
+  // Example:
+  //  {
+  //    "monday": { "open": "08:00", "close": "18:00" },
+  //    "tuesday": { "open": "08:00", "close": "18:00" },
+  //    "saturday": { "open": "09:00", "close": "14:00" },
+  //    "sunday": { "closed": true }
+  //  }
+
+  // Special Hours
+  holidayHours Json? // Holiday schedule
+  summerHours  Json? // Summer schedule
+
+  // ===== CAPACITY =====
+  maxInstructors   Int @default(10)
+  maxVehicles      Int @default(15)
+  maxStudents      Int @default(100)
+  maxDailyBookings Int @default(50)
+
+  // Current Usage
+  activeInstructors Int @default(0)
+  activeVehicles    Int @default(0)
+  activeStudents    Int @default(0)
+
+  // ===== FACILITIES =====
+  hasClassroom      Boolean @default(true)
+  classroomCapacity Int?
+  hasParkingLot     Boolean @default(true)
+  parkingSpaces     Int?
+  hasWaitingArea    Boolean @default(true)
+  hasRestroom       Boolean @default(true)
+  hasAccessibility  Boolean @default(false)
+  hasWifi           Boolean @default(true)
+
+  // Training Areas
+  hasPrivatePracticeArea Boolean @default(false)
+  practiceAreaSize       Int? // square meters
+
+  // ===== STATUS =====
+  status    LocationStatus @default(ACTIVE)
+  isActive  Boolean        @default(true)
+  isPrimary Boolean        @default(false) // Main/HQ location
+  isOnline  Boolean        @default(false) // Virtual location for online classes
+
+  // ===== MANAGEMENT =====
+  managerId    String?
+  managerName  String?
+  managerPhone String?
+  managerEmail String?
+
+  // ===== SERVICE AREA =====
+  serviceRadius      Int? // km
+  servicePostalCodes String[]
+  serviceCities      String[]
+
+  // ===== PRICING =====
+  pricingZone     String? // For location-based pricing
+  priceMultiplier Float   @default(1.0)
+
+  // ===== SETTINGS =====
+  timezone String @default("Europe/Warsaw")
+  currency String @default("PLN")
+  locale   String @default("pl-PL")
+
+  // Booking Settings
+  advanceBookingDays   Int @default(30)
+  minBookingHours      Int @default(24) // Minimum hours before lesson
+  maxBookingPerStudent Int @default(5)
+
+  // ===== INTEGRATIONS =====
+  googlePlaceId  String?
+  googleMapsUrl  String?
+  facebookPageId String?
+
+  // ===== RATINGS =====
+  rating       Float @default(0)
+  totalReviews Int   @default(0)
+
+  // ===== PHOTOS =====
+  logoUrl        String?
+  coverPhotoUrl  String?
+  photoUrls      String[]
+  virtualTourUrl String?
+
+  // ===== METADATA =====
+  establishedDate    DateTime?
+  licenseNumber      String?
+  taxId              String?
+  registrationNumber String?
+
+  // ===== NOTES =====
+  description   String?
+  publicNotes   String? // Shown to customers
+  internalNotes String? // Internal only
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  // Relations
+  users               User[]
+  vehicles            Vehicle[]
+  bookings            Booking[]
+  instructorSchedules InstructorSchedule[]
+  rooms               Room[]
+  locationAmenities   LocationAmenity[]
+  locationHolidays    LocationHoliday[]
+  locationStats       LocationStats[]
+  nearbyPlaces        NearbyPlace[]
+
+  @@index([code])
+  @@index([city])
+  @@index([status])
+  @@index([isPrimary])
+  @@map("locations")
+}
+
+model LocationAmenity {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // ===== AMENITY =====
+  type        AmenityType
+  name        String
+  description String?
+
+  // ===== AVAILABILITY =====
+  isAvailable Boolean  @default(true)
+  isFree      Boolean  @default(true)
+  fee         Decimal? @db.Decimal(10, 2)
+
+  // ===== DETAILS =====
+  quantity Int?
+  capacity Int?
+
+  // ===== ICON/IMAGE =====
+  icon     String?
+  imageUrl String?
+
+  createdAt DateTime @default(now())
+
+  @@index([locationId])
+  @@index([type])
+  @@map("location_amenities")
+}
+
+model LocationHoliday {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // ===== HOLIDAY =====
+  name String
+  date DateTime
+
+  // ===== TYPE =====
+  type           HolidayType
+  isRecurring    Boolean     @default(false)
+  recurrenceRule String? // RRULE for recurring holidays
+
+  // ===== CLOSURE =====
+  isClosed        Boolean @default(true)
+  hasLimitedHours Boolean @default(false)
+  specialHours    Json? // Special operating hours
+
+  // ===== AFFECTED SERVICES =====
+  affectsBookings Boolean @default(true)
+  affectsTheory   Boolean @default(true)
+  affectsExams    Boolean @default(true)
+
+  // ===== NOTES =====
+  description  String?
+  publicNotice String?
+
+  createdAt DateTime @default(now())
+  createdBy String?
+
+  @@index([locationId])
+  @@index([date])
+  @@map("location_holidays")
+}
+
+model LocationStats {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // ===== PERIOD =====
+  periodType  PeriodType
+  periodStart DateTime
+  periodEnd   DateTime
+
+  // ===== BOOKINGS =====
+  totalBookings     Int
+  completedBookings Int
+  cancelledBookings Int
+  noShowBookings    Int
+
+  // ===== STUDENTS =====
+  newStudents       Int
+  activeStudents    Int
+  graduatedStudents Int
+
+  // ===== REVENUE =====
+  totalRevenue   Decimal @db.Decimal(10, 2)
+  bookingRevenue Decimal @db.Decimal(10, 2)
+  packageRevenue Decimal @db.Decimal(10, 2)
+
+  // ===== UTILIZATION =====
+  instructorUtilization Float // percentage
+  vehicleUtilization    Float // percentage
+  roomUtilization       Float // percentage
+
+  // ===== EXAMS =====
+  theoryExamsPassed    Int
+  theoryExamsFailed    Int
+  practicalExamsPassed Int
+  practicalExamsFailed Int
+
+  // ===== RATINGS =====
+  averageRating Float
+  totalReviews  Int
+
+  // ===== EFFICIENCY =====
+  averageLessonsToPass   Float
+  averageStudentDuration Int // days from start to license
+
+  createdAt DateTime @default(now())
+
+  @@unique([locationId, periodType, periodStart])
+  @@index([locationId])
+  @@index([periodType])
+  @@index([periodStart])
+  @@map("location_stats")
+}
+
+model LoginHistory {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Login Result
+  success       Boolean
+  failureReason String? // wrong_password, account_locked, etc.
+
+  // Method
+  authMethod String  @default("password") // password, oauth, magic_link
+  provider   String? // google, facebook, etc.
+
+  // Device & Location
+  ip        String
+  userAgent String?
+  browser   String?
+  os        String?
+  device    String?
+  country   String?
+  city      String?
+
+  // Session
+  sessionId String?
+
+  // Security
+  suspiciousActivity Boolean @default(false)
+  suspiciousReason   String?
+
+  // MFA
+  mfaUsed   Boolean @default(false)
+  mfaMethod String? // sms, app, email
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([success])
+  @@index([ip])
+  @@map("login_history")
+}
+
+model MaintenanceLog {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  // ===== MAINTENANCE TYPE =====
+  type     MaintenanceType
+  category MaintenanceCategory @default(PREVENTIVE)
+  priority MaintenancePriority @default(NORMAL)
+
+  // ===== SCHEDULING =====
+  scheduledDate DateTime?
+  actualDate    DateTime?
+  completedDate DateTime?
+
+  // Mileage
+  scheduledMileage Int?
+  actualMileage    Int?
+
+  // ===== STATUS =====
+  status MaintenanceStatus @default(SCHEDULED)
+
+  // ===== SERVICE DETAILS =====
+  serviceProvider String? // Workshop/Garage name
+  serviceLocation String?
+  servicedBy      String? // Mechanic name
+
+  // Work Performed
+  description    String
+  performedTasks String[]
+  partsReplaced  Json? // Detailed parts list
+  // Example:
+  //  {
+  //    "parts": [
+  //      { "name": "Oil Filter", "partNumber": "123456", "quantity": 1, "price": 25.00 },
+  //      { "name": "Engine Oil", "partNumber": "789012", "quantity": 4, "price": 120.00 }
+  //    ]
+  //  }
+
+  // ===== COST =====
+  laborCost Decimal? @db.Decimal(10, 2)
+  partsCost Decimal? @db.Decimal(10, 2)
+  totalCost Decimal? @db.Decimal(10, 2)
+  currency  String   @default("PLN")
+
+  // Payment
+  isPaid        Boolean   @default(false)
+  paidAt        DateTime?
+  paymentMethod String?
+
+  // ===== DOCUMENTATION =====
+  invoiceNumber String?
+  invoiceUrl    String?
+  photoUrls     String[]
+
+  // ===== WARRANTY =====
+  hasWarranty    Boolean   @default(false)
+  warrantyMonths Int?
+  warrantyExpiry DateTime?
+  warrantyTerms  String?
+
+  // ===== NEXT SERVICE =====
+  nextServiceMileage Int?
+  nextServiceDate    DateTime?
+  nextServiceNotes   String?
+
+  // ===== DOWNTIME =====
+  vehicleDowntime      Int? // hours
+  requiredReplacement  Boolean @default(false)
+  replacementVehicleId String?
+
+  // ===== QUALITY CHECK =====
+  qualityChecked   Boolean @default(false)
+  qualityCheckedBy String?
+  qualityNotes     String?
+
+  // ===== NOTES =====
+  notes           String?
+  internalNotes   String?
+  recommendations String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([vehicleId])
+  @@index([type])
+  @@index([status])
+  @@index([scheduledDate])
+  @@map("maintenance_logs")
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  // ===== PARTICIPANTS =====
+  senderId   String
+  sender     User   @relation("SentMessages", fields: [senderId], references: [id])
+  receiverId String
+  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  // ===== CONTENT =====
+  subject     String?
+  content     String
+  contentHtml String?
+
+  // ===== TYPE & CATEGORY =====
+  messageType String  @default("direct") // direct, broadcast, system
+  category    String? // inquiry, complaint, feedback, etc.
+
+  // ===== STATUS =====
+  status String    @default("sent") // draft, sent, delivered, failed
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  // ===== PRIORITY =====
+  priority    MessagePriority @default(NORMAL)
+  isImportant Boolean         @default(false)
+  isStarred   Boolean         @default(false)
+
+  // ===== THREADING =====
+  threadId   String?
+  parentId   String?
+  parent     Message?  @relation("MessageThread", fields: [parentId], references: [id])
+  replies    Message[] @relation("MessageThread")
+  replyCount Int       @default(0)
+
+  // ===== ATTACHMENTS =====
+  hasAttachments Boolean @default(false)
+  attachments    Json?
+  //  Example:
+  //  {
+  //    "files": [
+  //      { "name": "document.pdf", "url": "...", "size": 1024, "type": "application/pdf" }
+  //    ]
+  //  }
+
+  // ===== ACTIONS =====
+  isArchived Boolean   @default(false)
+  archivedAt DateTime?
+  isDeleted  Boolean   @default(false)
+  deletedAt  DateTime?
+
+  // ===== DELIVERY =====
+  deliveredAt    DateTime?
+  deliveryStatus String?
+
+  // ===== SPAM/MODERATION =====
+  isSpam           Boolean   @default(false)
+  spamScore        Float?
+  moderationStatus String? // pending, approved, rejected
+  moderatedBy      String?
+  moderatedAt      DateTime?
+
+  // ===== METADATA =====
+  metadata Json?
+  tags     String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([isRead])
+  @@index([threadId])
+  @@index([parentId])
+  @@index([status])
+  @@map("messages")
+}
+
+model NearbyPlace {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // ===== PLACE INFO =====
+  type    NearbyPlaceType
+  name    String
+  address String?
+
+  // ===== DISTANCE =====
+  distanceKm  Float
+  walkingTime Int? // minutes
+  drivingTime Int? // minutes
+
+  // ===== COORDINATES =====
+  latitude  Float?
+  longitude Float?
+
+  // ===== DETAILS =====
+  description   String?
+  googlePlaceId String?
+
+  // ===== RELEVANCE =====
+  isPickupPoint  Boolean @default(false)
+  isLandmark     Boolean @default(false)
+  isPracticeArea Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([locationId])
+  @@index([type])
+  @@map("nearby_places")
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ===== NOTIFICATION TYPE =====
+  type     NotificationType
+  category String? // booking, payment, system, etc.
+
+  // ===== CONTENT =====
+  title        String
+  message      String
+  shortMessage String? // For SMS/Push
+
+  // Rich Content
+  imageUrl    String?
+  actionUrl   String?
+  actionLabel String?
+
+  // ===== CHANNEL & DELIVERY =====
+  channel  NotificationChannel
+  priority NotificationPriority @default(MEDIUM)
+
+  // ===== STATUS =====
+  status NotificationStatus @default(PENDING)
+
+  // ===== SCHEDULING =====
+  scheduledFor DateTime?
+  sendAfter    DateTime?
+  expiresAt    DateTime?
+
+  // ===== DELIVERY TRACKING =====
+  sentAt      DateTime?
+  deliveredAt DateTime?
+  readAt      DateTime?
+  clickedAt   DateTime?
+  failedAt    DateTime?
+
+  // Error Handling
+  errorMessage String?
+  errorCode    String?
+  retryCount   Int       @default(0)
+  maxRetries   Int       @default(3)
+  nextRetryAt  DateTime?
+
+  // ===== METADATA =====
+  metadata Json?
+  tags     String[]
+
+  // Related Entities
+  relatedEntityType String? // booking, payment, lesson, etc.
+  relatedEntityId   String?
+
+  // Batch/Campaign
+  batchId    String?
+  campaignId String?
+
+  // ===== PREFERENCES =====
+  respectQuietHours Boolean @default(true)
+  allowDuplicates   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([channel])
+  @@index([scheduledFor])
+  @@index([batchId])
+  @@map("notifications")
+}
+
+model NotificationPreferences {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  // ===== EMAIL PREFERENCES =====
+  emailEnabled   Boolean  @default(true)
+  emailTypes     String[] // Types of emails user wants to receive
+  emailFrequency String   @default("immediate") // immediate, daily, weekly
+
+  // ===== SMS PREFERENCES =====
+  smsEnabled Boolean  @default(true)
+  smsTypes   String[]
+
+  // ===== PUSH PREFERENCES =====
+  pushEnabled Boolean  @default(true)
+  pushTypes   String[]
+
+  // ===== IN-APP PREFERENCES =====
+  inAppEnabled Boolean  @default(true)
+  inAppTypes   String[]
+
+  // ===== QUIET HOURS =====
+  quietHoursEnabled  Boolean @default(false)
+  quietHoursStart    String? // "22:00"
+  quietHoursEnd      String? // "08:00"
+  quietHoursTimezone String  @default("Europe/Warsaw")
+
+  // ===== DIGEST SETTINGS =====
+  digestEnabled   Boolean @default(false)
+  digestFrequency String? // daily, weekly, monthly
+  digestDay       Int? // Day of week/month
+  digestTime      String? // "09:00"
+
+  // ===== UNSUBSCRIBE =====
+  unsubscribedAll  Boolean   @default(false)
+  unsubscribedAt   DateTime?
+  unsubscribeToken String?   @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notification_preferences")
+}
+
+model OAuthAccount {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Provider Info
+  provider          String // google, facebook, github, etc.
+  providerAccountId String
+
+  // Tokens
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime?
+  tokenType    String?
+  scope        String?
+  idToken      String?
+
+  // Profile Data
+  providerProfile Json?
+
+  // Status
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}
+
+model Package {
+  id String @id @default(cuid())
+
+  // ===== BASIC INFO =====
+  name             String
+  slug             String  @unique
+  description      String?
+  shortDescription String?
+
+  // ===== PACKAGE TYPE =====
+  type     PackageType     @default(STANDARD)
+  category PackageCategory @default(DRIVING_LESSONS)
+
+  // ===== CONTENTS =====
+  credits         Int // Number of credits
+  lessonsIncluded Int // Number of lessons
+
+  // Theory
+  theoryLessonsIncluded Int     @default(0)
+  theoryTestsIncluded   Int     @default(0)
+  theoryUnlimited       Boolean @default(false)
+
+  // Practical
+  practicalHours         Float @default(0)
+  practicalTestsIncluded Int   @default(0)
+
+  // Exam
+  examIncluded       Boolean @default(false)
+  examRetakeIncluded Int     @default(0)
+
+  // ===== PRICING =====
+  price         Decimal  @db.Decimal(10, 2)
+  originalPrice Decimal? @db.Decimal(10, 2) // For showing discount
+  currency      String   @default("PLN")
+
+  // Tax
+  taxRate          Float   @default(23) // percentage
+  priceIncludesTax Boolean @default(true)
+
+  // ===== VALIDITY =====
+  validityDays Int // How long package is valid
+  validityType ValidityType @default(FROM_PURCHASE)
+
+  // Activation
+  activationRequired     Boolean @default(false)
+  activationDeadlineDays Int? // Days to activate after purchase
+
+  // ===== RESTRICTIONS =====
+  minAge Int?
+  maxAge Int?
+
+  // Student Level
+  forBeginners    Boolean @default(true)
+  forIntermediate Boolean @default(true)
+  forAdvanced     Boolean @default(true)
+
+  // Scheduling
+  maxBookingsPerWeek    Int?
+  minDaysBetweenLessons Int?
+  blackoutDates         Json? // Dates when package can't be used
+
+  // ===== DISPLAY =====
+  isActive   Boolean @default(true)
+  isPublic   Boolean @default(true)
+  isFeatured Boolean @default(false)
+  isPopular  Boolean @default(false)
+
+  // Badges
+  badges String[] // ["BEST_VALUE", "LIMITED_TIME", "RECOMMENDED"]
+
+  // Sorting
+  sortOrder Int @default(0)
+
+  // ===== CUSTOMIZATION =====
+  color    String? // Brand color for package
+  icon     String? // Icon identifier
+  imageUrl String? // Package image
+
+  // ===== FEATURES =====
+  features   String[] // List of included features
+  highlights String[] // Key selling points
+
+  // Additional Benefits
+  freePickup          Boolean @default(false)
+  flexibleScheduling  Boolean @default(true)
+  onlineTheoryAccess  Boolean @default(false)
+  progressTracking    Boolean @default(true)
+  certificateIncluded Boolean @default(true)
+
+  // ===== TERMS =====
+  termsAndConditions String?
+  cancellationPolicy String?
+  refundPolicy       String?
+
+  // ===== METADATA =====
+  tags           String[]
+  searchKeywords String[]
+
+  // Analytics
+  purchaseCount  Int   @default(0)
+  viewCount      Int   @default(0)
+  conversionRate Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  // Relations
+  userPackages UserPackage[]
+  enrollments  Enrollment[]
+  promotions   PackagePromotion[]
+
+  @@index([slug])
+  @@index([type])
+  @@index([isActive])
+  @@index([sortOrder])
+  @@map("packages")
+}
+
+model PackagePromotion {
+  id String @id @default(cuid())
+
+  // Promotion Info
+  name        String
+  code        String  @unique
+  description String?
+
+  // ===== DISCOUNT =====
+  discountType  DiscountType
+  discountValue Float // Amount or percentage
+
+  // Max Discount
+  maxDiscountAmount Decimal? @db.Decimal(10, 2)
+
+  // ===== VALIDITY =====
+  validFrom DateTime
+  validTo   DateTime
+  isActive  Boolean  @default(true)
+
+  // ===== USAGE LIMITS =====
+  usageLimit   Int? // Total usage limit
+  usageCount   Int  @default(0)
+  usagePerUser Int? // Limit per user
+
+  // ===== CONDITIONS =====
+  minPurchaseAmount Decimal? @db.Decimal(10, 2)
+
+  // Applicable Packages
+  packageIds String[] // Empty means all packages
+  packages   Package[]
+
+  // User Restrictions
+  newUsersOnly    Boolean    @default(false)
+  userRoles       UserRole[]
+  specificUserIds String[]
+
+  // ===== METADATA =====
+  tags   String[]
+  source String? // Marketing campaign
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([code])
+  @@index([isActive])
+  @@index([validFrom, validTo])
+  @@map("package_promotions")
+}
+
+model PackageUsage {
+  id           String     @id @default(cuid())
+  enrollmentId String
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  bookingId    String
+  booking      Booking    @relation(fields: [bookingId], references: [id])
+
+  // Credits/Lessons Used
+  creditsUsed Int
+  lessonsUsed Int @default(1)
+
+  // Balance
+  creditsBefore Int
+  creditsAfter  Int
+
+  // Type
+  usageType UsageType @default(LESSON)
+
+  // Reversal (for cancellations)
+  isReversed     Boolean   @default(false)
+  reversedAt     DateTime?
+  reversalReason String?
+
+  createdAt DateTime @default(now())
+
+  @@index([enrollmentId])
+  @@index([bookingId])
+  @@map("package_usage")
+}
+
+model PasswordReset {
+  id     String @id @default(cuid())
+  token  String @unique
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Token Info
+  expiresAt DateTime
+
+  // Usage
+  used   Boolean   @default(false)
+  usedAt DateTime?
+
+  // Request Info
+  requestedIp        String?
+  requestedUserAgent String?
+
+  // Verification
+  verificationCode     String?
+  verificationAttempts Int     @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("password_resets")
+}
+
+model Payment {
+  id String @id @default(cuid())
+
+  // ===== USER =====
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // ===== PAYMENT FOR =====
+  bookingId     String?      @unique
+  booking       Booking?
+  userPackageId String?      @unique
+  userPackage   UserPackage?
+  enrollmentId  String?
+  enrollment    Enrollment?  @relation(fields: [enrollmentId], references: [id])
+
+  // ===== AMOUNT =====
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("PLN")
+
+  // Tax
+  taxAmount Decimal @default(0) @db.Decimal(10, 2)
+  netAmount Decimal @db.Decimal(10, 2)
+
+  // ===== PAYMENT METHOD =====
+  method PaymentMethod @default(CARD)
+
+  // ===== STATUS =====
+  status PaymentStatus @default(PENDING)
+
+  // Status Timeline
+  pendingAt    DateTime  @default(now())
+  processingAt DateTime?
+  completedAt  DateTime?
+  failedAt     DateTime?
+  refundedAt   DateTime?
+
+  // ===== PAYMENT GATEWAY =====
+  gateway PaymentGateway @default(PRZELEWY24)
+
+  // Przelewy24
+  p24SessionId String? @unique
+  p24OrderId   String? @unique
+  p24Token     String?
+  p24Sign      String?
+
+  // Stripe
+  stripePaymentIntentId String? @unique
+  stripeChargeId        String?
+  stripeRefundId        String?
+
+  // PayPal
+  paypalOrderId   String?
+  paypalCaptureId String?
+
+  // ===== TRANSACTION DETAILS =====
+  transactionId   String? @unique
+  referenceNumber String? @unique @default(cuid())
+
+  // Card Details (masked)
+  cardLast4   String?
+  cardBrand   String?
+  cardCountry String?
+
+  // Bank Transfer
+  bankName    String?
+  bankAccount String?
+
+  // ===== INVOICE =====
+  invoiceRequired Boolean  @default(false)
+  invoiceId       String?
+  invoice         Invoice? @relation(fields: [invoiceId], references: [id])
+
+  // Invoice Data
+  billingName       String?
+  billingEmail      String?
+  billingPhone      String?
+  billingAddress    String?
+  billingCity       String?
+  billingPostalCode String?
+  billingCountry    String?
+  taxId             String? // NIP/VAT number
+
+  // ===== REFUND =====
+  isRefundable  Boolean  @default(true)
+  refundAmount  Decimal? @db.Decimal(10, 2)
+  refundReason  String?
+  refundNotes   String?
+  partialRefund Boolean  @default(false)
+
+  // ===== ERROR HANDLING =====
+  failureReason String?
+  failureCode   String?
+  retryCount    Int       @default(0)
+  maxRetries    Int       @default(3)
+  nextRetryAt   DateTime?
+
+  // ===== FEES =====
+  processingFee Decimal @default(0) @db.Decimal(10, 2)
+  gatewayFee    Decimal @default(0) @db.Decimal(10, 2)
+  netReceived   Decimal @db.Decimal(10, 2)
+
+  // ===== METADATA =====
+  description String?
+  notes       String?
+  metadata    Json?
+
+  // Security
+  ipAddress String?
+  userAgent String?
+
+  // Webhooks
+  webhookStatus String?
+  webhookData   Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([method])
+  @@index([referenceNumber])
+  @@index([p24SessionId])
+  @@index([stripePaymentIntentId])
+  @@index([transactionId])
+  @@map("payments")
+}
+
+model PaymentSettings {
+  id String @id @default(cuid())
+
+  // ===== GENERAL =====
+  acceptedMethods PaymentMethod[]
+  defaultMethod   PaymentMethod   @default(CARD)
+  currency        String          @default("PLN")
+
+  // ===== TAX =====
+  taxRate     Float   @default(23)
+  taxIncluded Boolean @default(true)
+
+  // ===== CANCELLATION =====
+  cancellationFeeHours   Int   @default(24) // Hours before lesson
+  cancellationFeePercent Float @default(50) // Percentage of lesson price
+
+  // Late Cancellation
+  lateCancellationHours      Int   @default(6)
+  lateCancellationFeePercent Float @default(100)
+
+  // No-show
+  noShowFeePercent Float @default(100)
+
+  // ===== REFUNDS =====
+  refundEnabled    Boolean @default(true)
+  refundDays       Int     @default(14)
+  refundFeePercent Float   @default(0)
+
+  // ===== PAYMENT TERMS =====
+  paymentTermDays Int   @default(7)
+  lateFeePercent  Float @default(5)
+
+  // ===== GATEWAY SETTINGS =====
+  // Przelewy24
+  p24Enabled    Boolean @default(true)
+  p24MerchantId String?
+  p24PosId      String?
+  p24CrcKey     String?
+  p24TestMode   Boolean @default(false)
+
+  // Stripe
+  stripeEnabled   Boolean @default(false)
+  stripePublicKey String?
+  stripeSecretKey String?
+
+  // PayPal
+  paypalEnabled   Boolean @default(false)
+  paypalClientId  String?
+  paypalSecretKey String?
+
+  // ===== NOTIFICATIONS =====
+  sendPaymentReminders Boolean @default(true)
+  reminderDaysBefore   Int[]   @default([7, 3, 1])
+
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+
+  @@map("payment_settings")
+}
+
+model PushTemplate {
+  id String @id @default(cuid())
+
+  // ===== IDENTIFICATION =====
+  code String @unique
+  name String
+
+  // ===== CONTENT =====
+  title String
+  body  String
+
+  // ===== RICH CONTENT =====
+  imageUrl  String?
+  iconUrl   String?
+  badgeUrl  String?
+  soundFile String?
+
+  // ===== ACTIONS =====
+  actionUrl   String?
+  actionLabel String?
+  actions     Json? // Multiple action buttons
+
+  // ===== DATA =====
+  dataPayload Json?
+
+  // ===== PLATFORM SPECIFIC =====
+  iosPayload     Json?
+  androidPayload Json?
+  webPayload     Json?
+
+  // ===== TARGETING =====
+  targetPlatforms String[] @default(["ios", "android", "web"])
+
+  // ===== STATUS =====
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([code])
+  @@map("push_templates")
+}
+
+model RefreshToken {
+  id     String @id @default(cuid())
+  token  String @unique
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Token Info
+  expiresAt DateTime
+
+  // Usage
+  used       Boolean   @default(false)
+  usedAt     DateTime?
+  replacedBy String? // New token that replaced this one
+
+  // Security
+  revoked       Boolean   @default(false)
+  revokedAt     DateTime?
+  revokedReason String?
+
+  // Device
+  deviceId String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@index([deviceId])
+  @@map("refresh_tokens")
+}
+
+model Room {
+  id         String   @id @default(cuid())
+  locationId String
+  location   Location @relation(fields: [locationId], references: [id])
+
+  // ===== BASIC INFO =====
+  name       String
+  code       String
+  type       RoomType
+  floor      Int?
+  roomNumber String?
+
+  // ===== CAPACITY =====
+  capacity     Int
+  examCapacity Int? // For theory exams
+
+  // ===== FEATURES =====
+  hasProjector       Boolean @default(false)
+  hasWhiteboard      Boolean @default(true)
+  hasAC              Boolean @default(false)
+  hasComputers       Boolean @default(false)
+  computerCount      Int?
+  hasAudioSystem     Boolean @default(false)
+  hasVideoConference Boolean @default(false)
+
+  // ===== DIMENSIONS =====
+  area   Float? // square meters
+  length Float? // meters
+  width  Float? // meters
+  height Float? // meters
+
+  // ===== AVAILABILITY =====
+  isAvailable Boolean @default(true)
+  isBookable  Boolean @default(true)
+
+  // Maintenance
+  underMaintenance Boolean   @default(false)
+  maintenanceFrom  DateTime?
+  maintenanceTo    DateTime?
+
+  // ===== USAGE =====
+  usageType String[] // ["theory_class", "exam", "meeting", "waiting"]
+
+  // ===== BOOKING =====
+  hourlyRate Decimal? @db.Decimal(10, 2)
+  dailyRate  Decimal? @db.Decimal(10, 2)
+
+  // ===== EQUIPMENT =====
+  equipment Json? // Detailed equipment list
+
+  // ===== PHOTOS =====
+  photoUrls String[]
+  layoutUrl String? // Floor plan
+
+  // ===== NOTES =====
+  description String?
+  rules       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  roomBookings  RoomBooking[]
+  theoryClasses TheoryClass[]
+
+  @@unique([locationId, code])
+  @@index([locationId])
+  @@index([type])
+  @@index([isAvailable])
+  @@map("rooms")
+}
+
+model RoomBooking {
+  id     String @id @default(cuid())
+  roomId String
+  room   Room   @relation(fields: [roomId], references: [id])
+
+  // ===== BOOKING DETAILS =====
+  date      DateTime
+  startTime String // "09:00"
+  endTime   String // "11:00"
+  duration  Int // minutes
+
+  // ===== PURPOSE =====
+  purpose     RoomBookingPurpose
+  title       String
+  description String?
+
+  // ===== ORGANIZER =====
+  organizerId   String // userId
+  attendeeCount Int?
+  attendeeList  String[]
+
+  // ===== THEORY CLASS =====
+  theoryClassId String?
+  theoryClass   TheoryClass? @relation(fields: [theoryClassId], references: [id])
+
+  // ===== STATUS =====
+  status RoomBookingStatus @default(CONFIRMED)
+
+  // ===== RECURRING =====
+  isRecurring   Boolean @default(false)
+  recurringRule String? // RRULE format
+  recurringId   String? // Group recurring bookings
+
+  // ===== EQUIPMENT =====
+  equipmentNeeded String[]
+  setupRequired   String?
+
+  // ===== CATERING =====
+  cateringRequired Boolean @default(false)
+  cateringDetails  String?
+
+  // ===== NOTES =====
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  @@index([roomId])
+  @@index([date])
+  @@index([theoryClassId])
+  @@index([organizerId])
+  @@map("room_bookings")
+}
+
+model ScheduleException {
+  id           String @id @default(cuid())
+  instructorId String
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  // ===== EXCEPTION TYPE =====
+  type ScheduleExceptionType
+
+  // ===== DATE/TIME RANGE =====
+  startDate DateTime
+  endDate   DateTime
+  allDay    Boolean  @default(true)
+  startTime String? // "14:00" if not allDay
+  endTime   String? // "18:00" if not allDay
+
+  // ===== REASON & DETAILS =====
+  reason      String
+  description String?
+
+  // ===== APPROVAL WORKFLOW =====
+  status      ExceptionStatus @default(PENDING)
+  requestedAt DateTime        @default(now())
+
+  // Approval
+  isApproved    Boolean?
+  approvedBy    String?
+  approvedAt    DateTime?
+  approvalNotes String?
+
+  // Rejection
+  rejectedBy      String?
+  rejectedAt      DateTime?
+  rejectionReason String?
+
+  // ===== AFFECTED BOOKINGS =====
+  affectsBookings    Boolean @default(true)
+  bookingsCount      Int     @default(0)
+  bookingsReassigned Int     @default(0)
+  bookingsCancelled  Int     @default(0)
+
+  // ===== SUBSTITUTE INSTRUCTOR =====
+  substituteInstructorId String?
+  substituteConfirmed    Boolean @default(false)
+
+  // ===== NOTIFICATIONS =====
+  notificationSent Boolean @default(false)
+  studentsNotified Int     @default(0)
+
+  // ===== DOCUMENTATION =====
+  attachmentUrl       String? // Medical certificate, etc.
+  certificateNumber   String?
+  certificateExpected Boolean @default(false)
+
+  // ===== COMPENSATION =====
+  isPaid                 Boolean @default(false)
+  compensationRate       Float? // Percentage of normal rate
+  additionalCompensation Float?
+
+  // ===== METADATA =====
+  isRecurring    Boolean           @default(false)
+  recurrenceRule String? // RRULE format
+  isCompanyWide  Boolean           @default(false) // Holiday for all
+  priority       ExceptionPriority @default(NORMAL)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([instructorId])
+  @@index([startDate, endDate])
+  @@index([type])
+  @@index([status])
+  @@map("schedule_exceptions")
+}
+
+model ScheduleTemplate {
+  id           String @id @default(cuid())
+  instructorId String
+  instructor   User   @relation(fields: [instructorId], references: [id], onDelete: Cascade)
+
+  // Template Info
+  name        String // "Summer Schedule", "Winter Schedule"
+  description String?
+  isActive    Boolean @default(false)
+  isDefault   Boolean @default(false)
+
+  // Schedule Pattern (JSON)
+  weekPattern Json // Array of daily schedules
+  // Example:
+  //  {
+  //    "monday": { "start": "09:00", "end": "17:00", "break": "13:00-14:00" },
+  //    "tuesday": { "start": "10:00", "end": "18:00", "break": "14:00-15:00" },
+  //    ...
+  //  }
+
+  // Settings
+  bufferBefore      Int @default(15)
+  bufferAfter       Int @default(15)
+  maxBookingsPerDay Int @default(5)
+
+  // Validity Period
+  validFrom DateTime?
+  validTo   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([instructorId])
+  @@index([isActive])
+  @@map("schedule_templates")
+}
+
+model SecurityLog {
+  id     String  @id @default(cuid())
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
+
+  // Event Info
+  event    String // password_changed, 2fa_enabled, suspicious_login, etc.
+  severity String // info, warning, critical
+
+  // Details
+  description String
+  metadata    Json?
+
+  // Source
+  ip        String?
+  userAgent String?
+
+  // Resolution
+  resolved   Boolean   @default(false)
+  resolvedAt DateTime?
+  resolvedBy String?
+  resolution String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([event])
+  @@index([severity])
+  @@index([createdAt])
+  @@map("security_logs")
+}
+
+model Session {
+  id           String @id @default(cuid())
+  sessionToken String @unique
+  userId       String
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Session Info
+  expires DateTime
+
+  // Device & Location
+  userAgent String?
+  browser   String?
+  os        String?
+  device    String?
+  ip        String?
+  country   String?
+  city      String?
+
+  // Activity
+  lastActivity DateTime @default(now())
+  isActive     Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([sessionToken])
+  @@index([expires])
+  @@map("sessions")
+}
+
+model SmsTemplate {
+  id String @id @default(cuid())
+
+  // ===== IDENTIFICATION =====
+  code        String  @unique
+  name        String
+  description String?
+
+  // ===== CONTENT =====
+  message String // Max 160 chars typically
+
+  // ===== VARIABLES =====
+  variables String[]
+
+  // ===== LOCALIZATION =====
+  language String @default("pl")
+
+  // ===== CATEGORY =====
+  category String
+
+  // ===== SENDER =====
+  senderId String? // Sender ID/Name
+
+  // ===== STATUS =====
+  isActive Boolean @default(true)
+
+  // ===== USAGE =====
+  usageCount Int       @default(0)
+  lastUsedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([code])
+  @@index([category])
+  @@map("sms_templates")
+}
+
+model StudentPreferences {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ===== SCHEDULING PREFERENCES =====
+  preferredDays       String[] // ["MON", "TUE", "WED"]
+  preferredTimeSlots  String[] // ["MORNING", "AFTERNOON", "EVENING"]
+  preferredStartTime  String? // "09:00"
+  preferredEndTime    String? // "17:00"
+  weekendAvailability Boolean  @default(false)
+
+  // Instructor Preferences
+  preferredInstructorIds String[]
+  avoidInstructorIds     String[]
+  preferredGender        Gender?
+
+  // Vehicle Preferences
+  preferredVehicleIds   String[]
+  preferredTransmission Transmission?
+
+  // Location Preferences
+  preferredLocationId String?
+  maxDistanceKm       Int?
+
+  // ===== LEARNING PREFERENCES =====
+  learningPace   LearningPace @default(MODERATE)
+  lessonDuration Int          @default(120) // minutes
+  focusAreas     String[]
+  avoidAreas     String[]
+
+  // Communication
+  preferredLanguage  String             @default("pl")
+  communicationStyle CommunicationStyle @default(DETAILED)
+
+  // ===== NOTIFICATION PREFERENCES =====
+  reminderTime  Int      @default(24) // hours before lesson
+  reminderTypes String[] @default(["email", "sms"])
+
+  // Notification Times
+  doNotDisturbStart String? // "22:00"
+  doNotDisturbEnd   String? // "08:00"
+
+  // ===== SPECIAL REQUIREMENTS =====
+  requiresFemaleInstructor Boolean @default(false)
+  requiresEnglishSpeaking  Boolean @default(false)
+  anxietySupport           Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("student_preferences")
+}
+
+model StudentProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Student Identification
+  studentNumber String  @unique @default(cuid())
+  studentCardId String?
+
+  // Learning Information
+  learningStyle            LearningStyle?
+  experienceLevel          ExperienceLevel @default(BEGINNER)
+  hasLicenseInOtherCountry Boolean         @default(false)
+  previousDrivingSchool    String?
+
+  // Medical & Special Needs
+  wearsCorrectionGlasses   Boolean   @default(false)
+  hasDisabilities          Boolean   @default(false)
+  specialNeeds             String?
+  medicalCertificateDate   DateTime?
+  medicalCertificateExpiry DateTime?
+
+  // Goals & Motivation
+  targetExamDate        DateTime?
+  reasonForLearning     String?
+  availableHoursPerWeek Int?
+
+  // Referral
+  referralSource String?
+  referredBy     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([studentNumber])
+  @@map("student_profiles")
+}
+
+model StudentProgress {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ===== PARKING SKILLS (0-100) =====
+  parkingGeneral       Int @default(0)
+  parallelParking      Int @default(0)
+  perpendicularParking Int @default(0)
+  angleParking         Int @default(0)
+  reverseParkingBay    Int @default(0)
+  emergencyStop        Int @default(0)
+
+  // ===== TRAFFIC RULES KNOWLEDGE (0-100) =====
+  trafficRulesGeneral Int @default(0)
+  signRecognition     Int @default(0)
+  rightOfWay          Int @default(0)
+  speedLimits         Int @default(0)
+  roadMarkings        Int @default(0)
+
+  // ===== CITY DRIVING SKILLS (0-100) =====
+  cityDrivingGeneral  Int @default(0)
+  laneChanging        Int @default(0)
+  intersections       Int @default(0)
+  roundabouts         Int @default(0)
+  pedestrianCrossings Int @default(0)
+  trafficLights       Int @default(0)
+
+  // ===== HIGHWAY SKILLS (0-100) =====
+  highwayGeneral   Int @default(0)
+  merging          Int @default(0)
+  overtaking       Int @default(0)
+  exitingHighway   Int @default(0)
+  maintainingSpeed Int @default(0)
+
+  // ===== SPECIAL CONDITIONS (0-100) =====
+  nightDriving Int @default(0)
+  rainDriving  Int @default(0)
+  fogDriving   Int @default(0)
+  snowDriving  Int @default(0)
+
+  // ===== VEHICLE CONTROL (0-100) =====
+  steeringControl Int @default(0)
+  clutchControl   Int @default(0)
+  gearChanging    Int @default(0)
+  smoothBraking   Int @default(0)
+  hillStart       Int @default(0)
+
+  // ===== SAFETY & OBSERVATION (0-100) =====
+  mirrorUsage           Int @default(0)
+  blindSpotChecking     Int @default(0)
+  signaling             Int @default(0)
+  safeFollowingDistance Int @default(0)
+  hazardPerception      Int @default(0)
+
+  // ===== OVERALL METRICS =====
+  overallProgress Int @default(0) // 0-100
+  confidenceLevel Int @default(0) // 0-100
+  examReadiness   Int @default(0) // 0-100
+  safetyRating    Int @default(0) // 0-100
+
+  // ===== STATISTICS =====
+  totalHoursDriven        Float @default(0)
+  totalKmDriven           Float @default(0)
+  totalLessonsCompleted   Int   @default(0)
+  totalLessonsCancelled   Int   @default(0)
+  totalLessonsRescheduled Int   @default(0)
+
+  // Theory
+  theoryTestsTaken   Int   @default(0)
+  theoryTestsPassed  Int   @default(0)
+  averageTheoryScore Float @default(0)
+  lastTheoryScore    Int?
+
+  // Practical
+  practicalTestsTaken  Int @default(0)
+  practicalTestsPassed Int @default(0)
+
+  // ===== MILESTONES =====
+  firstLessonDate     DateTime?
+  lastLessonDate      DateTime?
+  theoryPassedDate    DateTime?
+  practicalPassedDate DateTime?
+  licenseIssuedDate   DateTime?
+
+  // ===== STREAKS & GAMIFICATION =====
+  currentStreak Int @default(0) // Days
+  longestStreak Int @default(0) // Days
+  totalPoints   Int @default(0)
+  currentLevel  Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("student_progress")
+}
+
+model SupportTicket {
+  id String @id @default(cuid())
+
+  // ===== TICKET NUMBER =====
+  ticketNumber String @unique @default(cuid())
+
+  // ===== REQUESTER =====
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // ===== CLASSIFICATION =====
+  category    TicketCategory
+  subcategory String?
+  priority    TicketPriority @default(MEDIUM)
+  severity    String? // low, medium, high, critical
+
+  // ===== CONTENT =====
+  subject     String
+  description String
+
+  // ===== STATUS =====
+  status TicketStatus @default(OPEN)
+
+  // Status Timeline
+  openedAt       DateTime  @default(now())
+  acknowledgedAt DateTime?
+  inProgressAt   DateTime?
+  onHoldAt       DateTime?
+  resolvedAt     DateTime?
+  closedAt       DateTime?
+  reopenedAt     DateTime?
+
+  // ===== ASSIGNMENT =====
+  assignedTo String?
+  assignedBy String?
+  assignedAt DateTime?
+
+  // Team/Department
+  department String?
+  team       String?
+
+  // ===== RESOLUTION =====
+  resolution      String?
+  resolutionNotes String?
+  resolvedBy      String?
+
+  // ===== SLA =====
+  slaDeadline    DateTime?
+  slaBreached    Boolean   @default(false)
+  responseTime   Int? // minutes
+  resolutionTime Int? // minutes
+
+  // ===== SATISFACTION =====
+  satisfactionRating  Int? // 1-5
+  satisfactionComment String?
+
+  // ===== ESCALATION =====
+  isEscalated      Boolean   @default(false)
+  escalatedTo      String?
+  escalatedAt      DateTime?
+  escalationReason String?
+
+  // ===== RELATED ENTITIES =====
+  relatedEntityType String? // booking, payment, lesson, etc.
+  relatedEntityId   String?
+
+  // ===== TAGS & LABELS =====
+  tags   String[]
+  labels String[]
+
+  // ===== ATTACHMENTS =====
+  hasAttachments Boolean @default(false)
+  attachments    Json?
+
+  // ===== INTERNAL =====
+  internalNotes String?
+  isPublic      Boolean @default(true)
+
+  // ===== SOURCE =====
+  source String @default("web") // web, email, phone, chat, social
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  replies       TicketReply[]
+  statusHistory TicketStatusHistory[]
+
+  @@index([userId])
+  @@index([ticketNumber])
+  @@index([status])
+  @@index([priority])
+  @@index([assignedTo])
+  @@index([category])
+  @@map("support_tickets")
+}
+
+model TheoryClass {
+  id         String  @id @default(cuid())
+  locationId String
+  roomId     String?
+  room       Room?   @relation(fields: [roomId], references: [id])
+
+  // ===== CLASS INFO =====
+  name  String
+  code  String          @unique
+  topic String
+  level ExperienceLevel
+
+  // ===== SCHEDULE =====
+  date      DateTime
+  startTime String // "18:00"
+  endTime   String // "20:00"
+  duration  Int // minutes
+
+  // ===== INSTRUCTOR =====
+  instructorId String // userId
+  substituteId String? // Backup instructor
+
+  // ===== CAPACITY =====
+  maxStudents   Int
+  enrolledCount Int @default(0)
+  waitlistCount Int @default(0)
+
+  // ===== ENROLLMENT =====
+  enrollmentDeadline DateTime?
+  minStudents        Int       @default(3)
+
+  // ===== STATUS =====
+  status TheoryClassStatus @default(SCHEDULED)
+
+  // ===== MATERIALS =====
+  syllabus     String?
+  materialsUrl String[]
+  homeworkUrl  String?
+
+  // ===== ONLINE =====
+  isOnline       Boolean @default(false)
+  onlineUrl      String?
+  onlinePlatform String? // Zoom, Teams, etc.
+  recordingUrl   String?
+
+  // ===== PRICING =====
+  price  Decimal? @db.Decimal(10, 2)
+  isFree Boolean  @default(false)
+
+  // ===== ATTENDANCE =====
+  attendanceTaken Boolean @default(false)
+  presentCount    Int?
+  absentCount     Int?
+
+  // ===== NOTES =====
+  description   String?
+  prerequisites String?
+  notes         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  enrollments  TheoryClassEnrollment[]
+  roomBookings RoomBooking[]
+
+  @@index([locationId])
+  @@index([date])
+  @@index([instructorId])
+  @@index([status])
+  @@map("theory_classes")
+}
+
+model TheoryClassEnrollment {
+  id            String      @id @default(cuid())
+  theoryClassId String
+  theoryClass   TheoryClass @relation(fields: [theoryClassId], references: [id])
+  studentId     String // userId
+
+  // ===== STATUS =====
+  status TheoryEnrollmentStatus @default(CONFIRMED)
+
+  // ===== ATTENDANCE =====
+  attended      Boolean?
+  arrivalTime   DateTime?
+  departureTime DateTime?
+
+  // ===== PAYMENT =====
+  isPaid    Boolean @default(false)
+  paymentId String?
+
+  // ===== WAITLIST =====
+  isWaitlist       Boolean @default(false)
+  waitlistPosition Int?
+
+  // ===== NOTES =====
+  notes String?
+
+  enrolledAt DateTime @default(now())
+
+  @@unique([theoryClassId, studentId])
+  @@index([theoryClassId])
+  @@index([studentId])
+  @@map("theory_class_enrollments")
+}
+
+model TicketReply {
+  id       String        @id @default(cuid())
+  ticketId String
+  ticket   SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  userId   String
+  user     User          @relation(fields: [userId], references: [id])
+
+  // ===== CONTENT =====
+  content     String
+  contentHtml String?
+
+  // ===== TYPE =====
+  replyType  String  @default("comment") // comment, solution, note
+  isInternal Boolean @default(false)
+  isStaff    Boolean @default(false)
+
+  // ===== STATUS =====
+  status String @default("published") // draft, published, deleted
+
+  // ===== VISIBILITY =====
+  isPublic  Boolean  @default(true)
+  visibleTo String[] // user ids who can see this reply
+
+  // ===== ATTACHMENTS =====
+  hasAttachments Boolean @default(false)
+  attachments    Json?
+
+  // ===== ACTIONS =====
+  isPinned Boolean   @default(false)
+  isEdited Boolean   @default(false)
+  editedAt DateTime?
+  editedBy String?
+
+  // ===== REACTIONS =====
+  helpful    Int @default(0)
+  notHelpful Int @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ticketId])
+  @@index([userId])
+  @@map("ticket_replies")
+}
+
+model TicketStatusHistory {
+  id       String        @id @default(cuid())
+  ticketId String
+  ticket   SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  // Status Change
+  fromStatus TicketStatus?
+  toStatus   TicketStatus
+
+  // Changed By
+  changedBy String
+
+  // Reason
+  reason String?
+  notes  String?
+
+  createdAt DateTime @default(now())
+
+  @@index([ticketId])
+  @@map("ticket_status_history")
+}
+
+model TwoFactorAuth {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Secret
+  secret String
+
+  // Backup Codes
+  backupCodes     String[] // Encrypted backup codes
+  usedBackupCodes String[]
+
+  // Status
+  enabled    Boolean   @default(false)
+  verifiedAt DateTime?
+
+  // Methods
+  methods       String[] @default(["app"]) // app, sms, email
+  primaryMethod String   @default("app")
+
+  // Recovery
+  recoveryEmail String?
+  recoveryPhone String?
+
+  // Last Use
+  lastUsedAt     DateTime?
+  lastUsedMethod String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("two_factor_auth")
+}
+
+model TwoFactorToken {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Token
+  token String
+
+  // Type
+  type String // sms, email, backup
+
+  // Validity
+  expiresAt DateTime
+
+  // Usage
+  used   Boolean   @default(false)
+  usedAt DateTime?
+
+  // Attempts
+  attempts Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, token])
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("two_factor_tokens")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  passwordHash  String?
+
+  // Personal Information
+  firstName     String
+  lastName      String
+  phone         String?
+  phoneVerified DateTime?
+  avatar        String?
+  dateOfBirth   DateTime?
+
+  // Emergency Contacts
+  emergencyContact String?
+  emergencyPhone   String?
+
+  // Role & Status
+  role   UserRole   @default(STUDENT)
+  status UserStatus @default(ACTIVE)
+
+  // Location (Multi-branch support)
+  locationId String?
+  location   Location? @relation(fields: [locationId], references: [id])
+
+  // Address
+  address    String?
+  city       String?
+  postalCode String?
+  country    String? @default("PL")
+
+  // Document Numbers
+  nationalId     String?
+  licenseNumber  String?
+  passportNumber String?
+
+  // Settings & Preferences
+  language           String  @default("pl")
+  timezone           String  @default("Europe/Warsaw")
+  emailNotifications Boolean @default(true)
+  smsNotifications   Boolean @default(true)
+  pushNotifications  Boolean @default(true)
+  marketingConsent   Boolean @default(false)
+
+  // Security
+  twoFactorEnabled    Boolean   @default(false)
+  twoFactorSecret     String?
+  lastPasswordChange  DateTime?
+  failedLoginAttempts Int       @default(0)
+  accountLockedUntil  DateTime?
+
+  // Activity Tracking
+  lastLoginAt    DateTime?
+  lastActivityAt DateTime?
+  loginCount     Int       @default(0)
+
+  // Timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // Soft delete
+
+  // ============ RELATIONS ============
+
+  // Student Relations
+  studentProfile     StudentProfile?
+  studentProgress    StudentProgress?
+  studentPreferences StudentPreferences?
+  enrollments        Enrollment[]
+  studentBookings    Booking[]           @relation("StudentBookings")
+  examResults        ExamResult[]
+  userAchievements   UserAchievement[]
+  bookingRequests    BookingRequest[]
+  bookingWaitlists   BookingWaitlist[]
+  calendarSyncs      CalendarSync[]
+
+  // Instructor Relations
+  instructorProfile   InstructorProfile?
+  instructorBookings  Booking[]            @relation("InstructorBookings")
+  instructorSchedules InstructorSchedule[]
+  scheduleTemplates   ScheduleTemplate[]
+  scheduleExceptions  ScheduleException[]
+  examsConducted      ExamResult[]         @relation("ExamInstructor")
+  feedbacksGiven      LessonFeedback[]     @relation("InstructorFeedback")
+
+  // examsConducted and feedbacksGiven are defined in the target models
+
+  // Vehicle Relations
+  assignedVehicles Vehicle[] @relation("AssignedInstructor")
+
+  // Payment Relations
+  payments     Payment[]
+  userPackages UserPackage[]
+
+  // Auth Relations (from auth.prisma)
+  sessions           Session[]
+  refreshTokens      RefreshToken[]
+  passwordResets     PasswordReset[]
+  loginHistory       LoginHistory[]
+  emailVerifications EmailVerification[]
+  twoFactorAuth      TwoFactorAuth?
+  twoFactorTokens    TwoFactorToken[]
+  oauthAccounts      OAuthAccount[]
+  apiKeys            ApiKey[]
+  securityLogs       SecurityLog[]
+
+  // Communication Relations (from notification.prisma)
+  notifications        Notification[]
+  sentMessages         Message[]       @relation("SentMessages")
+  receivedMessages     Message[]       @relation("ReceivedMessages")
+  supportTickets       SupportTicket[]
+  supportTicketReplies TicketReply[]
+
+  // ============ INDEXES ============
+  @@index([email])
+  @@index([phone])
+  @@index([role])
+  @@index([status])
+  @@index([locationId])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  // Progress
+  progress   Int       @default(0) // 0-100
+  unlockedAt DateTime?
+
+  // Notification
+  notified Boolean   @default(false)
+  sharedAt DateTime? // If shared on social
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([unlockedAt])
+  @@map("user_achievements")
+}
+
+model UserPackage {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  packageId String
+  package   Package @relation(fields: [packageId], references: [id])
+
+  // ===== PURCHASE INFO =====
+  purchaseNumber String   @unique @default(cuid())
+  purchasedAt    DateTime @default(now())
+  purchasePrice  Decimal  @db.Decimal(10, 2)
+
+  // Discount
+  discountCode       String?
+  discountAmount     Decimal @default(0) @db.Decimal(10, 2)
+  discountPercentage Float? // percentage
+
+  // Final Price
+  finalPrice Decimal @db.Decimal(10, 2)
+
+  // ===== CREDITS & USAGE =====
+  creditsTotal     Int
+  creditsUsed      Int @default(0)
+  creditsRemaining Int
+  creditsExpired   Int @default(0)
+
+  // ===== VALIDITY =====
+  activatedAt DateTime?
+  expiresAt   DateTime
+  status      PackageStatus @default(PENDING)
+
+  // Extension
+  extendedDays Int       @default(0)
+  extendedBy   String?
+  extendedAt   DateTime?
+
+  // ===== PAYMENT =====
+  paymentId String?  @unique
+  payment   Payment? @relation(fields: [paymentId], references: [id])
+  isPaid    Boolean  @default(false)
+
+  // ===== GIFT =====
+  isGift      Boolean @default(false)
+  giftFrom    String?
+  giftMessage String?
+  giftCode    String? @unique
+
+  // ===== TRANSFER =====
+  isTransferable Boolean   @default(false)
+  transferredTo  String?
+  transferredAt  DateTime?
+
+  // ===== CANCELLATION =====
+  cancelledAt        DateTime?
+  cancelledBy        String?
+  cancellationReason String?
+  refundAmount       Decimal?  @db.Decimal(10, 2)
+  refundedAt         DateTime?
+
+  // ===== NOTES =====
+  notes         String?
+  internalNotes String?
+
+  // ===== METADATA =====
+  source   String? // How package was acquired
+  campaign String? // Marketing campaign
+  referrer String? // Referral source
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([packageId])
+  @@index([status])
+  @@index([purchaseNumber])
+  @@index([expiresAt])
+  @@map("user_packages")
+}
+
+model Vehicle {
+  id String @id @default(cuid())
+
+  // ===== IDENTIFICATION =====
+  registrationNumber String  @unique
+  vin                String? @unique
+  plateNumber        String  @unique
+
+  // ===== BASIC INFO =====
+  make    String // Toyota, Volkswagen, etc.
+  model   String // Corolla, Golf, etc.
+  variant String? // GTI, Sport, etc.
+  year    Int
+  color   String
+
+  // ===== CATEGORY & TYPE =====
+  category       VehicleCategory
+  transmission   Transmission
+  fuelType       FuelType
+  engineCapacity Float? // in liters (1.6, 2.0)
+  enginePower    Int? // in HP
+
+  // ===== FEATURES =====
+  features           String[] // ["ABS", "ESP", "Parking_Sensors", "AC"]
+  hasABS             Boolean  @default(true)
+  hasESP             Boolean  @default(true)
+  hasAirConditioning Boolean  @default(true)
+  hasParkingSensors  Boolean  @default(false)
+  hasReverseCamera   Boolean  @default(false)
+  hasCruiseControl   Boolean  @default(false)
+
+  // Dual Control (for training vehicles)
+  hasDualControls         Boolean   @default(true)
+  dualControlsInstallDate DateTime?
+
+  // ===== OWNERSHIP =====
+  ownershipType OwnershipType @default(OWNED)
+
+  // Purchase/Lease Info
+  purchaseDate    DateTime?
+  purchasePrice   Decimal?  @db.Decimal(10, 2)
+  purchaseMileage Int?
+
+  // Lease Details
+  leaseCompany        String?
+  leaseStartDate      DateTime?
+  leaseEndDate        DateTime?
+  monthlyLeaseRate    Decimal?  @db.Decimal(10, 2)
+  leaseContractNumber String?
+
+  // ===== ASSIGNMENT =====
+  assignedInstructorId String?
+  assignedInstructor   User?   @relation("AssignedInstructor", fields: [assignedInstructorId], references: [id])
+
+  // Location
+  baseLocationId    String
+  baseLocation      Location @relation(fields: [baseLocationId], references: [id])
+  currentLocationId String?
+
+  // ===== MILEAGE & USAGE =====
+  currentMileage    Int       @default(0)
+  totalKmDriven     Int       @default(0)
+  averageKmPerDay   Float     @default(0)
+  lastMileageUpdate DateTime?
+
+  // Usage Stats
+  totalLessons           Int    @default(0)
+  totalHours             Float  @default(0)
+  averageFuelConsumption Float? // l/100km
+
+  // ===== SERVICE & MAINTENANCE =====
+  lastServiceDate    DateTime?
+  lastServiceMileage Int?
+  nextServiceDate    DateTime?
+  nextServiceMileage Int?
+  serviceDueSoon     Boolean   @default(false)
+
+  // Oil Change
+  lastOilChangeDate    DateTime?
+  lastOilChangeMileage Int?
+  nextOilChangeMileage Int?
+
+  // ===== DOCUMENTS & COMPLIANCE =====
+  // Insurance
+  insuranceCompany      String
+  insurancePolicyNumber String
+  insuranceStartDate    DateTime
+  insuranceExpiry       DateTime
+  insuranceType         String // OC, AC, NNW
+  insuranceCoverage     Decimal? @db.Decimal(10, 2)
+
+  // Technical Inspection
+  inspectionExpiry   DateTime
+  inspectionPassed   Boolean   @default(true)
+  lastInspectionDate DateTime?
+  inspectionNotes    String?
+
+  // Registration
+  registrationExpiry DateTime?
+  roadTaxPaid        Boolean   @default(true)
+  roadTaxExpiry      DateTime?
+
+  // ===== CONDITION =====
+  condition         VehicleCondition @default(GOOD)
+  cleanlinessRating Int?             @default(5) // 1-5
+
+  // Issues
+  hasActiveIssues   Boolean @default(false)
+  activeIssuesCount Int     @default(0)
+
+  // ===== STATUS =====
+  status VehicleStatus @default(ACTIVE)
+
+  // Status Timeline
+  lastStatusChange DateTime?
+  statusReason     String?
+
+  // Availability
+  isAvailable       Boolean   @default(true)
+  unavailableFrom   DateTime?
+  unavailableTo     DateTime?
+  unavailableReason String?
+
+  // ===== FINANCIAL =====
+  marketValue      Decimal? @db.Decimal(10, 2)
+  depreciationRate Float? // percentage per year
+  currentValue     Decimal? @db.Decimal(10, 2)
+
+  // Operating Costs
+  monthlyInsurance   Decimal? @db.Decimal(10, 2)
+  monthlyMaintenance Decimal? @db.Decimal(10, 2)
+  monthlyFuel        Decimal? @db.Decimal(10, 2)
+  totalMonthlyCost   Decimal? @db.Decimal(10, 2)
+  costPerKm          Decimal? @db.Decimal(10, 2)
+  costPerLesson      Decimal? @db.Decimal(10, 2)
+
+  // ===== PHOTOS =====
+  primaryPhotoUrl String?
+  photoUrls       String[]
+
+  // ===== NOTES =====
+  notes         String?
+  internalNotes String?
+
+  // ===== DISPOSAL =====
+  disposalDate    DateTime?
+  disposalReason  String?
+  disposalPrice   Decimal?  @db.Decimal(10, 2)
+  disposalMileage Int?
+  soldTo          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String?
+
+  // Relations
+  bookings           Booking[]
+  maintenanceLogs    MaintenanceLog[]
+  vehicleIssues      VehicleIssue[]
+  fuelLogs           FuelLog[]
+  vehicleDocuments   VehicleDocument[]
+  vehicleInspections VehicleInspection[]
+
+  @@index([registrationNumber])
+  @@index([vin])
+  @@index([assignedInstructorId])
+  @@index([baseLocationId])
+  @@index([status])
+  @@index([category])
+  @@map("vehicles")
+}
+
+model VehicleDocument {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  // ===== DOCUMENT TYPE =====
+  type           VehicleDocumentType
+  name           String
+  documentNumber String?
+
+  // ===== VALIDITY =====
+  issueDate  DateTime
+  expiryDate DateTime?
+  isExpired  Boolean   @default(false)
+
+  // ===== FILE =====
+  fileUrl  String
+  fileSize Int? // bytes
+  mimeType String?
+
+  // ===== ISSUER =====
+  issuedBy      String?
+  issuerContact String?
+
+  // ===== REMINDERS =====
+  reminderDays   Int[]     @default([30, 14, 7])
+  remindersSent  Int       @default(0)
+  lastReminderAt DateTime?
+
+  // ===== VERIFICATION =====
+  isVerified Boolean   @default(false)
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  // ===== NOTES =====
+  notes String?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  uploadedBy String?
+
+  @@index([vehicleId])
+  @@index([type])
+  @@index([expiryDate])
+  @@map("vehicle_documents")
+}
+
+model VehicleInspection {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  // ===== INSPECTION TYPE =====
+  type InspectionType
+
+  // ===== DATE & MILEAGE =====
+  inspectionDate DateTime
+  mileage        Int
+
+  // ===== RESULT =====
+  passed Boolean
+
+  // ===== STATION =====
+  stationName       String
+  stationAddress    String?
+  inspectorName     String?
+  certificateNumber String?
+
+  // ===== FINDINGS =====
+  findings Json? // Detailed inspection results
+  //  Example:
+  //  {
+  //    "brakes": { "status": "pass", "notes": "Front pads 60%" },
+  //    "lights": { "status": "pass", "notes": "All working" },
+  //    "tires": { "status": "warning", "notes": "Rear tires 3mm" },
+  //    "emissions": { "status": "pass", "co": 0.3, "hc": 50 }
+  //  }
+
+  // Failed Items
+  failedItems  String[]
+  warningItems String[]
+
+  // ===== RECOMMENDATIONS =====
+  recommendations String[]
+  requiredRepairs String[]
+
+  // ===== NEXT INSPECTION =====
+  nextInspectionDate DateTime
+  validUntil         DateTime
+
+  // ===== COST =====
+  cost   Decimal? @db.Decimal(10, 2)
+  isPaid Boolean  @default(false)
+
+  // ===== DOCUMENTATION =====
+  certificateUrl String?
+  reportUrl      String?
+  photoUrls      String[]
+
+  // ===== NOTES =====
+  notes String?
+
+  createdAt DateTime @default(now())
+  createdBy String?
+
+  @@index([vehicleId])
+  @@index([type])
+  @@index([inspectionDate])
+  @@map("vehicle_inspections")
+}
+
+model VehicleIssue {
+  id        String  @id @default(cuid())
+  vehicleId String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  // ===== ISSUE DETAILS =====
+  title       String
+  description String
+  category    IssueCategory
+  severity    IssueSeverity
+
+  // ===== REPORTED BY =====
+  reportedBy      String // userId
+  reportedAt      DateTime @default(now())
+  reportedMileage Int?
+
+  // ===== STATUS =====
+  status IssueStatus @default(REPORTED)
+
+  // Status Timeline
+  acknowledgedAt DateTime?
+  inProgressAt   DateTime?
+  resolvedAt     DateTime?
+  closedAt       DateTime?
+
+  // ===== SAFETY =====
+  isSafetyIssue           Boolean @default(false)
+  requiresImmediateAction Boolean @default(false)
+  vehicleDriveable        Boolean @default(true)
+
+  // ===== RESOLUTION =====
+  assignedTo String? // Mechanic/Workshop
+  diagnosis  String?
+  resolution String?
+  rootCause  String?
+
+  // Preventive Action
+  preventiveAction String?
+
+  // ===== COST =====
+  estimatedCost Decimal? @db.Decimal(10, 2)
+  actualCost    Decimal? @db.Decimal(10, 2)
+
+  // ===== MAINTENANCE LINK =====
+  maintenanceLogId String?
+
+  // ===== IMPACT =====
+  affectedBookings Int  @default(0)
+  downtime         Int? // hours
+
+  // ===== PHOTOS =====
+  photoUrls String[]
+
+  // ===== NOTES =====
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([vehicleId])
+  @@index([status])
+  @@index([severity])
+  @@index([reportedBy])
+  @@map("vehicle_issues")
 }

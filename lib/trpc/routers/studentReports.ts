@@ -291,5 +291,315 @@ export const studentReportsRouter = router({
       }
 
       return stats
+    }),
+
+
+getLessonHistory: protectedProcedure
+  .input(z.object({
+    startDate: z.date().optional(),
+    endDate: z.date().optional(),
+    limit: z.number().min(1).max(100).default(50)
+  }).optional())
+  .query(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    const where: any = {
+      studentId: userId,
+      status: {
+        in: ['COMPLETED', 'CANCELLED', 'NO_SHOW']
+      }
+    }
+    
+    if (input?.startDate && input?.endDate) {
+      where.startTime = {
+        gte: input.startDate,
+        lte: input.endDate
+      }
+    }
+    
+    const lessons = await ctx.db.booking.findMany({
+      where,
+      include: {
+        instructor: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            phone: true,
+            rating: true
+          }
+        },
+        vehicle: {
+          select: {
+            id: true,
+            make: true,
+            model: true,
+            registrationNumber: true,
+            category: true
+          }
+        },
+        location: {
+          select: {
+            id: true,
+            name: true,
+            address: true,
+            city: true
+          }
+        },
+        payment: {
+          select: {
+            amount: true,
+            status: true,
+            method: true
+          }
+        }
+      },
+      orderBy: {
+        startTime: 'desc'
+      },
+      take: input?.limit || 50
     })
+    
+    return lessons
+  }),
+
+getProgress: protectedProcedure
+  .query(async ({ ctx }) => {
+    const userId = ctx.session.user.id
+    
+    // Отримуємо дані користувача
+    const user = await ctx.db.user.findUnique({
+      where: { id: userId },
+      select: {
+        completedLessons: true,
+        examAttempts: true,
+        examPassed: true,
+        examPassedDate: true
+      }
+    })
+    
+    // Підраховуємо уроки по типах
+    const lessonsByType = await ctx.db.booking.groupBy({
+      by: ['lessonType'],
+      where: {
+        studentId: userId,
+        status: 'COMPLETED'
+      },
+      _count: true
+    })
+    
+    const lessonCounts = lessonsByType.reduce((acc, item) => {
+      acc[item.lessonType] = item._count
+      return acc
+    }, {} as Record<string, number>)
+    
+    // Розраховуємо прогрес
+    const totalCompleted = user?.completedLessons || 0
+    const requiredForExam = 30
+    const examProgress = Math.min((totalCompleted / requiredForExam) * 100, 100)
+    
+    // Прогрес по категоріях
+    const cityProgress = Math.min(((lessonCounts['CITY_TRAFFIC'] || 0) / 5) * 100, 100)
+    const parkingProgress = Math.min(((lessonCounts['PARKING'] || 0) / 3) * 100, 100)
+    const highwayProgress = Math.min(((lessonCounts['HIGHWAY'] || 0) / 3) * 100, 100)
+    
+    // Досягнення
+    const achievements = []
+    
+    if (totalCompleted >= 1) {
+      achievements.push({
+        id: 'first_lesson',
+        name: 'First Step',
+        description: 'Completed your first lesson',
+        icon: '🎯',
+        unlocked: true
+      })
+    }
+    
+    if (totalCompleted >= 10) {
+      achievements.push({
+        id: 'ten_lessons',
+        name: 'Dedicated Learner',
+        description: 'Completed 10 lessons',
+        icon: '⭐',
+        unlocked: true
+      })
+    }
+    
+    if (examProgress >= 100) {
+      achievements.push({
+        id: 'ready_for_exam',
+        name: 'Exam Ready',
+        description: 'Completed required lessons for exam',
+        icon: '🏆',
+        unlocked: true
+      })
+    }
+    
+    if (user?.examPassed) {
+      achievements.push({
+        id: 'passed_exam',
+        name: 'Licensed Driver',
+        description: 'Passed the driving exam',
+        icon: '🎓',
+        unlocked: true
+      })
+    }
+    
+    // Рекомендації
+    const recommendations = []
+    
+    if (cityProgress < 60) {
+      recommendations.push('Focus on city traffic lessons to improve your urban driving skills')
+    }
+    
+    if (parkingProgress < 60) {
+      recommendations.push('Practice more parking maneuvers')
+    }
+    
+    if (highwayProgress < 40) {
+      recommendations.push('Schedule highway driving lessons for high-speed experience')
+    }
+    
+    if (examProgress >= 80 && !user?.examPassed) {
+      recommendations.push('You are almost ready for the exam! Consider booking exam preparation lessons')
+    }
+    
+    return {
+      examProgress,
+      cityProgress,
+      parkingProgress,
+      highwayProgress,
+      lessonsCompleted: totalCompleted,
+      lessonsRequired: requiredForExam,
+      examPassed: user?.examPassed || false,
+      examPassedDate: user?.examPassedDate,
+      examAttempts: user?.examAttempts || 0,
+      achievements,
+      recommendations
+    }
+  }),
+
+exportReport: protectedProcedure
+  .input(z.object({
+    period: z.enum(['week', 'month', 'quarter', 'year', 'all']),
+    format: z.enum(['csv', 'json']).default('csv')
+  }))
+  .mutation(async ({ ctx, input }) => {
+    const userId = ctx.session.user.id
+    
+    // Визначаємо період
+    let startDate: Date | undefined
+    const now = new Date()
+    
+    switch (input.period) {
+      case 'week':
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
+        break
+      case 'month':
+        startDate = new Date(now.getFullYear(), now.getMonth(), 1)
+        break
+      case 'quarter':
+        startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
+        break
+      case 'year':
+        startDate = new Date(now.getFullYear(), 0, 1)
+        break
+      case 'all':
+        startDate = undefined
+        break
+    }
+    
+    // Отримуємо дані
+    const [stats, lessons, payments] = await Promise.all([
+      // Статистика
+      ctx.db.booking.aggregate({
+        where: {
+          studentId: userId,
+          ...(startDate && { startTime: { gte: startDate } })
+        },
+        _count: true,
+        _sum: {
+          duration: true,
+          usedCredits: true
+        }
+      }),
+      // Уроки
+      ctx.db.booking.findMany({
+        where: {
+          studentId: userId,
+          ...(startDate && { startTime: { gte: startDate } })
+        },
+        include: {
+          instructor: true,
+          vehicle: true,
+          location: true
+        },
+        orderBy: {
+          startTime: 'desc'
+        }
+      }),
+      // Платежі
+      ctx.db.payment.findMany({
+        where: {
+          userId,
+          status: 'COMPLETED',
+          ...(startDate && { completedAt: { gte: startDate } })
+        },
+        orderBy: {
+          completedAt: 'desc'
+        }
+      })
+    ])
+    
+    if (input.format === 'csv') {
+      // Генерація CSV звіту
+      const reportData = [
+        ['Student Report'],
+        ['Generated:', new Date().toISOString()],
+        ['Period:', input.period],
+        [''],
+        ['SUMMARY'],
+        ['Total Lessons:', stats._count],
+        ['Total Hours:', (stats._sum.duration || 0) / 60],
+        ['Credits Used:', stats._sum.usedCredits || 0],
+        ['Total Spent:', payments.reduce((sum, p) => sum + Number(p.amount), 0) + ' PLN'],
+        [''],
+        ['LESSON HISTORY'],
+        ['Date', 'Time', 'Type', 'Instructor', 'Vehicle', 'Location', 'Status'],
+        ...lessons.map(l => [
+          l.startTime.toLocaleDateString(),
+          l.startTime.toLocaleTimeString(),
+          l.lessonType,
+          `${l.instructor.firstName} ${l.instructor.lastName}`,
+          l.vehicle ? `${l.vehicle.make} ${l.vehicle.model}` : '-',
+          l.location?.name || '-',
+          l.status
+        ])
+      ]
+      
+      const csv = reportData.map(row => row.join(',')).join('\n')
+      
+      return {
+        content: csv,
+        filename: `student-report-${input.period}-${new Date().toISOString().split('T')[0]}.csv`
+      }
+    }
+    
+    // JSON формат
+    return {
+      content: JSON.stringify({
+        summary: {
+          totalLessons: stats._count,
+          totalHours: (stats._sum.duration || 0) / 60,
+          creditsUsed: stats._sum.usedCredits || 0,
+          totalSpent: payments.reduce((sum, p) => sum + Number(p.amount), 0)
+        },
+        lessons,
+        payments
+      }, null, 2),
+      filename: `student-report-${input.period}-${new Date().toISOString().split('T')[0]}.json`
+    }
+  }),
 })

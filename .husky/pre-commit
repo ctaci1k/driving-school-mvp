@@ -1,0 +1,8 @@
+// .husky/pre-commit
+
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Auto-merge Prisma schemas before commit
+npm run prisma:merge
+git add prisma/schema.prisma

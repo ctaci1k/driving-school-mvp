@@ -1,0 +1,674 @@
+// prisma/schema/vehicle.prisma
+
+// ============================================
+// VEHICLE MODULE MODELS
+// All vehicle and maintenance related tables
+// ============================================
+
+// ============================================
+// VEHICLE - Main vehicle model
+// ============================================
+model Vehicle {
+ id            String   @id @default(cuid())
+ 
+ // ===== IDENTIFICATION =====
+ registrationNumber String  @unique
+ vin               String?  @unique
+ plateNumber       String   @unique
+ 
+ // ===== BASIC INFO =====
+ make              String   // Toyota, Volkswagen, etc.
+ model             String   // Corolla, Golf, etc.
+ variant           String?  // GTI, Sport, etc.
+ year              Int
+ color             String
+ 
+ // ===== CATEGORY & TYPE =====
+ category          VehicleCategory
+ transmission      Transmission
+ fuelType          FuelType
+ engineCapacity    Float?   // in liters (1.6, 2.0)
+ enginePower       Int?     // in HP
+ 
+ // ===== FEATURES =====
+ features          String[] // ["ABS", "ESP", "Parking_Sensors", "AC"]
+ hasABS            Boolean  @default(true)
+ hasESP            Boolean  @default(true)
+ hasAirConditioning Boolean @default(true)
+ hasParkingSensors Boolean  @default(false)
+ hasReverseCamera  Boolean  @default(false)
+ hasCruiseControl  Boolean  @default(false)
+ 
+ // Dual Control (for training vehicles)
+ hasDualControls   Boolean  @default(true)
+ dualControlsInstallDate DateTime?
+ 
+ // ===== OWNERSHIP =====
+ ownershipType     OwnershipType @default(OWNED)
+ 
+ // Purchase/Lease Info
+ purchaseDate      DateTime?
+ purchasePrice     Decimal?  @db.Decimal(10, 2)
+ purchaseMileage   Int?
+ 
+ // Lease Details
+ leaseCompany      String?
+ leaseStartDate    DateTime?
+ leaseEndDate      DateTime?
+ monthlyLeaseRate  Decimal?  @db.Decimal(10, 2)
+ leaseContractNumber String?
+ 
+ // ===== ASSIGNMENT =====
+ assignedInstructorId String?
+ assignedInstructor   User?    @relation("AssignedInstructor", fields: [assignedInstructorId], references: [id])
+ 
+ // Location
+ baseLocationId    String
+ baseLocation      Location @relation(fields: [baseLocationId], references: [id])
+ currentLocationId String?
+ 
+ // ===== MILEAGE & USAGE =====
+ currentMileage    Int      @default(0)
+ totalKmDriven     Int      @default(0)
+ averageKmPerDay   Float    @default(0)
+ lastMileageUpdate DateTime?
+ 
+ // Usage Stats
+ totalLessons      Int      @default(0)
+ totalHours        Float    @default(0)
+ averageFuelConsumption Float? // l/100km
+ 
+ // ===== SERVICE & MAINTENANCE =====
+ lastServiceDate   DateTime?
+ lastServiceMileage Int?
+ nextServiceDate   DateTime?
+ nextServiceMileage Int?
+ serviceDueSoon    Boolean  @default(false)
+ 
+ // Oil Change
+ lastOilChangeDate DateTime?
+ lastOilChangeMileage Int?
+ nextOilChangeMileage Int?
+ 
+ // ===== DOCUMENTS & COMPLIANCE =====
+ // Insurance
+ insuranceCompany  String
+ insurancePolicyNumber String
+ insuranceStartDate DateTime
+ insuranceExpiry   DateTime
+ insuranceType     String   // OC, AC, NNW
+ insuranceCoverage Decimal? @db.Decimal(10, 2)
+ 
+ // Technical Inspection
+ inspectionExpiry  DateTime
+ inspectionPassed  Boolean  @default(true)
+ lastInspectionDate DateTime?
+ inspectionNotes   String?
+ 
+ // Registration
+ registrationExpiry DateTime?
+ roadTaxPaid       Boolean  @default(true)
+ roadTaxExpiry     DateTime?
+ 
+ // ===== CONDITION =====
+ condition         VehicleCondition @default(GOOD)
+ cleanlinessRating Int?     @default(5) // 1-5
+ 
+ // Issues
+ hasActiveIssues   Boolean  @default(false)
+ activeIssuesCount Int      @default(0)
+ 
+ // ===== STATUS =====
+ status            VehicleStatus @default(ACTIVE)
+ 
+ // Status Timeline
+ lastStatusChange  DateTime?
+ statusReason      String?
+ 
+ // Availability
+ isAvailable       Boolean  @default(true)
+ unavailableFrom   DateTime?
+ unavailableTo     DateTime?
+ unavailableReason String?
+ 
+ // ===== FINANCIAL =====
+ marketValue       Decimal? @db.Decimal(10, 2)
+ depreciationRate  Float?   // percentage per year
+ currentValue      Decimal? @db.Decimal(10, 2)
+ 
+ // Operating Costs
+ monthlyInsurance  Decimal? @db.Decimal(10, 2)
+ monthlyMaintenance Decimal? @db.Decimal(10, 2)
+ monthlyFuel       Decimal? @db.Decimal(10, 2)
+ totalMonthlyCost  Decimal? @db.Decimal(10, 2)
+ costPerKm         Decimal? @db.Decimal(10, 2)
+ costPerLesson     Decimal? @db.Decimal(10, 2)
+ 
+ // ===== PHOTOS =====
+ primaryPhotoUrl   String?
+ photoUrls         String[]
+ 
+ // ===== NOTES =====
+ notes             String?
+ internalNotes     String?
+ 
+ // ===== DISPOSAL =====
+ disposalDate      DateTime?
+ disposalReason    String?
+ disposalPrice     Decimal? @db.Decimal(10, 2)
+ disposalMileage   Int?
+ soldTo            String?
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ createdBy String?
+ 
+ // Relations
+ bookings          Booking[]
+ maintenanceLogs   MaintenanceLog[]
+ vehicleIssues     VehicleIssue[]
+ fuelLogs          FuelLog[]
+ vehicleDocuments  VehicleDocument[]
+ vehicleInspections VehicleInspection[]
+ 
+ @@index([registrationNumber])
+ @@index([vin])
+ @@index([assignedInstructorId])
+ @@index([baseLocationId])
+ @@index([status])
+ @@index([category])
+ @@map("vehicles")
+}
+
+// ============================================
+// MAINTENANCE LOG - Service history
+// ============================================
+model MaintenanceLog {
+ id            String   @id @default(cuid())
+ vehicleId     String
+ vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+ 
+ // ===== MAINTENANCE TYPE =====
+ type          MaintenanceType
+ category      MaintenanceCategory @default(PREVENTIVE)
+ priority      MaintenancePriority @default(NORMAL)
+ 
+ // ===== SCHEDULING =====
+ scheduledDate DateTime?
+ actualDate    DateTime?
+ completedDate DateTime?
+ 
+ // Mileage
+ scheduledMileage Int?
+ actualMileage    Int?
+ 
+ // ===== STATUS =====
+ status        MaintenanceStatus @default(SCHEDULED)
+ 
+ // ===== SERVICE DETAILS =====
+ serviceProvider  String?  // Workshop/Garage name
+ serviceLocation  String?
+ servicedBy       String?  // Mechanic name
+ 
+ // Work Performed
+ description      String
+ performedTasks   String[]
+ partsReplaced    Json?    // Detailed parts list
+// Example:
+//  {
+//    "parts": [
+//      { "name": "Oil Filter", "partNumber": "123456", "quantity": 1, "price": 25.00 },
+//      { "name": "Engine Oil", "partNumber": "789012", "quantity": 4, "price": 120.00 }
+//    ]
+//  }
+
+ 
+ // ===== COST =====
+ laborCost        Decimal? @db.Decimal(10, 2)
+ partsCost        Decimal? @db.Decimal(10, 2)
+ totalCost        Decimal? @db.Decimal(10, 2)
+ currency         String   @default("PLN")
+ 
+ // Payment
+ isPaid           Boolean  @default(false)
+ paidAt           DateTime?
+ paymentMethod    String?
+ 
+ // ===== DOCUMENTATION =====
+ invoiceNumber    String?
+ invoiceUrl       String?
+ photoUrls        String[]
+ 
+ // ===== WARRANTY =====
+ hasWarranty      Boolean  @default(false)
+ warrantyMonths   Int?
+ warrantyExpiry   DateTime?
+ warrantyTerms    String?
+ 
+ // ===== NEXT SERVICE =====
+ nextServiceMileage Int?
+ nextServiceDate    DateTime?
+ nextServiceNotes   String?
+ 
+ // ===== DOWNTIME =====
+ vehicleDowntime  Int?     // hours
+ requiredReplacement Boolean @default(false)
+ replacementVehicleId String?
+ 
+ // ===== QUALITY CHECK =====
+ qualityChecked   Boolean  @default(false)
+ qualityCheckedBy String?
+ qualityNotes     String?
+ 
+ // ===== NOTES =====
+ notes            String?
+ internalNotes    String?
+ recommendations  String[]
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ createdBy String?
+ 
+ @@index([vehicleId])
+ @@index([type])
+ @@index([status])
+ @@index([scheduledDate])
+ @@map("maintenance_logs")
+}
+
+// ============================================
+// VEHICLE ISSUE - Problems and repairs
+// ============================================
+model VehicleIssue {
+ id            String   @id @default(cuid())
+ vehicleId     String
+ vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+ 
+ // ===== ISSUE DETAILS =====
+ title         String
+ description   String
+ category      IssueCategory
+ severity      IssueSeverity
+ 
+ // ===== REPORTED BY =====
+ reportedBy    String   // userId
+ reportedAt    DateTime @default(now())
+ reportedMileage Int?
+ 
+ // ===== STATUS =====
+ status        IssueStatus @default(REPORTED)
+ 
+ // Status Timeline
+ acknowledgedAt DateTime?
+ inProgressAt  DateTime?
+ resolvedAt    DateTime?
+ closedAt      DateTime?
+ 
+ // ===== SAFETY =====
+ isSafetyIssue Boolean  @default(false)
+ requiresImmediateAction Boolean @default(false)
+ vehicleDriveable Boolean @default(true)
+ 
+ // ===== RESOLUTION =====
+ assignedTo    String?  // Mechanic/Workshop
+ diagnosis     String?
+ resolution    String?
+ rootCause     String?
+ 
+ // Preventive Action
+ preventiveAction String?
+ 
+ // ===== COST =====
+ estimatedCost Decimal? @db.Decimal(10, 2)
+ actualCost    Decimal? @db.Decimal(10, 2)
+ 
+ // ===== MAINTENANCE LINK =====
+ maintenanceLogId String?
+ 
+ // ===== IMPACT =====
+ affectedBookings Int     @default(0)
+ downtime        Int?     // hours
+ 
+ // ===== PHOTOS =====
+ photoUrls       String[]
+ 
+ // ===== NOTES =====
+ notes           String?
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ 
+ @@index([vehicleId])
+ @@index([status])
+ @@index([severity])
+ @@index([reportedBy])
+ @@map("vehicle_issues")
+}
+
+// ============================================
+// FUEL LOG - Fuel consumption tracking
+// ============================================
+model FuelLog {
+ id            String   @id @default(cuid())
+ vehicleId     String
+ vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+ 
+ // ===== REFUELING DETAILS =====
+ date          DateTime @default(now())
+ mileage       Int
+ 
+ // Fuel
+ fuelType      FuelType
+ liters        Float
+ pricePerLiter Decimal  @db.Decimal(10, 2)
+ totalCost     Decimal  @db.Decimal(10, 2)
+ 
+ // Station
+ gasStation    String?
+ location      String?
+ 
+ // ===== CONSUMPTION =====
+ kmSinceLastFill Int?
+ consumption    Float?   // l/100km
+ 
+ // ===== TANK =====
+ isFillUp      Boolean  @default(true)
+ tankLevel     Int?     // percentage before fill
+ 
+ // ===== PAYMENT =====
+ paymentMethod String?
+ receiptNumber String?
+ receiptUrl    String?
+ 
+ // ===== DRIVER =====
+ driverId      String?  // userId
+ 
+ // ===== NOTES =====
+ notes         String?
+ 
+ createdAt DateTime @default(now())
+ createdBy String?
+ 
+ @@index([vehicleId])
+ @@index([date])
+ @@index([driverId])
+ @@map("fuel_logs")
+}
+
+// ============================================
+// VEHICLE DOCUMENT - Registration, insurance, etc.
+// ============================================
+model VehicleDocument {
+ id            String   @id @default(cuid())
+ vehicleId     String
+ vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+ 
+ // ===== DOCUMENT TYPE =====
+ type          VehicleDocumentType
+ name          String
+ documentNumber String?
+ 
+ // ===== VALIDITY =====
+ issueDate     DateTime
+ expiryDate    DateTime?
+ isExpired     Boolean  @default(false)
+ 
+ // ===== FILE =====
+ fileUrl       String
+ fileSize      Int?     // bytes
+ mimeType      String?
+ 
+ // ===== ISSUER =====
+ issuedBy      String?
+ issuerContact String?
+ 
+ // ===== REMINDERS =====
+ reminderDays  Int[]    @default([30, 14, 7])
+ remindersSent Int      @default(0)
+ lastReminderAt DateTime?
+ 
+ // ===== VERIFICATION =====
+ isVerified    Boolean  @default(false)
+ verifiedBy    String?
+ verifiedAt    DateTime?
+ 
+ // ===== NOTES =====
+ notes         String?
+ 
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
+ uploadedBy String?
+ 
+ @@index([vehicleId])
+ @@index([type])
+ @@index([expiryDate])
+ @@map("vehicle_documents")
+}
+
+// ============================================
+// VEHICLE INSPECTION - Technical inspections
+// ============================================
+model VehicleInspection {
+ id            String   @id @default(cuid())
+ vehicleId     String
+ vehicle       Vehicle  @relation(fields: [vehicleId], references: [id])
+ 
+ // ===== INSPECTION TYPE =====
+ type          InspectionType
+ 
+ // ===== DATE & MILEAGE =====
+ inspectionDate DateTime
+ mileage       Int
+ 
+ // ===== RESULT =====
+ passed        Boolean
+ 
+ // ===== STATION =====
+ stationName   String
+ stationAddress String?
+ inspectorName String?
+ certificateNumber String?
+ 
+ // ===== FINDINGS =====
+ findings      Json?    // Detailed inspection results
+//  Example:
+//  {
+//    "brakes": { "status": "pass", "notes": "Front pads 60%" },
+//    "lights": { "status": "pass", "notes": "All working" },
+//    "tires": { "status": "warning", "notes": "Rear tires 3mm" },
+//    "emissions": { "status": "pass", "co": 0.3, "hc": 50 }
+//  }
+ 
+ 
+ // Failed Items
+ failedItems   String[]
+ warningItems  String[]
+ 
+ // ===== RECOMMENDATIONS =====
+ recommendations String[]
+ requiredRepairs String[]
+ 
+ // ===== NEXT INSPECTION =====
+ nextInspectionDate DateTime
+ validUntil    DateTime
+ 
+ // ===== COST =====
+ cost          Decimal? @db.Decimal(10, 2)
+ isPaid        Boolean  @default(false)
+ 
+ // ===== DOCUMENTATION =====
+ certificateUrl String?
+ reportUrl     String?
+ photoUrls     String[]
+ 
+ // ===== NOTES =====
+ notes         String?
+ 
+ createdAt DateTime @default(now())
+ createdBy String?
+ 
+ @@index([vehicleId])
+ @@index([type])
+ @@index([inspectionDate])
+ @@map("vehicle_inspections")
+}
+
+// ============================================
+// ENUMS FOR VEHICLE MODULE
+// ============================================
+
+enum VehicleCategory {
+ B
+ B1
+ B_AUTOMATIC
+ C
+ C1
+ D
+ D1
+ BE
+ CE
+ C1E
+ DE
+ D1E
+ T
+ AM
+ A1
+ A2
+ A
+}
+
+enum Transmission {
+ MANUAL
+ AUTOMATIC
+ SEMI_AUTOMATIC
+ CVT
+ DSG
+}
+
+enum FuelType {
+ PETROL
+ DIESEL
+ ELECTRIC
+ HYBRID
+ HYBRID_PLUGIN
+ LPG
+ CNG
+ HYDROGEN
+}
+
+enum VehicleStatus {
+ ACTIVE
+ MAINTENANCE
+ REPAIR
+ INACTIVE
+ RESERVED
+ DISPOSED
+ ACCIDENT
+}
+
+enum VehicleCondition {
+ EXCELLENT
+ GOOD
+ FAIR
+ POOR
+ DAMAGED
+}
+
+enum OwnershipType {
+ OWNED
+ LEASED
+ RENTED
+ SUBSCRIPTION
+ LOANED
+}
+
+enum MaintenanceType {
+ REGULAR_SERVICE
+ OIL_CHANGE
+ TIRE_CHANGE
+ BRAKE_SERVICE
+ INSPECTION
+ REPAIR
+ CLEANING
+ BATTERY
+ FILTERS
+ FLUIDS
+ OTHER
+}
+
+enum MaintenanceCategory {
+ PREVENTIVE
+ CORRECTIVE
+ PREDICTIVE
+ EMERGENCY
+}
+
+enum MaintenancePriority {
+ LOW
+ NORMAL
+ HIGH
+ URGENT
+ CRITICAL
+}
+
+enum MaintenanceStatus {
+ SCHEDULED
+ IN_PROGRESS
+ COMPLETED
+ CANCELLED
+ OVERDUE
+ POSTPONED
+}
+
+enum IssueCategory {
+ ENGINE
+ TRANSMISSION
+ BRAKES
+ SUSPENSION
+ ELECTRICAL
+ BODY
+ INTERIOR
+ TIRES
+ LIGHTS
+ FLUIDS
+ OTHER
+}
+
+enum IssueSeverity {
+ MINOR
+ MODERATE
+ MAJOR
+ CRITICAL
+ SAFETY
+}
+
+enum IssueStatus {
+ REPORTED
+ ACKNOWLEDGED
+ IN_PROGRESS
+ RESOLVED
+ CLOSED
+ REOPENED
+}
+
+enum VehicleDocumentType {
+ REGISTRATION
+ INSURANCE_OC
+ INSURANCE_AC
+ INSPECTION
+ ROAD_TAX
+ LEASE_CONTRACT
+ PURCHASE_INVOICE
+ SERVICE_BOOK
+ WARRANTY
+ OTHER
+}
+
+enum InspectionType {
+ TECHNICAL
+ SAFETY
+ EMISSIONS
+ PRE_PURCHASE
+ ANNUAL
+ ROADWORTHY
+}

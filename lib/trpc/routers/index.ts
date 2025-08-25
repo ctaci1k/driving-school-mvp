@@ -12,6 +12,8 @@ import { locationRouter } from './location'
 import { studentReportsRouter } from './studentReports'
 import { instructorReportsRouter } from './instructorReports'
 import { adminReportsRouter } from './adminReports'
+import { notificationRouter } from './notification'
+import { dashboardRouter } from './dashboard'
 
 export const appRouter = router({
   auth: authRouter,
@@ -25,6 +27,8 @@ export const appRouter = router({
   studentReports: studentReportsRouter,
   instructorReports: instructorReportsRouter,
   adminReports: adminReportsRouter,
+  notification: notificationRouter,
+  dashboard: dashboardRouter, 
 })
 
 export type AppRouter = typeof appRouter

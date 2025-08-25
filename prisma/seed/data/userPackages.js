@@ -1,19 +1,17 @@
-// prisma/seed/data/userPackages.js - ПОВНА ФІНАЛЬНА ВЕРСІЯ
+// prisma/seed/data/userPackages.js - ВИПРАВЛЕНА ВЕРСІЯ
 const { faker } = require('@faker-js/faker')
 const { addDays, subDays } = require('date-fns')
 
 async function seedUserPackages(prisma, logger, options = {}) {
   const isMinimal = options.minimal || false
   
-  // Pobierz studentów i pakiety
+  // Отримати студентів і пакети - БЕЗ невірних полів
   const students = await prisma.user.findMany({
     where: { role: 'STUDENT' },
     select: { 
       id: true, 
       firstName: true, 
-      lastName: true,
-      totalLessons: true,
-      completedLessons: true
+      lastName: true
     }
   })
   
@@ -23,364 +21,226 @@ async function seedUserPackages(prisma, logger, options = {}) {
   })
   
   if (students.length === 0 || packages.length === 0) {
-    logger.warn('No students or packages found - skipping user packages')
-    return
+    logger && logger.warn('No students or packages found - skipping user packages')
+    return 0
   }
   
   const userPackages = []
   
-  // Strategia przydziału pakietów:
-  // - 70% studentów ma jakiś pakiet
-  // - 30% studentów ma więcej niż jeden pakiet (historyczny)
-  // - Popularniejsze pakiety częściej wybierane
-  
+  // Стратегія розподілу пакетів
   const studentsWithPackages = faker.helpers.arrayElements(
     students, 
     Math.floor(students.length * (isMinimal ? 0.5 : 0.7))
   )
   
-  for (const student of studentsWithPackages) {
-    // Określ ile pakietów ma student (1-3)
-    const packageCount = faker.helpers.weightedArrayElement([
-      { value: 1, weight: 70 },
-      { value: 2, weight: 25 },
-      { value: 3, weight: 5 }
-    ])
-    
-    const studentPackages = []
-    
-    for (let i = 0; i < packageCount; i++) {
-      // Wybierz pakiet (popularniejsze częściej)
-      const pkg = faker.helpers.weightedArrayElement(
-        packages.map(p => ({
-          value: p,
-          weight: p.isPopular ? 40 : p.credits <= 10 ? 30 : 20
-        }))
-      )
-      
-      // Określ status pakietu na podstawie lekcji studenta
-      let status = 'ACTIVE'
-      let creditsUsed = 0
-      let creditsRemaining = pkg.credits
-      
-      // Jeśli to nie pierwszy pakiet, może być zużyty
-      if (i > 0) {
-        status = faker.helpers.weightedArrayElement([
-          { value: 'DEPLETED', weight: 50 },
-          { value: 'EXPIRED', weight: 20 },
-          { value: 'ACTIVE', weight: 30 }
-        ])
-        
-        if (status === 'DEPLETED') {
-          creditsUsed = pkg.credits
-          creditsRemaining = 0
-        } else if (status === 'EXPIRED') {
-          creditsUsed = faker.number.int({ min: 0, max: pkg.credits })
-          creditsRemaining = pkg.credits - creditsUsed
-        }
-      } else {
-        // Aktywny pakiet - częściowo wykorzystany
-        if (student.completedLessons && student.completedLessons > 0) {
-          creditsUsed = Math.min(
-            faker.number.int({ min: 0, max: Math.min(student.completedLessons * 2, pkg.credits - 1) }),
-            pkg.credits - 1
-          )
-          creditsRemaining = pkg.credits - creditsUsed
-        }
-      }
-      
-      // Daty zakupu i wygaśnięcia
-      const purchasedAt = status === 'DEPLETED' || status === 'EXPIRED'
-        ? subDays(new Date(), faker.number.int({ min: 30, max: 180 }))
-        : subDays(new Date(), faker.number.int({ min: 1, max: 30 }))
-      
-      let expiresAt = addDays(purchasedAt, pkg.validityDays)
-      
-      // Jeśli status EXPIRED, ustaw datę wygaśnięcia w przeszłości
-      if (status === 'EXPIRED') {
-        expiresAt = subDays(new Date(), faker.number.int({ min: 1, max: 30 }))
-      }
-      
-      // Czy to prezent? (10% szans)
-      const isGift = faker.datatype.boolean({ probability: 0.1 })
-      
-      studentPackages.push({
-        userId: student.id,
-        packageId: pkg.id,
-        creditsTotal: pkg.credits,
-        creditsUsed,
-        creditsRemaining,
-        purchasedAt,
-        expiresAt,
-        status,
-        purchasePrice: pkg.price * (isGift ? 1 : faker.datatype.boolean({ probability: 0.2 }) ? 0.9 : 1), // 20% ma rabat
-        paymentId: null, // Będzie dodane przez seedPayments
-        
-        // Pola prezentowe
-        isGift,
-        giftFrom: isGift ? faker.helpers.arrayElement([
-          'Rodzice',
-          'Jan i Anna Kowalski',
-          'Babcia i Dziadek',
-          'Firma XYZ',
-          'Przyjaciele'
-        ]) : null,
-        giftMessage: isGift ? faker.helpers.arrayElement([
-          'Wszystkiego najlepszego! Powodzenia na drodze!',
-          'Z okazji 18 urodzin! Powodzenia!',
-          'Gratulacje z okazji matury!',
-          'Świąteczny prezent dla Ciebie!',
-          'Powodzenia na egzaminie!'
-        ]) : null,
-        
-        notes: faker.helpers.arrayElement([
-          null,
-          'Prezent urodzinowy',
-          'Promocja studencka',
-          'Pakiet świąteczny',
-          'Zniżka za polecenie',
-          'Stały klient',
-          'Pierwsza jazda gratis'
-        ]),
-        
-        // Metadata jako JSON
-        metadata: {
-          source: faker.helpers.arrayElement(['WEBSITE', 'PHONE', 'OFFICE', 'PROMOTION', 'GIFT']),
-          promoCode: faker.datatype.boolean({ probability: 0.2 }) 
-            ? faker.helpers.arrayElement(['STUDENT20', 'WELCOME10', 'SUMMER15', 'FRIEND25', 'XMAS2024'])
-            : null,
-          referredBy: faker.datatype.boolean({ probability: 0.1 })
-            ? faker.helpers.arrayElement(students.filter(s => s.id !== student.id))?.id
-            : null,
-          packageName: pkg.name,
-          originalPrice: pkg.price,
-          discount: faker.datatype.boolean({ probability: 0.2 }) ? 0.1 : 0,
-          purchaseChannel: faker.helpers.arrayElement(['WEB', 'MOBILE', 'OFFICE', 'PHONE']),
-          campaignId: faker.datatype.boolean({ probability: 0.3 }) 
-            ? `CAMP-${faker.string.alphanumeric(6).toUpperCase()}`
-            : null
-        }
-      })
-    }
-    
-    userPackages.push(...studentPackages)
+
+
+for (const student of studentsWithPackages) {
+  const pkg = faker.helpers.arrayElement(packages)
+  
+  // Визначити знижку
+  const hasDiscount = faker.datatype.boolean({ probability: 0.2 })
+  const discountPercent = hasDiscount ? 0.1 : 0  // 10% знижка
+  const finalPrice = pkg.price * (1 - discountPercent)
+  
+  // Визначити статус і кредити
+  const status = faker.helpers.arrayElement(['ACTIVE', 'DEPLETED', 'EXPIRED'])
+  let creditsUsed = 0
+  let creditsRemaining = pkg.credits
+  
+  if (status === 'DEPLETED') {
+    creditsUsed = pkg.credits
+    creditsRemaining = 0
+  } else if (status === 'EXPIRED') {
+    creditsUsed = faker.number.int({ min: 0, max: pkg.credits })
+    creditsRemaining = pkg.credits - creditsUsed
+  } else {
+    creditsUsed = faker.number.int({ min: 0, max: Math.max(0, pkg.credits - 1) })
+    creditsRemaining = pkg.credits - creditsUsed
   }
   
-  // Dodaj specjalne przypadki (tylko dla pełnego seed)
-  if (!isMinimal && students.length >= 5) {
-    // Przypadek 1: Student z wieloma pakietami (stały klient)
-    const loyalStudent = students[0]
-    const loyalPackages = packages.slice(0, Math.min(4, packages.length))
+  // Дати
+  const purchasedAt = subDays(new Date(), faker.number.int({ min: 1, max: 90 }))
+  const activatedAt = purchasedAt
+  const expiresAt = status === 'EXPIRED' 
+    ? subDays(new Date(), faker.number.int({ min: 1, max: 30 }))
+    : addDays(purchasedAt, pkg.validityDays)
+  
+  // Подарунок?
+  const isGift = faker.datatype.boolean({ probability: 0.1 })
+  
+  userPackages.push({
+    // Обов'язкові поля
+    userId: student.id,
+    packageId: pkg.id,
+    status: status,
+    purchasedAt: purchasedAt,
+    activatedAt: activatedAt,
+    expiresAt: expiresAt,
+    creditsTotal: pkg.credits,
+    creditsUsed: creditsUsed,
+    creditsRemaining: creditsRemaining,
+    purchasePrice: pkg.price,
+    finalPrice: pkg.price,
     
-    for (const [index, pkg] of loyalPackages.entries()) {
-      userPackages.push({
-        userId: loyalStudent.id,
-        packageId: pkg.id,
-        creditsTotal: pkg.credits,
-        creditsUsed: pkg.credits, // Wszystkie wykorzystane
-        creditsRemaining: 0,
-        purchasedAt: subDays(new Date(), 180 - (index * 30)),
-        expiresAt: subDays(new Date(), 90 - (index * 30)),
-        status: 'DEPLETED',
-        purchasePrice: pkg.price * 0.9, // Stały klient ma rabat
-        paymentId: null,
+    // Необов'язкові поля
+    paymentId: null,
+    isGift: isGift,
+    giftFrom: isGift ? 'Jan Kowalski' : null,
+    giftMessage: isGift ? 'Wszystkiego najlepszego!' : null,
+    notes: hasDiscount ? 'Promocja -10%' : null,
+    
+    // Metadata
+    metadata: {
+      source: faker.helpers.arrayElement(['WEBSITE', 'OFFICE', 'PHONE']),
+      packageName: pkg.name,
+      discount: hasDiscount ? '10%' : null,
+      originalPrice: pkg.price
+    }
+  })
+}
+
+
+
+  // Додати спеціальні випадки
+  if (!isMinimal && students.length >= 3 && packages.length > 0) {
+    // Випадок 1: Студент з завершеним пакетом
+    const completedPackage = {
+      userId: students[0].id,
+      packageId: packages[0].id,
+      status: 'DEPLETED',
+      purchasedAt: subDays(new Date(), 90),
+      activatedAt: subDays(new Date(), 90),
+      expiresAt: addDays(subDays(new Date(), 90), packages[0].validityDays),
+      creditsTotal: packages[0].credits,
+      creditsUsed: packages[0].credits,
+      creditsRemaining: 0,
+      purchasePrice: packages[0].price,
+finalPrice: packages[0].price,
+      isGift: false,
+      giftFrom: null,
+      giftMessage: null,
+      notes: 'Pakiet ukończony',
+
+      metadata: {
+        completedLessons: packages[0].credits,
+        source: 'OFFICE'
+      }
+    }
+    userPackages.push(completedPackage)
+    
+    // Випадок 2: Подарунковий пакет
+    if (packages.length > 1 && students.length > 1) {
+      const giftPackage = {
+        userId: students[1].id,
+        packageId: packages[1].id,
+        status: 'ACTIVE',
+        purchasedAt: subDays(new Date(), 7),
+        activatedAt: subDays(new Date(), 5),
+        expiresAt: addDays(new Date(), packages[1].validityDays - 7),
+        creditsTotal: packages[1].credits,
+        creditsUsed: 0,
+        creditsRemaining: packages[1].credits,
+        purchasePrice: packages[1].price,
+        finalPrice: packages[1].price,
+       
+        isGift: true,
+        giftFrom: 'Jan i Anna Kowalski',
+        giftMessage: 'Z okazji 18 urodzin! Powodzenia!',
+        notes: 'Prezent urodzinowy',
+
+        metadata: {
+          occasion: 'BIRTHDAY_18',
+          source: 'GIFT'
+        }
+      }
+      userPackages.push(giftPackage)
+    }
+    
+    // Випадок 3: Пакет з промокодом
+    if (packages.length > 2 && students.length > 2) {
+      const promoPackage = {
+        userId: students[2].id,
+        packageId: packages[2].id,
+        status: 'ACTIVE',
+        purchasedAt: subDays(new Date(), 14),
+        activatedAt: subDays(new Date(), 14),
+        expiresAt: addDays(new Date(), packages[2].validityDays - 14),
+        creditsTotal: packages[2].credits,
+        creditsUsed: 2,
+        creditsRemaining: packages[2].credits - 2,
+        purchasePrice: packages[2].price,
+       
+        finalPrice: packages[2].price * 0.8,
         isGift: false,
         giftFrom: null,
         giftMessage: null,
-        notes: `Pakiet #${index + 1} - stały klient`,
+        notes: 'Zniżka studencka 20%',
+
         metadata: {
-          source: 'OFFICE',
-          loyaltyDiscount: 0.1,
-          packageName: pkg.name,
-          customerType: 'LOYAL',
-          totalPurchases: index + 1
-        }
-      })
-    }
-    
-    // Przypadek 2: Rodzina kupująca pakiety
-    const familyPackage = packages.find(p => p.credits >= 20) || packages[packages.length - 1]
-    if (familyPackage && students.length >= 3) {
-      for (let i = 1; i <= Math.min(2, students.length - 1); i++) {
-        userPackages.push({
-          userId: students[i].id,
-          packageId: familyPackage.id,
-          creditsTotal: familyPackage.credits,
-          creditsUsed: faker.number.int({ min: 2, max: Math.min(8, familyPackage.credits) }),
-          creditsRemaining: familyPackage.credits - faker.number.int({ min: 2, max: Math.min(8, familyPackage.credits) }),
-          purchasedAt: subDays(new Date(), 14),
-          expiresAt: addDays(new Date(), familyPackage.validityDays - 14),
-          status: 'ACTIVE',
-          purchasePrice: familyPackage.price * 0.85, // Rabat rodzinny
-          paymentId: null,
-          isGift: false,
-          giftFrom: null,
-          giftMessage: null,
-          notes: 'Pakiet rodzinny - rabat 15%',
-          metadata: {
-            source: 'OFFICE',
-            familyDiscount: 0.15,
-            familyGroupId: 'FAM-001',
-            packageName: familyPackage.name,
-            familyMembers: 2
-          }
-        })
-      }
-    }
-    
-    // Przypadek 3: Pakiet prezentowy na 18 urodziny
-    const giftPackage = packages.find(p => p.credits === 10) || packages[Math.floor(packages.length / 2)]
-    if (giftPackage && students.length >= 4) {
-      userPackages.push({
-        userId: students[3].id,
-        packageId: giftPackage.id,
-        creditsTotal: giftPackage.credits,
-        creditsUsed: 0,
-        creditsRemaining: giftPackage.credits,
-        purchasedAt: subDays(new Date(), 7),
-        expiresAt: addDays(new Date(), giftPackage.validityDays - 7),
-        status: 'ACTIVE',
-        purchasePrice: giftPackage.price,
-        paymentId: null,
-        isGift: true,
-        giftFrom: 'Jan i Anna Kowalski',
-        giftMessage: 'Wszystkiego najlepszego z okazji 18 urodzin! Powodzenia na drodze!',
-        notes: 'Prezent od rodziców na 18 urodziny',
-        metadata: {
-          source: 'GIFT',
-          occasion: 'BIRTHDAY_18',
-          packageName: giftPackage.name,
-          giftWrapping: true,
-          giftCard: true,
-          purchasedBy: 'Jan Kowalski',
-          purchaserEmail: 'jan.kowalski@example.com'
-        }
-      })
-    }
-    
-    // Przypadek 4: Pakiet firmowy (szkolenie pracowników)
-    if (students.length >= 6) {
-      const corporatePackage = packages.find(p => p.credits >= 15) || packages[packages.length - 2]
-      if (corporatePackage) {
-        for (let i = 4; i <= Math.min(5, students.length - 1); i++) {
-          userPackages.push({
-            userId: students[i].id,
-            packageId: corporatePackage.id,
-            creditsTotal: corporatePackage.credits,
-            creditsUsed: faker.number.int({ min: 0, max: 5 }),
-            creditsRemaining: corporatePackage.credits - faker.number.int({ min: 0, max: 5 }),
-            purchasedAt: subDays(new Date(), 21),
-            expiresAt: addDays(new Date(), corporatePackage.validityDays),
-            status: 'ACTIVE',
-            purchasePrice: corporatePackage.price * 0.8, // Rabat firmowy 20%
-            paymentId: null,
-            isGift: true,
-            giftFrom: 'Firma ABC Sp. z o.o.',
-            giftMessage: 'Benefit pracowniczy - powodzenia!',
-            notes: 'Pakiet firmowy - benefit pracowniczy',
-            metadata: {
-              source: 'CORPORATE',
-              companyName: 'ABC Sp. z o.o.',
-              companyNIP: '1234567890',
-              corporateDiscount: 0.2,
-              packageName: corporatePackage.name,
-              employeeId: `EMP-${faker.string.numeric(5)}`,
-              invoiceRequired: true
-            }
-          })
+          studentDiscount: true,
+          source: 'WEBSITE'
         }
       }
+      userPackages.push(promoPackage)
     }
   }
   
-  // Zapisz pakiety użytkowników
+  // Записати пакети користувачів
   let created = 0
   let skipped = 0
   
-  for (const packageData of userPackages) {
-    try {
-      const userPackage = await prisma.userPackage.create({
-        data: packageData
-      })
-      created++
-      
-      if (created <= 5 || created % 10 === 0) {
-        const student = students.find(s => s.id === packageData.userId)
-        const pkg = packages.find(p => p.id === packageData.packageId)
-        logger.info(`Created package ${created}: ${pkg?.name || 'Unknown'} for ${student?.firstName} ${student?.lastName}`)
-      }
-    } catch (error) {
-      skipped++
-      if (skipped <= 3) {
-        logger.warn(`Failed to create user package: ${error.message}`)
-      }
-    }
+for (const packageData of userPackages) {
+  try {
+    await prisma.userPackage.create({
+      data: packageData
+    })
+    created++
+    
+    const student = students.find(s => s.id === packageData.userId)
+    logger && logger.info(`✓ Created package for ${student?.firstName} ${student?.lastName}`)
+  } catch (error) {
+    skipped++
+    logger && logger.warn(`Failed to create user package: ${error.message}`)
   }
+}
+
   
-  logger.success(`Created ${created} user packages (${skipped} skipped)`)
+  logger && logger.success(`✓ Created ${created} user packages (${skipped} skipped)`)
   
-  // Statystyki
+  // Статистика
   if (created > 0) {
-    const stats = await prisma.userPackage.groupBy({
-      by: ['status'],
-      _count: true,
-      _sum: { 
-        creditsTotal: true,
-        creditsUsed: true,
-        creditsRemaining: true
-      }
-    })
-    
-    const packageStats = await prisma.userPackage.groupBy({
-      by: ['packageId'],
-      _count: true
-    })
-    
-    logger.info('\n📊 User Package Statistics:')
-    logger.info(`   Total user packages: ${created}`)
-    
-    stats.forEach(stat => {
-      logger.info(`   ${stat.status}:`)
-      logger.info(`     Count: ${stat._count}`)
-      logger.info(`     Total credits: ${stat._sum.creditsTotal || 0}`)
-      logger.info(`     Used credits: ${stat._sum.creditsUsed || 0}`)
-      logger.info(`     Remaining credits: ${stat._sum.creditsRemaining || 0}`)
-    })
-    
-    // Najpopularniejsze pakiety
-    logger.info('\n   Most popular packages:')
-    const sortedPackages = packageStats
-      .sort((a, b) => b._count - a._count)
-      .slice(0, 3)
-    
-    for (const stat of sortedPackages) {
-      const pkg = packages.find(p => p.id === stat.packageId)
-      if (pkg) {
-        logger.info(`     ${pkg.name}: ${stat._count} purchases`)
-      }
-    }
-    
-    // Pakiety prezentowe
-    const giftPackages = await prisma.userPackage.count({
-      where: { isGift: true }
-    })
-    
-    logger.info(`\n   Gift packages: ${giftPackages}`)
-    
-    // Studenci z pakietami vs bez
-    const studentsWithPackageCount = await prisma.user.count({
-      where: {
-        role: 'STUDENT',
-        userPackages: {
-          some: {
-            status: 'ACTIVE'
-          }
+    try {
+      const stats = await prisma.userPackage.groupBy({
+        by: ['status'],
+        _count: true,
+        _sum: { 
+          creditsTotal: true,
+          creditsUsed: true,
+          creditsRemaining: true
         }
-      }
-    })
-    
-    logger.info(`   Students with active packages: ${studentsWithPackageCount}/${students.length}`)
+      })
+      
+      logger && logger.info('\n📊 User Package Statistics:')
+      logger && logger.info(`   Total user packages: ${created}`)
+      
+      stats.forEach(stat => {
+        logger && logger.info(`   ${stat.status}: ${stat._count} packages`)
+      })
+      
+      // Подарункові пакети
+      const giftPackages = await prisma.userPackage.count({
+        where: { isGift: true }
+      })
+      
+      logger && logger.info(`   Gift packages: ${giftPackages}`)
+      
+    } catch (error) {
+      logger && logger.warn(`Could not generate statistics: ${error.message}`)
+    }
   }
+  
+  return created
 }
 
 module.exports = seedUserPackages

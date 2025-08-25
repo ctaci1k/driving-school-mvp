@@ -32,11 +32,10 @@ export class OfflineManager {
     if ('caches' in window) {
       const cache = await caches.open('offline-data-v1')
       
-      // Кешуємо важливі дані
       const essentialUrls = [
         '/api/trpc/booking.list',
         '/api/trpc/schedule.getMySchedule',
-        '/api/trpc/user.getProfile',
+        '/api/trpc/user.getMe', // ✅ виправлено
       ]
 
       for (const url of essentialUrls) {
@@ -51,7 +50,6 @@ export class OfflineManager {
   }
 
   private async syncData() {
-    // Синхронізуємо офлайн зміни
     const pendingBookings = localStorage.getItem('pendingBookings')
     if (pendingBookings) {
       const bookings = JSON.parse(pendingBookings)
@@ -71,7 +69,6 @@ export class OfflineManager {
   }
 
   private notifyOffline() {
-    // Показуємо повідомлення про офлайн режим
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('Jesteś offline', {
         body: 'Niektóre funkcje mogą być niedostępne',

@@ -349,39 +349,41 @@ export const adminReportsRouter = router({
       const startDate = input.startDate || startOfMonth(new Date())
       const endDate = input.endDate || endOfMonth(new Date())
 
-      // Використання автомобілів
-      const vehicles = await ctx.db.vehicle.findMany({
-        include: {
-          bookings: {
-            where: {
-              startTime: { gte: startDate, lte: endDate },
-              status: 'COMPLETED'
-            }
-          },
-          maintenanceLogs: {
-            where: {
-              performedAt: { gte: startDate, lte: endDate }
-            }
-          }
-        }
-      })
 
-      const vehicleStats = vehicles.map(vehicle => ({
-        id: vehicle.id,
-        registrationNumber: vehicle.registrationNumber,
-        make: vehicle.make,
-        model: vehicle.model,
-        status: vehicle.status,
-        lessonsCount: vehicle.bookings.length,
-        hoursUsed: vehicle.bookings.reduce((sum, b) => sum + (b.duration / 60), 0),
-        maintenanceCount: vehicle.maintenanceLogs.length,
-        currentMileage: vehicle.currentMileage,
-        insuranceExpiry: vehicle.insuranceExpiry,
-        inspectionExpiry: vehicle.inspectionExpiry,
-        needsAttention: 
-          new Date(vehicle.insuranceExpiry) < new Date(Date.now() + 30*24*60*60*1000) ||
-          new Date(vehicle.inspectionExpiry) < new Date(Date.now() + 30*24*60*60*1000)
-      }))
+// Використання автомобілів
+const vehicles = await ctx.db.vehicle.findMany({
+  include: {
+    bookings: {
+      where: {
+        startTime: { gte: startDate, lte: endDate },
+        status: 'COMPLETED'
+      }
+    },
+    maintenanceLogs: {
+      where: {
+        // Використовуємо completedDate замість performedAt
+        completedDate: { gte: startDate, lte: endDate }
+      }
+    }
+  }
+})
+
+const vehicleStats = vehicles.map(vehicle => ({
+  id: vehicle.id,
+  registrationNumber: vehicle.registrationNumber,
+  make: vehicle.make,
+  model: vehicle.model,
+  status: vehicle.status,
+  lessonsCount: vehicle.bookings.length,
+  hoursUsed: vehicle.bookings.reduce((sum, b) => sum + (b.duration / 60), 0),
+  maintenanceCount: vehicle.maintenanceLogs.length,
+  currentMileage: vehicle.currentMileage,
+  insuranceExpiry: vehicle.insuranceExpiry,
+  inspectionExpiry: vehicle.inspectionExpiry,
+  needsAttention: 
+    new Date(vehicle.insuranceExpiry) < new Date(Date.now() + 30*24*60*60*1000) ||
+    new Date(vehicle.inspectionExpiry) < new Date(Date.now() + 30*24*60*60*1000)
+}))
 
       // Використання локацій
       const locations = await ctx.db.location.findMany({

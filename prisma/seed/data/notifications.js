@@ -3,37 +3,37 @@ const { faker } = require('@faker-js/faker')
 const { subDays, subHours, addHours } = require('date-fns')
 
 const notificationTemplates = {
-  BOOKING_CONFIRMATION: {
+  SYSTEM_NOTIFICATION: {
     title: 'Potwierdzenie rezerwacji',
     template: 'Twoja jazda z instruktorem {instructorName} została potwierdzona na {date} o godzinie {time}.',
     priority: 'MEDIUM',
     channels: ['EMAIL', 'SMS', 'PUSH']
   },
-  BOOKING_REMINDER: {
+  SYSTEM_NOTIFICATION: {
     title: 'Przypomnienie o jeździe',
     template: 'Przypominamy o jutrzejszej jeździe o godzinie {time}. Instruktor: {instructorName}, miejsce: {location}.',
     priority: 'HIGH',
     channels: ['SMS', 'PUSH']
   },
-  BOOKING_CANCELLED: {
+  SYSTEM_NOTIFICATION: {
     title: 'Anulowanie jazdy',
     template: 'Twoja jazda zaplanowana na {date} została anulowana. Powód: {reason}. Prosimy o kontakt w celu ustalenia nowego terminu.',
     priority: 'HIGH',
     channels: ['EMAIL', 'SMS', 'PUSH']
   },
-  PAYMENT_SUCCESS: {
+  SYSTEM_NOTIFICATION: {
     title: 'Płatność potwierdzona',
     template: 'Otrzymaliśmy Twoją płatność w wysokości {amount} PLN. Dziękujemy!',
     priority: 'MEDIUM',
     channels: ['EMAIL']
   },
-  PAYMENT_FAILED: {
+  SYSTEM_NOTIFICATION: {
     title: 'Problem z płatnością',
     template: 'Nie udało się przetworzyć płatności. Prosimy spróbować ponownie lub skontaktować się z nami.',
     priority: 'HIGH',
     channels: ['EMAIL', 'SMS']
   },
-  PACKAGE_EXPIRING: {
+  SYSTEM_NOTIFICATION: {
     title: 'Pakiet wkrótce wygasa',
     template: 'Twój pakiet "{packageName}" wygasa za {days} dni. Pozostało {credits} godzin do wykorzystania.',
     priority: 'MEDIUM',
@@ -51,7 +51,7 @@ const notificationTemplates = {
     priority: 'HIGH',
     channels: ['EMAIL', 'SMS']
   },
-  BIRTHDAY_WISHES: {
+  SYSTEM_NOTIFICATION: {
     title: 'Wszystkiego najlepszego!',
     template: 'Z okazji urodzin życzymy Ci samych udanych jazd i szybkiego zdania egzaminu! Specjalny rabat 10% czeka w panelu.',
     priority: 'LOW',
@@ -113,9 +113,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     if (booking.status === 'CONFIRMED') {
       notifications.push({
         userId: booking.studentId,
-        type: 'BOOKING_CONFIRMATION',
-        title: notificationTemplates.BOOKING_CONFIRMATION.title,
-        message: notificationTemplates.BOOKING_CONFIRMATION.template
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template
           .replace('{instructorName}', `${booking.instructor.firstName} ${booking.instructor.lastName}`)
           .replace('{date}', booking.startTime.toLocaleDateString('pl-PL'))
           .replace('{time}', booking.startTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })),
@@ -126,7 +126,7 @@ async function seedNotifications(prisma, logger, options = {}) {
         readAt: faker.datatype.boolean({ probability: 0.7 }) ? subHours(booking.startTime, 20) : null,
         metadata: {
           bookingId: booking.id,
-          template: 'BOOKING_CONFIRMATION',
+          template: 'SYSTEM_NOTIFICATION',
           instructorName: `${booking.instructor.firstName} ${booking.instructor.lastName}`,
           location: booking.location?.name
         }
@@ -136,9 +136,9 @@ async function seedNotifications(prisma, logger, options = {}) {
       if (booking.startTime > subDays(new Date(), 7)) {
         notifications.push({
           userId: booking.studentId,
-          type: 'BOOKING_REMINDER',
-          title: notificationTemplates.BOOKING_REMINDER.title,
-          message: notificationTemplates.BOOKING_REMINDER.template
+          type: 'SYSTEM_NOTIFICATION',
+          title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+          message: notificationTemplates.SYSTEM_NOTIFICATION.template
             .replace('{time}', booking.startTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }))
             .replace('{instructorName}', `${booking.instructor.firstName} ${booking.instructor.lastName}`)
             .replace('{location}', booking.location?.name || 'Biuro główne'),
@@ -149,7 +149,7 @@ async function seedNotifications(prisma, logger, options = {}) {
           sentAt: booking.startTime < new Date() ? subHours(booking.startTime, 24) : null,
           metadata: {
             bookingId: booking.id,
-            template: 'BOOKING_REMINDER'
+            template: 'SYSTEM_NOTIFICATION'
           }
         })
       }
@@ -159,9 +159,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     if (booking.status === 'CANCELLED') {
       notifications.push({
         userId: booking.studentId,
-        type: 'BOOKING_CANCELLED',
-        title: notificationTemplates.BOOKING_CANCELLED.title,
-        message: notificationTemplates.BOOKING_CANCELLED.template
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template
           .replace('{date}', booking.startTime.toLocaleDateString('pl-PL'))
           .replace('{reason}', booking.cancellationReason || 'Nieoczekiwane okoliczności'),
         priority: 'HIGH',
@@ -171,7 +171,7 @@ async function seedNotifications(prisma, logger, options = {}) {
         readAt: faker.datatype.boolean({ probability: 0.8 }) ? addHours(booking.updatedAt || subDays(booking.startTime, 1), 2) : null,
         metadata: {
           bookingId: booking.id,
-          template: 'BOOKING_CANCELLED',
+          template: 'SYSTEM_NOTIFICATION',
           reason: booking.cancellationReason
         }
       })
@@ -185,9 +185,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     if (payment.status === 'COMPLETED' && payment.amount > 0) {
       notifications.push({
         userId: payment.userId,
-        type: 'PAYMENT_SUCCESS',
-        title: notificationTemplates.PAYMENT_SUCCESS.title,
-        message: notificationTemplates.PAYMENT_SUCCESS.template
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template
           .replace('{amount}', payment.amount.toString()),
         priority: 'MEDIUM',
         channel: 'EMAIL',
@@ -196,7 +196,7 @@ async function seedNotifications(prisma, logger, options = {}) {
         readAt: faker.datatype.boolean({ probability: 0.9 }) ? addHours(payment.completedAt || payment.createdAt, 1) : null,
         metadata: {
           paymentId: payment.id,
-          template: 'PAYMENT_SUCCESS',
+          template: 'SYSTEM_NOTIFICATION',
           amount: payment.amount,
           method: payment.method
         }
@@ -206,9 +206,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     if (payment.status === 'FAILED') {
       notifications.push({
         userId: payment.userId,
-        type: 'PAYMENT_FAILED',
-        title: notificationTemplates.PAYMENT_FAILED.title,
-        message: notificationTemplates.PAYMENT_FAILED.template,
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template,
         priority: 'HIGH',
         channel: faker.helpers.arrayElement(['EMAIL', 'SMS']),
         status: 'SENT',
@@ -216,7 +216,7 @@ async function seedNotifications(prisma, logger, options = {}) {
         readAt: faker.datatype.boolean({ probability: 0.6 }) ? addHours(payment.failedAt || payment.createdAt, 0.5) : null,
         metadata: {
           paymentId: payment.id,
-          template: 'PAYMENT_FAILED',
+          template: 'SYSTEM_NOTIFICATION',
           failureReason: payment.failureReason
         }
       })
@@ -232,9 +232,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     if (daysUntilExpiry <= 7 && daysUntilExpiry > 0 && userPackage.creditsRemaining > 0) {
       notifications.push({
         userId: userPackage.userId,
-        type: 'PACKAGE_EXPIRING',
-        title: notificationTemplates.PACKAGE_EXPIRING.title,
-        message: notificationTemplates.PACKAGE_EXPIRING.template
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template
           .replace('{packageName}', userPackage.package.name)
           .replace('{days}', daysUntilExpiry.toString())
           .replace('{credits}', userPackage.creditsRemaining.toString()),
@@ -245,7 +245,7 @@ async function seedNotifications(prisma, logger, options = {}) {
         readAt: faker.datatype.boolean({ probability: 0.5 }) ? subDays(userPackage.expiresAt, 6) : null,
         metadata: {
           userPackageId: userPackage.id,
-          template: 'PACKAGE_EXPIRING',
+          template: 'SYSTEM_NOTIFICATION',
           packageName: userPackage.package.name,
           creditsRemaining: userPackage.creditsRemaining
         }
@@ -265,7 +265,7 @@ async function seedNotifications(prisma, logger, options = {}) {
       
       notifications.push({
         userId: student.id,
-        type: 'INSTRUCTOR_MESSAGE',
+        type: 'SYSTEM_NOTIFICATION', 
         title: notificationTemplates.INSTRUCTOR_MESSAGE.title,
         message: notificationTemplates.INSTRUCTOR_MESSAGE.template
           .replace('{instructorName}', `${instructor.firstName} ${instructor.lastName}`)
@@ -285,7 +285,7 @@ async function seedNotifications(prisma, logger, options = {}) {
           : null,
         metadata: {
           fromUserId: instructor.id,
-          template: 'INSTRUCTOR_MESSAGE'
+          template: 'SYSTEM_NOTIFICATION'
         }
       })
     }
@@ -293,7 +293,7 @@ async function seedNotifications(prisma, logger, options = {}) {
     // Powiadomienia systemowe
     notifications.push({
       userId: null, // Broadcast do wszystkich
-      type: 'SYSTEM_MAINTENANCE',
+      type: 'SYSTEM_NOTIFICATION',
       title: notificationTemplates.SYSTEM_MAINTENANCE.title,
       message: notificationTemplates.SYSTEM_MAINTENANCE.template
         .replace('{date}', '2024-02-15')
@@ -305,7 +305,7 @@ async function seedNotifications(prisma, logger, options = {}) {
       sentAt: subDays(new Date(), 5),
       isBroadcast: true,
       metadata: {
-        template: 'SYSTEM_MAINTENANCE',
+        template: 'SYSTEM_NOTIFICATION',
         affectedUsers: 'ALL'
       }
     })
@@ -315,9 +315,9 @@ async function seedNotifications(prisma, logger, options = {}) {
     for (const student of birthdayStudents) {
       notifications.push({
         userId: student.id,
-        type: 'BIRTHDAY_WISHES',
-        title: notificationTemplates.BIRTHDAY_WISHES.title,
-        message: notificationTemplates.BIRTHDAY_WISHES.template,
+        type: 'SYSTEM_NOTIFICATION',
+        title: notificationTemplates.SYSTEM_NOTIFICATION.title,
+        message: notificationTemplates.SYSTEM_NOTIFICATION.template,
         priority: 'LOW',
         channel: 'EMAIL',
         status: 'SENT',
@@ -326,7 +326,7 @@ async function seedNotifications(prisma, logger, options = {}) {
           ? subDays(new Date(), faker.number.int({ min: 0, max: 29 }))
           : null,
         metadata: {
-          template: 'BIRTHDAY_WISHES',
+          template: 'SYSTEM_NOTIFICATION',
           promoCode: 'BIRTHDAY10'
         }
       })

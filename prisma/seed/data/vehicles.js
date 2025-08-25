@@ -2,7 +2,7 @@
 const { faker } = require('@faker-js/faker')
 
 const vehicleModels = {
-  'B_MANUAL': [
+  'B': [
     { make: 'Toyota', model: 'Yaris', year: [2020, 2021, 2022, 2023] },
     { make: 'Volkswagen', model: 'Polo', year: [2020, 2021, 2022] },
     { make: 'Skoda', model: 'Fabia', year: [2021, 2022, 2023] },
@@ -62,7 +62,7 @@ async function seedVehicles(prisma, logger, options = {}) {
   
   // Generuj pojazdy
   for (let i = 0; i < vehicleCount; i++) {
-    const category = i < vehicleCount * 0.7 ? 'B_MANUAL' : 'B_AUTOMATIC' // 70% manual, 30% automatic
+    const category = i < vehicleCount * 0.7 ? 'B' : 'B_AUTOMATIC' // 70% manual, 30% automatic
     const modelInfo = faker.helpers.arrayElement(vehicleModels[category])
     const year = faker.helpers.arrayElement(modelInfo.year)
     const isActive = faker.datatype.boolean({ probability: 0.9 }) // 90% active
@@ -77,7 +77,8 @@ async function seedVehicles(prisma, logger, options = {}) {
     const location = faker.helpers.arrayElement(locations)
     
     const vehicle = {
-      registrationNumber: generatePlateNumber(),
+      plateNumber: generatePlateNumber(),
+      registrationNumber: `REG-${faker.string.numeric(8)}`,
       vin: generateVIN(),
       make: modelInfo.make,
       model: modelInfo.model,
@@ -97,6 +98,8 @@ async function seedVehicles(prisma, logger, options = {}) {
       inspectionExpiry: faker.date.future({ years: 1 }),
       insuranceCompany: faker.helpers.arrayElement(['PZU', 'Warta', 'Allianz', 'Generali', 'AXA']),
       insurancePolicyNumber: `POL-${faker.string.numeric(10)}`,
+      insuranceStartDate: faker.date.past({ years: 1 }), 
+      insuranceType: "OC+AC",
       purchaseDate: faker.date.past({ years: year === 2023 ? 1 : 3 }),
       purchasePrice: faker.number.int({ min: 50000, max: 150000 }),
       features: faker.helpers.arrayElements([

@@ -34,10 +34,10 @@ export function Navigation({ userRole }: { userRole?: string }) {
   const isActive = (path: string) => pathname === path
 
   const studentLinks = [
-    { href: `/${locale}/student-dashboard`, label: t('dashboard'), icon: Home },
-    { href: `/${locale}/student-book`, label: t('bookLesson'), icon: Calendar },
-    { href: `/${locale}/student-bookings`, label: t('myBookings'), icon: FileText },
-    { href: `/${locale}/student-reports`, label: t('myReports'), icon: TrendingUp },
+    { href: `/${locale}/student/dashboard`, label: t('dashboard'), icon: Home },
+    { href: `/${locale}/student/book`, label: t('bookLesson'), icon: Calendar },
+    { href: `/${locale}/student/bookings`, label: t('myBookings'), icon: FileText },
+    { href: `/${locale}/student/reports`, label: t('myReports'), icon: TrendingUp },
     { href: `/${locale}/packages`, label: t('packages'), icon: Package },
     { href: `/${locale}/payments`, label: t('payments'), icon: CreditCard },
   ]

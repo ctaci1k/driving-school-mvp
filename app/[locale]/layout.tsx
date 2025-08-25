@@ -1,35 +1,40 @@
 // app/[locale]/layout.tsx
 
-import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
-import { PWAInstallPrompt } from '@/components/pwa/pwa-install-prompt'
-import React from 'react'
+import { getMessages } from 'next-intl/server'
+import { Inter } from 'next/font/google'
+import { SessionProvider } from '@/components/providers/session-provider'
+import { TRPCProvider } from '@/components/providers/trpc-provider'
+import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
+import { ClientThemeProvider } from '@/components/client-theme-provider'
+import '../globals.css'
 
-const locales = ['pl', 'uk', 'en', 'ru']
+const inter = Inter({ subsets: ['latin'] })
 
-// ТІЛЬКИ ОДИН export default!
-export default async function LocaleLayout({
+export default async function RootLayout({
   children,
   params: { locale }
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
-  if (!locales.includes(locale)) {
-    notFound()
-  }
-
-  let messages
-  try {
-    messages = (await import(`@/messages/${locale}.json`)).default
-  } catch (error) {
-    notFound()
-  }
+  const messages = await getMessages()
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
-      <PWAInstallPrompt />
-    </NextIntlClientProvider>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
+        <TRPCProvider>
+          <SessionProvider>
+            <NextIntlClientProvider messages={messages}>
+              <ClientThemeProvider>
+                {children}
+                <Toaster />
+              </ClientThemeProvider>
+            </NextIntlClientProvider>
+          </SessionProvider>
+        </TRPCProvider>
+      </body>
+    </html>
   )
 }
