@@ -288,10 +288,13 @@ return (
             <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
               <Download className="w-5 h-5" />
             </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2">
-              <Plus className="w-4 h-4" />
-              Nowa lekcja
-            </button>
+<button 
+  onClick={() => window.location.href = '/student/booking'}
+  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+>
+  <Plus className="w-4 h-4" />
+  Nowa lekcja
+</button>
           </div>
         </div>
 
@@ -329,10 +332,8 @@ return (
 
 {/* Calendar View */}
 <div className="bg-white rounded-xl shadow-sm p-4">
-  <div className="relative">
-    {/* Додати скролл контейнер для мобільних */}
-    <div className={`${currentView === 'week' ? 'overflow-auto max-h-[600px] md:max-h-[700px]' : ''}`}>
-      
+<div className="relative">
+  <div>
 
 
         {/* Month View */}
@@ -405,7 +406,7 @@ return (
 
 {/* Week View */}
 {currentView === 'week' && (
-  <div className="overflow-x-auto">
+  <div>
     <div className="min-w-[800px]">
       <div className="grid grid-cols-8 gap-2">
         {/* Time Column */}
@@ -443,15 +444,17 @@ return (
                 
                 {/* Events */}
                 {dayEvents.map((event) => {
-                  const startHour = parseInt(event.startTime.split(':')[0]);
-                  const startMinute = parseInt(event.startTime.split(':')[1]);
-                  const endHour = parseInt(event.endTime.split(':')[0]);
-                  const endMinute = parseInt(event.endTime.split(':')[1]);
-                  
-                  // Розрахунок позиції (8:00 = 0px, кожна година = 80px)
-                  const top = ((startHour - 8) * 80) + (startMinute / 60 * 80);
-                  const height = ((endHour - startHour) * 80) + ((endMinute - startMinute) / 60 * 80);
-                  
+const startHour = parseInt(event.startTime.split(':')[0]);
+const startMinute = parseInt(event.startTime.split(':')[1]);
+const endHour = parseInt(event.endTime.split(':')[0]);
+const endMinute = parseInt(event.endTime.split(':')[1]);
+
+// Розрахунок позиції (8:00 = 0px, кожна 2 години = 80px)
+const startIndex = Math.floor((startHour - 8) / 2);
+const endIndex = Math.floor((endHour - 8) / 2);
+const top = (startIndex * 80) + ((startHour % 2) * 40) + (startMinute / 60 * 40);
+const duration = ((endHour * 60 + endMinute) - (startHour * 60 + startMinute)) / 60;
+const height = duration * 40; // 40px за годину
                   // Перевірка чи подія не виходить за межі
                   const maxHeight = 640 - top; // максимальна висота до кінця дня
                   const actualHeight = Math.min(height, maxHeight);
