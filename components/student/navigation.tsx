@@ -80,17 +80,12 @@ export default function StudentNavigation({ locale }: { locale: string }) {
       children: [
         {
           name: 'Nowa rezerwacja',
-          href: `/${locale}/student/booking/new`,
+          href: `/${locale}/student/booking`,
           icon: ChevronRight,
         },
         {
           name: 'Moje rezerwacje',
-          href: `/${locale}/student/booking/my`,
-          icon: ChevronRight,
-        },
-        {
-          name: 'Kalendarz',
-          href: `/${locale}/student/booking/calendar`,
+          href: `/${locale}/student/calendar`,
           icon: ChevronRight,
         },
       ]

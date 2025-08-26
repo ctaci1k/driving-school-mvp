@@ -28,7 +28,6 @@
 ├── package-lock.json
 ├── postcss.config.js
 ├── prisma-merge.config.json
-├── project_structure.txt
 ├── README.md
 ├── README_DEV.md
 ├── start-docker.ps1
@@ -49,6 +48,7 @@
 │   ├── layout.tsx
 │   ├── loading.tsx
 │   ├── not-found.tsx
+│   ├── page.tsx
 │   ├── [locale]
 │   ├── api
 │   │   ├── auth
@@ -68,9 +68,11 @@
 │   │   └── webhooks
 │   │       └── p24
 │   │           └── route.ts
-│   └── payments
-│       └── return
-│           └── page.tsx
+│   ├── payments
+│   │   └── return
+│   │       └── page.tsx
+│   └── providers
+│       └── trpc-provider.tsx
 ├── components
 │   ├── client-theme-provider.tsx
 │   ├── theme-provider.tsx
@@ -83,15 +85,11 @@
 │   │   ├── day-view.tsx
 │   │   ├── month-view.tsx
 │   │   ├── recurring-bookings.tsx
-│   │   ├── schedule-exceptions.tsx
-│   │   ├── schedule-template.tsx
 │   │   └── week-view.tsx
 │   ├── forms
 │   │   ├── booking-form.tsx
 │   │   └── schedule-form.tsx
 │   ├── layouts
-│   │   ├── dashboard-layout.tsx
-│   │   └── navigation.tsx
 │   ├── payments
 │   │   └── PaymentButton.tsx
 │   ├── providers
@@ -103,8 +101,7 @@
 │   │   └── pwa-install-prompt.tsx
 │   ├── reports
 │   │   ├── DateRangePicker.tsx
-│   │   ├── SimpleChart.tsx
-│   │   └── StatsCard.tsx
+│   │   └── SimpleChart.tsx
 │   ├── student
 │   │   ├── navigation.tsx
 │   │   └── student-sidebar.tsx
@@ -187,20 +184,12 @@
 │   │   ├── client.ts
 │   │   ├── server.ts
 │   │   └── routers
-│   │       ├── adminReports.ts
-│   │       ├── auth.ts
 │   │       ├── booking.ts
 │   │       ├── dashboard.ts
 │   │       ├── index.ts
-│   │       ├── instructorReports.ts
-│   │       ├── location.ts
+│   │       ├── messages.ts
 │   │       ├── notification.ts
-│   │       ├── package.ts
-│   │       ├── payment.ts
-│   │       ├── schedule.ts
-│   │       ├── studentReports.ts
-│   │       ├── user.ts
-│   │       └── vehicle.ts
+│   │       └── user.ts
 │   ├── utils
 │   │   ├── export.ts
 │   │   └── schedule.ts
@@ -224,7 +213,9 @@
 │   ├── schema.prisma
 │   ├── migrations
 │   │   ├── migration_lock.toml
-│   │   └── 20250823194017_init
+│   │   ├── 20250823194017_init
+│   │   │   └── migration.sql
+│   │   └── 20250825092526_add_dashboard_fields
 │   │       └── migration.sql
 │   ├── schema
 │   │   ├── auth.prisma

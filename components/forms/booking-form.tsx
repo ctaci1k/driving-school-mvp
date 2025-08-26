@@ -73,7 +73,7 @@ export function BookingForm({
     onSuccess: () => {
       toast.success(t('bookingCreated'))
       onSuccess?.()
-      router.push(`/${locale}/student/bookings`)
+      router.push(`/${locale}/student/calendar`)
     },
     onError: (error) => {
       toast.error(error.message)
