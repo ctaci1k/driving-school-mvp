@@ -1,0 +1,50 @@
+# /Dockerfile.prod
+# PROD-шаблон: multi-stage build, Next.js 'standalone' рантайм, мінімальний образ.
+
+########## deps ##########
+FROM node:20-bookworm-slim AS deps
+ENV NODE_ENV=production TZ=Europe/Warsaw
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+########## builder ##########
+FROM node:20-bookworm-slim AS builder
+ENV NODE_ENV=development NEXT_TELEMETRY_DISABLED=1 TZ=Europe/Warsaw
+WORKDIR /app
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY package*.json ./
+COPY prisma ./prisma
+RUN npx prisma generate
+COPY . .
+# Важливо: у next.config.js має бути `output: 'standalone'`
+RUN npm run build
+
+########## runner ##########
+FROM node:20-bookworm-slim AS runner
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 TZ=Europe/Warsaw
+WORKDIR /app
+
+# Prisma клієнту потрібні сертифікати
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssl ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+# Беремо тільки те, що потрібно для рантайму
+COPY --from=deps /app/package*.json ./
+COPY --from=deps /app/node_modules ./node_modules
+RUN npm prune --omit=dev
+
+# Опційно лишаємо schema (деяким інструментам зручно)
+COPY --from=builder /app/prisma ./prisma
+
+# Standalone сервер Next.js + статичні файли + public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+
+USER node
+EXPOSE 3000
+CMD ["node", "server.js"]

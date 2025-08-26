@@ -1,4 +1,4 @@
-# docker-compose.yml
+version: "3.9"
 
 services:
   # PostgreSQL Database
@@ -7,6 +7,7 @@ services:
     container_name: driving-school-db
     restart: unless-stopped
     environment:
+      TZ: Europe/Warsaw
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres123
       POSTGRES_DB: driving_school
@@ -15,7 +16,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d driving_school || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,6 +28,8 @@ services:
     image: redis:7-alpine
     container_name: driving-school-redis
     restart: unless-stopped
+    environment:
+      TZ: Europe/Warsaw
     ports:
       - "6379:6379"
     volumes:
@@ -40,16 +43,15 @@ services:
     networks:
       - driving-network
 
-  # Next.js Application
+  # Next.js Application (dev + hot reload)
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: driving-school-app
     restart: unless-stopped
-    ports:
-      - "3000:3000"
     environment:
+      TZ: Europe/Warsaw
       NODE_ENV: development
       DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
       DIRECT_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
@@ -57,68 +59,67 @@ services:
       NEXTAUTH_URL: http://localhost:3000
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       NEXTAUTH_SECRET: development-secret-key-change-in-production
-      # Przelewy24 Test
-      P24_MERCHANT_ID: 27290
-      P24_POS_ID: 27290
-      P24_CRC: b36103b3f74181c8
-      P24_API_KEY: test
-      P24_SANDBOX: "true"
+      # Якщо у рідкісних випадках не бачить зміни — розкоментуй дві нижні:
+      # CHOKIDAR_USEPOLLING: "true"
+      # WATCHPACK_POLLING: "true"
+      NEXT_TELEMETRY_DISABLED: "1"
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
+    ports:
+      - "3000:3000"
+    # Монтуємо весь проект (зручно для hot-reload) + ізолюємо node_modules та .next у named volumes
     volumes:
-      # Mount source code for hot reload
-      - ./app:/app/app
-      - ./components:/app/components
-      - ./lib:/app/lib
-      - ./prisma:/app/prisma
-      - ./scripts:/app/scripts
-      - ./public:/app/public
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
-      - ./tsconfig.json:/app/tsconfig.json
-      # - ./next.config.mjs:/app/next.config.mjs
-      - ./tailwind.config.ts:/app/tailwind.config.ts
-      - ./postcss.config.mjs:/app/postcss.config.mjs
-      # Prevent node_modules from being overwritten
-      - /app/node_modules
-      - /app/.next
+      - ./:/app
+      - node_modules:/app/node_modules
+      - next-cache:/app/.next
     networks:
       - driving-network
+    # Авто-інсталяція залежностей, Prisma push + generate, сид, dev-сервер з 0.0.0.0
     command: >
       sh -c "
-        echo '⏳ Waiting for database connection...' &&
-        until nc -z postgres 5432; do
-          echo 'Waiting for PostgreSQL...'
-          sleep 2
-        done &&
-        echo '✅ Database is reachable!' &&
-        echo '🔍 Checking if tables exist...' &&
-        npx prisma db push --skip-generate --accept-data-loss &&
-        echo '✅ Database schema synchronized!' &&
-        if [ -f prisma/seed/index.js ]; then
-          echo '🌱 Checking if seeding needed...' &&
-          node prisma/seed/index.js &&
-          echo '✅ Database seeded!'
+        # 1) Встановити залежності, якщо немає next
+        if [ ! -x node_modules/.bin/next ]; then
+          echo '📦 Installing dependencies...';
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi;
         fi &&
-        echo '🚀 Starting Next.js application...' &&
+
+        # 2) Чекаємо БД
+        echo '⏳ Waiting for database connection...' &&
+        until nc -z postgres 5432; do echo 'Waiting for PostgreSQL...'; sleep 2; done &&
+
+        # 3) Prisma
+        echo '🔃 Prisma db push...' &&
+        npx prisma db push --skip-generate --accept-data-loss &&
+        echo '🧬 Prisma generate...' &&
+        npx prisma generate &&
+
+        # 4) Seed (не фатально у dev)
+        if [ -f prisma/seed/index.js ]; then
+          echo '🌱 Seeding database...'; node prisma/seed/index.js || echo '⚠️ Seed failed (non-fatal in dev)';
+        fi &&
+
+        # 5) Старт dev-сервера
+        echo '🚀 Starting Next.js dev server...' &&
         npm run dev
       "
 
-  # Adminer для управління БД
+  # Adminer для управління БД (порт змінив на 8081, бо 8080 займає Portainer/Traefik)
   adminer:
     image: adminer:latest
     container_name: driving-school-adminer
     restart: unless-stopped
-    ports:
-      - "8081:8080"
     environment:
+      TZ: Europe/Warsaw
       ADMINER_DEFAULT_SERVER: postgres
       ADMINER_DESIGN: pepa-linha
+    ports:
+      - "8081:8080"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - driving-network
 
@@ -130,4 +131,8 @@ volumes:
   postgres-data:
     driver: local
   redis-data:
+    driver: local
+  node_modules:
+    driver: local
+  next-cache:
     driver: local

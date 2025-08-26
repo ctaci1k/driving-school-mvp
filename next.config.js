@@ -1,48 +1,22 @@
-// next.config.js
+// /next.config.js
 const createNextIntlPlugin = require('next-intl/plugin');
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const baseConfig = {
   output: 'standalone',
+  reactStrictMode: true,
+  trailingSlash: false,
   images: {
-    domains: ['localhost', 'yourdomain.com'],
+    remotePatterns: [
+      { protocol: 'http', hostname: 'localhost' },
+      { protocol: 'https', hostname: 'yourdomain.com' }
+    ]
   },
-  experimental: {
-    outputFileTracingRoot: require('path').join(__dirname, '../../'),
-  },
-    env: {
-    _next_intl_trailing_slash: '' // ДОДАЙТЕ ЦЕ
-  },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      };
-    }
-    return config;
-  },
-}
-
-// PWA тільки для production
-let finalConfig = withNextIntl(nextConfig);
-
-if (process.env.NODE_ENV === 'production') {
-  try {
-    const withPWA = require('next-pwa')({
-      dest: 'public',
-      register: true,
-      skipWaiting: true,
-      disable: false,
-    });
-    
-    finalConfig = withPWA(finalConfig);
-  } catch (e) {
-    console.log('PWA not installed, using only next-intl');
+  // 👇 Додаємо це, щоб прибрати warning від Next
+  env: {
+    _next_intl_trailing_slash: 'false'
   }
-}
+};
 
-module.exports = finalConfig;
+module.exports = withNextIntl(baseConfig);

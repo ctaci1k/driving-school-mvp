@@ -1,136 +1,125 @@
 // middleware.ts
-import { withAuth } from 'next-auth/middleware'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import createIntlMiddleware from 'next-intl/middleware'
+import type {NextRequest} from 'next/server';
+import {NextResponse} from 'next/server';
+import createIntlMiddleware from 'next-intl/middleware';
+import {getToken} from 'next-auth/jwt';
 
-const locales = ['pl', 'uk', 'en']
+// Підтримувані локалі та дефолтна
+const locales = ['pl', 'uk', 'en'] as const;
+type AppLocale = (typeof locales)[number];
+const defaultLocale: AppLocale = 'pl';
+
+// Публічні сторінки (без префікса локалі)
 const publicPages = [
   '/',
-  '/auth/login',           // Змінено з /auth/login
-  '/auth/register',        // Змінено з /auth/register
-  '/auth/forgot-password', // Змінено з /auth/forgot-password
-  '/auth/reset-password',  // Змінено з /auth/reset-password
-  '/auth/verify',          // Змінено з /auth/verify
+  '/auth/login',
+  '/auth/register',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/auth/verify',
   '/about',
   '/contact',
   '/pricing',
   '/terms',
   '/privacy'
-]
+];
 
-const intlMiddleware = createIntlMiddleware({
-  locales,
-  defaultLocale: 'pl',
+// next-intl middleware: додає/перевіряє префікс локалі
+const intl = createIntlMiddleware({
+  locales: locales as unknown as string[],
+  defaultLocale,
+  // хочеш без префікса для дефолтної локалі — заміни на 'as-needed'
   localePrefix: 'always'
-})
+});
 
-const authMiddleware = withAuth(
-  function middleware(req) {
-    return intlMiddleware(req)
-  },
-  {
-    callbacks: {
-      authorized({ req, token }) {
-        const pathname = req.nextUrl.pathname
-        
-        // Remove locale prefix for checking
-        const pathnameWithoutLocale = locales.reduce((path, locale) => {
-          return path.replace(`/${locale}`, '') || '/'
-        }, pathname)
-        
-        // Check if it's a public page
-        const isPublicPage = publicPages.some(page => 
-          pathnameWithoutLocale === page || 
-          pathnameWithoutLocale.startsWith(`${page}/`)
-        )
-        
-        if (isPublicPage) {
-          return true
-        }
-        
-        // Require authentication for all other pages
-        if (!token) {
-          return false
-        }
-        
-        // Role-based access control
-        if (pathnameWithoutLocale.startsWith('/admin')) {
-          return token.role === 'ADMIN'
-        }
-        
-        if (pathnameWithoutLocale.startsWith('/instructor')) {
-          return token.role === 'INSTRUCTOR' || token.role === 'ADMIN'
-        }
-        
-        if (pathnameWithoutLocale.startsWith('/student')) {
-          return token.role === 'STUDENT' || token.role === 'ADMIN'
-        }
-        
-        return true
-      }
-    },
-    pages: {
-      signIn: '/auth/login',  // Змінено з /auth/login
-      error: '/auth/error'    // Змінено з /auth/error
-    }
+// Допоміжне: зняти рівно один префікс локалі з початку шляху
+function stripLocalePrefix(pathname: string): {locale: AppLocale; stripped: string} {
+  for (const l of locales) {
+    if (pathname === `/${l}`) return {locale: l, stripped: '/'};
+    if (pathname.startsWith(`/${l}/`)) return {locale: l, stripped: pathname.slice(1 + l.length) || '/'};
   }
-)
-
-export default function middleware(req: NextRequest) {
-  const pathname = req.nextUrl.pathname
-  
-  // Handle API routes
-  if (pathname.startsWith('/api')) {
-    return NextResponse.next()
-  }
-  
-  // Handle static files
-  if (pathname.includes('.')) {
-    return NextResponse.next()
-  }
-  
-  // Check if pathname is missing locale
-  const pathnameIsMissingLocale = locales.every(
-    locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  )
-  
-  // Redirect to default locale if missing
-  if (pathnameIsMissingLocale) {
-    const locale = 'pl' // Default locale
-    return NextResponse.redirect(
-      new URL(`/${locale}${pathname}`, req.url)
-    )
-  }
-  
-  // Apply auth middleware for protected routes
-  const locale = pathname.split('/')[1]
-  const pathnameWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
-  
-  const isPublicPage = publicPages.some(page => 
-    pathnameWithoutLocale === page || 
-    pathnameWithoutLocale.startsWith(`${page}/`)
-  )
-  
-  if (!isPublicPage) {
-    return (authMiddleware as any)(req)
-  }
-  
-  return intlMiddleware(req)
+  // якщо немає префікса — вважай дефолтну локаль
+  return {locale: defaultLocale, stripped: pathname};
 }
 
+// Допоміжне: сторінка є публічною?
+function isPublic(pathnameWithoutLocale: string): boolean {
+  // Нормалізувати подвійні слеші
+  const p = pathnameWithoutLocale.replace(/\/{2,}/g, '/');
+  return publicPages.some((page) => p === page || p.startsWith(page + '/'));
+}
+
+// Редірект на локалізовану сторінку логіну
+function redirectToLogin(req: NextRequest, locale: AppLocale) {
+  const url = new URL(`/${locale}/auth/login`, req.url);
+  url.searchParams.set('callbackUrl', req.nextUrl.pathname + req.nextUrl.search);
+  return NextResponse.redirect(url);
+}
+
+export default async function middleware(req: NextRequest) {
+  const {pathname} = req.nextUrl;
+
+  // 1) Пропускаємо технічне (статичні файли/іконки) — це ще дублюється у matcher, але залишимо guard
+  if (pathname.startsWith('/_next') || pathname.includes('.') || pathname === '/favicon.ico') {
+    return NextResponse.next();
+  }
+
+  // 2) API не локалізуємо й не захищаємо тут (керуйся роут-хендлерами)
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
+  // 3) Спочатку — локалізація
+  const intlResp = intl(req);
+
+  // Якщо intl зробив редірект (/ -> /pl тощо), віддаємо його одразу
+  if (intlResp.status >= 300 && intlResp.status < 400) {
+    return intlResp;
+  }
+
+  // 4) Визначаємо локаль і шлях без локалі
+  const {locale, stripped: pathnameWithoutLocale} = stripLocalePrefix(req.nextUrl.pathname);
+
+  // 5) Публічні сторінки — пропускаємо (але вже після нормалізації локалі)
+  if (isPublic(pathnameWithoutLocale)) {
+    return intlResp; // достатньо next-intl обробки
+  }
+
+  // 6) Дістаємо токен (JWT) з NextAuth
+  const token = await getToken({req, secret: process.env.NEXTAUTH_SECRET});
+
+  // Якщо немає токена — редіректимо на локалізований логін
+  if (!token) {
+    return redirectToLogin(req, locale);
+  }
+
+  // 7) Рольовий доступ
+  const role = (token as any)?.role as string | undefined;
+
+  if (pathnameWithoutLocale.startsWith('/admin')) {
+    if (role !== 'ADMIN') return NextResponse.redirect(new URL(`/${locale}`, req.url));
+  }
+
+  if (pathnameWithoutLocale.startsWith('/instructor')) {
+    if (role !== 'INSTRUCTOR' && role !== 'ADMIN')
+      return NextResponse.redirect(new URL(`/${locale}`, req.url));
+  }
+
+  if (pathnameWithoutLocale.startsWith('/student')) {
+    if (role !== 'STUDENT' && role !== 'ADMIN')
+      return NextResponse.redirect(new URL(`/${locale}`, req.url));
+  }
+
+  // 8) Усе інше — пропускаємо далі (вже локалізований запит)
+  return intlResp;
+}
+
+// Матчер: локалізуємо все, крім технічного
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     * - api routes
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\..*|public|api).*)',
+    // усе, крім системних шляхів та файлів з розширенням
+    '/((?!_next|.*\\..*|favicon.ico|api).*)',
     '/',
     '/(pl|uk|en)/:path*'
   ]
-}
+};

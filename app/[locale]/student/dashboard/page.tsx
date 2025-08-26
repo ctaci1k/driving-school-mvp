@@ -157,7 +157,7 @@ const handleShowMap = () => {
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          Witaj z powrotem, {user?.firstName}! 👋
+          Witaj z powrotem33, {user?.firstName}! 👋
         </h1>
         <p className="text-gray-600">
           {nextLesson ? (

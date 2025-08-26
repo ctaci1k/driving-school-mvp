@@ -1,0 +1,50 @@
+# ===========================
+# Dockerfile.dev — Development
+# Швидкий дев-сетап під WSL/Compose:
+#  - hot-reload (next dev)
+#  - без chown по всьому /app (жодних 6-хвилинних кроків)
+#  - запускаємось від root, щоб не ламались права на томах
+# ===========================
+
+FROM node:20-bookworm-slim
+
+# Базові налаштування середовища
+ENV NODE_ENV=development \
+    NEXT_TELEMETRY_DISABLED=1 \
+    TZ=Europe/Warsaw
+
+# Корисні утиліти:
+# - openssl/ca-certificates — для Prisma клієнта
+# - netcat-openbsd — щоб у compose-скрипті можна було чекати Postgres (nc -z)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    openssl ca-certificates netcat-openbsd \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# 1) Спочатку тільки package-файли — кешуємо install
+COPY package*.json ./
+
+# 2) Встановлюємо залежності (dev-залежності теж потрібні у деві)
+RUN npm ci
+
+# 3) Копіюємо Prisma-схему окремо — це дозволяє кешувати npx prisma generate
+COPY prisma ./prisma
+RUN npx prisma generate || true
+# ^ "|| true" — щоби перша збірка не падала, якщо ще нема всіх dev-залежностей
+
+# 4) Копіюємо решту коду
+COPY . .
+
+# 5) Готуємо кеш-директорії. Без chown — ми root у dev, тож прав достатньо.
+RUN mkdir -p .next node_modules
+
+# Експонуємо dev-порт Next.js
+EXPOSE 3000
+
+# Увага: у dev НЕ перемикаємось на USER node — це уникає проблем з правами volume'ів
+# USER node
+
+# Запуск dev-сервера. Переконайся, що в package.json:
+#   "dev": "next dev -p 3000 -H 0.0.0.0"
+CMD ["npm", "run", "dev"]
