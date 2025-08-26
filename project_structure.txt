@@ -1,292 +1,362 @@
-﻿PROJECT STRUCTURE
-==================================================
-
+.
 ├── .dockerignore
 ├── .env
 ├── .env.docker
 ├── .env.example
 ├── .env.local
 ├── .env.production
+├── .github
+│   └── workflows
+│       └── prisma.yml
 ├── .gitignore
+├── .husky
+│   └── pre-commit
 ├── .npmrc
 ├── .prisma-merge.json
+├── Dockerfile
+├── Dockerfile.dev
+├── Dockerfile.dev:Zone.Identifier
+├── Dockerfile.prod
+├── Dockerfile.prod:Zone.Identifier
+├── Dockerfile.production
+├── README.md
+├── README_DEV.md
+├── app
+│   ├── [locale]
+│   │   ├── admin
+│   │   │   └── admin-dashboard
+│   │   │       ├── layout.tsx
+│   │   │       └── page.tsx
+│   │   ├── auth
+│   │   │   ├── forgot-password
+│   │   │   │   └── page.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   ├── register
+│   │   │   │   └── page.tsx
+│   │   │   └── reset-password
+│   │   │       └── page.tsx
+│   │   ├── client-providers.tsx
+│   │   ├── instructor
+│   │   │   └── instructor-dashboard
+│   │   │       ├── layout.tsx
+│   │   │       └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── payments
+│   │   │   └── return
+│   │   │       └── page.tsx
+│   │   ├── settings
+│   │   │   └── page.tsx
+│   │   ├── student
+│   │   │   ├── booking
+│   │   │   │   └── page.tsx
+│   │   │   ├── calendar
+│   │   │   │   └── page.tsx
+│   │   │   ├── dashboard
+│   │   │   │   ├── error.tsx
+│   │   │   │   ├── loading.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── help
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── loading.tsx
+│   │   │   ├── messages
+│   │   │   │   └── page.tsx
+│   │   │   ├── payments
+│   │   │   │   └── page.tsx
+│   │   │   ├── profile
+│   │   │   │   └── page.tsx
+│   │   │   ├── progress
+│   │   │   │   └── page.tsx
+│   │   │   ├── resources
+│   │   │   │   └── page.tsx
+│   │   │   └── settings
+│   │   │       └── page.tsx
+│   │   ├── test-calendar
+│   │   │   └── page.tsx
+│   │   └── test-payment
+│   │       └── page.tsx
+│   ├── api
+│   │   ├── auth
+│   │   │   └── [...nextauth]
+│   │   │       └── route.ts
+│   │   ├── payments
+│   │   │   ├── create
+│   │   │   │   └── route.ts
+│   │   │   ├── p24
+│   │   │   │   ├── create
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── verify
+│   │   │   │       └── route.ts
+│   │   │   └── status
+│   │   │       └── route.ts
+│   │   ├── trpc
+│   │   │   └── [trpc]
+│   │   │       └── route.ts
+│   │   └── webhooks
+│   │       └── p24
+│   │           └── route.ts
+│   ├── error.tsx
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── loading.tsx
+│   ├── not-found.tsx
+│   ├── page.tsx
+│   ├── payments
+│   │   └── return
+│   │       └── page.tsx
+│   └── providers
+│       └── trpc-provider.tsx
+├── components
+│   ├── booking
+│   │   └── recurring-booking-modal.tsx
+│   ├── calendar
+│   │   ├── calendar-filters.tsx
+│   │   ├── calendar-navigation.tsx
+│   │   ├── conflict-detection.tsx
+│   │   ├── day-view.tsx
+│   │   ├── month-view.tsx
+│   │   ├── recurring-bookings.tsx
+│   │   └── week-view.tsx
+│   ├── client-theme-provider.tsx
+│   ├── forms
+│   │   ├── booking-form.tsx
+│   │   └── schedule-form.tsx
+│   ├── layouts
+│   ├── payments
+│   │   └── PaymentButton.tsx
+│   ├── providers
+│   │   ├── dashboard-provider.tsx
+│   │   └── session-provider.tsx
+│   ├── pwa
+│   │   ├── push-notifications.tsx
+│   │   └── pwa-install-prompt.tsx
+│   ├── reports
+│   │   ├── DateRangePicker.tsx
+│   │   └── SimpleChart.tsx
+│   ├── student
+│   │   └── navigation.tsx
+│   ├── theme-provider.tsx
+│   └── ui
+│       ├── accordion.tsx
+│       ├── alert-dialog.tsx
+│       ├── alert.tsx
+│       ├── avatar.tsx
+│       ├── badge.tsx
+│       ├── booking-card.tsx
+│       ├── button.tsx
+│       ├── calendar-view-switcher.tsx
+│       ├── calendar.tsx
+│       ├── card.tsx
+│       ├── carousel.tsx
+│       ├── checkbox.tsx
+│       ├── credits-display.tsx
+│       ├── date-range-picker.tsx
+│       ├── dialog.tsx
+│       ├── dropdown-menu.tsx
+│       ├── input.tsx
+│       ├── label.tsx
+│       ├── language-switcher.tsx
+│       ├── lesson-type-selector.tsx
+│       ├── location-selector.tsx
+│       ├── popover.tsx
+│       ├── progress.tsx
+│       ├── radio-group.tsx
+│       ├── scroll-area.tsx
+│       ├── select.tsx
+│       ├── separator.tsx
+│       ├── simple-table.tsx
+│       ├── skeleton.tsx
+│       ├── stats-card.tsx
+│       ├── switch.tsx
+│       ├── table.tsx
+│       ├── tabs.tsx
+│       ├── textarea.tsx
+│       ├── time-slot-picker.tsx
+│       ├── toast.tsx
+│       ├── toaster.tsx
+│       ├── tooltip.tsx
+│       └── use-toast.ts
 ├── deploy.sh
 ├── dev-start.bat
+├── docker
+│   ├── nginx
+│   │   └── nginx.conf
+│   ├── postgres
+│   │   └── init.sql
+│   ├── redis
+│   │   └── redis.conf
+│   └── scripts
+│       └── backup.sh
 ├── docker-compose.prod.yml
 ├── docker-compose.yml
-├── Dockerfile
-├── Dockerfile.production
 ├── docker-quick-start.bat
 ├── docker-start-with-seed.bat
 ├── eslint.config.mjs
+├── favicon_io
+│   ├── about.txt
+│   ├── about.txt:Zone.Identifier
+│   ├── apple-touch-icon.png
+│   ├── apple-touch-icon.png:Zone.Identifier
+│   ├── favicon-16x16.png
+│   ├── favicon-16x16.png:Zone.Identifier
+│   ├── favicon-32x32.png
+│   ├── favicon-32x32.png:Zone.Identifier
+│   ├── favicon.ico
+│   ├── favicon.ico:Zone.Identifier
+│   ├── site.webmanifest
+│   └── site.webmanifest:Zone.Identifier
+├── i18n
+│   └── request.ts
 ├── i18n.ts
+├── lib
+│   ├── auth.ts
+│   ├── booking-utils.ts
+│   ├── constants.ts
+│   ├── db.ts
+│   ├── email.ts
+│   ├── i18n
+│   │   ├── client.ts
+│   │   └── config.ts
+│   ├── mock-payment.ts
+│   ├── payment
+│   │   ├── p24-client.ts
+│   │   └── przelewy24.ts
+│   ├── pwa
+│   │   └── offline-manager.ts
+│   ├── toast.ts
+│   ├── trpc
+│   │   ├── client.ts
+│   │   ├── routers
+│   │   │   ├── booking.ts
+│   │   │   ├── dashboard.ts
+│   │   │   ├── index.ts
+│   │   │   ├── messages.ts
+│   │   │   ├── notification.ts
+│   │   │   └── user.ts
+│   │   └── server.ts
+│   ├── utils
+│   │   ├── export.ts
+│   │   └── schedule.ts
+│   ├── utils.ts
+│   └── validations
+│       ├── booking.ts
+│       ├── package.ts
+│       ├── payment.ts
+│       ├── report.ts
+│       ├── schedule.ts
+│       ├── user.ts
+│       └── vehicle.ts
 ├── manifest.json
+├── messages
+│   ├── en.json
+│   ├── pl.json
+│   ├── ru.json
+│   └── uk.json
 ├── middleware.ts
-├── next.config.js
 ├── next-env.d.ts
-├── package.json
+├── next.config.js
 ├── package-lock.json
+├── package.json
 ├── postcss.config.js
+├── postcss.config.js:Zone.Identifier
+├── postcss.config.mjs
+├── prisma
+│   ├── client.ts
+│   ├── migrations
+│   │   ├── 20250823194017_init
+│   │   │   └── migration.sql
+│   │   ├── 20250825092526_add_dashboard_fields
+│   │   │   └── migration.sql
+│   │   └── migration_lock.toml
+│   ├── readme.md
+│   ├── schema
+│   │   ├── auth.prisma
+│   │   ├── base.prisma
+│   │   ├── booking.prisma
+│   │   ├── enums.prisma
+│   │   ├── instructor.prisma
+│   │   ├── location.prisma
+│   │   ├── notification.prisma
+│   │   ├── payment.prisma
+│   │   ├── relations.prisma
+│   │   ├── student.prisma
+│   │   ├── user.prisma
+│   │   └── vehicle.prisma
+│   ├── schema.prisma
+│   └── seed
+│       ├── data
+│       │   ├── bookings.js
+│       │   ├── locations.js
+│       │   ├── maintenanceLogs.js
+│       │   ├── notifications.js
+│       │   ├── packages.js
+│       │   ├── payments.js
+│       │   ├── scheduleExceptions.js
+│       │   ├── schedules.js
+│       │   ├── userPackages.js
+│       │   ├── users.js
+│       │   └── vehicles.js
+│       ├── index.js
+│       └── utils
+│           ├── logger.js
+│           └── stats.js
 ├── prisma-merge.config.json
-├── README.md
-├── README_DEV.md
+├── prisma.config.ts
+├── prisma.config.ts:Zone.Identifier
+├── project_structure.txt
+├── public
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── icon-192x192.png
+│   ├── icon-192x192.png:Zone.Identifier
+│   ├── icon-512x512.png
+│   ├── icon-512x512.png:Zone.Identifier
+│   ├── icons
+│   │   ├── icon-128x128.png
+│   │   ├── icon-128x128.svg
+│   │   ├── icon-144x144.png
+│   │   ├── icon-144x144.svg
+│   │   ├── icon-152x152.png
+│   │   ├── icon-152x152.svg
+│   │   ├── icon-192x192.png
+│   │   ├── icon-192x192.svg
+│   │   ├── icon-384x384.png
+│   │   ├── icon-384x384.svg
+│   │   ├── icon-512x512.png
+│   │   ├── icon-512x512.svg
+│   │   ├── icon-72x72.png
+│   │   ├── icon-72x72.svg
+│   │   ├── icon-96x96.png
+│   │   └── icon-96x96.svg
+│   ├── manifest.json
+│   ├── next.svg
+│   ├── screenshots
+│   ├── sw.js
+│   ├── sw.js.map
+│   ├── vercel.svg
+│   ├── window.svg
+│   ├── workbox-e43f5367.js
+│   └── workbox-e43f5367.js.map
+├── scripts
+│   ├── convert-icons.js
+│   ├── fix-prisma-relations.js
+│   ├── generate-pwa-icons.js
+│   ├── merge-prisma-schemas.js
+│   ├── merge-schemas.js
+│   ├── migration-health-check.js
+│   ├── reset-database.bat
+│   ├── reset-database.sh
+│   └── setup-prisma.js
 ├── start-docker.ps1
 ├── tailwind.config.ts
 ├── temp_schema.txt
 ├── tsconfig.json
 ├── tsconfig.tsbuildinfo
-├── vercel.json
-├── .github
-│   └── workflows
-│       └── prisma.yml
-├── .husky
-│   └── pre-commit
-├── app
-│   ├── error.tsx
-│   ├── favicon.ico
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── loading.tsx
-│   ├── not-found.tsx
-│   ├── page.tsx
-│   ├── [locale]
-│   ├── api
-│   │   ├── auth
-│   │   │   └── [...nextauth]
-│   │   ├── payments
-│   │   │   ├── create
-│   │   │   │   └── route.ts
-│   │   │   ├── p24
-│   │   │   │   ├── create
-│   │   │   │   │   └── route.ts
-│   │   │   │   └── verify
-│   │   │   │       └── route.ts
-│   │   │   └── status
-│   │   │       └── route.ts
-│   │   ├── trpc
-│   │   │   └── [trpc]
-│   │   └── webhooks
-│   │       └── p24
-│   │           └── route.ts
-│   ├── payments
-│   │   └── return
-│   │       └── page.tsx
-│   └── providers
-│       └── trpc-provider.tsx
-├── components
-│   ├── client-theme-provider.tsx
-│   ├── theme-provider.tsx
-│   ├── booking
-│   │   └── recurring-booking-modal.tsx
-│   ├── calendar
-│   │   ├── calendar-filters.tsx
-│   │   ├── calendar-navigation.tsx
-│   │   ├── conflict-detection.tsx
-│   │   ├── day-view.tsx
-│   │   ├── month-view.tsx
-│   │   ├── recurring-bookings.tsx
-│   │   └── week-view.tsx
-│   ├── forms
-│   │   ├── booking-form.tsx
-│   │   └── schedule-form.tsx
-│   ├── layouts
-│   ├── payments
-│   │   └── PaymentButton.tsx
-│   ├── providers
-│   │   ├── dashboard-provider.tsx
-│   │   ├── session-provider.tsx
-│   │   └── trpc-provider.tsx
-│   ├── pwa
-│   │   ├── push-notifications.tsx
-│   │   └── pwa-install-prompt.tsx
-│   ├── reports
-│   │   ├── DateRangePicker.tsx
-│   │   └── SimpleChart.tsx
-│   ├── student
-│   │   ├── navigation.tsx
-│   │   └── student-sidebar.tsx
-│   └── ui
-│       ├── accordion.tsx
-│       ├── alert.tsx
-│       ├── alert-dialog.tsx
-│       ├── avatar.tsx
-│       ├── badge.tsx
-│       ├── booking-card.tsx
-│       ├── button.tsx
-│       ├── calendar.tsx
-│       ├── calendar-view-switcher.tsx
-│       ├── card.tsx
-│       ├── carousel.tsx
-│       ├── checkbox.tsx
-│       ├── credits-display.tsx
-│       ├── date-range-picker.tsx
-│       ├── dialog.tsx
-│       ├── dropdown-menu.tsx
-│       ├── input.tsx
-│       ├── label.tsx
-│       ├── language-switcher.tsx
-│       ├── lesson-type-selector.tsx
-│       ├── location-selector.tsx
-│       ├── popover.tsx
-│       ├── progress.tsx
-│       ├── radio-group.tsx
-│       ├── scroll-area.tsx
-│       ├── select.tsx
-│       ├── separator.tsx
-│       ├── simple-table.tsx
-│       ├── skeleton.tsx
-│       ├── stats-card.tsx
-│       ├── switch.tsx
-│       ├── table.tsx
-│       ├── tabs.tsx
-│       ├── textarea.tsx
-│       ├── time-slot-picker.tsx
-│       ├── toast.tsx
-│       ├── toaster.tsx
-│       ├── tooltip.tsx
-│       └── use-toast.ts
-├── docker
-│   ├── nginx
-│   │   └── nginx.conf
-│   ├── postgres
-│   │   └── init.sql
-│   ├── redis
-│   │   └── redis.conf
-│   └── scripts
-│       └── backup.sh
-├── favicon_io
-│   ├── about.txt
-│   ├── apple-touch-icon.png
-│   ├── favicon.ico
-│   ├── favicon-16x16.png
-│   ├── favicon-32x32.png
-│   └── site.webmanifest
-├── i18n
-│   └── request.ts
-├── lib
-│   ├── auth.ts
-│   ├── booking-utils.ts
-│   ├── constants.ts
-│   ├── db.ts
-│   ├── email.ts
-│   ├── mock-payment.ts
-│   ├── toast.ts
-│   ├── utils.ts
-│   ├── i18n
-│   │   ├── client.ts
-│   │   └── config.ts
-│   ├── payment
-│   │   ├── p24-client.ts
-│   │   └── przelewy24.ts
-│   ├── pwa
-│   │   └── offline-manager.ts
-│   ├── trpc
-│   │   ├── client.ts
-│   │   ├── server.ts
-│   │   └── routers
-│   │       ├── booking.ts
-│   │       ├── dashboard.ts
-│   │       ├── index.ts
-│   │       ├── messages.ts
-│   │       ├── notification.ts
-│   │       └── user.ts
-│   ├── utils
-│   │   ├── export.ts
-│   │   └── schedule.ts
-│   └── validations
-│       ├── booking.ts
-│       ├── package.ts
-│       ├── payment.ts
-│       ├── report.ts
-│       ├── schedule.ts
-│       ├── user.ts
-│       └── vehicle.ts
-├── messages
-│   ├── en.json
-│   ├── pl.json
-│   ├── ru.json
-│   └── uk.json
-├── postcss.config.mjs
-├── prisma
-│   ├── client.ts
-│   ├── readme.md
-│   ├── schema.prisma
-│   ├── migrations
-│   │   ├── migration_lock.toml
-│   │   ├── 20250823194017_init
-│   │   │   └── migration.sql
-│   │   └── 20250825092526_add_dashboard_fields
-│   │       └── migration.sql
-│   ├── schema
-│   │   ├── auth.prisma
-│   │   ├── base.prisma
-│   │   ├── booking.prisma
-│   │   ├── enums.prisma
-│   │   ├── instructor.prisma
-│   │   ├── location.prisma
-│   │   ├── notification.prisma
-│   │   ├── payment.prisma
-│   │   ├── relations.prisma
-│   │   ├── student.prisma
-│   │   ├── user.prisma
-│   │   └── vehicle.prisma
-│   └── seed
-│       ├── index.js
-│       ├── data
-│       │   ├── bookings.js
-│       │   ├── locations.js
-│       │   ├── maintenanceLogs.js
-│       │   ├── notifications.js
-│       │   ├── packages.js
-│       │   ├── payments.js
-│       │   ├── scheduleExceptions.js
-│       │   ├── schedules.js
-│       │   ├── userPackages.js
-│       │   ├── users.js
-│       │   └── vehicles.js
-│       └── utils
-│           ├── logger.js
-│           └── stats.js
-├── public
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── icon-192x192.png
-│   ├── icon-512x512.png
-│   ├── manifest.json
-│   ├── next.svg
-│   ├── sw.js
-│   ├── sw.js.map
-│   ├── vercel.svg
-│   ├── window.svg
-│   ├── workbox-e43f5367.js
-│   ├── workbox-e43f5367.js.map
-│   ├── icons
-│   │   ├── icon-128x128.png
-│   │   ├── icon-128x128.svg
-│   │   ├── icon-144x144.png
-│   │   ├── icon-144x144.svg
-│   │   ├── icon-152x152.png
-│   │   ├── icon-152x152.svg
-│   │   ├── icon-192x192.png
-│   │   ├── icon-192x192.svg
-│   │   ├── icon-384x384.png
-│   │   ├── icon-384x384.svg
-│   │   ├── icon-512x512.png
-│   │   ├── icon-512x512.svg
-│   │   ├── icon-72x72.png
-│   │   ├── icon-72x72.svg
-│   │   ├── icon-96x96.png
-│   │   └── icon-96x96.svg
-│   └── screenshots
-├── scripts
-│   ├── convert-icons.js
-│   ├── fix-prisma-relations.js
-│   ├── generate-pwa-icons.js
-│   ├── merge-prisma-schemas.js
-│   ├── merge-schemas.js
-│   ├── migration-health-check.js
-│   ├── reset-database.bat
-│   ├── reset-database.sh
-│   └── setup-prisma.js
-└── types
-    └── next-auth.d.ts
+├── types
+│   └── next-auth.d.ts
+└── vercel.json
+
+88 directories, 272 files

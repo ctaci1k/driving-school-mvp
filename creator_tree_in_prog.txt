@@ -1,0 +1,1 @@
+tree -a -I '.git|node_modules|.next|.cache|__pycache__|dist|build|.vscode|.idea|coverage|.nuxt|.output|.vercel|out' > project_structure.txt

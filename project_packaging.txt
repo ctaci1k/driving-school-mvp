@@ -1,0 +1,20 @@
+target="PROJECT_FLAT_COPY" && \
+rm -rf "$target" && mkdir "$target" && \
+find . -type f \
+  ! -path "./$target/*" \
+  ! -path "./.git/*" \
+  ! -path "./node_modules/*" \
+  ! -path "./.next/*" \
+  ! -path "./.cache/*" \
+  ! -path "./__pycache__/*" \
+  ! -path "./dist/*" \
+  ! -path "./build/*" \
+  ! -path "./coverage/*" \
+  ! -path "./.nuxt/*" \
+  ! -path "./.output/*" \
+  ! -path "./.vercel/*" \
+  ! -path "./out/*" \
+| while read -r file; do rel="${file#./}"; newname=$(echo "$rel" | tr '/' '_'); cp "$file" "$target/$newname"; done && \
+mapping="$target/_FILE_MAPPING.txt" && \
+{ echo "МАПІНГ ФАЙЛІВ - де що було в оригіналі"; printf '=%.0s' {1..60}; echo; echo "Створено: $(date '+%Y-%m-%d %H:%M:%S')"; printf '=%.0s' {1..60}; echo; echo; for f in "$target"/*; do name=$(basename "$f"); [ "$name" = "_FILE_MAPPING.txt" ] && continue; orig=$(echo "$name" | tr '_' '/'); echo "$name => $orig"; done; } > "$mapping" && \
+echo "✅ Готово! Файли в папці $target, мапінг у $mapping"

@@ -150,7 +150,7 @@ const getProgressColor = (progress: number) => {
     <div className="min-h-screen bg-gray-50 p-4 lg:p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Moje postępy1</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-2">Moje postępy</h1>
         <p className="text-gray-600">Śledź swoje umiejętności i przygotowanie do egzaminu</p>
       </div>
 
