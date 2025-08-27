@@ -1,0 +1,366 @@
+// app/[locale]/student/progress/skills/page.tsx
+
+'use client';
+
+import { useState } from 'react';
+import { 
+  Target, 
+  TrendingUp, 
+  Award, 
+  AlertTriangle,
+  CheckCircle2,
+  Info,
+  Filter,
+  Download,
+  Car,
+  BookOpen,
+  Navigation,
+  GitBranch,
+  Zap,
+  Shield,
+  Eye,
+  Moon,
+  Cloud,
+  ArrowUp,
+  ArrowDown,
+  Minus,
+  ChevronDown
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import ProgressBar from '@/components/ui/ProgressBar';
+
+export default function SkillsPage() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [sortBy, setSortBy] = useState('score');
+  const [showDetails, setShowDetails] = useState<string | null>(null);
+
+  const categories = [
+    { id: 'all', name: 'Wszystkie', count: 24 },
+    { id: 'maneuvers', name: 'Manewry', count: 8, icon: GitBranch },
+    { id: 'city', name: 'Jazda w mieście', count: 6, icon: Navigation },
+    { id: 'highway', name: 'Autostrady', count: 4, icon: Zap },
+    { id: 'theory', name: 'Teoria', count: 6, icon: BookOpen }
+  ];
+
+  const skillsData = [
+    {
+      id: '1',
+      name: 'Parkowanie równoległe',
+      category: 'maneuvers',
+      currentScore: 75,
+      previousScore: 60,
+      attempts: 45,
+      successRate: 75,
+      lastPracticed: '2024-01-20',
+      instructorNotes: 'Dobra kontrola pojazdu, pracuj nad oceną odległości',
+      difficulty: 'hard',
+      requiredForExam: true,
+      trend: 'up'
+    },
+    {
+      id: '2',
+      name: 'Parkowanie prostopadłe',
+      category: 'maneuvers',
+      currentScore: 82,
+      previousScore: 78,
+      attempts: 38,
+      successRate: 82,
+      lastPracticed: '2024-01-19',
+      instructorNotes: 'Bardzo dobrze, utrzymuj tempo',
+      difficulty: 'medium',
+      requiredForExam: true,
+      trend: 'up'
+    },
+    {
+      id: '3',
+      name: 'Jazda w korku',
+      category: 'city',
+      currentScore: 70,
+      previousScore: 70,
+      attempts: 25,
+      successRate: 70,
+      lastPracticed: '2024-01-18',
+      instructorNotes: 'Zachowaj większy odstęp między pojazdami',
+      difficulty: 'medium',
+      requiredForExam: false,
+      trend: 'stable'
+    },
+    {
+      id: '4',
+      name: 'Zmiana pasów na autostradzie',
+      category: 'highway',
+      currentScore: 65,
+      previousScore: 72,
+      attempts: 15,
+      successRate: 65,
+      lastPracticed: '2024-01-17',
+      instructorNotes: 'Pamiętaj o martwym polu w lusterkach',
+      difficulty: 'hard',
+      requiredForExam: true,
+      trend: 'down'
+    },
+    {
+      id: '5',
+      name: 'Znaki drogowe',
+      category: 'theory',
+      currentScore: 90,
+      previousScore: 85,
+      attempts: 120,
+      successRate: 90,
+      lastPracticed: '2024-01-21',
+      instructorNotes: 'Świetna znajomość, prawie perfekcyjnie',
+      difficulty: 'easy',
+      requiredForExam: true,
+      trend: 'up'
+    },
+    {
+      id: '6',
+      name: 'Pierwszeństwo przejazdu',
+      category: 'theory',
+      currentScore: 85,
+      previousScore: 80,
+      attempts: 95,
+      successRate: 85,
+      lastPracticed: '2024-01-21',
+      instructorNotes: 'Dobra znajomość zasad',
+      difficulty: 'medium',
+      requiredForExam: true,
+      trend: 'up'
+    },
+    {
+      id: '7',
+      name: 'Zawracanie',
+      category: 'maneuvers',
+      currentScore: 60,
+      previousScore: 55,
+      attempts: 20,
+      successRate: 60,
+      lastPracticed: '2024-01-16',
+      instructorNotes: 'Wymaga więcej praktyki, zbyt szeroki łuk',
+      difficulty: 'hard',
+      requiredForExam: true,
+      trend: 'up'
+    },
+    {
+      id: '8',
+      name: 'Jazda nocna',
+      category: 'city',
+      currentScore: 68,
+      previousScore: 60,
+      attempts: 8,
+      successRate: 68,
+      lastPracticed: '2024-01-15',
+      instructorNotes: 'Popraw używanie świateł drogowych',
+      difficulty: 'hard',
+      requiredForExam: false,
+      trend: 'up'
+    }
+  ];
+
+  const filteredSkills = skillsData.filter(
+    skill => selectedCategory === 'all' || skill.category === selectedCategory
+  );
+
+  const sortedSkills = [...filteredSkills].sort((a, b) => {
+    if (sortBy === 'score') return b.currentScore - a.currentScore;
+    if (sortBy === 'progress') return (b.currentScore - b.previousScore) - (a.currentScore - a.previousScore);
+    if (sortBy === 'attempts') return b.attempts - a.attempts;
+    return 0;
+  });
+
+  const averageScore = Math.round(
+    sortedSkills.reduce((acc, skill) => acc + skill.currentScore, 0) / sortedSkills.length
+  );
+
+  const getTrendIcon = (trend: string) => {
+    if (trend === 'up') return <ArrowUp className="h-4 w-4 text-green-500" />;
+    if (trend === 'down') return <ArrowDown className="h-4 w-4 text-red-500" />;
+    return <Minus className="h-4 w-4 text-gray-400" />;
+  };
+
+  const getDifficultyBadge = (difficulty: string) => {
+    const colors = {
+      easy: 'bg-green-100 text-green-700',
+      medium: 'bg-yellow-100 text-yellow-700',
+      hard: 'bg-red-100 text-red-700'
+    };
+    const labels = {
+      easy: 'Łatwy',
+      medium: 'Średni',
+      hard: 'Trudny'
+    };
+    return (
+      <Badge className={colors[difficulty as keyof typeof colors]}>
+        {labels[difficulty as keyof typeof labels]}
+      </Badge>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Szczegółowe umiejętności</h1>
+          <p className="text-gray-600 mt-1">Analiza i postępy w każdej kategorii</p>
+        </div>
+        <Button variant="outline" className="gap-2">
+          <Download className="h-4 w-4" />
+          Eksportuj raport
+        </Button>
+      </div>
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600">Średni wynik</span>
+            <Target className="h-4 w-4 text-gray-400" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">{averageScore}%</p>
+          <p className="text-xs text-green-600 mt-1">+5% w tym miesiącu</p>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600">Najlepsza umiejętność</span>
+            <Award className="h-4 w-4 text-yellow-500" />
+          </div>
+          <p className="text-lg font-semibold text-gray-900">Znaki drogowe</p>
+          <p className="text-sm text-gray-500">90% skuteczności</p>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600">Do poprawy</span>
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+          </div>
+          <p className="text-lg font-semibold text-gray-900">Zawracanie</p>
+          <p className="text-sm text-gray-500">60% skuteczności</p>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm text-gray-600">Gotowość egzaminowa</span>
+            <CheckCircle2 className="h-4 w-4 text-green-500" />
+          </div>
+          <p className="text-2xl font-bold text-gray-900">72%</p>
+          <p className="text-xs text-gray-500">6/8 umiejętności gotowych</p>
+        </div>
+      </div>
+
+      {/* Filters and Categories */}
+      <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-2 overflow-x-auto">
+            {categories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors ${
+                    selectedCategory === category.id
+                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {Icon && <Icon className="h-4 w-4" />}
+                  <span className="font-medium">{category.name}</span>
+                  <span className="text-sm">({category.count})</span>
+                </button>
+              );
+            })}
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Sortuj:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="score">Według wyniku</option>
+              <option value="progress">Według postępu</option>
+              <option value="attempts">Według prób</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* Skills Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {sortedSkills.map((skill) => (
+          <div key={skill.id} className="bg-white rounded-xl shadow-sm p-4">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="font-semibold text-gray-900">{skill.name}</h3>
+                  {skill.requiredForExam && (
+                    <Badge variant="outline" className="text-xs">Egzamin</Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  {getDifficultyBadge(skill.difficulty)}
+                  <span className="flex items-center gap-1">
+                    {getTrendIcon(skill.trend)}
+                    {skill.currentScore - skill.previousScore > 0 ? '+' : ''}{skill.currentScore - skill.previousScore}%
+                  </span>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-gray-900">{skill.currentScore}%</p>
+                <p className="text-xs text-gray-500">{skill.attempts} prób</p>
+              </div>
+            </div>
+            
+            <ProgressBar 
+              value={skill.currentScore} 
+              color={skill.currentScore >= 80 ? 'green' : skill.currentScore >= 60 ? 'yellow' : 'red'}
+              className="mb-3"
+            />
+            
+            <div className="bg-gray-50 rounded-lg p-3">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-gray-400 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm text-gray-600">{skill.instructorNotes}</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Ostatnio ćwiczone: {skill.lastPracticed}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <button
+              onClick={() => setShowDetails(showDetails === skill.id ? null : skill.id)}
+              className="w-full mt-3 flex items-center justify-center gap-2 text-sm text-blue-600 hover:text-blue-700"
+            >
+              {showDetails === skill.id ? 'Zwiń szczegóły' : 'Zobacz historię'}
+              <ChevronDown className={`h-4 w-4 transition-transform ${showDetails === skill.id ? 'rotate-180' : ''}`} />
+            </button>
+            
+            {showDetails === skill.id && (
+              <div className="mt-3 pt-3 border-t border-gray-200">
+                {/* SkillHistoryChart component would go here */}
+                <div className="h-32 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
+                  <span className="text-sm">Wykres historii umiejętności</span>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Comparison with Average */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Porównanie z innymi studentami</h2>
+        {/* ComparisonChart component would go here */}
+        <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
+          <span>Wykres porównawczy</span>
+        </div>
+      </div>
+    </div>
+  );
+}
