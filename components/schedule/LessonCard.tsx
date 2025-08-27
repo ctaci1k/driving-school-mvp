@@ -206,9 +206,12 @@ export function LessonCard({
                 {lesson.student.avatar && (
                   <AvatarImage src={lesson.student.avatar} />
                 )}
-                <AvatarFallback>
-                  {lesson.student.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
+<AvatarFallback>
+  {lesson.student?.name ? 
+    lesson.student.name.split(' ').map(n => n[0]).join('') : 
+    'NA'
+  }
+</AvatarFallback>
               </Avatar>
               <div>
                 <h4 className="font-semibold">{lesson.student.name}</h4>

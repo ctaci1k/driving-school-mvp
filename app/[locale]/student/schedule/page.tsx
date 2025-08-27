@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Calendar,
@@ -26,7 +26,12 @@ import {
   Share2,
   Moon,
   Sun,
-  Zap
+  Zap,
+  Plus,
+  CalendarDays,
+  Timer,
+  Circle,
+  RotateCw
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -36,100 +41,177 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import MonthView from '@/components/calendar/MonthView';
 
-// Mock data
-const mockLessons = [
-  {
-    id: '1',
-    date: '2024-08-28',
-    time: '14:00-16:00',
-    type: 'Jazda miejska',
-    instructor: {
-      name: 'Piotr Nowak',
-      avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff'
-    },
-    vehicle: 'Toyota Yaris (WZ 12345)',
-    location: 'ul. Puławska 145',
-    status: 'confirmed',
-    credits: 2,
-    color: 'blue'
-  },
-  {
-    id: '2',
-    date: '2024-08-30',
-    time: '10:00-11:30',
-    type: 'Parkowanie',
-    instructor: {
-      name: 'Anna Kowalczyk',
-      avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff'
-    },
-    vehicle: 'VW Golf (WZ 67890)',
-    location: 'Plac manewrowy',
-    status: 'confirmed',
-    credits: 1,
-    color: 'green'
-  },
-  {
-    id: '3',
-    date: '2024-09-02',
-    time: '18:00-20:00',
-    type: 'Jazda nocna',
-    instructor: {
-      name: 'Piotr Nowak',
-      avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff'
-    },
-    vehicle: 'Toyota Yaris (WZ 12345)',
-    location: 'ul. Wilanowska 89',
-    status: 'pending',
-    credits: 2,
-    color: 'indigo'
-  },
-  {
-    id: '4',
-    date: '2024-09-05',
-    time: '08:00-10:00',
-    type: 'Jazda autostradą',
-    instructor: {
-      name: 'Tomasz Wiśniewski',
-      avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff'
-    },
-    vehicle: 'Škoda Fabia (WZ 11111)',
-    location: 'Stacja paliw Orlen',
-    status: 'confirmed',
-    credits: 2,
-    color: 'purple'
-  },
-  {
-    id: '5',
-    date: '2024-09-10',
-    time: '16:00-18:00',
-    type: 'Egzamin próbny',
-    instructor: {
-      name: 'Piotr Nowak',
-      avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff'
-    },
-    vehicle: 'Toyota Yaris (WZ 12345)',
-    location: 'WORD Warszawa',
-    status: 'confirmed',
-    credits: 2,
-    color: 'red'
+// Unified lesson type configuration
+const lessonTypeConfig = {
+  STANDARD: { label: 'Jazda standardowa', icon: Car, color: 'blue' },
+  HIGHWAY: { label: 'Jazda autostradą', icon: Zap, color: 'purple' },
+  PARKING: { label: 'Parkowanie', icon: Circle, color: 'green' },
+  NIGHT: { label: 'Jazda nocna', icon: Moon, color: 'indigo' },
+  EXAM_PREP: { label: 'Egzamin próbny', icon: BookOpen, color: 'red' },
+  MANEUVERS: { label: 'Manewry', icon: RotateCw, color: 'teal' },
+  CITY: { label: 'Jazda miejska', icon: Sun, color: 'blue' }
+};
+
+// Unified mock data generator
+const generateMockLessons = () => {
+  const lessons = [];
+  const startDate = new Date(2024, 7, 1); // August 2024
+  const endDate = new Date(2024, 9, 31); // October 2024
+  
+  const instructors = [
+    { id: '1', name: 'Piotr Nowak', avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff' },
+    { id: '2', name: 'Anna Kowalczyk', avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff' },
+    { id: '3', name: 'Tomasz Wiśniewski', avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff' },
+  ];
+  
+  const vehicles = [
+    'Toyota Yaris (WZ 12345)',
+    'VW Golf (WZ 67890)',
+    'Škoda Fabia (WZ 11111)'
+  ];
+  
+  const locations = [
+    'ul. Puławska 145',
+    'Plac manewrowy',
+    'ul. Wilanowska 89',
+    'Stacja paliw Orlen',
+    'WORD Warszawa',
+    'al. KEN 36'
+  ];
+
+  const timeSlots = ['08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00'];
+  const lessonTypes = Object.keys(lessonTypeConfig);
+  
+  // Generate lessons for each day
+  let lessonId = 1;
+  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    // Skip some days randomly to make it realistic
+    if (Math.random() > 0.3) continue;
+    
+    // Generate 1-3 lessons per day
+    const lessonsPerDay = Math.floor(Math.random() * 3) + 1;
+    
+    for (let i = 0; i < lessonsPerDay; i++) {
+      const instructor = instructors[Math.floor(Math.random() * instructors.length)];
+      const lessonType = lessonTypes[Math.floor(Math.random() * lessonTypes.length)];
+      const startTime = timeSlots[Math.floor(Math.random() * timeSlots.length)];
+      const startHour = parseInt(startTime.split(':')[0]);
+      const endTime = `${startHour + 2}:00`;
+      
+      // Determine status based on date
+      let status = 'confirmed';
+      const today = new Date(2024, 7, 27); // Current date in the app
+      if (d < today) {
+        status = Math.random() > 0.1 ? 'completed' : 'cancelled';
+      } else if (d.getTime() === today.getTime()) {
+        status = 'in_progress';
+      } else {
+        status = Math.random() > 0.2 ? 'confirmed' : 'pending';
+      }
+      
+      lessons.push({
+        id: String(lessonId++),
+        date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+        time: `${startTime}-${endTime}`,
+        startTime,
+        endTime,
+        type: lessonType,
+        instructor: instructor,
+        vehicle: vehicles[Math.floor(Math.random() * vehicles.length)],
+        location: locations[Math.floor(Math.random() * locations.length)],
+        status: status,
+        credits: Math.floor(Math.random() * 2) + 1,
+        notes: Math.random() > 0.7 ? 'Dodatkowe uwagi dotyczące lekcji' : null
+      });
+    }
   }
-];
+  
+  return lessons.sort((a, b) => {
+    const dateCompare = a.date.localeCompare(b.date);
+    if (dateCompare !== 0) return dateCompare;
+    return a.startTime.localeCompare(b.startTime);
+  });
+};
 
 const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'];
 const monthNames = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 
                     'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
 
 export default function StudentSchedulePage() {
-  const [currentView, setCurrentView] = useState<'month' | 'week' | 'list'>('week');
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const router = useRouter();
+  const [mockLessons] = useState(generateMockLessons());
+  const [currentView, setCurrentView] = useState<'month' | 'week' | 'list'>('month');
+  const [currentDate, setCurrentDate] = useState(new Date(2024, 7, 27)); // August 27, 2024
   const [selectedInstructor, setSelectedInstructor] = useState('all');
   const [showCancelled, setShowCancelled] = useState(false);
-  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<any>(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+
+  // Get unique instructors for filter
+  const uniqueInstructors = useMemo(() => {
+    const instructorsSet = new Set(mockLessons.map(l => l.instructor.name));
+    return Array.from(instructorsSet);
+  }, [mockLessons]);
 
   // Helper functions
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    const startingDayOfWeek = firstDay.getDay() || 7; // Convert Sunday (0) to 7
+    
+    const days = [];
+    
+    // Previous month days
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    for (let i = startingDayOfWeek - 2; i >= 0; i--) {
+      days.push({
+        day: prevMonthLastDay - i,
+        isCurrentMonth: false,
+        date: new Date(year, month - 1, prevMonthLastDay - i),
+        dateString: ''
+      });
+    }
+    
+    // Current month days
+    for (let i = 1; i <= daysInMonth; i++) {
+      const currentDate = new Date(year, month, i);
+      days.push({
+        day: i,
+        isCurrentMonth: true,
+        date: currentDate,
+        dateString: `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`
+      });
+    }
+    
+    // Fill remaining cells to make 42 (6 weeks)
+    const remainingDays = 42 - days.length;
+    for (let i = 1; i <= remainingDays; i++) {
+      days.push({
+        day: i,
+        isCurrentMonth: false,
+        date: new Date(year, month + 1, i),
+        dateString: ''
+      });
+    }
+    
+    return days;
+  };
+
   const getWeekDates = (date: Date) => {
     const week = [];
     const startOfWeek = new Date(date);
@@ -143,6 +225,15 @@ export default function StudentSchedulePage() {
       week.push(day);
     }
     return week;
+  };
+
+  const getLessonsForDate = (dateString: string) => {
+    return mockLessons.filter(lesson => {
+      if (lesson.date !== dateString) return false;
+      if (selectedInstructor !== 'all' && lesson.instructor.name !== selectedInstructor) return false;
+      if (!showCancelled && lesson.status === 'cancelled') return false;
+      return true;
+    });
   };
 
   const formatDateHeader = () => {
@@ -184,37 +275,141 @@ export default function StudentSchedulePage() {
   };
 
   const getLessonTypeIcon = (type: string) => {
-    switch(type) {
-      case 'Jazda nocna': return <Moon className="h-4 w-4" />;
-      case 'Jazda autostradą': return <Zap className="h-4 w-4" />;
-      case 'Parkowanie': return <Car className="h-4 w-4" />;
-      case 'Egzamin próbny': return <BookOpen className="h-4 w-4" />;
-      default: return <Sun className="h-4 w-4" />;
-    }
+    const config = lessonTypeConfig[type as keyof typeof lessonTypeConfig];
+    const Icon = config?.icon || Car;
+    return <Icon className="h-4 w-4" />;
   };
 
   const getStatusBadge = (status: string) => {
-    switch(status) {
-      case 'confirmed':
-        return <Badge className="bg-green-100 text-green-800 border-green-200">Potwierdzone</Badge>;
-      case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">Oczekuje</Badge>;
-      case 'cancelled':
-        return <Badge className="bg-red-100 text-red-800 border-red-200">Anulowane</Badge>;
-      default:
-        return null;
-    }
+    const badges = {
+      confirmed: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200', label: 'Potwierdzone' },
+      pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200', label: 'Oczekuje' },
+      cancelled: { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200', label: 'Anulowane' },
+      completed: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', label: 'Zakończone' },
+      in_progress: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200', label: 'W trakcie' }
+    };
+    const badge = badges[status as keyof typeof badges] || badges.confirmed;
+    return <Badge className={`${badge.bg} ${badge.text} ${badge.border}`}>{badge.label}</Badge>;
   };
 
-  const getLessonColor = (color: string) => {
-    const colors: { [key: string]: string } = {
-      blue: 'border-l-blue-500 bg-blue-50',
-      green: 'border-l-green-500 bg-green-50',
-      purple: 'border-l-purple-500 bg-purple-50',
-      indigo: 'border-l-indigo-500 bg-indigo-50',
-      red: 'border-l-red-500 bg-red-50'
+  const getLessonColor = (type: string) => {
+    const config = lessonTypeConfig[type as keyof typeof lessonTypeConfig];
+    const colorMap: { [key: string]: string } = {
+      blue: 'border-l-4 border-l-blue-500 bg-blue-50 hover:bg-blue-100',
+      green: 'border-l-4 border-l-green-500 bg-green-50 hover:bg-green-100',
+      purple: 'border-l-4 border-l-purple-500 bg-purple-50 hover:bg-purple-100',
+      indigo: 'border-l-4 border-l-indigo-500 bg-indigo-50 hover:bg-indigo-100',
+      red: 'border-l-4 border-l-red-500 bg-red-50 hover:bg-red-100',
+      teal: 'border-l-4 border-l-teal-500 bg-teal-50 hover:bg-teal-100'
     };
-    return colors[color] || colors.blue;
+    return colorMap[config?.color || 'blue'] || colorMap.blue;
+  };
+
+  const handleLessonClick = (lesson: any) => {
+    setSelectedLesson(lesson);
+    setDetailsDialogOpen(true);
+  };
+
+  const handleEditLesson = (lesson: any) => {
+    router.push(`/student/schedule/reschedule/${lesson.id}`);
+  };
+
+  const handleCancelLesson = (lesson: any) => {
+    // TODO: Implement cancellation logic
+    console.log('Cancel lesson:', lesson.id);
+  };
+
+  const filteredLessons = mockLessons.filter(lesson => {
+    if (selectedInstructor !== 'all' && lesson.instructor.name !== selectedInstructor) return false;
+    if (!showCancelled && lesson.status === 'cancelled') return false;
+    return true;
+  });
+
+  // Month view component
+  const MonthView = () => {
+    const monthDays = getDaysInMonth(currentDate);
+    
+    return (
+      <div className="grid grid-cols-7">
+        {/* Week day headers */}
+        {weekDays.map(day => (
+          <div key={day} className="p-3 text-center text-sm font-medium text-gray-600 border-b border-gray-100">
+            {day}
+          </div>
+        ))}
+        
+        {/* Calendar days */}
+        {monthDays.map((dayInfo, index) => {
+          const dayLessons = dayInfo.isCurrentMonth ? getLessonsForDate(dayInfo.dateString) : [];
+          const isToday = dayInfo.dateString === '2024-08-27';
+          
+          return (
+            <div
+              key={index}
+              className={cn(
+                "min-h-[100px] p-2 border-b border-r border-gray-100 relative",
+                !dayInfo.isCurrentMonth && "bg-gray-50",
+                isToday && "bg-blue-50"
+              )}
+            >
+              {dayInfo.isCurrentMonth && (
+                <>
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn(
+                      "text-sm font-medium",
+                      isToday ? "text-blue-600" : "text-gray-800"
+                    )}>
+                      {dayInfo.day}
+                    </span>
+                    {dayLessons.length > 0 && (
+                      <Badge variant="secondary" className="text-xs">
+                        {dayLessons.length}
+                      </Badge>
+                    )}
+                  </div>
+                  
+                  <ScrollArea className="h-[70px]">
+                    <div className="space-y-1">
+                      {dayLessons.slice(0, 3).map(lesson => {
+                        const config = lessonTypeConfig[lesson.type as keyof typeof lessonTypeConfig];
+                        return (
+                          <div
+                            key={lesson.id}
+                            className={`text-xs p-1 rounded cursor-pointer transition-all ${getLessonColor(lesson.type)}`}
+                            onClick={() => handleLessonClick(lesson)}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium truncate">
+                                {lesson.startTime}
+                              </span>
+                              {getLessonTypeIcon(lesson.type)}
+                            </div>
+                            <div className="text-xs opacity-75 truncate">
+                              {config?.label || lesson.type}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {dayLessons.length > 3 && (
+                        <button
+                          className="text-xs text-blue-600 hover:text-blue-700 font-medium w-full text-left"
+                          onClick={() => {
+                            setCurrentDate(dayInfo.date);
+                            setCurrentView('list');
+                          }}
+                        >
+                          +{dayLessons.length - 3} więcej
+                        </button>
+                      )}
+                    </div>
+                  </ScrollArea>
+                </>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   // Week view component
@@ -229,7 +424,8 @@ export default function StudentSchedulePage() {
           <div className="grid grid-cols-8 gap-px bg-gray-200 rounded-t-lg overflow-hidden">
             <div className="bg-white p-2"></div>
             {weekDates.map((date, index) => {
-              const isToday = date.toDateString() === new Date().toDateString();
+              const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+              const isToday = dateString === '2024-08-27';
               return (
                 <div key={index} className={`bg-white p-3 text-center ${isToday ? 'bg-blue-50' : ''}`}>
                   <div className="text-xs text-gray-500">{weekDays[index]}</div>
@@ -241,37 +437,40 @@ export default function StudentSchedulePage() {
             })}
           </div>
 
-{/* Time slots */}
-<div className="grid grid-cols-8 gap-px bg-gray-200">
-  {hours.map(hour => (
-    <React.Fragment key={`hour-block-${hour}`}>
-      <div className="bg-gray-50 p-2 text-xs text-gray-600 text-right">
-        {hour}:00
-      </div>
-      {weekDates.map((date, dayIndex) => {
-        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-        const dayLessons = mockLessons.filter(lesson => lesson.date === dateStr);
-        const hourStr = `${hour}:00`;
-        const lessonAtThisTime = dayLessons.find(lesson => lesson.time.startsWith(hourStr));
+          {/* Time slots */}
+          <div className="grid grid-cols-8 gap-px bg-gray-200">
+            {hours.map(hour => (
+              <React.Fragment key={`hour-block-${hour}`}>
+                <div className="bg-gray-50 p-2 text-xs text-gray-600 text-right">
+                  {hour}:00
+                </div>
+                {weekDates.map((date, dayIndex) => {
+                  const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                  const dayLessons = getLessonsForDate(dateStr);
+                  const hourStr = `${String(hour).padStart(2, '0')}:00`;
+                  const lessonAtThisTime = dayLessons.find(lesson => lesson.startTime === hourStr);
 
-        return (
-          <div key={`${dayIndex}-${hour}`} className="bg-white min-h-[60px] p-1 relative">
-            {lessonAtThisTime && (
-              <div 
-                className={`absolute inset-x-1 p-2 rounded border-l-4 cursor-pointer hover:shadow-md transition-shadow ${getLessonColor(lessonAtThisTime.color)}`}
-                onClick={() => setSelectedLesson(lessonAtThisTime.id)}
-              >
-                <div className="text-xs font-semibold">{lessonAtThisTime.type}</div>
-                <div className="text-xs text-gray-600">{lessonAtThisTime.instructor.name}</div>
-              </div>
-            )}
+                  return (
+                    <div key={`${dayIndex}-${hour}`} className="bg-white min-h-[60px] p-1 relative">
+                      {lessonAtThisTime && (
+                        <div 
+                          className={`absolute inset-x-1 p-2 rounded cursor-pointer transition-shadow ${getLessonColor(lessonAtThisTime.type)}`}
+                          style={{ height: '118px' }} // 2-hour span
+                          onClick={() => handleLessonClick(lessonAtThisTime)}
+                        >
+                          <div className="text-xs font-semibold">
+                            {lessonTypeConfig[lessonAtThisTime.type as keyof typeof lessonTypeConfig]?.label}
+                          </div>
+                          <div className="text-xs text-gray-600">{lessonAtThisTime.instructor.name}</div>
+                          <div className="text-xs text-gray-500 mt-1">{lessonAtThisTime.location}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </React.Fragment>
+            ))}
           </div>
-        );
-      })}
-    </React.Fragment>
-  ))}
-</div>
-
         </div>
       </div>
     );
@@ -279,89 +478,100 @@ export default function StudentSchedulePage() {
 
   // List view component
   const ListView = () => {
-    const filteredLessons = mockLessons.filter(lesson => {
-      if (selectedInstructor !== 'all' && lesson.instructor.name !== selectedInstructor) return false;
-      if (!showCancelled && lesson.status === 'cancelled') return false;
-      return true;
-    });
-
     return (
       <div className="space-y-3">
-        {filteredLessons.map(lesson => (
-          <Card key={lesson.id} className={`border-l-4 ${getLessonColor(lesson.color)}`}>
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <Avatar>
-                    <AvatarImage src={lesson.instructor.avatar} />
-                    <AvatarFallback>{lesson.instructor.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold">{lesson.type}</h3>
-                      {getLessonTypeIcon(lesson.type)}
-                      {getStatusBadge(lesson.status)}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{lesson.date}</span>
+        {filteredLessons.map(lesson => {
+          const config = lessonTypeConfig[lesson.type as keyof typeof lessonTypeConfig];
+          return (
+            <Card key={lesson.id} className={`${getLessonColor(lesson.type)}`}>
+              <CardContent className="p-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start gap-4">
+                    <Avatar>
+                      <AvatarImage src={lesson.instructor.avatar} />
+                      <AvatarFallback>{lesson.instructor.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">{config?.label || lesson.type}</h3>
+                        {getLessonTypeIcon(lesson.type)}
+                        {getStatusBadge(lesson.status)}
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{lesson.time}</span>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{lesson.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{lesson.time}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <User className="h-4 w-4" />
+                          <span>{lesson.instructor.name}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        <span>{lesson.instructor.name}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Car className="h-4 w-4" />
-                        <span>{lesson.vehicle}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>{lesson.location}</span>
+                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <Car className="h-4 w-4" />
+                          <span>{lesson.vehicle}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          <span>{lesson.location}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline">{lesson.credits} kredyt</Badge>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Eye className="h-4 w-4 mr-2" />
-                        Szczegóły
-                      </DropdownMenuItem>
-                      <Link href={`/student/schedule/reschedule/${lesson.id}`}>
-                        <DropdownMenuItem>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">{lesson.credits} kredyt</Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleLessonClick(lesson)}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          Szczegóły
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditLesson(lesson)}>
                           <Edit className="h-4 w-4 mr-2" />
                           Przełóż
                         </DropdownMenuItem>
-                      </Link>
-                      <DropdownMenuItem className="text-red-600">
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Anuluj
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                        <DropdownMenuItem 
+                          className="text-red-600"
+                          onClick={() => handleCancelLesson(lesson)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Anuluj
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     );
   };
+
+  // Calculate stats
+  const upcomingLessons = filteredLessons.filter(l => l.date >= '2024-08-27' && l.status !== 'cancelled');
+  const thisWeekLessons = filteredLessons.filter(l => {
+    const lessonDate = new Date(l.date);
+    const weekDates = getWeekDates(currentDate);
+    return lessonDate >= weekDates[0] && lessonDate <= weekDates[6];
+  });
+  const thisMonthLessons = filteredLessons.filter(l => {
+    const lessonDate = new Date(l.date);
+    return lessonDate.getMonth() === currentDate.getMonth() && 
+           lessonDate.getFullYear() === currentDate.getFullYear();
+  });
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
@@ -374,7 +584,7 @@ export default function StudentSchedulePage() {
         <div className="flex items-center gap-2">
           <Link href="/student/bookings/book">
             <Button>
-              <Calendar className="h-4 w-4 mr-2" />
+              <Plus className="h-4 w-4 mr-2" />
               Zarezerwuj lekcję
             </Button>
           </Link>
@@ -399,9 +609,9 @@ export default function StudentSchedulePage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Wszyscy instruktorzy</SelectItem>
-                  <SelectItem value="Piotr Nowak">Piotr Nowak</SelectItem>
-                  <SelectItem value="Anna Kowalczyk">Anna Kowalczyk</SelectItem>
-                  <SelectItem value="Tomasz Wiśniewski">Tomasz Wiśniewski</SelectItem>
+                  {uniqueInstructors.map(name => (
+                    <SelectItem key={name} value={name}>{name}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
@@ -449,42 +659,23 @@ export default function StudentSchedulePage() {
           </div>
 
           {/* Calendar Content */}
+          {currentView === 'month' && <MonthView />}
           {currentView === 'week' && <WeekView />}
           {currentView === 'list' && <ListView />}
-          {currentView === 'month' && (
-            <div className="text-center p-8 text-gray-500">
-              <Calendar className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-              <p>Widok miesięczny w przygotowaniu</p>
-            </div>
-          )}
         </CardContent>
       </Card>
 
       {/* Legend */}
       <Card>
         <CardContent className="p-4">
-          <div className="flex items-center gap-6 text-sm">
+          <div className="flex items-center gap-6 text-sm flex-wrap">
             <span className="font-medium text-gray-700">Legenda:</span>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-blue-500 rounded"></div>
-              <span>Jazda miejska</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-500 rounded"></div>
-              <span>Parkowanie</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-purple-500 rounded"></div>
-              <span>Autostrada</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-indigo-500 rounded"></div>
-              <span>Jazda nocna</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-red-500 rounded"></div>
-              <span>Egzamin</span>
-            </div>
+            {Object.entries(lessonTypeConfig).slice(0, 5).map(([key, config]) => (
+              <div key={key} className="flex items-center gap-2">
+                <div className={`w-4 h-4 bg-${config.color}-500 rounded`}></div>
+                <span>{config.label}</span>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>
@@ -496,7 +687,7 @@ export default function StudentSchedulePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Ten tydzień</p>
-                <p className="text-2xl font-bold">3</p>
+                <p className="text-2xl font-bold">{thisWeekLessons.length}</p>
                 <p className="text-xs text-gray-500">lekcje</p>
               </div>
               <Calendar className="h-8 w-8 text-blue-500" />
@@ -509,7 +700,7 @@ export default function StudentSchedulePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Ten miesiąc</p>
-                <p className="text-2xl font-bold">12</p>
+                <p className="text-2xl font-bold">{thisMonthLessons.length}</p>
                 <p className="text-xs text-gray-500">lekcji</p>
               </div>
               <Calendar className="h-8 w-8 text-green-500" />
@@ -522,7 +713,7 @@ export default function StudentSchedulePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Godzin łącznie</p>
-                <p className="text-2xl font-bold">24</p>
+                <p className="text-2xl font-bold">{thisMonthLessons.length * 2}</p>
                 <p className="text-xs text-gray-500">w tym miesiącu</p>
               </div>
               <Clock className="h-8 w-8 text-purple-500" />
@@ -535,14 +726,86 @@ export default function StudentSchedulePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Następna lekcja</p>
-                <p className="text-lg font-bold">28.08</p>
-                <p className="text-xs text-gray-500">14:00</p>
+                <p className="text-lg font-bold">
+                  {upcomingLessons[0]?.date.split('-').slice(1).reverse().join('.')}
+                </p>
+                <p className="text-xs text-gray-500">{upcomingLessons[0]?.startTime}</p>
               </div>
               <AlertCircle className="h-8 w-8 text-orange-500" />
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Lesson Details Dialog */}
+      <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Szczegóły lekcji</DialogTitle>
+          </DialogHeader>
+          {selectedLesson && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Badge className={getLessonColor(selectedLesson.type).split(' ')[0]}>
+                  {lessonTypeConfig[selectedLesson.type as keyof typeof lessonTypeConfig]?.label}
+                </Badge>
+                {getStatusBadge(selectedLesson.status)}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Instruktor</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.instructor.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Data</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.date}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Godzina</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.time}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Lokalizacja</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.location}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Pojazd</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.vehicle}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Kredyty</p>
+                  <p className="font-medium text-gray-800">{selectedLesson.credits}</p>
+                </div>
+              </div>
+
+              {selectedLesson.notes && (
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Notatki</p>
+                  <p className="text-gray-800">{selectedLesson.notes}</p>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDetailsDialogOpen(false)}>
+              Zamknij
+            </Button>
+            {selectedLesson && selectedLesson.status === 'confirmed' && (
+              <>
+                <Button variant="outline" onClick={() => handleEditLesson(selectedLesson)}>
+                  <Edit className="w-4 h-4 mr-2" />
+                  Przełóż
+                </Button>
+                <Button variant="destructive" onClick={() => handleCancelLesson(selectedLesson)}>
+                  <X className="w-4 h-4 mr-2" />
+                  Anuluj
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
