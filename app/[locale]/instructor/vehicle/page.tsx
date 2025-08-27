@@ -246,7 +246,7 @@ export default function InstructorVehicle() {
             <div className="space-y-4">
               <div>
                 <div className="flex items-baseline justify-between mb-2">
-                  <span className="text-3xl font-bold">{vehicle.currentMileage.toLocaleString()}</span>
+                  <span className="text-3xl font-bold">{vehicle.currentMileage}</span>
                   <span className="text-sm text-gray-500">km</span>
                 </div>
                 <p className="text-sm text-gray-600">+{vehicle.todayMileage} km dzisiaj</p>

@@ -237,11 +237,13 @@ export default function MessagesPage() {
               <CardContent className="p-0">
                 <div className="divide-y max-h-[calc(100vh-20rem)] overflow-y-auto">
                   {filteredConversations.map((conversation) => (
-                    <button
-                      key={conversation.id}
-                      onClick={() => handleConversationClick(conversation.id)}
-                      className="w-full p-4 hover:bg-gray-50 transition-colors text-left"
-                    >
+<div
+  key={conversation.id}
+  onClick={() => handleConversationClick(conversation.id)}
+  className="w-full p-4 hover:bg-gray-50 transition-colors text-left cursor-pointer"
+  role="button"
+  tabIndex={0}
+>
                       <div className="flex items-start gap-3">
                         <div className="relative">
                           <Avatar>
@@ -336,7 +338,7 @@ export default function MessagesPage() {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
-                    </button>
+                    </div>
                   ))}
                 </div>
               </CardContent>
