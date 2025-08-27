@@ -485,6 +485,7 @@ export default function AdminDashboard() {
               <p className="text-sm font-medium text-gray-700 group-hover:text-blue-600">
                 Dodaj użytkownika
               </p>
+              
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-all group">
               <Calendar className="w-6 h-6 text-purple-600 mb-2" />

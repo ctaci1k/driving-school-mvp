@@ -27,7 +27,7 @@ RUN npx prisma generate || true
 COPY package*.json ./
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3001
 
 # Команда для дев-режиму (можеш перекрити її у docker-compose.override.yml)
 CMD ["npm", "run", "dev"]

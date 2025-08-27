@@ -1,5 +1,5 @@
 // /app/[locale]/instructor/lessons/[id]/page.tsx
-// Деталі конкретного заняття
+// Szczegóły konkretnej lekcji
 
 'use client'
 
@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 export default function LessonDetailPage() {
   const params = useParams()
@@ -41,38 +41,38 @@ export default function LessonDetailPage() {
     
     student: {
       id: 's1',
-      name: 'Марія Шевчук',
-      avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
-      phone: '+380501234569',
-      email: 'maria.s@email.com',
+      name: 'Maria Kowalska',
+      avatar: 'https://ui-avatars.com/api/?name=MK&background=10B981&color=fff',
+      phone: '+48501234569',
+      email: 'maria.k@email.com',
       lessonsCompleted: 24,
       totalLessons: 28,
       progress: 85,
       joinDate: '2024-01-05'
     },
     
-    type: 'Підготовка до іспиту',
+    type: 'Przygotowanie do egzaminu',
     category: 'B',
     
     location: {
-      start: 'вул. Шевченка, 100',
-      end: 'Автодром',
-      area: 'Маршрут ДАІ',
-      coordinates: { lat: 50.4501, lng: 30.5234 }
+      start: 'ul. Marszałkowska 100',
+      end: 'Plac manewrowy',
+      area: 'Trasa egzaminacyjna',
+      coordinates: { lat: 52.2297, lng: 21.0122 }
     },
     
     vehicle: {
       id: 'v1',
       model: 'Toyota Corolla',
-      number: 'AA 1234 AA',
+      number: 'WZ 1234 A',
       year: 2020
     },
     
     objectives: [
-      { id: 1, title: 'Маршрут іспиту ДАІ', completed: true },
-      { id: 2, title: 'Екстрене гальмування', completed: true },
-      { id: 3, title: 'Паралельне паркування', completed: true },
-      { id: 4, title: 'Розворот в обмеженому просторі', completed: false }
+      { id: 1, title: 'Trasa egzaminacyjna', completed: true },
+      { id: 2, title: 'Hamowanie awaryjne', completed: true },
+      { id: 3, title: 'Parkowanie równoległe', completed: true },
+      { id: 4, title: 'Zawracanie w ograniczonej przestrzeni', completed: false }
     ],
     
     performance: {
@@ -84,7 +84,7 @@ export default function LessonDetailPage() {
         safety: 5
       },
       mistakes: 2,
-      improvements: ['Впевненість при паркуванні', 'Швидкість прийняття рішень']
+      improvements: ['Pewność przy parkowaniu', 'Szybkość podejmowania decyzji']
     },
     
     metrics: {
@@ -97,45 +97,45 @@ export default function LessonDetailPage() {
     },
     
     payment: {
-      amount: 600,
+      amount: 150,
       status: 'paid',
       method: 'cash',
       date: '2024-02-03'
     },
     
     feedback: {
-      instructor: 'Відмінне заняття! Марія показала великий прогрес. Готова до іспиту на 90%.',
-      student: 'Дякую за терпіння! Нарешті зрозуміла паралельне паркування.',
+      instructor: 'Doskonała lekcja! Maria pokazała wielki postęp. Gotowa do egzaminu w 90%.',
+      student: 'Dziękuję za cierpliwość! W końcu zrozumiałam parkowanie równoległe.',
       studentRating: 5
     },
     
     photos: [
-      { id: 1, url: '/photo1.jpg', caption: 'Паркування' },
-      { id: 2, url: '/photo2.jpg', caption: 'Маршрут' }
+      { id: 1, url: '/photo1.jpg', caption: 'Parkowanie' },
+      { id: 2, url: '/photo2.jpg', caption: 'Trasa' }
     ],
     
     nextLesson: {
       date: '2024-02-05',
       time: '14:00',
-      type: 'Фінальна підготовка'
+      type: 'Finalne przygotowanie'
     }
   }
 
   const handleEditLesson = () => {
-    // Логіка редагування
+    // Logika edytowania
   }
 
   const handleShareLesson = () => {
-    // Логіка поділитися
+    // Logika udostępniania
   }
 
   const handleDownloadReport = () => {
-    // Логіка завантаження звіту
+    // Logika pobierania raportu
   }
 
   return (
     <div className="space-y-6">
-      {/* Заголовок */}
+      {/* Nagłówek */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -146,34 +146,34 @@ export default function LessonDetailPage() {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Деталі заняття</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Szczegóły lekcji</h1>
             <p className="text-gray-600 mt-1">
-              {format(new Date(lesson.date), 'd MMMM yyyy', { locale: uk })} • {lesson.startTime} - {lesson.endTime}
+              {format(new Date(lesson.date), 'd MMMM yyyy', { locale: pl })} • {lesson.startTime} - {lesson.endTime}
             </p>
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleShareLesson}>
             <Share className="w-4 h-4 mr-2" />
-            Поділитись
+            Udostępnij
           </Button>
           <Button variant="outline" onClick={handleDownloadReport}>
             <Download className="w-4 h-4 mr-2" />
-            Звіт
+            Raport
           </Button>
           <Button onClick={handleEditLesson}>
             <Edit className="w-4 h-4 mr-2" />
-            Редагувати
+            Edytuj
           </Button>
         </div>
       </div>
 
-      {/* Основна інформація */}
+      {/* Podstawowe informacje */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Студент */}
+        {/* Kursant */}
         <Card>
           <CardHeader>
-            <CardTitle>Студент</CardTitle>
+            <CardTitle>Kursant</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3 mb-4">
@@ -198,58 +198,58 @@ export default function LessonDetailPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-gray-400" />
-                <span>З нами з {format(new Date(lesson.student.joinDate), 'd MMM yyyy', { locale: uk })}</span>
+                <span>Z nami od {format(new Date(lesson.student.joinDate), 'd MMM yyyy', { locale: pl })}</span>
               </div>
             </div>
 
             <div className="mt-4 pt-4 border-t">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-500">Прогрес курсу</span>
+                <span className="text-sm text-gray-500">Postęp kursu</span>
                 <span className="text-sm font-medium">{lesson.student.progress}%</span>
               </div>
               <Progress value={lesson.student.progress} className="h-2" />
               <p className="text-xs text-gray-500 mt-1">
-                {lesson.student.lessonsCompleted} з {lesson.student.totalLessons} занять
+                {lesson.student.lessonsCompleted} z {lesson.student.totalLessons} lekcji
               </p>
             </div>
 
             <div className="flex gap-2 mt-4">
               <Button variant="outline" size="sm" className="flex-1">
                 <Phone className="w-4 h-4 mr-1" />
-                Дзвонити
+                Zadzwoń
               </Button>
               <Button variant="outline" size="sm" className="flex-1">
                 <MessageSquare className="w-4 h-4 mr-1" />
-                Написати
+                Napisz
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Деталі заняття */}
+        {/* Szczegóły lekcji */}
         <Card>
           <CardHeader>
-            <CardTitle>Інформація про заняття</CardTitle>
+            <CardTitle>Informacje o lekcji</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Тип заняття</p>
+                <p className="text-sm text-gray-500">Typ lekcji</p>
                 <Badge variant="outline" className="mt-1">{lesson.type}</Badge>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Категорія</p>
-                <p className="font-medium">Категорія {lesson.category}</p>
+                <p className="text-sm text-gray-500">Kategoria</p>
+                <p className="font-medium">Kategoria {lesson.category}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Тривалість</p>
-                <p className="font-medium">{lesson.duration} хвилин</p>
+                <p className="text-sm text-gray-500">Czas trwania</p>
+                <p className="font-medium">{lesson.duration} minut</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Локація</p>
+                <p className="text-sm text-gray-500">Lokalizacja</p>
                 <div className="flex items-start gap-2 mt-1">
                   <MapPin className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
@@ -260,7 +260,7 @@ export default function LessonDetailPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Автомобіль</p>
+                <p className="text-sm text-gray-500">Pojazd</p>
                 <div className="flex items-center gap-2 mt-1">
                   <Car className="w-4 h-4 text-gray-400" />
                   <span className="font-medium">{lesson.vehicle.model}</span>
@@ -269,41 +269,41 @@ export default function LessonDetailPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Статус</p>
+                <p className="text-sm text-gray-500">Status</p>
                 <Badge variant="default" className="mt-1">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Завершено
+                  Zakończona
                 </Badge>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Оплата */}
+        {/* Płatność */}
         <Card>
           <CardHeader>
-            <CardTitle>Оплата</CardTitle>
+            <CardTitle>Płatność</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center mb-4">
-              <p className="text-3xl font-bold">₴{lesson.payment.amount}</p>
+              <p className="text-3xl font-bold">{lesson.payment.amount} zł</p>
               <Badge variant="default" className="mt-2">
                 <CheckCircle className="w-3 h-3 mr-1" />
-                Оплачено
+                Opłacone
               </Badge>
             </div>
 
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Метод оплати:</span>
+                <span className="text-gray-500">Sposób płatności:</span>
                 <span className="font-medium">
-                  {lesson.payment.method === 'cash' ? 'Готівка' : 'Картка'}
+                  {lesson.payment.method === 'cash' ? 'Gotówka' : 'Karta'}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Дата:</span>
+                <span className="text-gray-500">Data:</span>
                 <span className="font-medium">
-                  {format(new Date(lesson.payment.date), 'd MMM yyyy', { locale: uk })}
+                  {format(new Date(lesson.payment.date), 'd MMM yyyy', { locale: pl })}
                 </span>
               </div>
             </div>
@@ -311,26 +311,26 @@ export default function LessonDetailPage() {
             <Alert className="mt-4">
               <DollarSign className="h-4 w-4" />
               <AlertDescription>
-                Оплата підтверджена системою
+                Płatność potwierdzona przez system
               </AlertDescription>
             </Alert>
           </CardContent>
         </Card>
       </div>
 
-      {/* Табси з детальною інформацією */}
+      {/* Karty z szczegółowymi informacjami */}
       <Tabs defaultValue="objectives" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="objectives">Цілі</TabsTrigger>
-          <TabsTrigger value="performance">Результати</TabsTrigger>
-          <TabsTrigger value="metrics">Метрики</TabsTrigger>
-          <TabsTrigger value="feedback">Відгуки</TabsTrigger>
+          <TabsTrigger value="objectives">Cele</TabsTrigger>
+          <TabsTrigger value="performance">Wyniki</TabsTrigger>
+          <TabsTrigger value="metrics">Metryki</TabsTrigger>
+          <TabsTrigger value="feedback">Opinie</TabsTrigger>
         </TabsList>
 
         <TabsContent value="objectives" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Цілі заняття</CardTitle>
+              <CardTitle>Cele lekcji</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -350,23 +350,23 @@ export default function LessonDetailPage() {
                       </span>
                     </div>
                     <Badge variant={objective.completed ? 'default' : 'secondary'}>
-                      {objective.completed ? 'Виконано' : 'Частково'}
+                      {objective.completed ? 'Wykonane' : 'Częściowo'}
                     </Badge>
                   </div>
                 ))}
               </div>
 
               <div className="mt-6">
-                <Label>Додаткові нотатки</Label>
+                <Label>Dodatkowe notatki</Label>
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Додайте нотатки про заняття..."
+                  placeholder="Dodaj notatki o lekcji..."
                   className="mt-2"
                 />
                 <Button className="mt-2">
                   <FileText className="w-4 h-4 mr-2" />
-                  Зберегти нотатки
+                  Zapisz notatki
                 </Button>
               </div>
             </CardContent>
@@ -376,11 +376,11 @@ export default function LessonDetailPage() {
         <TabsContent value="performance" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Оцінка виконання</CardTitle>
+              <CardTitle>Ocena wykonania</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center mb-6">
-                <p className="text-sm text-gray-500 mb-2">Загальна оцінка</p>
+                <p className="text-sm text-gray-500 mb-2">Ocena ogólna</p>
                 <div className="flex justify-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -401,10 +401,10 @@ export default function LessonDetailPage() {
                   <div key={skill}>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm capitalize">
-                        {skill === 'confidence' && 'Впевненість'}
-                        {skill === 'technique' && 'Техніка'}
-                        {skill === 'rules' && 'Знання ПДР'}
-                        {skill === 'safety' && 'Безпека'}
+                        {skill === 'confidence' && 'Pewność siebie'}
+                        {skill === 'technique' && 'Technika'}
+                        {skill === 'rules' && 'Znajomość przepisów'}
+                        {skill === 'safety' && 'Bezpieczeństwo'}
                       </span>
                       <span className="text-sm font-medium">{rating}/5</span>
                     </div>
@@ -415,14 +415,14 @@ export default function LessonDetailPage() {
 
               <div className="space-y-4">
                 <div>
-                  <p className="font-medium mb-2">Кількість помилок</p>
+                  <p className="font-medium mb-2">Liczba błędów</p>
                   <Badge variant={lesson.performance.mistakes <= 2 ? 'default' : 'destructive'}>
-                    {lesson.performance.mistakes} помилки
+                    {lesson.performance.mistakes} błędów
                   </Badge>
                 </div>
 
                 <div>
-                  <p className="font-medium mb-2">Потребує покращення</p>
+                  <p className="font-medium mb-2">Wymaga poprawy</p>
                   <div className="flex flex-wrap gap-2">
                     {lesson.performance.improvements.map((item, index) => (
                       <Badge key={index} variant="outline">{item}</Badge>
@@ -437,44 +437,44 @@ export default function LessonDetailPage() {
         <TabsContent value="metrics" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Метрики їзди</CardTitle>
+              <CardTitle>Metryki jazdy</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Gauge className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.distance} км</p>
-                  <p className="text-sm text-gray-500">Відстань</p>
+                  <p className="text-2xl font-bold">{lesson.metrics.distance} km</p>
+                  <p className="text-sm text-gray-500">Dystans</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Timer className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.avgSpeed} км/год</p>
-                  <p className="text-sm text-gray-500">Середня швидкість</p>
+                  <p className="text-2xl font-bold">{lesson.metrics.avgSpeed} km/h</p>
+                  <p className="text-sm text-gray-500">Średnia prędkość</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Navigation className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.maxSpeed} км/год</p>
-                  <p className="text-sm text-gray-500">Макс. швидкість</p>
+                  <p className="text-2xl font-bold">{lesson.metrics.maxSpeed} km/h</p>
+                  <p className="text-sm text-gray-500">Maks. prędkość</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Fuel  className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.fuelUsed} л</p>
-                  <p className="text-sm text-gray-500">Витрата палива</p>
+                  <p className="text-2xl font-bold">{lesson.metrics.fuelUsed} l</p>
+                  <p className="text-sm text-gray-500">Zużycie paliwa</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <AlertCircle className="w-6 h-6 mx-auto mb-2 text-yellow-600" />
                   <p className="text-2xl font-bold">{lesson.metrics.suddenBrakes}</p>
-                  <p className="text-sm text-gray-500">Різкі гальмування</p>
+                  <p className="text-sm text-gray-500">Gwałtowne hamowania</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Target className="w-6 h-6 mx-auto mb-2 text-green-600" />
                   <p className="text-2xl font-bold">{lesson.metrics.sharpTurns}</p>
-                  <p className="text-sm text-gray-500">Різкі повороти</p>
+                  <p className="text-sm text-gray-500">Ostre zakręty</p>
                 </div>
               </div>
             </CardContent>
@@ -485,7 +485,7 @@ export default function LessonDetailPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Відгук інструктора</CardTitle>
+                <CardTitle>Opinia instruktora</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700">{lesson.feedback.instructor}</p>
@@ -494,7 +494,7 @@ export default function LessonDetailPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Відгук студента</CardTitle>
+                <CardTitle>Opinia kursanta</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-start justify-between mb-3">
@@ -518,12 +518,12 @@ export default function LessonDetailPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Наступне заняття */}
+      {/* Następna lekcja */}
       {lesson.nextLesson && (
         <Alert>
           <Calendar className="h-4 w-4" />
           <AlertDescription>
-            <strong>Наступне заняття:</strong> {format(new Date(lesson.nextLesson.date), 'd MMMM', { locale: uk })} о {lesson.nextLesson.time} - {lesson.nextLesson.type}
+            <strong>Następna lekcja:</strong> {format(new Date(lesson.nextLesson.date), 'd MMMM', { locale: pl })} o {lesson.nextLesson.time} - {lesson.nextLesson.type}
           </AlertDescription>
         </Alert>
       )}

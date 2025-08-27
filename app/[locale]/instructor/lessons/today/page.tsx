@@ -1,5 +1,5 @@
 // /app/[locale]/instructor/lessons/today/page.tsx
-// Сьогоднішні заняття інструктора
+// Dzisiejsze lekcje instruktora
 
 'use client'
 
@@ -18,7 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import Link from 'next/link'
 import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 export default function InstructorTodayLessonsPage() {
   const [currentLesson, setCurrentLesson] = useState<any>(null)
@@ -26,7 +26,7 @@ export default function InstructorTodayLessonsPage() {
   const [isTimerRunning, setIsTimerRunning] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
 
-  // Сьогоднішні заняття
+  // Dzisiejsze lekcje
   const todayLessons = [
     {
       id: '1',
@@ -34,18 +34,18 @@ export default function InstructorTodayLessonsPage() {
       status: 'completed',
       student: {
         id: 's1',
-        name: 'Олена Коваленко',
-        phone: '+380501234567',
-        avatar: 'https://ui-avatars.com/api/?name=OK&background=EC4899&color=fff',
+        name: 'Anna Kowalczyk',
+        phone: '+48 501 234 567',
+        avatar: 'https://ui-avatars.com/api/?name=AK&background=EC4899&color=fff',
         lessonsCompleted: 12,
         progress: 65
       },
-      type: 'Практика - місто',
+      type: 'Praktyka - miasto',
       location: {
-        pickup: 'вул. Хрещатик, 1',
-        area: 'Центр міста'
+        pickup: 'ul. Marszałkowska 1',
+        area: 'Centrum miasta'
       },
-      objectives: ['Паралельне паркування', 'Проїзд перехресть'],
+      objectives: ['Parkowanie równoległe', 'Przejazd przez skrzyżowania'],
       duration: 90,
       distance: 18.5,
       rating: 5
@@ -56,18 +56,18 @@ export default function InstructorTodayLessonsPage() {
       status: 'completed',
       student: {
         id: 's2',
-        name: 'Іван Петренко',
-        phone: '+380501234568',
-        avatar: 'https://ui-avatars.com/api/?name=IP&background=3B82F6&color=fff',
+        name: 'Jan Nowak',
+        phone: '+48 501 234 568',
+        avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff',
         lessonsCompleted: 5,
         progress: 30
       },
-      type: 'Практика - майданчик',
+      type: 'Praktyka - plac manewrowy',
       location: {
-        pickup: 'Автодром',
-        area: 'Навчальний майданчик'
+        pickup: 'Ośrodek szkolenia kierowców',
+        area: 'Plac manewrowy'
       },
-      objectives: ['Рушання', 'Гальмування', 'Повороти'],
+      objectives: ['Ruszanie', 'Hamowanie', 'Skręty'],
       duration: 90,
       distance: 5.2,
       rating: 4
@@ -78,18 +78,18 @@ export default function InstructorTodayLessonsPage() {
       status: 'in-progress',
       student: {
         id: 's3',
-        name: 'Марія Шевчук',
-        phone: '+380501234569',
-        avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
+        name: 'Maria Wiśniewska',
+        phone: '+48 501 234 569',
+        avatar: 'https://ui-avatars.com/api/?name=MW&background=10B981&color=fff',
         lessonsCompleted: 22,
         progress: 85
       },
-      type: 'Підготовка до іспиту',
+      type: 'Przygotowanie do egzaminu',
       location: {
-        pickup: 'вул. Шевченка, 100',
-        area: 'Маршрут ДАІ'
+        pickup: 'ul. Mickiewicza 100',
+        area: 'Trasa egzaminacyjna'
       },
-      objectives: ['Маршрут іспиту', 'Екстрене гальмування'],
+      objectives: ['Trasa egzaminacyjna', 'Hamowanie awaryjne'],
       duration: 90,
       distance: 0,
       rating: null
@@ -100,18 +100,18 @@ export default function InstructorTodayLessonsPage() {
       status: 'upcoming',
       student: {
         id: 's4',
-        name: 'Андрій Бондаренко',
-        phone: '+380501234570',
-        avatar: 'https://ui-avatars.com/api/?name=AB&background=F59E0B&color=fff',
+        name: 'Andrzej Kowalski',
+        phone: '+48 501 234 570',
+        avatar: 'https://ui-avatars.com/api/?name=AK&background=F59E0B&color=fff',
         lessonsCompleted: 10,
         progress: 55
       },
-      type: 'Практика - траса',
+      type: 'Praktyka - drogi szybkiego ruchu',
       location: {
-        pickup: 'вул. Перемоги, 50',
-        area: 'Київ-Житомир'
+        pickup: 'ul. Zwycięstwa 50',
+        area: 'Warszawa-Łódź'
       },
-      objectives: ['Рух по трасі', 'Обгін', 'Дистанція'],
+      objectives: ['Ruch po autostradzie', 'Wyprzedzanie', 'Zachowanie odstępu'],
       duration: 90,
       distance: 0,
       rating: null
@@ -122,25 +122,25 @@ export default function InstructorTodayLessonsPage() {
       status: 'upcoming',
       student: {
         id: 's5',
-        name: 'Наталія Гриценко',
-        phone: '+380501234571',
-        avatar: 'https://ui-avatars.com/api/?name=NG&background=8B5CF6&color=fff',
+        name: 'Natalia Kamińska',
+        phone: '+48 501 234 571',
+        avatar: 'https://ui-avatars.com/api/?name=NK&background=8B5CF6&color=fff',
         lessonsCompleted: 16,
         progress: 70
       },
-      type: 'Практика - складні умови',
+      type: 'Praktyka - trudne warunki',
       location: {
-        pickup: 'пл. Перемоги',
-        area: 'Центр - Оболонь'
+        pickup: 'Plac Zwycięstwa',
+        area: 'Centrum - Mokotów'
       },
-      objectives: ['Рух в заторах', 'Круговий рух'],
+      objectives: ['Jazda w korkach', 'Ruch okrężny'],
       duration: 90,
       distance: 0,
       rating: null
     }
   ]
 
-  // Статистика дня
+  // Statystyki dnia
   const todayStats = {
     completed: 2,
     total: 5,
@@ -151,7 +151,7 @@ export default function InstructorTodayLessonsPage() {
   }
 
   useEffect(() => {
-    // Оновлення таймера
+    // Aktualizacja timera
     const timer = setInterval(() => {
       setCurrentTime(new Date())
       if (isTimerRunning) {
@@ -159,7 +159,7 @@ export default function InstructorTodayLessonsPage() {
       }
     }, 1000)
 
-    // Знайти поточне заняття
+    // Znajdź bieżącą lekcję
     const current = todayLessons.find(l => l.status === 'in-progress')
     if (current) {
       setCurrentLesson(current)
@@ -177,13 +177,13 @@ export default function InstructorTodayLessonsPage() {
   }
 
   const handleStartLesson = (lessonId: string) => {
-    // Перехід на сторінку check-in
+    // Przejście na stronę check-in
     window.location.href = `/instructor/lessons/check-in/${lessonId}`
   }
 
   const handleEndLesson = () => {
     setIsTimerRunning(false)
-    // Логіка завершення заняття
+    // Logika zakończenia lekcji
   }
 
   const calculateTimeUntil = (timeStr: string) => {
@@ -192,34 +192,34 @@ export default function InstructorTodayLessonsPage() {
     lessonTime.setHours(hours, minutes, 0)
     
     const diff = lessonTime.getTime() - currentTime.getTime()
-    if (diff <= 0) return 'Зараз'
+    if (diff <= 0) return 'Teraz'
     
     const hoursUntil = Math.floor(diff / (1000 * 60 * 60))
     const minutesUntil = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
     
     if (hoursUntil > 0) {
-      return `${hoursUntil}г ${minutesUntil}хв`
+      return `${hoursUntil}g ${minutesUntil}min`
     }
-    return `${minutesUntil}хв`
+    return `${minutesUntil}min`
   }
 
   return (
     <div className="space-y-6">
-      {/* Заголовок */}
+      {/* Nagłówek */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Сьогоднішні заняття</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Dzisiejsze lekcje</h1>
         <p className="text-gray-600 mt-1">
-          {format(currentTime, 'EEEE, d MMMM yyyy', { locale: uk })}
+          {format(currentTime, 'EEEE, d MMMM yyyy', { locale: pl })}
         </p>
       </div>
 
-      {/* Швидка статистика */}
+      {/* Szybkie statystyki */}
       <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
         <Card>
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Виконано</p>
+                <p className="text-xs text-gray-500">Ukończone</p>
                 <p className="text-xl font-bold">{todayStats.completed}/{todayStats.total}</p>
               </div>
               <CheckCircle className="w-5 h-5 text-green-500" />
@@ -231,7 +231,7 @@ export default function InstructorTodayLessonsPage() {
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Км</p>
+                <p className="text-xs text-gray-500">Km</p>
                 <p className="text-xl font-bold">{todayStats.distance}</p>
               </div>
               <Navigation className="w-5 h-5 text-blue-500" />
@@ -243,8 +243,8 @@ export default function InstructorTodayLessonsPage() {
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Заробіток</p>
-                <p className="text-xl font-bold">₴{todayStats.earnings}</p>
+                <p className="text-xs text-gray-500">Zarobek</p>
+                <p className="text-xl font-bold">{todayStats.earnings} zł</p>
               </div>
               <TrendingUp className="w-5 h-5 text-green-500" />
             </div>
@@ -255,7 +255,7 @@ export default function InstructorTodayLessonsPage() {
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Рейтинг</p>
+                <p className="text-xs text-gray-500">Ocena</p>
                 <p className="text-xl font-bold">{todayStats.rating}</p>
               </div>
               <Star className="w-5 h-5 text-yellow-500" />
@@ -267,7 +267,7 @@ export default function InstructorTodayLessonsPage() {
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Час</p>
+                <p className="text-xs text-gray-500">Czas</p>
                 <p className="text-xl font-bold">{format(currentTime, 'HH:mm')}</p>
               </div>
               <Clock className="w-5 h-5 text-gray-400" />
@@ -279,7 +279,7 @@ export default function InstructorTodayLessonsPage() {
           <CardContent className="p-3">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Паливо</p>
+                <p className="text-xs text-gray-500">Paliwo</p>
                 <p className="text-xl font-bold">{todayStats.fuel}%</p>
               </div>
               <Fuel className="w-5 h-5 text-orange-500" />
@@ -288,15 +288,15 @@ export default function InstructorTodayLessonsPage() {
         </Card>
       </div>
 
-      {/* Поточне заняття */}
+      {/* Bieżąca lekcja */}
       {currentLesson && (
         <Card className="border-2 border-blue-500">
           <CardHeader className="bg-blue-50">
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle>Поточне заняття</CardTitle>
+                <CardTitle>Bieżąca lekcja</CardTitle>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="default" className="animate-pulse">ТРИВАЄ</Badge>
+                  <Badge variant="default" className="animate-pulse">W TRAKCIE</Badge>
                   <span className="text-2xl font-mono font-bold text-blue-600">
                     {formatTimer(lessonTimer)}
                   </span>
@@ -337,20 +337,20 @@ export default function InstructorTodayLessonsPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               <Button variant="outline" className="justify-start">
                 <Camera className="w-4 h-4 mr-2" />
-                Фото
+                Zdjęcia
               </Button>
               <Button variant="outline" className="justify-start">
                 <FileText className="w-4 h-4 mr-2" />
-                Нотатки
+                Notatki
               </Button>
               <Button variant="outline" className="justify-start">
                 <Navigation className="w-4 h-4 mr-2" />
-                Маршрут
+                Trasa
               </Button>
               <Button variant="outline" className="justify-start" asChild>
                 <Link href={`/instructor/lessons/${currentLesson.id}`}>
                   <Target className="w-4 h-4 mr-2" />
-                  Деталі
+                  Szczegóły
                 </Link>
               </Button>
             </div>
@@ -358,10 +358,10 @@ export default function InstructorTodayLessonsPage() {
         </Card>
       )}
 
-      {/* Розклад занять */}
+      {/* Harmonogram lekcji */}
       <Card>
         <CardHeader>
-          <CardTitle>Розклад на сьогодні</CardTitle>
+          <CardTitle>Harmonogram na dziś</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -377,7 +377,7 @@ export default function InstructorTodayLessonsPage() {
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start gap-3">
-                    {/* Час і статус */}
+                    {/* Czas i status */}
                     <div className="text-center min-w-[60px]">
                       <p className="font-semibold text-sm">{lesson.time.split(' - ')[0]}</p>
                       <p className="text-xs text-gray-500">{lesson.time.split(' - ')[1]}</p>
@@ -394,7 +394,7 @@ export default function InstructorTodayLessonsPage() {
                       )}
                     </div>
 
-                    {/* Інформація про студента */}
+                    {/* Informacje o uczniu */}
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Avatar className="h-8 w-8">
@@ -414,19 +414,19 @@ export default function InstructorTodayLessonsPage() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Target className="w-3 h-3" />
-                          {lesson.objectives.length} цілей
+                          {lesson.objectives.length} celów
                         </span>
                         {lesson.distance > 0 && (
                           <span className="flex items-center gap-1">
                             <Navigation className="w-3 h-3" />
-                            {lesson.distance} км
+                            {lesson.distance} km
                           </span>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Дії */}
+                  {/* Akcje */}
                   <div className="flex flex-col gap-2">
                     {lesson.status === 'completed' && lesson.rating && (
                       <div className="flex items-center gap-1">
@@ -446,12 +446,12 @@ export default function InstructorTodayLessonsPage() {
                         onClick={() => handleStartLesson(lesson.id)}
                       >
                         <Play className="w-4 h-4 mr-1" />
-                        Почати
+                        Rozpocznij
                       </Button>
                     )}
                     <Button size="sm" variant="outline" asChild>
                       <Link href={`/instructor/lessons/${lesson.id}`}>
-                        Деталі
+                        Szczegóły
                         <ChevronRight className="w-4 h-4 ml-1" />
                       </Link>
                     </Button>

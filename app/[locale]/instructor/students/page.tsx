@@ -1,5 +1,5 @@
 // app/[locale]/instructor/students/page.tsx
-// Сторінка управління студентами з пошуком, фільтрацією та детальною інформацією
+// Strona zarządzania kursantami z wyszukiwaniem, filtrowaniem i szczegółowymi informacjami
 
 'use client'
 
@@ -51,115 +51,115 @@ export default function InstructorStudents() {
   const students = [
     {
       id: '1',
-      name: 'Марія Шевчук',
-      avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
-      phone: '+380501234567',
-      email: 'maria.s@email.com',
+      name: 'Maria Kowalska',
+      avatar: 'https://ui-avatars.com/api/?name=MK&background=10B981&color=fff',
+      phone: '+48501234567',
+      email: 'maria.k@email.com',
       status: 'active',
       progress: 85,
       lessonsCompleted: 24,
       lessonsRemaining: 4,
-      nextLesson: '5 лютого, 14:00',
-      examDate: '12 лютого',
+      nextLesson: '5 lutego, 14:00',
+      examDate: '12 lutego',
       category: 'B',
       joinedDate: '2024-01-05',
       averageScore: 4.8,
-      weakPoints: ['Паралельне паркування', 'Рух заднім ходом'],
-      strongPoints: ['Дотримання ПДР', 'Впевнена їзда'],
+      weakPoints: ['Parkowanie równoległe', 'Jazda tyłem'],
+      strongPoints: ['Przestrzeganie przepisów', 'Pewna jazda'],
       totalHours: 36,
       payments: 'paid',
-      lastActivity: '2 дні тому'
+      lastActivity: '2 dni temu'
     },
     {
       id: '2',
-      name: 'Іван Петренко',
-      avatar: 'https://ui-avatars.com/api/?name=IP&background=3B82F6&color=fff',
-      phone: '+380501234568',
-      email: 'ivan.p@email.com',
+      name: 'Jan Nowak',
+      avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff',
+      phone: '+48501234568',
+      email: 'jan.n@email.com',
       status: 'active',
       progress: 30,
       lessonsCompleted: 8,
       lessonsRemaining: 20,
-      nextLesson: '4 лютого, 10:00',
+      nextLesson: '4 lutego, 10:00',
       examDate: null,
       category: 'B',
       joinedDate: '2024-01-20',
       averageScore: 4.2,
-      weakPoints: ['Впевненість', 'Швидкість реакції'],
-      strongPoints: ['Теорія', 'Обережність'],
+      weakPoints: ['Pewność siebie', 'Szybkość reakcji'],
+      strongPoints: ['Teoria', 'Ostrożność'],
       totalHours: 12,
       payments: 'paid',
-      lastActivity: 'Вчора'
+      lastActivity: 'Wczoraj'
     },
     {
       id: '3',
-      name: 'Олена Коваленко',
-      avatar: 'https://ui-avatars.com/api/?name=OK&background=EC4899&color=fff',
-      phone: '+380501234569',
-      email: 'olena.k@email.com',
+      name: 'Elena Wiśniewska',
+      avatar: 'https://ui-avatars.com/api/?name=EW&background=EC4899&color=fff',
+      phone: '+48501234569',
+      email: 'elena.w@email.com',
       status: 'active',
       progress: 65,
       lessonsCompleted: 18,
       lessonsRemaining: 10,
-      nextLesson: '6 лютого, 16:00',
+      nextLesson: '6 lutego, 16:00',
       examDate: null,
       category: 'B',
       joinedDate: '2024-01-10',
       averageScore: 4.5,
-      weakPoints: ['Паркування'],
-      strongPoints: ['Маневрування', 'Уважність'],
+      weakPoints: ['Parkowanie'],
+      strongPoints: ['Manewrowanie', 'Uwaga'],
       totalHours: 27,
       payments: 'pending',
-      lastActivity: '3 дні тому'
+      lastActivity: '3 dni temu'
     },
     {
       id: '4',
-      name: 'Андрій Бондаренко',
-      avatar: 'https://ui-avatars.com/api/?name=AB&background=F59E0B&color=fff',
-      phone: '+380501234570',
-      email: 'andriy.b@email.com',
+      name: 'Andrzej Kowalczyk',
+      avatar: 'https://ui-avatars.com/api/?name=AK&background=F59E0B&color=fff',
+      phone: '+48501234570',
+      email: 'andrzej.k@email.com',
       status: 'active',
       progress: 55,
       lessonsCompleted: 15,
       lessonsRemaining: 13,
-      nextLesson: '4 лютого, 14:30',
+      nextLesson: '4 lutego, 14:30',
       examDate: null,
       category: 'B',
       joinedDate: '2024-01-08',
       averageScore: 4.3,
-      weakPoints: ['Рух по трасі'],
-      strongPoints: ['Міська їзда', 'Паркування'],
+      weakPoints: ['Jazda po trasie'],
+      strongPoints: ['Jazda miejska', 'Parkowanie'],
       totalHours: 22.5,
       payments: 'paid',
-      lastActivity: 'Сьогодні'
+      lastActivity: 'Dzisiaj'
     },
     {
       id: '5',
-      name: 'Наталія Гриценко',
-      avatar: 'https://ui-avatars.com/api/?name=NG&background=8B5CF6&color=fff',
-      phone: '+380501234571',
-      email: 'natalia.g@email.com',
+      name: 'Natalia Lewandowska',
+      avatar: 'https://ui-avatars.com/api/?name=NL&background=8B5CF6&color=fff',
+      phone: '+48501234571',
+      email: 'natalia.l@email.com',
       status: 'active',
       progress: 70,
       lessonsCompleted: 20,
       lessonsRemaining: 8,
-      nextLesson: '5 лютого, 18:00',
-      examDate: '20 лютого',
+      nextLesson: '5 lutego, 18:00',
+      examDate: '20 lutego',
       category: 'B',
       joinedDate: '2024-01-03',
       averageScore: 4.6,
-      weakPoints: ['Нічна їзда'],
-      strongPoints: ['Техніка водіння', 'Знання ПДР'],
+      weakPoints: ['Jazda nocna'],
+      strongPoints: ['Technika jazdy', 'Znajomość przepisów'],
       totalHours: 30,
       payments: 'paid',
-      lastActivity: '1 день тому'
+      lastActivity: '1 dzień temu'
     },
     {
       id: '6',
-      name: 'Сергій Мельник',
-      avatar: 'https://ui-avatars.com/api/?name=SM&background=EF4444&color=fff',
-      phone: '+380501234572',
-      email: 'sergiy.m@email.com',
+      name: 'Szymon Woźniak',
+      avatar: 'https://ui-avatars.com/api/?name=SW&background=EF4444&color=fff',
+      phone: '+48501234572',
+      email: 'szymon.w@email.com',
       status: 'paused',
       progress: 45,
       lessonsCompleted: 12,
@@ -169,11 +169,11 @@ export default function InstructorStudents() {
       category: 'B',
       joinedDate: '2024-01-15',
       averageScore: 3.9,
-      weakPoints: ['Концентрація', 'Правила'],
-      strongPoints: ['Базові навички'],
+      weakPoints: ['Koncentracja', 'Przepisy'],
+      strongPoints: ['Podstawowe umiejętności'],
       totalHours: 18,
       payments: 'overdue',
-      lastActivity: '1 тиждень тому'
+      lastActivity: '1 tydzień temu'
     }
   ]
 
@@ -209,14 +209,14 @@ export default function InstructorStudents() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Мої студенти</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Moi kursanci</h1>
           <p className="text-gray-600 mt-1">
-            Управління та відстеження прогресу студентів
+            Zarządzanie i śledzenie postępów kursantów
           </p>
         </div>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Додати студента
+          Dodaj kursanta
         </Button>
       </div>
 
@@ -226,7 +226,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Всього</p>
+                <p className="text-sm text-gray-500">Łącznie</p>
                 <p className="text-2xl font-bold">{stats.totalStudents}</p>
               </div>
               <Users className="w-8 h-8 text-gray-400" />
@@ -238,7 +238,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Активні</p>
+                <p className="text-sm text-gray-500">Aktywni</p>
                 <p className="text-2xl font-bold">{stats.activeStudents}</p>
               </div>
               <CheckCircle className="w-8 h-8 text-green-500" />
@@ -250,7 +250,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Прогрес</p>
+                <p className="text-sm text-gray-500">Postęp</p>
                 <p className="text-2xl font-bold">{stats.averageProgress}%</p>
               </div>
               <TrendingUp className="w-8 h-8 text-blue-500" />
@@ -262,7 +262,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Іспити</p>
+                <p className="text-sm text-gray-500">Egzaminy</p>
                 <p className="text-2xl font-bold">{stats.upcomingExams}</p>
               </div>
               <GraduationCap className="w-8 h-8 text-purple-500" />
@@ -274,7 +274,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Годин</p>
+                <p className="text-sm text-gray-500">Godziny</p>
                 <p className="text-2xl font-bold">{stats.totalHours}</p>
               </div>
               <Clock className="w-8 h-8 text-orange-500" />
@@ -286,7 +286,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Рейтинг</p>
+                <p className="text-sm text-gray-500">Ocena</p>
                 <p className="text-2xl font-bold">{stats.averageRating}</p>
               </div>
               <Star className="w-8 h-8 text-yellow-500" />
@@ -301,7 +301,7 @@ export default function InstructorStudents() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-              placeholder="Пошук за іменем, email або телефоном..."
+              placeholder="Wyszukaj według imienia, email lub telefonu..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -313,10 +313,10 @@ export default function InstructorStudents() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Всі студенти</SelectItem>
-            <SelectItem value="active">Активні</SelectItem>
-            <SelectItem value="paused">На паузі</SelectItem>
-            <SelectItem value="completed">Завершили</SelectItem>
+            <SelectItem value="all">Wszyscy kursanci</SelectItem>
+            <SelectItem value="active">Aktywni</SelectItem>
+            <SelectItem value="paused">Wstrzymani</SelectItem>
+            <SelectItem value="completed">Ukończyli</SelectItem>
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={setSortBy}>
@@ -324,10 +324,10 @@ export default function InstructorStudents() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="name">За іменем</SelectItem>
-            <SelectItem value="progress">За прогресом</SelectItem>
-            <SelectItem value="lessons">За заняттями</SelectItem>
-            <SelectItem value="rating">За рейтингом</SelectItem>
+            <SelectItem value="name">Według imienia</SelectItem>
+            <SelectItem value="progress">Według postępu</SelectItem>
+            <SelectItem value="lessons">Według lekcji</SelectItem>
+            <SelectItem value="rating">Według oceny</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -335,8 +335,8 @@ export default function InstructorStudents() {
       {/* Students Tabs */}
       <Tabs defaultValue="grid" className="w-full">
         <TabsList className="grid w-full max-w-[200px] grid-cols-2">
-          <TabsTrigger value="grid">Картки</TabsTrigger>
-          <TabsTrigger value="list">Список</TabsTrigger>
+          <TabsTrigger value="grid">Karty</TabsTrigger>
+          <TabsTrigger value="list">Lista</TabsTrigger>
         </TabsList>
 
         <TabsContent value="grid" className="mt-6">
@@ -352,7 +352,7 @@ export default function InstructorStudents() {
                       </Avatar>
                       <div>
                         <h3 className="font-semibold">{student.name}</h3>
-                        <p className="text-sm text-gray-500">{student.category} категорія</p>
+                        <p className="text-sm text-gray-500">kategoria {student.category}</p>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -362,32 +362,32 @@ export default function InstructorStudents() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Дії</DropdownMenuLabel>
+                        <DropdownMenuLabel>Akcje</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Link href={`/instructor/students/${student.id}`} className="flex items-center">
                             <User className="w-4 h-4 mr-2" />
-                            Профіль
+                            Profil
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Link href={`/instructor/students/${student.id}/progress`} className="flex items-center">
                             <TrendingUp className="w-4 h-4 mr-2" />
-                            Прогрес
+                            Postęp
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <FileText className="w-4 h-4 mr-2" />
-                          Звіт
+                          Raport
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Phone className="w-4 h-4 mr-2" />
-                          Зателефонувати
+                          Zadzwoń
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <MessageSquare className="w-4 h-4 mr-2" />
-                          Повідомлення
+                          Wiadomość
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -396,7 +396,7 @@ export default function InstructorStudents() {
                   {/* Progress */}
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Загальний прогрес</span>
+                      <span className="text-gray-600">Ogólny postęp</span>
                       <span className="font-medium">{student.progress}%</span>
                     </div>
                     <Progress value={student.progress} className="h-2" />
@@ -405,11 +405,11 @@ export default function InstructorStudents() {
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
                     <div className="bg-gray-50 rounded p-2">
-                      <p className="text-gray-500">Занять</p>
+                      <p className="text-gray-500">Lekcje</p>
                       <p className="font-semibold">{student.lessonsCompleted}/{student.lessonsCompleted + student.lessonsRemaining}</p>
                     </div>
                     <div className="bg-gray-50 rounded p-2">
-                      <p className="text-gray-500">Рейтинг</p>
+                      <p className="text-gray-500">Ocena</p>
                       <div className="flex items-center gap-1">
                         <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                         <span className="font-semibold">{student.averageScore}</span>
@@ -420,14 +420,14 @@ export default function InstructorStudents() {
                   {/* Status badges */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
-                      {student.status === 'active' ? 'Активний' : 'На паузі'}
+                      {student.status === 'active' ? 'Aktywny' : 'Wstrzymany'}
                     </Badge>
                     {student.payments === 'overdue' && (
-                      <Badge variant="destructive">Заборгованість</Badge>
+                      <Badge variant="destructive">Zaległość</Badge>
                     )}
                     {student.examDate && (
                       <Badge variant="outline">
-                        Іспит: {student.examDate}
+                        Egzamin: {student.examDate}
                       </Badge>
                     )}
                   </div>
@@ -435,7 +435,7 @@ export default function InstructorStudents() {
                   {/* Next lesson */}
                   {student.nextLesson && (
                     <div className="p-3 bg-blue-50 rounded-lg mb-4">
-                      <p className="text-sm font-medium text-blue-900">Наступне заняття</p>
+                      <p className="text-sm font-medium text-blue-900">Następna lekcja</p>
                       <p className="text-sm text-blue-700">{student.nextLesson}</p>
                     </div>
                   )}
@@ -444,12 +444,12 @@ export default function InstructorStudents() {
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" className="flex-1" asChild>
                       <Link href={`/instructor/students/${student.id}`}>
-                        Деталі
+                        Szczegóły
                       </Link>
                     </Button>
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={`/instructor/students/${student.id}/progress`}>
-                        Прогрес
+                        Postęp
                       </Link>
                     </Button>
                   </div>
@@ -466,12 +466,12 @@ export default function InstructorStudents() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Студент</TableHead>
-                      <TableHead>Прогрес</TableHead>
-                      <TableHead>Заняття</TableHead>
-                      <TableHead>Наступне</TableHead>
-                      <TableHead>Статус</TableHead>
-                      <TableHead>Дії</TableHead>
+                      <TableHead>Kursant</TableHead>
+                      <TableHead>Postęp</TableHead>
+                      <TableHead>Lekcje</TableHead>
+                      <TableHead>Następna</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Akcje</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -497,7 +497,7 @@ export default function InstructorStudents() {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {student.lessonsCompleted} з {student.lessonsCompleted + student.lessonsRemaining}
+                            {student.lessonsCompleted} z {student.lessonsCompleted + student.lessonsRemaining}
                           </div>
                         </TableCell>
                         <TableCell>
@@ -507,7 +507,7 @@ export default function InstructorStudents() {
                         </TableCell>
                         <TableCell>
                           <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
-                            {student.status === 'active' ? 'Активний' : 'На паузі'}
+                            {student.status === 'active' ? 'Aktywny' : 'Wstrzymany'}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -530,25 +530,25 @@ export default function InstructorStudents() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Швидкі дії</CardTitle>
+          <CardTitle>Szybkie akcje</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button variant="outline" className="justify-start">
               <FileText className="w-4 h-4 mr-2" />
-              Згенерувати звіт
+              Generuj raport
             </Button>
             <Button variant="outline" className="justify-start">
               <Download className="w-4 h-4 mr-2" />
-              Експорт даних
+              Eksport danych
             </Button>
             <Button variant="outline" className="justify-start">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Масова розсилка
+              Masowa wysyłka
             </Button>
             <Button variant="outline" className="justify-start">
               <Calendar className="w-4 h-4 mr-2" />
-              Планувати заняття
+              Planuj lekcje
             </Button>
           </div>
         </CardContent>

@@ -19,32 +19,32 @@ interface FormData {
   phone: string;
   birthDate: string;
   gender: string;
-  
+
   // Address
   street: string;
   city: string;
   postalCode: string;
-  
+
   // Account
   role: string;
   password: string;
   confirmPassword: string;
   sendWelcomeEmail: boolean;
-  
+
   // Additional for specific roles
   // Student
   package?: string;
   category?: string;
   instructor?: string;
   startDate?: string;
-  
+
   // Instructor
   licenseNumber?: string;
   experience?: string;
   specializations?: string[];
   workingDays?: string[];
   hourlyRate?: number;
-  
+
   // Emergency contact
   emergencyName: string;
   emergencyPhone: string;
@@ -58,83 +58,83 @@ export default function AdminNewUserPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
-  
+
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
-    phone: '+380',
+    phone: '+48',
     birthDate: '',
     gender: 'male',
     street: '',
-    city: 'Київ',
+    city: 'Warszawa',
     postalCode: '',
     role: 'STUDENT',
     password: '',
     confirmPassword: '',
     sendWelcomeEmail: true,
     emergencyName: '',
-    emergencyPhone: '+380',
+    emergencyPhone: '+48',
     emergencyRelation: '',
     specializations: [],
     workingDays: []
   });
 
-  const packages = ['Базовий', 'Стандарт', 'Преміум', 'VIP', 'Інтенсив'];
+  const packages = ['Podstawowy', 'Standard', 'Premium', 'VIP', 'Intensywny'];
   const categories = ['B', 'B+E', 'C', 'C+E', 'D'];
   const instructors = [
-    'Петро Сидоренко',
-    'Анна Коваленко',
-    'Іван Мельник',
-    'Оксана Шевченко'
+    'Piotr Kowalski',
+    'Anna Wójcik',
+    'Jan Nowak',
+    'Zofia Wiśniewska'
   ];
   const specializations = [
-    'Міська їзда',
-    'Автострада',
-    'Паркування',
-    'Нічна їзда',
-    'Екстремальне водіння',
-    'Теорія'
+    'Jazda po mieście',
+    'Autostrada',
+    'Parkowanie',
+    'Jazda nocą',
+    'Jazda ekstremalna',
+    'Teoria'
   ];
   const weekDays = [
-    'Понеділок',
-    'Вівторок',
-    'Середа',
-    'Четвер',
-    'П\'ятниця',
-    'Субота',
-    'Неділя'
+    'Poniedziałek',
+    'Wtorek',
+    'Środa',
+    'Czwartek',
+    'Piątek',
+    'Sobota',
+    'Niedziela'
   ];
 
   const validateStep = (stepNumber: number): boolean => {
     const newErrors: Partial<FormData> = {};
 
     if (stepNumber === 1) {
-      if (!formData.firstName) newErrors.firstName = 'Ім\'я обов\'язкове';
-      if (!formData.lastName) newErrors.lastName = 'Прізвище обов\'язкове';
-      if (!formData.email) newErrors.email = 'Email обов\'язковий';
+      if (!formData.firstName) newErrors.firstName = 'Imię jest wymagane';
+      if (!formData.lastName) newErrors.lastName = 'Nazwisko jest wymagane';
+      if (!formData.email) newErrors.email = 'Email jest wymagany';
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Невірний формат email';
+        newErrors.email = 'Nieprawidłowy format email';
       }
-      if (!formData.phone || formData.phone.length < 13) {
-        newErrors.phone = 'Телефон обов\'язковий';
+      if (!formData.phone || formData.phone.length < 11) {
+        newErrors.phone = 'Telefon jest wymagany';
       }
-      if (!formData.birthDate) newErrors.birthDate = 'Дата народження обов\'язкова';
+      if (!formData.birthDate) newErrors.birthDate = 'Data urodzenia jest wymagana';
     }
 
     if (stepNumber === 2) {
-      if (!formData.street) newErrors.street = 'Вулиця обов\'язкова';
-      if (!formData.city) newErrors.city = 'Місто обов\'язкове';
-      if (!formData.postalCode) newErrors.postalCode = 'Поштовий індекс обов\'язковий';
+      if (!formData.street) newErrors.street = 'Ulica jest wymagana';
+      if (!formData.city) newErrors.city = 'Miasto jest wymagane';
+      if (!formData.postalCode) newErrors.postalCode = 'Kod pocztowy jest wymagany';
     }
 
     if (stepNumber === 3) {
-      if (!formData.password) newErrors.password = 'Пароль обов\'язковий';
+      if (!formData.password) newErrors.password = 'Hasło jest wymagane';
       if (formData.password.length < 8) {
-        newErrors.password = 'Пароль має містити мінімум 8 символів';
+        newErrors.password = 'Hasło musi zawierać minimum 8 znaków';
       }
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Паролі не співпадають';
+        newErrors.confirmPassword = 'Hasła nie pasują do siebie';
       }
     }
 
@@ -158,7 +158,7 @@ export default function AdminNewUserPage() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       console.log('Creating user:', formData);
-      router.push('/uk/admin/users');
+      router.push('/pl/admin/users');
     }
   };
 
@@ -190,14 +190,14 @@ export default function AdminNewUserPage() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <button
-          onClick={() => router.push('/uk/admin/users')}
+          onClick={() => router.push('/pl/admin/users')}
           className="p-2 hover:bg-gray-100 rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Створення нового користувача</h1>
-          <p className="text-gray-600 mt-1">Заповніть всю необхідну інформацію</p>
+          <h1 className="text-3xl font-bold text-gray-800">Tworzenie nowego użytkownika</h1>
+          <p className="text-gray-600 mt-1">Wypełnij wszystkie niezbędne informacje</p>
         </div>
       </div>
 
@@ -231,12 +231,12 @@ export default function AdminNewUserPage() {
         {/* Step 1: Personal Information */}
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Особиста інформація</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Dane osobowe</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ім'я *
+                  Imię *
                 </label>
                 <input
                   type="text"
@@ -245,7 +245,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.firstName ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Олександр"
+                  placeholder="Aleksander"
                 />
                 {errors.firstName && (
                   <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
@@ -254,7 +254,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Прізвище *
+                  Nazwisko *
                 </label>
                 <input
                   type="text"
@@ -263,7 +263,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.lastName ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Петренко"
+                  placeholder="Kowalski"
                 />
                 {errors.lastName && (
                   <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
@@ -290,7 +290,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Телефон *
+                  Telefon *
                 </label>
                 <input
                   type="tel"
@@ -299,7 +299,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.phone ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="+380501234567"
+                  placeholder="+48123456789"
                 />
                 {errors.phone && (
                   <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
@@ -308,7 +308,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Дата народження *
+                  Data urodzenia *
                 </label>
                 <input
                   type="date"
@@ -325,16 +325,16 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Стать
+                  Płeć
                 </label>
                 <select
                   value={formData.gender}
                   onChange={(e) => handleInputChange('gender', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="male">Чоловік</option>
-                  <option value="female">Жінка</option>
-                  <option value="other">Інше</option>
+                  <option value="male">Mężczyzna</option>
+                  <option value="female">Kobieta</option>
+                  <option value="other">Inna</option>
                 </select>
               </div>
             </div>
@@ -344,12 +344,12 @@ export default function AdminNewUserPage() {
         {/* Step 2: Address */}
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Адреса</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Adres</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Вулиця та номер будинку *
+                  Ulica i numer domu *
                 </label>
                 <input
                   type="text"
@@ -358,7 +358,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.street ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="вул. Хрещатик, 1"
+                  placeholder="ul. Marszałkowska 1"
                 />
                 {errors.street && (
                   <p className="mt-1 text-sm text-red-600">{errors.street}</p>
@@ -367,7 +367,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Місто *
+                  Miasto *
                 </label>
                 <select
                   value={formData.city}
@@ -376,11 +376,11 @@ export default function AdminNewUserPage() {
                     errors.city ? 'border-red-500' : 'border-gray-300'
                   }`}
                 >
-                  <option value="Київ">Київ</option>
-                  <option value="Львів">Львів</option>
-                  <option value="Одеса">Одеса</option>
-                  <option value="Харків">Харків</option>
-                  <option value="Дніпро">Дніпро</option>
+                  <option value="Warszawa">Warszawa</option>
+                  <option value="Kraków">Kraków</option>
+                  <option value="Gdańsk">Gdańsk</option>
+                  <option value="Wrocław">Wrocław</option>
+                  <option value="Poznań">Poznań</option>
                 </select>
                 {errors.city && (
                   <p className="mt-1 text-sm text-red-600">{errors.city}</p>
@@ -389,7 +389,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Поштовий індекс *
+                  Kod pocztowy *
                 </label>
                 <input
                   type="text"
@@ -398,7 +398,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.postalCode ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="01001"
+                  placeholder="00-001"
                 />
                 {errors.postalCode && (
                   <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
@@ -407,44 +407,44 @@ export default function AdminNewUserPage() {
             </div>
 
             <div className="border-t pt-6">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">Екстрений контакт</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-4">Kontakt alarmowy</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Ім'я
+                    Imię
                   </label>
                   <input
                     type="text"
                     value={formData.emergencyName}
                     onChange={(e) => handleInputChange('emergencyName', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Марія Петренко"
+                    placeholder="Maria Kowalska"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Телефон
+                    Telefon
                   </label>
                   <input
                     type="tel"
                     value={formData.emergencyPhone}
                     onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="+380509876543"
+                    placeholder="+48123987654"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Відношення
+                    Relacja
                   </label>
                   <input
                     type="text"
                     value={formData.emergencyRelation}
                     onChange={(e) => handleInputChange('emergencyRelation', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Мати"
+                    placeholder="Matka"
                   />
                 </div>
               </div>
@@ -455,18 +455,18 @@ export default function AdminNewUserPage() {
         {/* Step 3: Account Settings */}
         {step === 3 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Налаштування акаунту</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Ustawienia konta</h2>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Роль користувача *
+                Rola użytkownika *
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { value: 'STUDENT', label: 'Студент', icon: User },
-                  { value: 'INSTRUCTOR', label: 'Інструктор', icon: GraduationCap },
-                  { value: 'MANAGER', label: 'Менеджер', icon: Users },
-                  { value: 'ADMIN', label: 'Адміністратор', icon: Shield }
+                  { value: 'STUDENT', label: 'Student', icon: User },
+                  { value: 'INSTRUCTOR', label: 'Instruktor', icon: GraduationCap },
+                  { value: 'MANAGER', label: 'Menedżer', icon: Users },
+                  { value: 'ADMIN', label: 'Administrator', icon: Shield }
                 ].map(role => (
                   <button
                     key={role.value}
@@ -494,7 +494,7 @@ export default function AdminNewUserPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Пароль *
+                  Hasło *
                 </label>
                 <div className="relative">
                   <input
@@ -504,7 +504,7 @@ export default function AdminNewUserPage() {
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 pr-20 ${
                       errors.password ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Мінімум 8 символів"
+                    placeholder="Minimum 8 znaków"
                   />
                   <button
                     type="button"
@@ -517,7 +517,7 @@ export default function AdminNewUserPage() {
                     type="button"
                     onClick={generatePassword}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-700"
-                    title="Згенерувати пароль"
+                    title="Generuj hasło"
                   >
                     <Lock className="w-5 h-5" />
                   </button>
@@ -529,7 +529,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Підтвердження паролю *
+                  Potwierdź hasło *
                 </label>
                 <div className="relative">
                   <input
@@ -539,7 +539,7 @@ export default function AdminNewUserPage() {
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 pr-10 ${
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Повторіть пароль"
+                    placeholder="Powtórz hasło"
                   />
                   <button
                     type="button"
@@ -564,7 +564,7 @@ export default function AdminNewUserPage() {
                 className="rounded border-gray-300"
               />
               <label htmlFor="sendWelcomeEmail" className="text-sm text-gray-700">
-                Надіслати вітальний email з даними для входу
+                Wyślij powitalny email z danymi do logowania
               </label>
             </div>
           </div>
@@ -573,19 +573,19 @@ export default function AdminNewUserPage() {
         {/* Step 4: Role-specific Information (Student) */}
         {step === 4 && formData.role === 'STUDENT' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Інформація студента</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Informacje o studencie</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Навчальний пакет
+                  Pakiet szkoleniowy
                 </label>
                 <select
                   value={formData.package || ''}
                   onChange={(e) => handleInputChange('package', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Оберіть пакет</option>
+                  <option value="">Wybierz pakiet</option>
                   {packages.map(pkg => (
                     <option key={pkg} value={pkg}>{pkg}</option>
                   ))}
@@ -594,14 +594,14 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Категорія
+                  Kategoria
                 </label>
                 <select
                   value={formData.category || ''}
                   onChange={(e) => handleInputChange('category', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Оберіть категорію</option>
+                  <option value="">Wybierz kategorię</option>
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
@@ -610,14 +610,14 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Інструктор
+                  Instruktor
                 </label>
                 <select
                   value={formData.instructor || ''}
                   onChange={(e) => handleInputChange('instructor', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Призначити пізніше</option>
+                  <option value="">Przypisz później</option>
                   {instructors.map(inst => (
                     <option key={inst} value={inst}>{inst}</option>
                   ))}
@@ -626,7 +626,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Дата початку навчання
+                  Data rozpoczęcia szkolenia
                 </label>
                 <input
                   type="date"
@@ -642,12 +642,12 @@ export default function AdminNewUserPage() {
         {/* Step 4: Role-specific Information (Instructor) */}
         {step === 4 && formData.role === 'INSTRUCTOR' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Інформація інструктора</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Informacje o instruktorze</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Номер посвідчення
+                  Numer prawa jazdy
                 </label>
                 <input
                   type="text"
@@ -660,7 +660,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Досвід роботи (років)
+                  Doświadczenie (lat)
                 </label>
                 <input
                   type="number"
@@ -673,7 +673,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Погодинна ставка (грн)
+                  Stawka godzinowa (PLN)
                 </label>
                 <input
                   type="number"
@@ -687,7 +687,7 @@ export default function AdminNewUserPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Спеціалізації
+                Specjalizacje
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {specializations.map(spec => (
@@ -713,7 +713,7 @@ export default function AdminNewUserPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Робочі дні
+                Dni pracy
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {weekDays.map(day => (
@@ -742,52 +742,52 @@ export default function AdminNewUserPage() {
         {/* Step 5: Review */}
         {step === getTotalSteps() && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Перевірка даних</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-800">Podsumowanie danych</h2>
+
             <div className="bg-gray-50 rounded-lg p-6 space-y-4">
               <div>
-                <h3 className="font-medium text-gray-800 mb-2">Особиста інформація</h3>
+                <h3 className="font-medium text-gray-800 mb-2">Dane osobowe</h3>
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                  <dt className="text-gray-500">Ім'я:</dt>
+                  <dt className="text-gray-500">Imię i Nazwisko:</dt>
                   <dd className="font-medium">{formData.firstName} {formData.lastName}</dd>
                   <dt className="text-gray-500">Email:</dt>
                   <dd className="font-medium">{formData.email}</dd>
-                  <dt className="text-gray-500">Телефон:</dt>
+                  <dt className="text-gray-500">Telefon:</dt>
                   <dd className="font-medium">{formData.phone}</dd>
-                  <dt className="text-gray-500">Роль:</dt>
+                  <dt className="text-gray-500">Rola:</dt>
                   <dd className="font-medium">
-                    {formData.role === 'STUDENT' && 'Студент'}
-                    {formData.role === 'INSTRUCTOR' && 'Інструктор'}
-                    {formData.role === 'MANAGER' && 'Менеджер'}
-                    {formData.role === 'ADMIN' && 'Адміністратор'}
+                    {formData.role === 'STUDENT' && 'Student'}
+                    {formData.role === 'INSTRUCTOR' && 'Instruktor'}
+                    {formData.role === 'MANAGER' && 'Menedżer'}
+                    {formData.role === 'ADMIN' && 'Administrator'}
                   </dd>
                 </dl>
               </div>
 
               {formData.role === 'STUDENT' && (
                 <div>
-                  <h3 className="font-medium text-gray-800 mb-2">Навчальна інформація</h3>
+                  <h3 className="font-medium text-gray-800 mb-2">Informacje szkoleniowe</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <dt className="text-gray-500">Пакет:</dt>
-                    <dd className="font-medium">{formData.package || 'Не обрано'}</dd>
-                    <dt className="text-gray-500">Категорія:</dt>
-                    <dd className="font-medium">{formData.category || 'Не обрано'}</dd>
-                    <dt className="text-gray-500">Інструктор:</dt>
-                    <dd className="font-medium">{formData.instructor || 'Не призначено'}</dd>
+                    <dt className="text-gray-500">Pakiet:</dt>
+                    <dd className="font-medium">{formData.package || 'Nie wybrano'}</dd>
+                    <dt className="text-gray-500">Kategoria:</dt>
+                    <dd className="font-medium">{formData.category || 'Nie wybrano'}</dd>
+                    <dt className="text-gray-500">Instruktor:</dt>
+                    <dd className="font-medium">{formData.instructor || 'Nie przypisano'}</dd>
                   </dl>
                 </div>
               )}
 
               {formData.role === 'INSTRUCTOR' && (
                 <div>
-                  <h3 className="font-medium text-gray-800 mb-2">Професійна інформація</h3>
+                  <h3 className="font-medium text-gray-800 mb-2">Informacje zawodowe</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <dt className="text-gray-500">Досвід:</dt>
-                    <dd className="font-medium">{formData.experience} років</dd>
-                    <dt className="text-gray-500">Ставка:</dt>
-                    <dd className="font-medium">₴{formData.hourlyRate}/год</dd>
-                    <dt className="text-gray-500">Спеціалізації:</dt>
-                    <dd className="font-medium">{formData.specializations?.join(', ') || 'Не вказано'}</dd>
+                    <dt className="text-gray-500">Doświadczenie:</dt>
+                    <dd className="font-medium">{formData.experience} lat</dd>
+                    <dt className="text-gray-500">Stawka:</dt>
+                    <dd className="font-medium">PLN {formData.hourlyRate}/godz</dd>
+                    <dt className="text-gray-500">Specjalizacje:</dt>
+                    <dd className="font-medium">{formData.specializations?.join(', ') || 'Nie podano'}</dd>
                   </dl>
                 </div>
               )}
@@ -796,84 +796,44 @@ export default function AdminNewUserPage() {
             <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3">
               <Info className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">Користувач буде створений з наступними правами:</p>
-                <ul className="list-disc list-inside space-y-1">
-                  {formData.role === 'STUDENT' && (
-                    <>
-                      <li>Перегляд та бронювання занять</li>
-                      <li>Доступ до навчальних матеріалів</li>
-                      <li>Відстеження прогресу</li>
-                    </>
-                  )}
-                  {formData.role === 'INSTRUCTOR' && (
-                    <>
-                      <li>Управління розкладом</li>
-                      <li>Оцінювання студентів</li>
-                      <li>Перегляд статистики</li>
-                    </>
-                  )}
-                  {formData.role === 'MANAGER' && (
-                    <>
-                      <li>Управління бронюваннями</li>
-                      <li>Перегляд звітів</li>
-                      <li>Робота з клієнтами</li>
-                    </>
-                  )}
-                  {formData.role === 'ADMIN' && (
-                    <>
-                      <li>Повний доступ до системи</li>
-                      <li>Управління користувачами</li>
-                      <li>Налаштування системи</li>
-                    </>
-                  )}
-                </ul>
-                {formData.sendWelcomeEmail && (
-                  <p className="mt-2">На email буде надіслано дані для входу</p>
-                )}
+                <p className="font-medium mb-1">Użytkownik zostanie utworzony z powyższymi danymi.</p>
+                <p>Upewnij się, że wszystkie informacje są poprawne przed zatwierdzeniem.</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* Navigation Buttons */}
-        <div className="flex justify-between pt-6 border-t">
-          <button
-            type="button"
-            onClick={handlePrevious}
-            disabled={step === 1}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Назад
-          </button>
-
+        {/* Buttons */}
+        <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+          {step > 1 && (
+            <button
+              onClick={handlePrevious}
+              className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+              disabled={loading}
+            >
+              Poprzedni
+            </button>
+          )}
           {step < getTotalSteps() ? (
             <button
-              type="button"
               onClick={handleNext}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              className={`px-6 py-2 rounded-lg text-white transition ${
+                loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+              disabled={loading}
             >
-              Далі
-              <ArrowLeft className="w-4 h-4 rotate-180" />
+              Dalej
             </button>
           ) : (
             <button
-              type="button"
               onClick={handleSubmit}
+              className={`px-6 py-2 rounded-lg text-white flex items-center gap-2 transition ${
+                loading ? 'bg-green-400' : 'bg-green-600 hover:bg-green-700'
+              }`}
               disabled={loading}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
             >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Створення...
-                </>
-              ) : (
-                <>
-                  <UserPlus className="w-4 h-4" />
-                  Створити користувача
-                </>
-              )}
+              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+              {loading ? 'Zapisywanie...' : 'Zapisz'}
             </button>
           )}
         </div>

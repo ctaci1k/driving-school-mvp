@@ -1,4 +1,4 @@
-// /app/[locale]/instructor/schedule/availability/page.tsx
+// app/[locale]/instructor/schedule/availability/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -22,12 +22,35 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+// Dodajemy interfejsy dla typizacji
+interface TimeSlot {
+  start: string;
+  end: string;
+}
+
+interface DaySchedule {
+  enabled: boolean;
+  slots: TimeSlot[];
+}
+
+interface WorkingHoursState {
+  monday: DaySchedule;
+  tuesday: DaySchedule;
+  wednesday: DaySchedule;
+  thursday: DaySchedule;
+  friday: DaySchedule;
+  saturday: DaySchedule;
+  sunday: DaySchedule;
+}
+
+type DayKey = keyof WorkingHoursState;
+
 export default function InstructorAvailabilityPage() {
   const [isEditing, setIsEditing] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
 
-  // Working hours for each day
-  const [workingHours, setWorkingHours] = useState({
+  // Godziny pracy dla każdego dnia z wyraźną typizacją
+  const [workingHours, setWorkingHours] = useState<WorkingHoursState>({
     monday: {
       enabled: true,
       slots: [
@@ -75,128 +98,132 @@ export default function InstructorAvailabilityPage() {
     }
   })
 
-  // Templates
+  // Szablony
   const templates = [
     {
       id: 'morning',
-      name: 'Ранкова зміна',
+      name: 'Zmiana poranna',
       icon: Sun,
       hours: '08:00 - 14:00',
-      description: 'Робота в першій половині дня'
+      description: 'Praca w pierwszej połowie dnia'
     },
     {
       id: 'evening',
-      name: 'Вечірня зміна',
+      name: 'Zmiana wieczorna',
       icon: Moon,
       hours: '14:00 - 20:00',
-      description: 'Робота в другій половині дня'
+      description: 'Praca w drugiej połowie dnia'
     },
     {
       id: 'full',
-      name: 'Повний день',
+      name: 'Pełny dzień',
       icon: Clock,
       hours: '08:00 - 20:00',
-      description: 'З перервою на обід'
+      description: 'Z przerwą na obiad'
     },
     {
       id: 'weekend',
-      name: 'Вихідні',
+      name: 'Weekend',
       icon: Coffee,
       hours: '10:00 - 16:00',
-      description: 'Скорочений графік'
+      description: 'Skrócony grafik'
     }
   ]
 
   const weekDays = [
-    { key: 'monday', name: 'Понеділок', short: 'Пн' },
-    { key: 'tuesday', name: 'Вівторок', short: 'Вт' },
-    { key: 'wednesday', name: 'Середа', short: 'Ср' },
-    { key: 'thursday', name: 'Четвер', short: 'Чт' },
-    { key: 'friday', name: "П'ятниця", short: 'Пт' },
-    { key: 'saturday', name: 'Субота', short: 'Сб' },
-    { key: 'sunday', name: 'Неділя', short: 'Нд' }
+    { key: 'monday' as DayKey, name: 'Poniedziałek', short: 'Pn' },
+    { key: 'tuesday' as DayKey, name: 'Wtorek', short: 'Wt' },
+    { key: 'wednesday' as DayKey, name: 'Środa', short: 'Śr' },
+    { key: 'thursday' as DayKey, name: 'Czwartek', short: 'Cz' },
+    { key: 'friday' as DayKey, name: 'Piątek', short: 'Pt' },
+    { key: 'saturday' as DayKey, name: 'Sobota', short: 'Sb' },
+    { key: 'sunday' as DayKey, name: 'Niedziela', short: 'Nd' }
   ]
 
-  const addTimeSlot = (day: string) => {
+  const addTimeSlot = (day: DayKey) => {
     setWorkingHours(prev => ({
       ...prev,
       [day]: {
-        ...prev[day as keyof typeof prev],
-        slots: [...prev[day as keyof typeof prev].slots, { start: '09:00', end: '17:00' }]
+        ...prev[day],
+        slots: [...prev[day].slots, { start: '09:00', end: '17:00' }]
       }
     }))
   }
 
-  const removeTimeSlot = (day: string, index: number) => {
+  const removeTimeSlot = (day: DayKey, index: number) => {
     setWorkingHours(prev => ({
       ...prev,
       [day]: {
-        ...prev[day as keyof typeof prev],
-        slots: prev[day as keyof typeof prev].slots.filter((_, i) => i !== index)
+        ...prev[day],
+        slots: prev[day].slots.filter((_, i) => i !== index)
       }
     }))
   }
 
   const applyTemplate = (templateId: string) => {
     setSelectedTemplate(templateId)
-    // Apply template logic here
+    // Logika aplikowania szablonu tutaj
   }
 
-  const copyToAllDays = (sourceDay: string) => {
-    const sourceDayData = workingHours[sourceDay as keyof typeof workingHours]
-    const newHours = { ...workingHours }
+  const copyToAllDays = (sourceDay: DayKey) => {
+    const sourceDayData = workingHours[sourceDay]
     
-Object.keys(newHours).forEach(day => {
-  if (day !== sourceDay) {
-    newHours[day as keyof typeof newHours] = {
-      enabled: sourceDayData.enabled,
-      slots: sourceDayData.slots.map(slot => ({ ...slot }))
-    }
-  }
-})
-    
-    setWorkingHours(newHours)
+    setWorkingHours(prev => {
+      const newHours: WorkingHoursState = { ...prev }
+      
+      // Kopiujemy na wszystkie dni, oprócz dnia źródłowego
+      Object.keys(newHours).forEach(day => {
+        if (day !== sourceDay) {
+          newHours[day as DayKey] = {
+            enabled: sourceDayData.enabled,
+            slots: sourceDayData.slots.map(slot => ({ ...slot }))
+          }
+        }
+      })
+      
+      return newHours
+    })
   }
 
   const handleSave = () => {
     setIsEditing(false)
-    console.log('Saving availability:', workingHours)
+    console.log('Zapisywanie dostępności:', workingHours)
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Nagłówek */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Робочі години</h1>
-          <p className="text-gray-600 mt-1">Налаштуйте свій графік доступності</p>
+          <h1 className="text-2xl font-bold text-gray-900">Godziny pracy</h1>
+          <p className="text-gray-600 mt-1">Skonfiguruj swój harmonogram dostępności</p>
         </div>
         <div className="flex gap-2">
           {isEditing ? (
             <>
               <Button variant="outline" onClick={() => setIsEditing(false)}>
                 <X className="w-4 h-4 mr-2" />
-                Скасувати
+                Anuluj
               </Button>
               <Button onClick={handleSave}>
                 <Save className="w-4 h-4 mr-2" />
-                Зберегти
+                Zapisz
               </Button>
             </>
           ) : (
             <Button onClick={() => setIsEditing(true)}>
               <Settings className="w-4 h-4 mr-2" />
-              Редагувати
+              Edytuj
             </Button>
           )}
         </div>
       </div>
 
-      {/* Quick Templates */}
+      {/* Szybkie szablony */}
       <Card>
         <CardHeader>
-          <CardTitle>Швидкі шаблони</CardTitle>
-          <CardDescription>Оберіть готовий шаблон робочого графіку</CardDescription>
+          <CardTitle>Szybkie szablony</CardTitle>
+          <CardDescription>Wybierz gotowy szablon harmonogramu pracy</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -220,11 +247,11 @@ Object.keys(newHours).forEach(day => {
         </CardContent>
       </Card>
 
-      {/* Weekly Schedule */}
+      {/* Harmonogram tygodniowy */}
       <Card>
         <CardHeader>
-          <CardTitle>Тижневий розклад</CardTitle>
-          <CardDescription>Налаштуйте робочі години для кожного дня</CardDescription>
+          <CardTitle>Harmonogram tygodniowy</CardTitle>
+          <CardDescription>Skonfiguruj godziny pracy dla każdego dnia</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
@@ -233,23 +260,23 @@ Object.keys(newHours).forEach(day => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Switch
-                      checked={workingHours[day.key as keyof typeof workingHours].enabled}
+                      checked={workingHours[day.key].enabled}
                       onCheckedChange={(checked) =>
                         setWorkingHours(prev => ({
                           ...prev,
-                          [day.key]: { ...prev[day.key as keyof typeof prev], enabled: checked }
+                          [day.key]: { ...prev[day.key], enabled: checked }
                         }))
                       }
                       disabled={!isEditing}
                     />
                     <Label className="text-base font-medium">
                       {day.name}
-                      {!workingHours[day.key as keyof typeof workingHours].enabled && (
-                        <Badge variant="secondary" className="ml-2">Вихідний</Badge>
+                      {!workingHours[day.key].enabled && (
+                        <Badge variant="secondary" className="ml-2">Dzień wolny</Badge>
                       )}
                     </Label>
                   </div>
-                  {isEditing && workingHours[day.key as keyof typeof workingHours].enabled && (
+                  {isEditing && workingHours[day.key].enabled && (
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
@@ -257,7 +284,7 @@ Object.keys(newHours).forEach(day => {
                         onClick={() => copyToAllDays(day.key)}
                       >
                         <Copy className="w-4 h-4 mr-2" />
-                        Копіювати на всі дні
+                        Kopiuj na wszystkie dni
                       </Button>
                       <Button
                         variant="outline"
@@ -270,18 +297,21 @@ Object.keys(newHours).forEach(day => {
                   )}
                 </div>
 
-                {workingHours[day.key as keyof typeof workingHours].enabled && (
+                {workingHours[day.key].enabled && (
                   <div className="space-y-2">
-                    {workingHours[day.key as keyof typeof workingHours].slots.map((slot, index) => (
+                    {workingHours[day.key].slots.map((slot, index) => (
                       <div key={index} className="flex items-center gap-2">
                         <Select
                           value={slot.start}
                           onValueChange={(value) => {
-                            const newSlots = [...workingHours[day.key as keyof typeof workingHours].slots]
-                            newSlots[index].start = value
                             setWorkingHours(prev => ({
                               ...prev,
-                              [day.key]: { ...prev[day.key as keyof typeof prev], slots: newSlots }
+                              [day.key]: {
+                                ...prev[day.key],
+                                slots: prev[day.key].slots.map((s, i) =>
+                                  i === index ? { ...s, start: value } : s
+                                )
+                              }
                             }))
                           }}
                           disabled={!isEditing}
@@ -304,11 +334,14 @@ Object.keys(newHours).forEach(day => {
                         <Select
                           value={slot.end}
                           onValueChange={(value) => {
-                            const newSlots = [...workingHours[day.key as keyof typeof workingHours].slots]
-                            newSlots[index].end = value
                             setWorkingHours(prev => ({
                               ...prev,
-                              [day.key]: { ...prev[day.key as keyof typeof prev], slots: newSlots }
+                              [day.key]: {
+                                ...prev[day.key],
+                                slots: prev[day.key].slots.map((s, i) =>
+                                  i === index ? { ...s, end: value } : s
+                                )
+                              }
                             }))
                           }}
                           disabled={!isEditing}
@@ -326,7 +359,7 @@ Object.keys(newHours).forEach(day => {
                           </SelectContent>
                         </Select>
 
-                        {isEditing && workingHours[day.key as keyof typeof workingHours].slots.length > 1 && (
+                        {isEditing && workingHours[day.key].slots.length > 1 && (
                           <Button
                             variant="ghost"
                             size="sm"
@@ -345,54 +378,54 @@ Object.keys(newHours).forEach(day => {
         </CardContent>
       </Card>
 
-      {/* Settings */}
+      {/* Ustawienia */}
       <Card>
         <CardHeader>
-          <CardTitle>Додаткові налаштування</CardTitle>
+          <CardTitle>Dodatkowe ustawienia</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <Label>Автоматичне підтвердження бронювань</Label>
-                <p className="text-sm text-gray-500">Студенти можуть бронювати без вашого схвалення</p>
+                <Label>Automatyczne potwierdzanie rezerwacji</Label>
+                <p className="text-sm text-gray-500">Kursanci mogą rezerwować bez Twojego zatwierdzenia</p>
               </div>
               <Switch disabled={!isEditing} />
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <Label>Повторювати щотижня</Label>
-                <p className="text-sm text-gray-500">Застосувати розклад для всіх тижнів</p>
+                <Label>Powtarzaj co tydzień</Label>
+                <p className="text-sm text-gray-500">Zastosuj harmonogram dla wszystkich tygodni</p>
               </div>
               <Switch defaultChecked disabled={!isEditing} />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Тривалість заняття</Label>
+                <Label>Czas trwania lekcji</Label>
                 <Select defaultValue="90" disabled={!isEditing}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="60">60 хвилин</SelectItem>
-                    <SelectItem value="90">90 хвилин</SelectItem>
-                    <SelectItem value="120">120 хвилин</SelectItem>
+                    <SelectItem value="60">60 minut</SelectItem>
+                    <SelectItem value="90">90 minut</SelectItem>
+                    <SelectItem value="120">120 minut</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label>Перерва між заняттями</Label>
+                <Label>Przerwa między lekcjami</Label>
                 <Select defaultValue="15" disabled={!isEditing}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="0">Без перерви</SelectItem>
-                    <SelectItem value="15">15 хвилин</SelectItem>
-                    <SelectItem value="30">30 хвилин</SelectItem>
+                    <SelectItem value="0">Bez przerwy</SelectItem>
+                    <SelectItem value="15">15 minut</SelectItem>
+                    <SelectItem value="30">30 minut</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

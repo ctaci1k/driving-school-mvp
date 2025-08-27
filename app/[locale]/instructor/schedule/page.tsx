@@ -54,7 +54,7 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, eachDayOfInte
          isSameMonth, isSameDay, isToday, addMonths, subMonths, 
          addWeeks, subWeeks, getDay, setHours, setMinutes, addDays,
          startOfDay, endOfDay, isWithinInterval, parse } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 // Import custom components
 import { CalendarView } from '@/components/calendar/CalendarView'
@@ -95,12 +95,12 @@ interface Lesson {
 }
 
 const lessonTypes = {
-  'city': { label: 'Місто', color: 'bg-blue-500', icon: '🏙️' },
-  'highway': { label: 'Траса', color: 'bg-green-500', icon: '🛣️' },
-  'parking': { label: 'Паркування', color: 'bg-purple-500', icon: '🅿️' },
-  'exam-prep': { label: 'Підготовка до іспиту', color: 'bg-orange-500', icon: '📝' },
-  'night': { label: 'Нічна їзда', color: 'bg-indigo-500', icon: '🌙' },
-  'theory': { label: 'Теорія', color: 'bg-yellow-500', icon: '📚' }
+  'city': { label: 'Miasto', color: 'bg-blue-500', icon: '🏙️' },
+  'highway': { label: 'Trasa', color: 'bg-green-500', icon: '🛣️' },
+  'parking': { label: 'Parkowanie', color: 'bg-purple-500', icon: '🅿️' },
+  'exam-prep': { label: 'Przygotowanie do egzaminu', color: 'bg-orange-500', icon: '📝' },
+  'night': { label: 'Jazda nocna', color: 'bg-indigo-500', icon: '🌙' },
+  'theory': { label: 'Teoria', color: 'bg-yellow-500', icon: '📚' }
 }
 
 const timeSlots = [
@@ -121,7 +121,7 @@ export default function SchedulePage() {
   const [showFilters, setShowFilters] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Mock data - lessons for the month
+  // Mock data - zajęcia na miesiąc
   const [lessons, setLessons] = useState<Lesson[]>([
     {
       id: '1',
@@ -130,16 +130,16 @@ export default function SchedulePage() {
       endTime: '10:30',
       student: {
         id: 's1',
-        name: 'Марія Шевчук',
-        avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
-        phone: '+380501234567',
+        name: 'Maria Wiśniewska',
+        avatar: 'https://ui-avatars.com/api/?name=MW&background=10B981&color=fff',
+        phone: '+48501234567',
         progress: 85,
         category: 'B'
       },
       type: 'exam-prep',
       status: 'confirmed',
-      location: 'вул. Шевченка, 100',
-      notes: 'Фінальна підготовка до іспиту',
+      location: 'ul. Marszałkowska, 100',
+      notes: 'Końcowe przygotowania do egzaminu',
       payment: { status: 'paid', amount: 400 }
     },
     {
@@ -149,15 +149,15 @@ export default function SchedulePage() {
       endTime: '12:30',
       student: {
         id: 's2',
-        name: 'Іван Петренко',
-        avatar: 'https://ui-avatars.com/api/?name=IP&background=3B82F6&color=fff',
-        phone: '+380501234568',
+        name: 'Jan Nowak',
+        avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff',
+        phone: '+48501234568',
         progress: 45,
         category: 'B'
       },
       type: 'city',
       status: 'scheduled',
-      location: 'вул. Хрещатик, 1',
+      location: 'ul. Nowy Świat, 1',
       recurring: {
         id: 'rec1',
         pattern: 'weekly',
@@ -172,16 +172,16 @@ export default function SchedulePage() {
       endTime: '15:30',
       student: {
         id: 's3',
-        name: 'Олена Коваленко',
-        avatar: 'https://ui-avatars.com/api/?name=OK&background=EC4899&color=fff',
-        phone: '+380501234569',
+        name: 'Anna Kowalska',
+        avatar: 'https://ui-avatars.com/api/?name=AK&background=EC4899&color=fff',
+        phone: '+48501234569',
         progress: 65,
         category: 'B'
       },
       type: 'parking',
       status: 'confirmed',
-      location: 'Майданчик',
-      notes: 'Паралельне паркування',
+      location: 'Plac manewrowy',
+      notes: 'Parkowanie równoległe',
       payment: { status: 'paid', amount: 350 }
     },
     {
@@ -191,20 +191,20 @@ export default function SchedulePage() {
       endTime: '17:30',
       student: {
         id: 's4',
-        name: 'Андрій Бондаренко',
-        avatar: 'https://ui-avatars.com/api/?name=AB&background=F59E0B&color=fff',
-        phone: '+380501234570',
+        name: 'Andrzej Kowalczyk',
+        avatar: 'https://ui-avatars.com/api/?name=AK&background=F59E0B&color=fff',
+        phone: '+48501234570',
         progress: 55,
         category: 'B'
       },
       type: 'highway',
       status: 'scheduled',
-      location: 'Київ-Житомир',
+      location: 'Warszawa-Kraków',
       payment: { status: 'overdue', amount: 400 }
     }
   ])
 
-  // Form state for new/edit lesson
+  // Stan formularza dla nowych/edytowanych zajęć
   const [lessonForm, setLessonForm] = useState({
     studentId: '',
     date: new Date(),
@@ -220,45 +220,45 @@ export default function SchedulePage() {
     reminderTime: '1-day' // 1-day, 2-hours, 30-min
   })
 
-  // Filter state
+  // Stan filtrów
   const [filters, setFilters] = useState({
     student: 'all',
     type: 'all',
     status: 'all'
   })
 
-  // Mock students data
+  // Mock data kursantów
   const students = [
-    { id: 's1', name: 'Марія Шевчук', progress: 85, avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff', phone: '+380501234567', category: 'B' },
-    { id: 's2', name: 'Іван Петренко', progress: 45, avatar: 'https://ui-avatars.com/api/?name=IP&background=3B82F6&color=fff', phone: '+380501234568', category: 'B' },
-    { id: 's3', name: 'Олена Коваленко', progress: 65, avatar: 'https://ui-avatars.com/api/?name=OK&background=EC4899&color=fff', phone: '+380501234569', category: 'B' },
-    { id: 's4', name: 'Андрій Бондаренко', progress: 55, avatar: 'https://ui-avatars.com/api/?name=AB&background=F59E0B&color=fff', phone: '+380501234570', category: 'B' },
-    { id: 's5', name: 'Наталія Гриценко', progress: 70, avatar: 'https://ui-avatars.com/api/?name=NG&background=8B5CF6&color=fff', phone: '+380501234571', category: 'B' },
-    { id: 's6', name: 'Сергій Мельник', progress: 40, avatar: 'https://ui-avatars.com/api/?name=SM&background=EF4444&color=fff', phone: '+380501234572', category: 'B' }
+    { id: 's1', name: 'Maria Wiśniewska', progress: 85, avatar: 'https://ui-avatars.com/api/?name=MW&background=10B981&color=fff', phone: '+48501234567', category: 'B' },
+    { id: 's2', name: 'Jan Nowak', progress: 45, avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff', phone: '+48501234568', category: 'B' },
+    { id: 's3', name: 'Anna Kowalska', progress: 65, avatar: 'https://ui-avatars.com/api/?name=AK&background=EC4899&color=fff', phone: '+48501234569', category: 'B' },
+    { id: 's4', name: 'Andrzej Kowalczyk', progress: 55, avatar: 'https://ui-avatars.com/api/?name=AK&background=F59E0B&color=fff', phone: '+48501234570', category: 'B' },
+    { id: 's5', name: 'Natalia Lewandowska', progress: 70, avatar: 'https://ui-avatars.com/api/?name=NL&background=8B5CF6&color=fff', phone: '+48501234571', category: 'B' },
+    { id: 's6', name: 'Szymon Kowalski', progress: 40, avatar: 'https://ui-avatars.com/api/?name=SK&background=EF4444&color=fff', phone: '+48501234572', category: 'B' }
   ]
 
-  // Get calendar days
+  // Pobierz dni kalendarza
   const getCalendarDays = () => {
     const start = startOfWeek(startOfMonth(currentDate), { weekStartsOn: 1 })
     const end = endOfWeek(endOfMonth(currentDate), { weekStartsOn: 1 })
     return eachDayOfInterval({ start, end })
   }
 
-  // Get week days
+  // Pobierz dni tygodnia
   const getWeekDays = () => {
     const start = startOfWeek(currentDate, { weekStartsOn: 1 })
     const end = endOfWeek(currentDate, { weekStartsOn: 1 })
     return eachDayOfInterval({ start, end })
   }
 
-  // Get lessons for a specific day
+  // Pobierz zajęcia dla konkretnego dnia
   const getLessonsForDay = (date: Date) => {
     return lessons.filter(lesson => 
       isSameDay(lesson.date, date) && lesson.status !== 'cancelled'
     )
   }
 
-  // Navigate calendar
+  // Nawigacja po kalendarzu
   const navigateCalendar = (direction: 'prev' | 'next') => {
     if (view === 'month') {
       setCurrentDate(direction === 'prev' ? subMonths(currentDate, 1) : addMonths(currentDate, 1))
@@ -269,7 +269,7 @@ export default function SchedulePage() {
     }
   }
 
-  // Handle lesson creation
+  // Obsługa tworzenia zajęć
   const handleCreateLesson = () => {
     const newLesson: Lesson = {
       id: `lesson-${Date.now()}`,
@@ -285,7 +285,7 @@ export default function SchedulePage() {
     }
 
     if (lessonForm.recurring) {
-      // Create recurring lessons
+      // Tworzenie powtarzających się zajęć
       const endDate = lessonForm.recurringEndDate
       let currentLessonDate = new Date(lessonForm.date)
       const recurringLessons: Lesson[] = []
@@ -302,7 +302,7 @@ export default function SchedulePage() {
           }
         })
 
-        // Calculate next date based on pattern
+        // Oblicz następną datę na podstawie wzorca
         if (lessonForm.recurringPattern === 'daily') {
           currentLessonDate = addDays(currentLessonDate, 1)
         } else if (lessonForm.recurringPattern === 'weekly') {
@@ -323,7 +323,7 @@ export default function SchedulePage() {
     resetForm()
   }
 
-  // Calculate end time
+  // Oblicz czas końcowy
   const calculateEndTime = (startTime: string, duration: number) => {
     const [hours, minutes] = startTime.split(':').map(Number)
     const totalMinutes = hours * 60 + minutes + duration
@@ -332,7 +332,7 @@ export default function SchedulePage() {
     return `${endHours.toString().padStart(2, '0')}:${endMinutes.toString().padStart(2, '0')}`
   }
 
-  // Reset form
+  // Resetuj formularz
   const resetForm = () => {
     setLessonForm({
       studentId: '',
@@ -350,100 +350,36 @@ export default function SchedulePage() {
     })
   }
 
-  // Delete lesson
+  // Usuń zajęcia
   const handleDeleteLesson = (lessonId: string, deleteAll: boolean = false) => {
     const lesson = lessons.find(l => l.id === lessonId)
     if (lesson?.recurring && deleteAll) {
-      // Delete all recurring lessons
+      // Usuń wszystkie powtarzające się zajęcia
       setLessons(lessons.filter(l => l.recurring?.id !== lesson.recurring?.id))
     } else {
-      // Delete single lesson
+      // Usuń pojedyncze zajęcia
       setLessons(lessons.filter(l => l.id !== lessonId))
     }
     setSelectedLesson(null)
   }
 
-  // Render calendar grid
+  // Renderuj siatkę kalendarza
   const renderCalendarGrid = () => {
     const days = getCalendarDays()
-    const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']
+    const weekDays = ['Pn', 'Wt', 'Śr', 'Czw', 'Pt', 'Sb', 'Nd']
 
     return (
       <div className="bg-white rounded-lg">
-        {/* Week days header */}
+        {/* Nagłówek dni tygodnia */}
         <div className="grid grid-cols-7 gap-px bg-gray-200">
           {weekDays.map(day => (
             <div key={day} className="bg-gray-50 p-2 text-center text-sm font-medium text-gray-700">
               {day}
-              {/* Quick Booking */}
-      <Button 
-        variant="outline"
-        className="fixed bottom-20 right-4 lg:bottom-4 h-14 w-14 rounded-full shadow-lg z-40"
-        onClick={() => setShowQuickBooking(true)}
-      >
-        <Plus className="w-6 h-6" />
-      </Button>
-
-      {/* Quick Booking Modal */}
-      <Dialog open={showQuickBooking} onOpenChange={setShowQuickBooking}>
-        <DialogContent className="max-w-2xl">
-          <QuickBooking
-            students={students.map(s => ({
-              id: s.id,
-              name: s.name,
-              progress: s.progress || 0
-            }))}
-            selectedDate={selectedDate || new Date()}
-            onSubmit={(booking) => {
-              const student = students.find(s => s.id === booking.studentId)
-              if (student) {
-                const newLesson: Lesson = {
-                  id: `lesson-${Date.now()}`,
-                  date: booking.date,
-                  startTime: booking.startTime,
-                  endTime: calculateEndTime(booking.startTime, booking.duration),
-                  student: {
-                    ...student,
-                    avatar: `https://ui-avatars.com/api/?name=${student.name.replace(' ', '+')}&background=10B981&color=fff`,
-                    phone: '+380501234567',
-                    progress: student.progress || 0,
-                    category: 'B'
-                  },
-                  type: booking.type,
-                  status: 'scheduled',
-                  location: booking.location,
-                  notes: booking.notes,
-                  payment: { status: 'pending', amount: 350 }
-                }
-                setLessons([...lessons, newLesson])
-              }
-              setShowQuickBooking(false)
-            }}
-            onCancel={() => setShowQuickBooking(false)}
-          />
-        </DialogContent>
-      </Dialog>
-
-      {/* Recurring Lesson Dialog */}
-      <RecurringLessonDialog
-        open={lessonForm.recurring && showRecurringDialog}
-        onOpenChange={setShowRecurringDialog}
-        onConfirm={(recurringData) => {
-          // Handle recurring lesson creation
-          console.log('Recurring data:', recurringData)
-          handleCreateLesson()
-        }}
-        startDate={lessonForm.date}
-        startTime={lessonForm.startTime}
-        duration={lessonForm.duration}
-        studentName={students.find(s => s.id === lessonForm.studentId)?.name}
-        lessonType={lessonTypes[lessonForm.type as keyof typeof lessonTypes]?.label}
-      />
-    </div>
+            </div>
           ))}
         </div>
 
-        {/* Calendar days */}
+        {/* Dni kalendarza */}
         <div className="grid grid-cols-7 gap-px bg-gray-200">
           {days.map((day, idx) => {
             const dayLessons = getLessonsForDay(day)
@@ -473,7 +409,7 @@ export default function SchedulePage() {
                   )}
                 </div>
 
-                {/* Mini lesson indicators */}
+                {/* Mini wskaźniki zajęć */}
                 <div className="space-y-1">
                   {dayLessons.slice(0, 3).map(lesson => (
                     <div
@@ -485,7 +421,7 @@ export default function SchedulePage() {
                   ))}
                   {dayLessons.length > 3 && (
                     <div className="text-xs text-gray-500">
-                      +{dayLessons.length - 3} більше
+                      +{dayLessons.length - 3} więcej
                     </div>
                   )}
                 </div>
@@ -497,16 +433,16 @@ export default function SchedulePage() {
     )
   }
 
-  // Render week view
+  // Renderuj widok tygodniowy
   const renderWeekView = () => {
     const days = getWeekDays()
-    const hours = Array.from({ length: 13 }, (_, i) => i + 8) // 8:00 to 20:00
+    const hours = Array.from({ length: 13 }, (_, i) => i + 8) // 8:00 do 20:00
 
     return (
       <div className="bg-white rounded-lg overflow-hidden">
         <div className="grid grid-cols-8 border-b">
           <div className="p-2 text-center text-sm font-medium text-gray-700 border-r">
-            Час
+            Czas
           </div>
           {days.map((day, idx) => (
             <div
@@ -514,7 +450,7 @@ export default function SchedulePage() {
               className={`p-2 text-center border-r ${isToday(day) ? 'bg-blue-50' : ''}`}
             >
               <div className="text-sm font-medium text-gray-700">
-                {format(day, 'EEE', { locale: uk })}
+                {format(day, 'EEE', { locale: pl })}
               </div>
               <div className={`text-lg font-bold ${isToday(day) ? 'text-blue-600' : ''}`}>
                 {format(day, 'd')}
@@ -563,7 +499,7 @@ export default function SchedulePage() {
     )
   }
 
-  // Render day view
+  // Renderuj widok dniowy
   const renderDayView = () => {
     const hours = Array.from({ length: 13 }, (_, i) => i + 8)
     const dayLessons = getLessonsForDay(currentDate)
@@ -572,10 +508,10 @@ export default function SchedulePage() {
       <div className="bg-white rounded-lg">
         <div className="border-b p-4">
           <h3 className="text-lg font-semibold">
-            {format(currentDate, 'EEEE, d MMMM yyyy', { locale: uk })}
+            {format(currentDate, 'EEEE, d MMMM yyyy', { locale: pl })}
           </h3>
           <p className="text-sm text-gray-500 mt-1">
-            {dayLessons.length} {dayLessons.length === 1 ? 'заняття' : 'занять'}
+            {dayLessons.length} {dayLessons.length === 1 ? 'zajęcia' : 'zajęć'}
           </p>
         </div>
 
@@ -594,30 +530,30 @@ export default function SchedulePage() {
                   <div className="flex-1">
                     {hourLessons.length > 0 ? (
                       <div className="space-y-2">
-                  {dayLessons.map(lesson => (
-                    <LessonCard
-                      key={lesson.id}
-                      lesson={{
-                        ...lesson,
-                        duration: 90,
-                        student: {
-                          ...lesson.student,
-                          lessonsCompleted: 10
-                        },
-                        recurring: !!lesson.recurring
-                      }}
-                      variant="detailed"
-                      onEdit={(l) => {
-                        setSelectedLesson(lessons.find(les => les.id === l.id) || null)
-                        setShowAddDialog(true)
-                      }}
-                      onDelete={(l) => handleDeleteLesson(l.id)}
-                      onCall={(l) => console.log('Call:', l)}
-                      onMessage={(l) => console.log('Message:', l)}
-                      onNavigate={(l) => console.log('Navigate:', l)}
-                      onClick={(l) => setSelectedLesson(lessons.find(les => les.id === l.id) || null)}
-                    />
-                  ))}
+                        {dayLessons.map(lesson => (
+                          <LessonCard
+                            key={lesson.id}
+                            lesson={{
+                              ...lesson,
+                              duration: 90,
+                              student: {
+                                ...lesson.student,
+                                lessonsCompleted: 10
+                              },
+                              recurring: !!lesson.recurring
+                            }}
+                            variant="detailed"
+                            onEdit={(l) => {
+                              setSelectedLesson(lessons.find(les => les.id === l.id) || null)
+                              setShowAddDialog(true)
+                            }}
+                            onDelete={(l) => handleDeleteLesson(l.id)}
+                            onCall={(l) => console.log('Dzwoń:', l)}
+                            onMessage={(l) => console.log('Wiadomość:', l)}
+                            onNavigate={(l) => console.log('Nawiguj:', l)}
+                            onClick={(l) => setSelectedLesson(lessons.find(les => les.id === l.id) || null)}
+                          />
+                        ))}
                       </div>
                     ) : (
                       <div className="h-16 border border-dashed border-gray-200 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-50 cursor-pointer"
@@ -630,7 +566,7 @@ export default function SchedulePage() {
                              setShowAddDialog(true)
                            }}>
                         <Plus className="w-4 h-4 mr-2" />
-                        Додати заняття
+                        Dodaj zajęcia
                       </div>
                     )}
                   </div>
@@ -643,7 +579,7 @@ export default function SchedulePage() {
     )
   }
 
-  // Render list view
+  // Renderuj widok listy
   const renderListView = () => {
     const sortedLessons = [...lessons].sort((a, b) => a.date.getTime() - b.date.getTime())
     const groupedLessons = sortedLessons.reduce((acc, lesson) => {
@@ -661,31 +597,31 @@ export default function SchedulePage() {
           <Card key={dateKey}>
             <CardHeader>
               <CardTitle className="text-base">
-                {format(new Date(dateKey), 'EEEE, d MMMM', { locale: uk })}
+                {format(new Date(dateKey), 'EEEE, d MMMM', { locale: pl })}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-            {dateLessons.map(lesson => (
-              <LessonCard
-                key={lesson.id}
-                lesson={{
-                  ...lesson,
-                  duration: 90,
-                  student: {
-                    ...lesson.student,
-                    lessonsCompleted: 10
-                  },
-                  recurring: !!lesson.recurring
-                }}
-                variant="default"
-                onEdit={(l) => {
-                  setSelectedLesson(lessons.find(les => les.id === l.id) || null)
-                  setShowAddDialog(true)
-                }}
-                onDelete={(l) => handleDeleteLesson(l.id)}
-                onClick={(l) => setSelectedLesson(lessons.find(les => les.id === l.id) || null)}
-              />
-            ))}
+              {dateLessons.map(lesson => (
+                <LessonCard
+                  key={lesson.id}
+                  lesson={{
+                    ...lesson,
+                    duration: 90,
+                    student: {
+                      ...lesson.student,
+                      lessonsCompleted: 10
+                    },
+                    recurring: !!lesson.recurring
+                  }}
+                  variant="default"
+                  onEdit={(l) => {
+                    setSelectedLesson(lessons.find(les => les.id === l.id) || null)
+                    setShowAddDialog(true)
+                  }}
+                  onDelete={(l) => handleDeleteLesson(l.id)}
+                  onClick={(l) => setSelectedLesson(lessons.find(les => les.id === l.id) || null)}
+                />
+              ))}
             </CardContent>
           </Card>
         ))}
@@ -695,39 +631,39 @@ export default function SchedulePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Nagłówek */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Календар занять</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Kalendarz zajęć</h1>
           <p className="text-gray-600 mt-1">
-            Керуйте розкладом та плануйте заняття
+            Zarządzaj harmonogramem i planuj zajęcia
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => setShowFilters(!showFilters)}>
             <Filter className="w-4 h-4 mr-2" />
-            Фільтри
+            Filtry
           </Button>
           <Button onClick={() => setShowAddDialog(true)}>
             <Plus className="w-4 h-4 mr-2" />
-            Додати заняття
+            Dodaj zajęcia
           </Button>
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filtry */}
       {showFilters && (
         <Card>
           <CardContent className="p-4">
             <div className="flex flex-wrap gap-4">
               <div className="flex-1 min-w-[200px]">
-                <Label>Студент</Label>
+                <Label>Kursant</Label>
                 <Select value={filters.student} onValueChange={(value) => setFilters(prev => ({ ...prev, student: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Всі студенти</SelectItem>
+                    <SelectItem value="all">Wszyscy kursanci</SelectItem>
                     {students.map(student => (
                       <SelectItem key={student.id} value={student.id}>
                         {student.name}
@@ -737,13 +673,13 @@ export default function SchedulePage() {
                 </Select>
               </div>
               <div className="flex-1 min-w-[200px]">
-                <Label>Тип заняття</Label>
+                <Label>Typ zajęć</Label>
                 <Select value={filters.type} onValueChange={(value) => setFilters(prev => ({ ...prev, type: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Всі типи</SelectItem>
+                    <SelectItem value="all">Wszystkie typy</SelectItem>
                     {Object.entries(lessonTypes).map(([key, type]) => (
                       <SelectItem key={key} value={key}>
                         {type.icon} {type.label}
@@ -753,17 +689,17 @@ export default function SchedulePage() {
                 </Select>
               </div>
               <div className="flex-1 min-w-[200px]">
-                <Label>Статус</Label>
+                <Label>Status</Label>
                 <Select value={filters.status} onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Всі статуси</SelectItem>
-                    <SelectItem value="scheduled">Заплановано</SelectItem>
-                    <SelectItem value="confirmed">Підтверджено</SelectItem>
-                    <SelectItem value="completed">Завершено</SelectItem>
-                    <SelectItem value="cancelled">Скасовано</SelectItem>
+                    <SelectItem value="all">Wszystkie statusy</SelectItem>
+                    <SelectItem value="scheduled">Zaplanowane</SelectItem>
+                    <SelectItem value="confirmed">Potwierdzone</SelectItem>
+                    <SelectItem value="completed">Zakończone</SelectItem>
+                    <SelectItem value="cancelled">Anulowane</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -772,7 +708,7 @@ export default function SchedulePage() {
         </Card>
       )}
 
-      {/* Calendar Controls */}
+      {/* Kontrolki kalendarza */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -781,91 +717,156 @@ export default function SchedulePage() {
                 <ChevronLeft className="w-4 h-4" />
               </Button>
               <h2 className="text-lg font-semibold">
-                {view === 'month' && format(currentDate, 'LLLL yyyy', { locale: uk })}
-                {view === 'week' && `${format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'd MMM', { locale: uk })} - ${format(endOfWeek(currentDate, { weekStartsOn: 1 }), 'd MMM yyyy', { locale: uk })}`}
-                {view === 'day' && format(currentDate, 'EEEE, d MMMM yyyy', { locale: uk })}
-                {view === 'list' && 'Список занять'}
+                {view === 'month' && format(currentDate, 'LLLL yyyy', { locale: pl })}
+                {view === 'week' && `${format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'd MMM', { locale: pl })} - ${format(endOfWeek(currentDate, { weekStartsOn: 1 }), 'd MMM yyyy', { locale: pl })}`}
+                {view === 'day' && format(currentDate, 'EEEE, d MMMM yyyy', { locale: pl })}
+                {view === 'list' && 'Lista zajęć'}
               </h2>
               <Button variant="ghost" size="icon" onClick={() => navigateCalendar('next')}>
                 <ChevronRight className="w-4 h-4" />
               </Button>
               <Button variant="outline" size="sm" onClick={() => setCurrentDate(new Date())}>
-                Сьогодні
+                Dzisiaj
               </Button>
             </div>
             <Tabs value={view} onValueChange={(v) => setView(v as typeof view)}>
               <TabsList>
                 <TabsTrigger value="month">
                   <CalendarDays className="w-4 h-4 mr-2" />
-                  Місяць
+                  Miesiąc
                 </TabsTrigger>
                 <TabsTrigger value="week">
                   <Grid3x3 className="w-4 h-4 mr-2" />
-                  Тиждень
+                  Tydzień
                 </TabsTrigger>
                 <TabsTrigger value="day">
                   <CalendarIcon className="w-4 h-4 mr-2" />
-                  День
+                  Dzień
                 </TabsTrigger>
                 <TabsTrigger value="list">
                   <List className="w-4 h-4 mr-2" />
-                  Список
+                  Lista
                 </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
         </CardHeader>
         <CardContent>
-        {view === 'month' && (
-          <CalendarView 
-            currentDate={currentDate}
-            events={lessons.map(lesson => ({
-              id: lesson.id,
-              date: lesson.date,
-              startTime: lesson.startTime,
-              endTime: lesson.endTime,
-              title: lesson.student.name,
-              type: lesson.type,
-              color: lessonTypes[lesson.type].color.replace('bg-', '#').replace('500', ''),
-              status: lesson.status
-            }))}
-            onDateSelect={setSelectedDate}
-            onEventClick={(event) => {
-              const lesson = lessons.find(l => l.id === event.id)
-              if (lesson) setSelectedLesson(lesson)
-            }}
-            onMonthChange={setCurrentDate}
-            onAddEvent={(date) => {
-              setLessonForm(prev => ({ ...prev, date }))
-              setShowAddDialog(true)
-            }}
-            showWeekNumbers={true}
-          />
-        )}
+          {view === 'month' && (
+            <CalendarView 
+              currentDate={currentDate}
+              events={lessons.map(lesson => ({
+                id: lesson.id,
+                date: lesson.date,
+                startTime: lesson.startTime,
+                endTime: lesson.endTime,
+                title: lesson.student.name,
+                type: lesson.type,
+                color: lessonTypes[lesson.type].color.replace('bg-', '#').replace('500', ''),
+                status: lesson.status
+              }))}
+              onDateSelect={setSelectedDate}
+              onEventClick={(event) => {
+                const lesson = lessons.find(l => l.id === event.id)
+                if (lesson) setSelectedLesson(lesson)
+              }}
+              onMonthChange={setCurrentDate}
+              onAddEvent={(date) => {
+                setLessonForm(prev => ({ ...prev, date }))
+                setShowAddDialog(true)
+              }}
+              showWeekNumbers={true}
+            />
+          )}
           {view === 'week' && renderWeekView()}
           {view === 'day' && renderDayView()}
           {view === 'list' && renderListView()}
         </CardContent>
       </Card>
 
-      {/* Add/Edit Lesson Dialog */}
+      {/* Szybka rezerwacja */}
+      <Button 
+        variant="outline"
+        className="fixed bottom-20 right-4 lg:bottom-4 h-14 w-14 rounded-full shadow-lg z-40"
+        onClick={() => setShowQuickBooking(true)}
+      >
+        <Plus className="w-6 h-6" />
+      </Button>
+
+      {/* Dialog szybkiej rezerwacji */}
+      <Dialog open={showQuickBooking} onOpenChange={setShowQuickBooking}>
+        <DialogContent className="max-w-2xl">
+          <QuickBooking
+            students={students.map(s => ({
+              id: s.id,
+              name: s.name,
+              progress: s.progress || 0
+            }))}
+            selectedDate={selectedDate || new Date()}
+            onSubmit={(booking) => {
+              const student = students.find(s => s.id === booking.studentId)
+              if (student) {
+                const newLesson: Lesson = {
+                  id: `lesson-${Date.now()}`,
+                  date: booking.date,
+                  startTime: booking.startTime,
+                  endTime: calculateEndTime(booking.startTime, booking.duration),
+                  student: {
+                    ...student,
+                    avatar: `https://ui-avatars.com/api/?name=${student.name.replace(' ', '+')}&background=10B981&color=fff`,
+                    phone: '+48501234567',
+                    progress: student.progress || 0,
+                    category: 'B'
+                  },
+                  type: booking.type,
+                  status: 'scheduled',
+                  location: booking.location,
+                  notes: booking.notes,
+                  payment: { status: 'pending', amount: 350 }
+                }
+                setLessons([...lessons, newLesson])
+              }
+              setShowQuickBooking(false)
+            }}
+            onCancel={() => setShowQuickBooking(false)}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog powtarzających się zajęć */}
+      <RecurringLessonDialog
+        open={lessonForm.recurring && showRecurringDialog}
+        onOpenChange={setShowRecurringDialog}
+        onConfirm={(recurringData) => {
+          // Obsługa tworzenia powtarzających się zajęć
+          console.log('Dane powtarzania:', recurringData)
+          handleCreateLesson()
+        }}
+        startDate={lessonForm.date}
+        startTime={lessonForm.startTime}
+        duration={lessonForm.duration}
+        studentName={students.find(s => s.id === lessonForm.studentId)?.name}
+        lessonType={lessonTypes[lessonForm.type as keyof typeof lessonTypes]?.label}
+      />
+
+      {/* Dialog dodawania/edycji zajęć */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Додати нове заняття</DialogTitle>
+            <DialogTitle>Dodaj nowe zajęcia</DialogTitle>
             <DialogDescription>
-              Заповніть інформацію про заняття
+              Wypełnij informacje o zajęciach
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            {/* Student Selector using custom component */}
+            {/* Selektor kursanta używający komponentu niestandardowego */}
             <StudentSelector
               students={students.map(s => ({
                 ...s,
                 id: s.id,
                 name: s.name,
-                phone: '+380501234567',
+                phone: '+48501234567',
                 category: 'B',
                 status: 'active',
                 progress: s.progress || 0,
@@ -878,7 +879,7 @@ export default function SchedulePage() {
               showSearch={true}
             />
 
-            {/* Lesson Type Selector using custom component */}
+            {/* Selektor typu zajęć używający komponentu niestandardowego */}
             <LessonTypeSelector
               value={lessonForm.type}
               onChange={(type) => {
@@ -893,10 +894,10 @@ export default function SchedulePage() {
               variant="grid"
             />
 
-            {/* Time Slot Picker using custom component */}
+            {/* Wybieracz godzin używający komponentu niestandardowego */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Дата</Label>
+                <Label>Data</Label>
                 <Input
                   type="date"
                   value={format(lessonForm.date, 'yyyy-MM-dd')}
@@ -904,7 +905,7 @@ export default function SchedulePage() {
                 />
               </div>
               <div>
-                <Label>Час</Label>
+                <Label>Godzina</Label>
                 <Button 
                   variant="outline" 
                   className="w-full justify-between"
@@ -916,12 +917,12 @@ export default function SchedulePage() {
               </div>
             </div>
 
-            {/* Time Slot Picker Dialog */}
+            {/* Dialog wybierania godzin */}
             {showTimeSlotPicker && (
               <Dialog open={showTimeSlotPicker} onOpenChange={setShowTimeSlotPicker}>
                 <DialogContent className="max-w-2xl">
                   <DialogHeader>
-                    <DialogTitle>Оберіть час</DialogTitle>
+                    <DialogTitle>Wybierz godzinę</DialogTitle>
                   </DialogHeader>
                   <TimeSlotPicker
                     date={lessonForm.date}
@@ -943,54 +944,54 @@ export default function SchedulePage() {
             )}
 
             <div>
-              <Label>Локація</Label>
+              <Label>Lokalizacja</Label>
               <Input
                 value={lessonForm.location}
                 onChange={(e) => setLessonForm(prev => ({ ...prev, location: e.target.value }))}
-                placeholder="Вкажіть місце зустрічі"
+                placeholder="Podaj miejsce spotkania"
               />
             </div>
 
             <div>
-              <Label>Нотатки</Label>
+              <Label>Notatki</Label>
               <Textarea
                 value={lessonForm.notes}
                 onChange={(e) => setLessonForm(prev => ({ ...prev, notes: e.target.value }))}
-                placeholder="Додаткова інформація..."
+                placeholder="Dodatkowe informacje..."
                 rows={3}
               />
             </div>
 
             <Separator />
 
-            {/* Recurring options */}
+            {/* Opcje powtarzania */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Checkbox
                   checked={lessonForm.recurring}
                   onCheckedChange={(checked) => setLessonForm(prev => ({ ...prev, recurring: checked as boolean }))}
                 />
-                <Label>Повторювати заняття</Label>
+                <Label>Powtarzaj zajęcia</Label>
               </div>
 
               {lessonForm.recurring && (
                 <div className="grid grid-cols-2 gap-4 ml-6">
                   <div>
-                    <Label>Частота повторення</Label>
+                    <Label>Częstotliwość powtarzania</Label>
                     <Select value={lessonForm.recurringPattern} onValueChange={(value) => setLessonForm(prev => ({ ...prev, recurringPattern: value as typeof lessonForm.recurringPattern }))}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="daily">Щоденно</SelectItem>
-                        <SelectItem value="weekly">Щотижня</SelectItem>
-                        <SelectItem value="biweekly">Кожні 2 тижні</SelectItem>
-                        <SelectItem value="monthly">Щомісяця</SelectItem>
+                        <SelectItem value="daily">Codziennie</SelectItem>
+                        <SelectItem value="weekly">Co tydzień</SelectItem>
+                        <SelectItem value="biweekly">Co 2 tygodnie</SelectItem>
+                        <SelectItem value="monthly">Co miesiąc</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label>Повторювати до</Label>
+                    <Label>Powtarzaj do</Label>
                     <Input
                       type="date"
                       value={format(lessonForm.recurringEndDate, 'yyyy-MM-dd')}
@@ -1003,31 +1004,31 @@ export default function SchedulePage() {
 
             <Separator />
 
-            {/* Reminder options */}
+            {/* Opcje przypomnień */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Checkbox
                   checked={lessonForm.sendReminder}
                   onCheckedChange={(checked) => setLessonForm(prev => ({ ...prev, sendReminder: checked as boolean }))}
                 />
-                <Label>Надіслати нагадування студенту</Label>
+                <Label>Wyślij przypomnienie kursantowi</Label>
               </div>
 
               {lessonForm.sendReminder && (
                 <div className="ml-6">
-                  <Label>Коли нагадати</Label>
+                  <Label>Kiedy przypomnieć</Label>
                   <RadioGroup value={lessonForm.reminderTime} onValueChange={(value) => setLessonForm(prev => ({ ...prev, reminderTime: value }))}>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="1-day" id="1-day" />
-                      <Label htmlFor="1-day">За 1 день</Label>
+                      <Label htmlFor="1-day">Za 1 dzień</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="2-hours" id="2-hours" />
-                      <Label htmlFor="2-hours">За 2 години</Label>
+                      <Label htmlFor="2-hours">Za 2 godziny</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="30-min" id="30-min" />
-                      <Label htmlFor="30-min">За 30 хвилин</Label>
+                      <Label htmlFor="30-min">Za 30 minut</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -1037,21 +1038,21 @@ export default function SchedulePage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-              Скасувати
+              Anuluj
             </Button>
             <Button onClick={handleCreateLesson}>
-              Створити заняття
+              Utwórz zajęcia
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Selected lesson details popover */}
+      {/* Popover szczegółów wybranych zajęć */}
       {selectedLesson && (
         <Dialog open={!!selectedLesson} onOpenChange={() => setSelectedLesson(null)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Деталі заняття</DialogTitle>
+              <DialogTitle>Szczegóły zajęć</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
@@ -1068,7 +1069,7 @@ export default function SchedulePage() {
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-sm">
                   <CalendarIcon className="w-4 h-4 text-gray-400" />
-                  {format(selectedLesson.date, 'EEEE, d MMMM yyyy', { locale: uk })}
+                  {format(selectedLesson.date, 'EEEE, d MMMM yyyy', { locale: pl })}
                 </div>
                 <div className="flex items-center gap-2 text-sm">
                   <Clock className="w-4 h-4 text-gray-400" />
@@ -1089,14 +1090,14 @@ export default function SchedulePage() {
               <div className="flex gap-2">
                 <Badge>{lessonTypes[selectedLesson.type].label}</Badge>
                 {selectedLesson.recurring && (
-                  <Badge variant="outline">Повторюється</Badge>
+                  <Badge variant="outline">Powtarza się</Badge>
                 )}
                 {selectedLesson.payment && (
                   <Badge variant={
                     selectedLesson.payment.status === 'paid' ? 'default' :
                     selectedLesson.payment.status === 'pending' ? 'secondary' : 'destructive'
                   }>
-                    ₴{selectedLesson.payment.amount}
+                    zł{selectedLesson.payment.amount}
                   </Badge>
                 )}
               </div>
@@ -1107,25 +1108,25 @@ export default function SchedulePage() {
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline">
                     <Phone className="w-4 h-4 mr-2" />
-                    Дзвонити
+                    Dzwoń
                   </Button>
                   <Button size="sm" variant="outline">
                     <MessageSquare className="w-4 h-4 mr-2" />
-                    Повідомлення
+                    Wiadomość
                   </Button>
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" variant="outline">
                     <Edit className="w-4 h-4 mr-2" />
-                    Редагувати
+                    Edytuj
                   </Button>
                   <Button
                     size="sm"
                     variant="destructive"
                     onClick={() => {
                       if (selectedLesson.recurring) {
-                        // Show confirmation for recurring lessons
-                        if (confirm('Видалити всі повторювані заняття?')) {
+                        // Pokaż potwierdzenie dla powtarzających się zajęć
+                        if (confirm('Usunąć wszystkie powtarzające się zajęcia?')) {
                           handleDeleteLesson(selectedLesson.id, true)
                         } else {
                           handleDeleteLesson(selectedLesson.id, false)
@@ -1136,7 +1137,7 @@ export default function SchedulePage() {
                     }}
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Видалити
+                    Usuń
                   </Button>
                 </div>
               </div>

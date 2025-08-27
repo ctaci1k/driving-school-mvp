@@ -56,8 +56,8 @@ services:
       DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
       DIRECT_URL: postgresql://postgres:postgres123@postgres:5432/driving_school?schema=public
       REDIS_URL: redis://redis:6379
-      NEXTAUTH_URL: http://localhost:3000
-      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      NEXTAUTH_URL: http://localhost:3001
+      NEXT_PUBLIC_APP_URL: http://localhost:3001
       NEXTAUTH_SECRET: development-secret-key-change-in-production
       # Якщо у рідкісних випадках не бачить зміни — розкоментуй дві нижні:
       # CHOKIDAR_USEPOLLING: "true"
@@ -69,7 +69,7 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "3000:3000"
+      - "3001:3000"
     # Монтуємо весь проект (зручно для hot-reload) + ізолюємо node_modules та .next у named volumes
     volumes:
       - ./:/app

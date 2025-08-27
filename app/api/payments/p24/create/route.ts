@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     })
 
     // Prepare P24 transaction
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
     
     const transaction = await p24Client.registerTransaction({
       sessionId,

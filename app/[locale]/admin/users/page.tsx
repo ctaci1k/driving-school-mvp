@@ -7,53 +7,55 @@ import {
   Download, Mail, Shield, CheckCircle, XCircle, Clock,
   ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight,
   Users, GraduationCap, UserCheck, ShieldCheck, AlertCircle,
-  Calendar, MapPin, Phone, Loader2, RefreshCw
+  Calendar, MapPin, Phone, Loader2, RefreshCw,
+  Plus
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
+import { useParams, useRouter} from 'next/navigation';
 
-// Функція для псевдовипадкових значень на основі індексу
+// Funkcja dla pseudolosowych wartości na podstawie indeksu
 const getSeededValue = (index: number, max: number, seed: number = 1) => {
   return ((index * seed + 7) % max);
 };
 
-// Generate mock data with stable values
+// Generowanie przykładowych danych ze stabilnymi wartościami
 const generateMockUsers = () => {
-const ukrainianNames = [
-    'Олександр Петренко', 'Марія Коваленко', 'Іван Шевченко', 'Оксана Бойко',
-    'Петро Мельник', 'Юлія Ткаченко', 'Андрій Кравчук', 'Наталія Савченко',
-    'Михайло Гончаренко', 'Тетяна Павленко', 'Василь Романенко', 'Світлана Яковенко',
-    'Богдан Левченко', 'Ірина Захарченко', 'Олег Дорошенко', 'Катерина Литвиненко',
-    'Сергій Кузьменко', 'Людмила Харченко', 'Володимир Білоус', 'Галина Мороз',
-    'Євген Лисенко', 'Валентина Кравченко', 'Анатолій Бондаренко', 'Надія Олійник',
-    'Ігор Шевчук', 'Лариса Коваль', 'Віктор Зайцев', 'Ольга Руденко',
-    'Роман Козлов', 'Алла Данилюк', 'Юрій Марченко', 'Раїса Поліщук'
+const polishNames = [
+    'Aleksander Nowak', 'Maria Kowalska', 'Jan Wiśniewski', 'Anna Wójcik',
+    'Piotr Kowalczyk', 'Julia Kamińska', 'Andrzej Lewandowski', 'Natalia Dąbrowska',
+    'Michał Zieliński', 'Teresa Szymańska', 'Wojciech Woźniak', 'Światłana Kozłowska',
+    'Bogdan Jankowski', 'Irena Mazur', 'Olaf Krawczyk', 'Katarzyna Piotrowski',
+    'Szymon Grabowski', 'Lucyna Nowakowski', 'Władysław Pawłowski', 'Halina Michalski',
+    'Eugeniusz Adamczyk', 'Walentyna Dudek', 'Anatol Zając', 'Nadzieja Król',
+    'Igor Wieczorek', 'Larisa Majewski', 'Wiktor Olszewski', 'Olga Jaworski',
+    'Roman Stępień', 'Alla Malinowski', 'Jerzy Górski', 'Rozalia Sikora'
   ];
 
-  const cities = ['Київ', 'Львів', 'Одеса', 'Харків', 'Дніпро', 'Запоріжжя', 'Вінниця', 'Полтава'];
+  const cities = ['Warszawa', 'Kraków', 'Wrocław', 'Gdańsk', 'Poznań', 'Szczecin', 'Łódź', 'Lublin'];
   const roles = ['STUDENT', 'INSTRUCTOR', 'ADMIN', 'MANAGER'];
   const statuses = ['ACTIVE', 'INACTIVE', 'PENDING', 'SUSPENDED'];
 
   return Array.from({ length: 50 }, (_, i) => {
-    const name = ukrainianNames[i % ukrainianNames.length] + (i >= ukrainianNames.length ? ` ${Math.floor(i / ukrainianNames.length)}` : '');
+    const name = polishNames[i % polishNames.length] + (i >= polishNames.length ? ` ${Math.floor(i / polishNames.length)}` : '');
     const nameParts = name.split(' ');
     const email = `${nameParts[1].toLowerCase()}.${nameParts[0].toLowerCase()}${i}@example.com`;
     
-    // Використовуємо детерміновані значення на основі індексу
+    // Używamy deterministycznych wartości na podstawie indeksu
     const roleIndex = getSeededValue(i, roles.length);
     const role = roles[roleIndex];
     const statusIndex = getSeededValue(i, statuses.length, 3);
     const status = statuses[statusIndex];
     const cityIndex = getSeededValue(i, cities.length, 5);
     
-    // Стабільні телефонні номери
+    // Stabilne numery telefonów
     const phoneBase = 500000000 + (i * 12345);
     
     return {
       id: `user-${i + 1}`,
       name,
       email,
-      phone: `+380${phoneBase}`,
+      phone: `+48${phoneBase}`,
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${
         role === 'ADMIN' ? '6366F1' : 
         role === 'INSTRUCTOR' ? '10B981' : 
@@ -64,8 +66,8 @@ const ukrainianNames = [
       location: cities[cityIndex],
       createdAt: new Date(2024, i % 12, (i % 28) + 1),
       lastLogin: new Date(2024, 11, (i % 28) + 1),
-      emailVerified: i % 5 !== 0, // 80% verified
-      phoneVerified: i % 3 !== 0, // ~66% verified
+      emailVerified: i % 5 !== 0, // 80% zweryfikowane
+      phoneVerified: i % 3 !== 0, // ~66% zweryfikowane
       completedLessons: role === 'STUDENT' ? ((i * 7) % 50) : null,
       totalStudents: role === 'INSTRUCTOR' ? 20 + ((i * 11) % 80) : null,
       rating: role === 'INSTRUCTOR' ? (4.0 + ((i % 10) / 10)).toFixed(1) : null
@@ -73,7 +75,7 @@ const ukrainianNames = [
   });
 };
 
-// Решта коду залишається без змін
+// Reszta kodu pozostaje bez zmian
 export default function AdminUsersPage() {
   const [users] = useState(generateMockUsers());
   const [searchQuery, setSearchQuery] = useState('');
@@ -85,8 +87,14 @@ export default function AdminUsersPage() {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(false);
+    const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || 'pl';
+    const handleAddUser = () => {
+    router.push(`/${locale}/admin/users/new`);
+  };
 
-  // Filter users
+  // Filtrowanie użytkowników
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
       const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,13 +107,13 @@ export default function AdminUsersPage() {
     });
   }, [users, searchQuery, selectedRole, selectedStatus, selectedLocation]);
 
-  // Pagination
+  // Paginacja
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = filteredUsers.slice(startIndex, endIndex);
 
-  // Stats
+  // Statystyki
   const stats = {
     total: users.length,
     students: users.filter(u => u.role === 'STUDENT').length,
@@ -134,40 +142,40 @@ export default function AdminUsersPage() {
   const handleBulkAction = async (action: string) => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(`Bulk action: ${action} for users:`, selectedUsers);
+    console.log(`Akcja grupowa: ${action} dla użytkowników:`, selectedUsers);
     setSelectedUsers([]);
     setLoading(false);
   };
 
   const getRoleBadge = (role: string) => {
     const badges = {
-      ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Адмін' },
-      INSTRUCTOR: { bg: 'bg-green-100', text: 'text-green-700', label: 'Інструктор' },
-      STUDENT: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Студент' },
-      MANAGER: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Менеджер' }
+      ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Administrator' },
+      INSTRUCTOR: { bg: 'bg-green-100', text: 'text-green-700', label: 'Instruktor' },
+      STUDENT: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Student' },
+      MANAGER: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Menedżer' }
     };
     return badges[role as keyof typeof badges] || badges.STUDENT;
   };
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      ACTIVE: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Активний' },
-      INACTIVE: { bg: 'bg-gray-100', text: 'text-gray-700', icon: XCircle, label: 'Неактивний' },
-      PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Очікує' },
-      SUSPENDED: { bg: 'bg-red-100', text: 'text-red-700', icon: AlertCircle, label: 'Заблокований' }
+      ACTIVE: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Aktywny' },
+      INACTIVE: { bg: 'bg-gray-100', text: 'text-gray-700', icon: XCircle, label: 'Nieaktywny' },
+      PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Oczekuje' },
+      SUSPENDED: { bg: 'bg-red-100', text: 'text-red-700', icon: AlertCircle, label: 'Zablokowany' }
     };
     return badges[status as keyof typeof badges] || badges.INACTIVE;
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Nagłówek */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Користувачі</h1>
-        <p className="text-gray-600 mt-1">Управління користувачами системи</p>
+        <h1 className="text-3xl font-bold text-gray-800">Użytkownicy</h1>
+        <p className="text-gray-600 mt-1">Zarządzanie użytkownikami systemu</p>
       </div>
 
-      {/* Stats Cards */}
+      {/* Karty ze statystykami */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-3">
@@ -176,7 +184,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Всього</p>
+              <p className="text-xs text-gray-500">Łącznie</p>
             </div>
           </div>
         </div>
@@ -187,7 +195,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.students}</p>
-              <p className="text-xs text-gray-500">Студентів</p>
+              <p className="text-xs text-gray-500">Studentów</p>
             </div>
           </div>
         </div>
@@ -198,7 +206,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.instructors}</p>
-              <p className="text-xs text-gray-500">Інструкторів</p>
+              <p className="text-xs text-gray-500">Instruktorów</p>
             </div>
           </div>
         </div>
@@ -209,7 +217,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.admins}</p>
-              <p className="text-xs text-gray-500">Адмінів</p>
+              <p className="text-xs text-gray-500">Administratorów</p>
             </div>
           </div>
         </div>
@@ -220,7 +228,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Активних</p>
+              <p className="text-xs text-gray-500">Aktywnych</p>
             </div>
           </div>
         </div>
@@ -231,13 +239,13 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.pending}</p>
-              <p className="text-xs text-gray-500">Очікують</p>
+              <p className="text-xs text-gray-500">Oczekują</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Filters Bar */}
+      {/* Pasek filtrów */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
         <div className="flex flex-col lg:flex-row lg:items-center gap-4">
           <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -245,7 +253,7 @@ export default function AdminUsersPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за іменем або email..."
+                placeholder="Wyszukaj po imieniu lub email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -257,11 +265,11 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedRole(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі ролі</option>
-              <option value="STUDENT">Студенти</option>
-              <option value="INSTRUCTOR">Інструктори</option>
-              <option value="ADMIN">Адміністратори</option>
-              <option value="MANAGER">Менеджери</option>
+              <option value="all">Wszystkie role</option>
+              <option value="STUDENT">Studenci</option>
+              <option value="INSTRUCTOR">Instruktorzy</option>
+              <option value="ADMIN">Administratorzy</option>
+              <option value="MANAGER">Menedżerowie</option>
             </select>
             
             <select
@@ -269,11 +277,11 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="ACTIVE">Активні</option>
-              <option value="INACTIVE">Неактивні</option>
-              <option value="PENDING">Очікують</option>
-              <option value="SUSPENDED">Забloковані</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="ACTIVE">Aktywni</option>
+              <option value="INACTIVE">Nieaktywni</option>
+              <option value="PENDING">Oczekują</option>
+              <option value="SUSPENDED">Zablokowani</option>
             </select>
 
             <button
@@ -281,17 +289,20 @@ export default function AdminUsersPage() {
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
             >
               <Filter className="w-4 h-4" />
-              Більше фільтрів
+              Więcej filtrów
             </button>
           </div>
           
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
-            <UserPlus className="w-4 h-4" />
-            Додати користувача
-          </button>
+
+                      <button onClick={handleAddUser}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+              <Plus className="w-4 h-4" />
+              Dodaj użytkownika
+            </button>
         </div>
 
-        {/* Extended Filters */}
+        {/* Rozszerzone filtry */}
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-2 md:grid-cols-4 gap-3">
             <select
@@ -299,74 +310,74 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі локації</option>
-              <option value="Київ">Київ</option>
-              <option value="Львів">Львів</option>
-              <option value="Одеса">Одеса</option>
-              <option value="Харків">Харків</option>
-              <option value="Дніпро">Дніпро</option>
+              <option value="all">Wszystkie lokalizacje</option>
+              <option value="Warszawa">Warszawa</option>
+              <option value="Kraków">Kraków</option>
+              <option value="Wrocław">Wrocław</option>
+              <option value="Gdańsk">Gdańsk</option>
+              <option value="Poznań">Poznań</option>
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Верифікація email</option>
-              <option>Підтверджено</option>
-              <option>Не підтверджено</option>
+              <option>Weryfikacja email</option>
+              <option>Potwierdzone</option>
+              <option>Niepotwierdzone</option>
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Верифікація телефону</option>
-              <option>Підтверджено</option>
-              <option>Не підтверджено</option>
+              <option>Weryfikacja telefonu</option>
+              <option>Potwierdzone</option>
+              <option>Niepotwierdzone</option>
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Дата реєстрації</option>
-              <option>Останні 7 днів</option>
-              <option>Останні 30 днів</option>
-              <option>Останні 90 днів</option>
+              <option>Data rejestracji</option>
+              <option>Ostatnie 7 dni</option>
+              <option>Ostatnie 30 dni</option>
+              <option>Ostatnie 90 dni</option>
             </select>
           </div>
         )}
       </div>
 
-      {/* Bulk Actions */}
+      {/* Akcje grupowe */}
       {selectedUsers.length > 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-blue-700">
-              Вибрано {selectedUsers.length} користувач(ів)
+              Zaznaczono {selectedUsers.length} użytkownik(ów)
             </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleBulkAction('activate')}
                 className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
               >
-                Активувати
+                Aktywuj
               </button>
               <button
                 onClick={() => handleBulkAction('deactivate')}
                 className="px-3 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"
               >
-                Деактивувати
+                Dezaktywuj
               </button>
               <button
                 onClick={() => handleBulkAction('delete')}
                 className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
               >
-                Видалити
+                Usuń
               </button>
               <button
                 onClick={() => setSelectedUsers([])}
                 className="px-3 py-1 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-100 text-sm"
               >
-                Скасувати
+                Anuluj
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Users Table */}
+      {/* Tabela użytkowników */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -381,25 +392,25 @@ export default function AdminUsersPage() {
                   />
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Користувач
+                  Użytkownik
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Роль
+                  Rola
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Статус
+                  Status
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Локація
+                  Lokalizacja
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Приєднався
+                  Dołączył
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Останній вхід
+                  Ostatnie logowanie
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Дії
+                  Akcje
                 </th>
               </tr>
             </thead>
@@ -408,15 +419,15 @@ export default function AdminUsersPage() {
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center">
                     <Loader2 className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Завантаження...</p>
+                    <p className="text-gray-500">Ładowanie...</p>
                   </td>
                 </tr>
               ) : currentUsers.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center">
                     <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500">Користувачів не знайдено</p>
-                    <p className="text-sm text-gray-400 mt-1">Спробуйте змінити фільтри пошуку</p>
+                    <p className="text-gray-500">Nie znaleziono użytkowników</p>
+                    <p className="text-sm text-gray-400 mt-1">Spróbuj zmienić filtry wyszukiwania</p>
                   </td>
                 </tr>
               ) : (
@@ -455,7 +466,7 @@ export default function AdminUsersPage() {
                               {user.phoneVerified && (
                                 <span className="text-xs text-green-600 flex items-center gap-1">
                                   <Phone className="w-3 h-3" />
-                                  Телефон
+                                  Telefon
                                 </span>
                               )}
                             </div>
@@ -468,7 +479,7 @@ export default function AdminUsersPage() {
                         </span>
                         {user.role === 'INSTRUCTOR' && user.rating && (
                           <p className="text-xs text-gray-500 mt-1">
-                            Рейтинг: {user.rating}★
+                            Ocena: {user.rating}★
                           </p>
                         )}
                       </td>
@@ -486,34 +497,34 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm text-gray-600">
-                          {format(user.createdAt, 'dd MMM yyyy', { locale: uk })}
+                          {format(user.createdAt, 'dd MMM yyyy', { locale: pl })}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm text-gray-600">
-                          {format(user.lastLogin, 'dd MMM, HH:mm', { locale: uk })}
+                          {format(user.lastLogin, 'dd MMM, HH:mm', { locale: pl })}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={() => console.log('View user', user.id)}
+                            onClick={() => console.log('Wyświetl użytkownika', user.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                            title="Переглянути"
+                            title="Wyświetl"
                           >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
                           <button
-                            onClick={() => console.log('Edit user', user.id)}
+                            onClick={() => console.log('Edytuj użytkownika', user.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                            title="Редагувати"
+                            title="Edytuj"
                           >
                             <Edit2 className="w-4 h-4 text-gray-600" />
                           </button>
                           <button
-                            onClick={() => console.log('Delete user', user.id)}
+                            onClick={() => console.log('Usuń użytkownika', user.id)}
                             className="p-1 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Видалити"
+                            title="Usuń"
                           >
                             <Trash2 className="w-4 h-4 text-red-600" />
                           </button>

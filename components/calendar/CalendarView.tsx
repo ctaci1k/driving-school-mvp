@@ -15,7 +15,7 @@ import {
   addMonths, subMonths, getDay,
   Locale
 } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 interface CalendarEvent {
   id: string
@@ -48,7 +48,7 @@ export function CalendarView({
   onMonthChange,
   onAddEvent,
   showWeekNumbers = false,
-  locale = uk,
+  locale = pl,
   className
 }: CalendarViewProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -92,7 +92,7 @@ export function CalendarView({
   }
 
   const days = getCalendarDays()
-  const weekDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд']
+  const weekDays = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd']
 
   // Group days by weeks for week numbers
   const weeks: Date[][] = []
@@ -128,7 +128,7 @@ export function CalendarView({
           size="sm"
           onClick={() => onMonthChange?.(new Date())}
         >
-          Сьогодні
+          Dzisiaj
         </Button>
       </div>
 
@@ -259,7 +259,7 @@ export function CalendarView({
                           className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-0.5"
                         >
                           <MoreHorizontal className="w-3 h-3" />
-                          <span>+{dayEvents.length - 3} ще</span>
+                          <span>+{dayEvents.length - 3} więcej</span>
                         </button>
                       )}
                     </div>
@@ -283,15 +283,15 @@ export function CalendarView({
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
-            <span>{events.length} занять</span>
+            <span>{events.length} lekcji</span>
           </div>
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            <span>{events.filter(e => e.status === 'scheduled').length} заплановано</span>
+            <span>{events.filter(e => e.status === 'scheduled').length} zaplanowanych</span>
           </div>
           <div className="flex items-center gap-1">
             <Users className="w-4 h-4" />
-            <span>{new Set(events.map(e => e.title)).size} студентів</span>
+            <span>{new Set(events.map(e => e.title)).size} kursantów</span>
           </div>
         </div>
         
@@ -299,15 +299,15 @@ export function CalendarView({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-blue-500 rounded" />
-            <span className="text-xs">Практика</span>
+            <span className="text-xs">Praktyka</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-green-500 rounded" />
-            <span className="text-xs">Теорія</span>
+            <span className="text-xs">Teoria</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-orange-500 rounded" />
-            <span className="text-xs">Іспит</span>
+            <span className="text-xs">Egzamin</span>
           </div>
         </div>
       </div>

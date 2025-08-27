@@ -26,20 +26,20 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
 
   const navigation = [
     { name: 'Dashboard', href: `/${params.locale}/admin/dashboard`, icon: LayoutDashboard },
-    { name: 'Користувачі', href: `/${params.locale}/admin/users`, icon: Users },
-    { name: 'Інструктори', href: `/${params.locale}/admin/instructors`, icon: GraduationCap },
-    { name: 'Студенти', href: `/${params.locale}/admin/students`, icon: UserCheck },
-    { name: 'Транспорт', href: `/${params.locale}/admin/vehicles`, icon: Car },
-    { name: 'Локації', href: `/${params.locale}/admin/locations`, icon: MapPin },
-    { name: 'Пакети', href: `/${params.locale}/admin/packages`, icon: Package },
-    { name: 'Бронювання', href: `/${params.locale}/admin/bookings`, icon: Calendar },
-    { name: 'Платежі', href: `/${params.locale}/admin/payments`, icon: CreditCard },
-    { name: 'Звіти', href: `/${params.locale}/admin/reports`, icon: FileText },
-    { name: 'Налаштування', href: `/${params.locale}/admin/settings`, icon: Settings }
+    { name: 'Użytkownicy', href: `/${params.locale}/admin/users`, icon: Users },
+    { name: 'Instruktorzy', href: `/${params.locale}/admin/instructors`, icon: GraduationCap },
+    { name: 'Uczniowie', href: `/${params.locale}/admin/students`, icon: UserCheck },
+    { name: 'Pojazdy', href: `/${params.locale}/admin/vehicles`, icon: Car },
+    { name: 'Lokalizacje', href: `/${params.locale}/admin/locations`, icon: MapPin },
+    { name: 'Pakiety', href: `/${params.locale}/admin/packages`, icon: Package },
+    { name: 'Rezerwacje', href: `/${params.locale}/admin/bookings`, icon: Calendar },
+    { name: 'Płatności', href: `/${params.locale}/admin/payments`, icon: CreditCard },
+    { name: 'Raporty', href: `/${params.locale}/admin/reports`, icon: FileText },
+    { name: 'Ustawienia', href: `/${params.locale}/admin/settings`, icon: Settings }
   ];
 
   const currentUser = {
-    name: 'Адміністратор Системи',
+    name: 'Administrator Systemu',
     email: 'admin@drive-school.com',
     avatar: 'https://ui-avatars.com/api/?name=Admin&background=6366F1&color=fff',
     role: 'Super Admin'
@@ -96,7 +96,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
             </div>
             <div>
               <h1 className="font-bold text-gray-800">DriveSchool</h1>
-              <p className="text-xs text-gray-500">Admin Portal</p>
+              <p className="text-xs text-gray-500">Portal Administratora</p>
             </div>
           </Link>
           <button
@@ -125,7 +125,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
-                {item.name === 'Платежі' && notifications > 0 && (
+                {item.name === 'Płatności' && notifications > 0 && (
                   <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                     {notifications}
                   </span>
@@ -255,25 +255,25 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                         <div className="p-1">
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <User className="w-4 h-4" />
-                            <span className="text-sm">Профіль</span>
+                            <span className="text-sm">Profil</span>
                           </button>
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <Shield className="w-4 h-4" />
-                            <span className="text-sm">Безпека</span>
+                            <span className="text-sm">Bezpieczeństwo</span>
                           </button>
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <Settings className="w-4 h-4" />
-                            <span className="text-sm">Налаштування</span>
+                            <span className="text-sm">Ustawienia</span>
                           </button>
                         </div>
                         <div className="p-1 border-t border-gray-200">
-<button 
-  onClick={() => signOut({ callbackUrl: '/' })}
-  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600"
->
-  <LogOut className="w-4 h-4" />
-  <span className="text-sm">Вийти</span>
-</button>
+                          <button 
+                            onClick={() => signOut({ callbackUrl: '/' })}
+                            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600"
+                          >
+                            <LogOut className="w-4 h-4" />
+                            <span className="text-sm">Wyloguj</span>
+                          </button>
                         </div>
                       </div>
                     </>

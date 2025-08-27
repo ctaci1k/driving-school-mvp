@@ -10,7 +10,7 @@ import {
   FileSpreadsheet, FilePlus, Eye, Settings, Database
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
 export default function AdminReportsPage() {
   const [selectedReportType, setSelectedReportType] = useState('financial');
@@ -23,74 +23,74 @@ export default function AdminReportsPage() {
   const [generatedReport, setGeneratedReport] = useState<any>(null);
   const [savedReports, setSavedReports] = useState<any[]>([]);
 
-  // Mock data
-  const locations = ['Київ - Центр', 'Київ - Оболонь', 'Київ - Позняки', 'Львів', 'Одеса'];
+  // Mock data - polskie miasta
+  const locations = ['Warszawa - Centrum', 'Warszawa - Mokotów', 'Warszawa - Wola', 'Kraków', 'Wrocław'];
   const instructors = [
-    'Петро Сидоренко', 'Анна Коваленко', 'Іван Мельник', 'Оксана Шевченко',
-    'Василь Бондаренко', 'Марія Ткаченко', 'Олександр Кравчук'
+    'Piotr Kowalski', 'Anna Nowak', 'Jan Wiśniewski', 'Katarzyna Wójcik',
+    'Marek Kowalczyk', 'Maria Kamińska', 'Aleksander Lewandowski'
   ];
   const categories = ['B', 'B+E', 'C', 'C+E', 'D'];
 
   const reportTypes = [
     {
       id: 'financial',
-      name: 'Фінансовий звіт',
-      description: 'Доходи, витрати, прибуток за період',
+      name: 'Raport finansowy',
+      description: 'Przychody, wydatki, zysk za okres',
       icon: DollarSign,
       color: 'green'
     },
     {
       id: 'students',
-      name: 'Звіт по студентах',
-      description: 'Статистика по студентах та їх прогресу',
+      name: 'Raport kursantów',
+      description: 'Statystyki kursantów i ich postępów',
       icon: Users,
       color: 'blue'
     },
     {
       id: 'instructors',
-      name: 'Звіт по інструкторах',
-      description: 'Ефективність та навантаження інструкторів',
+      name: 'Raport instruktorów',
+      description: 'Efektywność i obciążenie instruktorów',
       icon: GraduationCap,
       color: 'purple'
     },
     {
       id: 'bookings',
-      name: 'Звіт по бронюваннях',
-      description: 'Аналіз бронювань та завантаженості',
+      name: 'Raport rezerwacji',
+      description: 'Analiza rezerwacji i obłożenia',
       icon: Calendar,
       color: 'orange'
     },
     {
       id: 'vehicles',
-      name: 'Звіт по транспорту',
-      description: 'Використання та обслуговування автопарку',
+      name: 'Raport pojazdów',
+      description: 'Wykorzystanie i obsługa floty',
       icon: Car,
       color: 'indigo'
     },
     {
       id: 'performance',
-      name: 'Звіт ефективності',
-      description: 'KPI та загальна ефективність школи',
+      name: 'Raport wydajności',
+      description: 'KPI i ogólna efektywność szkoły',
       icon: Target,
       color: 'red'
     }
   ];
 
   const predefinedPeriods = [
-    { label: 'Сьогодні', value: 'today' },
-    { label: 'Вчора', value: 'yesterday' },
-    { label: 'Цей тиждень', value: 'week' },
-    { label: 'Цей місяць', value: 'month' },
-    { label: 'Минулий місяць', value: 'lastMonth' },
-    { label: 'Цей квартал', value: 'quarter' },
-    { label: 'Цей рік', value: 'year' }
+    { label: 'Dzisiaj', value: 'today' },
+    { label: 'Wczoraj', value: 'yesterday' },
+    { label: 'Ten tydzień', value: 'week' },
+    { label: 'Ten miesiąc', value: 'month' },
+    { label: 'Poprzedni miesiąc', value: 'lastMonth' },
+    { label: 'Ten kwartał', value: 'quarter' },
+    { label: 'Ten rok', value: 'year' }
   ];
 
   const scheduleOptions = [
-    { label: 'Щоденно', value: 'daily' },
-    { label: 'Щотижня', value: 'weekly' },
-    { label: 'Щомісяця', value: 'monthly' },
-    { label: 'Щоквартально', value: 'quarterly' }
+    { label: 'Codziennie', value: 'daily' },
+    { label: 'Co tydzień', value: 'weekly' },
+    { label: 'Co miesiąc', value: 'monthly' },
+    { label: 'Co kwartał', value: 'quarterly' }
   ];
 
   const handlePeriodSelect = (period: string) => {
@@ -163,11 +163,11 @@ export default function AdminReportsPage() {
   };
 
   const handleExport = (format: string) => {
-    console.log(`Exporting report as ${format}...`);
+    console.log(`Eksportowanie raportu jako ${format}...`);
   };
 
   const handleScheduleReport = () => {
-    console.log('Scheduling report...');
+    console.log('Planowanie raportu...');
   };
 
   const handleSaveReport = () => {
@@ -198,17 +198,17 @@ export default function AdminReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Звіти</h1>
-          <p className="text-gray-600 mt-1">Створення та аналіз звітів</p>
+          <h1 className="text-3xl font-bold text-gray-800">Raporty</h1>
+          <p className="text-gray-600 mt-1">Tworzenie i analiza raportów</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Database className="w-4 h-4" />
-            Збережені звіти
+            Zapisane raporty
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <FilePlus className="w-4 h-4" />
-            Новий звіт
+            Nowy raport
           </button>
         </div>
       </div>
@@ -218,7 +218,7 @@ export default function AdminReportsPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Report Type Selection */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Тип звіту</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Typ raportu</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {reportTypes.map((type) => {
                 const Icon = type.icon;
@@ -254,11 +254,11 @@ export default function AdminReportsPage() {
 
           {/* Date Range */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Період</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Okres</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Від</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Od</label>
                   <input
                     type="date"
                     value={dateFrom}
@@ -267,7 +267,7 @@ export default function AdminReportsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">До</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Do</label>
                   <input
                     type="date"
                     value={dateTo}
@@ -293,11 +293,11 @@ export default function AdminReportsPage() {
 
           {/* Filters */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Фільтри</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtry</h3>
             <div className="space-y-4">
               {/* Locations */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Локації</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Lokalizacje</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {locations.map((location) => (
                     <label key={location} className="flex items-center gap-2 cursor-pointer">
@@ -321,7 +321,7 @@ export default function AdminReportsPage() {
 
               {/* Instructors */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Інструктори</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Instruktorzy</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {instructors.map((instructor) => (
                     <label key={instructor} className="flex items-center gap-2 cursor-pointer">
@@ -345,7 +345,7 @@ export default function AdminReportsPage() {
 
               {/* Categories */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Категорії</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Kategorie</label>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <label key={category} className="flex items-center gap-2 cursor-pointer">
@@ -374,36 +374,36 @@ export default function AdminReportsPage() {
         <div className="space-y-6">
           {/* Preview */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 sticky top-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Попередній перегляд</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Podgląd</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Тип:</p>
+                <p className="text-sm text-gray-500">Typ:</p>
                 <p className="font-medium text-gray-800">
                   {reportTypes.find(r => r.id === selectedReportType)?.name}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Період:</p>
+                <p className="text-sm text-gray-500">Okres:</p>
                 <p className="font-medium text-gray-800">
                   {format(new Date(dateFrom), 'dd.MM.yyyy')} - {format(new Date(dateTo), 'dd.MM.yyyy')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Локації:</p>
+                <p className="text-sm text-gray-500">Lokalizacje:</p>
                 <p className="font-medium text-gray-800">
-                  {selectedLocations.length > 0 ? selectedLocations.join(', ') : 'Всі локації'}
+                  {selectedLocations.length > 0 ? selectedLocations.join(', ') : 'Wszystkie lokalizacje'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Інструктори:</p>
+                <p className="text-sm text-gray-500">Instruktorzy:</p>
                 <p className="font-medium text-gray-800">
-                  {selectedInstructors.length > 0 ? `Вибрано: ${selectedInstructors.length}` : 'Всі інструктори'}
+                  {selectedInstructors.length > 0 ? `Wybrano: ${selectedInstructors.length}` : 'Wszyscy instruktorzy'}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Категорії:</p>
+                <p className="text-sm text-gray-500">Kategorie:</p>
                 <p className="font-medium text-gray-800">
-                  {selectedCategories.length > 0 ? selectedCategories.join(', ') : 'Всі категорії'}
+                  {selectedCategories.length > 0 ? selectedCategories.join(', ') : 'Wszystkie kategorie'}
                 </p>
               </div>
             </div>
@@ -417,12 +417,12 @@ export default function AdminReportsPage() {
                 {isGenerating ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Генерація звіту...
+                    Generowanie raportu...
                   </>
                 ) : (
                   <>
                     <FileText className="w-4 h-4" />
-                    Згенерувати звіт
+                    Generuj raport
                   </>
                 )}
               </button>
@@ -440,17 +440,17 @@ export default function AdminReportsPage() {
 
               <button className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm">
                 <Clock className="w-4 h-4" />
-                Запланувати звіт
+                Zaplanuj raport
               </button>
             </div>
           </div>
 
           {/* Schedule Settings */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Автоматичні звіти</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Raporty automatyczne</h3>
             <div className="space-y-3">
               <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                <option>Вимкнено</option>
+                <option>Wyłączone</option>
                 {scheduleOptions.map(option => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
@@ -463,13 +463,13 @@ export default function AdminReportsPage() {
                   className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
                 <label htmlFor="sendEmail" className="text-sm text-gray-700">
-                  Надсилати на email
+                  Wyślij na email
                 </label>
               </div>
               
               <input
                 type="email"
-                placeholder="admin@drive-school.com"
+                placeholder="admin@szkola-jazdy.pl"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -486,42 +486,42 @@ export default function AdminReportsPage() {
                 {reportTypes.find(r => r.id === generatedReport.type)?.name}
               </h3>
               <p className="text-sm text-gray-500">
-                Згенеровано {format(generatedReport.generatedAt, 'dd.MM.yyyy HH:mm')}
+                Wygenerowano {format(generatedReport.generatedAt, 'dd.MM.yyyy HH:mm')}
               </p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleExport('pdf')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Завантажити PDF"
+                title="Pobierz PDF"
               >
                 <Download className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleExport('excel')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Завантажити Excel"
+                title="Pobierz Excel"
               >
                 <FileSpreadsheet className="w-4 h-4" />
               </button>
               <button
                 onClick={() => console.log('Print')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Друк"
+                title="Drukuj"
               >
                 <Printer className="w-4 h-4" />
               </button>
               <button
                 onClick={() => console.log('Share')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Поділитись"
+                title="Udostępnij"
               >
                 <Share2 className="w-4 h-4" />
               </button>
               <button
                 onClick={handleSaveReport}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Зберегти"
+                title="Zapisz"
               >
                 <Save className="w-4 h-4" />
               </button>
@@ -531,25 +531,25 @@ export default function AdminReportsPage() {
           {/* Report Summary */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Загальний дохід</p>
+              <p className="text-sm text-gray-500">Całkowity przychód</p>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{generatedReport.data.summary.totalRevenue.toLocaleString()}
+                {generatedReport.data.summary.totalRevenue.toLocaleString()} zł
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Витрати</p>
+              <p className="text-sm text-gray-500">Wydatki</p>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{generatedReport.data.summary.totalExpenses.toLocaleString()}
+                {generatedReport.data.summary.totalExpenses.toLocaleString()} zł
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Чистий прибуток</p>
+              <p className="text-sm text-gray-500">Zysk netto</p>
               <p className="text-2xl font-bold text-green-600">
-                ₴{generatedReport.data.summary.netProfit.toLocaleString()}
+                {generatedReport.data.summary.netProfit.toLocaleString()} zł
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Всього бронювань</p>
+              <p className="text-sm text-gray-500">Wszystkie rezerwacje</p>
               <p className="text-2xl font-bold text-gray-800">
                 {generatedReport.data.summary.totalBookings}
               </p>
@@ -558,8 +558,8 @@ export default function AdminReportsPage() {
 
           <div className="border-t pt-4">
             <p className="text-sm text-gray-600">
-              Детальний звіт містить повну аналітику за вибраний період. 
-              Завантажте повний звіт у форматі PDF або Excel для детального перегляду.
+              Szczegółowy raport zawiera pełną analitykę za wybrany okres. 
+              Pobierz pełny raport w formacie PDF lub Excel do szczegółowego przeglądu.
             </p>
           </div>
         </div>
@@ -568,7 +568,7 @@ export default function AdminReportsPage() {
       {/* Recent Reports */}
       {savedReports.length > 0 && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Останні збережені звіти</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ostatnie zapisane raporty</h3>
           <div className="space-y-3">
             {savedReports.slice(-5).reverse().map((report) => (
               <div key={report.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

@@ -10,7 +10,7 @@ import {
   Info, Download, RefreshCw, Loader2, ChevronRight
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 
 // Generate mock vehicles data
@@ -34,16 +34,15 @@ const generateVehicles = () => {
   ];
 
   const instructorNames = [
-    'Петро Сидоренко', 'Анна Коваленко', 'Іван Мельник', 'Оксана Шевченко',
-    'Василь Бондаренко', 'Марія Ткаченко', 'Олександр Кравчук'
+    'Piotr Kowalski', 'Anna Nowak', 'Jan Wiśniewski', 'Katarzyna Wójcik',
+    'Marek Kowalczyk', 'Maria Kamińska', 'Aleksander Lewandowski'
   ];
 
   const statuses = ['active', 'maintenance', 'reserved', 'inactive'];
   const transmissions = ['Manual', 'Automatic'];
-  const fuelTypes = ['Benzyna', 'Diesel', 'Hybrid', 'Electric'];
+  const fuelTypes = ['Benzyna', 'Diesel', 'Hybrid', 'Elektryczny'];
   const categories = ['B', 'B+E', 'C'];
-  const locations = ['Київ - Центр', 'Київ - Оболонь', 'Київ - Позняки'];
-
+  const locations = ['Warszawa - Centrum', 'Warszawa - Mokotów', 'Warszawa - Wola'];
 
   return vehicles.map((vehicle, index) => ({
     id: `vehicle-${index + 1}`,
@@ -84,7 +83,7 @@ export default function AdminVehiclesPage() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [loading, setLoading] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
-const router = useRouter();
+  const router = useRouter();
 
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchesSearch = 
@@ -99,10 +98,10 @@ const router = useRouter();
   });
 
   const vehicleStatuses = {
-    active: { bg: 'bg-green-100', text: 'text-green-700', label: 'Активний', icon: CheckCircle },
-    maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'На ТО', icon: Wrench },
-    reserved: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Зарезервований', icon: Calendar },
-    inactive: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Неактивний', icon: XCircle }
+    active: { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktywny', icon: CheckCircle },
+    maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'W serwisie', icon: Wrench },
+    reserved: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Zarezerwowany', icon: Calendar },
+    inactive: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Nieaktywny', icon: XCircle }
   };
 
   const stats = {
@@ -136,7 +135,7 @@ const router = useRouter();
           {vehicle.issues > 0 && (
             <div className="absolute top-3 left-3 px-2 py-1 bg-red-500 text-white rounded-full text-xs font-medium flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
-              {vehicle.issues} проблем
+              {vehicle.issues} problemów
             </div>
           )}
         </div>
@@ -156,27 +155,27 @@ const router = useRouter();
           
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Категорія:</span>
+              <span className="text-gray-500">Kategoria:</span>
               <span className="font-medium">{vehicle.category}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Трансмісія:</span>
-              <span className="font-medium">{vehicle.transmission}</span>
+              <span className="text-gray-500">Skrzynia:</span>
+              <span className="font-medium">{vehicle.transmission === 'Manual' ? 'Manualna' : 'Automatyczna'}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Інструктор:</span>
-              <span className="font-medium">{vehicle.instructor || 'Не призначено'}</span>
+              <span className="text-gray-500">Instruktor:</span>
+              <span className="font-medium">{vehicle.instructor || 'Nieprzydzielony'}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Пробіг:</span>
-              <span className="font-medium">{vehicle.mileage.toLocaleString()} км</span>
+              <span className="text-gray-500">Przebieg:</span>
+              <span className="font-medium">{vehicle.mileage.toLocaleString()} km</span>
             </div>
           </div>
 
           {/* Utilization bar */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-500">Використання</span>
+              <span className="text-gray-500">Wykorzystanie</span>
               <span className="font-medium">{vehicle.utilizationRate}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
@@ -196,8 +195,8 @@ const router = useRouter();
             <div className="mb-4 p-2 bg-amber-50 rounded-lg">
               <p className="text-xs text-amber-700 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
-                {vehicle.insuranceExpiry < addDays(new Date(), 30) && 'Страховка закінчується'} 
-                {vehicle.inspectionExpiry < addDays(new Date(), 30) && 'Потрібен техогляд'}
+                {vehicle.insuranceExpiry < addDays(new Date(), 30) && 'Ubezpieczenie wygasa'} 
+                {vehicle.inspectionExpiry < addDays(new Date(), 30) && 'Potrzebny przegląd'}
               </p>
             </div>
           )}
@@ -207,13 +206,13 @@ const router = useRouter();
               onClick={() => setSelectedVehicle(vehicle)}
               className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
             >
-              Деталі
+              Szczegóły
             </button>
             <button
               onClick={() => console.log('History', vehicle.id)}
               className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
             >
-              Історія
+              Historia
             </button>
           </div>
         </div>
@@ -249,13 +248,13 @@ const router = useRouter();
           </span>
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">{vehicle.category}</td>
-        <td className="px-4 py-4 text-sm text-gray-600">{vehicle.transmission}</td>
+        <td className="px-4 py-4 text-sm text-gray-600">{vehicle.transmission === 'Manual' ? 'Manualna' : 'Automatyczna'}</td>
         <td className="px-4 py-4 text-sm text-gray-600">
           {vehicle.instructor || <span className="text-gray-400">—</span>}
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">{vehicle.location}</td>
         <td className="px-4 py-4 text-sm text-gray-600">
-          {vehicle.mileage.toLocaleString()} км
+          {vehicle.mileage.toLocaleString()} km
         </td>
         <td className="px-4 py-4">
           <div className="flex items-center gap-2">
@@ -301,8 +300,8 @@ const router = useRouter();
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Транспорт</h1>
-        <p className="text-gray-600 mt-1">Управління автопарком школи</p>
+        <h1 className="text-3xl font-bold text-gray-800">Pojazdy</h1>
+        <p className="text-gray-600 mt-1">Zarządzanie flotą pojazdów szkoły</p>
       </div>
 
       {/* Stats */}
@@ -314,7 +313,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Всього</p>
+              <p className="text-xs text-gray-500">Razem</p>
             </div>
           </div>
         </div>
@@ -325,7 +324,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Активних</p>
+              <p className="text-xs text-gray-500">Aktywne</p>
             </div>
           </div>
         </div>
@@ -336,7 +335,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.maintenance}</p>
-              <p className="text-xs text-gray-500">На ТО</p>
+              <p className="text-xs text-gray-500">W serwisie</p>
             </div>
           </div>
         </div>
@@ -347,7 +346,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgUtilization}%</p>
-              <p className="text-xs text-gray-500">Використання</p>
+              <p className="text-xs text-gray-500">Wykorzystanie</p>
             </div>
           </div>
         </div>
@@ -358,7 +357,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.needsService}</p>
-              <p className="text-xs text-gray-500">Потребують ТО</p>
+              <p className="text-xs text-gray-500">Wymaga serwisu</p>
             </div>
           </div>
         </div>
@@ -369,7 +368,7 @@ const router = useRouter();
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.documentsExpiring}</p>
-              <p className="text-xs text-gray-500">Документи</p>
+              <p className="text-xs text-gray-500">Dokumenty</p>
             </div>
           </div>
         </div>
@@ -383,7 +382,7 @@ const router = useRouter();
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за маркою, моделлю або номером..."
+                placeholder="Wyszukaj według marki, modelu lub numeru..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -395,11 +394,11 @@ const router = useRouter();
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="active">Активні</option>
-              <option value="maintenance">На ТО</option>
-              <option value="reserved">Зарезервовані</option>
-              <option value="inactive">Неактивні</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="active">Aktywne</option>
+              <option value="maintenance">W serwisie</option>
+              <option value="reserved">Zarezerwowane</option>
+              <option value="inactive">Nieaktywne</option>
             </select>
             
             <select
@@ -407,9 +406,9 @@ const router = useRouter();
               onChange={(e) => setFilterTransmission(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі трансмісії</option>
-              <option value="Manual">Механіка</option>
-              <option value="Automatic">Автомат</option>
+              <option value="all">Wszystkie skrzynie</option>
+              <option value="Manual">Manualna</option>
+              <option value="Automatic">Automatyczna</option>
             </select>
             
             <select
@@ -417,7 +416,7 @@ const router = useRouter();
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі категорії</option>
+              <option value="all">Wszystkie kategorie</option>
               <option value="B">B</option>
               <option value="B+E">B+E</option>
               <option value="C">C</option>
@@ -442,15 +441,15 @@ const router = useRouter();
             
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
               <Plus className="w-4 h-4" />
-              Додати авто
+              Dodaj pojazd
             </button>
             <button 
-  onClick={() => router.push('/admin/vehicles/maintenance')}
-  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
->
-  <Wrench className="w-4 h-4" />
-  Техобслуговування
-</button>
+              onClick={() => router.push('/admin/vehicles/maintenance')}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
+            >
+              <Wrench className="w-4 h-4" />
+              Serwis
+            </button>
           </div>
         </div>
       </div>
@@ -473,31 +472,31 @@ const router = useRouter();
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Транспорт
+                    Pojazd
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Статус
+                    Status
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Категорія
+                    Kategoria
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Трансмісія
+                    Skrzynia
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Інструктор
+                    Instruktor
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Локація
+                    Lokalizacja
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Пробіг
+                    Przebieg
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Використання
+                    Wykorzystanie
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Дії
+                    Akcje
                   </th>
                 </tr>
               </thead>
@@ -536,7 +535,7 @@ const router = useRouter();
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Реєстраційний номер</p>
+                  <p className="text-sm text-gray-500">Numer rejestracyjny</p>
                   <p className="font-medium">{selectedVehicle.registrationNumber}</p>
                 </div>
                 <div>
@@ -544,19 +543,19 @@ const router = useRouter();
                   <p className="font-medium font-mono text-sm">{selectedVehicle.vin}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Рік випуску</p>
+                  <p className="text-sm text-gray-500">Rok produkcji</p>
                   <p className="font-medium">{selectedVehicle.year}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Пробіг</p>
-                  <p className="font-medium">{selectedVehicle.mileage.toLocaleString()} км</p>
+                  <p className="text-sm text-gray-500">Przebieg</p>
+                  <p className="font-medium">{selectedVehicle.mileage.toLocaleString()} km</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Паливо</p>
+                  <p className="text-sm text-gray-500">Paliwo</p>
                   <p className="font-medium">{selectedVehicle.fuelType}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Рівень палива</p>
+                  <p className="text-sm text-gray-500">Poziom paliwa</p>
                   <div className="flex items-center gap-2">
                     <div className="w-20 bg-gray-200 rounded-full h-2">
                       <div 
@@ -573,30 +572,30 @@ const router = useRouter();
               </div>
 
               <div className="border-t pt-4">
-                <h3 className="font-medium text-gray-800 mb-3">Документи та терміни</h3>
+                <h3 className="font-medium text-gray-800 mb-3">Dokumenty i terminy</h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Shield className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Страховка</span>
+                      <span className="text-sm">Ubezpieczenie</span>
                     </div>
                     <span className="text-sm font-medium">
-                      до {format(selectedVehicle.insuranceExpiry, 'dd.MM.yyyy')}
+                      do {format(selectedVehicle.insuranceExpiry, 'dd.MM.yyyy')}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Техогляд</span>
+                      <span className="text-sm">Przegląd</span>
                     </div>
                     <span className="text-sm font-medium">
-                      до {format(selectedVehicle.inspectionExpiry, 'dd.MM.yyyy')}
+                      do {format(selectedVehicle.inspectionExpiry, 'dd.MM.yyyy')}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Wrench className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Наступне ТО</span>
+                      <span className="text-sm">Następny serwis</span>
                     </div>
                     <span className="text-sm font-medium">
                       {format(selectedVehicle.nextService, 'dd.MM.yyyy')}
@@ -607,13 +606,13 @@ const router = useRouter();
 
               <div className="flex gap-3">
                 <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  Редагувати
+                  Edytuj
                 </button>
                 <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  Історія обслуговування
+                  Historia serwisu
                 </button>
                 <button className="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">
-                  Видалити
+                  Usuń
                 </button>
               </div>
             </div>

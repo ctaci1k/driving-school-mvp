@@ -35,7 +35,7 @@ Write-Host "  READY!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 Write-Host "Services:" -ForegroundColor Cyan
-Write-Host "  App:        http://localhost:3000" -ForegroundColor White
+Write-Host "  App:        http://localhost:3001" -ForegroundColor White
 Write-Host "  Database:   http://localhost:8080" -ForegroundColor White
 Write-Host ""
 Read-Host "Press Enter to exit"

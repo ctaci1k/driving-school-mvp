@@ -18,7 +18,7 @@ import { Progress } from '@/components/ui/progress'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 export default function VehicleInspectionPage() {
   const [currentStep, setCurrentStep] = useState(0)
@@ -85,7 +85,7 @@ export default function VehicleInspectionPage() {
   // Vehicle info
   const vehicle = {
     model: 'Toyota Corolla',
-    number: 'AA 1234 AA',
+    number: 'WA 1234K',
     year: 2020,
     mileage: 125467,
     lastInspection: '2024-02-01'
@@ -96,35 +96,35 @@ export default function VehicleInspectionPage() {
     {
       id: 1,
       date: '2024-02-01',
-      type: 'Щоденна',
+      type: 'Codzienny',
       status: 'passed',
       issues: 0,
-      inspector: 'Петро Водій'
+      inspector: 'Piotr Kierowca'
     },
     {
       id: 2,
       date: '2024-01-31',
-      type: 'Щоденна',
+      type: 'Codzienny',
       status: 'passed',
       issues: 1,
-      inspector: 'Петро Водій'
+      inspector: 'Piotr Kierowca'
     },
     {
       id: 3,
       date: '2024-01-30',
-      type: 'Щоденна',
+      type: 'Codzienny',
       status: 'warning',
       issues: 2,
-      inspector: 'Петро Водій'
+      inspector: 'Piotr Kierowca'
     }
   ]
 
   const inspectionSteps = [
-    { title: 'Зовнішній огляд', icon: Car },
-    { title: 'Салон', icon: Eye },
-    { title: 'Двигун', icon: Gauge },
-    { title: 'Безпека', icon: Shield },
-    { title: 'Документи', icon: FileText }
+    { title: 'Przegląd zewnętrzny', icon: Car },
+    { title: 'Wnętrze', icon: Eye },
+    { title: 'Silnik', icon: Gauge },
+    { title: 'Bezpieczeństwo', icon: Shield },
+    { title: 'Dokumenty', icon: FileText }
   ]
 
   const calculateInspectionScore = () => {
@@ -175,19 +175,19 @@ export default function VehicleInspectionPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Інспекція автомобіля</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Przegląd pojazdu</h1>
           <p className="text-gray-600 mt-1">
-            {vehicle.model} • {vehicle.number} • {vehicle.mileage} км
+            {vehicle.model} • {vehicle.number} • {vehicle.mileage} km
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Clock className="w-4 h-4 mr-2" />
-            Історія
+            Historia
           </Button>
           <Button onClick={handleSaveInspection}>
             <Save className="w-4 h-4 mr-2" />
-            Зберегти
+            Zapisz
           </Button>
         </div>
       </div>
@@ -196,8 +196,8 @@ export default function VehicleInspectionPage() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Прогрес інспекції</span>
-            <span className="text-sm font-medium">{currentStep + 1} з {inspectionSteps.length}</span>
+            <span className="text-sm text-gray-600">Postęp przeglądu</span>
+            <span className="text-sm font-medium">{currentStep + 1} z {inspectionSteps.length}</span>
           </div>
           <Progress value={(currentStep + 1) / inspectionSteps.length * 100} className="h-2" />
           <div className="flex justify-between mt-4">
@@ -246,13 +246,13 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-0" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Зовнішній огляд</CardTitle>
-              <CardDescription>Перевірте зовнішній стан автомобіля</CardDescription>
+              <CardTitle>Przegląd zewnętrzny</CardTitle>
+              <CardDescription>Sprawdź zewnętrzny stan pojazdu</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>Стан кузова</Label>
+                  <Label>Stan karoserii</Label>
                   <RadioGroup
                     value={inspection.exterior.bodyCondition}
                     onValueChange={(value) =>
@@ -265,21 +265,21 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="good" id="body-good" />
-                      <Label htmlFor="body-good">✅ Добрий - без пошкоджень</Label>
+                      <Label htmlFor="body-good">Dobry - bez uszkodzeń</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="minor" id="body-minor" />
-                      <Label htmlFor="body-minor">⚠️ Незначні подряпини</Label>
+                      <Label htmlFor="body-minor">Drobne rysy</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="major" id="body-major" />
-                      <Label htmlFor="body-major">❌ Значні пошкодження</Label>
+                      <Label htmlFor="body-major">Znaczne uszkodzenia</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
                 <div className="space-y-3">
-                  <Label>Перевірка компонентів</Label>
+                  <Label>Sprawdzenie komponentów</Label>
                   
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                     <Checkbox
@@ -291,7 +291,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Вікна чисті та без тріщин</span>
+                    <span>Szyby czyste i bez pęknięć</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -304,7 +304,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Всі фари працюють (ближнє/дальнє/поворотники/стоп)</span>
+                    <span>Wszystkie światła działają (mijania/drogowe/kierunkowskazy/hamowania)</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -317,7 +317,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Дзеркала чисті та правильно налаштовані</span>
+                    <span>Lusterka czyste i prawidłowo ustawione</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -330,12 +330,12 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Тиск в шинах відповідає нормі</span>
+                    <span>Ciśnienie w oponach zgodne z normą</span>
                   </label>
                 </div>
 
                 <div>
-                  <Label>Стан шин</Label>
+                  <Label>Stan opon</Label>
                   <RadioGroup
                     value={inspection.exterior.tiresCondition}
                     onValueChange={(value) =>
@@ -348,15 +348,15 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="good" id="tires-good" />
-                      <Label htmlFor="tires-good">Добрий протектор ({'>'}4мм)</Label>
+                      <Label htmlFor="tires-good">Dobry bieżnik (powyżej 4mm)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="worn" id="tires-worn" />
-                      <Label htmlFor="tires-worn">Зношені (2-4мм)</Label>
+                      <Label htmlFor="tires-worn">Zużyte (2-4mm)</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="replace" id="tires-replace" />
-                      <Label htmlFor="tires-replace">Потрібна заміна ({'>'}2мм)</Label>
+                      <Label htmlFor="tires-replace">Wymagana wymiana (poniżej 2mm)</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -369,13 +369,13 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-1" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Огляд салону</CardTitle>
-              <CardDescription>Перевірте стан та чистоту салону</CardDescription>
+              <CardTitle>Przegląd wnętrza</CardTitle>
+              <CardDescription>Sprawdź stan i czystość wnętrza</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label>Перевірка компонентів</Label>
+                  <Label>Sprawdzenie komponentów</Label>
                   
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                     <Checkbox
@@ -387,7 +387,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Ремені безпеки справні</span>
+                    <span>Pasy bezpieczeństwa sprawne</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -400,7 +400,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Приладова панель чиста</span>
+                    <span>Deska rozdzielcza czysta</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -413,7 +413,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Всі кнопки та перемикачі працюють</span>
+                    <span>Wszystkie przyciski i przełączniki działają</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -426,12 +426,12 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Кондиціонер/обігрів працює</span>
+                    <span>Klimatyzacja/ogrzewanie działa</span>
                   </label>
                 </div>
 
                 <div>
-                  <Label>Рівень чистоти</Label>
+                  <Label>Poziom czystości</Label>
                   <RadioGroup
                     value={inspection.interior.cleanlinessLevel}
                     onValueChange={(value) =>
@@ -444,15 +444,15 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="clean" id="clean" />
-                      <Label htmlFor="clean">Чистий</Label>
+                      <Label htmlFor="clean">Czysty</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="acceptable" id="acceptable" />
-                      <Label htmlFor="acceptable">Прийнятний</Label>
+                      <Label htmlFor="acceptable">Akceptowalny</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="dirty" id="dirty" />
-                      <Label htmlFor="dirty">Потребує прибирання</Label>
+                      <Label htmlFor="dirty">Wymaga sprzątania</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -465,22 +465,22 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-2" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Перевірка двигуна</CardTitle>
-              <CardDescription>Перевірте рівні рідин та стан двигуна</CardDescription>
+              <CardTitle>Sprawdzenie silnika</CardTitle>
+              <CardDescription>Sprawdź poziomy płynów i stan silnika</CardDescription>
             </CardHeader>
             <CardContent>
               <Alert className="mb-4">
                 <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>Увага!</AlertTitle>
+                <AlertTitle>Uwaga!</AlertTitle>
                 <AlertDescription>
-                  Перевірку двигуна проводити тільки при вимкненому та охолодженому двигуні
+                  Sprawdzenie silnika przeprowadzać tylko przy wyłączonym i ostygniętym silniku
                 </AlertDescription>
               </Alert>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Рівень масла</Label>
+                    <Label>Poziom oleju</Label>
                     <RadioGroup
                       value={inspection.engine.oilLevel}
                       onValueChange={(value) =>
@@ -493,21 +493,21 @@ export default function VehicleInspectionPage() {
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="normal" id="oil-normal" />
-                        <Label htmlFor="oil-normal">Нормальний</Label>
+                        <Label htmlFor="oil-normal">Prawidłowy</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="low" id="oil-low" />
-                        <Label htmlFor="oil-low">Низький</Label>
+                        <Label htmlFor="oil-low">Niski</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="critical" id="oil-critical" />
-                        <Label htmlFor="oil-critical">Критично низький</Label>
+                        <Label htmlFor="oil-critical">Krytycznie niski</Label>
                       </div>
                     </RadioGroup>
                   </div>
 
                   <div>
-                    <Label>Рівень охолоджуючої рідини</Label>
+                    <Label>Poziom płynu chłodzącego</Label>
                     <RadioGroup
                       value={inspection.engine.coolantLevel}
                       onValueChange={(value) =>
@@ -520,15 +520,15 @@ export default function VehicleInspectionPage() {
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="normal" id="coolant-normal" />
-                        <Label htmlFor="coolant-normal">Нормальний</Label>
+                        <Label htmlFor="coolant-normal">Prawidłowy</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="low" id="coolant-low" />
-                        <Label htmlFor="coolant-low">Низький</Label>
+                        <Label htmlFor="coolant-low">Niski</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="critical" id="coolant-critical" />
-                        <Label htmlFor="coolant-critical">Критично низький</Label>
+                        <Label htmlFor="coolant-critical">Krytycznie niski</Label>
                       </div>
                     </RadioGroup>
                   </div>
@@ -545,7 +545,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Достатній рівень омивача</span>
+                    <span>Wystarczający poziom płynu do spryskiwaczy</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -558,7 +558,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Відсутність витоків рідин</span>
+                    <span>Brak wycieków płynów</span>
                   </label>
                 </div>
               </div>
@@ -570,8 +570,8 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-3" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Перевірка безпеки</CardTitle>
-              <CardDescription>Перевірте всі системи безпеки</CardDescription>
+              <CardTitle>Sprawdzenie bezpieczeństwa</CardTitle>
+              <CardDescription>Sprawdź wszystkie systemy bezpieczeństwa</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -585,7 +585,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Робочі гальма працюють ефективно</span>
+                  <span>Hamulce robocze działają skutecznie</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -598,7 +598,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Стоянкове гальмо утримує автомобіль</span>
+                  <span>Hamulec postojowy utrzymuje pojazd</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -611,7 +611,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Звуковий сигнал працює</span>
+                  <span>Klakson działa</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -624,7 +624,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Аптечка наявна та укомплектована</span>
+                  <span>Apteczka obecna i skompletowana</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -637,7 +637,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Вогнегасник наявний та не прострочений</span>
+                  <span>Gaśnica obecna i nieprzeterminowana</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -650,7 +650,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Знак аварійної зупинки наявний</span>
+                  <span>Trójkąt ostrzegawczy obecny</span>
                 </label>
               </div>
             </CardContent>
@@ -661,8 +661,8 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-4" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Перевірка документів</CardTitle>
-              <CardDescription>Переконайтесь в наявності всіх необхідних документів</CardDescription>
+              <CardTitle>Sprawdzenie dokumentów</CardTitle>
+              <CardDescription>Upewnij się o obecności wszystkich wymaganych dokumentów</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -676,7 +676,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Свідоцтво про реєстрацію ТЗ</span>
+                  <span>Dowód rejestracyjny</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -689,7 +689,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Страховий поліс (дійсний)</span>
+                  <span>Polisa ubezpieczeniowa (ważna)</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -702,7 +702,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Техогляд (дійсний)</span>
+                  <span>Badania techniczne (ważne)</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -715,7 +715,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Посвідчення водія</span>
+                  <span>Prawo jazdy</span>
                 </label>
               </div>
             </CardContent>
@@ -726,11 +726,11 @@ export default function VehicleInspectionPage() {
       {/* Notes and Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Додаткові нотатки</CardTitle>
+          <CardTitle>Dodatkowe uwagi</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
-            placeholder="Вкажіть будь-які додаткові спостереження або проблеми..."
+            placeholder="Podaj wszelkie dodatkowe obserwacje lub problemy..."
             value={inspectionNotes}
             onChange={(e) => setInspectionNotes(e.target.value)}
             className="h-24"
@@ -745,15 +745,15 @@ export default function VehicleInspectionPage() {
           onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
           disabled={currentStep === 0}
         >
-          Назад
+          Wstecz
         </Button>
         {currentStep < inspectionSteps.length - 1 ? (
           <Button onClick={() => setCurrentStep(currentStep + 1)}>
-            Далі
+            Dalej
           </Button>
         ) : (
           <Button onClick={handleSaveInspection}>
-            Завершити інспекцію
+            Zakończ przegląd
           </Button>
         )}
       </div>
@@ -761,7 +761,7 @@ export default function VehicleInspectionPage() {
       {/* Previous Inspections */}
       <Card>
         <CardHeader>
-          <CardTitle>Попередні інспекції</CardTitle>
+          <CardTitle>Poprzednie przeglądy</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -773,21 +773,21 @@ export default function VehicleInspectionPage() {
                 <div>
                   <p className="font-medium">{inspection.type}</p>
                   <p className="text-sm text-gray-500">
-                    {format(new Date(inspection.date), 'd MMMM yyyy', { locale: uk })}
+                    {format(new Date(inspection.date), 'd MMMM yyyy', { locale: pl })}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   {inspection.issues > 0 && (
-                    <Badge variant="outline">{inspection.issues} проблем</Badge>
+                    <Badge variant="outline">{inspection.issues} problemów</Badge>
                   )}
                   <Badge variant={
                     inspection.status === 'passed' ? 'default' :
                     inspection.status === 'warning' ? 'secondary' :
                     'destructive'
                   }>
-                    {inspection.status === 'passed' ? 'Пройдено' :
-                     inspection.status === 'warning' ? 'З зауваженнями' :
-                     'Не пройдено'}
+                    {inspection.status === 'passed' ? 'Zaliczony' :
+                     inspection.status === 'warning' ? 'Z uwagami' :
+                     'Niezaliczony'}
                   </Badge>
                 </div>
               </div>

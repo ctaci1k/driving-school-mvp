@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 interface CheckInStep {
   id: string
@@ -43,36 +43,36 @@ interface CheckInStep {
 const checkInSteps: CheckInStep[] = [
   {
     id: 'documents',
-    title: 'Перевірка документів',
-    description: 'Перевірте документи студента',
+    title: 'Sprawdzenie dokumentów',
+    description: 'Sprawdź dokumenty ucznia',
     icon: FileCheck,
     required: true
   },
   {
     id: 'vehicle',
-    title: 'Огляд автомобіля',
-    description: 'Зовнішній та внутрішній огляд',
+    title: 'Przegląd pojazdu',
+    description: 'Przegląd zewnętrzny i wewnętrzny',
     icon: Car,
     required: true
   },
   {
     id: 'safety',
-    title: 'Безпека',
-    description: 'Перевірка систем безпеки',
+    title: 'Bezpieczeństwo',
+    description: 'Sprawdzenie systemów bezpieczeństwa',
     icon: Shield,
     required: true
   },
   {
     id: 'photos',
-    title: 'Фотофіксація',
-    description: 'Зробіть фото стану авто',
+    title: 'Dokumentacja zdjęciowa',
+    description: 'Zrób zdjęcia stanu pojazdu',
     icon: Camera,
     required: false
   },
   {
     id: 'confirmation',
-    title: 'Підтвердження',
-    description: 'Почати заняття',
+    title: 'Potwierdzenie',
+    description: 'Rozpocznij lekcję',
     icon: Check,
     required: true
   }
@@ -150,9 +150,9 @@ export default function LessonCheckInPage() {
   const lesson = {
     id: lessonId,
     student: {
-      name: 'Марія Шевчук',
-      avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
-      phone: '+380501234567',
+      name: 'Maria Kowalczyk',
+      avatar: 'https://ui-avatars.com/api/?name=MK&background=10B981&color=fff',
+      phone: '+48 501 234 567',
       licenseNumber: 'ABC123456',
       category: 'B',
       progress: 85,
@@ -161,10 +161,10 @@ export default function LessonCheckInPage() {
     type: 'city',
     duration: 90,
     startTime: '14:30',
-    location: 'вул. Шевченка, 100',
+    location: 'ul. Mickiewicza 100',
     vehicle: {
       model: 'Toyota Corolla',
-      number: 'AA 1234 AA',
+      number: 'WA 1234K',
       lastMileage: 125450
     }
   }
@@ -297,9 +297,9 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <Alert>
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Важливо</AlertTitle>
+              <AlertTitle>Ważne</AlertTitle>
               <AlertDescription>
-                Перевірте наявність та дійсність всіх документів перед початком заняття
+                Sprawdź obecność i ważność wszystkich dokumentów przed rozpoczęciem lekcji
               </AlertDescription>
             </Alert>
 
@@ -319,12 +319,12 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Студент присутній</p>
+                  <p className="font-medium">Uczeń obecny</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    {lesson.student.name} прибув на заняття вчасно
+                    {lesson.student.name} przybył na lekcję na czas
                   </p>
                 </div>
-                <Badge variant="destructive">Обов'язково</Badge>
+                <Badge variant="destructive">Obowiązkowe</Badge>
               </label>
 
               <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -342,10 +342,10 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Учнівське посвідчення водія</p>
+                  <p className="font-medium">Prawo jazdy ucznia</p>
                   <div className="flex items-center gap-2 mt-2">
                     <Input
-                      placeholder="Номер посвідчення"
+                      placeholder="Numer prawa jazdy"
                       value={checkInData.documents.studentLicenseNumber}
                       onChange={(e) =>
                         setCheckInData(prev => ({
@@ -361,7 +361,7 @@ export default function LessonCheckInPage() {
                     <Badge variant="outline">{lesson.student.licenseNumber}</Badge>
                   </div>
                 </div>
-                <Badge variant="destructive">Обов'язково</Badge>
+                <Badge variant="destructive">Obowiązkowe</Badge>
               </label>
 
               <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -379,9 +379,9 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Картка студента автошколи</p>
+                  <p className="font-medium">Legitymacja ucznia szkoły jazdy</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Для ідентифікації в системі
+                    Do identyfikacji w systemie
                   </p>
                 </div>
               </label>
@@ -401,9 +401,9 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Медична довідка</p>
+                  <p className="font-medium">Zaświadczenie lekarskie</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    За необхідності (перше заняття або після хвороби)
+                    W razie potrzeby (pierwsza lekcja lub po chorobie)
                   </p>
                 </div>
               </label>
@@ -423,12 +423,12 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Особу студента підтверджено</p>
+                  <p className="font-medium">Tożsamość ucznia potwierdzona</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Я підтверджую, що це {lesson.student.name}
+                    Potwierdzam, że to {lesson.student.name}
                   </p>
                 </div>
-                <Badge variant="destructive">Обов'язково</Badge>
+                <Badge variant="destructive">Obowiązkowe</Badge>
               </label>
             </div>
           </div>
@@ -439,7 +439,7 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Пробіг на початок (км)</Label>
+                <Label>Przebieg na początek (km)</Label>
                 <Input
                   type="number"
                   placeholder={lesson.vehicle.lastMileage.toString()}
@@ -456,12 +456,12 @@ export default function LessonCheckInPage() {
                   className="mt-2 text-lg font-mono"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Останній: {lesson.vehicle.lastMileage} км
+                  Ostatni: {lesson.vehicle.lastMileage} km
                 </p>
               </div>
 
               <div>
-                <Label>Рівень палива</Label>
+                <Label>Poziom paliwa</Label>
                 <Select
                   value={checkInData.vehicle.fuelLevel}
                   onValueChange={(value) =>
@@ -475,14 +475,14 @@ export default function LessonCheckInPage() {
                   }
                 >
                   <SelectTrigger className="mt-2">
-                    <SelectValue placeholder="Оберіть рівень" />
+                    <SelectValue placeholder="Wybierz poziom" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="full">Повний бак (100%)</SelectItem>
-                    <SelectItem value="3/4">3/4 бака (75%)</SelectItem>
-                    <SelectItem value="1/2">1/2 бака (50%)</SelectItem>
-                    <SelectItem value="1/4">1/4 бака (25%)</SelectItem>
-                    <SelectItem value="reserve">Резерв (&lt;10%)</SelectItem>
+                    <SelectItem value="full">Pełny bak (100%)</SelectItem>
+                    <SelectItem value="3/4">3/4 baka (75%)</SelectItem>
+                    <SelectItem value="1/2">1/2 baka (50%)</SelectItem>
+                    <SelectItem value="1/4">1/4 baka (25%)</SelectItem>
+                    <SelectItem value="reserve">Rezerwa (&lt;10%)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -491,7 +491,7 @@ export default function LessonCheckInPage() {
             <Separator />
 
             <div>
-              <Label className="text-base mb-3 block">Зовнішній огляд</Label>
+              <Label className="text-base mb-3 block">Przegląd zewnętrzny</Label>
               <div className="space-y-2">
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                   <Checkbox
@@ -506,12 +506,12 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Кузов чистий, без видимих пошкоджень</span>
+                  <span>Karoseria czysta, bez widocznych uszkodzeń</span>
                 </label>
 
                 {!checkInData.vehicle.exteriorClean && (
                   <Textarea
-                    placeholder="Опишіть виявлені проблеми або пошкодження..."
+                    placeholder="Opisz wykryte problemy lub uszkodzenia..."
                     value={checkInData.vehicle.exteriorDamages}
                     onChange={(e) =>
                       setCheckInData(prev => ({
@@ -539,7 +539,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Всі фари та поворотники працюють</span>
+                  <span>Wszystkie światła i kierunkowskazy działają</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -555,7 +555,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Шини в нормальному стані, тиск достатній</span>
+                  <span>Opony w normalnym stanie, ciśnienie wystarczające</span>
                 </label>
               </div>
             </div>
@@ -563,7 +563,7 @@ export default function LessonCheckInPage() {
             <Separator />
 
             <div>
-              <Label className="text-base mb-3 block">Внутрішній огляд</Label>
+              <Label className="text-base mb-3 block">Przegląd wewnętrzny</Label>
               <div className="space-y-2">
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                   <Checkbox
@@ -578,7 +578,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Салон чистий та охайний</span>
+                  <span>Wnętrze czyste i schludne</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -594,7 +594,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Рівень рідин (масло, охолоджуюча, склоомивач) в нормі</span>
+                  <span>Poziom płynów (olej, chłodząca, płyn do spryskiwaczy) w normie</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -610,7 +610,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Документи на авто присутні</span>
+                  <span>Dokumenty pojazdu obecne</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -626,7 +626,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Аптечка, вогнегасник, знак присутні</span>
+                  <span>Apteczka, gaśnica, trójkąt obecne</span>
                 </label>
               </div>
             </div>
@@ -635,7 +635,7 @@ export default function LessonCheckInPage() {
               <Alert className="border-yellow-200 bg-yellow-50">
                 <AlertTriangle className="h-4 w-4 text-yellow-600" />
                 <AlertDescription className="text-yellow-800">
-                  Виявлені проблеми будуть передані механіку після заняття
+                  Wykryte problemy zostaną przekazane mechanikowi po lekcji
                 </AlertDescription>
               </Alert>
             )}
@@ -647,14 +647,14 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <Alert>
               <Shield className="h-4 w-4" />
-              <AlertTitle>Безпека понад усе</AlertTitle>
+              <AlertTitle>Bezpieczeństwo przede wszystkim</AlertTitle>
               <AlertDescription>
-                Переконайтеся, що всі системи безпеки працюють справно
+                Upewnij się, że wszystkie systemy bezpieczeństwa działają prawidłowo
               </AlertDescription>
             </Alert>
 
             <div className="space-y-2">
-              <Label className="text-base mb-3 block">Системи безпеки</Label>
+              <Label className="text-base mb-3 block">Systemy bezpieczeństwa</Label>
               
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                 <Checkbox
@@ -669,7 +669,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Ремені безпеки справні та фіксуються</span>
+                <span>Pasy bezpieczeństwa sprawne i zapinające się</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -685,7 +685,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Дзеркала налаштовані для студента</span>
+                <span>Lusterka ustawione dla ucznia</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -701,7 +701,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Гальма перевірені (робоча та стоянкова)</span>
+                <span>Hamulce sprawdzone (robocze i postojowy)</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -717,7 +717,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Ручне гальмо працює справно</span>
+                <span>Hamulec ręczny działa prawidłowo</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -733,14 +733,14 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Звуковий сигнал працює</span>
+                <span>Klakson działa</span>
               </label>
             </div>
 
             <Separator />
 
             <div className="space-y-2">
-              <Label className="text-base mb-3 block">Інструктаж студента</Label>
+              <Label className="text-base mb-3 block">Instruktaż ucznia</Label>
               
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
                 <Checkbox
@@ -755,7 +755,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Проведено інструктаж з техніки безпеки</span>
+                <span className="font-medium">Przeprowadzono instruktaż z techniki bezpieczeństwa</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
@@ -771,7 +771,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Пояснено дії в екстрених ситуаціях</span>
+                <span className="font-medium">Wyjaśniono działania w sytuacjach awaryjnych</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
@@ -787,7 +787,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Телефони переведені в беззвучний режим</span>
+                <span className="font-medium">Telefony przełączone w tryb cichy</span>
               </label>
             </div>
           </div>
@@ -799,7 +799,7 @@ export default function LessonCheckInPage() {
             <Alert>
               <Camera className="h-4 w-4" />
               <AlertDescription>
-                Зробіть фото для документування стану автомобіля (опціонально)
+                Zrób zdjęcia do dokumentacji stanu pojazdu (opcjonalnie)
               </AlertDescription>
             </Alert>
 
@@ -807,12 +807,12 @@ export default function LessonCheckInPage() {
               {['front', 'back', 'left', 'right', 'interior', 'dashboard'].map((side) => (
                 <div key={side}>
                   <Label className="mb-2 block capitalize">
-                    {side === 'front' && 'Перед'}
-                    {side === 'back' && 'Зад'}
-                    {side === 'left' && 'Лівий бік'}
-                    {side === 'right' && 'Правий бік'}
-                    {side === 'interior' && 'Салон'}
-                    {side === 'dashboard' && 'Приладова панель'}
+                    {side === 'front' && 'Przód'}
+                    {side === 'back' && 'Tył'}
+                    {side === 'left' && 'Lewa strona'}
+                    {side === 'right' && 'Prawa strona'}
+                    {side === 'interior' && 'Wnętrze'}
+                    {side === 'dashboard' && 'Deska rozdzielcza'}
                   </Label>
                   {checkInData.photos[side as keyof typeof checkInData.photos] ? (
                     <div className="relative">
@@ -844,7 +844,7 @@ export default function LessonCheckInPage() {
                       className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 hover:bg-blue-50 transition-colors"
                     >
                       <Camera className="w-8 h-8 text-gray-400 mb-2" />
-                      <span className="text-sm text-gray-500">Зробити фото</span>
+                      <span className="text-sm text-gray-500">Zrób zdjęcie</span>
                     </button>
                   )}
                 </div>
@@ -861,13 +861,13 @@ export default function LessonCheckInPage() {
             />
 
             <div>
-              <Label>Додаткові фото пошкоджень (за наявності)</Label>
+              <Label>Dodatkowe zdjęcia uszkodzeń (jeśli występują)</Label>
               <button
                 onClick={() => handlePhotoCapture('damage')}
                 className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-red-500 hover:bg-red-50 transition-colors mt-2"
               >
                 <AlertTriangle className="w-6 h-6 text-gray-400 mr-2" />
-                <span className="text-sm text-gray-500">Додати фото пошкоджень</span>
+                <span className="text-sm text-gray-500">Dodaj zdjęcia uszkodzeń</span>
               </button>
             </div>
           </div>
@@ -879,37 +879,37 @@ export default function LessonCheckInPage() {
             {/* Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Підсумок перевірки</CardTitle>
+                <CardTitle>Podsumowanie sprawdzenia</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Студент:</span>
+                  <span className="text-sm text-gray-600">Uczeń:</span>
                   <span className="font-medium">{lesson.student.name}</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Тип заняття:</span>
-                  <Badge>Практика - місто</Badge>
+                  <span className="text-sm text-gray-600">Typ lekcji:</span>
+                  <Badge>Praktyka - miasto</Badge>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Час:</span>
-                  <span className="font-medium">{lesson.startTime} ({lesson.duration} хв)</span>
+                  <span className="text-sm text-gray-600">Czas:</span>
+                  <span className="font-medium">{lesson.startTime} ({lesson.duration} min)</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Автомобіль:</span>
+                  <span className="text-sm text-gray-600">Pojazd:</span>
                   <span className="font-medium">{lesson.vehicle.model} • {lesson.vehicle.number}</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Пробіг початковий:</span>
-                  <span className="font-medium">{checkInData.vehicle.mileageStart || lesson.vehicle.lastMileage} км</span>
+                  <span className="text-sm text-gray-600">Przebieg początkowy:</span>
+                  <span className="font-medium">{checkInData.vehicle.mileageStart || lesson.vehicle.lastMileage} km</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Паливо:</span>
-                  <span className="font-medium">{checkInData.vehicle.fuelLevel || 'Не вказано'}</span>
+                  <span className="text-sm text-gray-600">Paliwo:</span>
+                  <span className="font-medium">{checkInData.vehicle.fuelLevel || 'Nie podano'}</span>
                 </div>
               </CardContent>
             </Card>
@@ -923,7 +923,7 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Документи</p>
+                  <p className="text-sm font-medium">Dokumenty</p>
                 </CardContent>
               </Card>
               
@@ -934,7 +934,7 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Автомобіль</p>
+                  <p className="text-sm font-medium">Pojazd</p>
                 </CardContent>
               </Card>
               
@@ -945,16 +945,16 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Безпека</p>
+                  <p className="text-sm font-medium">Bezpieczeństwo</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Notes */}
             <div>
-              <Label>Додаткові нотатки (опціонально)</Label>
+              <Label>Dodatkowe uwagi (opcjonalnie)</Label>
               <Textarea
-                placeholder="Будь-які коментарі щодо початку заняття..."
+                placeholder="Wszelkie komentarze dotyczące rozpoczęcia lekcji..."
                 value={checkInData.notes}
                 onChange={(e) =>
                   setCheckInData(prev => ({
@@ -981,10 +981,10 @@ export default function LessonCheckInPage() {
               />
               <div>
                 <p className="font-medium text-sm">
-                  Я підтверджую правильність всіх перевірок
+                  Potwierdzam poprawność wszystkich sprawdzeń
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
-                  Автомобіль готовий до навчального заняття, студент проінформований про правила безпеки
+                  Pojazd jest gotowy do lekcji nauki jazdy, uczeń został poinformowany o zasadach bezpieczeństwa
                 </p>
               </div>
             </label>
@@ -1001,7 +1001,7 @@ export default function LessonCheckInPage() {
                         <Navigation className="w-4 h-4 text-red-500" />
                       )}
                       <span className={gpsEnabled ? 'text-green-600' : 'text-red-600'}>
-                        GPS {gpsEnabled ? 'активний' : 'недоступний'}
+                        GPS {gpsEnabled ? 'aktywny' : 'niedostępny'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1011,7 +1011,7 @@ export default function LessonCheckInPage() {
                         <WifiOff className="w-4 h-4 text-red-500" />
                       )}
                       <span className={isOnline ? 'text-green-600' : 'text-red-600'}>
-                        {isOnline ? 'Онлайн' : 'Офлайн'}
+                        {isOnline ? 'Online' : 'Offline'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1025,7 +1025,7 @@ export default function LessonCheckInPage() {
                 </div>
                 {checkInData.location && (
                   <p className="text-xs text-gray-500 mt-2">
-                    Координати: {checkInData.location.coords.latitude.toFixed(6)}, {checkInData.location.coords.longitude.toFixed(6)}
+                    Współrzędne: {checkInData.location.coords.latitude.toFixed(6)}, {checkInData.location.coords.longitude.toFixed(6)}
                   </p>
                 )}
               </CardContent>
@@ -1043,9 +1043,9 @@ export default function LessonCheckInPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Початок заняття</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Rozpoczęcie lekcji</h1>
           <p className="text-gray-600 mt-1">
-            Виконайте всі перевірки перед початком
+            Wykonaj wszystkie sprawdzenia przed rozpoczęciem
           </p>
         </div>
         <Button
@@ -1053,7 +1053,7 @@ export default function LessonCheckInPage() {
           onClick={() => router.back()}
         >
           <X className="w-4 h-4 mr-2" />
-          Скасувати
+          Anuluj
         </Button>
       </div>
 
@@ -1074,12 +1074,12 @@ export default function LessonCheckInPage() {
                     {lesson.student.phone}
                   </span>
                   <Badge variant="outline">{lesson.student.category}</Badge>
-                  <span>Занять: {lesson.student.lessonsCompleted}</span>
+                  <span>Lekcji: {lesson.student.lessonsCompleted}</span>
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Прогрес</p>
+              <p className="text-sm text-gray-500">Postęp</p>
               <div className="flex items-center gap-2 mt-1">
                 <Progress value={lesson.student.progress} className="w-24 h-2" />
                 <span className="text-sm font-medium">{lesson.student.progress}%</span>
@@ -1092,9 +1092,9 @@ export default function LessonCheckInPage() {
       {/* Progress Steps */}
       <Card>
         <CardHeader>
-          <CardTitle>Етапи перевірки</CardTitle>
+          <CardTitle>Etapy sprawdzenia</CardTitle>
           <CardDescription>
-            Крок {currentStep + 1} з {checkInSteps.length}
+            Krok {currentStep + 1} z {checkInSteps.length}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1148,7 +1148,7 @@ export default function LessonCheckInPage() {
             disabled={currentStep === 0}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Назад
+            Wstecz
           </Button>
 
           {currentStep < checkInSteps.length - 1 ? (
@@ -1156,7 +1156,7 @@ export default function LessonCheckInPage() {
               onClick={() => setCurrentStep(currentStep + 1)}
               disabled={!canProceed()}
             >
-              Далі
+              Dalej
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
@@ -1168,12 +1168,12 @@ export default function LessonCheckInPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Починаємо...
+                  Rozpoczynamy...
                 </>
               ) : (
                 <>
                   <Play className="w-4 h-4 mr-2" />
-                  Розпочати заняття
+                  Rozpocznij lekcję
                 </>
               )}
             </Button>
@@ -1189,7 +1189,7 @@ export default function LessonCheckInPage() {
               window.location.href = `tel:${lesson.student.phone}`
             }}>
               <Phone className="w-4 h-4 mr-2" />
-              Зателефонувати студенту
+              Zadzwoń do ucznia
             </Button>
           </CardContent>
         </Card>
@@ -1197,7 +1197,7 @@ export default function LessonCheckInPage() {
           <CardContent className="p-4">
             <Button variant="outline" className="w-full">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Повідомлення
+              Wiadomość
             </Button>
           </CardContent>
         </Card>
@@ -1207,9 +1207,9 @@ export default function LessonCheckInPage() {
       {!isOnline && (
         <Alert className="border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
-          <AlertTitle className="text-yellow-800">Офлайн режим</AlertTitle>
+          <AlertTitle className="text-yellow-800">Tryb offline</AlertTitle>
           <AlertDescription className="text-yellow-700">
-            Ви працюєте в офлайн режимі. Дані будуть збережені локально та синхронізовані при відновленні з'єднання.
+            Pracujesz w trybie offline. Dane zostaną zapisane lokalnie i zsynchronizowane po przywróceniu połączenia.
           </AlertDescription>
         </Alert>
       )}

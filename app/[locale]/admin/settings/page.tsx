@@ -22,14 +22,14 @@ export default function AdminSettingsPage() {
   
   // Form states
   const [generalSettings, setGeneralSettings] = useState({
-    schoolName: 'Автошкола Драйв',
+    schoolName: 'Szkoła Jazdy Drive',
     email: 'info@drive-school.com',
-    phone: '+380 44 123 45 67',
+    phone: '+48 22 123 45 67',
     website: 'https://drive-school.com',
-    address: 'вул. Хрещатик 1, Київ, 01001',
-    timezone: 'Europe/Kyiv',
-    language: 'uk',
-    currency: 'UAH',
+    address: 'ul. Marszałkowska 1, Warszawa, 00-001',
+    timezone: 'Europe/Warsaw',
+    language: 'pl',
+    currency: 'PLN',
     registrationNumber: '№123456',
     taxNumber: '1234567890',
     workingDays: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],
@@ -80,7 +80,7 @@ export default function AdminSettingsPage() {
     cashEnabled: true,
     bankTransferEnabled: true,
     taxRate: 23,
-    invoicePrefix: 'INV',
+    invoicePrefix: 'FV',
     autoInvoice: true,
     paymentTerms: 7,
     lateFeePercentage: 5,
@@ -110,7 +110,7 @@ export default function AdminSettingsPage() {
       id: 1,
       name: 'Google Calendar',
       icon: Calendar,
-      description: 'Синхронізація розкладу з Google Calendar',
+      description: 'Synchronizacja harmonogramu z Google Calendar',
       enabled: true,
       configured: true,
       lastSync: new Date('2024-01-15T10:30:00')
@@ -119,7 +119,7 @@ export default function AdminSettingsPage() {
       id: 2,
       name: 'Zoom',
       icon: Monitor,
-      description: 'Онлайн заняття через Zoom',
+      description: 'Zajęcia online przez Zoom',
       enabled: false,
       configured: false,
       lastSync: null
@@ -128,7 +128,7 @@ export default function AdminSettingsPage() {
       id: 3,
       name: 'Mailchimp',
       icon: Mail,
-      description: 'Email маркетинг та розсилки',
+      description: 'Email marketing i kampanie',
       enabled: true,
       configured: true,
       lastSync: new Date('2024-01-14T15:45:00')
@@ -137,7 +137,7 @@ export default function AdminSettingsPage() {
       id: 4,
       name: 'Facebook Pixel',
       icon: Globe,
-      description: 'Відстеження конверсій',
+      description: 'Śledzenie konwersji',
       enabled: true,
       configured: true,
       lastSync: null
@@ -146,7 +146,7 @@ export default function AdminSettingsPage() {
       id: 5,
       name: 'Google Analytics',
       icon: FileText,
-      description: 'Аналітика веб-трафіку',
+      description: 'Analityka ruchu na stronie',
       enabled: true,
       configured: true,
       lastSync: null
@@ -155,7 +155,7 @@ export default function AdminSettingsPage() {
       id: 6,
       name: 'Telegram Bot',
       icon: MessageSquare,
-      description: 'Повідомлення через Telegram',
+      description: 'Powiadomienia przez Telegram',
       enabled: false,
       configured: false,
       lastSync: null
@@ -165,26 +165,26 @@ export default function AdminSettingsPage() {
   const branches = [
     {
       id: 1,
-      name: 'Київ - Центр',
-      address: 'вул. Хрещатик 1',
-      phone: '+380 44 123 45 67',
-      manager: 'Олександр Петренко',
+      name: 'Warszawa - Centrum',
+      address: 'ul. Marszałkowska 1',
+      phone: '+48 22 123 45 67',
+      manager: 'Aleksander Petrak',
       active: true
     },
     {
       id: 2,
-      name: 'Київ - Оболонь',
-      address: 'пр-т Героїв Сталінграда 24',
-      phone: '+380 44 234 56 78',
-      manager: 'Марія Коваленко',
+      name: 'Warszawa - Mokotów',
+      address: 'al. Wilanowska 24',
+      phone: '+48 22 234 56 78',
+      manager: 'Maria Kowalczyk',
       active: true
     },
     {
       id: 3,
-      name: 'Львів - Центр',
-      address: 'пл. Ринок 1',
-      phone: '+380 32 345 67 89',
-      manager: 'Іван Шевченко',
+      name: 'Wrocław - Centrum',
+      address: 'Rynek 1',
+      phone: '+48 71 345 67 89',
+      manager: 'Jan Kowalski',
       active: true
     }
   ];
@@ -192,29 +192,29 @@ export default function AdminSettingsPage() {
   const emailTemplates = [
     {
       id: 1,
-      name: 'Підтвердження бронювання',
-      subject: 'Ваше заняття підтверджено',
+      name: 'Potwierdzenie rezerwacji',
+      subject: 'Twoja lekcja została potwierdzona',
       type: 'booking_confirmation',
       lastModified: new Date('2024-01-10')
     },
     {
       id: 2,
-      name: 'Нагадування про заняття',
-      subject: 'Нагадування: заняття завтра',
+      name: 'Przypomnienie o lekcji',
+      subject: 'Przypomnienie: lekcja jutro',
       type: 'lesson_reminder',
       lastModified: new Date('2024-01-08')
     },
     {
       id: 3,
-      name: 'Скасування заняття',
-      subject: 'Ваше заняття скасовано',
+      name: 'Anulowanie lekcji',
+      subject: 'Twoja lekcja została anulowana',
       type: 'lesson_cancelled',
       lastModified: new Date('2024-01-05')
     },
     {
       id: 4,
-      name: 'Вітання з реєстрацією',
-      subject: 'Ласкаво просимо до Автошколи Драйв',
+      name: 'Powitanie po rejestracji',
+      subject: 'Witamy w Szkole Jazdy Drive',
       type: 'welcome',
       lastModified: new Date('2023-12-20')
     }
@@ -230,14 +230,14 @@ export default function AdminSettingsPage() {
   };
 
   const tabs = [
-    { id: 'general', name: 'Загальні', icon: Settings },
-    { id: 'school', name: 'Школа', icon: Building },
-    { id: 'notifications', name: 'Сповіщення', icon: Bell },
-    { id: 'payments', name: 'Платежі', icon: CreditCard },
-    { id: 'security', name: 'Безпека', icon: Shield },
-    { id: 'integrations', name: 'Інтеграції', icon: Link2 },
-    { id: 'branches', name: 'Філії', icon: MapPin },
-    { id: 'templates', name: 'Шаблони', icon: Mail }
+    { id: 'general', name: 'Ogólne', icon: Settings },
+    { id: 'school', name: 'Szkoła', icon: Building },
+    { id: 'notifications', name: 'Powiadomienia', icon: Bell },
+    { id: 'payments', name: 'Płatności', icon: CreditCard },
+    { id: 'security', name: 'Bezpieczeństwo', icon: Shield },
+    { id: 'integrations', name: 'Integracje', icon: Link2 },
+    { id: 'branches', name: 'Filie', icon: MapPin },
+    { id: 'templates', name: 'Szablony', icon: Mail }
   ];
 
   return (
@@ -245,17 +245,17 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Налаштування</h1>
-          <p className="text-gray-600 mt-1">Системні налаштування та конфігурація</p>
+          <h1 className="text-3xl font-bold text-gray-800">Ustawienia</h1>
+          <p className="text-gray-600 mt-1">Ustawienia systemowe i konfiguracja</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Експорт
+            Eksport
           </button>
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Upload className="w-4 h-4" />
-            Імпорт
+            Import
           </button>
           <button
             onClick={handleSaveSettings}
@@ -267,7 +267,7 @@ export default function AdminSettingsPage() {
             ) : (
               <Save className="w-4 h-4" />
             )}
-            Зберегти
+            Zapisz
           </button>
         </div>
       </div>
@@ -276,7 +276,7 @@ export default function AdminSettingsPage() {
       {saved && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
           <CheckCircle className="w-5 h-5 text-green-600" />
-          <p className="text-green-700">Налаштування успішно збережено!</p>
+          <p className="text-green-700">Ustawienia zostały pomyślnie zapisane!</p>
         </div>
       )}
 
@@ -308,12 +308,12 @@ export default function AdminSettingsPage() {
           {/* General Settings */}
           {activeTab === 'general' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Загальні налаштування</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia ogólne</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Назва школи
+                    Nazwa szkoły
                   </label>
                   <input
                     type="text"
@@ -337,7 +337,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Телефон
+                    Telefon
                   </label>
                   <input
                     type="tel"
@@ -349,7 +349,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Веб-сайт
+                    Strona internetowa
                   </label>
                   <input
                     type="url"
@@ -361,7 +361,7 @@ export default function AdminSettingsPage() {
                 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Адреса
+                    Adres
                   </label>
                   <textarea
                     value={generalSettings.address}
@@ -373,30 +373,30 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Часовий пояс
+                    Strefa czasowa
                   </label>
                   <select
                     value={generalSettings.timezone}
                     onChange={(e) => setGeneralSettings({...generalSettings, timezone: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="Europe/Kyiv">Київ (UTC+2)</option>
-                    <option value="Europe/Warsaw">Варшава (UTC+1)</option>
+                    <option value="Europe/Warsaw">Warszawa (UTC+1)</option>
+                    <option value="Europe/Kyiv">Kijów (UTC+2)</option>
                   </select>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Мова
+                    Język
                   </label>
                   <select
                     value={generalSettings.language}
                     onChange={(e) => setGeneralSettings({...generalSettings, language: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="uk">Українська</option>
-                    <option value="en">English</option>
                     <option value="pl">Polski</option>
+                    <option value="en">English</option>
+                    <option value="uk">Українська</option>
                   </select>
                 </div>
               </div>
@@ -405,9 +405,9 @@ export default function AdminSettingsPage() {
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-800">Режим обслуговування</h4>
+                    <h4 className="font-medium text-gray-800">Tryb konserwacji</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Тимчасово вимкнути доступ для користувачів під час технічних робіт
+                      Tymczasowo wyłącz dostęp użytkowników podczas prac technicznych
                     </p>
                     <button
                       onClick={() => setGeneralSettings({...generalSettings, maintenanceMode: !generalSettings.maintenanceMode})}
@@ -419,7 +419,7 @@ export default function AdminSettingsPage() {
                         <ToggleLeft className="w-8 h-5 text-gray-400" />
                       )}
                       <span className="text-sm font-medium">
-                        {generalSettings.maintenanceMode ? 'Увімкнено' : 'Вимкнено'}
+                        {generalSettings.maintenanceMode ? 'Włączony' : 'Wyłączony'}
                       </span>
                     </button>
                   </div>
@@ -431,12 +431,12 @@ export default function AdminSettingsPage() {
           {/* School Settings */}
           {activeTab === 'school' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Налаштування школи</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia szkoły</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Тривалість заняття (хвилин)
+                    Czas trwania lekcji (minuty)
                   </label>
                   <input
                     type="number"
@@ -448,7 +448,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Буферний час між заняттями (хвилин)
+                    Czas bufora między lekcjami (minuty)
                   </label>
                   <input
                     type="number"
@@ -460,7 +460,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Макс. бронювання наперед (днів)
+                    Maks. rezerwacja z wyprzedzeniem (dni)
                   </label>
                   <input
                     type="number"
@@ -472,7 +472,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Мін. час до бронювання (годин)
+                    Min. czas do rezerwacji (godziny)
                   </label>
                   <input
                     type="number"
@@ -484,7 +484,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Період скасування (годин)
+                    Okres anulowania (godziny)
                   </label>
                   <input
                     type="number"
@@ -496,7 +496,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Мінімальний вік
+                    Minimalny wiek
                   </label>
                   <input
                     type="number"
@@ -517,7 +517,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Дозволити бронювання на вихідні
+                    Zezwalaj na rezerwacje weekendowe
                   </span>
                 </label>
                 
@@ -529,7 +529,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Дозволити нічні заняття
+                    Zezwalaj na lekcje nocne
                   </span>
                 </label>
                 
@@ -541,7 +541,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Вимагати медичну довідку
+                    Wymagaj zaświadczenia lekarskiego
                   </span>
                 </label>
                 
@@ -553,7 +553,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Вимагати здачу теорії перед практикою
+                    Wymagaj zdania teorii przed praktyką
                   </span>
                 </label>
               </div>
@@ -563,14 +563,14 @@ export default function AdminSettingsPage() {
           {/* Notification Settings */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Налаштування сповіщень</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia powiadomień</h3>
               
               <div className="space-y-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Канали сповіщень</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">Kanały powiadomień</h4>
                   <div className="space-y-3">
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Email сповіщення</span>
+                      <span className="text-sm font-medium text-gray-700">Powiadomienia email</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, emailEnabled: !notificationSettings.emailEnabled})}
                       >
@@ -583,7 +583,7 @@ export default function AdminSettingsPage() {
                     </label>
                     
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">SMS сповіщення</span>
+                      <span className="text-sm font-medium text-gray-700">Powiadomienia SMS</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, smsEnabled: !notificationSettings.smsEnabled})}
                       >
@@ -596,7 +596,7 @@ export default function AdminSettingsPage() {
                     </label>
                     
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Push сповіщення</span>
+                      <span className="text-sm font-medium text-gray-700">Powiadomienia push</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, pushEnabled: !notificationSettings.pushEnabled})}
                       >
@@ -611,7 +611,7 @@ export default function AdminSettingsPage() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Типи сповіщень</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">Typy powiadomień</h4>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3">
                       <input
@@ -620,7 +620,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, bookingConfirmation: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Підтвердження бронювання</span>
+                      <span className="text-sm text-gray-700">Potwierdzenie rezerwacji</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -630,7 +630,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, bookingReminder: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Нагадування про заняття</span>
+                      <span className="text-sm text-gray-700">Przypomnienie o lekcji</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -640,7 +640,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, cancellationAlert: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Сповіщення про скасування</span>
+                      <span className="text-sm text-gray-700">Powiadomienie o anulowaniu</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -650,14 +650,14 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, paymentReminder: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Нагадування про оплату</span>
+                      <span className="text-sm text-gray-700">Przypomnienie o płatności</span>
                     </label>
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Час нагадування до заняття (годин)
+                    Czas przypomnienia przed lekcją (godziny)
                   </label>
                   <input
                     type="number"
@@ -673,12 +673,12 @@ export default function AdminSettingsPage() {
           {/* Payment Settings */}
           {activeTab === 'payments' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Налаштування платежів</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia płatności</h3>
               
               <div className="space-y-4">
                 {/* Payment Providers */}
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Платіжні системи</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">Systemy płatności</h4>
                   
                   <div className="space-y-4">
                     <div className="flex items-center justify-between pb-3 border-b">
@@ -686,7 +686,7 @@ export default function AdminSettingsPage() {
                         <CreditCard className="w-5 h-5 text-gray-600" />
                         <div>
                           <p className="font-medium text-gray-800">Stripe</p>
-                          <p className="text-sm text-gray-500">Картки Visa, Mastercard</p>
+                          <p className="text-sm text-gray-500">Karty Visa, Mastercard</p>
                         </div>
                       </div>
                       <button
@@ -705,7 +705,7 @@ export default function AdminSettingsPage() {
                         <Zap className="w-5 h-5 text-gray-600" />
                         <div>
                           <p className="font-medium text-gray-800">Przelewy24</p>
-                          <p className="text-sm text-gray-500">Польські банківські перекази</p>
+                          <p className="text-sm text-gray-500">Polskie przelewy bankowe</p>
                         </div>
                       </div>
                       <button
@@ -723,8 +723,8 @@ export default function AdminSettingsPage() {
                       <div className="flex items-center gap-3">
                         <DollarSign className="w-5 h-5 text-gray-600" />
                         <div>
-                          <p className="font-medium text-gray-800">Готівка</p>
-                          <p className="text-sm text-gray-500">Оплата готівкою в офісі</p>
+                          <p className="font-medium text-gray-800">Gotówka</p>
+                          <p className="text-sm text-gray-500">Płatność gotówką w biurze</p>
                         </div>
                       </div>
                       <button
@@ -744,7 +744,7 @@ export default function AdminSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ставка податку (%)
+                      Stawka podatku (%)
                     </label>
                     <input
                       type="number"
@@ -756,7 +756,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Префікс інвойсів
+                      Prefiks faktur
                     </label>
                     <input
                       type="text"
@@ -768,7 +768,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Термін оплати (днів)
+                      Termin płatności (dni)
                     </label>
                     <input
                       type="number"
@@ -780,7 +780,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Штраф за прострочення (%)
+                      Kara za opóźnienie (%)
                     </label>
                     <input
                       type="number"
@@ -797,15 +797,15 @@ export default function AdminSettingsPage() {
           {/* Security Settings */}
           {activeTab === 'security' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Налаштування безпеки</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia bezpieczeństwa</h3>
               
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-start gap-3">
                   <Shield className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-800">Важливо</h4>
+                    <h4 className="font-medium text-gray-800">Ważne</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Зміна налаштувань безпеки може вплинути на доступ користувачів до системи
+                      Zmiana ustawień bezpieczeństwa może wpłynąć na dostęp użytkowników do systemu
                     </p>
                   </div>
                 </div>
@@ -815,7 +815,7 @@ export default function AdminSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Таймаут сесії (хвилин)
+                      Timeout sesji (minuty)
                     </label>
                     <input
                       type="number"
@@ -827,7 +827,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Макс. спроб входу
+                      Maks. prób logowania
                     </label>
                     <input
                       type="number"
@@ -839,10 +839,10 @@ export default function AdminSettingsPage() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Вимоги до паролю</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">Wymagania dla hasła</h4>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Мінімальна довжина: {securitySettings.passwordMinLength} символів</span>
+                      <span className="text-sm text-gray-700">Minimalna długość: {securitySettings.passwordMinLength} znaków</span>
                       <input
                         type="range"
                         min="6"
@@ -860,7 +860,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireUppercase: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Вимагати великі літери</span>
+                      <span className="text-sm text-gray-700">Wymagaj wielkich liter</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -870,7 +870,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireNumber: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Вимагати цифри</span>
+                      <span className="text-sm text-gray-700">Wymagaj cyfr</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -880,26 +880,26 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireSpecial: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Вимагати спеціальні символи</span>
+                      <span className="text-sm text-gray-700">Wymagaj znaków specjalnych</span>
                     </label>
                   </div>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Резервне копіювання</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">Kopia zapasowa</h4>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-700">Автоматичне резервне копіювання</p>
-                      <p className="text-xs text-gray-500 mt-1">Останнє: вчора, 02:00</p>
+                      <p className="text-sm text-gray-700">Automatyczna kopia zapasowa</p>
+                      <p className="text-xs text-gray-500 mt-1">Ostatnia: wczoraj, 02:00</p>
                     </div>
                     <select
                       value={securitySettings.backupFrequency}
                       onChange={(e) => setSecuritySettings({...securitySettings, backupFrequency: e.target.value})}
                       className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="daily">Щоденно</option>
-                      <option value="weekly">Щотижня</option>
-                      <option value="monthly">Щомісяця</option>
+                      <option value="daily">Codziennie</option>
+                      <option value="weekly">Co tydzień</option>
+                      <option value="monthly">Co miesiąc</option>
                     </select>
                   </div>
                 </div>
@@ -910,7 +910,7 @@ export default function AdminSettingsPage() {
           {/* Integrations */}
           {activeTab === 'integrations' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Інтеграції</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Integracje</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {integrations.map((integration) => {
@@ -950,25 +950,25 @@ export default function AdminSettingsPage() {
                           {integration.configured ? (
                             <>
                               <CheckCircle className="w-3 h-3" />
-                              Налаштовано
+                              Skonfigurowane
                             </>
                           ) : (
                             <>
                               <Info className="w-3 h-3" />
-                              Не налаштовано
+                              Nie skonfigurowane
                             </>
                           )}
                         </span>
                         
                         {integration.lastSync && (
                           <span className="text-xs text-gray-500">
-                            Остання синхронізація: {format(integration.lastSync, 'dd.MM HH:mm')}
+                            Ostatnia synchronizacja: {format(integration.lastSync, 'dd.MM HH:mm')}
                           </span>
                         )}
                       </div>
                       
                       <button className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium">
-                        Налаштувати →
+                        Skonfiguruj →
                       </button>
                     </div>
                   );
@@ -981,10 +981,10 @@ export default function AdminSettingsPage() {
           {activeTab === 'branches' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Філії</h3>
+                <h3 className="text-lg font-semibold text-gray-800">Filie</h3>
                 <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
                   <Plus className="w-4 h-4" />
-                  Додати філію
+                  Dodaj filię
                 </button>
               </div>
               
@@ -1016,7 +1016,7 @@ export default function AdminSettingsPage() {
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           branch.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                         }`}>
-                          {branch.active ? 'Активна' : 'Неактивна'}
+                          {branch.active ? 'Aktywna' : 'Nieaktywna'}
                         </span>
                         <button className="p-1 hover:bg-gray-100 rounded">
                           <Edit2 className="w-4 h-4 text-gray-600" />
@@ -1033,10 +1033,10 @@ export default function AdminSettingsPage() {
           {activeTab === 'templates' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Шаблони повідомлень</h3>
+                <h3 className="text-lg font-semibold text-gray-800">Szablony wiadomości</h3>
                 <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
                   <Plus className="w-4 h-4" />
-                  Новий шаблон
+                  Nowy szablon
                 </button>
               </div>
               
@@ -1050,9 +1050,9 @@ export default function AdminSettingsPage() {
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-800">{template.name}</h4>
-                          <p className="text-sm text-gray-500 mt-1">Тема: {template.subject}</p>
+                          <p className="text-sm text-gray-500 mt-1">Temat: {template.subject}</p>
                           <p className="text-xs text-gray-400 mt-2">
-                            Останні зміни: {format(template.lastModified, 'dd.MM.yyyy')}
+                            Ostatnie zmiany: {format(template.lastModified, 'dd.MM.yyyy')}
                           </p>
                         </div>
                       </div>

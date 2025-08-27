@@ -34,15 +34,15 @@ import {
   PieChart as RePieChart, Pie, Cell, Legend
 } from 'recharts'
 import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import { pl } from 'date-fns/locale'
 
 export default function EarningsDetailsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('month')
   const [selectedMonth, setSelectedMonth] = useState('february')
 
-  // Current period breakdown
+  // Podział bieżącego okresu
   const currentPeriod = {
-    period: 'Лютий 2024',
+    period: 'Luty 2024',
     gross: 24850,
     net: 22365,
     lessons: 65,
@@ -50,7 +50,7 @@ export default function EarningsDetailsPage() {
     students: 15,
     
     breakdown: {
-      base: 19500,  // 65 lessons * 300
+      base: 19500,  // 65 lekcji * 300
       overtime: 2000,
       bonuses: {
         quality: 1000,
@@ -69,25 +69,25 @@ export default function EarningsDetailsPage() {
     }
   }
 
-  // Earnings by lesson type
+  // Zarobki według typu lekcji
   const earningsByType = [
-    { type: 'Практика - місто', lessons: 30, amount: 9000, percentage: 36 },
-    { type: 'Практика - траса', lessons: 15, amount: 5250, percentage: 21 },
-    { type: 'Підготовка до іспиту', lessons: 10, amount: 4000, percentage: 16 },
-    { type: 'Практика - майданчик', lessons: 8, amount: 2400, percentage: 10 },
-    { type: 'Нічна їзда', lessons: 2, amount: 800, percentage: 3 }
+    { type: 'Praktyka - miasto', lessons: 30, amount: 9000, percentage: 36 },
+    { type: 'Praktyka - trasa', lessons: 15, amount: 5250, percentage: 21 },
+    { type: 'Przygotowanie do egzaminu', lessons: 10, amount: 4000, percentage: 16 },
+    { type: 'Praktyka - plac manewrowy', lessons: 8, amount: 2400, percentage: 10 },
+    { type: 'Jazda nocna', lessons: 2, amount: 800, percentage: 3 }
   ]
 
-  // Earnings by student
+  // Zarobki według kursantów
   const earningsByStudent = [
-    { name: 'Марія Шевчук', lessons: 12, amount: 3600, status: 'active' },
-    { name: 'Іван Петренко', lessons: 10, amount: 3000, status: 'active' },
-    { name: 'Олена Коваленко', lessons: 9, amount: 2700, status: 'active' },
-    { name: 'Андрій Бондаренко', lessons: 8, amount: 2400, status: 'active' },
-    { name: 'Наталія Гриценко', lessons: 7, amount: 2100, status: 'active' }
+    { name: 'Maria Kowalska', lessons: 12, amount: 3600, status: 'active' },
+    { name: 'Jan Nowak', lessons: 10, amount: 3000, status: 'active' },
+    { name: 'Anna Wiśniewska', lessons: 9, amount: 2700, status: 'active' },
+    { name: 'Andrzej Kowalczyk', lessons: 8, amount: 2400, status: 'active' },
+    { name: 'Natalia Lewandowska', lessons: 7, amount: 2100, status: 'active' }
   ]
 
-  // Daily earnings for chart
+  // Dzienne zarobki dla wykresu
   const dailyEarnings = [
     { day: '1', amount: 1200, lessons: 3 },
     { day: '2', amount: 1800, lessons: 4 },
@@ -98,13 +98,13 @@ export default function EarningsDetailsPage() {
     { day: '7', amount: 0, lessons: 0 }
   ]
 
-  // Bonuses breakdown
+  // Historia bonusów
   const bonusesHistory = [
     {
       id: 1,
       type: 'quality',
-      title: 'Бонус за якість',
-      description: 'Рейтинг 4.9+ протягом місяця',
+      title: 'Bonus za jakość',
+      description: 'Ocena 4.9+ przez cały miesiąc',
       amount: 1000,
       status: 'received',
       date: '2024-02-28'
@@ -112,8 +112,8 @@ export default function EarningsDetailsPage() {
     {
       id: 2,
       type: 'punctuality',
-      title: 'Бонус за пунктуальність',
-      description: '100% вчасних занять',
+      title: 'Bonus za punktualność',
+      description: '100% terminowych zajęć',
       amount: 500,
       status: 'received',
       date: '2024-02-28'
@@ -121,8 +121,8 @@ export default function EarningsDetailsPage() {
     {
       id: 3,
       type: 'newStudents',
-      title: 'Бонус за нових студентів',
-      description: '3 нових студента',
+      title: 'Bonus za nowych kursantów',
+      description: '3 nowych kursantów',
       amount: 750,
       status: 'pending',
       date: '2024-02-28'
@@ -130,15 +130,15 @@ export default function EarningsDetailsPage() {
     {
       id: 4,
       type: 'examSuccess',
-      title: 'Бонус за успішні іспити',
-      description: '2 студенти склали іспит',
+      title: 'Bonus za zdane egzaminy',
+      description: '2 kursantów zdało egzamin',
       amount: 600,
       status: 'pending',
       date: '2024-02-28'
     }
   ]
 
-  // Tax information
+  // Informacje podatkowe
   const taxInfo = {
     taxRate: 5,
     socialSecurity: 1.5,
@@ -162,11 +162,11 @@ export default function EarningsDetailsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Nagłówek */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Деталізація заробітку</h1>
-          <p className="text-gray-600 mt-1">Детальна інформація про доходи та витрати</p>
+          <h1 className="text-2xl font-bold text-gray-900">Szczegóły zarobków</h1>
+          <p className="text-gray-600 mt-1">Szczegółowe informacje o dochodach i wydatkach</p>
         </div>
         <div className="flex gap-2">
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
@@ -174,27 +174,27 @@ export default function EarningsDetailsPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="week">Тиждень</SelectItem>
-              <SelectItem value="month">Місяць</SelectItem>
-              <SelectItem value="quarter">Квартал</SelectItem>
-              <SelectItem value="year">Рік</SelectItem>
+              <SelectItem value="week">Tydzień</SelectItem>
+              <SelectItem value="month">Miesiąc</SelectItem>
+              <SelectItem value="quarter">Kwartał</SelectItem>
+              <SelectItem value="year">Rok</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
-            Експорт
+            Eksport
           </Button>
         </div>
       </div>
 
-      {/* Summary Cards */}
+      {/* Karty podsumowujące */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Валовий дохід</p>
-                <p className="text-2xl font-bold">₴{currentPeriod.gross.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">Dochód brutto</p>
+                <p className="text-2xl font-bold">zł{currentPeriod.gross.toLocaleString()}</p>
               </div>
               <DollarSign className="w-6 h-6 text-gray-400" />
             </div>
@@ -205,8 +205,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Чистий дохід</p>
-                <p className="text-2xl font-bold">₴{currentPeriod.net.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">Dochód netto</p>
+                <p className="text-2xl font-bold">zł{currentPeriod.net.toLocaleString()}</p>
               </div>
               <TrendingUp className="w-6 h-6 text-green-500" />
             </div>
@@ -217,8 +217,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Утримання</p>
-                <p className="text-2xl font-bold text-red-600">₴{currentPeriod.breakdown.deductions.total}</p>
+                <p className="text-sm text-gray-500">Potrącenia</p>
+                <p className="text-2xl font-bold text-red-600">zł{currentPeriod.breakdown.deductions.total}</p>
               </div>
               <TrendingDown className="w-6 h-6 text-red-500" />
             </div>
@@ -229,8 +229,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Бонуси</p>
-                <p className="text-2xl font-bold text-green-600">₴{currentPeriod.breakdown.bonuses.total}</p>
+                <p className="text-sm text-gray-500">Bonusy</p>
+                <p className="text-2xl font-bold text-green-600">zł{currentPeriod.breakdown.bonuses.total}</p>
               </div>
               <Award className="w-6 h-6 text-yellow-500" />
             </div>
@@ -240,50 +240,50 @@ export default function EarningsDetailsPage() {
 
       <Tabs defaultValue="breakdown" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="breakdown">Розподіл</TabsTrigger>
-          <TabsTrigger value="bonuses">Бонуси</TabsTrigger>
-          <TabsTrigger value="deductions">Утримання</TabsTrigger>
-          <TabsTrigger value="students">По студентах</TabsTrigger>
-          <TabsTrigger value="analytics">Аналітика</TabsTrigger>
+          <TabsTrigger value="breakdown">Podział</TabsTrigger>
+          <TabsTrigger value="bonuses">Bonusy</TabsTrigger>
+          <TabsTrigger value="deductions">Potrącenia</TabsTrigger>
+          <TabsTrigger value="students">Według kursantów</TabsTrigger>
+          <TabsTrigger value="analytics">Analityka</TabsTrigger>
         </TabsList>
 
         <TabsContent value="breakdown" className="mt-6 space-y-6">
-          {/* Income Breakdown */}
+          {/* Podział dochodów */}
           <Card>
             <CardHeader>
-              <CardTitle>Структура доходу</CardTitle>
+              <CardTitle>Struktura dochodu</CardTitle>
               <CardDescription>{currentPeriod.period}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Базовий дохід ({currentPeriod.lessons} занять)</span>
-                    <span className="font-semibold">₴{currentPeriod.breakdown.base}</span>
+                    <span className="text-sm text-gray-600">Dochód podstawowy ({currentPeriod.lessons} lekcji)</span>
+                    <span className="font-semibold">zł{currentPeriod.breakdown.base}</span>
                   </div>
                   <Progress value={78} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Понаднормові</span>
-                    <span className="font-semibold">₴{currentPeriod.breakdown.overtime}</span>
+                    <span className="text-sm text-gray-600">Godziny nadliczbowe</span>
+                    <span className="font-semibold">zł{currentPeriod.breakdown.overtime}</span>
                   </div>
                   <Progress value={8} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Бонуси</span>
-                    <span className="font-semibold text-green-600">₴{currentPeriod.breakdown.bonuses.total}</span>
+                    <span className="text-sm text-gray-600">Bonusy</span>
+                    <span className="font-semibold text-green-600">zł{currentPeriod.breakdown.bonuses.total}</span>
                   </div>
                   <Progress value={11} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Додатковий дохід</span>
-                    <span className="font-semibold">₴{currentPeriod.breakdown.additionalIncome}</span>
+                    <span className="text-sm text-gray-600">Dodatkowy dochód</span>
+                    <span className="font-semibold">zł{currentPeriod.breakdown.additionalIncome}</span>
                   </div>
                   <Progress value={2} className="h-2" />
                 </div>
@@ -291,18 +291,18 @@ export default function EarningsDetailsPage() {
 
               <div className="mt-6 pt-6 border-t">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Всього (валовий):</span>
-                  <span>₴{currentPeriod.gross.toLocaleString()}</span>
+                  <span>Łącznie (brutto):</span>
+                  <span>zł{currentPeriod.gross.toLocaleString()}</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Earnings by Type Chart */}
+          {/* Wykres zarobków według typu */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>За типами занять</CardTitle>
+                <CardTitle>Według typu lekcji</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>
@@ -328,7 +328,7 @@ export default function EarningsDetailsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Список за типами</CardTitle>
+                <CardTitle>Lista według typów</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -342,8 +342,8 @@ export default function EarningsDetailsPage() {
                         <span className="text-sm">{type.type}</span>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">₴{type.amount}</p>
-                        <p className="text-xs text-gray-500">{type.lessons} занять</p>
+                        <p className="font-semibold">zł{type.amount}</p>
+                        <p className="text-xs text-gray-500">{type.lessons} lekcji</p>
                       </div>
                     </div>
                   ))}
@@ -356,7 +356,7 @@ export default function EarningsDetailsPage() {
         <TabsContent value="bonuses" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Деталізація бонусів</CardTitle>
+              <CardTitle>Szczegóły bonusów</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -372,9 +372,9 @@ export default function EarningsDetailsPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">+₴{bonus.amount}</p>
+                      <p className="text-lg font-bold text-green-600">+zł{bonus.amount}</p>
                       <Badge variant={bonus.status === 'received' ? 'default' : 'secondary'}>
-                        {bonus.status === 'received' ? 'Отримано' : 'Очікується'}
+                        {bonus.status === 'received' ? 'Otrzymano' : 'Oczekuje'}
                       </Badge>
                     </div>
                   </div>
@@ -384,7 +384,7 @@ export default function EarningsDetailsPage() {
               <Alert className="mt-4">
                 <Info className="h-4 w-4" />
                 <AlertDescription>
-                  Бонуси нараховуються автоматично в кінці місяця при виконанні умов
+                  Bonusy naliczane są automatycznie na koniec miesiąca przy spełnieniu warunków
                 </AlertDescription>
               </Alert>
             </CardContent>
@@ -392,70 +392,70 @@ export default function EarningsDetailsPage() {
         </TabsContent>
 
         <TabsContent value="deductions" className="mt-6 space-y-6">
-          {/* Deductions Breakdown */}
+          {/* Podział potrąceń */}
           <Card>
             <CardHeader>
-              <CardTitle>Утримання та податки</CardTitle>
+              <CardTitle>Potrącenia i podatki</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">Комісія платформи</p>
-                    <p className="text-sm text-gray-600">6% від валового доходу</p>
+                    <p className="font-medium">prowizja platformy</p>
+                    <p className="text-sm text-gray-600">6% od dochodu brutto</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-₴{currentPeriod.breakdown.deductions.platformFee}</p>
+                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.platformFee}</p>
                 </div>
 
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">Податки</p>
-                    <p className="text-sm text-gray-600">ЄП 5% + ЄСВ 1.5%</p>
+                    <p className="font-medium">Podatki</p>
+                    <p className="text-sm text-gray-600">PIT 5% + ZUS 1.5%</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-₴{currentPeriod.breakdown.deductions.taxes}</p>
+                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.taxes}</p>
                 </div>
 
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">Страхування</p>
-                    <p className="text-sm text-gray-600">Додаткове страхування</p>
+                    <p className="font-medium">Ubezpieczenie</p>
+                    <p className="text-sm text-gray-600">Dodatkowe ubezpieczenie</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-₴{currentPeriod.breakdown.deductions.insurance}</p>
+                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.insurance}</p>
                 </div>
               </div>
 
               <div className="mt-6 pt-6 border-t">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Всього утримань:</span>
-                  <span className="text-red-600">-₴{currentPeriod.breakdown.deductions.total}</span>
+                  <span>Łączne potrącenia:</span>
+                  <span className="text-red-600">-zł{currentPeriod.breakdown.deductions.total}</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Tax Information */}
+          {/* Informacje podatkowe */}
           <Card>
             <CardHeader>
-              <CardTitle>Податкова інформація</CardTitle>
+              <CardTitle>Informacje podatkowe</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-gray-500">Річний дохід (прогноз)</p>
-                  <p className="text-xl font-bold">₴{taxInfo.yearlyIncome.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">Roczny dochód (prognoza)</p>
+                  <p className="text-xl font-bold">zł{taxInfo.yearlyIncome.toLocaleString()}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Податки за рік</p>
-                  <p className="text-xl font-bold">₴{taxInfo.yearlyTax.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">Podatki za rok</p>
+                  <p className="text-xl font-bold">zł{taxInfo.yearlyTax.toLocaleString()}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 {taxInfo.quarterlyPayments.map((payment) => (
                   <div key={payment.quarter} className="flex justify-between p-2 border rounded">
-                    <span className="text-sm">{payment.quarter} - до {payment.due}</span>
+                    <span className="text-sm">{payment.quarter} - do {payment.due}</span>
                     <Badge variant={payment.paid > 0 ? 'default' : 'secondary'}>
-                      {payment.paid > 0 ? `Сплачено ₴${payment.paid}` : 'Очікує'}
+                      {payment.paid > 0 ? `Opłacono zł${payment.paid}` : 'Oczekuje'}
                     </Badge>
                   </div>
                 ))}
@@ -467,17 +467,17 @@ export default function EarningsDetailsPage() {
         <TabsContent value="students" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Заробіток по студентах</CardTitle>
+              <CardTitle>Zarobek według kursantów</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Студент</TableHead>
-                    <TableHead>Занять</TableHead>
-                    <TableHead>Сума</TableHead>
-                    <TableHead>Середня вартість</TableHead>
-                    <TableHead>Статус</TableHead>
+                    <TableHead>Kursant</TableHead>
+                    <TableHead>Lekcji</TableHead>
+                    <TableHead>Kwota</TableHead>
+                    <TableHead>Średnia cena</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -485,10 +485,10 @@ export default function EarningsDetailsPage() {
                     <TableRow key={student.name}>
                       <TableCell className="font-medium">{student.name}</TableCell>
                       <TableCell>{student.lessons}</TableCell>
-                      <TableCell className="font-semibold">₴{student.amount}</TableCell>
-                      <TableCell>₴{Math.round(student.amount / student.lessons)}</TableCell>
+                      <TableCell className="font-semibold">zł{student.amount}</TableCell>
+                      <TableCell>zł{Math.round(student.amount / student.lessons)}</TableCell>
                       <TableCell>
-                        <Badge variant="default">Активний</Badge>
+                        <Badge variant="default">Aktywny</Badge>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -501,7 +501,7 @@ export default function EarningsDetailsPage() {
         <TabsContent value="analytics" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Динаміка заробітку</CardTitle>
+              <CardTitle>Dynamika zarobków</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
