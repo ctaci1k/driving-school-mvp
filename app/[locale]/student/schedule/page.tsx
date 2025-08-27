@@ -2,7 +2,8 @@
 
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Calendar,
   Clock,
@@ -36,7 +37,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
-import React from 'react';
+import MonthView from '@/components/calendar/MonthView';
 
 // Mock data
 const mockLessons = [
@@ -225,13 +226,12 @@ export default function StudentSchedulePage() {
       <div className="overflow-x-auto">
         <div className="min-w-[800px]">
           {/* Week header */}
-          
           <div className="grid grid-cols-8 gap-px bg-gray-200 rounded-t-lg overflow-hidden">
             <div className="bg-white p-2"></div>
             {weekDates.map((date, index) => {
               const isToday = date.toDateString() === new Date().toDateString();
               return (
-                <div key={`weekday-${index}`} className={`bg-white p-3 text-center ${isToday ? 'bg-blue-50' : ''}`}>
+                <div key={index} className={`bg-white p-3 text-center ${isToday ? 'bg-blue-50' : ''}`}>
                   <div className="text-xs text-gray-500">{weekDays[index]}</div>
                   <div className={`text-sm font-semibold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>
                     {date.getDate()}
@@ -241,36 +241,37 @@ export default function StudentSchedulePage() {
             })}
           </div>
 
-          {/* Time slots */}
-          <div className="grid grid-cols-8 gap-px bg-gray-200">
-            {hours.map(hour => (
-              <React.Fragment key={`hour-row-${hour}`}>
-                <div className="bg-gray-50 p-2 text-xs text-gray-600 text-right">
-                  {hour}:00
-                </div>
-                {weekDates.map((date, dayIndex) => {
-                  const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-                  const dayLessons = mockLessons.filter(lesson => lesson.date === dateStr);
-                  const hourStr = `${hour}:00`;
-                  const lessonAtThisTime = dayLessons.find(lesson => lesson.time.startsWith(hourStr));
+{/* Time slots */}
+<div className="grid grid-cols-8 gap-px bg-gray-200">
+  {hours.map(hour => (
+    <React.Fragment key={`hour-block-${hour}`}>
+      <div className="bg-gray-50 p-2 text-xs text-gray-600 text-right">
+        {hour}:00
+      </div>
+      {weekDates.map((date, dayIndex) => {
+        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        const dayLessons = mockLessons.filter(lesson => lesson.date === dateStr);
+        const hourStr = `${hour}:00`;
+        const lessonAtThisTime = dayLessons.find(lesson => lesson.time.startsWith(hourStr));
 
-                  return (
-                    <div key={`cell-${hour}-${dayIndex}`} className="bg-white min-h-[60px] p-1 relative">
-                      {lessonAtThisTime && (
-                        <div 
-                          className={`absolute inset-x-1 p-2 rounded border-l-4 cursor-pointer hover:shadow-md transition-shadow ${getLessonColor(lessonAtThisTime.color)}`}
-                          onClick={() => setSelectedLesson(lessonAtThisTime.id)}
-                        >
-                          <div className="text-xs font-semibold">{lessonAtThisTime.type}</div>
-                          <div className="text-xs text-gray-600">{lessonAtThisTime.instructor.name}</div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </React.Fragment>
-            ))}
+        return (
+          <div key={`${dayIndex}-${hour}`} className="bg-white min-h-[60px] p-1 relative">
+            {lessonAtThisTime && (
+              <div 
+                className={`absolute inset-x-1 p-2 rounded border-l-4 cursor-pointer hover:shadow-md transition-shadow ${getLessonColor(lessonAtThisTime.color)}`}
+                onClick={() => setSelectedLesson(lessonAtThisTime.id)}
+              >
+                <div className="text-xs font-semibold">{lessonAtThisTime.type}</div>
+                <div className="text-xs text-gray-600">{lessonAtThisTime.instructor.name}</div>
+              </div>
+            )}
           </div>
+        );
+      })}
+    </React.Fragment>
+  ))}
+</div>
+
         </div>
       </div>
     );
