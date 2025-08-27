@@ -262,7 +262,7 @@ export default function StudentBookingPage() {
       transmission: 'Manual',
       fuel: 'Benzyna',
       registration: 'WZ 12345',
-      image: 'https://via.placeholder.com/300x200?text=Toyota+Yaris',
+      image: 'https://placehold.co/300x200?text=Toyota+Yaris',
       features: ['ABS', 'ESP', 'Klimatyzacja', 'Parking sensors']
     },
     {
@@ -273,7 +273,7 @@ export default function StudentBookingPage() {
       transmission: 'Manual',
       fuel: 'Diesel',
       registration: 'WZ 67890',
-      image: 'https://via.placeholder.com/300x200?text=VW+Golf',
+      image: 'https://placehold.co/300x200?text=VW+Golf',
       features: ['ABS', 'ESP', 'Klimatyzacja', 'Kamera cofania']
     },
     {
@@ -284,7 +284,7 @@ export default function StudentBookingPage() {
       transmission: 'Automatic',
       fuel: 'Benzyna',
       registration: 'WZ 11111',
-      image: 'https://via.placeholder.com/300x200?text=Skoda+Fabia',
+      image: 'https://placehold.co/300x200?text=Skoda+Fabia',
       features: ['ABS', 'ESP', 'Klimatyzacja', 'Apple CarPlay']
     }
   ];

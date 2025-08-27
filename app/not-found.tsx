@@ -3,8 +3,7 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <html lang="en">
-      <body>
+
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
           <div className="text-center">
             <h1 className="text-6xl font-bold text-gray-900">404</h1>
@@ -17,7 +16,6 @@ export default function NotFound() {
             </Link>
           </div>
         </div>
-      </body>
-    </html>
+
   )
 }

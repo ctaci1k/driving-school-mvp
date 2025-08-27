@@ -1,649 +1,901 @@
 // app/[locale]/admin/payments/invoices/page.tsx
-"use client";
+// Strona faktur - zarządzanie fakturami, generowanie i wysyłka dokumentów księgowych
+
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  ArrowLeft, FileText, Download, Send, Eye, Edit2, Trash2,
-  Plus, Filter, Search, Calendar, DollarSign, User, Clock,
-  CheckCircle, XCircle, AlertCircle, Printer, Mail, Copy,
-  MoreHorizontal, CreditCard, Building, Phone, MapPin,
-  ChevronLeft, ChevronRight, RefreshCw, Upload, Loader2
+  FileText,
+  Download,
+  Send,
+  Eye,
+  Filter,
+  Search,
+  Plus,
+  MoreVertical,
+  Calendar,
+  User,
+  Building,
+  CheckCircle,
+  XCircle,
+  Clock,
+  AlertCircle,
+  Mail,
+  Printer,
+  Copy,
+  Edit,
+  Trash2,
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  RefreshCw,
+  ChevronLeft,
+  ChevronRight,
+  Settings
 } from 'lucide-react';
-import { format, addDays, subDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
+import { toast } from '@/components/ui/use-toast';
+import { DatePickerWithRange } from '@/components/ui/date-range-picker';
+import { cn } from '@/lib/utils';
+
+// Typy
+type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled' | 'refunded';
+type InvoiceType = 'standard' | 'proforma' | 'correction';
+type PaymentMethod = 'cash' | 'transfer' | 'card' | 'online';
 
 interface Invoice {
   id: string;
   number: string;
-  clientName: string;
-  clientEmail: string;
-  clientPhone: string;
-  clientAddress: string;
-  amount: number;
-  tax: number;
-  total: number;
-  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled';
-  issueDate: Date;
-  dueDate: Date;
-  paidDate?: Date;
+  type: InvoiceType;
+  status: InvoiceStatus;
+  issueDate: string;
+  dueDate: string;
+  paymentDate?: string;
+  customer: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    taxId?: string;
+    isCompany: boolean;
+  };
   items: {
+    id: string;
     description: string;
     quantity: number;
-    price: number;
+    unitPrice: number;
+    vatRate: number;
     total: number;
   }[];
+  subtotal: number;
+  vatAmount: number;
+  total: number;
+  currency: string;
+  paymentMethod?: PaymentMethod;
   notes?: string;
+  attachments?: string[];
+  sentAt?: string;
+  viewedAt?: string;
+  reminders: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const generateInvoices = (): Invoice[] => {
-  const clients = [
-    'Олександр Петренко', 'Марія Коваленко', 'Іван Шевченко', 'Юлія Ткаченко',
-    'Петро Мельник', 'Оксана Бойко', 'Андрій Кравчук', 'Наталія Савченко',
-    'Михайло Гончаренко', 'Тетяна Павленко', 'Василь Романенко', 'Світлана Яковенко'
-  ];
+// Mock data
+const mockInvoices: Invoice[] = [
+  {
+    id: 'inv-001',
+    number: 'FV/2024/12/001',
+    type: 'standard',
+    status: 'paid',
+    issueDate: '2024-12-01',
+    dueDate: '2024-12-15',
+    paymentDate: '2024-12-10',
+    customer: {
+      id: 'cust-1',
+      name: 'Jan Kowalski',
+      email: 'jan.kowalski@email.com',
+      phone: '+48 600 123 456',
+      address: 'ul. Marszałkowska 10, 00-001 Warszawa',
+      isCompany: false
+    },
+    items: [
+      {
+        id: '1',
+        description: 'Pakiet Standard B - Kurs prawa jazdy',
+        quantity: 1,
+        unitPrice: 2999,
+        vatRate: 23,
+        total: 3688.77
+      }
+    ],
+    subtotal: 2999,
+    vatAmount: 689.77,
+    total: 3688.77,
+    currency: 'PLN',
+    paymentMethod: 'transfer',
+    reminders: 0,
+    createdAt: '2024-12-01',
+    updatedAt: '2024-12-10'
+  },
+  {
+    id: 'inv-002',
+    number: 'FV/2024/12/002',
+    type: 'proforma',
+    status: 'sent',
+    issueDate: '2024-12-05',
+    dueDate: '2024-12-19',
+    customer: {
+      id: 'cust-2',
+      name: 'AutoSzkoła Partner Sp. z o.o.',
+      email: 'kontakt@partner.pl',
+      phone: '+48 22 123 45 67',
+      address: 'ul. Prosta 20, 00-002 Warszawa',
+      taxId: 'PL1234567890',
+      isCompany: true
+    },
+    items: [
+      {
+        id: '1',
+        description: 'Pakiet Premium B - 5 kursantów',
+        quantity: 5,
+        unitPrice: 3500,
+        vatRate: 23,
+        total: 21525
+      },
+      {
+        id: '2',
+        description: 'Dodatkowe godziny praktyki',
+        quantity: 10,
+        unitPrice: 120,
+        vatRate: 23,
+        total: 1476
+      }
+    ],
+    subtotal: 18700,
+    vatAmount: 4301,
+    total: 23001,
+    currency: 'PLN',
+    sentAt: '2024-12-05T14:30:00',
+    viewedAt: '2024-12-05T16:45:00',
+    reminders: 0,
+    createdAt: '2024-12-05',
+    updatedAt: '2024-12-05'
+  },
+  {
+    id: 'inv-003',
+    number: 'FV/2024/12/003',
+    type: 'standard',
+    status: 'overdue',
+    issueDate: '2024-11-20',
+    dueDate: '2024-12-04',
+    customer: {
+      id: 'cust-3',
+      name: 'Anna Nowak',
+      email: 'anna.nowak@email.com',
+      phone: '+48 700 234 567',
+      address: 'ul. Złota 44, 00-003 Warszawa',
+      isCompany: false
+    },
+    items: [
+      {
+        id: '1',
+        description: 'Pakiet Intensywny A2',
+        quantity: 1,
+        unitPrice: 2200,
+        vatRate: 23,
+        total: 2706
+      }
+    ],
+    subtotal: 2200,
+    vatAmount: 506,
+    total: 2706,
+    currency: 'PLN',
+    reminders: 2,
+    createdAt: '2024-11-20',
+    updatedAt: '2024-12-15'
+  },
+  // Więcej faktur dla demonstracji
+  ...Array.from({ length: 10 }, (_, i) => ({
+    id: `inv-${String(i + 4).padStart(3, '0')}`,
+    number: `FV/2024/12/${String(i + 4).padStart(3, '0')}`,
+    type: (['standard', 'proforma', 'correction'] as InvoiceType[])[i % 3],
+    status: (['paid', 'sent', 'draft', 'overdue', 'cancelled'] as InvoiceStatus[])[i % 5],
+    issueDate: `2024-12-${String(i + 1).padStart(2, '0')}`,
+    dueDate: `2024-12-${String(i + 15).padStart(2, '0')}`,
+    customer: {
+      id: `cust-${i + 4}`,
+      name: `Klient ${i + 4}`,
+      email: `klient${i + 4}@email.com`,
+      phone: `+48 600 ${String(i).padStart(3, '0')} ${String(i).padStart(3, '0')}`,
+      address: `ul. Testowa ${i + 1}, 00-00${i} Warszawa`,
+      isCompany: i % 2 === 0,
+      taxId: i % 2 === 0 ? `PL${String(i).padStart(10, '0')}` : undefined
+    },
+    items: [
+      {
+        id: '1',
+        description: 'Usługa szkoleniowa',
+        quantity: 1,
+        unitPrice: 2000 + (i * 100),
+        vatRate: 23,
+        total: (2000 + (i * 100)) * 1.23
+      }
+    ],
+    subtotal: 2000 + (i * 100),
+    vatAmount: (2000 + (i * 100)) * 0.23,
+    total: (2000 + (i * 100)) * 1.23,
+    currency: 'PLN',
+    paymentMethod: (['transfer', 'card', 'cash'] as PaymentMethod[])[i % 3],
+    reminders: 0,
+    createdAt: `2024-12-${String(i + 1).padStart(2, '0')}`,
+    updatedAt: `2024-12-${String(i + 1).padStart(2, '0')}`
+  }))
+];
 
-  const statuses: Invoice['status'][] = ['draft', 'sent', 'paid', 'overdue', 'cancelled'];
-  
-  const invoices: Invoice[] = [];
-  
-  for (let i = 0; i < 100; i++) {
-    const issueDate = subDays(new Date(), Math.floor(Math.random() * 60));
-    const dueDate = addDays(issueDate, 14);
-    const status = statuses[Math.floor(Math.random() * statuses.length)];
-    const amount = Math.floor(Math.random() * 5000) + 1500;
-    const tax = amount * 0.2;
-    
-    invoices.push({
-      id: `inv-${i + 1}`,
-      number: `INV-2024-${String(i + 1).padStart(4, '0')}`,
-      clientName: clients[Math.floor(Math.random() * clients.length)],
-      clientEmail: `client${i}@example.com`,
-      clientPhone: `+380${Math.floor(Math.random() * 900000000 + 100000000)}`,
-      clientAddress: `вул. Хрещатик ${Math.floor(Math.random() * 100) + 1}, Київ`,
-      amount,
-      tax,
-      total: amount + tax,
-      status,
-      issueDate,
-      dueDate,
-      paidDate: status === 'paid' ? addDays(issueDate, Math.floor(Math.random() * 10)) : undefined,
-      items: [
-        {
-          description: 'Пакет навчання "Стандарт"',
-          quantity: 1,
-          price: amount * 0.7,
-          total: amount * 0.7
-        },
-        {
-          description: 'Додаткові заняття',
-          quantity: Math.floor(Math.random() * 3) + 1,
-          price: amount * 0.3,
-          total: amount * 0.3
-        }
-      ],
-      notes: 'Дякуємо за вашу довіру!'
-    });
-  }
-  
-  return invoices;
-};
-
-export default function AdminInvoicesPage() {
+export default function InvoicesPage() {
   const router = useRouter();
-  const [invoices] = useState(generateInvoices());
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
+  const [invoices] = useState<Invoice[]>(mockInvoices);
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
+  const [filters, setFilters] = useState({
+    search: '',
+    status: 'all',
+    type: 'all',
+    dateRange: null
+  });
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
   const [loading, setLoading] = useState(false);
-  const itemsPerPage = 20;
-
-  // Filter invoices
-  const filteredInvoices = invoices.filter(invoice => {
-    const matchesSearch = 
-      invoice.number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      invoice.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      invoice.clientEmail.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || invoice.status === filterStatus;
-    
-    let matchesDate = true;
-    if (dateFrom) {
-      matchesDate = matchesDate && invoice.issueDate >= new Date(dateFrom);
-    }
-    if (dateTo) {
-      matchesDate = matchesDate && invoice.issueDate <= new Date(dateTo);
-    }
-    
-    return matchesSearch && matchesStatus && matchesDate;
+  const [detailsDialog, setDetailsDialog] = useState<{ open: boolean; invoice: Invoice | null }>({
+    open: false,
+    invoice: null
+  });
+  const [sendDialog, setSendDialog] = useState<{ open: boolean; invoice: Invoice | null }>({
+    open: false,
+    invoice: null
   });
 
-  // Pagination
-  const totalPages = Math.ceil(filteredInvoices.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedInvoices = filteredInvoices.slice(startIndex, startIndex + itemsPerPage);
-
-  // Stats
+  // Statystyki
   const stats = {
     total: invoices.length,
-    draft: invoices.filter(i => i.status === 'draft').length,
-    sent: invoices.filter(i => i.status === 'sent').length,
-    paid: invoices.filter(i => i.status === 'paid').length,
-    overdue: invoices.filter(i => i.status === 'overdue').length,
-    totalAmount: invoices.reduce((acc, i) => acc + i.total, 0),
-    paidAmount: invoices.filter(i => i.status === 'paid').reduce((acc, i) => acc + i.total, 0),
-    pendingAmount: invoices.filter(i => ['sent', 'overdue'].includes(i.status)).reduce((acc, i) => acc + i.total, 0)
+    totalValue: invoices.reduce((sum, inv) => sum + inv.total, 0),
+    paid: invoices.filter(inv => inv.status === 'paid').length,
+    paidValue: invoices.filter(inv => inv.status === 'paid').reduce((sum, inv) => sum + inv.total, 0),
+    pending: invoices.filter(inv => inv.status === 'sent').length,
+    pendingValue: invoices.filter(inv => inv.status === 'sent').reduce((sum, inv) => sum + inv.total, 0),
+    overdue: invoices.filter(inv => inv.status === 'overdue').length,
+    overdueValue: invoices.filter(inv => inv.status === 'overdue').reduce((sum, inv) => sum + inv.total, 0)
   };
 
-  const getStatusBadge = (status: Invoice['status']) => {
-    const badges = {
-      draft: { bg: 'bg-gray-100', text: 'text-gray-700', icon: Edit2, label: 'Чернетка' },
-      sent: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Send, label: 'Надіслано' },
-      paid: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Оплачено' },
-      overdue: { bg: 'bg-red-100', text: 'text-red-700', icon: AlertCircle, label: 'Прострочено' },
-      cancelled: { bg: 'bg-gray-100', text: 'text-gray-500', icon: XCircle, label: 'Скасовано' }
-    };
-    return badges[status];
+  // Filtrowane faktury
+  const filteredInvoices = invoices.filter(invoice => {
+    if (filters.search && !invoice.number.toLowerCase().includes(filters.search.toLowerCase()) &&
+        !invoice.customer.name.toLowerCase().includes(filters.search.toLowerCase())) {
+      return false;
+    }
+    if (filters.status !== 'all' && invoice.status !== filters.status) return false;
+    if (filters.type !== 'all' && invoice.type !== filters.type) return false;
+    return true;
+  });
+
+  const statusColors: Record<InvoiceStatus, string> = {
+    draft: 'bg-gray-100 text-gray-700',
+    sent: 'bg-blue-100 text-blue-700',
+    paid: 'bg-green-100 text-green-700',
+    overdue: 'bg-red-100 text-red-700',
+    cancelled: 'bg-gray-100 text-gray-500',
+    refunded: 'bg-purple-100 text-purple-700'
   };
 
-  const handleSelectAll = () => {
-    if (selectedInvoices.length === paginatedInvoices.length) {
+  const statusLabels: Record<InvoiceStatus, string> = {
+    draft: 'Szkic',
+    sent: 'Wysłana',
+    paid: 'Opłacona',
+    overdue: 'Zaległa',
+    cancelled: 'Anulowana',
+    refunded: 'Zwrócona'
+  };
+
+  const typeLabels: Record<InvoiceType, string> = {
+    standard: 'Faktura VAT',
+    proforma: 'Proforma',
+    correction: 'Korekta'
+  };
+
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedInvoices(filteredInvoices.map(inv => inv.id));
+    } else {
       setSelectedInvoices([]);
-    } else {
-      setSelectedInvoices(paginatedInvoices.map(i => i.id));
     }
   };
 
-  const handleSelectInvoice = (invoiceId: string) => {
-    if (selectedInvoices.includes(invoiceId)) {
-      setSelectedInvoices(selectedInvoices.filter(id => id !== invoiceId));
-    } else {
+  const handleSelectInvoice = (invoiceId: string, checked: boolean) => {
+    if (checked) {
       setSelectedInvoices([...selectedInvoices, invoiceId]);
+    } else {
+      setSelectedInvoices(selectedInvoices.filter(id => id !== invoiceId));
     }
   };
 
-  const handleBulkAction = async (action: string) => {
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(`Bulk action: ${action} for invoices:`, selectedInvoices);
+  const handleBulkAction = (action: string) => {
+    console.log('Bulk action:', action, selectedInvoices);
+    toast({
+      title: 'Akcja wykonana',
+      description: `${action} dla ${selectedInvoices.length} faktur`,
+    });
     setSelectedInvoices([]);
-    setLoading(false);
   };
 
-  const handleSendInvoice = async (invoice: Invoice) => {
-    setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log('Sending invoice:', invoice.number);
-    setLoading(false);
+  const handleSendInvoice = (invoice: Invoice) => {
+    setSendDialog({ open: true, invoice });
   };
+
+  const sendInvoice = () => {
+    console.log('Sending invoice:', sendDialog.invoice?.id);
+    toast({
+      title: 'Faktura wysłana',
+      description: `Faktura ${sendDialog.invoice?.number} została wysłana na adres ${sendDialog.invoice?.customer.email}`,
+    });
+    setSendDialog({ open: false, invoice: null });
+  };
+
+  const handleDownloadInvoice = (invoice: Invoice) => {
+    console.log('Download invoice:', invoice.id);
+    toast({
+      title: 'Pobieranie faktury',
+      description: `Faktura ${invoice.number} została pobrana`,
+    });
+  };
+
+  const handleDuplicateInvoice = (invoice: Invoice) => {
+    console.log('Duplicate invoice:', invoice.id);
+    toast({
+      title: 'Faktura zduplikowana',
+      description: `Utworzono kopię faktury ${invoice.number}`,
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="p-6 space-y-6">
+        <Skeleton className="h-12 w-64" />
+        <div className="grid grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+        <Skeleton className="h-96" />
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.push('/uk/admin/payments')}
-            className="p-2 hover:bg-gray-100 rounded-lg"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">Інвойси</h1>
-            <p className="text-gray-600 mt-1">Управління рахунками та квитанціями</p>
-          </div>
-        </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          Створити інвойс
-        </button>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <FileText className="w-4 h-4 text-gray-400" />
-            <p className="text-xs text-gray-500">Всього</p>
-          </div>
-          <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <Edit2 className="w-4 h-4 text-gray-400" />
-            <p className="text-xs text-gray-500">Чернетки</p>
-          </div>
-          <p className="text-2xl font-bold text-gray-800">{stats.draft}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <Send className="w-4 h-4 text-blue-400" />
-            <p className="text-xs text-gray-500">Надіслано</p>
-          </div>
-          <p className="text-2xl font-bold text-blue-600">{stats.sent}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <CheckCircle className="w-4 h-4 text-green-400" />
-            <p className="text-xs text-gray-500">Оплачено</p>
-          </div>
-          <p className="text-2xl font-bold text-green-600">{stats.paid}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <AlertCircle className="w-4 h-4 text-red-400" />
-            <p className="text-xs text-gray-500">Прострочено</p>
-          </div>
-          <p className="text-2xl font-bold text-red-600">{stats.overdue}</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="w-4 h-4 text-gray-400" />
-            <p className="text-xs text-gray-500">Загальна сума</p>
-          </div>
-          <p className="text-lg font-bold text-gray-800">₴{(stats.totalAmount / 1000).toFixed(0)}k</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="w-4 h-4 text-green-400" />
-            <p className="text-xs text-gray-500">Оплачено</p>
-          </div>
-          <p className="text-lg font-bold text-green-600">₴{(stats.paidAmount / 1000).toFixed(0)}k</p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-1">
-            <DollarSign className="w-4 h-4 text-orange-400" />
-            <p className="text-xs text-gray-500">Очікується</p>
-          </div>
-          <p className="text-lg font-bold text-orange-600">₴{(stats.pendingAmount / 1000).toFixed(0)}k</p>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                placeholder="Пошук за номером, клієнтом..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
+    <div className="p-6 bg-gray-50 min-h-screen">
+      {/* Nagłówek */}
+      <div className="mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <FileText className="w-6 h-6 text-blue-600" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800">Faktury</h1>
+              <p className="text-gray-600">Zarządzaj dokumentami księgowymi</p>
             </div>
           </div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Всі статуси</option>
-            <option value="draft">Чернетка</option>
-            <option value="sent">Надіслано</option>
-            <option value="paid">Оплачено</option>
-            <option value="overdue">Прострочено</option>
-            <option value="cancelled">Скасовано</option>
-          </select>
-          <input
-            type="date"
-            value={dateFrom}
-            onChange={(e) => setDateFrom(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            placeholder="Від"
-          />
-          <input
-            type="date"
-            value={dateTo}
-            onChange={(e) => setDateTo(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            placeholder="До"
-          />
-          <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
-            <Filter className="w-4 h-4" />
-            Більше
-          </button>
-        </div>
-
-        {/* Bulk Actions */}
-        {selectedInvoices.length > 0 && (
-          <div className="mt-4 p-3 bg-blue-50 rounded-lg flex items-center justify-between">
-            <span className="text-blue-700 font-medium">
-              Вибрано: {selectedInvoices.length} інвойсів
-            </span>
-            <div className="flex gap-2">
-              <button 
-                onClick={() => handleBulkAction('send')}
-                className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50"
-              >
-                Завантажити
-              </button>
-              <button 
-                onClick={() => handleBulkAction('delete')}
-                className="px-3 py-1 bg-white text-red-600 rounded border border-red-300 hover:bg-red-50"
-              >
-                Видалити
-              </button>
-              <button 
-                onClick={() => setSelectedInvoices([])}
-                className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50"
-              >
-                Скасувати
-              </button>
-            </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => router.push('/admin/payments/invoices/settings')}
+            >
+              <Settings className="w-4 h-4 mr-2" />
+              Ustawienia
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => router.push('/admin/payments/invoices/new')}
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Nowa faktura
+            </Button>
           </div>
-        )}
+        </div>
       </div>
 
-      {/* Invoices Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-6 py-3 text-left">
-                  <input
-                    type="checkbox"
-                    checked={selectedInvoices.length === paginatedInvoices.length}
-                    onChange={handleSelectAll}
-                    className="rounded border-gray-300"
+      {/* Karty statystyk */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <Card className="bg-white border-gray-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <FileText className="w-5 h-5 text-blue-600" />
+              <span className="text-sm text-gray-500">Ten miesiąc</span>
+            </div>
+            <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
+            <p className="text-sm text-gray-600">Wszystkich faktur</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Wartość: {stats.totalValue.toLocaleString('pl-PL')} zł
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-gray-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <Badge className="bg-green-100 text-green-700">{stats.paid}</Badge>
+            </div>
+            <p className="text-2xl font-bold text-gray-800">
+              {stats.paidValue.toLocaleString('pl-PL')} zł
+            </p>
+            <p className="text-sm text-gray-600">Opłacone</p>
+            <div className="flex items-center gap-1 mt-2">
+              <TrendingUp className="w-3 h-3 text-green-600" />
+              <span className="text-xs text-green-600">+12% vs poprz. miesiąc</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-gray-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <Clock className="w-5 h-5 text-yellow-600" />
+              <Badge className="bg-yellow-100 text-yellow-700">{stats.pending}</Badge>
+            </div>
+            <p className="text-2xl font-bold text-gray-800">
+              {stats.pendingValue.toLocaleString('pl-PL')} zł
+            </p>
+            <p className="text-sm text-gray-600">Oczekujące</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Średni czas: 7 dni
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-gray-100">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-2">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              <Badge className="bg-red-100 text-red-700">{stats.overdue}</Badge>
+            </div>
+            <p className="text-2xl font-bold text-gray-800">
+              {stats.overdueValue.toLocaleString('pl-PL')} zł
+            </p>
+            <p className="text-sm text-gray-600">Zaległe</p>
+            <div className="flex items-center gap-1 mt-2">
+              <TrendingDown className="w-3 h-3 text-red-600" />
+              <span className="text-xs text-red-600">Wymaga interwencji</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filtry i akcje */}
+      <Card className="bg-white border-gray-100 mb-6">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4 flex-1">
+              <div className="relative flex-1 max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <Input
+                  placeholder="Szukaj po numerze lub kliencie..."
+                  value={filters.search}
+                  onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                  className="pl-10"
+                />
+              </div>
+              
+              <Select
+                value={filters.status}
+                onValueChange={(value) => setFilters({ ...filters, status: value })}
+              >
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Wszystkie</SelectItem>
+                  <SelectItem value="draft">Szkice</SelectItem>
+                  <SelectItem value="sent">Wysłane</SelectItem>
+                  <SelectItem value="paid">Opłacone</SelectItem>
+                  <SelectItem value="overdue">Zaległe</SelectItem>
+                  <SelectItem value="cancelled">Anulowane</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={filters.type}
+                onValueChange={(value) => setFilters({ ...filters, type: value })}
+              >
+                <SelectTrigger className="w-40">
+                  <SelectValue placeholder="Typ" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Wszystkie</SelectItem>
+                  <SelectItem value="standard">Faktura VAT</SelectItem>
+                  <SelectItem value="proforma">Proforma</SelectItem>
+                  <SelectItem value="correction">Korekta</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <DatePickerWithRange />
+            </div>
+
+            {selectedInvoices.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600">
+                  Zaznaczono: {selectedInvoices.length}
+                </span>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      Akcje
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => handleBulkAction('send')}>
+                      <Send className="w-4 h-4 mr-2" />
+                      Wyślij
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleBulkAction('download')}>
+                      <Download className="w-4 h-4 mr-2" />
+                      Pobierz
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleBulkAction('print')}>
+                      <Printer className="w-4 h-4 mr-2" />
+                      Drukuj
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={() => handleBulkAction('delete')}
+                      className="text-red-600"
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Usuń
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Tabela faktur */}
+      <Card className="bg-white border-gray-100">
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-12">
+                  <Checkbox
+                    checked={selectedInvoices.length === filteredInvoices.length && filteredInvoices.length > 0}
+                    onCheckedChange={handleSelectAll}
                   />
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Номер
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Клієнт
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Сума
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Дата видачі
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Термін оплати
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Статус
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Дії
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {paginatedInvoices.map((invoice) => {
-                const statusBadge = getStatusBadge(invoice.status);
-                const StatusIcon = statusBadge.icon;
-                
-                return (
-                  <tr key={invoice.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedInvoices.includes(invoice.id)}
-                        onChange={() => handleSelectInvoice(invoice.id)}
-                        className="rounded border-gray-300"
-                      />
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => setSelectedInvoice(invoice)}
-                        className="font-medium text-blue-600 hover:text-blue-700"
-                      >
-                        {invoice.number}
-                      </button>
-                    </td>
-                    <td className="px-6 py-4">
+                </TableHead>
+                <TableHead>Numer</TableHead>
+                <TableHead>Klient</TableHead>
+                <TableHead>Data wystawienia</TableHead>
+                <TableHead>Termin płatności</TableHead>
+                <TableHead>Kwota</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="w-12"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredInvoices.map((invoice) => (
+                <TableRow key={invoice.id} className="hover:bg-gray-50">
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedInvoices.includes(invoice.id)}
+                      onCheckedChange={(checked) => handleSelectInvoice(invoice.id, checked as boolean)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium text-gray-800">{invoice.number}</p>
+                      <p className="text-xs text-gray-500">{typeLabels[invoice.type]}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {invoice.customer.isCompany && (
+                        <Building className="w-4 h-4 text-gray-400" />
+                      )}
                       <div>
-                        <p className="font-medium text-gray-900">{invoice.clientName}</p>
-                        <p className="text-sm text-gray-500">{invoice.clientEmail}</p>
+                        <p className="font-medium text-gray-800">{invoice.customer.name}</p>
+                        <p className="text-xs text-gray-500">{invoice.customer.email}</p>
                       </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900">₴{invoice.total.toLocaleString()}</p>
-                      <p className="text-xs text-gray-500">Включно з ПДВ</p>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">
-                      {format(invoice.issueDate, 'dd.MM.yyyy')}
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-sm text-gray-900">
-                        {format(invoice.dueDate, 'dd.MM.yyyy')}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {new Date(invoice.issueDate).toLocaleDateString('pl-PL')}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className={cn(
+                        "text-sm",
+                        invoice.status === 'overdue' && "text-red-600 font-medium"
+                      )}>
+                        {new Date(invoice.dueDate).toLocaleDateString('pl-PL')}
                       </p>
                       {invoice.status === 'overdue' && (
                         <p className="text-xs text-red-600">
-                          Прострочено на {Math.floor((new Date().getTime() - invoice.dueDate.getTime()) / (1000 * 3600 * 24))} днів
+                          {Math.floor((new Date().getTime() - new Date(invoice.dueDate).getTime()) / (1000 * 60 * 60 * 24))} dni po terminie
                         </p>
                       )}
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadge.bg} ${statusBadge.text}`}>
-                        <StatusIcon className="w-3 h-3" />
-                        {statusBadge.label}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setSelectedInvoice(invoice)}
-                          className="p-1 hover:bg-gray-100 rounded"
-                          title="Переглянути"
-                        >
-                          <Eye className="w-4 h-4 text-gray-600" />
-                        </button>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <p className="font-semibold text-gray-800">
+                      {invoice.total.toLocaleString('pl-PL', { minimumFractionDigits: 2 })} zł
+                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={statusColors[invoice.status]}>
+                      {statusLabels[invoice.status]}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => setDetailsDialog({ open: true, invoice })}>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Podgląd
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownloadInvoice(invoice)}>
+                          <Download className="w-4 h-4 mr-2" />
+                          Pobierz PDF
+                        </DropdownMenuItem>
                         {invoice.status === 'draft' && (
-                          <button
-                            onClick={() => handleSendInvoice(invoice)}
-                            className="p-1 hover:bg-gray-100 rounded"
-                            title="Надіслати"
-                          >
-                            <Send className="w-4 h-4 text-gray-600" />
-                          </button>
+                          <DropdownMenuItem onClick={() => handleSendInvoice(invoice)}>
+                            <Send className="w-4 h-4 mr-2" />
+                            Wyślij
+                          </DropdownMenuItem>
                         )}
-                        <button
-                          onClick={() => console.log('Download:', invoice.id)}
-                          className="p-1 hover:bg-gray-100 rounded"
-                          title="Завантажити PDF"
+                        <DropdownMenuItem onClick={() => window.print()}>
+                          <Printer className="w-4 h-4 mr-2" />
+                          Drukuj
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => handleDuplicateInvoice(invoice)}>
+                          <Copy className="w-4 h-4 mr-2" />
+                          Duplikuj
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push(`/admin/payments/invoices/${invoice.id}/edit`)}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Edytuj
+                        </DropdownMenuItem>
+                        {invoice.status === 'paid' && (
+                          <DropdownMenuItem onClick={() => console.log('Create correction')}>
+                            <RefreshCw className="w-4 h-4 mr-2" />
+                            Wystaw korektę
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem 
+                          className="text-red-600"
+                          onClick={() => console.log('Delete invoice')}
                         >
-                          <Download className="w-4 h-4 text-gray-600" />
-                        </button>
-                        <button
-                          onClick={() => console.log('More:', invoice.id)}
-                          className="p-1 hover:bg-gray-100 rounded"
-                        >
-                          <MoreHorizontal className="w-4 h-4 text-gray-600" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Usuń
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
 
-        {/* Pagination */}
-        <div className="px-6 py-4 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-gray-700">
-              Показано <span className="font-medium">{startIndex + 1}</span> -{' '}
-              <span className="font-medium">
-                {Math.min(startIndex + itemsPerPage, filteredInvoices.length)}
-              </span>{' '}
-              з <span className="font-medium">{filteredInvoices.length}</span> інвойсів
-            </div>
+          {/* Paginacja */}
+          <div className="flex items-center justify-between p-4 border-t border-gray-100">
+            <p className="text-sm text-gray-600">
+              Pokazywanie 1-10 z {filteredInvoices.length} wyników
+            </p>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+              <Button variant="outline" size="sm" disabled>
                 <ChevronLeft className="w-4 h-4" />
-              </button>
-              {[...Array(Math.min(5, totalPages))].map((_, index) => {
-                const pageNumber = currentPage > 3 ? currentPage - 2 + index : index + 1;
-                if (pageNumber > totalPages) return null;
-                return (
-                  <button
-                    key={pageNumber}
-                    onClick={() => setCurrentPage(pageNumber)}
-                    className={`px-3 py-1 rounded-lg ${
-                      currentPage === pageNumber
-                        ? 'bg-blue-600 text-white'
-                        : 'border border-gray-300 hover:bg-gray-50'
-                    }`}
-                  >
-                    {pageNumber}
-                  </button>
-                );
-              })}
-              <button
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-                className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+                Poprzednia
+              </Button>
+              <Button variant="outline" size="sm">
+                Następna
                 <ChevronRight className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* Invoice Details Modal */}
-      {selectedInvoice && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-800">Інвойс {selectedInvoice.number}</h2>
-                <button
-                  onClick={() => setSelectedInvoice(null)}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
-                >
-                  <XCircle className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              {/* Invoice Header */}
-              <div className="flex justify-between mb-8">
+      {/* Dialog szczegółów faktury */}
+      <Dialog open={detailsDialog.open} onOpenChange={(open) => setDetailsDialog({ open, invoice: detailsDialog.invoice })}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Szczegóły faktury</DialogTitle>
+          </DialogHeader>
+          {detailsDialog.invoice && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-start">
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-800 mb-2">Автошкола Драйв</h1>
-                  <p className="text-gray-600">вул. Хрещатик 1, Київ, 01001</p>
-                  <p className="text-gray-600">Тел: +380 44 123 45 67</p>
-                  <p className="text-gray-600">Email: info@drive-school.com</p>
+                  <h3 className="text-lg font-semibold">{detailsDialog.invoice.number}</h3>
+                  <Badge className={statusColors[detailsDialog.invoice.status]}>
+                    {statusLabels[detailsDialog.invoice.status]}
+                  </Badge>
                 </div>
                 <div className="text-right">
-                  <h2 className="text-3xl font-bold text-gray-800 mb-2">ІНВОЙС</h2>
-                  <p className="text-gray-600">№ {selectedInvoice.number}</p>
-                  <p className="text-gray-600">Дата: {format(selectedInvoice.issueDate, 'dd.MM.yyyy')}</p>
-                  <p className="text-gray-600">Термін оплати: {format(selectedInvoice.dueDate, 'dd.MM.yyyy')}</p>
+                  <p className="text-sm text-gray-600">Data wystawienia</p>
+                  <p className="font-medium">{new Date(detailsDialog.invoice.issueDate).toLocaleDateString('pl-PL')}</p>
                 </div>
               </div>
 
-              {/* Client Info */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold text-gray-800 mb-2">Клієнт:</h3>
-                <p className="text-gray-700">{selectedInvoice.clientName}</p>
-                <p className="text-gray-700">{selectedInvoice.clientAddress}</p>
-                <p className="text-gray-700">Тел: {selectedInvoice.clientPhone}</p>
-                <p className="text-gray-700">Email: {selectedInvoice.clientEmail}</p>
+              <Separator />
+
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium mb-2">Sprzedawca</h4>
+                  <p className="text-sm text-gray-600">
+                    AutoSzkoła Drive<br />
+                    ul. Marszałkowska 10<br />
+                    00-001 Warszawa<br />
+                    NIP: 1234567890
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-medium mb-2">Nabywca</h4>
+                  <p className="text-sm text-gray-600">
+                    {detailsDialog.invoice.customer.name}<br />
+                    {detailsDialog.invoice.customer.address}<br />
+                    {detailsDialog.invoice.customer.taxId && `NIP: ${detailsDialog.invoice.customer.taxId}`}
+                  </p>
+                </div>
               </div>
 
-              {/* Invoice Items */}
-              <table className="w-full mb-6">
-                <thead>
-                  <tr className="border-b-2 border-gray-300">
-                    <th className="text-left py-2">Опис</th>
-                    <th className="text-right py-2">Кількість</th>
-                    <th className="text-right py-2">Ціна</th>
-                    <th className="text-right py-2">Сума</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedInvoice.items.map((item, index) => (
-                    <tr key={index} className="border-b border-gray-200">
-                      <td className="py-2">{item.description}</td>
-                      <td className="text-right py-2">{item.quantity}</td>
-                      <td className="text-right py-2">₴{item.price.toLocaleString()}</td>
-                      <td className="text-right py-2">₴{item.total.toLocaleString()}</td>
-                    </tr>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Opis</TableHead>
+                    <TableHead className="text-right">Ilość</TableHead>
+                    <TableHead className="text-right">Cena jedn.</TableHead>
+                    <TableHead className="text-right">VAT</TableHead>
+                    <TableHead className="text-right">Wartość</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {detailsDialog.invoice.items.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{item.description}</TableCell>
+                      <TableCell className="text-right">{item.quantity}</TableCell>
+                      <TableCell className="text-right">{item.unitPrice.toFixed(2)} zł</TableCell>
+                      <TableCell className="text-right">{item.vatRate}%</TableCell>
+                      <TableCell className="text-right font-medium">{item.total.toFixed(2)} zł</TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colSpan={3} className="text-right py-2 font-medium">Сума:</td>
-                    <td className="text-right py-2 font-medium">₴{selectedInvoice.amount.toLocaleString()}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan={3} className="text-right py-2 font-medium">ПДВ (20%):</td>
-                    <td className="text-right py-2 font-medium">₴{selectedInvoice.tax.toLocaleString()}</td>
-                  </tr>
-                  <tr className="border-t-2 border-gray-300">
-                    <td colSpan={3} className="text-right py-3 text-xl font-bold">Всього до сплати:</td>
-                    <td className="text-right py-3 text-xl font-bold text-blue-600">₴{selectedInvoice.total.toLocaleString()}</td>
-                  </tr>
-                </tfoot>
-              </table>
+                </TableBody>
+              </Table>
 
-              {/* Notes */}
-              {selectedInvoice.notes && (
-                <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                  <h3 className="font-semibold text-gray-800 mb-2">Примітки:</h3>
-                  <p className="text-gray-700">{selectedInvoice.notes}</p>
+              <div className="flex justify-end">
+                <div className="space-y-2 w-64">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Netto:</span>
+                    <span>{detailsDialog.invoice.subtotal.toFixed(2)} zł</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">VAT:</span>
+                    <span>{detailsDialog.invoice.vatAmount.toFixed(2)} zł</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between font-semibold">
+                    <span>Do zapłaty:</span>
+                    <span>{detailsDialog.invoice.total.toFixed(2)} zł</span>
+                  </div>
                 </div>
-              )}
-
-              {/* Actions */}
-              <div className="flex items-center gap-3">
-                <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
-                  <Printer className="w-4 h-4" />
-                  Друкувати
-                </button>
-                <button className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Завантажити PDF
-                </button>
-                <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  Надіслати email
-                </button>
-                <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
-                  <Copy className="w-4 h-4" />
-                  Копіювати
-                </button>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDetailsDialog({ open: false, invoice: null })}>
+              Zamknij
+            </Button>
+            {detailsDialog.invoice && (
+              <>
+                <Button variant="outline" onClick={() => handleDownloadInvoice(detailsDialog.invoice!)}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Pobierz PDF
+                </Button>
+                <Button onClick={() => handleSendInvoice(detailsDialog.invoice!)}>
+                  <Send className="w-4 h-4 mr-2" />
+                  Wyślij
+                </Button>
+              </>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {/* Loading Overlay */}
-      {loading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 flex items-center gap-3">
-            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-            <span className="text-gray-700">Обробка...</span>
-          </div>
-        </div>
-      )}
+      {/* Dialog wysyłania faktury */}
+      <Dialog open={sendDialog.open} onOpenChange={(open) => setSendDialog({ open, invoice: sendDialog.invoice })}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Wyślij fakturę</DialogTitle>
+            <DialogDescription>
+              Faktura zostanie wysłana na adres email klienta
+            </DialogDescription>
+          </DialogHeader>
+          {sendDialog.invoice && (
+            <div className="space-y-4">
+              <div>
+                <Label>Odbiorca</Label>
+                <Input value={sendDialog.invoice.customer.email} disabled />
+              </div>
+              <div>
+                <Label>Temat wiadomości</Label>
+                <Input defaultValue={`Faktura ${sendDialog.invoice.number}`} />
+              </div>
+              <div>
+                <Label>Treść wiadomości</Label>
+                <textarea 
+                  className="w-full h-32 p-3 border rounded-md"
+                  defaultValue={`Szanowni Państwo,\n\nW załączeniu przesyłamy fakturę nr ${sendDialog.invoice.number}.\n\nTermin płatności: ${new Date(sendDialog.invoice.dueDate).toLocaleDateString('pl-PL')}\n\nPozdrawiamy,\nAutoSzkoła Drive`}
+                />
+              </div>
+              <Alert className="bg-blue-50 border-blue-200">
+                <Mail className="h-4 w-4 text-blue-600" />
+                <AlertDescription>
+                  Faktura w formacie PDF zostanie dołączona automatycznie
+                </AlertDescription>
+              </Alert>
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSendDialog({ open: false, invoice: null })}>
+              Anuluj
+            </Button>
+            <Button onClick={sendInvoice}>
+              <Send className="w-4 h-4 mr-2" />
+              Wyślij
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-}-50"
-              >
-                Надіслати
-              </button>
-              <button 
-                onClick={() => handleBulkAction('download')}
-                className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray
+}

@@ -88,21 +88,21 @@ export default function StudentHelpPage() {
       id: 'v1',
       title: 'Jak zarezerwować pierwszą lekcję',
       duration: '3:45',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Tutorial+1',
+      thumbnail: 'https://placehold.co/300x200?text=Tutorial+1',
       views: 2345
     },
     {
       id: 'v2',
       title: 'Zarządzanie kredytami',
       duration: '2:30',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Tutorial+2',
+      thumbnail: 'https://placehold.co/300x200?text=Tutorial+2',
       views: 1567
     },
     {
       id: 'v3',
       title: 'Korzystanie z kalendarza',
       duration: '4:15',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Tutorial+3',
+      thumbnail: 'https://placehold.co/300x200?text=Tutorial+3',
       views: 987
     }
   ];

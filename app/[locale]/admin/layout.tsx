@@ -10,6 +10,7 @@ import {
   Bell, Menu, X, ChevronDown, LogOut, User, Shield,
   Sun, Moon, Search, Home, ChevronRight
 } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -266,10 +267,13 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                           </button>
                         </div>
                         <div className="p-1 border-t border-gray-200">
-                          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600">
-                            <LogOut className="w-4 h-4" />
-                            <span className="text-sm">Вийти</span>
-                          </button>
+<button 
+  onClick={() => signOut({ callbackUrl: '/' })}
+  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600"
+>
+  <LogOut className="w-4 h-4" />
+  <span className="text-sm">Вийти</span>
+</button>
                         </div>
                       </div>
                     </>

@@ -95,7 +95,7 @@ export default function StudentResourcesPage() {
       views: 1234,
       rating: 4.8,
       instructor: 'Piotr Nowak',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Jazda+Miejska',
+      thumbnail: 'https://placehold.co/300x200?text=Jazda+Miejska',
       difficulty: 'intermediate',
       completed: true
     },
@@ -107,7 +107,7 @@ export default function StudentResourcesPage() {
       views: 2456,
       rating: 4.9,
       instructor: 'Anna Kowalczyk',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Parkowanie',
+      thumbnail: 'https://placehold.co/300x200?text=Parkowanie',
       difficulty: 'intermediate',
       completed: true
     },
@@ -119,7 +119,7 @@ export default function StudentResourcesPage() {
       views: 876,
       rating: 4.7,
       instructor: 'Tomasz Wiśniewski',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Jazda+Nocna',
+      thumbnail: 'https://placehold.co/300x200?text=Jazda+Nocna',
       difficulty: 'advanced',
       completed: false
     },
@@ -131,7 +131,7 @@ export default function StudentResourcesPage() {
       views: 3210,
       rating: 4.9,
       instructor: 'Piotr Nowak',
-      thumbnail: 'https://via.placeholder.com/300x200?text=Rondo',
+      thumbnail: 'https://placehold.co/300x200?text=Rondo',
       difficulty: 'beginner',
       completed: false
     }

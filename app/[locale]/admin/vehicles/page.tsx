@@ -11,25 +11,26 @@ import {
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { uk } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
 
 // Generate mock vehicles data
 const generateVehicles = () => {
   const vehicles = [
-    { make: 'Toyota', model: 'Yaris', year: 2023, image: 'https://via.placeholder.com/400x250?text=Toyota+Yaris' },
-    { make: 'Volkswagen', model: 'Golf', year: 2022, image: 'https://via.placeholder.com/400x250?text=VW+Golf' },
-    { make: 'Škoda', model: 'Fabia', year: 2023, image: 'https://via.placeholder.com/400x250?text=Skoda+Fabia' },
-    { make: 'Renault', model: 'Clio', year: 2022, image: 'https://via.placeholder.com/400x250?text=Renault+Clio' },
-    { make: 'Ford', model: 'Fiesta', year: 2021, image: 'https://via.placeholder.com/400x250?text=Ford+Fiesta' },
-    { make: 'Opel', model: 'Corsa', year: 2023, image: 'https://via.placeholder.com/400x250?text=Opel+Corsa' },
-    { make: 'Peugeot', model: '208', year: 2022, image: 'https://via.placeholder.com/400x250?text=Peugeot+208' },
-    { make: 'Nissan', model: 'Micra', year: 2021, image: 'https://via.placeholder.com/400x250?text=Nissan+Micra' },
-    { make: 'Hyundai', model: 'i20', year: 2023, image: 'https://via.placeholder.com/400x250?text=Hyundai+i20' },
-    { make: 'Mazda', model: '2', year: 2022, image: 'https://via.placeholder.com/400x250?text=Mazda+2' },
-    { make: 'Suzuki', model: 'Swift', year: 2023, image: 'https://via.placeholder.com/400x250?text=Suzuki+Swift' },
-    { make: 'Honda', model: 'Jazz', year: 2021, image: 'https://via.placeholder.com/400x250?text=Honda+Jazz' },
-    { make: 'Kia', model: 'Rio', year: 2022, image: 'https://via.placeholder.com/400x250?text=Kia+Rio' },
-    { make: 'Seat', model: 'Ibiza', year: 2023, image: 'https://via.placeholder.com/400x250?text=Seat+Ibiza' },
-    { make: 'Fiat', model: '500', year: 2022, image: 'https://via.placeholder.com/400x250?text=Fiat+500' }
+    { make: 'Toyota', model: 'Yaris', year: 2023, image: 'https://placehold.co/400x250?text=Toyota+Yaris' },
+    { make: 'Volkswagen', model: 'Golf', year: 2022, image: 'https://placehold.co/400x250?text=VW+Golf' },
+    { make: 'Škoda', model: 'Fabia', year: 2023, image: 'https://placehold.co/400x250?text=Skoda+Fabia' },
+    { make: 'Renault', model: 'Clio', year: 2022, image: 'https://placehold.co/400x250?text=Renault+Clio' },
+    { make: 'Ford', model: 'Fiesta', year: 2021, image: 'https://placehold.co/400x250?text=Ford+Fiesta' },
+    { make: 'Opel', model: 'Corsa', year: 2023, image: 'https://placehold.co/400x250?text=Opel+Corsa' },
+    { make: 'Peugeot', model: '208', year: 2022, image: 'https://placehold.co/400x250?text=Peugeot+208' },
+    { make: 'Nissan', model: 'Micra', year: 2021, image: 'https://placehold.co/400x250?text=Nissan+Micra' },
+    { make: 'Hyundai', model: 'i20', year: 2023, image: 'https://placehold.co/400x250?text=Hyundai+i20' },
+    { make: 'Mazda', model: '2', year: 2022, image: 'https://placehold.co/400x250?text=Mazda+2' },
+    { make: 'Suzuki', model: 'Swift', year: 2023, image: 'https://placehold.co/400x250?text=Suzuki+Swift' },
+    { make: 'Honda', model: 'Jazz', year: 2021, image: 'https://placehold.co/400x250?text=Honda+Jazz' },
+    { make: 'Kia', model: 'Rio', year: 2022, image: 'https://placehold.co/400x250?text=Kia+Rio' },
+    { make: 'Seat', model: 'Ibiza', year: 2023, image: 'https://placehold.co/400x250?text=Seat+Ibiza' },
+    { make: 'Fiat', model: '500', year: 2022, image: 'https://placehold.co/400x250?text=Fiat+500' }
   ];
 
   const instructorNames = [
@@ -42,6 +43,7 @@ const generateVehicles = () => {
   const fuelTypes = ['Benzyna', 'Diesel', 'Hybrid', 'Electric'];
   const categories = ['B', 'B+E', 'C'];
   const locations = ['Київ - Центр', 'Київ - Оболонь', 'Київ - Позняки'];
+
 
   return vehicles.map((vehicle, index) => ({
     id: `vehicle-${index + 1}`,
@@ -82,6 +84,7 @@ export default function AdminVehiclesPage() {
   const [filterCategory, setFilterCategory] = useState('all');
   const [loading, setLoading] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<any>(null);
+const router = useRouter();
 
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchesSearch = 
@@ -441,6 +444,13 @@ export default function AdminVehiclesPage() {
               <Plus className="w-4 h-4" />
               Додати авто
             </button>
+            <button 
+  onClick={() => router.push('/admin/vehicles/maintenance')}
+  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
+>
+  <Wrench className="w-4 h-4" />
+  Техобслуговування
+</button>
           </div>
         </div>
       </div>

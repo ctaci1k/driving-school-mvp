@@ -1,15 +1,13 @@
-// /app/[locale]/instructor/students/[id]/page.tsx
+// app/[locale]/instructor/students/[id]/page.tsx
 'use client'
 
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { 
-  User, Phone, Mail, Calendar, Clock, MapPin, Car,
-  Star, TrendingUp, Award, FileText, MessageSquare,
-  ChevronRight, ChevronLeft, MoreVertical, Edit, Download, Share,
-  AlertCircle, CheckCircle, XCircle, Target, BookOpen,
-  DollarSign, History, Camera, Video
+  User, Mail, Phone, MapPin, Calendar, Car, Clock,
+  Star, TrendingUp, Award, Target, FileText, MessageSquare,
+  ChevronLeft, Edit, Save, X, AlertCircle, CheckCircle,
+  BookOpen, GraduationCap, CreditCard, History
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -18,170 +16,112 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
-export default function StudentDetailPage() {
+export default function StudentProfilePage() {
   const params = useParams()
   const router = useRouter()
   const studentId = params?.id as string
+  const [isEditing, setIsEditing] = useState(false)
 
-  // Mock student data
   const student = {
     id: studentId,
-    // Personal info
     name: 'Марія Шевчук',
     avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
     phone: '+380501234569',
-    alternatePhone: '+380671234569',
-    email: 'maria.shevchuk@email.com',
-    dateOfBirth: '2002-03-15',
-    address: 'вул. Хрещатик, 100, Київ',
-    
-    // Course info
+    email: 'maria.s@email.com',
+    address: 'вул. Хрещатик, 22',
+    dateOfBirth: '2000-05-15',
     category: 'B',
-    enrollmentDate: '2024-01-05',
-    status: 'active',
-    courseType: 'Повний курс',
-    paymentStatus: 'paid',
     
-    // Progress
-    overallProgress: 85,
-    theoryProgress: 95,
-    practiceProgress: 78,
+    // Learning info
+    status: 'active',
+    enrollmentDate: '2024-01-05',
+    instructor: 'Петро Водій',
+    progress: 85,
+    theoryStatus: 'completed',
+    practiceHours: 36,
+    
+    // Lessons
     totalLessons: 28,
     completedLessons: 24,
-    remainingLessons: 4,
-    totalHours: 36,
-    
-    // Performance
-    averageRating: 4.8,
-    lastLessonDate: '2024-02-03',
-    nextLessonDate: '2024-02-05',
-    examDate: '2024-02-12',
+    upcomingLessons: 2,
+    missedLessons: 1,
     
     // Financial
-    totalPaid: 12500,
-    totalCost: 14000,
-    balance: -1500,
-    nextPaymentDate: '2024-02-10',
+    packageType: 'Стандарт',
+    totalCost: 15000,
+    paid: 12000,
+    balance: 3000,
+    nextPayment: '2024-02-10',
+    
+    // Performance
+    averageScore: 4.8,
+    strongPoints: ['Знання ПДР', 'Впевнена їзда'],
+    weakPoints: ['Паралельне паркування'],
+    
+    // Exam info
+    theoryExamDate: '2024-01-25',
+    theoryExamResult: 'passed',
+    practiceExamDate: '2024-02-12',
+    practiceExamAttempts: 0,
     
     // Emergency contact
-    emergencyContact: {
-      name: 'Олена Шевчук',
-      relation: 'Мати',
-      phone: '+380501234560'
-    },
+    emergencyContact: 'Олена Шевчук',
+    emergencyPhone: '+380501234570',
     
-    // Skills assessment
-    skills: {
-      'Знання ПДР': 95,
-      'Паркування': 70,
-      'Маневрування': 85,
-      'Міська їзда': 88,
-      'Трасова їзда': 75,
-      'Нічна їзда': 60
-    }
+    // Notes
+    notes: 'Швидко навчається, потребує більше практики з паркуванням'
   }
 
-  // Lesson history
   const lessonHistory = [
     {
       id: 1,
       date: '2024-02-03',
-      time: '14:00-15:30',
+      time: '14:30-16:00',
       type: 'Підготовка до іспиту',
-      status: 'completed',
+      instructor: 'Петро Водій',
       rating: 5,
-      distance: 22.5,
-      notes: 'Відмінно! Готова до іспиту'
+      status: 'completed'
     },
     {
       id: 2,
-      date: '2024-02-01',
+      date: '2024-02-05',
       time: '10:00-11:30',
       type: 'Практика - місто',
-      status: 'completed',
-      rating: 4,
-      distance: 18.3,
-      notes: 'Покращення в паркуванні'
-    },
-    {
-      id: 3,
-      date: '2024-01-29',
-      time: '14:00-16:00',
-      type: 'Практика - траса',
-      status: 'completed',
-      rating: 5,
-      distance: 45.7,
-      notes: 'Впевнена їзда по трасі'
+      instructor: 'Петро Водій',
+      rating: null,
+      status: 'upcoming'
     }
   ]
 
-  // Upcoming lessons
-  const upcomingLessons = [
-    {
-      id: 1,
-      date: '2024-02-05',
-      time: '14:00-15:30',
-      type: 'Підготовка до іспиту',
-      location: 'Маршрут ДАІ'
-    },
-    {
-      id: 2,
-      date: '2024-02-07',
-      time: '10:00-11:30',
-      type: 'Екзаменаційна практика',
-      location: 'Автодром'
-    }
-  ]
-
-  // Payments history
   const payments = [
     {
       id: 1,
       date: '2024-01-05',
       amount: 5000,
+      method: 'Картка',
       description: 'Перший внесок',
-      method: 'Банківський переказ',
       status: 'completed'
     },
     {
       id: 2,
-      date: '2024-01-15',
-      amount: 4000,
-      description: 'Другий внесок',
+      date: '2024-01-20',
+      amount: 7000,
       method: 'Готівка',
-      status: 'completed'
-    },
-    {
-      id: 3,
-      date: '2024-01-25',
-      amount: 3500,
-      description: 'Третій внесок',
-      method: 'Картка',
+      description: 'Другий внесок',
       status: 'completed'
     }
   ]
-
-  const getStatusBadge = () => {
-    if (student.status === 'active') {
-      return <Badge variant="default">Активний</Badge>
-    } else if (student.status === 'paused') {
-      return <Badge variant="secondary">На паузі</Badge>
-    } else {
-      return <Badge variant="outline">Завершив</Badge>
-    }
-  }
 
   return (
     <div className="space-y-6">
@@ -190,297 +130,196 @@ export default function StudentDetailPage() {
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
-            size="icon"
             onClick={() => router.back()}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="w-4 h-4 mr-2" />
+            Назад
           </Button>
-          <Avatar className="h-16 w-16">
-            <AvatarImage src={student.avatar} />
-            <AvatarFallback>{student.name[0]}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{student.name}</h1>
-            <div className="flex items-center gap-3 mt-1">
-              {getStatusBadge()}
-              <span className="text-gray-500">Категорія {student.category}</span>
-              <span className="text-gray-500">З {format(new Date(student.enrollmentDate), 'd MMM yyyy', { locale: uk })}</span>
-            </div>
-          </div>
+          <h1 className="text-2xl font-bold">Профіль студента</h1>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Phone className="w-4 h-4 mr-2" />
-            Зателефонувати
-          </Button>
-          <Button variant="outline">
-            <MessageSquare className="w-4 h-4 mr-2" />
-            Повідомлення
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon">
-                <MoreVertical className="w-4 h-4" />
+          {isEditing ? (
+            <>
+              <Button variant="outline" onClick={() => setIsEditing(false)}>
+                <X className="w-4 h-4 mr-2" />
+                Скасувати
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Дії</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Edit className="w-4 h-4 mr-2" />
-                Редагувати
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <FileText className="w-4 h-4 mr-2" />
-                Згенерувати звіт
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Download className="w-4 h-4 mr-2" />
-                Експорт даних
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Share className="w-4 h-4 mr-2" />
-                Поділитись
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <Button onClick={() => setIsEditing(false)}>
+                <Save className="w-4 h-4 mr-2" />
+                Зберегти
+              </Button>
+            </>
+          ) : (
+            <Button onClick={() => setIsEditing(true)}>
+              <Edit className="w-4 h-4 mr-2" />
+              Редагувати
+            </Button>
+          )}
         </div>
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
+      {/* Main Info Card */}
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex flex-col md:flex-row gap-6">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={student.avatar} />
+              <AvatarFallback>{student.name[0]}</AvatarFallback>
+            </Avatar>
+            
+            <div className="flex-1 space-y-4">
               <div>
-                <p className="text-sm text-gray-500">Прогрес</p>
-                <p className="text-2xl font-bold">{student.overallProgress}%</p>
+                <h2 className="text-2xl font-bold">{student.name}</h2>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
+                    {student.status === 'active' ? 'Активний' : 'Неактивний'}
+                  </Badge>
+                  <Badge variant="outline">Категорія {student.category}</Badge>
+                  {student.theoryStatus === 'completed' && (
+                    <Badge variant="outline" className="text-green-600">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Теорія здана
+                    </Badge>
+                  )}
+                </div>
               </div>
-              <Progress value={student.overallProgress} className="w-12 h-12" />
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Занять</p>
-                <p className="text-2xl font-bold">{student.completedLessons}/{student.totalLessons}</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                  <p className="text-sm text-gray-500">Прогрес</p>
+                  <div className="flex items-center gap-2">
+                    <Progress value={student.progress} className="flex-1 h-2" />
+                    <span className="text-sm font-medium">{student.progress}%</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Занять</p>
+                  <p className="font-semibold">{student.completedLessons}/{student.totalLessons}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Годин практики</p>
+                  <p className="font-semibold">{student.practiceHours}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Рейтинг</p>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <span className="font-semibold">{student.averageScore}</span>
+                  </div>
+                </div>
               </div>
-              <BookOpen className="w-6 h-6 text-blue-500" />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Рейтинг</p>
-                <p className="text-2xl font-bold">{student.averageRating}</p>
-              </div>
-              <Star className="w-6 h-6 text-yellow-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Годин</p>
-                <p className="text-2xl font-bold">{student.totalHours}</p>
-              </div>
-              <Clock className="w-6 h-6 text-gray-400" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Баланс</p>
-                <p className={`text-2xl font-bold ${student.balance < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  ₴{Math.abs(student.balance)}
-                </p>
-              </div>
-              <DollarSign className="w-6 h-6 text-gray-400" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Important Dates Alert */}
-      {student.examDate && (
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Іспит заплановано на {format(new Date(student.examDate), 'd MMMM yyyy', { locale: uk })}</strong>
-            <br />
-            Залишилось {student.remainingLessons} занять до завершення курсу
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="info" className="w-full">
+      {/* Tabs */}
+      <Tabs defaultValue="info">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="info">Інформація</TabsTrigger>
-          <TabsTrigger value="progress">
-            <Link href={`/instructor/students/${studentId}/progress`}>
-              Прогрес
-            </Link>
-          </TabsTrigger>
           <TabsTrigger value="lessons">Заняття</TabsTrigger>
           <TabsTrigger value="payments">Платежі</TabsTrigger>
-          <TabsTrigger value="feedback">
-            <Link href={`/instructor/students/${studentId}/feedback`}>
-              Оцінювання
-            </Link>
-          </TabsTrigger>
+          <TabsTrigger value="exams">Іспити</TabsTrigger>
+          <TabsTrigger value="notes">Нотатки</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="info" className="mt-6 space-y-6">
-          {/* Personal Information */}
+        <TabsContent value="info" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Особиста інформація</CardTitle>
+              <CardTitle>Контактна інформація</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Телефон</p>
-                  <p className="font-medium">{student.phone}</p>
+                  <Label>Телефон</Label>
+                  <Input value={student.phone} disabled={!isEditing} />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Додатковий телефон</p>
-                  <p className="font-medium">{student.alternatePhone}</p>
+                  <Label>Email</Label>
+                  <Input value={student.email} disabled={!isEditing} />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Email</p>
-                  <p className="font-medium">{student.email}</p>
+                  <Label>Дата народження</Label>
+                  <Input value={student.dateOfBirth} disabled={!isEditing} />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Дата народження</p>
-                  <p className="font-medium">{format(new Date(student.dateOfBirth), 'd MMMM yyyy', { locale: uk })}</p>
+                  <Label>Адреса</Label>
+                  <Input value={student.address} disabled={!isEditing} />
                 </div>
-                <div className="md:col-span-2">
-                  <p className="text-sm text-gray-500">Адреса</p>
-                  <p className="font-medium">{student.address}</p>
+                <div>
+                  <Label>Контакт для екстрених випадків</Label>
+                  <Input value={student.emergencyContact} disabled={!isEditing} />
                 </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div>
-                <h3 className="font-semibold mb-3">Екстрений контакт</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Ім'я</p>
-                    <p className="font-medium">{student.emergencyContact.name}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Відношення</p>
-                    <p className="font-medium">{student.emergencyContact.relation}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Телефон</p>
-                    <p className="font-medium">{student.emergencyContact.phone}</p>
-                  </div>
+                <div>
+                  <Label>Телефон екстреного контакту</Label>
+                  <Input value={student.emergencyPhone} disabled={!isEditing} />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Course Information */}
           <Card>
             <CardHeader>
-              <CardTitle>Інформація про курс</CardTitle>
+              <CardTitle>Навчальна інформація</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Тип курсу</p>
-                  <p className="font-medium">{student.courseType}</p>
+                  <Label>Дата зарахування</Label>
+                  <Input value={student.enrollmentDate} disabled />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Категорія</p>
-                  <p className="font-medium">Категорія {student.category}</p>
+                  <Label>Пакет навчання</Label>
+                  <Input value={student.packageType} disabled />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Дата початку</p>
-                  <p className="font-medium">{format(new Date(student.enrollmentDate), 'd MMMM yyyy', { locale: uk })}</p>
+                  <Label>Сильні сторони</Label>
+                  <div className="flex gap-2 mt-2">
+                    {student.strongPoints.map(point => (
+                      <Badge key={point} variant="outline">{point}</Badge>
+                    ))}
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Дата іспиту</p>
-                  <p className="font-medium">
-                    {student.examDate ? format(new Date(student.examDate), 'd MMMM yyyy', { locale: uk }) : 'Не призначено'}
-                  </p>
+                  <Label>Потребує уваги</Label>
+                  <div className="flex gap-2 mt-2">
+                    {student.weakPoints.map(point => (
+                      <Badge key={point} variant="outline" className="text-yellow-600">
+                        {point}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="lessons" className="mt-6 space-y-6">
-          {/* Upcoming Lessons */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Заплановані заняття</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {upcomingLessons.map((lesson) => (
-                  <div key={lesson.id} className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <p className="font-medium">{lesson.type}</p>
-                      <p className="text-sm text-gray-600">
-                        {format(new Date(lesson.date), 'd MMMM', { locale: uk })} • {lesson.time}
-                      </p>
-                      <p className="text-sm text-gray-500">{lesson.location}</p>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      Деталі
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Lesson History */}
+        <TabsContent value="lessons" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Історія занять</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {lessonHistory.map((lesson) => (
+                {lessonHistory.map(lesson => (
                   <div key={lesson.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-medium">{lesson.type}</p>
-                        {lesson.status === 'completed' && (
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                        )}
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        {format(new Date(lesson.date), 'd MMMM', { locale: uk })} • {lesson.time}
+                    <div>
+                      <p className="font-medium">{lesson.type}</p>
+                      <p className="text-sm text-gray-500">
+                        {lesson.date} • {lesson.time} • {lesson.instructor}
                       </p>
-                      {lesson.notes && (
-                        <p className="text-sm text-gray-500 mt-1">{lesson.notes}</p>
-                      )}
                     </div>
-                    <div className="text-right">
-                      {lesson.rating && (
-                        <div className="flex items-center gap-1 mb-1">
+                    <div className="flex items-center gap-2">
+                      {lesson.status === 'completed' && lesson.rating && (
+                        <div className="flex items-center gap-1">
                           <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-medium">{lesson.rating}</span>
+                          <span>{lesson.rating}</span>
                         </div>
                       )}
-                      <p className="text-sm text-gray-500">{lesson.distance} км</p>
+                      <Badge variant={lesson.status === 'completed' ? 'default' : 'outline'}>
+                        {lesson.status === 'completed' ? 'Завершено' : 'Заплановано'}
+                      </Badge>
                     </div>
                   </div>
                 ))}
@@ -489,48 +328,106 @@ export default function StudentDetailPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="payments" className="mt-6">
+        <TabsContent value="payments" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Історія платежів</CardTitle>
+              <CardTitle>Фінансова інформація</CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <p className="text-sm text-gray-500">Загальна вартість</p>
+                  <p className="text-2xl font-bold">₴{student.totalCost}</p>
+                </div>
+                <div className="text-center p-4 bg-green-50 rounded-lg">
+                  <p className="text-sm text-gray-500">Сплачено</p>
+                  <p className="text-2xl font-bold text-green-600">₴{student.paid}</p>
+                </div>
+                <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                  <p className="text-sm text-gray-500">Залишок</p>
+                  <p className="text-2xl font-bold text-yellow-600">₴{student.balance}</p>
+                </div>
+              </div>
+
               <div className="space-y-3">
-                {payments.map((payment) => (
+                {payments.map(payment => (
                   <div key={payment.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div>
                       <p className="font-medium">{payment.description}</p>
-                      <p className="text-sm text-gray-600">
-                        {format(new Date(payment.date), 'd MMMM yyyy', { locale: uk })}
-                      </p>
-                      <p className="text-sm text-gray-500">{payment.method}</p>
+                      <p className="text-sm text-gray-500">{payment.date} • {payment.method}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">₴{payment.amount}</p>
-                      <Badge variant="default">Сплачено</Badge>
+                      <p className="font-semibold">₴{payment.amount}</p>
+                      <Badge variant="outline" className="text-green-600">
+                        <CheckCircle className="w-3 h-3 mr-1" />
+                        Сплачено
+                      </Badge>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <Separator className="my-4" />
+              {student.balance > 0 && (
+                <Alert className="mt-4">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Наступний платіж ₴{student.balance} до {student.nextPayment}
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Всього сплачено:</span>
-                  <span className="font-semibold">₴{student.totalPaid}</span>
+        <TabsContent value="exams" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Екзамени</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold">Теоретичний іспит</p>
+                      <p className="text-sm text-gray-500">Дата: {student.theoryExamDate}</p>
+                    </div>
+                    <Badge variant="default" className="bg-green-600">
+                      <CheckCircle className="w-3 h-3 mr-1" />
+                      Здано
+                    </Badge>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Загальна вартість:</span>
-                  <span className="font-semibold">₴{student.totalCost}</span>
-                </div>
-                <div className="flex justify-between text-lg font-bold">
-                  <span>Залишок:</span>
-                  <span className={student.balance < 0 ? 'text-red-600' : 'text-green-600'}>
-                    ₴{Math.abs(student.balance)}
-                  </span>
+
+                <div className="p-4 border rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold">Практичний іспит</p>
+                      <p className="text-sm text-gray-500">Запланована дата: {student.practiceExamDate}</p>
+                      <p className="text-xs text-gray-400">Спроб: {student.practiceExamAttempts}</p>
+                    </div>
+                    <Badge variant="outline">
+                      Заплановано
+                    </Badge>
+                  </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="notes" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Нотатки інструктора</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                value={student.notes}
+                disabled={!isEditing}
+                className="h-32"
+                placeholder="Додайте нотатки про студента..."
+              />
             </CardContent>
           </Card>
         </TabsContent>

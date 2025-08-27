@@ -1,19 +1,21 @@
 // /app/[locale]/instructor/messages/page.tsx
+
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { 
-  MessageSquare, Search, Send, Paperclip, MoreVertical,
-  Phone, Video, Info, Smile, Mic, Image as ImageIcon,
-  Check, CheckCheck, Clock, Star, Archive, Trash,
-  Filter, Plus, ChevronLeft, Pin, VolumeX 
+  MessageSquare, Search, Filter, Plus, Archive,
+  Star, Pin, Trash2, MoreVertical, Send, 
+  Circle, CheckCheck, Clock, AlertCircle,
+  Users, User, Bell, BellOff, Phone, Video
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Textarea } from '@/components/ui/textarea'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,435 +24,366 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { format } from 'date-fns'
-import { uk } from 'date-fns/locale'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { format, formatDistanceToNow } from 'date-fns'
+import { pl } from 'date-fns/locale'
 
-interface Message {
-  id: string
-  senderId: string
-  text: string
-  timestamp: string
-  read: boolean
-  delivered: boolean
-  type: 'text' | 'image' | 'file' | 'voice'
-  attachment?: {
-    url: string
-    name: string
-    size?: string
-  }
-}
-
-interface Conversation {
-  id: string
-  user: {
-    id: string
-    name: string
-    avatar: string
-    role: 'student' | 'admin' | 'parent'
-    online: boolean
-    lastSeen?: string
-  }
-  lastMessage: {
-    text: string
-    timestamp: string
-    isMe: boolean
-  }
-  unreadCount: number
-  isPinned?: boolean
-  isMuted?: boolean
-}
-
-export default function InstructorMessages() {
+export default function MessagesPage() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedConversation, setSelectedConversation] = useState<string | null>('1')
-  const [messageText, setMessageText] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
+  const [selectedFilter, setSelectedFilter] = useState('all')
 
-  // Mock conversations
-  const conversations: Conversation[] = [
+  // Mock conversations data
+  const conversations = [
     {
       id: '1',
-      user: {
-        id: 's1',
-        name: 'Марія Шевчук',
-        avatar: 'https://ui-avatars.com/api/?name=MS&background=10B981&color=fff',
-        role: 'student',
-        online: true
+      type: 'individual',
+      participant: {
+        name: 'Maria Nowak',
+        avatar: 'https://ui-avatars.com/api/?name=MN&background=EC4899&color=fff',
+        role: 'Student',
+        status: 'online'
       },
       lastMessage: {
-        text: 'Дякую за сьогоднішнє заняття!',
-        timestamp: '2024-02-03T18:30:00',
-        isMe: false
+        text: 'Dziękuję za dzisiejszą lekcję! Do zobaczenia w przyszłym tygodniu.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 30),
+        isRead: true,
+        sender: 'them'
+      },
+      unreadCount: 0,
+      isPinned: true,
+      isMuted: false
+    },
+    {
+      id: '2',
+      type: 'individual',
+      participant: {
+        name: 'Jan Kowalski',
+        avatar: 'https://ui-avatars.com/api/?name=JK&background=3B82F6&color=fff',
+        role: 'Student',
+        status: 'offline'
+      },
+      lastMessage: {
+        text: 'Czy możemy przełożyć jutrzejszą lekcję na 16:00?',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
+        isRead: false,
+        sender: 'them'
+      },
+      unreadCount: 1,
+      isPinned: false,
+      isMuted: false
+    },
+    {
+      id: '3',
+      type: 'group',
+      participant: {
+        name: 'Grupa poniedziałkowa',
+        avatar: 'https://ui-avatars.com/api/?name=GP&background=10B981&color=fff',
+        role: 'Grupa',
+        memberCount: 8
+      },
+      lastMessage: {
+        text: 'Przypomnienie: jutro teoria o 18:00',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5),
+        isRead: true,
+        sender: 'you'
+      },
+      unreadCount: 0,
+      isPinned: false,
+      isMuted: false
+    },
+    {
+      id: '4',
+      type: 'individual',
+      participant: {
+        name: 'Anna Wiśniewska',
+        avatar: 'https://ui-avatars.com/api/?name=AW&background=8B5CF6&color=fff',
+        role: 'Student',
+        status: 'away'
+      },
+      lastMessage: {
+        text: 'Mam pytanie odnośnie egzaminu praktycznego',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
+        isRead: false,
+        sender: 'them'
       },
       unreadCount: 2,
-      isPinned: true
-    },
-    {
-      id: '2',
-      user: {
-        id: 's2',
-        name: 'Іван Петренко',
-        avatar: 'https://ui-avatars.com/api/?name=IP&background=3B82F6&color=fff',
-        role: 'student',
-        online: false,
-        lastSeen: '2024-02-03T16:00:00'
-      },
-      lastMessage: {
-        text: 'Добре, зустрінемось завтра о 10:00',
-        timestamp: '2024-02-03T14:20:00',
-        isMe: true
-      },
-      unreadCount: 0
-    },
-    {
-      id: '3',
-      user: {
-        id: 'a1',
-        name: 'Адміністрація',
-        avatar: 'https://ui-avatars.com/api/?name=A&background=6366F1&color=fff',
-        role: 'admin',
-        online: false
-      },
-      lastMessage: {
-        text: 'Нагадуємо про звіт за місяць',
-        timestamp: '2024-02-02T10:00:00',
-        isMe: false
-      },
-      unreadCount: 1
-    },
-    {
-      id: '4',
-      user: {
-        id: 's3',
-        name: 'Олена Коваленко',
-        avatar: 'https://ui-avatars.com/api/?name=OK&background=EC4899&color=fff',
-        role: 'student',
-        online: false,
-        lastSeen: '2024-02-03T12:00:00'
-      },
-      lastMessage: {
-        text: 'Чи можна перенести заняття на інший час?',
-        timestamp: '2024-02-03T11:45:00',
-        isMe: false
-      },
-      unreadCount: 1
-    }
-  ]
-
-  // Mock messages for selected conversation
-  const messages: Message[] = [
-    {
-      id: '1',
-      senderId: 's1',
-      text: 'Доброго дня! Чи можна сьогодні попрацювати над паралельним паркуванням?',
-      timestamp: '2024-02-03T10:00:00',
-      read: true,
-      delivered: true,
-      type: 'text'
-    },
-    {
-      id: '2',
-      senderId: 'me',
-      text: 'Звичайно! Сьогодні обов\'язково приділимо цьому увагу.',
-      timestamp: '2024-02-03T10:05:00',
-      read: true,
-      delivered: true,
-      type: 'text'
-    },
-    {
-      id: '3',
-      senderId: 's1',
-      text: 'Супер! До зустрічі о 14:30',
-      timestamp: '2024-02-03T10:10:00',
-      read: true,
-      delivered: true,
-      type: 'text'
-    },
-    {
-      id: '4',
-      senderId: 'me',
-      text: '👍',
-      timestamp: '2024-02-03T10:11:00',
-      read: true,
-      delivered: true,
-      type: 'text'
+      isPinned: false,
+      isMuted: false
     },
     {
       id: '5',
-      senderId: 's1',
-      text: 'Дякую за сьогоднішнє заняття!',
-      timestamp: '2024-02-03T18:25:00',
-      read: true,
-      delivered: true,
-      type: 'text'
+      type: 'individual',
+      participant: {
+        name: 'Administracja',
+        avatar: 'https://ui-avatars.com/api/?name=AD&background=F59E0B&color=fff',
+        role: 'Administracja',
+        status: 'online'
+      },
+      lastMessage: {
+        text: 'Nowy harmonogram na luty jest już dostępny',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48),
+        isRead: true,
+        sender: 'them'
+      },
+      unreadCount: 0,
+      isPinned: true,
+      isMuted: false
     },
     {
       id: '6',
-      senderId: 's1',
-      text: 'Паралельне паркування вже краще виходить 😊',
-      timestamp: '2024-02-03T18:30:00',
-      read: false,
-      delivered: true,
-      type: 'text'
+      type: 'individual',
+      participant: {
+        name: 'Piotr Zieliński',
+        avatar: 'https://ui-avatars.com/api/?name=PZ&background=EF4444&color=fff',
+        role: 'Student',
+        status: 'offline'
+      },
+      lastMessage: {
+        text: 'Potwierdzam obecność na zajęciach',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72),
+        isRead: true,
+        sender: 'them'
+      },
+      unreadCount: 0,
+      isPinned: false,
+      isMuted: true
     }
   ]
 
-  const currentConversation = conversations.find(c => c.id === selectedConversation)
+  // Quick replies templates
+  const quickReplies = [
+    { id: 1, text: 'Tak, potwierdzam' },
+    { id: 2, text: 'Nie mogę, przepraszam' },
+    { id: 3, text: 'Zobaczmy się o ustalonej godzinie' },
+    { id: 4, text: 'Proszę o kontakt telefoniczny' },
+    { id: 5, text: 'Dziękuję za wiadomość' }
+  ]
 
-  const handleSendMessage = () => {
-    if (messageText.trim()) {
-      console.log('Sending message:', messageText)
-      setMessageText('')
-    }
+  // Filter conversations
+  const filteredConversations = conversations.filter(conv => {
+    const matchesSearch = conv.participant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         conv.lastMessage.text.toLowerCase().includes(searchQuery.toLowerCase())
+    
+    const matchesFilter = selectedFilter === 'all' ||
+                         (selectedFilter === 'unread' && conv.unreadCount > 0) ||
+                         (selectedFilter === 'groups' && conv.type === 'group') ||
+                         (selectedFilter === 'pinned' && conv.isPinned)
+    
+    return matchesSearch && matchesFilter
+  })
+
+  const handleConversationClick = (chatId: string) => {
+    router.push(`/instructor/messages/${chatId}`)
   }
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSendMessage()
-    }
-  }
-
-  // Filter conversations based on search
-  const filteredConversations = conversations.filter(conv => 
-    conv.user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    conv.lastMessage.text.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const totalUnread = conversations.reduce((sum, conv) => sum + conv.unreadCount, 0)
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] gap-4">
-      {/* Conversations List */}
-      <Card className="w-80 flex flex-col">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between mb-3">
-            <CardTitle>Повідомлення</CardTitle>
-            <Button size="icon" variant="ghost">
-              <Plus className="w-4 h-4" />
-            </Button>
-          </div>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Пошук..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-        </CardHeader>
-        <CardContent className="flex-1 p-0">
-          <ScrollArea className="h-full">
-            <div className="p-3 space-y-2">
-              {filteredConversations.map((conversation) => (
-                <button
-                  key={conversation.id}
-                  onClick={() => setSelectedConversation(conversation.id)}
-                  className={`w-full text-left p-3 rounded-lg transition-all hover:bg-gray-50 ${
-                    selectedConversation === conversation.id ? 'bg-blue-50 border-l-4 border-blue-500' : ''
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="relative">
-                      <Avatar>
-                        <AvatarImage src={conversation.user.avatar} />
-                        <AvatarFallback>{conversation.user.name[0]}</AvatarFallback>
-                      </Avatar>
-                      {conversation.user.online && (
-                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium truncate">{conversation.user.name}</p>
-                          {conversation.isPinned && <Pin className="w-3 h-3 text-gray-400" />}
-                          {conversation.isMuted && <VolumeX  className="w-3 h-3 text-gray-400" />}
-                        </div>
-                        <span className="text-xs text-gray-500 whitespace-nowrap">
-                          {format(new Date(conversation.lastMessage.timestamp), 'HH:mm')}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between mt-1">
-                        <p className="text-sm text-gray-600 truncate">
-                          {conversation.lastMessage.isMe && <span className="text-gray-400">Ви: </span>}
-                          {conversation.lastMessage.text}
-                        </p>
-                        {conversation.unreadCount > 0 && (
-                          <Badge className="ml-2 h-5 min-w-[20px] px-1">
-                            {conversation.unreadCount}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+    <div className="h-[calc(100vh-8rem)] flex flex-col">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Wiadomości</h1>
+          <p className="text-gray-600">
+            {totalUnread > 0 ? `${totalUnread} nieprzeczytanych` : 'Wszystkie przeczytane'}
+          </p>
+        </div>
+        <Button>
+          <Plus className="w-4 h-4 mr-2" />
+          Nowa wiadomość
+        </Button>
+      </div>
 
-      {/* Chat Area */}
-      {currentConversation ? (
-        <Card className="flex-1 flex flex-col">
-          {/* Chat Header */}
-          <CardHeader className="border-b">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Button size="icon" variant="ghost" className="lg:hidden">
-                  <ChevronLeft className="w-4 h-4" />
-                </Button>
-                <Avatar>
-                  <AvatarImage src={currentConversation.user.avatar} />
-                  <AvatarFallback>{currentConversation.user.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-semibold">{currentConversation.user.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {currentConversation.user.online 
-                      ? 'Онлайн' 
-                      : currentConversation.user.lastSeen 
-                        ? `Був(ла) ${format(new Date(currentConversation.user.lastSeen), 'HH:mm')}`
-                        : 'Офлайн'
-                    }
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button size="icon" variant="ghost">
-                  <Phone className="w-4 h-4" />
-                </Button>
-                <Button size="icon" variant="ghost">
-                  <Video className="w-4 h-4" />
-                </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon" variant="ghost">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Info className="w-4 h-4 mr-2" />
-                      Інформація
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Search className="w-4 h-4 mr-2" />
-                      Пошук в чаті
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Pin className="w-4 h-4 mr-2" />
-                      Закріпити
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <VolumeX  className="w-4 h-4 mr-2" />
-                      Вимкнути сповіщення
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-600">
-                      <Archive className="w-4 h-4 mr-2" />
-                      Архівувати
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </CardHeader>
+      {/* Search and filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex-1 relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Input
+            placeholder="Szukaj wiadomości lub osoby..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={selectedFilter} onValueChange={setSelectedFilter}>
+          <SelectTrigger className="w-full sm:w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Wszystkie</SelectItem>
+            <SelectItem value="unread">Nieprzeczytane</SelectItem>
+            <SelectItem value="groups">Grupy</SelectItem>
+            <SelectItem value="pinned">Przypięte</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          {/* Messages */}
-          <CardContent className="flex-1 p-0">
-            <ScrollArea className="h-full p-4">
-              <div className="space-y-4">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.senderId === 'me' ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div className={`max-w-[70%] ${message.senderId === 'me' ? 'order-2' : ''}`}>
-                      <div
-                        className={`rounded-2xl px-4 py-2 ${
-                          message.senderId === 'me'
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-100 text-gray-900'
-                        }`}
-                      >
-                        <p className="break-words">{message.text}</p>
-                        <div className={`flex items-center justify-end gap-1 mt-1 ${
-                          message.senderId === 'me' ? 'text-blue-100' : 'text-gray-500'
-                        }`}>
-                          <span className="text-xs">
-                            {format(new Date(message.timestamp), 'HH:mm')}
-                          </span>
-                          {message.senderId === 'me' && (
-                            message.read ? (
-                              <CheckCheck className="w-3 h-3" />
-                            ) : message.delivered ? (
-                              <Check className="w-3 h-3" />
-                            ) : (
-                              <Clock className="w-3 h-3" />
-                            )
+      {/* Main content */}
+      <div className="flex-1 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
+          {/* Conversations list */}
+          <div className="lg:col-span-1">
+            <Card className="h-full">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Konwersacje</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="divide-y max-h-[calc(100vh-20rem)] overflow-y-auto">
+                  {filteredConversations.map((conversation) => (
+                    <button
+                      key={conversation.id}
+                      onClick={() => handleConversationClick(conversation.id)}
+                      className="w-full p-4 hover:bg-gray-50 transition-colors text-left"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="relative">
+                          <Avatar>
+                            <AvatarImage src={conversation.participant.avatar} />
+                            <AvatarFallback>
+                              {conversation.participant.name.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          {conversation.participant.status && (
+                            <div className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${
+                              conversation.participant.status === 'online' ? 'bg-green-500' :
+                              conversation.participant.status === 'away' ? 'bg-yellow-500' :
+                              'bg-gray-300'
+                            }`} />
                           )}
                         </div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium text-gray-900 truncate">
+                                {conversation.participant.name}
+                              </p>
+                              {conversation.isPinned && (
+                                <Pin className="w-3 h-3 text-gray-400" />
+                              )}
+                              {conversation.isMuted && (
+                                <BellOff className="w-3 h-3 text-gray-400" />
+                              )}
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {formatDistanceToNow(conversation.lastMessage.timestamp, {
+                                addSuffix: false,
+                                locale: pl
+                              })}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between">
+                            <p className={`text-sm truncate ${
+                              !conversation.lastMessage.isRead ? 'font-medium text-gray-900' : 'text-gray-600'
+                            }`}>
+                              {conversation.lastMessage.sender === 'you' && (
+                                <span className="text-gray-400 mr-1">Ty:</span>
+                              )}
+                              {conversation.lastMessage.text}
+                            </p>
+                            {conversation.unreadCount > 0 && (
+                              <Badge variant="default" className="ml-2 min-w-[20px] h-5 px-1">
+                                {conversation.unreadCount}
+                              </Badge>
+                            )}
+                          </div>
+
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline" className="text-xs">
+                              {conversation.participant.role}
+                            </Badge>
+                            {conversation.type === 'group' && (
+                              <span className="text-xs text-gray-500">
+                                {conversation.participant.memberCount} członków
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              {conversation.isPinned ? 'Odepnij' : 'Przypnij'}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              {conversation.isMuted ? 'Włącz powiadomienia' : 'Wycisz'}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              Oznacz jako przeczytane
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                              <Archive className="w-4 h-4 mr-2" />
+                              Archiwizuj
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-red-600">
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Usuń
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </div>
-                    </div>
-                  </div>
-                ))}
+                    </button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
-                {isTyping && (
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
-                    </div>
-                    <span className="text-sm">друкує...</span>
-                  </div>
-                )}
+          {/* Message preview / placeholder */}
+          <div className="lg:col-span-2">
+            <Card className="h-full flex items-center justify-center">
+              <div className="text-center p-8">
+                <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Wybierz konwersację
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Kliknij na konwersację po lewej stronie, aby zobaczyć wiadomości
+                </p>
+                <Button variant="outline">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Rozpocznij nową rozmowę
+                </Button>
               </div>
-            </ScrollArea>
-          </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
 
-          {/* Message Input */}
-          <div className="border-t p-4">
-            <div className="flex gap-2">
-              <Button size="icon" variant="ghost">
-                <Paperclip className="w-4 h-4" />
-              </Button>
-              <Button size="icon" variant="ghost">
-                <ImageIcon className="w-4 h-4" />
-              </Button>
-              <Textarea
-                placeholder="Написати повідомлення..."
-                value={messageText}
-                onChange={(e) => setMessageText(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="flex-1 min-h-[40px] max-h-[120px] resize-none"
-                rows={1}
-              />
-              <Button size="icon" variant="ghost">
-                <Smile className="w-4 h-4" />
-              </Button>
-              <Button size="icon" variant="ghost">
-                <Mic className="w-4 h-4" />
-              </Button>
-              <Button 
-                onClick={handleSendMessage}
-                disabled={!messageText.trim()}
+      {/* Quick replies */}
+      <Card className="mt-6">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Szybkie odpowiedzi</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-wrap gap-2">
+            {quickReplies.map((reply) => (
+              <Button
+                key={reply.id}
+                variant="outline"
+                size="sm"
+                className="text-xs"
               >
-                <Send className="w-4 h-4" />
+                {reply.text}
               </Button>
-            </div>
+            ))}
           </div>
-        </Card>
-      ) : (
-        <Card className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">Оберіть чат для початку спілкування</p>
-          </div>
-        </Card>
-      )}
+        </CardContent>
+      </Card>
     </div>
   )
 }
