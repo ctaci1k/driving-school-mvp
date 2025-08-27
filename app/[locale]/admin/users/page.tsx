@@ -12,9 +12,14 @@ import {
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 
-// Generate mock data
+// Функція для псевдовипадкових значень на основі індексу
+const getSeededValue = (index: number, max: number, seed: number = 1) => {
+  return ((index * seed + 7) % max);
+};
+
+// Generate mock data with stable values
 const generateMockUsers = () => {
-  const ukrainianNames = [
+const ukrainianNames = [
     'Олександр Петренко', 'Марія Коваленко', 'Іван Шевченко', 'Оксана Бойко',
     'Петро Мельник', 'Юлія Ткаченко', 'Андрій Кравчук', 'Наталія Савченко',
     'Михайло Гончаренко', 'Тетяна Павленко', 'Василь Романенко', 'Світлана Яковенко',
@@ -33,32 +38,42 @@ const generateMockUsers = () => {
     const name = ukrainianNames[i % ukrainianNames.length] + (i >= ukrainianNames.length ? ` ${Math.floor(i / ukrainianNames.length)}` : '');
     const nameParts = name.split(' ');
     const email = `${nameParts[1].toLowerCase()}.${nameParts[0].toLowerCase()}${i}@example.com`;
-    const role = roles[Math.floor(Math.random() * roles.length)];
+    
+    // Використовуємо детерміновані значення на основі індексу
+    const roleIndex = getSeededValue(i, roles.length);
+    const role = roles[roleIndex];
+    const statusIndex = getSeededValue(i, statuses.length, 3);
+    const status = statuses[statusIndex];
+    const cityIndex = getSeededValue(i, cities.length, 5);
+    
+    // Стабільні телефонні номери
+    const phoneBase = 500000000 + (i * 12345);
     
     return {
       id: `user-${i + 1}`,
       name,
       email,
-      phone: `+380${Math.floor(Math.random() * 900000000 + 100000000)}`,
+      phone: `+380${phoneBase}`,
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${
         role === 'ADMIN' ? '6366F1' : 
         role === 'INSTRUCTOR' ? '10B981' : 
         role === 'MANAGER' ? 'F59E0B' : '3B82F6'
       }&color=fff`,
       role,
-      status: statuses[Math.floor(Math.random() * statuses.length)],
-      location: cities[Math.floor(Math.random() * cities.length)],
-      createdAt: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-      lastLogin: new Date(2024, 11, Math.floor(Math.random() * 28) + 1),
-      emailVerified: Math.random() > 0.2,
-      phoneVerified: Math.random() > 0.3,
-      completedLessons: role === 'STUDENT' ? Math.floor(Math.random() * 50) : null,
-      totalStudents: role === 'INSTRUCTOR' ? Math.floor(Math.random() * 100) + 20 : null,
-      rating: role === 'INSTRUCTOR' ? (4 + Math.random()).toFixed(1) : null
+      status,
+      location: cities[cityIndex],
+      createdAt: new Date(2024, i % 12, (i % 28) + 1),
+      lastLogin: new Date(2024, 11, (i % 28) + 1),
+      emailVerified: i % 5 !== 0, // 80% verified
+      phoneVerified: i % 3 !== 0, // ~66% verified
+      completedLessons: role === 'STUDENT' ? ((i * 7) % 50) : null,
+      totalStudents: role === 'INSTRUCTOR' ? 20 + ((i * 11) % 80) : null,
+      rating: role === 'INSTRUCTOR' ? (4.0 + ((i % 10) / 10)).toFixed(1) : null
     };
   });
 };
 
+// Решта коду залишається без змін
 export default function AdminUsersPage() {
   const [users] = useState(generateMockUsers());
   const [searchQuery, setSearchQuery] = useState('');
