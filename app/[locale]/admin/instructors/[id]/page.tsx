@@ -10,7 +10,7 @@ import {
   DollarSign, Activity, BarChart3, Eye, UserCheck, CreditCard
 } from 'lucide-react';
 import { format, addDays, subDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
 export default function InstructorProfilePage() {
   const params = useParams();
@@ -21,11 +21,11 @@ export default function InstructorProfilePage() {
   // Mock instructor data
   const instructor = {
     id: params.id,
-    firstName: 'Олег',
-    lastName: 'Коваль',
-    email: 'oleg.koval@driveschool.ua',
-    phone: '+380 67 123 45 67',
-    avatar: 'https://ui-avatars.com/api/?name=Олег+Коваль&background=10B981&color=fff',
+    firstName: 'Piotr',
+    lastName: 'Kowalski',
+    email: 'piotr.kowalski@driveschool.pl',
+    phone: '+48 601 234 567',
+    avatar: 'https://ui-avatars.com/api/?name=Piotr+Kowalski&background=10B981&color=fff',
     dateOfBirth: '1985-03-15',
     licenseNumber: 'DL123456',
     categories: ['B', 'C', 'D'],
@@ -36,16 +36,16 @@ export default function InstructorProfilePage() {
     activeStudents: 18,
     completedLessons: 1847,
     successRate: 94,
-    monthlyRevenue: 42500,
-    address: 'вул. Хрещатик, 22, Київ',
+    monthlyRevenue: 8500,
+    address: 'ul. Marszałkowska 22, Warszawa',
     emergencyContact: {
-      name: 'Марія Коваль',
-      relation: 'Дружина',
-      phone: '+380 67 987 65 43'
+      name: 'Maria Kowalska',
+      relation: 'Żona',
+      phone: '+48 601 987 654'
     },
-    experience: '12 років',
-    specializations: ['Початківці', 'Екзамени', 'Нічна їзда', 'Автострада'],
-    languages: ['Українська', 'Російська', 'Англійська'],
+    experience: '12 lat',
+    specializations: ['Początkujący', 'Egzaminy', 'Jazda nocna', 'Autostrada'],
+    languages: ['Polski', 'Angielski', 'Niemiecki'],
     workingHours: {
       monday: { start: '08:00', end: '18:00' },
       tuesday: { start: '08:00', end: '18:00' },
@@ -56,66 +56,66 @@ export default function InstructorProfilePage() {
       sunday: null
     },
     vehicles: [
-      { id: 1, make: 'Toyota', model: 'Corolla', registration: 'AA 1234 BB', status: 'active' },
-      { id: 2, make: 'Volkswagen', model: 'Golf', registration: 'AA 5678 CC', status: 'maintenance' }
+      { id: 1, make: 'Toyota', model: 'Corolla', registration: 'WA 1234B', status: 'active' },
+      { id: 2, make: 'Volkswagen', model: 'Golf', registration: 'WA 5678C', status: 'maintenance' }
     ],
     documents: [
-      { id: 1, name: 'Водійське посвідчення', type: 'license', uploadDate: '2024-01-10', status: 'verified' },
-      { id: 2, name: 'Медична довідка', type: 'medical', uploadDate: '2024-01-05', status: 'verified' },
-      { id: 3, name: 'Інструкторське посвідчення', type: 'instructor', uploadDate: '2024-01-01', status: 'verified' }
+      { id: 1, name: 'Prawo jazdy', type: 'license', uploadDate: '2024-01-10', status: 'verified' },
+      { id: 2, name: 'Zaświadczenie lekarskie', type: 'medical', uploadDate: '2024-01-05', status: 'verified' },
+      { id: 3, name: 'Uprawnienia instruktora', type: 'instructor', uploadDate: '2024-01-01', status: 'verified' }
     ]
   };
 
   // Performance stats
   const performanceStats = [
-    { label: 'Середня оцінка', value: instructor.rating, max: 5, type: 'rating' },
-    { label: 'Успішність студентів', value: instructor.successRate, max: 100, type: 'percentage' },
-    { label: 'Завантаженість', value: 78, max: 100, type: 'percentage' },
-    { label: 'Пунктуальність', value: 96, max: 100, type: 'percentage' }
+    { label: 'Średnia ocena', value: instructor.rating, max: 5, type: 'rating' },
+    { label: 'Skuteczność kursantów', value: instructor.successRate, max: 100, type: 'percentage' },
+    { label: 'Obłożenie', value: 78, max: 100, type: 'percentage' },
+    { label: 'Punktualność', value: 96, max: 100, type: 'percentage' }
   ];
 
   // Recent students
   const recentStudents = [
-    { id: 1, name: 'Іван Петренко', avatar: null, lessons: 12, progress: 75, nextLesson: '2024-02-01 10:00' },
-    { id: 2, name: 'Марія Коваленко', avatar: null, lessons: 8, progress: 60, nextLesson: '2024-02-01 14:00' },
-    { id: 3, name: 'Андрій Шевченко', avatar: null, lessons: 15, progress: 90, nextLesson: '2024-02-02 08:00' },
-    { id: 4, name: 'Оксана Мельник', avatar: null, lessons: 5, progress: 35, nextLesson: '2024-02-02 16:00' },
-    { id: 5, name: 'Петро Сидоренко', avatar: null, lessons: 20, progress: 95, nextLesson: '2024-02-03 12:00' }
+    { id: 1, name: 'Jan Nowak', avatar: null, lessons: 12, progress: 75, nextLesson: '2024-02-01 10:00' },
+    { id: 2, name: 'Maria Wiśniewska', avatar: null, lessons: 8, progress: 60, nextLesson: '2024-02-01 14:00' },
+    { id: 3, name: 'Andrzej Lewandowski', avatar: null, lessons: 15, progress: 90, nextLesson: '2024-02-02 08:00' },
+    { id: 4, name: 'Oksana Wójcik', avatar: null, lessons: 5, progress: 35, nextLesson: '2024-02-02 16:00' },
+    { id: 5, name: 'Piotr Kamiński', avatar: null, lessons: 20, progress: 95, nextLesson: '2024-02-03 12:00' }
   ];
 
   // Schedule for the week
   const weekSchedule = [
-    { day: 'Пн', date: '29.01', lessons: 6, hours: '08:00-18:00', revenue: 3600 },
-    { day: 'Вт', date: '30.01', lessons: 7, hours: '08:00-18:00', revenue: 4200 },
-    { day: 'Ср', date: '31.01', lessons: 5, hours: '08:00-16:00', revenue: 3000 },
-    { day: 'Чт', date: '01.02', lessons: 8, hours: '08:00-20:00', revenue: 4800 },
-    { day: 'Пт', date: '02.02', lessons: 6, hours: '08:00-18:00', revenue: 3600 },
-    { day: 'Сб', date: '03.02', lessons: 3, hours: '10:00-16:00', revenue: 1800 },
-    { day: 'Нд', date: '04.02', lessons: 0, hours: 'Вихідний', revenue: 0 }
+    { day: 'Pon', date: '29.01', lessons: 6, hours: '08:00-18:00', revenue: 720 },
+    { day: 'Wt', date: '30.01', lessons: 7, hours: '08:00-18:00', revenue: 840 },
+    { day: 'Śr', date: '31.01', lessons: 5, hours: '08:00-16:00', revenue: 600 },
+    { day: 'Czw', date: '01.02', lessons: 8, hours: '08:00-20:00', revenue: 960 },
+    { day: 'Pt', date: '02.02', lessons: 6, hours: '08:00-18:00', revenue: 720 },
+    { day: 'Sob', date: '03.02', lessons: 3, hours: '10:00-16:00', revenue: 360 },
+    { day: 'Ndz', date: '04.02', lessons: 0, hours: 'Wolne', revenue: 0 }
   ];
 
   // Reviews
   const reviews = [
-    { id: 1, student: 'Іван Петренко', rating: 5, comment: 'Чудовий інструктор! Все пояснює дуже зрозуміло.', date: '2024-01-28' },
-    { id: 2, student: 'Марія Коваленко', rating: 5, comment: 'Дуже терплячий та уважний. Рекомендую!', date: '2024-01-25' },
-    { id: 3, student: 'Андрій Шевченко', rating: 4, comment: 'Професіонал своєї справи.', date: '2024-01-20' }
+    { id: 1, student: 'Jan Nowak', rating: 5, comment: 'Świetny instruktor! Wszystko tłumaczy bardzo zrozumiale.', date: '2024-01-28' },
+    { id: 2, student: 'Maria Wiśniewska', rating: 5, comment: 'Bardzo cierpliwy i uważny. Polecam!', date: '2024-01-25' },
+    { id: 3, student: 'Andrzej Lewandowski', rating: 4, comment: 'Profesjonalista w swojej dziedzinie.', date: '2024-01-20' }
   ];
 
   // Financial history
   const financialHistory = [
-    { month: 'Січень 2024', revenue: 42500, lessons: 145, averagePrice: 293 },
-    { month: 'Грудень 2023', revenue: 38900, lessons: 132, averagePrice: 295 },
-    { month: 'Листопад 2023', revenue: 41200, lessons: 140, averagePrice: 294 },
-    { month: 'Жовтень 2023', revenue: 39800, lessons: 135, averagePrice: 295 }
+    { month: 'Styczeń 2024', revenue: 8500, lessons: 145, averagePrice: 59 },
+    { month: 'Grudzień 2023', revenue: 7780, lessons: 132, averagePrice: 59 },
+    { month: 'Listopad 2023', revenue: 8240, lessons: 140, averagePrice: 59 },
+    { month: 'Październik 2023', revenue: 7960, lessons: 135, averagePrice: 59 }
   ];
 
   const tabs = [
-    { id: 'overview', label: 'Огляд', icon: Eye },
-    { id: 'schedule', label: 'Розклад', icon: Calendar },
-    { id: 'students', label: 'Студенти', icon: Users },
-    { id: 'performance', label: 'Продуктивність', icon: TrendingUp },
-    { id: 'financial', label: 'Фінанси', icon: DollarSign },
-    { id: 'documents', label: 'Документи', icon: Shield }
+    { id: 'overview', label: 'Przegląd', icon: Eye },
+    { id: 'schedule', label: 'Grafik', icon: Calendar },
+    { id: 'students', label: 'Kursanci', icon: Users },
+    { id: 'performance', label: 'Wydajność', icon: TrendingUp },
+    { id: 'financial', label: 'Finanse', icon: DollarSign },
+    { id: 'documents', label: 'Dokumenty', icon: Shield }
   ];
 
   return (
@@ -130,8 +130,8 @@ export default function InstructorProfilePage() {
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Профіль інструктора</h1>
-            <p className="text-sm text-gray-600">Детальна інформація та управління</p>
+            <h1 className="text-2xl font-bold text-gray-800">Profil instruktora</h1>
+            <p className="text-sm text-gray-600">Szczegółowe informacje i zarządzanie</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -139,18 +139,18 @@ export default function InstructorProfilePage() {
             <>
               <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                Експорт
+                Eksport
               </button>
               <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
                 <Send className="w-4 h-4" />
-                Повідомлення
+                Wiadomość
               </button>
               <button
                 onClick={() => setIsEditing(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
               >
                 <Edit className="w-4 h-4" />
-                Редагувати
+                Edytuj
               </button>
             </>
           ) : (
@@ -160,11 +160,11 @@ export default function InstructorProfilePage() {
                 className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
               >
                 <X className="w-4 h-4" />
-                Скасувати
+                Anuluj
               </button>
               <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
                 <Save className="w-4 h-4" />
-                Зберегти
+                Zapisz
               </button>
             </>
           )}
@@ -190,12 +190,12 @@ export default function InstructorProfilePage() {
                     ? 'bg-green-100 text-green-700' 
                     : 'bg-gray-100 text-gray-700'
                 }`}>
-                  {instructor.status === 'active' ? 'Активний' : 'Неактивний'}
+                  {instructor.status === 'active' ? 'Aktywny' : 'Nieaktywny'}
                 </span>
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                   <span className="font-semibold">{instructor.rating}</span>
-                  <span className="text-gray-500 text-sm">({instructor.totalStudents} студентів)</span>
+                  <span className="text-gray-500 text-sm">({instructor.totalStudents} kursantów)</span>
                 </div>
               </div>
               <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
@@ -213,19 +213,19 @@ export default function InstructorProfilePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1">
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-gray-800">{instructor.activeStudents}</p>
-              <p className="text-xs text-gray-600">Активні студенти</p>
+              <p className="text-xs text-gray-600">Aktywni kursanci</p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-gray-800">{instructor.completedLessons}</p>
-              <p className="text-xs text-gray-600">Проведено занять</p>
+              <p className="text-xs text-gray-600">Przeprowadzonych lekcji</p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-2xl font-bold text-gray-800">{instructor.successRate}%</p>
-              <p className="text-xs text-gray-600">Успішність</p>
+              <p className="text-xs text-gray-600">Skuteczność</p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-800">₴{instructor.monthlyRevenue}</p>
-              <p className="text-xs text-gray-600">Дохід/місяць</p>
+              <p className="text-2xl font-bold text-gray-800">{instructor.monthlyRevenue} zł</p>
+              <p className="text-xs text-gray-600">Przychód/miesiąc</p>
             </div>
           </div>
         </div>
@@ -261,18 +261,18 @@ export default function InstructorProfilePage() {
             <div className="space-y-6">
               {/* Basic Info */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Основна інформація</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Podstawowe informacje</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-600">Дата народження</label>
-                    <p className="font-medium text-gray-800">{format(new Date(instructor.dateOfBirth), 'dd MMMM yyyy', { locale: uk })}</p>
+                    <label className="text-sm text-gray-600">Data urodzenia</label>
+                    <p className="font-medium text-gray-800">{format(new Date(instructor.dateOfBirth), 'dd MMMM yyyy', { locale: pl })}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Номер посвідчення</label>
+                    <label className="text-sm text-gray-600">Numer prawa jazdy</label>
                     <p className="font-medium text-gray-800">{instructor.licenseNumber}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Категорії</label>
+                    <label className="text-sm text-gray-600">Kategorie</label>
                     <div className="flex gap-2 mt-1">
                       {instructor.categories.map(cat => (
                         <span key={cat} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
@@ -282,15 +282,15 @@ export default function InstructorProfilePage() {
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Дата найму</label>
-                    <p className="font-medium text-gray-800">{format(new Date(instructor.hireDate), 'dd MMMM yyyy', { locale: uk })}</p>
+                    <label className="text-sm text-gray-600">Data zatrudnienia</label>
+                    <p className="font-medium text-gray-800">{format(new Date(instructor.hireDate), 'dd MMMM yyyy', { locale: pl })}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Досвід</label>
+                    <label className="text-sm text-gray-600">Doświadczenie</label>
                     <p className="font-medium text-gray-800">{instructor.experience}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Адреса</label>
+                    <label className="text-sm text-gray-600">Adres</label>
                     <p className="font-medium text-gray-800">{instructor.address}</p>
                   </div>
                 </div>
@@ -299,7 +299,7 @@ export default function InstructorProfilePage() {
               {/* Skills & Languages */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Спеціалізації</h4>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Specjalizacje</h4>
                   <div className="flex flex-wrap gap-2">
                     {instructor.specializations.map(spec => (
                       <span key={spec} className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">
@@ -309,7 +309,7 @@ export default function InstructorProfilePage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Мови</h4>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Języki</h4>
                   <div className="flex flex-wrap gap-2">
                     {instructor.languages.map(lang => (
                       <span key={lang} className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">
@@ -322,19 +322,19 @@ export default function InstructorProfilePage() {
 
               {/* Emergency Contact */}
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Екстрений контакт</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Kontakt awaryjny</h4>
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="grid grid-cols-3 gap-4">
                     <div>
-                      <label className="text-xs text-gray-600">Ім'я</label>
+                      <label className="text-xs text-gray-600">Imię i nazwisko</label>
                       <p className="font-medium text-gray-800">{instructor.emergencyContact.name}</p>
                     </div>
                     <div>
-                      <label className="text-xs text-gray-600">Відношення</label>
+                      <label className="text-xs text-gray-600">Relacja</label>
                       <p className="font-medium text-gray-800">{instructor.emergencyContact.relation}</p>
                     </div>
                     <div>
-                      <label className="text-xs text-gray-600">Телефон</label>
+                      <label className="text-xs text-gray-600">Telefon</label>
                       <p className="font-medium text-gray-800">{instructor.emergencyContact.phone}</p>
                     </div>
                   </div>
@@ -355,7 +355,7 @@ export default function InstructorProfilePage() {
                     <p className="text-2xl font-bold text-blue-600 my-2">{day.lessons}</p>
                     <p className="text-xs text-gray-500">{day.hours}</p>
                     {day.revenue > 0 && (
-                      <p className="text-sm font-semibold text-green-600 mt-2">₴{day.revenue}</p>
+                      <p className="text-sm font-semibold text-green-600 mt-2">{day.revenue} zł</p>
                     )}
                   </div>
                 ))}
@@ -373,11 +373,11 @@ export default function InstructorProfilePage() {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-800">{student.name}</p>
-                      <p className="text-sm text-gray-600">{student.lessons} занять • Прогрес: {student.progress}%</p>
+                      <p className="text-sm text-gray-600">{student.lessons} lekcji • Postęp: {student.progress}%</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-600">Наступне заняття</p>
+                    <p className="text-sm text-gray-600">Następna lekcja</p>
                     <p className="font-medium text-gray-800">{format(new Date(student.nextLesson), 'dd.MM HH:mm')}</p>
                   </div>
                 </div>
@@ -408,7 +408,7 @@ export default function InstructorProfilePage() {
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Останні відгуки</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Ostatnie opinie</h4>
                 <div className="space-y-3">
                   {reviews.map((review) => (
                     <div key={review.id} className="p-4 bg-gray-50 rounded-lg">
@@ -443,49 +443,49 @@ export default function InstructorProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-green-700">Поточний місяць</p>
+                    <p className="text-sm text-green-700">Bieżący miesiąc</p>
                     <TrendingUp className="w-4 h-4 text-green-600" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-800">₴{instructor.monthlyRevenue}</p>
-                  <p className="text-sm text-green-600 mt-1">+8.5% від минулого місяця</p>
+                  <p className="text-2xl font-bold text-gray-800">{instructor.monthlyRevenue} zł</p>
+                  <p className="text-sm text-green-600 mt-1">+8.5% od poprzedniego miesiąca</p>
                 </div>
                 <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-blue-700">Середня вартість</p>
+                    <p className="text-sm text-blue-700">Średnia cena</p>
                     <CreditCard className="w-4 h-4 text-blue-600" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-800">₴295</p>
-                  <p className="text-sm text-gray-600 mt-1">за заняття</p>
+                  <p className="text-2xl font-bold text-gray-800">59 zł</p>
+                  <p className="text-sm text-gray-600 mt-1">za lekcję</p>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-purple-700">Заборгованість</p>
+                    <p className="text-sm text-purple-700">Zadłużenie</p>
                     <AlertCircle className="w-4 h-4 text-purple-600" />
                   </div>
-                  <p className="text-2xl font-bold text-gray-800">₴0</p>
-                  <p className="text-sm text-green-600 mt-1">Всі розрахунки проведено</p>
+                  <p className="text-2xl font-bold text-gray-800">0 zł</p>
+                  <p className="text-sm text-green-600 mt-1">Wszystkie rozliczenia przeprowadzone</p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Історія доходів</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Historia przychodów</h4>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-sm font-semibold text-gray-700">Місяць</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Дохід</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Занять</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Середня вартість</th>
+                        <th className="text-left py-2 text-sm font-semibold text-gray-700">Miesiąc</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Przychód</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Lekcje</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Średnia cena</th>
                       </tr>
                     </thead>
                     <tbody>
                       {financialHistory.map((month, index) => (
                         <tr key={index} className="border-b border-gray-100">
                           <td className="py-3 text-gray-800">{month.month}</td>
-                          <td className="py-3 text-right font-semibold text-gray-800">₴{month.revenue.toLocaleString()}</td>
+                          <td className="py-3 text-right font-semibold text-gray-800">{month.revenue.toLocaleString('pl-PL')} zł</td>
                           <td className="py-3 text-right text-gray-600">{month.lessons}</td>
-                          <td className="py-3 text-right text-gray-600">₴{month.averagePrice}</td>
+                          <td className="py-3 text-right text-gray-600">{month.averagePrice} zł</td>
                         </tr>
                       ))}
                     </tbody>
@@ -503,7 +503,7 @@ export default function InstructorProfilePage() {
                     <Shield className="w-5 h-5 text-gray-600" />
                     <div>
                       <p className="font-medium text-gray-800">{doc.name}</p>
-                      <p className="text-sm text-gray-600">Завантажено: {format(new Date(doc.uploadDate), 'dd.MM.yyyy')}</p>
+                      <p className="text-sm text-gray-600">Przesłano: {format(new Date(doc.uploadDate), 'dd.MM.yyyy')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -512,7 +512,7 @@ export default function InstructorProfilePage() {
                         ? 'bg-green-100 text-green-700'
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {doc.status === 'verified' ? 'Перевірено' : 'На перевірці'}
+                      {doc.status === 'verified' ? 'Zweryfikowano' : 'W weryfikacji'}
                     </span>
                     <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                       <Eye className="w-4 h-4 text-gray-600" />

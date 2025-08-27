@@ -12,7 +12,7 @@ import {
   FileText, Calculator, Wallet, ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths, addDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 import {
   LineChart, Line, BarChart, Bar, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
@@ -54,39 +54,39 @@ const generatePayouts = (): Payout[] => {
   const instructors: Instructor[] = [
     {
       id: 'inst-1',
-      name: 'Петро Сидоренко',
-      email: 'sydorenko@drive-school.com',
-      phone: '+380501234567',
-      avatar: 'https://ui-avatars.com/api/?name=Петро+Сидоренко&background=10B981&color=fff',
-      bankAccount: 'UA213223130000026007233566001',
-      taxNumber: '3234567890'
+      name: 'Piotr Kowalski',
+      email: 'kowalski@drive-school.pl',
+      phone: '+48501234567',
+      avatar: 'https://ui-avatars.com/api/?name=Piotr+Kowalski&background=10B981&color=fff',
+      bankAccount: 'PL61109010140000071219812874',
+      taxNumber: '5234567890'
     },
     {
       id: 'inst-2',
-      name: 'Анна Коваленко',
-      email: 'kovalenko@drive-school.com',
-      phone: '+380509876543',
-      avatar: 'https://ui-avatars.com/api/?name=Анна+Коваленко&background=10B981&color=fff',
-      bankAccount: 'UA213223130000026007233566002',
-      taxNumber: '3234567891'
+      name: 'Anna Nowak',
+      email: 'nowak@drive-school.pl',
+      phone: '+48509876543',
+      avatar: 'https://ui-avatars.com/api/?name=Anna+Nowak&background=10B981&color=fff',
+      bankAccount: 'PL27114020040000300201355387',
+      taxNumber: '5234567891'
     },
     {
       id: 'inst-3',
-      name: 'Іван Мельник',
-      email: 'melnyk@drive-school.com',
-      phone: '+380507654321',
-      avatar: 'https://ui-avatars.com/api/?name=Іван+Мельник&background=10B981&color=fff',
-      bankAccount: 'UA213223130000026007233566003',
-      taxNumber: '3234567892'
+      name: 'Jan Wiśniewski',
+      email: 'wisniewski@drive-school.pl',
+      phone: '+48507654321',
+      avatar: 'https://ui-avatars.com/api/?name=Jan+Wiśniewski&background=10B981&color=fff',
+      bankAccount: 'PL60102010260000042270201111',
+      taxNumber: '5234567892'
     },
     {
       id: 'inst-4',
-      name: 'Оксана Шевченко',
-      email: 'shevchenko@drive-school.com',
-      phone: '+380503456789',
-      avatar: 'https://ui-avatars.com/api/?name=Оксана+Шевченко&background=10B981&color=fff',
-      bankAccount: 'UA213223130000026007233566004',
-      taxNumber: '3234567893'
+      name: 'Katarzyna Wójcik',
+      email: 'wojcik@drive-school.pl',
+      phone: '+48503456789',
+      avatar: 'https://ui-avatars.com/api/?name=Katarzyna+Wójcik&background=10B981&color=fff',
+      bankAccount: 'PL83101010230000261395100000',
+      taxNumber: '5234567893'
     }
   ];
 
@@ -102,10 +102,10 @@ const generatePayouts = (): Payout[] => {
     instructors.forEach(instructor => {
       const lessons = Math.floor(Math.random() * 40) + 20;
       const hours = lessons * 1.5;
-      const hourlyRate = 150 + Math.floor(Math.random() * 100);
+      const hourlyRate = 70 + Math.floor(Math.random() * 50);
       const gross = hours * hourlyRate;
       const commission = gross * 0.2;
-      const tax = (gross - commission) * 0.05;
+      const tax = (gross - commission) * 0.19; // Polish tax rate
       const net = gross - commission - tax;
       const status = month === 0 ? 'pending' : statuses[Math.floor(Math.random() * 3) + 1];
       
@@ -128,7 +128,7 @@ const generatePayouts = (): Payout[] => {
         status,
         paymentMethod: methods[Math.floor(Math.random() * methods.length)],
         paymentDate: status === 'completed' ? addDays(periodEnd, 5) : undefined,
-        notes: status === 'failed' ? 'Невірні банківські реквізити' : undefined
+        notes: status === 'failed' ? 'Nieprawidłowe dane bankowe' : undefined
       });
     });
   }
@@ -185,26 +185,26 @@ export default function AdminPayoutsPage() {
 
   // Chart data
   const monthlyData = [
-    { month: 'Січ', amount: 85000 },
-    { month: 'Лют', amount: 92000 },
-    { month: 'Бер', amount: 88000 },
-    { month: 'Кві', amount: 95000 },
-    { month: 'Тра', amount: 98000 },
-    { month: 'Чер', amount: 102000 }
+    { month: 'Sty', amount: 18500 },
+    { month: 'Lut', amount: 19200 },
+    { month: 'Mar', amount: 18800 },
+    { month: 'Kwi', amount: 19500 },
+    { month: 'Maj', amount: 20800 },
+    { month: 'Cze', amount: 21200 }
   ];
 
   const distributionData = [
-    { name: 'Зарплата', value: stats.totalNet, color: '#10B981' },
-    { name: 'Комісія', value: stats.totalCommission, color: '#3B82F6' },
-    { name: 'Податки', value: stats.totalTax, color: '#F59E0B' }
+    { name: 'Wynagrodzenie', value: stats.totalNet, color: '#10B981' },
+    { name: 'Prowizja', value: stats.totalCommission, color: '#3B82F6' },
+    { name: 'Podatki', value: stats.totalTax, color: '#F59E0B' }
   ];
 
   const getStatusBadge = (status: Payout['status']) => {
     const badges = {
-      pending: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Очікує' },
-      processing: { bg: 'bg-blue-100', text: 'text-blue-700', icon: RefreshCw, label: 'Обробляється' },
-      completed: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Виплачено' },
-      failed: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Помилка' }
+      pending: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Oczekuje' },
+      processing: { bg: 'bg-blue-100', text: 'text-blue-700', icon: RefreshCw, label: 'Przetwarzanie' },
+      completed: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Wypłacono' },
+      failed: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Błąd' }
     };
     return badges[status];
   };
@@ -230,14 +230,14 @@ export default function AdminPayoutsPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => router.push('/uk/admin/payments')}
+            onClick={() => router.push('/pl/admin/payments')}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-800">Виплати інструкторам</h1>
-            <p className="text-gray-600 mt-1">Розрахунки заробітної плати</p>
+            <h1 className="text-3xl font-bold text-gray-800">Wypłaty dla instruktorów</h1>
+            <p className="text-gray-600 mt-1">Rozliczenia wynagrodzeń</p>
           </div>
         </div>
         <button
@@ -245,7 +245,7 @@ export default function AdminPayoutsPage() {
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Calculator className="w-4 h-4" />
-          Розрахувати виплати
+          Oblicz wypłaty
         </button>
       </div>
 
@@ -254,70 +254,70 @@ export default function AdminPayoutsPage() {
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <DollarSign className="w-5 h-5 text-green-500" />
-            <p className="text-sm text-gray-500">Загальна сума</p>
+            <p className="text-sm text-gray-500">Suma całkowita</p>
           </div>
-          <p className="text-2xl font-bold text-gray-800">₴{(stats.totalPayouts / 1000).toFixed(0)}k</p>
-          <p className="text-xs text-gray-500 mt-1">Gross</p>
+          <p className="text-2xl font-bold text-gray-800">{(stats.totalPayouts / 1000).toFixed(0)}k zł</p>
+          <p className="text-xs text-gray-500 mt-1">Brutto</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <Wallet className="w-5 h-5 text-blue-500" />
-            <p className="text-sm text-gray-500">До виплати</p>
+            <p className="text-sm text-gray-500">Do wypłaty</p>
           </div>
-          <p className="text-2xl font-bold text-gray-800">₴{(stats.totalNet / 1000).toFixed(0)}k</p>
-          <p className="text-xs text-gray-500 mt-1">Net</p>
+          <p className="text-2xl font-bold text-gray-800">{(stats.totalNet / 1000).toFixed(0)}k zł</p>
+          <p className="text-xs text-gray-500 mt-1">Netto</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <Activity className="w-5 h-5 text-purple-500" />
-            <p className="text-sm text-gray-500">Комісія</p>
+            <p className="text-sm text-gray-500">Prowizja</p>
           </div>
-          <p className="text-2xl font-bold text-gray-800">₴{(stats.totalCommission / 1000).toFixed(0)}k</p>
+          <p className="text-2xl font-bold text-gray-800">{(stats.totalCommission / 1000).toFixed(0)}k zł</p>
           <p className="text-xs text-gray-500 mt-1">20%</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-5 h-5 text-orange-500" />
-            <p className="text-sm text-gray-500">Податки</p>
+            <p className="text-sm text-gray-500">Podatki</p>
           </div>
-          <p className="text-2xl font-bold text-gray-800">₴{(stats.totalTax / 1000).toFixed(0)}k</p>
-          <p className="text-xs text-gray-500 mt-1">5%</p>
+          <p className="text-2xl font-bold text-gray-800">{(stats.totalTax / 1000).toFixed(0)}k zł</p>
+          <p className="text-xs text-gray-500 mt-1">19%</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <GraduationCap className="w-5 h-5 text-indigo-500" />
-            <p className="text-sm text-gray-500">Занять</p>
+            <p className="text-sm text-gray-500">Lekcje</p>
           </div>
           <p className="text-2xl font-bold text-gray-800">{stats.totalLessons}</p>
-          <p className="text-xs text-gray-500 mt-1">За період</p>
+          <p className="text-xs text-gray-500 mt-1">W okresie</p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-2 mb-2">
             <Clock className="w-5 h-5 text-gray-500" />
-            <p className="text-sm text-gray-500">Годин</p>
+            <p className="text-sm text-gray-500">Godziny</p>
           </div>
           <p className="text-2xl font-bold text-gray-800">{stats.totalHours.toFixed(0)}</p>
-          <p className="text-xs text-gray-500 mt-1">Відпрацьовано</p>
+          <p className="text-xs text-gray-500 mt-1">Przepracowane</p>
         </div>
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Динаміка виплат</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Dynamika wypłat</h3>
           <ResponsiveContainer width="100%" height={250}>
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
               <YAxis />
-              <Tooltip formatter={(value) => `₴${Number(value).toLocaleString()}`} />
+              <Tooltip formatter={(value) => `${Number(value).toLocaleString()} zł`} />
               <Line type="monotone" dataKey="amount" stroke="#3B82F6" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Розподіл виплат</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Podział wypłat</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
@@ -333,7 +333,7 @@ export default function AdminPayoutsPage() {
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip formatter={(value) => `₴${Number(value).toLocaleString()}`} />
+              <Tooltip formatter={(value) => `${Number(value).toLocaleString()} zł`} />
             </PieChart>
           </ResponsiveContainer>
           <div className="mt-4 space-y-2">
@@ -344,7 +344,7 @@ export default function AdminPayoutsPage() {
                   <span className="text-sm text-gray-600">{item.name}</span>
                 </div>
                 <span className="text-sm font-medium text-gray-900">
-                  ₴{item.value.toLocaleString()}
+                  {item.value.toLocaleString()} zł
                 </span>
               </div>
             ))}
@@ -366,7 +366,7 @@ export default function AdminPayoutsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук інструктора..."
+                placeholder="Szukaj instruktora..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -378,11 +378,11 @@ export default function AdminPayoutsPage() {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">Всі статуси</option>
-            <option value="pending">Очікує</option>
-            <option value="processing">Обробляється</option>
-            <option value="completed">Виплачено</option>
-            <option value="failed">Помилка</option>
+            <option value="all">Wszystkie statusy</option>
+            <option value="pending">Oczekuje</option>
+            <option value="processing">Przetwarzanie</option>
+            <option value="completed">Wypłacono</option>
+            <option value="failed">Błąd</option>
           </select>
           {selectedPayouts.length > 0 && (
             <button
@@ -390,7 +390,7 @@ export default function AdminPayoutsPage() {
               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
             >
               <Send className="w-4 h-4" />
-              Обробити вибрані ({selectedPayouts.length})
+              Przetwórz wybrane ({selectedPayouts.length})
             </button>
           )}
         </div>
@@ -416,25 +416,25 @@ export default function AdminPayoutsPage() {
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Інструктор
+                  Instruktor
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Період
+                  Okres
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Занять/Годин
+                  Lekcje/Godziny
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Gross
+                  Brutto
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Net
+                  Netto
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Статус
+                  Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Дії
+                  Akcje
                 </th>
               </tr>
             </thead>
@@ -478,14 +478,14 @@ export default function AdminPayoutsPage() {
                       </p>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-sm text-gray-900">{payout.lessons} занять</p>
-                      <p className="text-sm text-gray-500">{payout.hours} год</p>
+                      <p className="text-sm text-gray-900">{payout.lessons} lekcji</p>
+                      <p className="text-sm text-gray-500">{payout.hours} godz.</p>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium text-gray-900">₴{payout.earnings.gross.toLocaleString()}</p>
+                      <p className="font-medium text-gray-900">{payout.earnings.gross.toLocaleString()} zł</p>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="font-medium text-green-600">₴{payout.earnings.net.toLocaleString()}</p>
+                      <p className="font-medium text-green-600">{payout.earnings.net.toLocaleString()} zł</p>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadge.bg} ${statusBadge.text}`}>
@@ -498,7 +498,7 @@ export default function AdminPayoutsPage() {
                         <button
                           onClick={() => setSelectedPayout(payout)}
                           className="p-1 hover:bg-gray-100 rounded"
-                          title="Деталі"
+                          title="Szczegóły"
                         >
                           <Eye className="w-4 h-4 text-gray-600" />
                         </button>
@@ -506,7 +506,7 @@ export default function AdminPayoutsPage() {
                           <button
                             onClick={() => handleProcessPayout(payout)}
                             className="p-1 hover:bg-gray-100 rounded"
-                            title="Обробити"
+                            title="Przetwórz"
                           >
                             <Send className="w-4 h-4 text-gray-600" />
                           </button>
@@ -514,7 +514,7 @@ export default function AdminPayoutsPage() {
                         <button
                           onClick={() => console.log('Download:', payout.id)}
                           className="p-1 hover:bg-gray-100 rounded"
-                          title="Завантажити"
+                          title="Pobierz"
                         >
                           <Download className="w-4 h-4 text-gray-600" />
                         </button>
@@ -531,11 +531,11 @@ export default function AdminPayoutsPage() {
         <div className="px-6 py-4 border-t border-gray-200">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Показано <span className="font-medium">{startIndex + 1}</span> -{' '}
+              Pokazano <span className="font-medium">{startIndex + 1}</span> -{' '}
               <span className="font-medium">
                 {Math.min(startIndex + itemsPerPage, filteredPayouts.length)}
               </span>{' '}
-              з <span className="font-medium">{filteredPayouts.length}</span> виплат
+              z <span className="font-medium">{filteredPayouts.length}</span> wypłat
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -564,7 +564,7 @@ export default function AdminPayoutsPage() {
           <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6 border-b">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-gray-800">Деталі виплати</h2>
+                <h2 className="text-xl font-bold text-gray-800">Szczegóły wypłaty</h2>
                 <button
                   onClick={() => setSelectedPayout(null)}
                   className="p-2 hover:bg-gray-100 rounded-lg"
@@ -577,7 +577,7 @@ export default function AdminPayoutsPage() {
             <div className="p-6 space-y-6">
               {/* Instructor Info */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Інструктор</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Instruktor</h3>
                 <div className="flex items-center gap-4">
                   <img
                     src={selectedPayout.instructor.avatar}
@@ -595,60 +595,60 @@ export default function AdminPayoutsPage() {
               {/* Period and Stats */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-1">Період</p>
+                  <p className="text-sm text-gray-500 mb-1">Okres</p>
                   <p className="font-medium text-gray-900">
-                    {format(selectedPayout.period.from, 'dd MMMM', { locale: uk })} - {format(selectedPayout.period.to, 'dd MMMM yyyy', { locale: uk })}
+                    {format(selectedPayout.period.from, 'dd MMMM', { locale: pl })} - {format(selectedPayout.period.to, 'dd MMMM yyyy', { locale: pl })}
                   </p>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <p className="text-sm text-gray-500 mb-1">Статистика</p>
+                  <p className="text-sm text-gray-500 mb-1">Statystyki</p>
                   <p className="font-medium text-gray-900">
-                    {selectedPayout.lessons} занять / {selectedPayout.hours} годин
+                    {selectedPayout.lessons} lekcji / {selectedPayout.hours} godzin
                   </p>
                 </div>
               </div>
 
               {/* Earnings Breakdown */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Розрахунок</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Rozliczenie</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Нараховано (Gross)</span>
-                    <span className="font-medium">₴{selectedPayout.earnings.gross.toLocaleString()}</span>
+                    <span className="text-gray-600">Naliczono (Brutto)</span>
+                    <span className="font-medium">{selectedPayout.earnings.gross.toLocaleString()} zł</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Комісія школи (20%)</span>
-                    <span className="text-red-600">-₴{selectedPayout.earnings.commission.toLocaleString()}</span>
+                    <span className="text-gray-600">Prowizja szkoły (20%)</span>
+                    <span className="text-red-600">-{selectedPayout.earnings.commission.toLocaleString()} zł</span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Податок (5%)</span>
-                    <span className="text-red-600">-₴{selectedPayout.earnings.tax.toLocaleString()}</span>
+                    <span className="text-gray-600">Podatek (19%)</span>
+                    <span className="text-red-600">-{selectedPayout.earnings.tax.toLocaleString()} zł</span>
                   </div>
                   <div className="flex justify-between py-3 text-lg font-bold">
-                    <span>До виплати (Net)</span>
-                    <span className="text-green-600">₴{selectedPayout.earnings.net.toLocaleString()}</span>
+                    <span>Do wypłaty (Netto)</span>
+                    <span className="text-green-600">{selectedPayout.earnings.net.toLocaleString()} zł</span>
                   </div>
                 </div>
               </div>
 
               {/* Payment Info */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Платіжна інформація</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Informacje płatnicze</h3>
                 <div className="bg-gray-50 rounded-lg p-4 space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Банківський рахунок</span>
+                    <span className="text-gray-600">Numer konta</span>
                     <span className="font-mono text-sm">{selectedPayout.instructor.bankAccount}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">ІПН</span>
+                    <span className="text-gray-600">NIP</span>
                     <span className="font-mono text-sm">{selectedPayout.instructor.taxNumber}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Метод оплати</span>
+                    <span className="text-gray-600">Metoda płatności</span>
                     <span className="text-sm">
-                      {selectedPayout.paymentMethod === 'bank_transfer' && 'Банківський переказ'}
-                      {selectedPayout.paymentMethod === 'cash' && 'Готівка'}
-                      {selectedPayout.paymentMethod === 'card' && 'Картка'}
+                      {selectedPayout.paymentMethod === 'bank_transfer' && 'Przelew bankowy'}
+                      {selectedPayout.paymentMethod === 'cash' && 'Gotówka'}
+                      {selectedPayout.paymentMethod === 'card' && 'Karta'}
                     </span>
                   </div>
                 </div>
@@ -659,16 +659,16 @@ export default function AdminPayoutsPage() {
                 {selectedPayout.status === 'pending' && (
                   <button className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2">
                     <Send className="w-4 h-4" />
-                    Обробити виплату
+                    Przetwórz wypłatę
                   </button>
                 )}
                 <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
                   <Download className="w-4 h-4" />
-                  Завантажити звіт
+                  Pobierz raport
                 </button>
                 <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
                   <FileText className="w-4 h-4" />
-                  Створити інвойс
+                  Wygeneruj fakturę
                 </button>
               </div>
             </div>
@@ -681,7 +681,7 @@ export default function AdminPayoutsPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 flex items-center gap-3">
             <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-            <span className="text-gray-700">Обробка виплат...</span>
+            <span className="text-gray-700">Przetwarzanie wypłat...</span>
           </div>
         </div>
       )}

@@ -15,7 +15,7 @@ import {
   Area, AreaChart
 } from 'recharts';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
@@ -36,48 +36,48 @@ export default function AdminDashboard() {
   // Mock data
   const stats = [
     {
-      title: 'Загальна виручка',
-      value: '₴125,450',
+      title: 'Całkowity przychód',
+      value: 'zł125,450',
       change: '+12.5%',
       changeType: 'increase',
       icon: DollarSign,
       color: 'green',
-      subtitle: 'цього місяця'
+      subtitle: 'tego miesiąca'
     },
     {
-      title: 'Активні студенти',
+      title: 'Aktywni uczniowie',
       value: '284',
-      change: '+8 цього тижня',
+      change: '+8 w tym tygodniu',
       changeType: 'increase',
       icon: Users,
       color: 'blue',
-      subtitle: 'всього зареєстровано: 1,245'
+      subtitle: 'łącznie zarejestrowanych: 1,245'
     },
     {
-      title: 'Заняття сьогодні',
+      title: 'Lekcje dzisiaj',
       value: '18',
-      change: '6 завершено',
+      change: '6 zakończonych',
       changeType: 'neutral',
       icon: Calendar,
       color: 'purple',
-      subtitle: '12 ще заплановано'
+      subtitle: '12 jeszcze zaplanowanych'
     },
     {
-      title: 'Конверсія',
+      title: 'Konwersja',
       value: '72%',
-      change: '+5% від минулого місяця',
+      change: '+5% od ostatniego miesiąca',
       changeType: 'increase',
       icon: TrendingUp,
       color: 'orange',
-      subtitle: 'від реєстрації до оплати'
+      subtitle: 'od rejestracji do płatności'
     }
   ];
 
   const secondaryStats = [
-    { title: 'Інструкторів онлайн', value: '8/12', icon: GraduationCap, color: 'indigo' },
-    { title: 'Доступних авто', value: '14/15', icon: Car, color: 'teal' },
-    { title: 'Нових платежів', value: '7', icon: CreditCard, color: 'pink' },
-    { title: 'Активних локацій', value: '3', icon: MapPin, color: 'cyan' }
+    { title: 'Instruktorów online', value: '8/12', icon: GraduationCap, color: 'indigo' },
+    { title: 'Dostępnych aut', value: '14/15', icon: Car, color: 'teal' },
+    { title: 'Nowych płatności', value: '7', icon: CreditCard, color: 'pink' },
+    { title: 'Aktywnych lokalizacji', value: '3', icon: MapPin, color: 'cyan' }
   ];
 
   // Revenue chart data
@@ -100,10 +100,10 @@ export default function AdminDashboard() {
 
   // Package distribution
   const packageData = [
-    { name: 'Стандарт', value: 45, color: '#3B82F6' },
-    { name: 'Преміум', value: 30, color: '#8B5CF6' },
+    { name: 'Standard', value: 45, color: '#3B82F6' },
+    { name: 'Premium', value: 30, color: '#8B5CF6' },
     { name: 'VIP', value: 15, color: '#F59E0B' },
-    { name: 'Базовий', value: 10, color: '#10B981' }
+    { name: 'Podstawowy', value: 10, color: '#10B981' }
   ];
 
   // Recent activities
@@ -111,73 +111,73 @@ export default function AdminDashboard() {
     {
       id: 1,
       type: 'booking_created',
-      user: 'Іван Петренко',
-      action: 'забронював заняття',
-      time: '5 хвилин тому',
+      user: 'Jan Kowalski',
+      action: 'zarezerwował lekcję',
+      time: '5 minut temu',
       icon: Calendar,
       color: 'blue'
     },
     {
       id: 2,
       type: 'payment_received',
-      user: 'Марія Коваленко',
-      action: 'оплатила пакет "Стандарт"',
-      amount: '₴3,500',
-      time: '12 хвилин тому',
+      user: 'Maria Nowak',
+      action: 'opłaciła pakiet "Standard"',
+      amount: 'zł3,500',
+      time: '12 minut temu',
       icon: CreditCard,
       color: 'green'
     },
     {
       id: 3,
       type: 'instructor_online',
-      user: 'Петро Сидоренко',
-      action: 'почав робочий день',
-      time: '25 хвилин тому',
+      user: 'Piotr Wiśniewski',
+      action: 'rozpoczął dzień pracy',
+      time: '25 minut temu',
       icon: GraduationCap,
       color: 'purple'
     },
     {
       id: 4,
       type: 'booking_cancelled',
-      user: 'Оксана Мельник',
-      action: 'скасувала заняття на 14:00',
-      time: '1 годину тому',
+      user: 'Anna Wójcik',
+      action: 'anulowała lekcję na 14:00',
+      time: '1 godzinę temu',
       icon: XCircle,
       color: 'red'
     },
     {
       id: 5,
       type: 'vehicle_maintenance',
-      user: 'Система',
-      action: 'Toyota Yaris WZ 12345 потребує ТО',
-      time: '2 години тому',
+      user: 'System',
+      action: 'Toyota Yaris WZ 12345 wymaga przeglądu',
+      time: '2 godziny temu',
       icon: Car,
       color: 'yellow'
     },
     {
       id: 6,
       type: 'new_registration',
-      user: 'Андрій Кравчук',
-      action: 'зареєструвався як новий студент',
-      time: '3 години тому',
+      user: 'Andrzej Kowalczyk',
+      action: 'zarejestrował się jako nowy uczeń',
+      time: '3 godziny temu',
       icon: UserPlus,
       color: 'indigo'
     },
     {
       id: 7,
       type: 'exam_passed',
-      user: 'Юлія Бойко',
-      action: 'успішно склала іспит',
-      time: '4 години тому',
+      user: 'Julia Kamińska',
+      action: 'pomyślnie zdała egzamin',
+      time: '4 godziny temu',
       icon: Award,
       color: 'green'
     },
     {
       id: 8,
       type: 'review_received',
-      user: 'Михайло Ткаченко',
-      action: 'залишив відгук 5★',
-      time: '5 годин тому',
+      user: 'Michał Lewandowski',
+      action: 'zostawił recenzję 5★',
+      time: '5 godzin temu',
       icon: Award,
       color: 'yellow'
     }
@@ -185,10 +185,10 @@ export default function AdminDashboard() {
 
   // Top instructors
   const topInstructors = [
-    { name: 'Петро Сидоренко', lessons: 142, rating: 4.9, revenue: '₴28,400' },
-    { name: 'Анна Коваленко', lessons: 128, rating: 4.8, revenue: '₴25,600' },
-    { name: 'Іван Мельник', lessons: 115, rating: 4.7, revenue: '₴23,000' },
-    { name: 'Оксана Шевченко', lessons: 98, rating: 4.9, revenue: '₴19,600' }
+    { name: 'Piotr Wiśniewski', lessons: 142, rating: 4.9, revenue: 'zł28,400' },
+    { name: 'Anna Kowalska', lessons: 128, rating: 4.8, revenue: 'zł25,600' },
+    { name: 'Jan Nowicki', lessons: 115, rating: 4.7, revenue: 'zł23,000' },
+    { name: 'Ewa Mazur', lessons: 98, rating: 4.9, revenue: 'zł19,600' }
   ];
 
   const getColorClasses = (color: string) => {
@@ -212,7 +212,7 @@ export default function AdminDashboard() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Завантаження даних...</p>
+          <p className="text-gray-600">Ładowanie danych...</p>
         </div>
       </div>
     );
@@ -225,7 +225,7 @@ export default function AdminDashboard() {
         <div>
           <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
           <p className="text-gray-600 mt-1">
-            Ласкаво просимо! Ось огляд вашої автошколи
+            Witamy! Oto przegląd Twojej szkoły jazdy
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -234,10 +234,10 @@ export default function AdminDashboard() {
             onChange={(e) => setSelectedPeriod(e.target.value)}
             className="px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="day">Сьогодні</option>
-            <option value="week">Цей тиждень</option>
-            <option value="month">Цей місяць</option>
-            <option value="year">Цей рік</option>
+            <option value="day">Dzisiaj</option>
+            <option value="week">Ten tydzień</option>
+            <option value="month">Ten miesiąc</option>
+            <option value="year">Ten rok</option>
           </select>
           <button
             onClick={handleRefresh}
@@ -248,7 +248,7 @@ export default function AdminDashboard() {
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             <Download className="w-5 h-5 inline mr-2" />
-            Експорт
+            Eksport
           </button>
         </div>
       </div>
@@ -322,11 +322,11 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Динаміка виручки</h3>
-              <p className="text-sm text-gray-600">Порівняння з минулим періодом</p>
+              <h3 className="text-lg font-semibold text-gray-800">Dynamika przychodów</h3>
+              <p className="text-sm text-gray-600">Porównanie z poprzednim okresem</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Детальніше →
+              Szczegóły →
             </button>
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
               <Area
                 type="monotone"
                 dataKey="current"
-                name="Поточний період"
+                name="Bieżący okres"
                 stroke="#3B82F6"
                 fill="#93BBFC"
                 fillOpacity={0.6}
@@ -347,7 +347,7 @@ export default function AdminDashboard() {
               <Area
                 type="monotone"
                 dataKey="previous"
-                name="Попередній період"
+                name="Poprzedni okres"
                 stroke="#9CA3AF"
                 fill="#D1D5DB"
                 fillOpacity={0.4}
@@ -358,7 +358,7 @@ export default function AdminDashboard() {
 
         {/* Package Distribution */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Розподіл пакетів</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład pakietów</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -398,7 +398,7 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bookings by Time */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Бронювання за часом</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rezerwacje według godzin</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={bookingsByTime}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -413,9 +413,9 @@ export default function AdminDashboard() {
         {/* Recent Activities */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Остання активність</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Ostatnia aktywność</h3>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Вся активність →
+              Cała aktywność →
             </button>
           </div>
           <div className="space-y-3 max-h-[300px] overflow-y-auto">
@@ -451,9 +451,9 @@ export default function AdminDashboard() {
         {/* Top Instructors */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Топ інструктори</h3>
+            <h3 className="text-lg font-semibold text-gray-800">Top instruktorzy</h3>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Всі інструктори →
+              Wszyscy instruktorzy →
             </button>
           </div>
           <div className="space-y-3">
@@ -466,7 +466,7 @@ export default function AdminDashboard() {
                   <div>
                     <p className="font-medium text-gray-800">{instructor.name}</p>
                     <p className="text-sm text-gray-600">
-                      {instructor.lessons} занять • {instructor.rating}★
+                      {instructor.lessons} lekcji • {instructor.rating}★
                     </p>
                   </div>
                 </div>
@@ -478,30 +478,30 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Швидкі дії</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Szybkie akcje</h3>
           <div className="grid grid-cols-2 gap-3">
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all group">
               <UserPlus className="w-6 h-6 text-blue-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-blue-600">
-                Додати користувача
+                Dodaj użytkownika
               </p>
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-all group">
               <Calendar className="w-6 h-6 text-purple-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-purple-600">
-                Створити бронювання
+                Utwórz rezerwację
               </p>
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-all group">
               <FileText className="w-6 h-6 text-green-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-green-600">
-                Згенерувати звіт
+                Generuj raport
               </p>
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-all group">
               <Mail className="w-6 h-6 text-orange-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-orange-600">
-                Масова розсилка
+                Masowy mailing
               </p>
             </button>
           </div>
@@ -513,15 +513,15 @@ export default function AdminDashboard() {
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="font-medium text-yellow-800">Потребує уваги</p>
+            <p className="font-medium text-yellow-800">Wymaga uwagi</p>
             <ul className="mt-2 space-y-1 text-sm text-yellow-700">
-              <li>• 3 платежі очікують підтвердження</li>
-              <li>• Toyota Yaris (WZ 12345) потребує технічного огляду через 5 днів</li>
-              <li>• 2 інструктори не підтвердили розклад на наступний тиждень</li>
+              <li>• 3 płatności oczekują na potwierdzenie</li>
+              <li>• Toyota Yaris (WZ 12345) wymaga przeglądu technicznego za 5 dni</li>
+              <li>• 2 instruktorów nie potwierdziło harmonogramu na przyszły tydzień</li>
             </ul>
           </div>
           <button className="text-sm text-yellow-600 hover:text-yellow-700 font-medium">
-            Переглянути всі →
+            Zobacz wszystkie →
           </button>
         </div>
       </div>

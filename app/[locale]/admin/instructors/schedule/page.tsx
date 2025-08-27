@@ -9,7 +9,7 @@ import {
   Grid, List, CalendarDays, User, Star
 } from 'lucide-react';
 import { format, addDays, startOfWeek, endOfWeek, addWeeks, subWeeks } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
 export default function InstructorsSchedulePage() {
   const [viewMode, setViewMode] = useState<'week' | 'day' | 'list'>('week');
@@ -19,137 +19,137 @@ export default function InstructorsSchedulePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Mock instructors
+  // Instruktorzy (mock)
   const instructors = [
-    { id: '1', name: 'Олег Коваль', avatar: 'https://ui-avatars.com/api/?name=Олег+Коваль&background=10B981&color=fff', color: 'bg-green-500' },
-    { id: '2', name: 'Анна Лисенко', avatar: 'https://ui-avatars.com/api/?name=Анна+Лисенко&background=8B5CF6&color=fff', color: 'bg-purple-500' },
-    { id: '3', name: 'Михайло Ткаченко', avatar: 'https://ui-avatars.com/api/?name=Михайло+Ткаченко&background=F59E0B&color=fff', color: 'bg-yellow-500' },
-    { id: '4', name: 'Юлія Савченко', avatar: 'https://ui-avatars.com/api/?name=Юлія+Савченко&background=EC4899&color=fff', color: 'bg-pink-500' },
-    { id: '5', name: 'Віктор Бондар', avatar: 'https://ui-avatars.com/api/?name=Віктор+Бондар&background=3B82F6&color=fff', color: 'bg-blue-500' }
+    { id: '1', name: 'Oleh Kowal', avatar: 'https://ui-avatars.com/api/?name=Oleh+Kowal&background=10B981&color=fff', color: 'bg-green-500' },
+    { id: '2', name: 'Anna Lisenko', avatar: 'https://ui-avatars.com/api/?name=Anna+Lisenko&background=8B5CF6&color=fff', color: 'bg-purple-500' },
+    { id: '3', name: 'Michał Tkaczenko', avatar: 'https://ui-avatars.com/api/?name=Michał+Tkaczenko&background=F59E0B&color=fff', color: 'bg-yellow-500' },
+    { id: '4', name: 'Julia Sawczenko', avatar: 'https://ui-avatars.com/api/?name=Julia+Sawczenko&background=EC4899&color=fff', color: 'bg-pink-500' },
+    { id: '5', name: 'Wiktor Bondar', avatar: 'https://ui-avatars.com/api/?name=Wiktor+Bondar&background=3B82F6&color=fff', color: 'bg-blue-500' }
   ];
 
-  // Mock schedule data
+  // Dane harmonogramu (mock)
   const scheduleData = [
     {
       id: '1',
       instructorId: '1',
-      instructorName: 'Олег Коваль',
+      instructorName: 'Oleh Kowal',
       date: currentDate,
       startTime: '08:00',
       endTime: '10:00',
-      studentName: 'Іван Петренко',
-      lessonType: 'Практика',
+      studentName: 'Jan Petrenko',
+      lessonType: 'Praktyka',
       vehicleId: 'Toyota Corolla AA 1234 BB',
-      location: 'Центр',
+      location: 'Warszawa',
       status: 'confirmed'
     },
     {
       id: '2',
       instructorId: '1',
-      instructorName: 'Олег Коваль',
+      instructorName: 'Oleh Kowal',
       date: currentDate,
       startTime: '10:00',
       endTime: '12:00',
-      studentName: 'Марія Коваленко',
-      lessonType: 'Автодром',
+      studentName: 'Maria Kowalenko',
+      lessonType: 'Tor',
       vehicleId: 'Toyota Corolla AA 1234 BB',
-      location: 'Автодром Північний',
+      location: 'Tor Kraków',
       status: 'confirmed'
     },
     {
       id: '3',
       instructorId: '2',
-      instructorName: 'Анна Лисенко',
+      instructorName: 'Anna Lisenko',
       date: currentDate,
       startTime: '09:00',
       endTime: '11:00',
-      studentName: 'Андрій Шевченко',
-      lessonType: 'Місто',
+      studentName: 'Andrzej Szewczenko',
+      lessonType: 'Miasto',
       vehicleId: 'VW Golf AA 5678 CC',
-      location: 'Центр',
+      location: 'Warszawa',
       status: 'confirmed'
     },
     {
       id: '4',
       instructorId: '2',
-      instructorName: 'Анна Лисенко',
+      instructorName: 'Anna Lisenko',
       date: currentDate,
       startTime: '14:00',
       endTime: '16:00',
-      studentName: 'Оксана Мельник',
-      lessonType: 'Паркування',
+      studentName: 'Oksana Melnyk',
+      lessonType: 'Parkowanie',
       vehicleId: 'VW Golf AA 5678 CC',
-      location: 'Центр',
+      location: 'Warszawa',
       status: 'pending'
     },
     {
       id: '5',
       instructorId: '3',
-      instructorName: 'Михайло Ткаченко',
+      instructorName: 'Michał Tkaczenko',
       date: currentDate,
       startTime: '08:00',
       endTime: '10:00',
-      studentName: 'Петро Сидоренко',
-      lessonType: 'Екзамен',
+      studentName: 'Piotr Sydorenko',
+      lessonType: 'Egzamin',
       vehicleId: 'Škoda Fabia AA 9012 DD',
-      location: 'Сервісний центр МВС',
+      location: 'Ośrodek egzaminacyjny',
       status: 'confirmed'
     },
     {
       id: '6',
       instructorId: '3',
-      instructorName: 'Михайло Ткаченко',
+      instructorName: 'Michał Tkaczenko',
       date: addDays(currentDate, 1),
       startTime: '12:00',
       endTime: '14:00',
-      studentName: 'Наталія Козак',
-      lessonType: 'Практика',
+      studentName: 'Natalia Kozak',
+      lessonType: 'Praktyka',
       vehicleId: 'Škoda Fabia AA 9012 DD',
-      location: 'Центр',
+      location: 'Warszawa',
       status: 'confirmed'
     },
     {
       id: '7',
       instructorId: '4',
-      instructorName: 'Юлія Савченко',
+      instructorName: 'Julia Sawczenko',
       date: currentDate,
       startTime: '10:00',
       endTime: '12:00',
-      studentName: 'Богдан Кравчук',
-      lessonType: 'Нічна їзда',
+      studentName: 'Bogdan Krawczuk',
+      lessonType: 'Jazda nocna',
       vehicleId: 'Renault Megane AA 3456 EE',
-      location: 'Центр',
+      location: 'Warszawa',
       status: 'cancelled'
     },
     {
       id: '8',
       instructorId: '5',
-      instructorName: 'Віктор Бондар',
+      instructorName: 'Wiktor Bondar',
       date: addDays(currentDate, 2),
       startTime: '16:00',
       endTime: '18:00',
-      studentName: 'Тетяна Морозова',
-      lessonType: 'Автострада',
+      studentName: 'Tatiana Morozowa',
+      lessonType: 'Autostrada',
       vehicleId: 'Honda Civic AA 7890 FF',
-      location: 'Збір: Центр',
+      location: 'Zbiórka: Warszawa',
       status: 'confirmed'
     }
   ];
 
-  // Generate time slots for the schedule grid
-  const timeSlots = [];
+  // Generowanie przedziałów czasowych do siatki harmonogramu
+  const timeSlots: string[] = [];
   for (let hour = 8; hour <= 20; hour++) {
     timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
   }
 
-  // Generate week days
+  // Generowanie dni tygodnia
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
   const weekDays: Date[] = [];
   for (let i = 0; i < 7; i++) {
     weekDays.push(addDays(weekStart, i));
   }
 
-  // Filter schedule data
+  // Filtrowanie danych harmonogramu
   const filteredSchedule = scheduleData.filter(lesson => {
     if (selectedInstructor !== 'all' && lesson.instructorId !== selectedInstructor) return false;
     if (selectedLocation !== 'all' && !lesson.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
@@ -157,7 +157,7 @@ export default function InstructorsSchedulePage() {
     return true;
   });
 
-  // Get lessons for specific instructor and time
+  // Pobieranie zajęć dla konkretnego instruktora, dnia i godziny
   const getLessonsForSlot = (instructorId: string, day: Date, time: string) => {
     return filteredSchedule.filter(lesson => {
       const lessonDate = format(lesson.date, 'yyyy-MM-dd');
@@ -186,9 +186,9 @@ export default function InstructorsSchedulePage() {
     }
   };
 
-  const locations = ['Центр', 'Автодром Північний', 'Автодром Південний', 'Сервісний центр МВС'];
+  const locations = ['Warszawa', 'Tor Kraków', 'Tor Gdańsk', 'Ośrodek egzaminacyjny'];
 
-  // Statistics
+  // Statystyki
   const stats = {
     totalLessons: filteredSchedule.length,
     confirmed: filteredSchedule.filter(l => l.status === 'confirmed').length,
@@ -203,11 +203,11 @@ export default function InstructorsSchedulePage() {
 
   return (
     <div className="max-w-full">
-      {/* Header */}
+      {/* Nagłówek */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Розклад інструкторів</h1>
-          <p className="text-gray-600 mt-1">Управління розкладом всіх інструкторів</p>
+          <h1 className="text-3xl font-bold text-gray-800">Harmonogram instruktorów</h1>
+          <p className="text-gray-600 mt-1">Zarządzanie harmonogramem wszystkich instruktorów</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
@@ -218,39 +218,39 @@ export default function InstructorsSchedulePage() {
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Додати заняття
+            Dodaj zajęcia
           </button>
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Statystyki */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Всього занять</p>
+          <p className="text-sm text-gray-600 mb-1">Łącznie zajęć</p>
           <p className="text-2xl font-bold text-gray-800">{stats.totalLessons}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Підтверджено</p>
+          <p className="text-sm text-gray-600 mb-1">Potwierdzone</p>
           <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Очікують</p>
+          <p className="text-sm text-gray-600 mb-1">Oczekujące</p>
           <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Скасовано</p>
+          <p className="text-sm text-gray-600 mb-1">Anulowane</p>
           <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Годин заплановано</p>
+          <p className="text-sm text-gray-600 mb-1">Zaplanowane godziny</p>
           <p className="text-2xl font-bold text-blue-600">{stats.totalHours}</p>
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Sterowanie */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          {/* Date Navigation */}
+          {/* Nawigacja po datach */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setCurrentDate(subWeeks(currentDate, 1))}
@@ -260,9 +260,9 @@ export default function InstructorsSchedulePage() {
             </button>
             <div className="text-center">
               <h3 className="font-semibold text-gray-800">
-                {format(weekStart, 'd MMMM', { locale: uk })} - {format(addDays(weekStart, 6), 'd MMMM yyyy', { locale: uk })}
+                {format(weekStart, 'd MMMM', { locale: pl })} - {format(addDays(weekStart, 6), 'd MMMM yyyy', { locale: pl })}
               </h3>
-              <p className="text-sm text-gray-600">Тиждень {format(currentDate, 'w', { locale: uk })}</p>
+              <p className="text-sm text-gray-600">Tydzień {format(currentDate, 'w', { locale: pl })}</p>
             </div>
             <button
               onClick={() => setCurrentDate(addWeeks(currentDate, 1))}
@@ -274,11 +274,11 @@ export default function InstructorsSchedulePage() {
               onClick={() => setCurrentDate(new Date())}
               className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-lg hover:bg-blue-200"
             >
-              Сьогодні
+              Dziś
             </button>
           </div>
 
-          {/* View Mode Toggle */}
+          {/* Przełącznik widoku */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode('week')}
@@ -289,7 +289,7 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <CalendarDays className="w-4 h-4 inline mr-1" />
-              Тиждень
+              Tydzień
             </button>
             <button
               onClick={() => setViewMode('day')}
@@ -300,7 +300,7 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <Calendar className="w-4 h-4 inline mr-1" />
-              День
+              Dzień
             </button>
             <button
               onClick={() => setViewMode('list')}
@@ -311,18 +311,18 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <List className="w-4 h-4 inline mr-1" />
-              Список
+              Lista
             </button>
           </div>
 
-          {/* Filters */}
+          {/* Filtry */}
           <div className="flex items-center gap-3">
             <select
               value={selectedInstructor}
               onChange={(e) => setSelectedInstructor(e.target.value)}
               className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі інструктори</option>
+              <option value="all">Wszyscy instruktorzy</option>
               {instructors.map(instructor => (
                 <option key={instructor.id} value={instructor.id}>{instructor.name}</option>
               ))}
@@ -332,7 +332,7 @@ export default function InstructorsSchedulePage() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі локації</option>
+              <option value="all">Wszystkie lokalizacje</option>
               {locations.map(location => (
                 <option key={location} value={location}>{location}</option>
               ))}
@@ -347,7 +347,7 @@ export default function InstructorsSchedulePage() {
         </div>
       </div>
 
-      {/* Schedule Views */}
+      {/* Widoki harmonogramu */}
       {viewMode === 'week' && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
@@ -355,12 +355,12 @@ export default function InstructorsSchedulePage() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="sticky left-0 bg-gray-50 p-3 text-left text-sm font-semibold text-gray-700 w-40">
-                    Інструктор
+                    Instruktor
                   </th>
                   {weekDays.map((day, index) => (
                     <th key={index} className="p-3 text-center text-sm font-semibold text-gray-700 border-l border-gray-200">
-                      <div>{format(day, 'EEEE', { locale: uk })}</div>
-                      <div className="text-xs text-gray-500">{format(day, 'd MMM', { locale: uk })}</div>
+                      <div>{format(day, 'EEEE', { locale: pl })}</div>
+                      <div className="text-xs text-gray-500">{format(day, 'd MMM', { locale: pl })}</div>
                     </th>
                   ))}
                 </tr>
@@ -407,7 +407,7 @@ export default function InstructorsSchedulePage() {
                             ))}
                             {dayLessons.length === 0 && (
                               <div className="text-center text-gray-400 text-xs py-8">
-                                Вільно
+                                Wolne
                               </div>
                             )}
                           </div>
@@ -429,7 +429,7 @@ export default function InstructorsSchedulePage() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="sticky left-0 bg-gray-50 p-3 text-left text-sm font-semibold text-gray-700 w-20">
-                    Час
+                    Godzina
                   </th>
                   {instructors.filter(i => selectedInstructor === 'all' || i.id === selectedInstructor).map((instructor) => (
                     <th key={instructor.id} className="p-3 text-center text-sm font-semibold text-gray-700 border-l border-gray-200">
@@ -491,14 +491,14 @@ export default function InstructorsSchedulePage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Час</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Інструктор</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Студент</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Тип заняття</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Транспорт</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Локація</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Статус</th>
-                  <th className="p-3 text-center text-sm font-semibold text-gray-700">Дії</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Godzina</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Instruktor</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Kursant</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Typ zajęć</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Pojazd</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Lokalizacja</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Status</th>
+                  <th className="p-3 text-center text-sm font-semibold text-gray-700">Akcje</th>
                 </tr>
               </thead>
               <tbody>
@@ -516,7 +516,7 @@ export default function InstructorsSchedulePage() {
                       <td className="p-3">
                         <div className="flex items-center gap-2">
                           <img
-                            src={instructors.find(i => i.id === lesson.instructorId)?.avatar}
+                            src={instructors.find(i => i.id === lesson.instructorId)?.avatar || ''}
                             alt={lesson.instructorName}
                             className="w-8 h-8 rounded-full"
                           />
@@ -535,18 +535,18 @@ export default function InstructorsSchedulePage() {
                             lesson.status === 'pending' ? 'text-yellow-600' :
                             'text-red-600'
                           }`}>
-                            {lesson.status === 'confirmed' ? 'Підтверджено' :
-                             lesson.status === 'pending' ? 'Очікує' :
-                             'Скасовано'}
+                            {lesson.status === 'confirmed' ? 'Potwierdzone' :
+                             lesson.status === 'pending' ? 'Oczekujące' :
+                             'Anulowane'}
                           </span>
                         </div>
                       </td>
                       <td className="p-3">
                         <div className="flex items-center justify-center gap-1">
-                          <button className="p-1 hover:bg-gray-100 rounded transition-colors">
+                          <button className="p-1 hover:bg-gray-100 rounded transition-colors" aria-label="Pokaż szczegóły">
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
-                          <button className="p-1 hover:bg-gray-100 rounded transition-colors">
+                          <button className="p-1 hover:bg-gray-100 rounded transition-colors" aria-label="Edytuj">
                             <Edit className="w-4 h-4 text-gray-600" />
                           </button>
                         </div>

@@ -2,39 +2,46 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import {
   MapPin, Plus, Search, Filter, Edit2, Trash2, Eye,
   Users, Car, Calendar, Clock, Phone, Mail, Globe,
   Navigation, Building, Home, AlertCircle, CheckCircle,
   TrendingUp, Activity, Star, ChevronRight, Loader2,
-  Map, Compass, Route, ParkingCircle, Train, Bus
+  Map, Compass, Route, ParkingCircle, Train, Bus,
+  GraduationCap, BookOpen, Grid, List, XCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
-// Generate mock locations data
+// Funkcja dla stabilnych wartości
+const getSeededValue = (index: number, max: number, seed: number = 1) => {
+  return ((index * seed + 7) % max);
+};
+
+// Generate mock locations data with Polish cities
 const generateLocations = () => {
   const locationNames = [
-    { name: 'Київ - Центр', address: 'вул. Хрещатик, 1', type: 'main' },
-    { name: 'Київ - Подільський', address: 'вул. Контрактова площа, 10', type: 'branch' },
-    { name: 'Київ - Оболонський', address: 'пр-т Героїв Сталінграда, 24', type: 'branch' },
-    { name: 'Київ - Дарницький', address: 'вул. Урлівська, 11', type: 'branch' },
-    { name: 'Київ - Позняки', address: 'вул. Драгоманова, 17', type: 'branch' },
-    { name: 'Київ - Святошинський', address: 'вул. Академіка Корольова, 5', type: 'branch' },
-    { name: 'Львів - Центр', address: 'пл. Ринок, 1', type: 'main' },
-    { name: 'Львів - Сихівський', address: 'вул. Хуторівка, 35', type: 'branch' },
-    { name: 'Одеса - Приморський', address: 'вул. Дерибасівська, 20', type: 'main' },
-    { name: 'Харків - Центр', address: 'пл. Свободи, 5', type: 'main' },
-    { name: 'Дніпро - Центральний', address: 'пр-т Дмитра Яворницького, 45', type: 'main' },
-    { name: 'Запоріжжя - Центр', address: 'пр-т Соборний, 135', type: 'branch' },
-    { name: 'Вінниця - Центральний', address: 'вул. Соборна, 87', type: 'branch' },
-    { name: 'Полтава - Київський', address: 'вул. Європейська, 28', type: 'branch' },
-    { name: 'Чернігів - Деснянський', address: 'пр-т Миру, 53', type: 'branch' }
+    { name: 'Warszawa - Centrum', address: 'ul. Marszałkowska 1', type: 'main' },
+    { name: 'Warszawa - Mokotów', address: 'ul. Puławska 10', type: 'branch' },
+    { name: 'Warszawa - Praga', address: 'ul. Targowa 24', type: 'branch' },
+    { name: 'Warszawa - Wola', address: 'ul. Wolska 11', type: 'branch' },
+    { name: 'Warszawa - Ursynów', address: 'ul. KEN 17', type: 'branch' },
+    { name: 'Warszawa - Bemowo', address: 'ul. Powstańców Śląskich 5', type: 'branch' },
+    { name: 'Kraków - Centrum', address: 'Rynek Główny 1', type: 'main' },
+    { name: 'Kraków - Nowa Huta', address: 'os. Centrum A 35', type: 'branch' },
+    { name: 'Wrocław - Stare Miasto', address: 'ul. Świdnicka 20', type: 'main' },
+    { name: 'Poznań - Centrum', address: 'ul. Święty Marcin 5', type: 'main' },
+    { name: 'Gdańsk - Główne Miasto', address: 'ul. Długa 45', type: 'main' },
+    { name: 'Łódź - Śródmieście', address: 'ul. Piotrkowska 135', type: 'branch' },
+    { name: 'Katowice - Centrum', address: 'ul. 3 Maja 87', type: 'branch' },
+    { name: 'Szczecin - Centrum', address: 'al. Wyzwolenia 28', type: 'branch' },
+    { name: 'Lublin - Stare Miasto', address: 'ul. Krakowskie Przedmieście 53', type: 'branch' }
   ];
 
   const managers = [
-    'Олександр Петренко', 'Марія Коваленко', 'Іван Шевченко', 
-    'Юлія Ткаченко', 'Петро Мельник', 'Оксана Бойко'
+    'Aleksander Kowalski', 'Maria Nowak', 'Jan Wiśniewski', 
+    'Julia Wójcik', 'Piotr Kamiński', 'Katarzyna Lewandowska'
   ];
 
   return locationNames.map((location, index) => ({
@@ -45,57 +52,61 @@ const generateLocations = () => {
     city: location.name.split(' - ')[0],
     district: location.name.split(' - ')[1],
     coordinates: {
-      lat: 50.4501 + (Math.random() - 0.5) * 2,
-      lng: 30.5234 + (Math.random() - 0.5) * 2
+      lat: 52.2297 + (getSeededValue(index, 20) - 10) * 0.1,
+      lng: 21.0122 + (getSeededValue(index, 20) - 10) * 0.1
     },
-    phone: `+380 44 ${Math.floor(Math.random() * 900) + 100} ${Math.floor(Math.random() * 90) + 10} ${Math.floor(Math.random() * 90) + 10}`,
-    email: `${location.name.split(' - ')[0].toLowerCase()}.${location.name.split(' - ')[1].toLowerCase()}@drive-school.com`.replace(/і/g, 'i').replace(/ї/g, 'i'),
-    manager: managers[Math.floor(Math.random() * managers.length)],
+    phone: `+48 22 ${100 + getSeededValue(index, 900)} ${10 + getSeededValue(index, 90, 3)} ${10 + getSeededValue(index, 90, 5)}`,
+    email: `${location.name.split(' - ')[0].toLowerCase()}.${location.name.split(' - ')[1].toLowerCase().replace(/ó/g, 'o').replace(/ł/g, 'l').replace(/ą/g, 'a').replace(/ę/g, 'e').replace(/ś/g, 's').replace(/ń/g, 'n').replace(/ /g, '')}@drive-school.pl`,
+    manager: managers[index % managers.length],
     
     // Capacity and resources
-    capacity: Math.floor(Math.random() * 30) + 10,
-    parkingSpaces: Math.floor(Math.random() * 20) + 5,
-    classrooms: Math.floor(Math.random() * 5) + 1,
-    simulators: Math.floor(Math.random() * 3) + 1,
+    capacity: 10 + getSeededValue(index, 30),
+    parkingSpaces: 5 + getSeededValue(index, 20),
+    classrooms: 1 + getSeededValue(index, 5),
+    simulators: 1 + getSeededValue(index, 3),
     
     // Statistics
-    activeStudents: Math.floor(Math.random() * 200) + 50,
-    activeInstructors: Math.floor(Math.random() * 15) + 3,
-    vehicles: Math.floor(Math.random() * 10) + 2,
-    monthlyLessons: Math.floor(Math.random() * 500) + 100,
+    activeStudents: 50 + getSeededValue(index, 200, 11),
+    activeInstructors: 3 + getSeededValue(index, 15),
+    vehicles: 2 + getSeededValue(index, 10),
+    monthlyLessons: 100 + getSeededValue(index, 500, 7),
     
     // Performance
-    rating: (4 + Math.random()).toFixed(1),
-    utilization: Math.floor(Math.random() * 30) + 70,
-    revenue: Math.floor(Math.random() * 200000) + 50000,
+    rating: (4.0 + (index % 10) / 10).toFixed(1),
+    utilization: 70 + getSeededValue(index, 30),
+    revenue: 50000 + getSeededValue(index, 200000, 123),
     
     // Schedule
     workingHours: {
       weekdays: '08:00 - 20:00',
       saturday: '09:00 - 18:00',
-      sunday: 'Вихідний'
+      sunday: 'Zamknięte'
     },
     
     // Status
-    status: ['active', 'maintenance', 'inactive'][index < 12 ? 0 : Math.floor(Math.random() * 3)],
-    openedDate: new Date(2020 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), 1),
+    status: index < 12 ? 'active' : ['active', 'maintenance', 'inactive'][index % 3],
+    openedDate: new Date(2020 + (index % 4), index % 12, 1),
     
     // Amenities
     amenities: [
       'parking', 'wifi', 'cafe', 'simulator', 'theory_room', 
       'practice_area', 'waiting_area', 'disabled_access'
-    ].filter(() => Math.random() > 0.3),
+    ].filter((_, i) => getSeededValue(index + i, 10) > 3),
     
     // Transport
     publicTransport: {
-      metro: Math.random() > 0.5 ? `Станція ${['Хрещатик', 'Майдан Незалежності', 'Золоті ворота', 'Контрактова площа', 'Позняки'][Math.floor(Math.random() * 5)]}` : null,
-      bus: `Маршрути: ${Math.floor(Math.random() * 50) + 1}, ${Math.floor(Math.random() * 50) + 50}`,
-      tram: Math.random() > 0.7 ? `Трамвай №${Math.floor(Math.random() * 20) + 1}` : null
+      metro: index < 6 ? `Stacja M${index % 2 + 1} ${['Centrum', 'Politechnika', 'Wilanowska', 'Kabaty', 'Młociny'][index % 5]}` : null,
+      bus: `Linie: ${100 + getSeededValue(index, 50)}, ${150 + getSeededValue(index, 50, 3)}`,
+      tram: getSeededValue(index, 10) > 7 ? `Tramwaj ${1 + getSeededValue(index, 20)}` : null
     }
   }));
 };
 
 export default function AdminLocationsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || 'pl';
+  
   const [locations] = useState(generateLocations());
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -133,17 +144,17 @@ export default function AdminLocationsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      active: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Активна' },
-      maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: AlertCircle, label: 'На обслуговуванні' },
-      inactive: { bg: 'bg-gray-100', text: 'text-gray-700', icon: Clock, label: 'Неактивна' }
+      active: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Aktywna' },
+      maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: AlertCircle, label: 'W konserwacji' },
+      inactive: { bg: 'bg-gray-100', text: 'text-gray-700', icon: Clock, label: 'Nieaktywna' }
     };
     return badges[status as keyof typeof badges] || badges.inactive;
   };
 
   const getTypeBadge = (type: string) => {
     const badges = {
-      main: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Building, label: 'Головний офіс' },
-      branch: { bg: 'bg-purple-100', text: 'text-purple-700', icon: Home, label: 'Філія' }
+      main: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Building, label: 'Główne biuro' },
+      branch: { bg: 'bg-purple-100', text: 'text-purple-700', icon: Home, label: 'Filia' }
     };
     return badges[type as keyof typeof badges] || badges.branch;
   };
@@ -160,6 +171,18 @@ export default function AdminLocationsPage() {
       disabled_access: Users
     };
     return icons[amenity] || MapPin;
+  };
+
+  const handleViewLocation = (locationId: string) => {
+    router.push(`/${locale}/admin/locations/${locationId}`);
+  };
+
+  const handleEditLocation = (locationId: string) => {
+    router.push(`/${locale}/admin/locations/${locationId}/`);
+  };
+
+  const handleAddLocation = () => {
+    router.push(`/${locale}/admin/locations/new`);
   };
 
   const LocationCard = ({ location }: { location: any }) => {
@@ -194,39 +217,39 @@ export default function AdminLocationsPage() {
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Студенти</span>
+              <span className="text-xs text-gray-500">Kursanci</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.activeStudents}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <GraduationCap className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Інструктори</span>
+              <span className="text-xs text-gray-500">Instruktorzy</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.activeInstructors}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Car className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Автомобілі</span>
+              <span className="text-xs text-gray-500">Pojazdy</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.vehicles}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Завантаженість</span>
+              <span className="text-xs text-gray-500">Wykorzystanie</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.utilization}%</p>
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-600 mb-2">Менеджер: <span className="font-medium">{location.manager}</span></p>
+          <p className="text-sm text-gray-600 mb-2">Menedżer: <span className="font-medium">{location.manager}</span></p>
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
             <span className="font-medium text-gray-800">{location.rating}</span>
-            <span className="text-sm text-gray-500">• {location.monthlyLessons} занять/місяць</span>
+            <span className="text-sm text-gray-500">• {location.monthlyLessons} zajęć/miesiąc</span>
           </div>
         </div>
 
@@ -249,13 +272,16 @@ export default function AdminLocationsPage() {
 
         <div className="flex gap-2">
           <button
-            onClick={() => setSelectedLocation(location)}
+            onClick={() => handleViewLocation(location.id)}
             className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 text-sm font-medium"
           >
-            Деталі
+            Szczegóły
           </button>
-          <button className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium">
-            Редагувати
+          <button
+            onClick={() => handleEditLocation(location.id)}
+            className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium"
+          >
+            Edytuj
           </button>
         </div>
       </div>
@@ -267,12 +293,15 @@ export default function AdminLocationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Локації</h1>
-          <p className="text-gray-600 mt-1">Управління філіями та офісами</p>
+          <h1 className="text-3xl font-bold text-gray-800">Lokalizacje</h1>
+          <p className="text-gray-600 mt-1">Zarządzanie filiami i biurami</p>
         </div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+        <button 
+          onClick={handleAddLocation}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+        >
           <Plus className="w-4 h-4" />
-          Додати локацію
+          Dodaj lokalizację
         </button>
       </div>
 
@@ -285,7 +314,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Локацій</p>
+              <p className="text-xs text-gray-500">Lokalizacji</p>
             </div>
           </div>
         </div>
@@ -296,7 +325,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Активних</p>
+              <p className="text-xs text-gray-500">Aktywnych</p>
             </div>
           </div>
         </div>
@@ -307,7 +336,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalStudents}</p>
-              <p className="text-xs text-gray-500">Студентів</p>
+              <p className="text-xs text-gray-500">Kursantów</p>
             </div>
           </div>
         </div>
@@ -318,7 +347,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalInstructors}</p>
-              <p className="text-xs text-gray-500">Інструкторів</p>
+              <p className="text-xs text-gray-500">Instruktorów</p>
             </div>
           </div>
         </div>
@@ -329,7 +358,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalVehicles}</p>
-              <p className="text-xs text-gray-500">Автомобілів</p>
+              <p className="text-xs text-gray-500">Pojazdów</p>
             </div>
           </div>
         </div>
@@ -340,7 +369,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgUtilization}%</p>
-              <p className="text-xs text-gray-500">Завантаженість</p>
+              <p className="text-xs text-gray-500">Wykorzystanie</p>
             </div>
           </div>
         </div>
@@ -354,7 +383,7 @@ export default function AdminLocationsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за назвою, адресою або менеджером..."
+                placeholder="Szukaj po nazwie, adresie lub menedżerze..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -366,7 +395,7 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterCity(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі міста</option>
+              <option value="all">Wszystkie miasta</option>
               {cities.map(city => (
                 <option key={city} value={city}>{city}</option>
               ))}
@@ -377,9 +406,9 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterType(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі типи</option>
-              <option value="main">Головні офіси</option>
-              <option value="branch">Філії</option>
+              <option value="all">Wszystkie typy</option>
+              <option value="main">Główne biura</option>
+              <option value="branch">Filie</option>
             </select>
             
             <select
@@ -387,10 +416,10 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="active">Активні</option>
-              <option value="maintenance">На обслуговуванні</option>
-              <option value="inactive">Неактивні</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="active">Aktywne</option>
+              <option value="maintenance">W konserwacji</option>
+              <option value="inactive">Nieaktywne</option>
             </select>
           </div>
 
@@ -434,14 +463,14 @@ export default function AdminLocationsPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Локація</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Тип</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Менеджер</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Студенти</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Інструктори</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Завантаженість</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lokalizacja</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Typ</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Menedżer</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kursanci</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Instruktorzy</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Wykorzystanie</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -487,12 +516,15 @@ export default function AdminLocationsPage() {
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={() => setSelectedLocation(location)}
+                            onClick={() => handleViewLocation(location.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg"
                           >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
-                          <button className="p-1 hover:bg-gray-100 rounded-lg">
+                          <button
+                            onClick={() => handleEditLocation(location.id)}
+                            className="p-1 hover:bg-gray-100 rounded-lg"
+                          >
                             <Edit2 className="w-4 h-4 text-gray-600" />
                           </button>
                         </div>
@@ -509,154 +541,7 @@ export default function AdminLocationsPage() {
           <div className="flex items-center justify-center h-96 bg-gray-50 rounded-lg">
             <div className="text-center">
               <Map className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-500">Інтерактивна карта буде доступна найближчим часом</p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Location Details Modal */}
-      {selectedLocation && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800">{selectedLocation.name}</h2>
-                <p className="text-gray-500">{selectedLocation.address}</p>
-              </div>
-              <button
-                onClick={() => setSelectedLocation(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <XCircle className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Contact Information */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Контактна інформація</h3>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{selectedLocation.phone}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">{selectedLocation.email}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Users className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm">Менеджер: {selectedLocation.manager}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Working Hours */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Графік роботи</h3>
-                <div className="space-y-1 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Пн-Пт:</span>
-                    <span>{selectedLocation.workingHours.weekdays}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Сб:</span>
-                    <span>{selectedLocation.workingHours.saturday}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Нд:</span>
-                    <span>{selectedLocation.workingHours.sunday}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Resources */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Ресурси</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-sm text-gray-500">Місткість</p>
-                    <p className="text-lg font-semibold">{selectedLocation.capacity} осіб</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Паркомісця</p>
-                    <p className="text-lg font-semibold">{selectedLocation.parkingSpaces}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Класи</p>
-                    <p className="text-lg font-semibold">{selectedLocation.classrooms}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Симулятори</p>
-                    <p className="text-lg font-semibold">{selectedLocation.simulators}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Statistics */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Статистика</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <p className="text-sm text-gray-500">Студенти</p>
-                    <p className="text-lg font-semibold">{selectedLocation.activeStudents}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Інструктори</p>
-                    <p className="text-lg font-semibold">{selectedLocation.activeInstructors}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Автомобілі</p>
-                    <p className="text-lg font-semibold">{selectedLocation.vehicles}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Рейтинг</p>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="text-lg font-semibold">{selectedLocation.rating}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Transport */}
-            <div className="mt-6 bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-800 mb-3">Громадський транспорт</h3>
-              <div className="flex flex-wrap gap-3">
-                {selectedLocation.publicTransport.metro && (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
-                    <Train className="w-4 h-4" />
-                    {selectedLocation.publicTransport.metro}
-                  </div>
-                )}
-                <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  <Bus className="w-4 h-4" />
-                  {selectedLocation.publicTransport.bus}
-                </div>
-                {selectedLocation.publicTransport.tram && (
-                  <div className="flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">
-                    <Train className="w-4 h-4" />
-                    {selectedLocation.publicTransport.tram}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Редагувати
-              </button>
-              <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                Статистика
-              </button>
-              <button
-                onClick={() => setSelectedLocation(null)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Закрити
-              </button>
+              <p className="text-gray-500">Interaktywna mapa będzie dostępna wkrótce</p>
             </div>
           </div>
         </div>
@@ -664,6 +549,3 @@ export default function AdminLocationsPage() {
     </div>
   );
 }
-
-// Missing imports
-import { GraduationCap, BookOpen, Grid, List, XCircle } from 'lucide-react';

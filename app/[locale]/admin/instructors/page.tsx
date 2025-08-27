@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import {
   Grid, List, Star, Calendar, Eye, Phone, Mail, MapPin,
   Clock, Users, Car, Award, TrendingUp, AlertCircle,
@@ -10,50 +11,73 @@ import {
   GraduationCap, Activity, Loader2, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 
-// Generate mock instructors data
+// Funkcja dla stabilnych wartości
+const getSeededValue = (index: number, max: number, seed: number = 1) => {
+  return ((index * seed + 7) % max);
+};
+
+// Generate mock instructors data with stable values
 const generateInstructors = () => {
   const names = [
-    'Петро Сидоренко', 'Анна Коваленко', 'Іван Мельник', 'Оксана Шевченко',
-    'Василь Бондаренко', 'Марія Ткаченко', 'Олександр Кравчук', 'Юлія Павленко',
-    'Михайло Левченко', 'Тетяна Захарченко', 'Андрій Романенко', 'Наталія Литвиненко',
-    'Сергій Гончаренко', 'Людмила Дорошенко', 'Володимир Яковенко', 'Ірина Савченко',
-    'Богдан Кузьменко', 'Олена Білоус', 'Роман Харченко', 'Галина Мороз'
+    'Piotr Kowalski', 'Anna Nowak', 'Jan Wiśniewski', 'Katarzyna Wójcik',
+    'Tomasz Kamiński', 'Maria Lewandowska', 'Aleksander Zieliński', 'Julia Szymańska',
+    'Michał Woźniak', 'Magdalena Dąbrowska', 'Andrzej Kozłowski', 'Natalia Jankowska',
+    'Szymon Kwiatkowski', 'Barbara Krawczyk', 'Władysław Piotrowski', 'Irena Grabowska',
+    'Bogdan Pawłowski', 'Elżbieta Michalska', 'Roman Nowicki', 'Halina Adamczyk'
   ];
 
   const specializations = [
-    'Егзамени', 'Jazda nocna', 'Autostrady', 'Parkowanie', 
+    'Egzaminy', 'Jazda nocna', 'Autostrady', 'Parkowanie', 
     'Manewry', 'Miasto', 'Początkujący', 'Teoria'
   ];
 
   const categories = ['B', 'B+E', 'C', 'C+E', 'D'];
+  const cities = ['Warszawa', 'Kraków', 'Wrocław'];
 
-  return names.map((name, index) => ({
-    id: `instructor-${index + 1}`,
-    name,
-    email: `${name.split(' ')[1].toLowerCase()}.${name.split(' ')[0].toLowerCase()}@drive-school.com`,
-    phone: `+380${Math.floor(Math.random() * 900000000 + 100000000)}`,
-    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=10B981&color=fff`,
-    rating: (4 + Math.random()).toFixed(1),
-    reviews: Math.floor(Math.random() * 200) + 20,
-    experience: `${Math.floor(Math.random() * 10) + 1} років`,
-    specializations: specializations.sort(() => 0.5 - Math.random()).slice(0, 3),
-    categories: categories.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1),
-    completedLessons: Math.floor(Math.random() * 2000) + 500,
-    successRate: Math.floor(Math.random() * 20) + 80,
-    students: Math.floor(Math.random() * 50) + 10,
-    lessonsPerWeek: Math.floor(Math.random() * 30) + 10,
-    nextAvailable: addDays(new Date(), Math.floor(Math.random() * 7)),
-    status: ['available', 'busy', 'offline'][Math.floor(Math.random() * 3)],
-    earnings: Math.floor(Math.random() * 30000) + 20000,
-    location: ['Київ', 'Львів', 'Одеса'][Math.floor(Math.random() * 3)],
-    joinedDate: new Date(2020 + Math.floor(Math.random() * 4), Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1),
-    vehicle: `Toyota Yaris WZ ${Math.floor(Math.random() * 90000) + 10000}`
-  }));
+  return names.map((name, index) => {
+    const specializationIndices = [
+      getSeededValue(index, specializations.length, 2),
+      getSeededValue(index, specializations.length, 3),
+      getSeededValue(index, specializations.length, 5)
+    ].filter((v, i, arr) => arr.indexOf(v) === i); // unique values
+    
+    const categoryIndices = [
+      getSeededValue(index, categories.length, 2),
+      getSeededValue(index, categories.length, 7)
+    ].filter((v, i, arr) => arr.indexOf(v) === i);
+
+    return {
+      id: `instructor-${index + 1}`,
+      name,
+      email: `${name.split(' ')[1].toLowerCase()}.${name.split(' ')[0].toLowerCase()}@drive-school.com`,
+      phone: `+48${500000000 + (index * 12345)}`,
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=10B981&color=fff`,
+      rating: (4.0 + (index % 10) / 10).toFixed(1),
+      reviews: 20 + (index * 7) % 180,
+      experience: `${(index % 10) + 1} lat`,
+      specializations: specializationIndices.map(i => specializations[i]),
+      categories: categoryIndices.map(i => categories[i]),
+      completedLessons: 500 + (index * 83) % 1500,
+      successRate: 80 + (index % 20),
+      students: 10 + (index * 3) % 40,
+      lessonsPerWeek: 10 + (index * 2) % 20,
+      nextAvailable: addDays(new Date(), index % 7),
+      status: ['available', 'busy', 'offline'][index % 3],
+      earnings: 20000 + (index * 1234) % 30000,
+      location: cities[index % 3],
+      joinedDate: new Date(2020 + (index % 4), index % 12, (index % 28) + 1),
+      vehicle: `Toyota Yaris WZ ${10000 + (index * 1111) % 90000}`
+    };
+  });
 };
 
 export default function AdminInstructorsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || 'pl';
+  
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [instructors] = useState(generateInstructors());
   const [searchQuery, setSearchQuery] = useState('');
@@ -70,11 +94,28 @@ export default function AdminInstructorsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      available: { bg: 'bg-green-100', text: 'text-green-700', label: 'Доступний' },
-      busy: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Зайнятий' },
-      offline: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Офлайн' }
+      available: { bg: 'bg-green-100', text: 'text-green-700', label: 'Dostępny' },
+      busy: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Zajęty' },
+      offline: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Offline' }
     };
     return badges[status as keyof typeof badges] || badges.offline;
+  };
+
+  // Navigation functions
+  const handleViewInstructor = (instructorId: string) => {
+    router.push(`/${locale}/admin/instructors/${instructorId}`);
+  };
+
+  const handleViewSchedule = (instructorId: string) => {
+    router.push(`/${locale}/admin/instructors/schedule?instructorId=${instructorId}`);
+  };
+
+  const handleEditInstructor = (instructorId: string) => {
+    router.push(`/${locale}/admin/instructors/${instructorId}/edit`);
+  };
+
+  const handleAddInstructor = () => {
+    router.push(`/${locale}/admin/instructors/new`);
   };
 
   const InstructorCard = ({ instructor }: { instructor: any }) => {
@@ -105,7 +146,7 @@ export default function AdminInstructorsPage() {
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-sm text-gray-500">Рейтинг</p>
+            <p className="text-sm text-gray-500">Ocena</p>
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
               <span className="font-semibold">{instructor.rating}</span>
@@ -113,21 +154,21 @@ export default function AdminInstructorsPage() {
             </div>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Студентів</p>
+            <p className="text-sm text-gray-500">Kursanci</p>
             <p className="font-semibold">{instructor.students}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Занять/тиждень</p>
+            <p className="text-sm text-gray-500">Zajęć/tydzień</p>
             <p className="font-semibold">{instructor.lessonsPerWeek}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Успішність</p>
+            <p className="text-sm text-gray-500">Zdawalność</p>
             <p className="font-semibold text-green-600">{instructor.successRate}%</p>
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-2">Спеціалізації:</p>
+          <p className="text-sm text-gray-500 mb-2">Specjalizacje:</p>
           <div className="flex flex-wrap gap-1">
             {instructor.specializations.map((spec: string, idx: number) => (
               <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
@@ -150,18 +191,18 @@ export default function AdminInstructorsPage() {
         
         <div className="flex gap-2">
           <button
-            onClick={() => console.log('View instructor', instructor.id)}
+            onClick={() => handleViewInstructor(instructor.id)}
             className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
           >
             <Eye className="w-4 h-4" />
-            Переглянути
+            Podgląd
           </button>
           <button
-            onClick={() => console.log('View schedule', instructor.id)}
+            onClick={() => handleViewSchedule(instructor.id)}
             className="flex-1 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors flex items-center justify-center gap-2"
           >
             <Calendar className="w-4 h-4" />
-            Розклад
+            Harmonogram
           </button>
         </div>
       </div>
@@ -219,25 +260,28 @@ export default function AdminInstructorsPage() {
           <span className="text-sm font-medium text-green-600">{instructor.successRate}%</span>
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">
-          ₴{instructor.earnings.toLocaleString()}
+          {instructor.earnings.toLocaleString()} zł
         </td>
         <td className="px-4 py-4">
           <div className="flex items-center gap-1">
             <button
-              onClick={() => console.log('View instructor', instructor.id)}
+              onClick={() => handleViewInstructor(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
+              title="Podgląd"
             >
               <Eye className="w-4 h-4 text-gray-600" />
             </button>
             <button
-              onClick={() => console.log('Edit instructor', instructor.id)}
+              onClick={() => handleEditInstructor(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
+              title="Edytuj"
             >
               <Edit2 className="w-4 h-4 text-gray-600" />
             </button>
             <button
-              onClick={() => console.log('View schedule', instructor.id)}
+              onClick={() => handleViewSchedule(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
+              title="Harmonogram"
             >
               <Calendar className="w-4 h-4 text-gray-600" />
             </button>
@@ -251,8 +295,8 @@ export default function AdminInstructorsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Інструктори</h1>
-        <p className="text-gray-600 mt-1">Управління інструкторами автошколи</p>
+        <h1 className="text-3xl font-bold text-gray-800">Instruktorzy</h1>
+        <p className="text-gray-600 mt-1">Zarządzanie instruktorami szkoły jazdy</p>
       </div>
 
       {/* Stats */}
@@ -264,7 +308,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{instructors.length}</p>
-              <p className="text-xs text-gray-500">Всього інструкторів</p>
+              <p className="text-xs text-gray-500">Łącznie instruktorów</p>
             </div>
           </div>
         </div>
@@ -277,7 +321,7 @@ export default function AdminInstructorsPage() {
               <p className="text-2xl font-bold text-gray-800">
                 {instructors.filter(i => i.status === 'available').length}
               </p>
-              <p className="text-xs text-gray-500">Доступно зараз</p>
+              <p className="text-xs text-gray-500">Dostępnych teraz</p>
             </div>
           </div>
         </div>
@@ -288,7 +332,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">4.8</p>
-              <p className="text-xs text-gray-500">Середній рейтинг</p>
+              <p className="text-xs text-gray-500">Średnia ocena</p>
             </div>
           </div>
         </div>
@@ -299,7 +343,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">89%</p>
-              <p className="text-xs text-gray-500">Середня успішність</p>
+              <p className="text-xs text-gray-500">Średnia zdawalność</p>
             </div>
           </div>
         </div>
@@ -313,7 +357,7 @@ export default function AdminInstructorsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за іменем..."
+                placeholder="Szukaj po nazwisku..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -325,10 +369,10 @@ export default function AdminInstructorsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="available">Доступні</option>
-              <option value="busy">Зайняті</option>
-              <option value="offline">Офлайн</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="available">Dostępni</option>
+              <option value="busy">Zajęci</option>
+              <option value="offline">Offline</option>
             </select>
             
             <select
@@ -336,10 +380,10 @@ export default function AdminInstructorsPage() {
               onChange={(e) => setFilterLocation(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі локації</option>
-              <option value="Київ">Київ</option>
-              <option value="Львів">Львів</option>
-              <option value="Одеса">Одеса</option>
+              <option value="all">Wszystkie lokalizacje</option>
+              <option value="Warszawa">Warszawa</option>
+              <option value="Kraków">Kraków</option>
+              <option value="Wrocław">Wrocław</option>
             </select>
           </div>
           
@@ -359,9 +403,12 @@ export default function AdminInstructorsPage() {
               </button>
             </div>
             
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+            <button 
+              onClick={handleAddInstructor}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            >
               <Plus className="w-4 h-4" />
-              Додати інструктора
+              Dodaj instruktora
             </button>
           </div>
         </div>
@@ -385,31 +432,31 @@ export default function AdminInstructorsPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Інструктор
+                    Instruktor
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Статус
+                    Status
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Рейтинг
+                    Ocena
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Категорії
+                    Kategorie
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Студентів
+                    Kursanci
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Занять/тиждень
+                    Zajęć/tydzień
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Успішність
+                    Zdawalność
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Заробіток
+                    Zarobki
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Дії
+                    Akcje
                   </th>
                 </tr>
               </thead>

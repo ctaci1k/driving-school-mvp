@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import {
   CreditCard, CheckCircle, XCircle, Clock, RotateCcw, Download,
   Filter, Search, Calendar, TrendingUp, TrendingDown, DollarSign,
@@ -10,55 +11,66 @@ import {
   Package, Coins, Wallet, PieChart, BarChart3, Activity
 } from 'lucide-react';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 import {
   LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Area, AreaChart
 } from 'recharts';
 
-// Generate mock transactions
+// Helper function to format numbers consistently
+const formatCurrency = (amount: number) => {
+  return `${Math.abs(amount)} zł`;
+};
+
+const formatNumber = (num: number) => {
+  return num.toString();
+};
+
+// Generate mock transactions with Polish data
 const generateTransactions = () => {
   const users = [
-    'Іван Петренко', 'Марія Коваленко', 'Олександр Шевченко', 'Юлія Ткаченко',
-    'Петро Мельник', 'Оксана Бойко', 'Андрій Кравчук', 'Наталія Савченко',
-    'Михайло Гончаренко', 'Тетяна Павленко', 'Василь Романенко', 'Світлана Яковенко'
+    'Jan Kowalski', 'Maria Nowak', 'Aleksander Wiśniewski', 'Julia Wójcik',
+    'Piotr Kamiński', 'Katarzyna Lewandowska', 'Andrzej Zieliński', 'Natalia Szymańska',
+    'Michał Woźniak', 'Magdalena Dąbrowska', 'Tomasz Kozłowski', 'Barbara Jankowska'
   ];
   
   const types = ['package', 'lesson', 'subscription', 'deposit', 'refund'];
-  const methods = ['Card', 'Bank Transfer', 'Cash', 'Przelewy24', 'PayPal'];
+  const methods = ['Karta', 'Przelew', 'Gotówka', 'Przelewy24', 'PayPal'];
   const statuses = ['completed', 'pending', 'failed', 'refunded'];
-  const packages = ['Стандарт', 'Преміум', 'VIP', 'Базовий'];
+  const packages = ['Standard', 'Premium', 'VIP', 'Podstawowy'];
 
   const transactions = [];
   
   for (let i = 0; i < 100; i++) {
-    const status = statuses[Math.floor(Math.random() * statuses.length)];
-    const type = types[Math.floor(Math.random() * types.length)];
+    const statusIndex = i % 4;
+    const typeIndex = i % 5;
+    const status = statuses[statusIndex];
+    const type = types[typeIndex];
     const isRefund = type === 'refund';
     
     transactions.push({
       id: `TRX-2024-${String(i + 1).padStart(5, '0')}`,
-      userId: `user-${Math.floor(Math.random() * 50) + 1}`,
-      userName: users[Math.floor(Math.random() * users.length)],
+      userId: `user-${(i % 50) + 1}`,
+      userName: users[i % users.length],
       userEmail: `user${i}@example.com`,
       userAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(users[i % users.length])}&background=3B82F6&color=fff`,
       type,
-      description: type === 'package' ? `Пакет "${packages[Math.floor(Math.random() * packages.length)]}"` :
-                   type === 'lesson' ? 'Одноразове заняття' :
-                   type === 'subscription' ? 'Місячна підписка' :
-                   type === 'deposit' ? 'Депозит на рахунок' :
-                   'Повернення коштів',
-      amount: isRefund ? -(Math.floor(Math.random() * 3000) + 500) : 
-              Math.floor(Math.random() * 5000) + 500,
-      currency: 'UAH',
-      method: methods[Math.floor(Math.random() * methods.length)],
+      description: type === 'package' ? `Pakiet "${packages[i % packages.length]}"` :
+                   type === 'lesson' ? 'Pojedyncze zajęcia' :
+                   type === 'subscription' ? 'Miesięczna subskrypcja' :
+                   type === 'deposit' ? 'Depozyt na konto' :
+                   'Zwrot środków',
+      amount: isRefund ? -(500 + (i * 30) % 2500) : 
+              500 + (i * 45) % 4500,
+      currency: 'PLN',
+      method: methods[i % methods.length],
       status,
-      date: subDays(new Date(), Math.floor(Math.random() * 30)),
-      processingFee: Math.floor(Math.random() * 100) + 10,
+      date: subDays(new Date(), i % 30),
+      processingFee: 10 + (i * 7) % 90,
       netAmount: 0, // Will calculate
       invoiceId: status === 'completed' ? `INV-2024-${String(i + 1).padStart(5, '0')}` : null,
-      refundReason: status === 'refunded' ? 'Скасування за запитом клієнта' : null
+      refundReason: status === 'refunded' ? 'Anulowanie na prośbę klienta' : null
     });
   }
   
@@ -74,6 +86,10 @@ const generateTransactions = () => {
 };
 
 export default function AdminPaymentsPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || 'pl';
+  
   const [transactions] = useState(generateTransactions());
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -83,6 +99,15 @@ export default function AdminPaymentsPage() {
   const [selectedTransaction, setSelectedTransaction] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('transactions');
+
+  // Navigation handlers
+  const handleCreateInvoice = () => {
+    router.push(`/${locale}/admin/payments/invoices`);
+  };
+
+  const handleViewPayouts = () => {
+    router.push(`/${locale}/admin/payments/payouts`);
+  };
 
   // Filter transactions
   const filteredTransactions = transactions.filter(t => {
@@ -138,11 +163,11 @@ export default function AdminPaymentsPage() {
   });
 
   // Define payment methods
-  const methods = ['Card', 'Bank Transfer', 'Cash', 'Przelewy24', 'PayPal'];
+  const methods = ['Karta', 'Przelew', 'Gotówka', 'Przelewy24', 'PayPal'];
   const methodColors = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444'];
 
   // Payment methods distribution
-  const methodsData = methods.map(method => ({
+  const methodsData = methods.map((method, index) => ({
     name: method,
     value: transactions.filter(t => t.method === method && t.status === 'completed').length,
     amount: transactions
@@ -151,10 +176,10 @@ export default function AdminPaymentsPage() {
   }));
 
   const paymentStatuses = {
-    completed: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100', label: 'Завершено' },
-    pending: { icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100', label: 'Очікується' },
-    failed: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-100', label: 'Невдало' },
-    refunded: { icon: RotateCcw, color: 'text-gray-600', bg: 'bg-gray-100', label: 'Повернено' }
+    completed: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100', label: 'Zakończona' },
+    pending: { icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100', label: 'Oczekująca' },
+    failed: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-100', label: 'Nieudana' },
+    refunded: { icon: RotateCcw, color: 'text-gray-600', bg: 'bg-gray-100', label: 'Zwrócona' }
   };
 
   const typeIcons = {
@@ -167,12 +192,10 @@ export default function AdminPaymentsPage() {
 
   const handleExport = () => {
     console.log('Exporting transactions...');
-    // Implementation for CSV export
   };
 
   const handleRefund = (transactionId: string) => {
     console.log('Processing refund for:', transactionId);
-    // Implementation for refund
   };
 
   return (
@@ -180,8 +203,8 @@ export default function AdminPaymentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Платежі</h1>
-          <p className="text-gray-600 mt-1">Управління фінансовими транзакціями</p>
+          <h1 className="text-3xl font-bold text-gray-800">Płatności</h1>
+          <p className="text-gray-600 mt-1">Zarządzanie transakcjami finansowymi</p>
         </div>
         <div className="flex items-center gap-3">
           <select
@@ -189,21 +212,24 @@ export default function AdminPaymentsPage() {
             onChange={(e) => setDateRange(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="today">Сьогодні</option>
-            <option value="week">Цей тиждень</option>
-            <option value="month">Цей місяць</option>
-            <option value="year">Цей рік</option>
+            <option value="today">Dzisiaj</option>
+            <option value="week">Ten tydzień</option>
+            <option value="month">Ten miesiąc</option>
+            <option value="year">Ten rok</option>
           </select>
           <button
             onClick={handleExport}
             className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            Експорт
+            Eksport
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+          <button 
+            onClick={handleCreateInvoice}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
             <Receipt className="w-4 h-4" />
-            Створити інвойс
+            Utwórz fakturę
           </button>
         </div>
       </div>
@@ -217,9 +243,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{(stats.totalRevenue / 1000).toFixed(1)}k
+                {Math.round(stats.totalRevenue / 1000)}k zł
               </p>
-              <p className="text-xs text-gray-500">Загальний дохід</p>
+              <p className="text-xs text-gray-500">Całkowity przychód</p>
             </div>
           </div>
         </div>
@@ -230,9 +256,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{(stats.pendingAmount / 1000).toFixed(1)}k
+                {Math.round(stats.pendingAmount / 1000)}k zł
               </p>
-              <p className="text-xs text-gray-500">Очікується</p>
+              <p className="text-xs text-gray-500">Oczekujące</p>
             </div>
           </div>
         </div>
@@ -243,9 +269,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{(stats.refundedAmount / 1000).toFixed(1)}k
+                {Math.round(stats.refundedAmount / 1000)}k zł
               </p>
-              <p className="text-xs text-gray-500">Повернено</p>
+              <p className="text-xs text-gray-500">Zwrócone</p>
             </div>
           </div>
         </div>
@@ -256,7 +282,7 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.successRate}%</p>
-              <p className="text-xs text-gray-500">Успішність</p>
+              <p className="text-xs text-gray-500">Sukces</p>
             </div>
           </div>
         </div>
@@ -267,9 +293,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                ₴{stats.avgTransaction}
+                {stats.avgTransaction} zł
               </p>
-              <p className="text-xs text-gray-500">Середній чек</p>
+              <p className="text-xs text-gray-500">Średnia kwota</p>
             </div>
           </div>
         </div>
@@ -280,7 +306,7 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.transactionsToday}</p>
-              <p className="text-xs text-gray-500">Сьогодні</p>
+              <p className="text-xs text-gray-500">Dzisiaj</p>
             </div>
           </div>
         </div>
@@ -290,7 +316,7 @@ export default function AdminPaymentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Динаміка доходів</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Dynamika przychodów</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -301,7 +327,7 @@ export default function AdminPaymentsPage() {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                name="Дохід"
+                name="Przychód"
                 stroke="#3B82F6"
                 fill="#93BBFC"
                 fillOpacity={0.6}
@@ -309,7 +335,7 @@ export default function AdminPaymentsPage() {
               <Area
                 type="monotone"
                 dataKey="refunds"
-                name="Повернення"
+                name="Zwroty"
                 stroke="#EF4444"
                 fill="#FCA5A5"
                 fillOpacity={0.4}
@@ -320,7 +346,7 @@ export default function AdminPaymentsPage() {
 
         {/* Payment Methods */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Методи оплати</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Metody płatności</h3>
           <ResponsiveContainer width="100%" height={250}>
             <RePieChart>
               <Pie
@@ -350,7 +376,7 @@ export default function AdminPaymentsPage() {
                   <span className="text-sm text-gray-600">{method.name}</span>
                 </div>
                 <span className="text-sm font-semibold text-gray-800">
-                  ₴{(method.amount / 1000).toFixed(1)}k
+                  {Math.round(method.amount / 1000)}k zł
                 </span>
               </div>
             ))}
@@ -370,27 +396,33 @@ export default function AdminPaymentsPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Транзакції
+              Transakcje
             </button>
             <button
-              onClick={() => setActiveTab('invoices')}
+              onClick={() => {
+                setActiveTab('invoices');
+                handleCreateInvoice();
+              }}
               className={`py-3 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'invoices'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Інвойси
+              Faktury
             </button>
             <button
-              onClick={() => setActiveTab('payouts')}
+              onClick={() => {
+                setActiveTab('payouts');
+                handleViewPayouts();
+              }}
               className={`py-3 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === 'payouts'
                   ? 'border-blue-500 text-blue-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Виплати інструкторам
+              Wypłaty instruktorom
             </button>
           </div>
         </div>
@@ -402,7 +434,7 @@ export default function AdminPaymentsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за ID, користувачем..."
+                placeholder="Szukaj po ID, użytkowniku..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -414,11 +446,11 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="completed">Завершено</option>
-              <option value="pending">Очікується</option>
-              <option value="failed">Невдало</option>
-              <option value="refunded">Повернено</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="completed">Zakończone</option>
+              <option value="pending">Oczekujące</option>
+              <option value="failed">Nieudane</option>
+              <option value="refunded">Zwrócone</option>
             </select>
             
             <select
@@ -426,12 +458,12 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterType(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі типи</option>
-              <option value="package">Пакети</option>
-              <option value="lesson">Заняття</option>
-              <option value="subscription">Підписка</option>
-              <option value="deposit">Депозит</option>
-              <option value="refund">Повернення</option>
+              <option value="all">Wszystkie typy</option>
+              <option value="package">Pakiety</option>
+              <option value="lesson">Zajęcia</option>
+              <option value="subscription">Subskrypcja</option>
+              <option value="deposit">Depozyt</option>
+              <option value="refund">Zwrot</option>
             </select>
             
             <select
@@ -439,7 +471,7 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterMethod(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі методи</option>
+              <option value="all">Wszystkie metody</option>
               {methods.map(method => (
                 <option key={method} value={method}>{method}</option>
               ))}
@@ -454,28 +486,28 @@ export default function AdminPaymentsPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ID транзакції
+                    ID transakcji
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Користувач
+                    Użytkownik
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Тип
+                    Typ
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Сума
+                    Kwota
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Метод
+                    Metoda
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Статус
+                    Status
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Дата
+                    Data
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Дії
+                    Akcje
                   </th>
                 </tr>
               </thead>
@@ -484,14 +516,14 @@ export default function AdminPaymentsPage() {
                   <tr>
                     <td colSpan={8} className="px-4 py-12 text-center">
                       <Loader2 className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-500">Завантаження...</p>
+                      <p className="text-gray-500">Ładowanie...</p>
                     </td>
                   </tr>
                 ) : filteredTransactions.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-4 py-12 text-center">
                       <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-gray-500">Транзакцій не знайдено</p>
+                      <p className="text-gray-500">Nie znaleziono transakcji</p>
                     </td>
                   </tr>
                 ) : (
@@ -534,7 +566,7 @@ export default function AdminPaymentsPage() {
                             <span className={`font-semibold ${
                               transaction.amount < 0 ? 'text-red-600' : 'text-gray-800'
                             }`}>
-                              ₴{Math.abs(transaction.amount).toLocaleString()}
+                              {formatCurrency(transaction.amount)}
                             </span>
                           </div>
                         </td>
@@ -555,7 +587,7 @@ export default function AdminPaymentsPage() {
                             <button
                               onClick={() => setSelectedTransaction(transaction)}
                               className="p-1 hover:bg-gray-100 rounded-lg"
-                              title="Переглянути"
+                              title="Podgląd"
                             >
                               <Eye className="w-4 h-4 text-gray-600" />
                             </button>
@@ -564,14 +596,14 @@ export default function AdminPaymentsPage() {
                                 <button
                                   onClick={() => console.log('Download invoice', transaction.id)}
                                   className="p-1 hover:bg-gray-100 rounded-lg"
-                                  title="Завантажити квитанцію"
+                                  title="Pobierz fakturę"
                                 >
                                   <Download className="w-4 h-4 text-gray-600" />
                                 </button>
                                 <button
                                   onClick={() => handleRefund(transaction.id)}
                                   className="p-1 hover:bg-red-50 rounded-lg"
-                                  title="Повернути кошти"
+                                  title="Zwrot środków"
                                 >
                                   <RotateCcw className="w-4 h-4 text-red-600" />
                                 </button>
@@ -587,144 +619,7 @@ export default function AdminPaymentsPage() {
             </table>
           </div>
         )}
-
-        {/* Invoices Tab */}
-        {activeTab === 'invoices' && (
-          <div className="p-6 text-center">
-            <Receipt className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">Модуль інвойсів буде доступний найближчим часом</p>
-          </div>
-        )}
-
-        {/* Payouts Tab */}
-        {activeTab === 'payouts' && (
-          <div className="p-6 text-center">
-            <Send className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">Модуль виплат інструкторам буде доступний найближчим часом</p>
-          </div>
-        )}
       </div>
-
-      {/* Transaction Details Modal */}
-      {selectedTransaction && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-lg w-full">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Деталі транзакції
-              </h2>
-              <button
-                onClick={() => setSelectedTransaction(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <XCircle className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-500">ID транзакції</p>
-                  <p className="font-mono font-medium">{selectedTransaction.id}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Статус</p>
-                  <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-                    paymentStatuses[selectedTransaction.status as keyof typeof paymentStatuses].bg
-                  } ${paymentStatuses[selectedTransaction.status as keyof typeof paymentStatuses].color}`}>
-                    {paymentStatuses[selectedTransaction.status as keyof typeof paymentStatuses].label}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Сума</p>
-                  <p className={`font-semibold text-lg ${
-                    selectedTransaction.amount < 0 ? 'text-red-600' : 'text-gray-800'
-                  }`}>
-                    ₴{Math.abs(selectedTransaction.amount).toLocaleString()}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Комісія</p>
-                  <p className="font-medium">₴{selectedTransaction.processingFee}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Чиста сума</p>
-                  <p className="font-medium">₴{selectedTransaction.netAmount.toLocaleString()}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Метод оплати</p>
-                  <p className="font-medium">{selectedTransaction.method}</p>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <p className="text-sm text-gray-500 mb-2">Користувач</p>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={selectedTransaction.userAvatar}
-                    alt={selectedTransaction.userName}
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <div>
-                    <p className="font-medium">{selectedTransaction.userName}</p>
-                    <p className="text-sm text-gray-500">{selectedTransaction.userEmail}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t pt-4">
-                <p className="text-sm text-gray-500 mb-1">Опис</p>
-                <p className="font-medium">{selectedTransaction.description}</p>
-              </div>
-
-              <div className="border-t pt-4">
-                <p className="text-sm text-gray-500 mb-1">Дата та час</p>
-                <p className="font-medium">
-                  {format(selectedTransaction.date, 'dd MMMM yyyy, HH:mm', { locale: uk })}
-                </p>
-              </div>
-
-              {selectedTransaction.invoiceId && (
-                <div className="border-t pt-4">
-                  <p className="text-sm text-gray-500 mb-1">Інвойс</p>
-                  <p className="font-mono font-medium">{selectedTransaction.invoiceId}</p>
-                </div>
-              )}
-
-              {selectedTransaction.refundReason && (
-                <div className="border-t pt-4">
-                  <p className="text-sm text-gray-500 mb-1">Причина повернення</p>
-                  <p className="text-sm">{selectedTransaction.refundReason}</p>
-                </div>
-              )}
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              {selectedTransaction.status === 'completed' && selectedTransaction.amount > 0 && (
-                <>
-                  <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    Завантажити квитанцію
-                  </button>
-                  <button className="flex-1 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">
-                    Повернути кошти
-                  </button>
-                </>
-              )}
-              {selectedTransaction.status === 'pending' && (
-                <button className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                  Підтвердити платіж
-                </button>
-              )}
-              <button
-                onClick={() => setSelectedTransaction(null)}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Закрити
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

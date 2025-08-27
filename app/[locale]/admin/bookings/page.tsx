@@ -11,7 +11,7 @@ import {
   RefreshCw, Loader2, FileText, CreditCard, Info
 } from 'lucide-react';
 import { format, addDays, startOfWeek, endOfWeek, isToday, isTomorrow } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
@@ -20,14 +20,14 @@ import {
 // Generate mock bookings data
 const generateBookings = () => {
   const studentNames = [
-    'Олександр Петренко', 'Марія Коваленко', 'Іван Шевченко', 'Юлія Ткаченко',
-    'Петро Мельник', 'Оксана Бойко', 'Андрій Кравчук', 'Наталія Савченко',
-    'Михайло Гончаренко', 'Тетяна Павленко', 'Василь Романенко', 'Світлана Яковенко'
+    'Aleksander Kowalski', 'Maria Nowak', 'Jan Wiśniewski', 'Julia Wójcik',
+    'Piotr Kowalczyk', 'Anna Kamińska', 'Andrzej Lewandowski', 'Natalia Zielińska',
+    'Michał Szymański', 'Katarzyna Woźniak', 'Wojciech Dąbrowski', 'Magdalena Kozłowska'
   ];
   
   const instructorNames = [
-    'Петро Сидоренко', 'Анна Коваленко', 'Іван Мельник', 'Оксана Шевченко',
-    'Василь Бондаренко', 'Марія Ткаченко'
+    'Piotr Mazur', 'Anna Krawczyk', 'Jan Piotrowski', 'Ewa Grabowska',
+    'Tomasz Nowakowski', 'Maria Pawłowska'
   ];
   
   const vehicles = [
@@ -36,13 +36,13 @@ const generateBookings = () => {
   ];
   
   const locations = [
-    'Київ - Центр, вул. Хрещатик 1',
-    'Київ - Оболонь, пр-т Героїв Сталінграда 24',
-    'Київ - Позняки, вул. Драгоманова 17',
-    'Львів - Центр, пл. Ринок 1'
+    'Warszawa - Centrum, ul. Marszałkowska 1',
+    'Warszawa - Mokotów, ul. Puławska 24',
+    'Warszawa - Wilanów, ul. Wiertnicza 17',
+    'Kraków - Centrum, Rynek Główny 1'
   ];
   
-  const lessonTypes = ['Стандартна', 'Автострада', 'Паркування', 'Нічна', 'Іспит', 'Маневри'];
+  const lessonTypes = ['Standardowa', 'Autostrada', 'Parkowanie', 'Nocna', 'Egzamin', 'Manewry'];
   const statuses = ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
   
   const bookings = [];
@@ -63,10 +63,10 @@ const generateBookings = () => {
     bookings.push({
       id: `BK-2024-${String(i + 1).padStart(5, '0')}`,
       studentName: studentNames[Math.floor(Math.random() * studentNames.length)],
-      studentPhone: `+380${Math.floor(Math.random() * 900000000 + 100000000)}`,
+      studentPhone: `+48${Math.floor(Math.random() * 900000000 + 100000000)}`,
       studentEmail: `student${i}@example.com`,
       instructorName: instructorNames[Math.floor(Math.random() * instructorNames.length)],
-      instructorPhone: `+380${Math.floor(Math.random() * 900000000 + 100000000)}`,
+      instructorPhone: `+48${Math.floor(Math.random() * 900000000 + 100000000)}`,
       vehicle: vehicles[Math.floor(Math.random() * vehicles.length)],
       location: locations[Math.floor(Math.random() * locations.length)],
       date: date,
@@ -78,8 +78,8 @@ const generateBookings = () => {
       price: 180 + Math.floor(Math.random() * 4) * 50,
       paid: status === 'COMPLETED' || Math.random() > 0.3,
       rating: status === 'COMPLETED' ? (4 + Math.random()).toFixed(1) : null,
-      notes: Math.random() > 0.7 ? 'Додаткові нотатки про заняття' : null,
-      cancelReason: status === 'CANCELLED' ? 'Хвороба студента' : null,
+      notes: Math.random() > 0.7 ? 'Dodatkowe uwagi dotyczące lekcji' : null,
+      cancelReason: status === 'CANCELLED' ? 'Choroba ucznia' : null,
       createdAt: addDays(date, -Math.floor(Math.random() * 7) - 1)
     });
   }
@@ -153,27 +153,27 @@ export default function AdminBookingsPage() {
       b.date.toDateString() === date.toDateString()
     );
     return {
-      day: format(date, 'EEE', { locale: uk }),
+      day: format(date, 'EEE', { locale: pl }),
       bookings: dayBookings.length,
       revenue: dayBookings.filter(b => b.paid).reduce((sum, b) => sum + b.price, 0)
     };
   });
 
   const bookingsByStatus = [
-    { name: 'Заплановано', value: bookings.filter(b => b.status === 'SCHEDULED').length, color: '#3B82F6' },
-    { name: 'В процесі', value: bookings.filter(b => b.status === 'IN_PROGRESS').length, color: '#F59E0B' },
-    { name: 'Завершено', value: bookings.filter(b => b.status === 'COMPLETED').length, color: '#10B981' },
-    { name: 'Скасовано', value: bookings.filter(b => b.status === 'CANCELLED').length, color: '#EF4444' },
-    { name: 'Неявка', value: bookings.filter(b => b.status === 'NO_SHOW').length, color: '#6B7280' }
+    { name: 'Zaplanowane', value: bookings.filter(b => b.status === 'SCHEDULED').length, color: '#3B82F6' },
+    { name: 'W trakcie', value: bookings.filter(b => b.status === 'IN_PROGRESS').length, color: '#F59E0B' },
+    { name: 'Zakończone', value: bookings.filter(b => b.status === 'COMPLETED').length, color: '#10B981' },
+    { name: 'Anulowane', value: bookings.filter(b => b.status === 'CANCELLED').length, color: '#EF4444' },
+    { name: 'Nieobecność', value: bookings.filter(b => b.status === 'NO_SHOW').length, color: '#6B7280' }
   ];
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      SCHEDULED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Calendar, label: 'Заплановано' },
-      IN_PROGRESS: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Timer, label: 'В процесі' },
-      COMPLETED: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Завершено' },
-      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Скасовано' },
-      NO_SHOW: { bg: 'bg-gray-100', text: 'text-gray-700', icon: AlertCircle, label: 'Неявка' }
+      SCHEDULED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Calendar, label: 'Zaplanowane' },
+      IN_PROGRESS: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Timer, label: 'W trakcie' },
+      COMPLETED: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Zakończone' },
+      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Anulowane' },
+      NO_SHOW: { bg: 'bg-gray-100', text: 'text-gray-700', icon: AlertCircle, label: 'Nieobecność' }
     };
     return badges[status as keyof typeof badges] || badges.SCHEDULED;
   };
@@ -200,17 +200,17 @@ export default function AdminBookingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Бронювання</h1>
-          <p className="text-gray-600 mt-1">Управління всіма бронюваннями та заняттями</p>
+          <h1 className="text-3xl font-bold text-gray-800">Rezerwacje</h1>
+          <p className="text-gray-600 mt-1">Zarządzanie wszystkimi rezerwacjami i lekcjami</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Експорт
+            Eksport
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            Нове бронювання
+            Nowa rezerwacja
           </button>
         </div>
       </div>
@@ -224,7 +224,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.todayTotal}</p>
-              <p className="text-xs text-gray-500">Сьогодні</p>
+              <p className="text-xs text-gray-500">Dzisiaj</p>
             </div>
           </div>
         </div>
@@ -235,7 +235,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.todayCompleted}</p>
-              <p className="text-xs text-gray-500">Завершено сьогодні</p>
+              <p className="text-xs text-gray-500">Zakończone dzisiaj</p>
             </div>
           </div>
         </div>
@@ -246,7 +246,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.weekTotal}</p>
-              <p className="text-xs text-gray-500">Цей тиждень</p>
+              <p className="text-xs text-gray-500">Ten tydzień</p>
             </div>
           </div>
         </div>
@@ -256,8 +256,8 @@ export default function AdminBookingsPage() {
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-800">₴{(stats.weekRevenue / 1000).toFixed(1)}k</p>
-              <p className="text-xs text-gray-500">Дохід тижня</p>
+              <p className="text-2xl font-bold text-gray-800">zł{(stats.weekRevenue / 1000).toFixed(1)}k</p>
+              <p className="text-xs text-gray-500">Przychód tygodnia</p>
             </div>
           </div>
         </div>
@@ -268,7 +268,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.cancellationRate}%</p>
-              <p className="text-xs text-gray-500">Скасування</p>
+              <p className="text-xs text-gray-500">Anulacje</p>
             </div>
           </div>
         </div>
@@ -279,7 +279,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRating}</p>
-              <p className="text-xs text-gray-500">Сер. рейтинг</p>
+              <p className="text-xs text-gray-500">Śr. ocena</p>
             </div>
           </div>
         </div>
@@ -289,21 +289,21 @@ export default function AdminBookingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Bookings by Day */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Бронювання за тиждень</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rezerwacje w tygodniu</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={bookingsByDay}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="day" fontSize={12} />
               <YAxis fontSize={12} />
               <Tooltip />
-              <Bar dataKey="bookings" name="Бронювання" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="bookings" name="Rezerwacje" fill="#3B82F6" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Status Distribution */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Розподіл за статусами</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład statusów</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
@@ -344,7 +344,7 @@ export default function AdminBookingsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук за ID, студентом або інструктором..."
+                placeholder="Szukaj po ID, uczniu lub instruktorze..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -356,10 +356,10 @@ export default function AdminBookingsPage() {
               onChange={(e) => setDateFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі дати</option>
-              <option value="today">Сьогодні</option>
-              <option value="tomorrow">Завтра</option>
-              <option value="week">Цей тиждень</option>
+              <option value="all">Wszystkie daty</option>
+              <option value="today">Dzisiaj</option>
+              <option value="tomorrow">Jutro</option>
+              <option value="week">Ten tydzień</option>
             </select>
             
             <select
@@ -367,12 +367,12 @@ export default function AdminBookingsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="SCHEDULED">Заплановано</option>
-              <option value="IN_PROGRESS">В процесі</option>
-              <option value="COMPLETED">Завершено</option>
-              <option value="CANCELLED">Скасовано</option>
-              <option value="NO_SHOW">Неявка</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="SCHEDULED">Zaplanowane</option>
+              <option value="IN_PROGRESS">W trakcie</option>
+              <option value="COMPLETED">Zakończone</option>
+              <option value="CANCELLED">Anulowane</option>
+              <option value="NO_SHOW">Nieobecność</option>
             </select>
             
             <select
@@ -380,7 +380,7 @@ export default function AdminBookingsPage() {
               onChange={(e) => setFilterInstructor(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі інструктори</option>
+              <option value="all">Wszyscy instruktorzy</option>
               {instructors.map(instructor => (
                 <option key={instructor} value={instructor}>{instructor}</option>
               ))}
@@ -416,13 +416,13 @@ export default function AdminBookingsPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Студент</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Інструктор</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дата і час</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Тип</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Оплата</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Uczeń</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Instruktor</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data i godzina</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Typ</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Płatność</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -467,12 +467,12 @@ export default function AdminBookingsPage() {
                         {booking.paid ? (
                           <span className="inline-flex items-center gap-1 text-green-600">
                             <CheckCircle className="w-4 h-4" />
-                            <span className="text-sm">₴{booking.price}</span>
+                            <span className="text-sm">zł{booking.price}</span>
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-gray-400">
                             <Clock className="w-4 h-4" />
-                            <span className="text-sm">Очікується</span>
+                            <span className="text-sm">Oczekuje</span>
                           </span>
                         )}
                       </td>
@@ -528,7 +528,7 @@ export default function AdminBookingsPage() {
                 {getWeekDays().map(day => (
                   <div key={day.toString()} className="p-2 text-center">
                     <p className="text-sm font-medium text-gray-700">
-                      {format(day, 'EEE', { locale: uk })}
+                      {format(day, 'EEE', { locale: pl })}
                     </p>
                     <p className="text-xs text-gray-500">
                       {format(day, 'dd MMM')}
@@ -577,10 +577,10 @@ export default function AdminBookingsPage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-semibold text-gray-800">
-                  Деталі бронювання {selectedBooking.id}
+                  Szczegóły rezerwacji {selectedBooking.id}
                 </h2>
                 <p className="text-gray-500">
-                  {format(selectedBooking.date, 'dd MMMM yyyy', { locale: uk })}
+                  {format(selectedBooking.date, 'dd MMMM yyyy', { locale: pl })}
                 </p>
               </div>
               <button
@@ -594,7 +594,7 @@ export default function AdminBookingsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Student Info */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Студент</h3>
+                <h3 className="font-medium text-gray-800 mb-3">Uczeń</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-gray-500" />
@@ -613,7 +613,7 @@ export default function AdminBookingsPage() {
 
               {/* Instructor Info */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Інструктор</h3>
+                <h3 className="font-medium text-gray-800 mb-3">Instruktor</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-gray-500" />
@@ -632,31 +632,31 @@ export default function AdminBookingsPage() {
 
               {/* Lesson Details */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Деталі заняття</h3>
+                <h3 className="font-medium text-gray-800 mb-3">Szczegóły lekcji</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Тип:</span>
+                    <span className="text-sm text-gray-500">Typ:</span>
                     <span className="text-sm font-medium">{selectedBooking.type}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Час:</span>
+                    <span className="text-sm text-gray-500">Godzina:</span>
                     <span className="text-sm font-medium">
                       {selectedBooking.startTime} - {selectedBooking.endTime}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Тривалість:</span>
-                    <span className="text-sm font-medium">{selectedBooking.duration} хв</span>
+                    <span className="text-sm text-gray-500">Czas trwania:</span>
+                    <span className="text-sm font-medium">{selectedBooking.duration} min</span>
                   </div>
                 </div>
               </div>
 
               {/* Payment & Status */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Оплата та статус</h3>
+                <h3 className="font-medium text-gray-800 mb-3">Płatność i status</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Статус:</span>
+                    <span className="text-sm text-gray-500">Status:</span>
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                       getStatusBadge(selectedBooking.status).bg
                     } ${getStatusBadge(selectedBooking.status).text}`}>
@@ -664,20 +664,20 @@ export default function AdminBookingsPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Ціна:</span>
-                    <span className="text-sm font-medium">₴{selectedBooking.price}</span>
+                    <span className="text-sm text-gray-500">Cena:</span>
+                    <span className="text-sm font-medium">zł{selectedBooking.price}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Оплата:</span>
+                    <span className="text-sm text-gray-500">Płatność:</span>
                     <span className={`text-sm font-medium ${
                       selectedBooking.paid ? 'text-green-600' : 'text-gray-400'
                     }`}>
-                      {selectedBooking.paid ? 'Оплачено' : 'Очікується'}
+                      {selectedBooking.paid ? 'Opłacone' : 'Oczekuje'}
                     </span>
                   </div>
                   {selectedBooking.rating && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Рейтинг:</span>
+                      <span className="text-sm text-gray-500">Ocena:</span>
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                         <span className="text-sm font-medium">{selectedBooking.rating}</span>
@@ -690,7 +690,7 @@ export default function AdminBookingsPage() {
 
             {/* Location */}
             <div className="mt-6 bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-800 mb-3">Локація</h3>
+              <h3 className="font-medium text-gray-800 mb-3">Lokalizacja</h3>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
                 <span className="text-sm">{selectedBooking.location}</span>
@@ -700,11 +700,11 @@ export default function AdminBookingsPage() {
             {/* Notes */}
             {(selectedBooking.notes || selectedBooking.cancelReason) && (
               <div className="mt-6 bg-yellow-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-2">Примітки</h3>
+                <h3 className="font-medium text-gray-800 mb-2">Uwagi</h3>
                 {selectedBooking.notes && <p className="text-sm text-gray-700">{selectedBooking.notes}</p>}
                 {selectedBooking.cancelReason && (
                   <p className="text-sm text-red-600 mt-2">
-                    <strong>Причина скасування:</strong> {selectedBooking.cancelReason}
+                    <strong>Powód anulowania:</strong> {selectedBooking.cancelReason}
                   </p>
                 )}
               </div>
@@ -712,18 +712,18 @@ export default function AdminBookingsPage() {
 
             <div className="flex gap-3 mt-6">
               <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Редагувати
+                Edytuj
               </button>
               {selectedBooking.status === 'SCHEDULED' && (
                 <button className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                  Скасувати
+                  Anuluj
                 </button>
               )}
               <button
                 onClick={() => setSelectedBooking(null)}
                 className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
-                Закрити
+                Zamknij
               </button>
             </div>
           </div>

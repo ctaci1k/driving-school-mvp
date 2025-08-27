@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import {
   Package, Plus, Edit2, Trash2, Eye, Copy, Archive,
   TrendingUp, Users, DollarSign, Clock, Calendar,
@@ -11,35 +12,36 @@ import {
   ChevronRight, Loader2, Shield, Sparkles, Crown
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { uk } from 'date-fns/locale';
+import { pl } from 'date-fns/locale';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
-// Generate mock packages data
+
+// Generate mock packages data with Polish content
 const generatePackages = () => {
   return [
     {
       id: 'package-1',
-      name: 'Базовий',
-      description: 'Ідеальний для початківців. Включає основи керування автомобілем',
+      name: 'Podstawowy',
+      description: 'Idealny dla początkujących. Zawiera podstawy prowadzenia pojazdu',
       icon: Shield,
       color: 'gray',
       credits: 10,
-      price: 2500,
+      price: 1200,
       originalPrice: null,
       discount: 0,
       validity: 30,
       features: [
-        '10 практичних занять по 90 хв',
-        'Базова теоретична підготовка',
-        'Навчальні матеріали',
-        'Підтримка інструктора'
+        '10 zajęć praktycznych po 90 min',
+        'Podstawowe przygotowanie teoretyczne',
+        'Materiały edukacyjne',
+        'Wsparcie instruktora'
       ],
       limitations: [
-        'Без занять на автостраді',
-        'Без нічних занять',
-        'Один інструктор'
+        'Bez jazdy po autostradzie',
+        'Bez jazdy nocnej',
+        'Jeden instruktor'
       ],
       popular: false,
       recommended: false,
@@ -48,33 +50,33 @@ const generatePackages = () => {
       priority: 1,
       purchaseCount: 145,
       activeUsers: 42,
-      revenue: 362500,
+      revenue: 174000,
       avgRating: 4.3,
       renewalRate: 65,
       category: 'beginner'
     },
     {
       id: 'package-2',
-      name: 'Стандарт',
-      description: 'Найпопулярніший вибір. Повний курс навчання водінню',
+      name: 'Standard',
+      description: 'Najpopularniejszy wybór. Pełny kurs nauki jazdy',
       icon: Star,
       color: 'blue',
       credits: 20,
-      price: 4500,
-      originalPrice: 5000,
+      price: 2200,
+      originalPrice: 2500,
       discount: 10,
       validity: 60,
       features: [
-        '20 практичних занять по 90 хв',
-        'Повна теоретична підготовка',
-        'Онлайн тести та симулятор',
-        'Вибір інструктора',
-        'Заняття на автостраді',
-        'Підготовка до іспиту'
+        '20 zajęć praktycznych po 90 min',
+        'Pełne przygotowanie teoretyczne',
+        'Testy online i symulator',
+        'Wybór instruktora',
+        'Jazda po autostradzie',
+        'Przygotowanie do egzaminu'
       ],
       limitations: [
-        'Без VIP підтримки',
-        'Стандартний графік'
+        'Bez wsparcia VIP',
+        'Standardowy harmonogram'
       ],
       popular: true,
       recommended: true,
@@ -83,31 +85,31 @@ const generatePackages = () => {
       priority: 2,
       purchaseCount: 523,
       activeUsers: 186,
-      revenue: 2353500,
+      revenue: 1150600,
       avgRating: 4.6,
       renewalRate: 78,
       category: 'standard'
     },
     {
       id: 'package-3',
-      name: 'Преміум',
-      description: 'Розширений курс з додатковими можливостями',
+      name: 'Premium',
+      description: 'Rozszerzony kurs z dodatkowymi możliwościami',
       icon: Zap,
       color: 'purple',
       credits: 30,
-      price: 6500,
-      originalPrice: 7500,
+      price: 3200,
+      originalPrice: 3800,
       discount: 13,
       validity: 90,
       features: [
-        '30 практичних занять по 90 хв',
-        'Повна теоретична підготовка',
-        'Персональний менеджер',
-        'Пріоритетний вибір інструктора',
-        'Нічні заняття',
-        'Заняття на автостраді',
-        'Екстремальне водіння',
-        '2 спроби іспиту включено'
+        '30 zajęć praktycznych po 90 min',
+        'Pełne przygotowanie teoretyczne',
+        'Osobisty menedżer',
+        'Priorytetowy wybór instruktora',
+        'Jazda nocna',
+        'Jazda po autostradzie',
+        'Jazda w trudnych warunkach',
+        '2 podejścia do egzaminu wliczone'
       ],
       limitations: [],
       popular: false,
@@ -117,7 +119,7 @@ const generatePackages = () => {
       priority: 3,
       purchaseCount: 234,
       activeUsers: 89,
-      revenue: 1521000,
+      revenue: 748800,
       avgRating: 4.8,
       renewalRate: 85,
       category: 'premium'
@@ -125,24 +127,24 @@ const generatePackages = () => {
     {
       id: 'package-4',
       name: 'VIP',
-      description: 'Максимальний комфорт та індивідуальний підхід',
+      description: 'Maksymalny komfort i indywidualne podejście',
       icon: Crown,
       color: 'gold',
       credits: 50,
-      price: 12000,
-      originalPrice: 15000,
+      price: 5500,
+      originalPrice: 7000,
       discount: 20,
       validity: 180,
       features: [
-        '50 практичних занять по 90 хв',
-        'Індивідуальна програма навчання',
-        'Персональний менеджер 24/7',
-        'Топ інструктори',
-        'Гнучкий графік',
-        'Преміум автомобілі',
-        'Необмежені спроби іспиту',
-        'Супровід на іспиті',
-        'Додаткові майстер-класи'
+        '50 zajęć praktycznych po 90 min',
+        'Indywidualny program nauki',
+        'Osobisty menedżer 24/7',
+        'Top instruktorzy',
+        'Elastyczny harmonogram',
+        'Premium pojazdy',
+        'Nieograniczone podejścia do egzaminu',
+        'Towarzyszenie na egzaminie',
+        'Dodatkowe warsztaty'
       ],
       limitations: [],
       popular: false,
@@ -152,31 +154,31 @@ const generatePackages = () => {
       priority: 4,
       purchaseCount: 67,
       activeUsers: 34,
-      revenue: 804000,
+      revenue: 368500,
       avgRating: 4.9,
       renewalRate: 92,
       category: 'vip'
     },
     {
       id: 'package-5',
-      name: 'Інтенсив',
-      description: 'Швидкий курс для тих, хто поспішає',
+      name: 'Intensywny',
+      description: 'Szybki kurs dla tych, którzy się spieszą',
       icon: Sparkles,
       color: 'orange',
       credits: 15,
-      price: 4200,
+      price: 1900,
       originalPrice: null,
       discount: 0,
       validity: 14,
       features: [
-        '15 інтенсивних занять',
-        'Щоденні заняття',
-        'Експрес теорія',
-        'Підготовка до іспиту за 2 тижні'
+        '15 intensywnych zajęć',
+        'Codzienne zajęcia',
+        'Ekspresowa teoria',
+        'Przygotowanie do egzaminu w 2 tygodnie'
       ],
       limitations: [
-        'Потребує повної зайнятості',
-        'Без вихідних'
+        'Wymaga pełnej dyspozycyjności',
+        'Bez weekendów'
       ],
       popular: false,
       recommended: false,
@@ -185,31 +187,31 @@ const generatePackages = () => {
       priority: 5,
       purchaseCount: 89,
       activeUsers: 23,
-      revenue: 373800,
+      revenue: 169100,
       avgRating: 4.4,
       renewalRate: 45,
       category: 'intensive'
     },
     {
       id: 'package-6',
-      name: 'Студентський',
-      description: 'Спеціальна пропозиція для студентів',
+      name: 'Studencki',
+      description: 'Specjalna oferta dla studentów',
       icon: Award,
       color: 'green',
       credits: 20,
-      price: 3800,
-      originalPrice: 4500,
+      price: 1800,
+      originalPrice: 2200,
       discount: 15,
       validity: 90,
       features: [
-        '20 практичних занять',
-        'Гнучкий графік',
-        'Знижка для студентів',
-        'Онлайн матеріали'
+        '20 zajęć praktycznych',
+        'Elastyczny harmonogram',
+        'Zniżka dla studentów',
+        'Materiały online'
       ],
       limitations: [
-        'Потрібен студентський квиток',
-        'Обмежена кількість'
+        'Wymagana legitymacja studencka',
+        'Ograniczona liczba miejsc'
       ],
       popular: false,
       recommended: false,
@@ -218,30 +220,30 @@ const generatePackages = () => {
       priority: 6,
       purchaseCount: 178,
       activeUsers: 67,
-      revenue: 676400,
+      revenue: 320400,
       avgRating: 4.5,
       renewalRate: 70,
       category: 'special'
     },
     {
       id: 'package-7',
-      name: 'Корпоративний',
-      description: 'Для компаній та організацій',
+      name: 'Firmowy',
+      description: 'Dla firm i organizacji',
       icon: Users,
       color: 'indigo',
       credits: 100,
-      price: 20000,
-      originalPrice: 25000,
+      price: 9500,
+      originalPrice: 12000,
       discount: 20,
       validity: 365,
       features: [
-        'Пакет на 5 співробітників',
-        'Корпоративні знижки',
-        'Звітність для компанії',
-        'Гнучкий графік для групи'
+        'Pakiet dla 5 pracowników',
+        'Rabaty firmowe',
+        'Raportowanie dla firmy',
+        'Elastyczny harmonogram dla grupy'
       ],
       limitations: [
-        'Мінімум 5 осіб'
+        'Minimum 5 osób'
       ],
       popular: false,
       recommended: false,
@@ -250,30 +252,30 @@ const generatePackages = () => {
       priority: 7,
       purchaseCount: 12,
       activeUsers: 45,
-      revenue: 240000,
+      revenue: 114000,
       avgRating: 4.7,
       renewalRate: 88,
       category: 'corporate'
     },
     {
       id: 'package-8',
-      name: 'Пробний',
-      description: 'Спробуйте наші послуги',
+      name: 'Próbny',
+      description: 'Wypróbuj nasze usługi',
       icon: Gift,
       color: 'pink',
       credits: 3,
-      price: 600,
+      price: 299,
       originalPrice: null,
       discount: 0,
       validity: 7,
       features: [
-        '3 пробних заняття',
-        'Оцінка рівня',
-        'Консультація'
+        '3 zajęcia próbne',
+        'Ocena poziomu',
+        'Konsultacja'
       ],
       limitations: [
-        'Одноразова пропозиція',
-        'Для нових клієнтів'
+        'Jednorazowa oferta',
+        'Dla nowych klientów'
       ],
       popular: false,
       recommended: false,
@@ -282,7 +284,7 @@ const generatePackages = () => {
       priority: 8,
       purchaseCount: 456,
       activeUsers: 0,
-      revenue: 273600,
+      revenue: 136344,
       avgRating: 4.2,
       renewalRate: 95,
       category: 'trial'
@@ -291,14 +293,30 @@ const generatePackages = () => {
 };
 
 export default function AdminPackagesPage() {
+  const router = useRouter();
+  const params = useParams();
+  const locale = params.locale || 'pl';
+  
   const [packages] = useState(generatePackages());
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
-  const [editingPackage, setEditingPackage] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
   const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
   const [loading, setLoading] = useState(false);
+
+  // Navigation handlers
+  const handleViewPackage = (packageId: string) => {
+    router.push(`/${locale}/admin/packages/${packageId}`);
+  };
+
+  const handleEditPackage = (packageId: string) => {
+    router.push(`/${locale}/admin/packages/${packageId}/`);
+  };
+
+  const handleAddPackage = () => {
+    router.push(`/${locale}/admin/packages/new`);
+  };
 
   // Filter packages
   const filteredPackages = packages.filter(pkg => {
@@ -326,12 +344,12 @@ export default function AdminPackagesPage() {
 
   // Sales data for chart
   const salesData = [
-    { month: 'Січ', sales: 45000 },
-    { month: 'Лют', sales: 52000 },
-    { month: 'Бер', sales: 48000 },
-    { month: 'Кві', sales: 61000 },
-    { month: 'Тра', sales: 58000 },
-    { month: 'Чер', sales: 65000 }
+    { month: 'Sty', sales: 45000 },
+    { month: 'Lut', sales: 52000 },
+    { month: 'Mar', sales: 48000 },
+    { month: 'Kwi', sales: 61000 },
+    { month: 'Maj', sales: 58000 },
+    { month: 'Cze', sales: 65000 }
   ];
 
   // Distribution data for pie chart
@@ -381,22 +399,22 @@ export default function AdminPackagesPage() {
         <div className="absolute top-4 right-4 flex flex-col gap-2">
           {pkg.popular && (
             <span className="px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded-full">
-              Популярний
+              Popularny
             </span>
           )}
           {pkg.recommended && (
             <span className="px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded-full">
-              Рекомендований
+              Polecany
             </span>
           )}
           {pkg.new && (
             <span className="px-2 py-1 bg-purple-500 text-white text-xs font-semibold rounded-full">
-              Новий
+              Nowy
             </span>
           )}
           {!pkg.active && (
             <span className="px-2 py-1 bg-gray-500 text-white text-xs font-semibold rounded-full">
-              Неактивний
+              Nieaktywny
             </span>
           )}
         </div>
@@ -416,10 +434,10 @@ export default function AdminPackagesPage() {
           {/* Price */}
           <div className="mb-4">
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-gray-800">₴{pkg.price.toLocaleString()}</span>
+              <span className="text-3xl font-bold text-gray-800">{pkg.price} zł</span>
               {pkg.originalPrice && (
                 <>
-                  <span className="text-lg text-gray-400 line-through">₴{pkg.originalPrice.toLocaleString()}</span>
+                  <span className="text-lg text-gray-400 line-through">{pkg.originalPrice} zł</span>
                   <span className="px-2 py-1 bg-red-100 text-red-600 text-xs font-semibold rounded-full">
                     -{pkg.discount}%
                   </span>
@@ -429,18 +447,18 @@ export default function AdminPackagesPage() {
             <div className="flex items-center gap-3 mt-2 text-sm text-gray-600">
               <div className="flex items-center gap-1">
                 <Coins className="w-4 h-4" />
-                <span>{pkg.credits} кредитів</span>
+                <span>{pkg.credits} kredytów</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                <span>{pkg.validity} днів</span>
+                <span>{pkg.validity} dni</span>
               </div>
             </div>
           </div>
 
           {/* Features */}
           <div className="mb-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">Включає:</p>
+            <p className="text-sm font-medium text-gray-700 mb-2">Zawiera:</p>
             <ul className="space-y-1">
               {pkg.features.slice(0, 3).map((feature: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
@@ -450,7 +468,7 @@ export default function AdminPackagesPage() {
               ))}
               {pkg.features.length > 3 && (
                 <li className="text-sm text-blue-600 font-medium">
-                  +{pkg.features.length - 3} більше
+                  +{pkg.features.length - 3} więcej
                 </li>
               )}
             </ul>
@@ -459,18 +477,18 @@ export default function AdminPackagesPage() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-gray-100">
             <div className="text-center">
-              <p className="text-xs text-gray-500">Користувачів</p>
+              <p className="text-xs text-gray-500">Użytkowników</p>
               <p className="text-lg font-semibold text-gray-800">{pkg.activeUsers}</p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-gray-500">Рейтинг</p>
+              <p className="text-xs text-gray-500">Ocena</p>
               <div className="flex items-center justify-center gap-1">
                 <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                 <span className="text-lg font-semibold text-gray-800">{pkg.avgRating}</span>
               </div>
             </div>
             <div className="text-center">
-              <p className="text-xs text-gray-500">Поновлення</p>
+              <p className="text-xs text-gray-500">Odnowienia</p>
               <p className="text-lg font-semibold text-gray-800">{pkg.renewalRate}%</p>
             </div>
           </div>
@@ -478,16 +496,16 @@ export default function AdminPackagesPage() {
           {/* Actions */}
           <div className="flex gap-2">
             <button
-              onClick={() => setSelectedPackage(pkg)}
+              onClick={() => handleViewPackage(pkg.id)}
               className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 text-sm font-medium"
             >
-              Деталі
+              Szczegóły
             </button>
             <button
-              onClick={() => setEditingPackage(pkg)}
+              onClick={() => handleEditPackage(pkg.id)}
               className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium"
             >
-              Редагувати
+              Edytuj
             </button>
             <button className="px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100">
               <Copy className="w-4 h-4" />
@@ -503,17 +521,20 @@ export default function AdminPackagesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Пакети</h1>
-          <p className="text-gray-600 mt-1">Управління тарифними планами та пакетами</p>
+          <h1 className="text-3xl font-bold text-gray-800">Pakiety</h1>
+          <p className="text-gray-600 mt-1">Zarządzanie planami taryfowymi i pakietami</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Експорт
+            Eksport
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+          <button 
+            onClick={handleAddPackage}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
-            Новий пакет
+            Nowy pakiet
           </button>
         </div>
       </div>
@@ -527,7 +548,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalPackages}</p>
-              <p className="text-xs text-gray-500">Всього пакетів</p>
+              <p className="text-xs text-gray-500">Łącznie pakietów</p>
             </div>
           </div>
         </div>
@@ -538,7 +559,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.activePackages}</p>
-              <p className="text-xs text-gray-500">Активних</p>
+              <p className="text-xs text-gray-500">Aktywnych</p>
             </div>
           </div>
         </div>
@@ -549,7 +570,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalUsers}</p>
-              <p className="text-xs text-gray-500">Користувачів</p>
+              <p className="text-xs text-gray-500">Użytkowników</p>
             </div>
           </div>
         </div>
@@ -559,8 +580,8 @@ export default function AdminPackagesPage() {
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-800">₴{(stats.totalRevenue / 1000000).toFixed(1)}M</p>
-              <p className="text-xs text-gray-500">Дохід</p>
+              <p className="text-2xl font-bold text-gray-800">{(stats.totalRevenue / 1000).toFixed(0)}k zł</p>
+              <p className="text-xs text-gray-500">Przychód</p>
             </div>
           </div>
         </div>
@@ -571,7 +592,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRating}</p>
-              <p className="text-xs text-gray-500">Сер. рейтинг</p>
+              <p className="text-xs text-gray-500">Śr. ocena</p>
             </div>
           </div>
         </div>
@@ -582,7 +603,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRenewal}%</p>
-              <p className="text-xs text-gray-500">Поновлення</p>
+              <p className="text-xs text-gray-500">Odnowienia</p>
             </div>
           </div>
         </div>
@@ -592,7 +613,7 @@ export default function AdminPackagesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Chart */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Продажі за місяць</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Sprzedaż miesięczna</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={salesData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -606,7 +627,7 @@ export default function AdminPackagesPage() {
 
         {/* Distribution Chart */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Розподіл користувачів</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład użytkowników</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -644,7 +665,7 @@ export default function AdminPackagesPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Пошук пакетів..."
+                placeholder="Szukaj pakietów..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -656,14 +677,14 @@ export default function AdminPackagesPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі категорії</option>
-              <option value="beginner">Початковий</option>
-              <option value="standard">Стандартний</option>
-              <option value="premium">Преміум</option>
+              <option value="all">Wszystkie kategorie</option>
+              <option value="beginner">Początkujący</option>
+              <option value="standard">Standardowy</option>
+              <option value="premium">Premium</option>
               <option value="vip">VIP</option>
-              <option value="intensive">Інтенсив</option>
-              <option value="special">Спеціальний</option>
-              <option value="corporate">Корпоративний</option>
+              <option value="intensive">Intensywny</option>
+              <option value="special">Specjalny</option>
+              <option value="corporate">Firmowy</option>
             </select>
             
             <select
@@ -671,9 +692,9 @@ export default function AdminPackagesPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Всі статуси</option>
-              <option value="active">Активні</option>
-              <option value="inactive">Неактивні</option>
+              <option value="all">Wszystkie statusy</option>
+              <option value="active">Aktywne</option>
+              <option value="inactive">Nieaktywne</option>
             </select>
           </div>
 
@@ -711,15 +732,15 @@ export default function AdminPackagesPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Пакет</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ціна</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Кредити</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Користувачі</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Продажі</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дохід</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Рейтинг</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Статус</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Дії</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pakiet</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cena</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kredyty</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Użytkownicy</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sprzedaż</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Przychód</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ocena</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -735,7 +756,7 @@ export default function AdminPackagesPage() {
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <p className="font-semibold">₴{pkg.price.toLocaleString()}</p>
+                      <p className="font-semibold">{pkg.price} zł</p>
                       {pkg.discount > 0 && (
                         <span className="text-xs text-red-600">-{pkg.discount}%</span>
                       )}
@@ -743,7 +764,7 @@ export default function AdminPackagesPage() {
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.credits}</td>
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.activeUsers}</td>
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.purchaseCount}</td>
-                    <td className="px-4 py-4 text-sm font-semibold">₴{(pkg.revenue / 1000).toFixed(0)}k</td>
+                    <td className="px-4 py-4 text-sm font-semibold">{(pkg.revenue / 1000).toFixed(0)}k zł</td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -754,18 +775,21 @@ export default function AdminPackagesPage() {
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         pkg.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                       }`}>
-                        {pkg.active ? 'Активний' : 'Неактивний'}
+                        {pkg.active ? 'Aktywny' : 'Nieaktywny'}
                       </span>
                     </td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-1">
                         <button
-                          onClick={() => setSelectedPackage(pkg)}
+                          onClick={() => handleViewPackage(pkg.id)}
                           className="p-1 hover:bg-gray-100 rounded-lg"
                         >
                           <Eye className="w-4 h-4 text-gray-600" />
                         </button>
-                        <button className="p-1 hover:bg-gray-100 rounded-lg">
+                        <button
+                          onClick={() => handleEditPackage(pkg.id)} 
+                          className="p-1 hover:bg-gray-100 rounded-lg"
+                        >
                           <Edit2 className="w-4 h-4 text-gray-600" />
                         </button>
                         <button className="p-1 hover:bg-gray-100 rounded-lg">
@@ -781,131 +805,6 @@ export default function AdminPackagesPage() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-      )}
-
-      {/* Package Details Modal */}
-      {selectedPackage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className={`p-3 rounded-lg ${getColorClasses(selectedPackage.color).bg}`}>
-                  <selectedPackage.icon className={`w-8 h-8 ${getColorClasses(selectedPackage.color).text}`} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-800">{selectedPackage.name}</h2>
-                  <p className="text-gray-500">{selectedPackage.description}</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setSelectedPackage(null)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <XCircle className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Pricing */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Тарифікація</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Ціна:</span>
-                    <span className="font-semibold">₴{selectedPackage.price.toLocaleString()}</span>
-                  </div>
-                  {selectedPackage.originalPrice && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Знижка:</span>
-                      <span className="font-semibold text-red-600">{selectedPackage.discount}%</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Кредити:</span>
-                    <span className="font-semibold">{selectedPackage.credits}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Термін дії:</span>
-                    <span className="font-semibold">{selectedPackage.validity} днів</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Statistics */}
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Статистика</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Активні користувачі:</span>
-                    <span className="font-semibold">{selectedPackage.activeUsers}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Всього продажів:</span>
-                    <span className="font-semibold">{selectedPackage.purchaseCount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Загальний дохід:</span>
-                    <span className="font-semibold">₴{selectedPackage.revenue.toLocaleString()}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Рейтинг:</span>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="font-semibold">{selectedPackage.avgRating}</span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Поновлення:</span>
-                    <span className="font-semibold">{selectedPackage.renewalRate}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Features */}
-            <div className="mt-6 bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-800 mb-3">Можливості пакету</h3>
-              <ul className="space-y-2">
-                {selectedPackage.features.map((feature: string, idx: number) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-gray-700">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Limitations */}
-            {selectedPackage.limitations.length > 0 && (
-              <div className="mt-6 bg-red-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Обмеження</h3>
-                <ul className="space-y-2">
-                  {selectedPackage.limitations.map((limitation: string, idx: number) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <XCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-gray-700">{limitation}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex gap-3 mt-6">
-              <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Редагувати пакет
-              </button>
-              <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                Дублювати
-              </button>
-              <button
-                onClick={() => setSelectedPackage(null)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-              >
-                Закрити
-              </button>
-            </div>
           </div>
         </div>
       )}
