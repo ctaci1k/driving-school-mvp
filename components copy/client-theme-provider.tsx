@@ -1,11 +1,9 @@
-import { ReactNode } from 'react'
+// components/client-theme-provider.tsx
+'use client'
+
 import { ThemeProvider } from 'next-themes'
 
-type Props = {
-  children: ReactNode
-}
-
-export function ClientThemeProvider({ children }: Props) {
+export function ClientThemeProvider({ children }) {
   return (
     <ThemeProvider
       attribute="class"
