@@ -225,6 +225,7 @@ export default function StudentSchedulePage() {
       <div className="overflow-x-auto">
         <div className="min-w-[800px]">
           {/* Week header */}
+          
           <div className="grid grid-cols-8 gap-px bg-gray-200 rounded-t-lg overflow-hidden">
             <div className="bg-white p-2"></div>
             {weekDates.map((date, index) => {
