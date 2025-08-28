@@ -1,226 +1,261 @@
-// /app/[locale]/instructor/lessons/today/page.tsx
-// Dzisiejsze zajęcia instruktora
+// app/[locale]/instructor/lessons/page.tsx
+// Сторінка зі списком усіх уроків інструктора
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
+import Link from 'next/link'
 import { 
-  Calendar, Clock, MapPin, Phone, Navigation, Play, Pause, StopCircle,
-  CheckCircle, XCircle, AlertCircle, Camera, FileText, Star,
-  ChevronRight, User, Car, Fuel, Gauge, MessageSquare,
-  Timer, Target, TrendingUp, Coffee, Battery
+  Calendar, Clock, MapPin, Phone, User, Car, Filter,
+  Search, ChevronRight, Star, CheckCircle, XCircle,
+  AlertCircle, Download, Eye, MessageSquare, Navigation,
+  DollarSign, TrendingUp, Users, FileText, Plus
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Progress } from '@/components/ui/progress'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import Link from 'next/link'
-import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Progress } from '@/components/ui/progress'
+import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from 'date-fns'
+import { uk } from 'date-fns/locale'
 
-export default function InstructorTodayLessonsPage() {
-  const [currentLesson, setCurrentLesson] = useState<any>(null)
-  const [lessonTimer, setLessonTimer] = useState(0)
-  const [isTimerRunning, setIsTimerRunning] = useState(false)
-  const [currentTime, setCurrentTime] = useState(new Date())
+interface Lesson {
+  id: string
+  date: string
+  time: string
+  status: 'completed' | 'scheduled' | 'cancelled' | 'no-show'
+  student: {
+    id: string
+    name: string
+    phone: string
+    avatar: string
+    progress: number
+  }
+  type: string
+  location: string
+  vehicle: string
+  duration: number
+  price: number
+  rating?: number
+  distance?: number
+  paid: boolean
+}
 
-  // Dzisiejsze zajęcia
-  const todayLessons = [
+export default function InstructorLessonsPage() {
+  const t = useTranslations('instructor.lessons.list')
+  const router = useRouter()
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
+  const [dateRange, setDateRange] = useState('week')
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
+
+  // Приклади даних уроків
+  const lessons: Lesson[] = [
     {
       id: '1',
-      time: '08:00 - 09:30',
-      status: 'completed',
+      date: '2024-02-05',
+      time: '08:00',
+      status: 'scheduled',
       student: {
         id: 's1',
-        name: 'Anna Kowalska',
-        phone: '+48501234567',
+        name: 'Анна Коваленко',
+        phone: '+380 123 456 789',
         avatar: 'https://ui-avatars.com/api/?name=AK&background=EC4899&color=fff',
-        lessonsCompleted: 12,
         progress: 65
       },
-      type: 'Praktyka - miasto',
-      location: {
-        pickup: 'ul. Nowy Świat, 1',
-        area: 'Centrum miasta'
-      },
-      objectives: ['Parkowanie równoległe', 'Przejazd przez skrzyżowania'],
+      type: t('lessonTypes.city'),
+      location: 'вул. Хрещатик 100',
+      vehicle: 'Toyota Corolla (АА 12345 КА)',
       duration: 90,
-      distance: 18.5,
-      rating: 5
+      price: 150,
+      paid: true
     },
     {
       id: '2',
-      time: '10:00 - 11:30',
+      date: '2024-02-04',
+      time: '14:00',
       status: 'completed',
       student: {
         id: 's2',
-        name: 'Jan Nowak',
-        phone: '+48501234568',
-        avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff',
-        lessonsCompleted: 5,
-        progress: 30
+        name: 'Петро Шевченко',
+        phone: '+380 987 654 321',
+        avatar: 'https://ui-avatars.com/api/?name=PS&background=3B82F6&color=fff',
+        progress: 85
       },
-      type: 'Praktyka - plac manewrowy',
-      location: {
-        pickup: 'Ośrodek szkolenia kierowców',
-        area: 'Plac nauki jazdy'
-      },
-      objectives: ['Ruszanie', 'Hamowanie', 'Skręty'],
-      duration: 90,
-      distance: 5.2,
-      rating: 4
+      type: t('lessonTypes.internalExam'),
+      location: 'Екзаменаційний майданчик',
+      vehicle: 'Toyota Corolla (АА 12345 КА)',
+      duration: 60,
+      price: 120,
+      rating: 5,
+      distance: 25.5,
+      paid: true
     },
     {
       id: '3',
-      time: '12:00 - 13:30',
-      status: 'in-progress',
+      date: '2024-02-04',
+      time: '10:00',
+      status: 'completed',
       student: {
         id: 's3',
-        name: 'Maria Wiśniewska',
-        phone: '+48501234569',
-        avatar: 'https://ui-avatars.com/api/?name=MW&background=10B981&color=fff',
-        lessonsCompleted: 22,
-        progress: 85
+        name: 'Марія Бондаренко',
+        phone: '+380 555 666 777',
+        avatar: 'https://ui-avatars.com/api/?name=MB&background=10B981&color=fff',
+        progress: 45
       },
-      type: 'Przygotowanie do egzaminu',
-      location: {
-        pickup: 'ul. Marszałkowska, 100',
-        area: 'Trasa egzaminacyjna WORD'
-      },
-      objectives: ['Trasa egzaminacyjna', 'Hamowanie awaryjne'],
+      type: t('lessonTypes.practiceArea'),
+      location: 'Навчальний майданчик',
+      vehicle: 'Toyota Yaris (АА 67890 КА)',
       duration: 90,
-      distance: 0,
-      rating: null
+      price: 150,
+      rating: 4,
+      distance: 8.2,
+      paid: false
     },
     {
       id: '4',
-      time: '14:30 - 16:00',
-      status: 'upcoming',
+      date: '2024-02-03',
+      time: '16:00',
+      status: 'cancelled',
       student: {
         id: 's4',
-        name: 'Andrzej Kowalczyk',
-        phone: '+48501234570',
-        avatar: 'https://ui-avatars.com/api/?name=AK&background=F59E0B&color=fff',
-        lessonsCompleted: 10,
-        progress: 55
+        name: 'Іван Мельник',
+        phone: '+380 111 222 333',
+        avatar: 'https://ui-avatars.com/api/?name=IM&background=F59E0B&color=fff',
+        progress: 30
       },
-      type: 'Praktyka - trasa',
-      location: {
-        pickup: 'ul. Zwycięstwa, 50',
-        area: 'Warszawa-Kraków'
-      },
-      objectives: ['Jazda trasą', 'Wyprzedzanie', 'Dystans'],
+      type: t('lessonTypes.city'),
+      location: 'вул. Шевченка 50',
+      vehicle: 'Toyota Corolla (АА 12345 КА)',
       duration: 90,
-      distance: 0,
-      rating: null
+      price: 150,
+      paid: false
     },
     {
       id: '5',
-      time: '16:30 - 18:00',
-      status: 'upcoming',
+      date: '2024-02-03',
+      time: '12:00',
+      status: 'no-show',
       student: {
         id: 's5',
-        name: 'Natalia Lewandowska',
-        phone: '+48501234571',
-        avatar: 'https://ui-avatars.com/api/?name=NL&background=8B5CF6&color=fff',
-        lessonsCompleted: 16,
+        name: 'Катерина Коваль',
+        phone: '+380 444 555 666',
+        avatar: 'https://ui-avatars.com/api/?name=KK&background=8B5CF6&color=fff',
         progress: 70
       },
-      type: 'Praktyka - trudne warunki',
-      location: {
-        pickup: 'pl. Zwycięstwa',
-        area: 'Centrum - Mokotów'
-      },
-      objectives: ['Jazda w korkach', 'Ruch okrężny'],
+      type: t('lessonTypes.examRoute'),
+      location: 'Старт: ТСЦ',
+      vehicle: 'Toyota Corolla (АА 12345 КА)',
       duration: 90,
-      distance: 0,
-      rating: null
+      price: 150,
+      paid: true
     }
   ]
 
-  // Statystyki dnia
-  const todayStats = {
-    completed: 2,
-    total: 5,
-    distance: 23.7,
-    earnings: 1500,
-    rating: 4.5,
-    fuel: 65
+  // Статистика
+  const stats = {
+    totalLessons: lessons.length,
+    completedLessons: lessons.filter(l => l.status === 'completed').length,
+    totalEarnings: lessons.filter(l => l.status === 'completed').reduce((sum, l) => sum + l.price, 0),
+    averageRating: 4.5,
+    totalDistance: lessons.filter(l => l.distance).reduce((sum, l) => sum + (l.distance || 0), 0),
+    unpaidLessons: lessons.filter(l => !l.paid && l.status === 'completed').length
   }
 
-  useEffect(() => {
-    // Aktualizacja timera
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-      if (isTimerRunning) {
-        setLessonTimer(prev => prev + 1)
-      }
-    }, 1000)
+  // Фільтрування уроків
+  const filteredLessons = lessons.filter(lesson => {
+    const matchesSearch = lesson.student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         lesson.location.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = statusFilter === 'all' || lesson.status === statusFilter
+    const matchesType = typeFilter === 'all' || lesson.type === typeFilter
+    
+    return matchesSearch && matchesStatus && matchesType
+  })
 
-    // Znalezienie bieżących zajęć
-    const current = todayLessons.find(l => l.status === 'in-progress')
-    if (current) {
-      setCurrentLesson(current)
-      setIsTimerRunning(true)
+  const getStatusBadge = (status: Lesson['status']) => {
+    switch (status) {
+      case 'completed':
+        return <Badge className="bg-green-100 text-green-800">{t('status.completed')}</Badge>
+      case 'scheduled':
+        return <Badge className="bg-blue-100 text-blue-800">{t('status.scheduled')}</Badge>
+      case 'cancelled':
+        return <Badge className="bg-gray-100 text-gray-800">{t('status.cancelled')}</Badge>
+      case 'no-show':
+        return <Badge className="bg-red-100 text-red-800">{t('status.noShow')}</Badge>
+      default:
+        return null
     }
-
-    return () => clearInterval(timer)
-  }, [isTimerRunning])
-
-  const formatTimer = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600)
-    const minutes = Math.floor((seconds % 3600) / 60)
-    const secs = seconds % 60
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
-  const handleStartLesson = (lessonId: string) => {
-    // Przejście do strony check-in
-    window.location.href = `/instructor/lessons/check-in/${lessonId}`
-  }
-
-  const handleEndLesson = () => {
-    setIsTimerRunning(false)
-    // Logika kończenia lekcji
-  }
-
-  const calculateTimeUntil = (timeStr: string) => {
-    const [hours, minutes] = timeStr.split(':').map(Number)
-    const lessonTime = new Date()
-    lessonTime.setHours(hours, minutes, 0)
-    
-    const diff = lessonTime.getTime() - currentTime.getTime()
-    if (diff <= 0) return 'Teraz'
-    
-    const hoursUntil = Math.floor(diff / (1000 * 60 * 60))
-    const minutesUntil = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
-    
-    if (hoursUntil > 0) {
-      return `${hoursUntil}g ${minutesUntil}min`
+  const getStatusIcon = (status: Lesson['status']) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="w-5 h-5 text-green-500" />
+      case 'scheduled':
+        return <Clock className="w-5 h-5 text-blue-500" />
+      case 'cancelled':
+        return <XCircle className="w-5 h-5 text-gray-500" />
+      case 'no-show':
+        return <AlertCircle className="w-5 h-5 text-red-500" />
+      default:
+        return null
     }
-    return `${minutesUntil}min`
   }
 
   return (
     <div className="space-y-6">
-      {/* Nagłówek */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Dzisiejsze zajęcia</h1>
-        <p className="text-gray-600 mt-1">
-          {format(currentTime, 'EEEE, d MMMM yyyy', { locale: pl })}
-        </p>
+      {/* Заголовок */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
+        </div>
+        <Button onClick={() => router.push('/instructor/lessons/new')}>
+          <Plus className="w-4 h-4 mr-2" />
+          {t('buttons.addLesson')}
+        </Button>
       </div>
 
-      {/* Szybkie statystyki */}
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+      {/* Статистика */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <Card>
-          <CardContent className="p-3">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Wykonane</p>
-                <p className="text-xl font-bold">{todayStats.completed}/{todayStats.total}</p>
+                <p className="text-xs text-gray-500">{t('stats.all')}</p>
+                <p className="text-2xl font-bold">{stats.totalLessons}</p>
+              </div>
+              <Calendar className="w-5 h-5 text-gray-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500">{t('stats.completed')}</p>
+                <p className="text-2xl font-bold">{stats.completedLessons}</p>
               </div>
               <CheckCircle className="w-5 h-5 text-green-500" />
             </div>
@@ -228,35 +263,23 @@ export default function InstructorTodayLessonsPage() {
         </Card>
 
         <Card>
-          <CardContent className="p-3">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Km</p>
-                <p className="text-xl font-bold">{todayStats.distance}</p>
+                <p className="text-xs text-gray-500">{t('stats.earnings')}</p>
+                <p className="text-xl font-bold">{t('stats.currency', {amount: stats.totalEarnings})}</p>
               </div>
-              <Navigation className="w-5 h-5 text-blue-500" />
+              <DollarSign className="w-5 h-5 text-green-500" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-3">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Zarobek</p>
-                <p className="text-xl font-bold">zł{todayStats.earnings}</p>
-              </div>
-              <TrendingUp className="w-5 h-5 text-green-500" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-gray-500">Ocena</p>
-                <p className="text-xl font-bold">{todayStats.rating}</p>
+                <p className="text-xs text-gray-500">{t('stats.rating')}</p>
+                <p className="text-2xl font-bold">{stats.averageRating}</p>
               </div>
               <Star className="w-5 h-5 text-yellow-500" />
             </div>
@@ -264,201 +287,198 @@ export default function InstructorTodayLessonsPage() {
         </Card>
 
         <Card>
-          <CardContent className="p-3">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Czas</p>
-                <p className="text-xl font-bold">{format(currentTime, 'HH:mm')}</p>
+                <p className="text-xs text-gray-500">{t('stats.distance')}</p>
+                <p className="text-xl font-bold">{t('stats.km', {distance: stats.totalDistance})}</p>
               </div>
-              <Clock className="w-5 h-5 text-gray-400" />
+              <Navigation className="w-5 h-5 text-blue-500" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardContent className="p-3">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs text-gray-500">Paliwo</p>
-                <p className="text-xl font-bold">{todayStats.fuel}%</p>
+                <p className="text-xs text-gray-500">{t('stats.unpaid')}</p>
+                <p className="text-2xl font-bold">{stats.unpaidLessons}</p>
               </div>
-              <Fuel className="w-5 h-5 text-orange-500" />
+              <AlertCircle className="w-5 h-5 text-orange-500" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Bieżące zajęcia */}
-      {currentLesson && (
-        <Card className="border-2 border-blue-500">
-          <CardHeader className="bg-blue-50">
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle>Bieżące zajęcia</CardTitle>
-                <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="default" className="animate-pulse">TRWA</Badge>
-                  <span className="text-2xl font-mono font-bold text-blue-600">
-                    {formatTimer(lessonTimer)}
-                  </span>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button size="icon" variant="outline">
-                  <Pause className="w-4 h-4" />
-                </Button>
-                <Button size="icon" variant="destructive" onClick={handleEndLesson}>
-                  <StopCircle className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-4">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={currentLesson.student.avatar} />
-                  <AvatarFallback>{currentLesson.student.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-semibold">{currentLesson.student.name}</p>
-                  <p className="text-sm text-gray-600">{currentLesson.type}</p>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline">
-                  <Phone className="w-4 h-4" />
-                </Button>
-                <Button size="sm" variant="outline">
-                  <MessageSquare className="w-4 h-4" />
-                </Button>
+      {/* Фільтри та пошук */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder={t('filters.searchPlaceholder')}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              <Button variant="outline" className="justify-start">
-                <Camera className="w-4 h-4 mr-2" />
-                Zdjęcie
-              </Button>
-              <Button variant="outline" className="justify-start">
-                <FileText className="w-4 h-4 mr-2" />
-                Notatki
-              </Button>
-              <Button variant="outline" className="justify-start">
-                <Navigation className="w-4 h-4 mr-2" />
-                Trasa
-              </Button>
-              <Button variant="outline" className="justify-start" asChild>
-                <Link href={`/instructor/lessons/${currentLesson.id}`}>
-                  <Target className="w-4 h-4 mr-2" />
-                  Szczegóły
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Статус" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('filters.allStatuses')}</SelectItem>
+                <SelectItem value="completed">{t('status.completed')}</SelectItem>
+                <SelectItem value="scheduled">{t('status.scheduled')}</SelectItem>
+                <SelectItem value="cancelled">{t('status.cancelled')}</SelectItem>
+                <SelectItem value="no-show">{t('status.noShow')}</SelectItem>
+              </SelectContent>
+            </Select>
 
-      {/* Harmonogram zajęć */}
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="w-full md:w-[180px]">
+                <SelectValue placeholder="Тип" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{t('filters.allTypes')}</SelectItem>
+                <SelectItem value={t('lessonTypes.city')}>{t('lessonTypes.city')}</SelectItem>
+                <SelectItem value={t('lessonTypes.practiceArea')}>{t('lessonTypes.practiceArea')}</SelectItem>
+                <SelectItem value={t('lessonTypes.examRoute')}>{t('lessonTypes.examRoute')}</SelectItem>
+                <SelectItem value={t('lessonTypes.internalExam')}>{t('lessonTypes.internalExam')}</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select value={dateRange} onValueChange={setDateRange}>
+              <SelectTrigger className="w-full md:w-[140px]">
+                <SelectValue placeholder="Період" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="today">{t('filters.period.today')}</SelectItem>
+                <SelectItem value="week">{t('filters.period.week')}</SelectItem>
+                <SelectItem value="month">{t('filters.period.month')}</SelectItem>
+                <SelectItem value="all">{t('filters.period.all')}</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button variant="outline" size="icon">
+              <Download className="w-4 h-4" />
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Таблиця уроків */}
       <Card>
         <CardHeader>
-          <CardTitle>Harmonogram na dzisiaj</CardTitle>
+          <CardTitle>{t('table.title')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            {todayLessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className={`
-                  p-4 rounded-lg border-2 transition-all
-                  ${lesson.status === 'completed' ? 'bg-gray-50 border-gray-200' : ''}
-                  ${lesson.status === 'in-progress' ? 'bg-blue-50 border-blue-300 shadow-md' : ''}
-                  ${lesson.status === 'upcoming' ? 'bg-white border-gray-200 hover:shadow-md' : ''}
-                `}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-3">
-                    {/* Czas i status */}
-                    <div className="text-center min-w-[60px]">
-                      <p className="font-semibold text-sm">{lesson.time.split(' - ')[0]}</p>
-                      <p className="text-xs text-gray-500">{lesson.time.split(' - ')[1]}</p>
-                      {lesson.status === 'completed' && (
-                        <CheckCircle className="w-5 h-5 text-green-500 mt-1 mx-auto" />
-                      )}
-                      {lesson.status === 'in-progress' && (
-                        <div className="w-5 h-5 bg-blue-500 rounded-full mt-1 mx-auto animate-pulse" />
-                      )}
-                      {lesson.status === 'upcoming' && (
-                        <Badge variant="outline" className="mt-1 text-xs">
-                          {calculateTimeUntil(lesson.time.split(' - ')[0])}
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Informacje o kursancie */}
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t('table.headers.status')}</TableHead>
+                  <TableHead>{t('table.headers.dateTime')}</TableHead>
+                  <TableHead>{t('table.headers.student')}</TableHead>
+                  <TableHead>{t('table.headers.lessonType')}</TableHead>
+                  <TableHead>{t('table.headers.location')}</TableHead>
+                  <TableHead>{t('table.headers.vehicle')}</TableHead>
+                  <TableHead>{t('table.headers.duration')}</TableHead>
+                  <TableHead>{t('table.headers.price')}</TableHead>
+                  <TableHead>{t('table.headers.payment')}</TableHead>
+                  <TableHead>{t('table.headers.rating')}</TableHead>
+                  <TableHead>{t('table.headers.actions')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredLessons.map((lesson) => (
+                  <TableRow key={lesson.id} className="hover:bg-gray-50">
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(lesson.status)}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <p className="font-medium">
+                          {format(new Date(lesson.date), 'dd MMM yyyy', { locale: uk })}
+                        </p>
+                        <p className="text-sm text-gray-500">{lesson.time}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
                           <AvatarImage src={lesson.student.avatar} />
                           <AvatarFallback>{lesson.student.name[0]}</AvatarFallback>
                         </Avatar>
-                        <p className="font-semibold">{lesson.student.name}</p>
-                        <Progress value={lesson.student.progress} className="w-20 h-1.5" />
-                        <span className="text-xs text-gray-500">{lesson.student.progress}%</span>
+                        <div>
+                          <p className="font-medium">{lesson.student.name}</p>
+                          <div className="flex items-center gap-2">
+                            <Progress value={lesson.student.progress} className="w-16 h-1.5" />
+                            <span className="text-xs text-gray-500">{lesson.student.progress}%</span>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">{lesson.type}</p>
-                      
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {lesson.location.area}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Target className="w-3 h-3" />
-                          {lesson.objectives.length} celów
-                        </span>
-                        {lesson.distance > 0 && (
-                          <span className="flex items-center gap-1">
-                            <Navigation className="w-3 h-3" />
-                            {lesson.distance} km
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Akcje */}
-                  <div className="flex flex-col gap-2">
-                    {lesson.status === 'completed' && lesson.rating && (
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{lesson.type}</Badge>
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-4 h-4 ${
-                              i < lesson.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
+                        <MapPin className="w-3 h-3 text-gray-400" />
+                        <span className="text-sm">{lesson.location}</span>
                       </div>
-                    )}
-                    {lesson.status === 'upcoming' && (
-                      <Button 
-                        size="sm"
-                        onClick={() => handleStartLesson(lesson.id)}
-                      >
-                        <Play className="w-4 h-4 mr-1" />
-                        Rozpocznij
-                      </Button>
-                    )}
-                    <Button size="sm" variant="outline" asChild>
-                      <Link href={`/instructor/lessons/${lesson.id}`}>
-                        Szczegóły
-                        <ChevronRight className="w-4 h-4 ml-1" />
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        <Car className="w-3 h-3 text-gray-400" />
+                        <span className="text-sm">{lesson.vehicle}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>{t('table.minutes', {duration: lesson.duration})}</TableCell>
+                    <TableCell className="font-medium">{t('stats.currency', {amount: lesson.price})}</TableCell>
+                    <TableCell>
+                      {lesson.paid ? (
+                        <Badge className="bg-green-100 text-green-800">{t('table.paid')}</Badge>
+                      ) : (
+                        <Badge className="bg-orange-100 text-orange-800">{t('table.toPay')}</Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {lesson.rating && (
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm">{lesson.rating}</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => router.push(`/instructor/lessons/${lesson.id}`)}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon">
+                          <MessageSquare className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon">
+                          <Phone className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </CardContent>
       </Card>

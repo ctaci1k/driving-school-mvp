@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   MapPin, Plus, Search, Filter, Edit2, Trash2, Eye,
   Users, Car, Calendar, Clock, Phone, Mail, Globe,
@@ -12,36 +13,36 @@ import {
   GraduationCap, BookOpen, Grid, List, XCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 
-// Funkcja dla stabilnych wartości
+// Функція для стабільних значень
 const getSeededValue = (index: number, max: number, seed: number = 1) => {
   return ((index * seed + 7) % max);
 };
 
-// Generate mock locations data with Polish cities
+// Генерація mock даних локацій
 const generateLocations = () => {
   const locationNames = [
-    { name: 'Warszawa - Centrum', address: 'ul. Marszałkowska 1', type: 'main' },
-    { name: 'Warszawa - Mokotów', address: 'ul. Puławska 10', type: 'branch' },
-    { name: 'Warszawa - Praga', address: 'ul. Targowa 24', type: 'branch' },
-    { name: 'Warszawa - Wola', address: 'ul. Wolska 11', type: 'branch' },
-    { name: 'Warszawa - Ursynów', address: 'ul. KEN 17', type: 'branch' },
-    { name: 'Warszawa - Bemowo', address: 'ul. Powstańców Śląskich 5', type: 'branch' },
-    { name: 'Kraków - Centrum', address: 'Rynek Główny 1', type: 'main' },
-    { name: 'Kraków - Nowa Huta', address: 'os. Centrum A 35', type: 'branch' },
-    { name: 'Wrocław - Stare Miasto', address: 'ul. Świdnicka 20', type: 'main' },
-    { name: 'Poznań - Centrum', address: 'ul. Święty Marcin 5', type: 'main' },
-    { name: 'Gdańsk - Główne Miasto', address: 'ul. Długa 45', type: 'main' },
-    { name: 'Łódź - Śródmieście', address: 'ul. Piotrkowska 135', type: 'branch' },
-    { name: 'Katowice - Centrum', address: 'ul. 3 Maja 87', type: 'branch' },
-    { name: 'Szczecin - Centrum', address: 'al. Wyzwolenia 28', type: 'branch' },
-    { name: 'Lublin - Stare Miasto', address: 'ul. Krakowskie Przedmieście 53', type: 'branch' }
+    { name: 'Варшава - Центр', address: 'вул. Маршалківська 1', type: 'main' },
+    { name: 'Варшава - Мокотув', address: 'вул. Пулавська 10', type: 'branch' },
+    { name: 'Варшава - Прага', address: 'вул. Таргова 24', type: 'branch' },
+    { name: 'Варшава - Воля', address: 'вул. Вольська 11', type: 'branch' },
+    { name: 'Варшава - Урсинув', address: 'вул. KEN 17', type: 'branch' },
+    { name: 'Варшава - Бемово', address: 'вул. Повстанців Сілезьких 5', type: 'branch' },
+    { name: 'Краків - Центр', address: 'Ринок Головний 1', type: 'main' },
+    { name: 'Краків - Нова Гута', address: 'ос. Центрум A 35', type: 'branch' },
+    { name: 'Вроцлав - Старе Місто', address: 'вул. Швидницька 20', type: 'main' },
+    { name: 'Познань - Центр', address: 'вул. Святий Марцін 5', type: 'main' },
+    { name: 'Гданськ - Головне Місто', address: 'вул. Довга 45', type: 'main' },
+    { name: 'Лодзь - Центр', address: 'вул. Пйотрковська 135', type: 'branch' },
+    { name: 'Катовіце - Центр', address: 'вул. 3 Травня 87', type: 'branch' },
+    { name: 'Щецин - Центр', address: 'ал. Визволення 28', type: 'branch' },
+    { name: 'Люблін - Старе Місто', address: 'вул. Краківське Передмістя 53', type: 'branch' }
   ];
 
   const managers = [
-    'Aleksander Kowalski', 'Maria Nowak', 'Jan Wiśniewski', 
-    'Julia Wójcik', 'Piotr Kamiński', 'Katarzyna Lewandowska'
+    'Олександр Ковальський', 'Марія Новак', 'Ян Вишневський', 
+    'Юлія Вуйцік', 'Петро Камінський', 'Катерина Левандовська'
   ];
 
   return locationNames.map((location, index) => ({
@@ -80,7 +81,7 @@ const generateLocations = () => {
     workingHours: {
       weekdays: '08:00 - 20:00',
       saturday: '09:00 - 18:00',
-      sunday: 'Zamknięte'
+      sunday: 'closed'
     },
     
     // Status
@@ -95,17 +96,18 @@ const generateLocations = () => {
     
     // Transport
     publicTransport: {
-      metro: index < 6 ? `Stacja M${index % 2 + 1} ${['Centrum', 'Politechnika', 'Wilanowska', 'Kabaty', 'Młociny'][index % 5]}` : null,
-      bus: `Linie: ${100 + getSeededValue(index, 50)}, ${150 + getSeededValue(index, 50, 3)}`,
-      tram: getSeededValue(index, 10) > 7 ? `Tramwaj ${1 + getSeededValue(index, 20)}` : null
+      metro: index < 6 ? `Станція M${index % 2 + 1} ${['Центр', 'Політехніка', 'Вилановська', 'Кабати', 'Млоцини'][index % 5]}` : null,
+      bus: `Лінії: ${100 + getSeededValue(index, 50)}, ${150 + getSeededValue(index, 50, 3)}`,
+      tram: getSeededValue(index, 10) > 7 ? `Трамвай ${1 + getSeededValue(index, 20)}` : null
     }
   }));
 };
 
 export default function AdminLocationsPage() {
+  const t = useTranslations('admin.locations.list');
   const router = useRouter();
   const params = useParams();
-  const locale = params.locale || 'pl';
+  const locale = params.locale || 'uk';
   
   const [locations] = useState(generateLocations());
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
@@ -116,10 +118,10 @@ export default function AdminLocationsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
   const [loading, setLoading] = useState(false);
 
-  // Get unique cities
+  // Отримати унікальні міста
   const cities = [...new Set(locations.map(l => l.city))];
 
-  // Filter locations
+  // Фільтрація локацій
   const filteredLocations = locations.filter(location => {
     const matchesSearch = 
       location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -132,7 +134,7 @@ export default function AdminLocationsPage() {
     return matchesSearch && matchesCity && matchesType && matchesStatus;
   });
 
-  // Calculate stats
+  // Підрахунок статистики
   const stats = {
     total: locations.length,
     active: locations.filter(l => l.status === 'active').length,
@@ -144,17 +146,17 @@ export default function AdminLocationsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      active: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Aktywna' },
-      maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: AlertCircle, label: 'W konserwacji' },
-      inactive: { bg: 'bg-gray-100', text: 'text-gray-700', icon: Clock, label: 'Nieaktywna' }
+      active: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: t('status.active') },
+      maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: AlertCircle, label: t('status.maintenance') },
+      inactive: { bg: 'bg-gray-100', text: 'text-gray-700', icon: Clock, label: t('status.inactive') }
     };
     return badges[status as keyof typeof badges] || badges.inactive;
   };
 
   const getTypeBadge = (type: string) => {
     const badges = {
-      main: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Building, label: 'Główne biuro' },
-      branch: { bg: 'bg-purple-100', text: 'text-purple-700', icon: Home, label: 'Filia' }
+      main: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Building, label: t('type.main') },
+      branch: { bg: 'bg-purple-100', text: 'text-purple-700', icon: Home, label: t('type.branch') }
     };
     return badges[type as keyof typeof badges] || badges.branch;
   };
@@ -217,39 +219,39 @@ export default function AdminLocationsPage() {
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Users className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Kursanci</span>
+              <span className="text-xs text-gray-500">{t('card.students')}</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.activeStudents}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <GraduationCap className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Instruktorzy</span>
+              <span className="text-xs text-gray-500">{t('card.instructors')}</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.activeInstructors}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Car className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Pojazdy</span>
+              <span className="text-xs text-gray-500">{t('card.vehicles')}</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.vehicles}</p>
           </div>
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 mb-1">
               <Activity className="w-4 h-4 text-gray-500" />
-              <span className="text-xs text-gray-500">Wykorzystanie</span>
+              <span className="text-xs text-gray-500">{t('card.utilization')}</span>
             </div>
             <p className="text-lg font-semibold text-gray-800">{location.utilization}%</p>
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-600 mb-2">Menedżer: <span className="font-medium">{location.manager}</span></p>
+          <p className="text-sm text-gray-600 mb-2">{t('card.manager')}: <span className="font-medium">{location.manager}</span></p>
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
             <span className="font-medium text-gray-800">{location.rating}</span>
-            <span className="text-sm text-gray-500">• {location.monthlyLessons} zajęć/miesiąc</span>
+            <span className="text-sm text-gray-500">• {location.monthlyLessons} {t('card.lessonsPerMonth')}</span>
           </div>
         </div>
 
@@ -258,7 +260,7 @@ export default function AdminLocationsPage() {
           {location.amenities.slice(0, 4).map((amenity: string, idx: number) => {
             const Icon = getAmenityIcon(amenity);
             return (
-              <div key={idx} className="p-1.5 bg-gray-100 rounded" title={amenity}>
+              <div key={idx} className="p-1.5 bg-gray-100 rounded" title={t(`amenities.${amenity}`)}>
                 <Icon className="w-4 h-4 text-gray-600" />
               </div>
             );
@@ -275,13 +277,13 @@ export default function AdminLocationsPage() {
             onClick={() => handleViewLocation(location.id)}
             className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 text-sm font-medium"
           >
-            Szczegóły
+            {t('buttons.details')}
           </button>
           <button
             onClick={() => handleEditLocation(location.id)}
             className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium"
           >
-            Edytuj
+            {t('buttons.edit')}
           </button>
         </div>
       </div>
@@ -293,15 +295,15 @@ export default function AdminLocationsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Lokalizacje</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie filiami i biurami</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <button 
           onClick={handleAddLocation}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Dodaj lokalizację
+          {t('buttons.addLocation')}
         </button>
       </div>
 
@@ -314,7 +316,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Lokalizacji</p>
+              <p className="text-xs text-gray-500">{t('stats.locations')}</p>
             </div>
           </div>
         </div>
@@ -325,7 +327,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Aktywnych</p>
+              <p className="text-xs text-gray-500">{t('stats.active')}</p>
             </div>
           </div>
         </div>
@@ -336,7 +338,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalStudents}</p>
-              <p className="text-xs text-gray-500">Kursantów</p>
+              <p className="text-xs text-gray-500">{t('stats.students')}</p>
             </div>
           </div>
         </div>
@@ -347,7 +349,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalInstructors}</p>
-              <p className="text-xs text-gray-500">Instruktorów</p>
+              <p className="text-xs text-gray-500">{t('stats.instructors')}</p>
             </div>
           </div>
         </div>
@@ -358,7 +360,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalVehicles}</p>
-              <p className="text-xs text-gray-500">Pojazdów</p>
+              <p className="text-xs text-gray-500">{t('stats.vehicles')}</p>
             </div>
           </div>
         </div>
@@ -369,7 +371,7 @@ export default function AdminLocationsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgUtilization}%</p>
-              <p className="text-xs text-gray-500">Wykorzystanie</p>
+              <p className="text-xs text-gray-500">{t('stats.utilization')}</p>
             </div>
           </div>
         </div>
@@ -383,7 +385,7 @@ export default function AdminLocationsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj po nazwie, adresie lub menedżerze..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -395,7 +397,7 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterCity(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie miasta</option>
+              <option value="all">{t('filters.allCities')}</option>
               {cities.map(city => (
                 <option key={city} value={city}>{city}</option>
               ))}
@@ -406,9 +408,9 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterType(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie typy</option>
-              <option value="main">Główne biura</option>
-              <option value="branch">Filie</option>
+              <option value="all">{t('filters.allTypes')}</option>
+              <option value="main">{t('filters.mainOffices')}</option>
+              <option value="branch">{t('filters.branches')}</option>
             </select>
             
             <select
@@ -416,10 +418,10 @@ export default function AdminLocationsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="active">Aktywne</option>
-              <option value="maintenance">W konserwacji</option>
-              <option value="inactive">Nieaktywne</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="active">{t('filters.active')}</option>
+              <option value="maintenance">{t('filters.maintenance')}</option>
+              <option value="inactive">{t('filters.inactive')}</option>
             </select>
           </div>
 
@@ -463,14 +465,14 @@ export default function AdminLocationsPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lokalizacja</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Typ</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Menedżer</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kursanci</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Instruktorzy</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Wykorzystanie</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.location')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.type')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.status')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.manager')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.students')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.instructors')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.utilization')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -518,12 +520,14 @@ export default function AdminLocationsPage() {
                           <button
                             onClick={() => handleViewLocation(location.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg"
+                            title={t('buttons.details')}
                           >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
                           <button
                             onClick={() => handleEditLocation(location.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg"
+                            title={t('buttons.edit')}
                           >
                             <Edit2 className="w-4 h-4 text-gray-600" />
                           </button>
@@ -541,7 +545,7 @@ export default function AdminLocationsPage() {
           <div className="flex items-center justify-center h-96 bg-gray-50 rounded-lg">
             <div className="text-center">
               <Map className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-500">Interaktywna mapa będzie dostępna wkrótce</p>
+              <p className="text-gray-500">{t('map.placeholder')}</p>
             </div>
           </div>
         </div>

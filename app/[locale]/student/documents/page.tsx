@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   FileText,
   Download,
@@ -71,30 +72,22 @@ import { toast } from '@/components/ui/use-toast';
 interface Document {
   id: string;
   name: string;
-  type: 'prawo_jazdy' | 'dowod' | 'zaswiadczenie' | 'faktura' | 'umowa' | 'certyfikat' | 'inne';
+  type: 'driving_license' | 'id' | 'medical' | 'invoice' | 'contract' | 'certificate' | 'other';
   category: string;
   size: number;
   uploadDate: string;
   expiryDate?: string;
-  status: 'aktywny' | 'wygasly' | 'oczekuje' | 'odrzucony';
+  status: 'active' | 'expired' | 'pending' | 'rejected';
   verified: boolean;
   url: string;
   thumbnailUrl?: string;
   description?: string;
 }
 
-const documentTypeLabels = {
-  prawo_jazdy: { label: 'Prawo jazdy', icon: CreditCard, color: 'blue' },
-  dowod: { label: 'Dowód osobisty', icon: Shield, color: 'purple' },
-  zaswiadczenie: { label: 'Zaświadczenie', icon: FileText, color: 'green' },
-  faktura: { label: 'Faktura', icon: File, color: 'orange' },
-  umowa: { label: 'Umowa', icon: FileText, color: 'indigo' },
-  certyfikat: { label: 'Certyfikat', icon: GraduationCap, color: 'pink' },
-  inne: { label: 'Inne', icon: File, color: 'gray' }
-};
-
 export default function StudentDocumentsPage() {
   const router = useRouter();
+  const t = useTranslations('student.documents');
+  
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -107,83 +100,93 @@ export default function StudentDocumentsPage() {
   const [storageUsed, setStorageUsed] = useState(0);
   const storageLimit = 100; // MB
 
+  const documentTypeLabels = {
+    driving_license: { label: t('types.drivingLicense'), icon: CreditCard, color: 'blue' },
+    id: { label: t('types.id'), icon: Shield, color: 'purple' },
+    medical: { label: t('types.medical'), icon: FileText, color: 'green' },
+    invoice: { label: t('types.invoice'), icon: File, color: 'orange' },
+    contract: { label: t('types.contract'), icon: FileText, color: 'indigo' },
+    certificate: { label: t('types.certificate'), icon: GraduationCap, color: 'pink' },
+    other: { label: t('types.other'), icon: File, color: 'gray' }
+  };
+
   useEffect(() => {
     // Mock data
     const mockDocuments: Document[] = [
       {
         id: '1',
-        name: 'Prawo jazdy',
-        type: 'prawo_jazdy',
-        category: 'Dokumenty osobiste',
+        name: t('types.drivingLicense'),
+        type: 'driving_license',
+        category: t('categories.personal'),
         size: 2.5,
         uploadDate: '2024-08-01',
         expiryDate: '2029-08-01',
-        status: 'aktywny',
+        status: 'active',
         verified: true,
-        url: '/documents/prawo-jazdy.pdf',
-        description: 'Prawo jazdy kategorii B'
+        url: '/documents/driving-license.pdf',
+        description: t('descriptions.drivingLicense')
       },
       {
         id: '2',
-        name: 'Dowód osobisty',
-        type: 'dowod',
-        category: 'Dokumenty osobiste',
+        name: t('types.id'),
+        type: 'id',
+        category: t('categories.personal'),
         size: 1.8,
         uploadDate: '2024-08-01',
         expiryDate: '2028-12-31',
-        status: 'aktywny',
+        status: 'active',
         verified: true,
-        url: '/documents/dowod.pdf',
-        description: 'Dowód osobisty'
+        url: '/documents/id.pdf',
+        description: t('descriptions.id')
       },
       {
         id: '3',
-        name: 'Zaświadczenie lekarskie',
-        type: 'zaswiadczenie',
-        category: 'Dokumenty medyczne',
+        name: t('types.medical'),
+        type: 'medical',
+        category: t('categories.medical'),
         size: 0.8,
         uploadDate: '2024-07-15',
         expiryDate: '2025-07-15',
-        status: 'aktywny',
+        status: 'active',
         verified: false,
-        url: '/documents/zaswiadczenie.pdf',
-        description: 'Zaświadczenie o braku przeciwwskazań'
+        url: '/documents/medical.pdf',
+        description: t('descriptions.medical')
       },
       {
         id: '4',
-        name: 'Faktura FV/2024/08/001',
-        type: 'faktura',
-        category: 'Finanse',
+        name: 'INV/2024/08/001',
+        type: 'invoice',
+        category: t('categories.financial'),
         size: 0.3,
         uploadDate: '2024-08-20',
-        status: 'aktywny',
+        status: 'active',
         verified: true,
-        url: '/documents/faktura-001.pdf',
-        description: 'Faktura za pakiet 10 lekcji'
+        url: '/documents/invoice-001.pdf',
+        description: t('descriptions.invoice', { count: 10 })
       },
       {
         id: '5',
-        name: 'Umowa szkolenia',
-        type: 'umowa',
-        category: 'Umowy',
+        name: t('types.contract'),
+        type: 'contract',
+        category: t('categories.contracts'),
         size: 1.2,
         uploadDate: '2024-06-01',
-        status: 'aktywny',
+        status: 'active',
         verified: true,
-        url: '/documents/umowa.pdf',
-        description: 'Umowa na kurs prawa jazdy kat. B'
+        url: '/documents/contract.pdf',
+        description: t('descriptions.contract')
       },
       {
         id: '6',
-        name: 'Certyfikat ukończenia kursu teorii',
-        type: 'certyfikat',
-        category: 'Certyfikaty',
+        name: t('types.certificate'),
+        type: 'certificate',
+        category: t('categories.certificates'),
         size: 0.5,
         uploadDate: '2024-07-30',
-        status: 'aktywny',
+        status: 'active',
         verified: true,
-        url: '/documents/certyfikat.pdf',
-        description: 'Certyfikat ukończenia części teoretycznej'
+        url: '/documents/certificate.pdf',
+        description: t('descriptions.certificate')
       }
     ];
 
@@ -193,7 +196,7 @@ export default function StudentDocumentsPage() {
       setStorageUsed(totalSize);
       setLoading(false);
     }, 1000);
-  }, []);
+  }, [t]);
 
   const filteredDocuments = documents.filter(doc => {
     const matchesSearch = searchQuery === '' || 
@@ -218,24 +221,24 @@ export default function StudentDocumentsPage() {
     setDocumentToDelete(null);
     
     toast({
-      title: "Dokument usunięty",
-      description: "Dokument został pomyślnie usunięty",
+      title: t('toast.documentDeleted'),
+      description: t('toast.documentDeletedDescription'),
     });
   };
 
   const formatFileSize = (sizeInMB: number) => {
     if (sizeInMB < 1) {
-      return `${(sizeInMB * 1024).toFixed(0)} KB`;
+      return t('fileSize.kb', { size: (sizeInMB * 1024).toFixed(0) });
     }
-    return `${sizeInMB.toFixed(1)} MB`;
+    return t('fileSize.mb', { size: sizeInMB.toFixed(1) });
   };
 
   const getStatusBadge = (status: Document['status']) => {
     const variants = {
-      aktywny: { label: 'Aktywny', className: 'bg-green-100 text-green-700' },
-      wygasly: { label: 'Wygasły', className: 'bg-red-100 text-red-700' },
-      oczekuje: { label: 'Oczekuje', className: 'bg-yellow-100 text-yellow-700' },
-      odrzucony: { label: 'Odrzucony', className: 'bg-gray-100 text-gray-700' }
+      active: { label: t('status.active'), className: 'bg-green-100 text-green-700' },
+      expired: { label: t('status.expired'), className: 'bg-red-100 text-red-700' },
+      pending: { label: t('status.pending'), className: 'bg-yellow-100 text-yellow-700' },
+      rejected: { label: t('status.rejected'), className: 'bg-gray-100 text-gray-700' }
     };
     return variants[status];
   };
@@ -250,7 +253,7 @@ export default function StudentDocumentsPage() {
       );
       return daysUntilExpiry <= 30 && daysUntilExpiry > 0;
     }).length,
-    expired: documents.filter(d => d.status === 'wygasly').length
+    expired: documents.filter(d => d.status === 'expired').length
   };
 
   if (loading) {
@@ -272,14 +275,14 @@ export default function StudentDocumentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Moje dokumenty</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Zarządzaj swoimi dokumentami i certyfikatami
+            {t('subtitle')}
           </p>
         </div>
         <Button onClick={() => router.push('/student/documents/upload')}>
           <Upload className="w-4 h-4 mr-2" />
-          Dodaj dokument
+          {t('addDocument')}
         </Button>
       </div>
 
@@ -288,7 +291,7 @@ export default function StudentDocumentsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wszystkie dokumenty
+              {t('stats.allDocuments')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -302,7 +305,7 @@ export default function StudentDocumentsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Zweryfikowane
+              {t('stats.verified')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -316,7 +319,7 @@ export default function StudentDocumentsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wygasające
+              {t('stats.expiring')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -330,7 +333,7 @@ export default function StudentDocumentsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wygasłe
+              {t('stats.expired')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -344,14 +347,14 @@ export default function StudentDocumentsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wykorzystana przestrzeń
+              {t('stats.storageUsed')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>{formatFileSize(storageUsed)}</span>
-                <span className="text-muted-foreground">/ {storageLimit} MB</span>
+                <span className="text-muted-foreground">{t('fileSize.limit', { limit: storageLimit })}</span>
               </div>
               <Progress value={(storageUsed / storageLimit) * 100} className="h-2" />
             </div>
@@ -364,8 +367,7 @@ export default function StudentDocumentsPage() {
         <Alert className="border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
           <AlertDescription>
-            Masz {documentStats.expiring} dokument(y) wygasające w ciągu 30 dni. 
-            Pamiętaj o ich odnowieniu.
+            {t('alert.expiringDocuments', { count: documentStats.expiring })}
           </AlertDescription>
         </Alert>
       )}
@@ -374,7 +376,7 @@ export default function StudentDocumentsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Dokumenty</CardTitle>
+            <CardTitle className="text-lg">{t('title')}</CardTitle>
             <div className="flex gap-2">
               <Button
                 variant={viewMode === 'grid' ? 'default' : 'outline'}
@@ -399,7 +401,7 @@ export default function StudentDocumentsPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Szukaj dokumentów..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -409,30 +411,30 @@ export default function StudentDocumentsPage() {
             
             <Select value={filterType} onValueChange={setFilterType}>
               <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Typ dokumentu" />
+                <SelectValue placeholder={t('filters.typeFilter.label')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie typy</SelectItem>
-                <SelectItem value="prawo_jazdy">Prawo jazdy</SelectItem>
-                <SelectItem value="dowod">Dowód osobisty</SelectItem>
-                <SelectItem value="zaswiadczenie">Zaświadczenie</SelectItem>
-                <SelectItem value="faktura">Faktura</SelectItem>
-                <SelectItem value="umowa">Umowa</SelectItem>
-                <SelectItem value="certyfikat">Certyfikat</SelectItem>
-                <SelectItem value="inne">Inne</SelectItem>
+                <SelectItem value="all">{t('filters.typeFilter.all')}</SelectItem>
+                <SelectItem value="driving_license">{t('types.drivingLicense')}</SelectItem>
+                <SelectItem value="id">{t('types.id')}</SelectItem>
+                <SelectItem value="medical">{t('types.medical')}</SelectItem>
+                <SelectItem value="invoice">{t('types.invoice')}</SelectItem>
+                <SelectItem value="contract">{t('types.contract')}</SelectItem>
+                <SelectItem value="certificate">{t('types.certificate')}</SelectItem>
+                <SelectItem value="other">{t('types.other')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('filters.statusFilter.label')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="aktywny">Aktywne</SelectItem>
-                <SelectItem value="wygasly">Wygasłe</SelectItem>
-                <SelectItem value="oczekuje">Oczekujące</SelectItem>
-                <SelectItem value="odrzucony">Odrzucone</SelectItem>
+                <SelectItem value="all">{t('filters.statusFilter.all')}</SelectItem>
+                <SelectItem value="active">{t('filters.statusFilter.active')}</SelectItem>
+                <SelectItem value="expired">{t('filters.statusFilter.expired')}</SelectItem>
+                <SelectItem value="pending">{t('filters.statusFilter.pending')}</SelectItem>
+                <SelectItem value="rejected">{t('filters.statusFilter.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -443,7 +445,7 @@ export default function StudentDocumentsPage() {
               {filteredDocuments.length === 0 ? (
                 <div className="col-span-full py-12 text-center">
                   <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Nie znaleziono dokumentów</p>
+                  <p className="text-muted-foreground">{t('empty.noDocuments')}</p>
                 </div>
               ) : (
                 filteredDocuments.map(doc => {
@@ -467,15 +469,15 @@ export default function StudentDocumentsPage() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={() => setSelectedDocument(doc)}>
                                 <Eye className="w-4 h-4 mr-2" />
-                                Podgląd
+                                {t('actions.preview')}
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <Download className="w-4 h-4 mr-2" />
-                                Pobierz
+                                {t('actions.download')}
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <Share2 className="w-4 h-4 mr-2" />
-                                Udostępnij
+                                {t('actions.share')}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem 
@@ -486,7 +488,7 @@ export default function StudentDocumentsPage() {
                                 }}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
-                                Usuń
+                                {t('actions.delete')}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -504,27 +506,27 @@ export default function StudentDocumentsPage() {
                           {doc.verified && (
                             <Badge variant="outline" className="text-green-600 border-green-600">
                               <CheckCircle className="w-3 h-3 mr-1" />
-                              Zweryfikowany
+                              {t('details.verified')}
                             </Badge>
                           )}
                         </div>
 
                         <div className="space-y-1 text-xs text-muted-foreground">
                           <div className="flex justify-between">
-                            <span>Rozmiar:</span>
+                            <span>{t('details.size')}:</span>
                             <span>{formatFileSize(doc.size)}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Dodano:</span>
-                            <span>{new Date(doc.uploadDate).toLocaleDateString('pl-PL')}</span>
+                            <span>{t('details.added')}:</span>
+                            <span>{new Date(doc.uploadDate).toLocaleDateString('uk-UA')}</span>
                           </div>
                           {doc.expiryDate && (
                             <div className="flex justify-between">
-                              <span>Wygasa:</span>
+                              <span>{t('details.expires')}:</span>
                               <span className={
                                 new Date(doc.expiryDate) < new Date() ? 'text-red-600' : ''
                               }>
-                                {new Date(doc.expiryDate).toLocaleDateString('pl-PL')}
+                                {new Date(doc.expiryDate).toLocaleDateString('uk-UA')}
                               </span>
                             </div>
                           )}
@@ -539,12 +541,12 @@ export default function StudentDocumentsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nazwa</TableHead>
-                  <TableHead>Typ</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Rozmiar</TableHead>
-                  <TableHead>Data dodania</TableHead>
-                  <TableHead>Data ważności</TableHead>
+                  <TableHead>{t('types.other')}</TableHead>
+                  <TableHead>{t('filters.typeFilter.label')}</TableHead>
+                  <TableHead>{t('filters.statusFilter.label')}</TableHead>
+                  <TableHead>{t('details.size')}</TableHead>
+                  <TableHead>{t('details.added')}</TableHead>
+                  <TableHead>{t('details.expires')}</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
@@ -553,7 +555,7 @@ export default function StudentDocumentsPage() {
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-8">
                       <FileText className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-muted-foreground">Nie znaleziono dokumentów</p>
+                      <p className="text-muted-foreground">{t('empty.noDocuments')}</p>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -580,13 +582,13 @@ export default function StudentDocumentsPage() {
                           </Badge>
                         </TableCell>
                         <TableCell>{formatFileSize(doc.size)}</TableCell>
-                        <TableCell>{new Date(doc.uploadDate).toLocaleDateString('pl-PL')}</TableCell>
+                        <TableCell>{new Date(doc.uploadDate).toLocaleDateString('uk-UA')}</TableCell>
                         <TableCell>
                           {doc.expiryDate ? (
                             <span className={
                               new Date(doc.expiryDate) < new Date() ? 'text-red-600' : ''
                             }>
-                              {new Date(doc.expiryDate).toLocaleDateString('pl-PL')}
+                              {new Date(doc.expiryDate).toLocaleDateString('uk-UA')}
                             </span>
                           ) : (
                             '-'
@@ -602,11 +604,11 @@ export default function StudentDocumentsPage() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem>
                                 <Eye className="w-4 h-4 mr-2" />
-                                Podgląd
+                                {t('actions.preview')}
                               </DropdownMenuItem>
                               <DropdownMenuItem>
                                 <Download className="w-4 h-4 mr-2" />
-                                Pobierz
+                                {t('actions.download')}
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem 
@@ -617,7 +619,7 @@ export default function StudentDocumentsPage() {
                                 }}
                               >
                                 <Trash2 className="w-4 h-4 mr-2" />
-                                Usuń
+                                {t('actions.delete')}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -636,10 +638,9 @@ export default function StudentDocumentsPage() {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Usuń dokument</DialogTitle>
+            <DialogTitle>{t('deleteDialog.title')}</DialogTitle>
             <DialogDescription>
-              Czy na pewno chcesz usunąć dokument "{documentToDelete?.name}"? 
-              Tej operacji nie można cofnąć.
+              {t('deleteDialog.description', { name: documentToDelete?.name })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -647,13 +648,13 @@ export default function StudentDocumentsPage() {
               variant="outline"
               onClick={() => setDeleteDialogOpen(false)}
             >
-              Anuluj
+              {t('deleteDialog.cancel')}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDeleteDocument}
             >
-              Usuń dokument
+              {t('deleteDialog.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

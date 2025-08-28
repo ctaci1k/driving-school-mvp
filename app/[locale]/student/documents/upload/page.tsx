@@ -4,6 +4,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Upload,
   FileText,
@@ -47,53 +48,9 @@ interface UploadFile {
   error?: string;
 }
 
-const documentTypes = [
-  { 
-    value: 'prawo_jazdy', 
-    label: 'Prawo jazdy', 
-    icon: CreditCard,
-    description: 'Skan lub zdjęcie prawa jazdy',
-    required: true 
-  },
-  { 
-    value: 'dowod', 
-    label: 'Dowód osobisty', 
-    icon: Shield,
-    description: 'Skan lub zdjęcie dowodu osobistego',
-    required: true 
-  },
-  { 
-    value: 'zaswiadczenie', 
-    label: 'Zaświadczenie lekarskie', 
-    icon: FileText,
-    description: 'Zaświadczenie o braku przeciwwskazań',
-    required: false 
-  },
-  { 
-    value: 'certyfikat', 
-    label: 'Certyfikat', 
-    icon: GraduationCap,
-    description: 'Certyfikat ukończenia kursu',
-    required: false 
-  },
-  { 
-    value: 'umowa', 
-    label: 'Umowa', 
-    icon: FileText,
-    description: 'Umowa szkoleniowa',
-    required: false 
-  },
-  { 
-    value: 'inne', 
-    label: 'Inne', 
-    icon: File,
-    description: 'Inny dokument',
-    required: false 
-  }
-];
-
 export default function DocumentsUploadPage() {
   const router = useRouter();
+  const t = useTranslations('student.documentsUpload');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedType, setSelectedType] = useState('');
   const [files, setFiles] = useState<UploadFile[]>([]);
@@ -103,6 +60,51 @@ export default function DocumentsUploadPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
   const [isDragActive, setIsDragActive] = useState(false);
+
+  const documentTypes = [
+    { 
+      value: 'driving_license', 
+      label: t('documentType.types.drivingLicense.label'), 
+      icon: CreditCard,
+      description: t('documentType.types.drivingLicense.description'),
+      required: true 
+    },
+    { 
+      value: 'id', 
+      label: t('documentType.types.id.label'), 
+      icon: Shield,
+      description: t('documentType.types.id.description'),
+      required: true 
+    },
+    { 
+      value: 'medical', 
+      label: t('documentType.types.medical.label'), 
+      icon: FileText,
+      description: t('documentType.types.medical.description'),
+      required: false 
+    },
+    { 
+      value: 'certificate', 
+      label: t('documentType.types.certificate.label'), 
+      icon: GraduationCap,
+      description: t('documentType.types.certificate.description'),
+      required: false 
+    },
+    { 
+      value: 'contract', 
+      label: t('documentType.types.contract.label'), 
+      icon: FileText,
+      description: t('documentType.types.contract.description'),
+      required: false 
+    },
+    { 
+      value: 'other', 
+      label: t('documentType.types.other.label'), 
+      icon: File,
+      description: t('documentType.types.other.description'),
+      required: false 
+    }
+  ];
 
   const handleFiles = (fileList: FileList | null) => {
     if (!fileList) return;
@@ -114,8 +116,8 @@ export default function DocumentsUploadPage() {
       
       if (!isValidSize) {
         toast({
-          title: "Błąd",
-          description: `Plik ${file.name} jest za duży (max 10MB)`,
+          title: t('toast.error'),
+          description: t('errors.fileTooBig', { name: file.name }),
           variant: "destructive"
         });
         return false;
@@ -123,8 +125,8 @@ export default function DocumentsUploadPage() {
       
       if (!isImage && !isPDF) {
         toast({
-          title: "Błąd",
-          description: `Plik ${file.name} ma nieprawidłowy format`,
+          title: t('toast.error'),
+          description: t('errors.invalidFormat', { name: file.name }),
           variant: "destructive"
         });
         return false;
@@ -182,8 +184,8 @@ export default function DocumentsUploadPage() {
   const handleUpload = async () => {
     if (!selectedType) {
       toast({
-        title: "Błąd",
-        description: "Wybierz typ dokumentu",
+        title: t('toast.error'),
+        description: t('errors.selectType'),
         variant: "destructive"
       });
       return;
@@ -191,8 +193,8 @@ export default function DocumentsUploadPage() {
 
     if (!documentName) {
       toast({
-        title: "Błąd",
-        description: "Podaj nazwę dokumentu",
+        title: t('toast.error'),
+        description: t('errors.enterName'),
         variant: "destructive"
       });
       return;
@@ -200,8 +202,8 @@ export default function DocumentsUploadPage() {
 
     if (files.length === 0) {
       toast({
-        title: "Błąd",
-        description: "Dodaj przynajmniej jeden plik",
+        title: t('toast.error'),
+        description: t('errors.addFiles'),
         variant: "destructive"
       });
       return;
@@ -232,8 +234,8 @@ export default function DocumentsUploadPage() {
     setUploadComplete(true);
 
     toast({
-      title: "Sukces!",
-      description: "Dokumenty zostały przesłane pomyślnie"
+      title: t('toast.success'),
+      description: t('toast.documentsUploaded')
     });
 
     setTimeout(() => {
@@ -244,9 +246,9 @@ export default function DocumentsUploadPage() {
   const selectedTypeInfo = documentTypes.find(t => t.value === selectedType);
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    if (bytes < 1024) return t('upload.fileSize.bytes', { size: bytes });
+    if (bytes < 1024 * 1024) return t('upload.fileSize.kb', { size: (bytes / 1024).toFixed(1) });
+    return t('upload.fileSize.mb', { size: (bytes / (1024 * 1024)).toFixed(1) });
   };
 
   if (uploadComplete) {
@@ -257,12 +259,12 @@ export default function DocumentsUploadPage() {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-500" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Dokumenty przesłane!</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('success.title')}</h2>
             <p className="text-muted-foreground mb-4">
-              Twoje dokumenty zostały przesłane i oczekują na weryfikację
+              {t('success.description')}
             </p>
             <p className="text-sm text-muted-foreground">
-              Przekierowanie do listy dokumentów...
+              {t('success.redirecting')}
             </p>
           </CardContent>
         </Card>
@@ -282,9 +284,9 @@ export default function DocumentsUploadPage() {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Dodaj dokument</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Prześlij nowy dokument do swojego profilu
+            {t('subtitle')}
           </p>
         </div>
       </div>
@@ -292,9 +294,9 @@ export default function DocumentsUploadPage() {
       {/* Document Type Selection */}
       <Card>
         <CardHeader>
-          <CardTitle>Typ dokumentu</CardTitle>
+          <CardTitle>{t('documentType.title')}</CardTitle>
           <CardDescription>
-            Wybierz rodzaj dokumentu, który chcesz przesłać
+            {t('documentType.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -321,7 +323,7 @@ export default function DocumentsUploadPage() {
                           <p className="font-medium">{type.label}</p>
                           {type.required && (
                             <Badge variant="secondary" className="text-xs">
-                              Wymagany
+                              {t('documentType.required')}
                             </Badge>
                           )}
                         </div>
@@ -341,36 +343,36 @@ export default function DocumentsUploadPage() {
       {/* Document Details */}
       <Card>
         <CardHeader>
-          <CardTitle>Szczegóły dokumentu</CardTitle>
+          <CardTitle>{t('details.title')}</CardTitle>
           <CardDescription>
-            Podaj informacje o dokumencie
+            {t('details.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nazwa dokumentu *</Label>
+            <Label htmlFor="name">{t('details.documentName.label')}</Label>
             <Input
               id="name"
               value={documentName}
               onChange={(e) => setDocumentName(e.target.value)}
-              placeholder={selectedTypeInfo ? selectedTypeInfo.label : "np. Prawo jazdy"}
+              placeholder={selectedTypeInfo ? selectedTypeInfo.label : t('details.documentName.placeholder')}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Opis (opcjonalnie)</Label>
+            <Label htmlFor="description">{t('details.documentDescription.label')}</Label>
             <Textarea
               id="description"
               value={documentDescription}
               onChange={(e) => setDocumentDescription(e.target.value)}
-              placeholder="Dodatkowe informacje o dokumencie..."
+              placeholder={t('details.documentDescription.placeholder')}
               rows={3}
             />
           </div>
 
-          {(selectedType === 'prawo_jazdy' || selectedType === 'dowod' || selectedType === 'zaswiadczenie') && (
+          {(selectedType === 'driving_license' || selectedType === 'id' || selectedType === 'medical') && (
             <div className="space-y-2">
-              <Label htmlFor="expiry">Data ważności</Label>
+              <Label htmlFor="expiry">{t('details.expiryDate.label')}</Label>
               <Input
                 id="expiry"
                 type="date"
@@ -386,9 +388,9 @@ export default function DocumentsUploadPage() {
       {/* File Upload */}
       <Card>
         <CardHeader>
-          <CardTitle>Przesyłanie plików</CardTitle>
+          <CardTitle>{t('upload.title')}</CardTitle>
           <CardDescription>
-            Przeciągnij pliki lub kliknij, aby wybrać
+            {t('upload.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -412,14 +414,14 @@ export default function DocumentsUploadPage() {
             />
             <Upload className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             {isDragActive ? (
-              <p className="text-lg font-medium">Upuść pliki tutaj...</p>
+              <p className="text-lg font-medium">{t('upload.dropzone.dragActive')}</p>
             ) : (
               <>
                 <p className="text-lg font-medium mb-1">
-                  Przeciągnij pliki lub kliknij, aby wybrać
+                  {t('upload.dropzone.dragInactive')}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Obsługiwane formaty: PDF, JPG, PNG (maks. 10MB)
+                  {t('upload.dropzone.supportedFormats')}
                 </p>
               </>
             )}
@@ -428,7 +430,7 @@ export default function DocumentsUploadPage() {
           {/* File List */}
           {files.length > 0 && (
             <div className="mt-6 space-y-3">
-              <h4 className="font-medium">Wybrane pliki ({files.length})</h4>
+              <h4 className="font-medium">{t('upload.selectedFiles', { count: files.length })}</h4>
               {files.map((file, index) => (
                 <div
                   key={index}
@@ -488,8 +490,7 @@ export default function DocumentsUploadPage() {
       <Alert>
         <FileCheck className="h-4 w-4" />
         <AlertDescription>
-          Przesłane dokumenty zostaną zweryfikowane przez administrację w ciągu 24 godzin.
-          Otrzymasz powiadomienie o statusie weryfikacji.
+          {t('info.verification')}
         </AlertDescription>
       </Alert>
 
@@ -500,7 +501,7 @@ export default function DocumentsUploadPage() {
           onClick={() => router.back()}
           disabled={isUploading}
         >
-          Anuluj
+          {t('buttons.cancel')}
         </Button>
         <Button
           onClick={handleUpload}
@@ -509,12 +510,12 @@ export default function DocumentsUploadPage() {
           {isUploading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Przesyłanie...
+              {t('buttons.uploading')}
             </>
           ) : (
             <>
               <Upload className="w-4 h-4 mr-2" />
-              Prześlij dokumenty
+              {t('buttons.upload')}
             </>
           )}
         </Button>

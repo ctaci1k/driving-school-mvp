@@ -443,6 +443,270 @@
       "upcomingLessons": "У вас {count} майбутніх уроків. Пам'ятайте про пунктуальність!"
     }
 
-}
+},
+"dashboard": {
+    "welcome": "Вітаємо знову, {name}!",
+    "subtitle": "Ваш прогрес у навчанні водіння",
+    "nextLesson": {
+      "title": "Наступний урок",
+      "timeRemaining": "Залишилось",
+      "hours": "годин",
+      "details": "Деталі",
+      "reschedule": "Перенести"
+    },
+    "stats": {
+      "credits": {
+        "title": "Кредити",
+        "validUntil": "Дійсні до {date}",
+        "buyMore": "Докупити кредити"
+      },
+      "progress": {
+        "title": "Прогрес навчання",
+        "lessonsCompleted": "уроків завершено"
+      },
+      "examReadiness": {
+        "title": "Готовність до іспиту",
+        "almostReady": "Майже готові!",
+        "checkDetails": "Перевірити деталі"
+      },
+      "nextSlot": {
+        "title": "Найближчий вільний час",
+        "tomorrow": "Завтра",
+        "with": "з",
+        "book": "Забронювати"
+      }
+    },
+    "recentGrades": {
+      "title": "Останні оцінки та відгуки",
+      "viewAll": "Переглянути всі оцінки"
+    },
+    "quickActions": {
+      "title": "Швидкі дії",
+      "bookLesson": "Забронювати урок",
+      "viewSchedule": "Переглянути розклад",
+      "studyMaterials": "Матеріали для навчання",
+      "contactInstructor": "Зв'язок з інструктором"
+    },
+    "notifications": {
+      "title": "Повідомлення",
+      "lessonTomorrow": "Урок завтра о {time}",
+      "newMaterials": "Нові матеріали для навчання",
+      "hoursAgo": "{count} год. тому",
+      "dayAgo": "{count} день тому"
+    },
+    "weakPoints": {
+      "title": "Області для покращення",
+      "practice": "Практикувати",
+      "improvementPlan": "План покращення"
+    },
+    "achievements": {
+      "title": "Досягнення",
+      "10lessons": "10 уроків",
+      "firstNightDrive": "Перша нічна поїздка",
+      "parkingMaster": "Майстер паркування",
+      "viewAll": "Дивитись всі"
+    },
+    "lessonTypes": {
+      "cityDriving": "Міське водіння",
+      "parking": "Паркування",
+      "nightDriving": "Нічне водіння",
+      "highway": "Автомагістраль",
+      "maneuvers": "Маневри"
+    },
+    "skills": {
+      "parallelParking": "Паралельне паркування",
+      "laneChange": "Зміна смуги",
+      "roundabout": "Кругове перехрестя",
+      "reverseParking": "Паркування заднім ходом",
+      "multiLaneRoundabout": "Багатосмугове кругове перехрестя"
+    },
+    "weather": {
+      "temperature": "{temp}°C"
+    },
+    "notificationTypes": {
+      "reminder": "Нагадування",
+      "info": "Інформація"
+    }
+  },
+  "documentsUpload": {
+    "title": "Додати документ",
+    "subtitle": "Завантажте новий документ до свого профілю",
+    "documentType": {
+      "title": "Тип документу",
+      "description": "Оберіть тип документу, який хочете завантажити",
+      "types": {
+        "drivingLicense": {
+          "label": "Водійське посвідчення",
+          "description": "Скан або фото водійського посвідчення"
+        },
+        "id": {
+          "label": "Паспорт",
+          "description": "Скан або фото паспорта"
+        },
+        "medical": {
+          "label": "Медична довідка",
+          "description": "Довідка про відсутність протипоказань"
+        },
+        "certificate": {
+          "label": "Сертифікат",
+          "description": "Сертифікат про закінчення курсу"
+        },
+        "contract": {
+          "label": "Договір",
+          "description": "Договір на навчання"
+        },
+        "other": {
+          "label": "Інше",
+          "description": "Інший документ"
+        }
+      },
+      "required": "Обов'язковий"
+    },
+    "details": {
+      "title": "Деталі документу",
+      "description": "Вкажіть інформацію про документ",
+      "documentName": {
+        "label": "Назва документу *",
+        "placeholder": "наприклад, Водійське посвідчення"
+      },
+      "documentDescription": {
+        "label": "Опис (необов'язково)",
+        "placeholder": "Додаткова інформація про документ..."
+      },
+      "expiryDate": {
+        "label": "Дата закінчення терміну дії"
+      }
+    },
+    "upload": {
+      "title": "Завантаження файлів",
+      "description": "Перетягніть файли або натисніть для вибору",
+      "dropzone": {
+        "dragActive": "Відпустіть файли тут...",
+        "dragInactive": "Перетягніть файли або натисніть для вибору",
+        "supportedFormats": "Підтримувані формати: PDF, JPG, PNG (макс. 10МБ)"
+      },
+      "selectedFiles": "Обрані файли ({count})",
+      "fileSize": {
+        "bytes": "{size} Б",
+        "kb": "{size} КБ",
+        "mb": "{size} МБ"
+      }
+    },
+    "buttons": {
+      "cancel": "Скасувати",
+      "upload": "Завантажити документи",
+      "uploading": "Завантаження..."
+    },
+    "success": {
+      "title": "Документи завантажено!",
+      "description": "Ваші документи завантажено та очікують на перевірку",
+      "redirecting": "Перенаправлення до списку документів..."
+    },
+    "errors": {
+      "fileTooBig": "Файл {name} занадто великий (макс 10МБ)",
+      "invalidFormat": "Файл {name} має неправильний формат",
+      "selectType": "Оберіть тип документу",
+      "enterName": "Введіть назву документу",
+      "addFiles": "Додайте принаймні один файл"
+    },
+    "toast": {
+      "error": "Помилка",
+      "success": "Успіх!",
+      "documentsUploaded": "Документи успішно завантажено"
+    },
+    "info": {
+      "verification": "Завантажені документи будуть перевірені адміністрацією протягом 24 годин. Ви отримаєте повідомлення про статус перевірки."
+    }
+  },
+   "documents": {
+    "title": "Мої документи",
+    "subtitle": "Керуйте своїми документами та сертифікатами",
+    "addDocument": "Додати документ",
+    "stats": {
+      "allDocuments": "Всі документи",
+      "verified": "Перевірені",
+      "expiring": "Термін закінчується",
+      "expired": "Прострочені",
+      "storageUsed": "Використаний простір"
+    },
+    "types": {
+      "drivingLicense": "Водійське посвідчення",
+      "id": "Паспорт",
+      "medical": "Довідка",
+      "invoice": "Рахунок",
+      "contract": "Договір",
+      "certificate": "Сертифікат",
+      "other": "Інше"
+    },
+    "categories": {
+      "personal": "Особисті документи",
+      "medical": "Медичні документи",
+      "financial": "Фінанси",
+      "contracts": "Договори",
+      "certificates": "Сертифікати"
+    },
+    "status": {
+      "active": "Активний",
+      "expired": "Прострочений",
+      "pending": "Очікує",
+      "rejected": "Відхилено"
+    },
+    "filters": {
+      "searchPlaceholder": "Пошук документів...",
+      "typeFilter": {
+        "label": "Тип документу",
+        "all": "Всі типи"
+      },
+      "statusFilter": {
+        "label": "Статус",
+        "all": "Всі",
+        "active": "Активні",
+        "expired": "Прострочені",
+        "pending": "Очікують",
+        "rejected": "Відхилені"
+      }
+    },
+    "actions": {
+      "preview": "Переглянути",
+      "download": "Завантажити",
+      "share": "Поділитися",
+      "delete": "Видалити"
+    },
+    "details": {
+      "verified": "Перевірено",
+      "size": "Розмір",
+      "added": "Додано",
+      "expires": "Закінчується"
+    },
+    "descriptions": {
+      "drivingLicense": "Водійське посвідчення категорії B",
+      "id": "Паспорт громадянина України",
+      "medical": "Довідка про відсутність протипоказань",
+      "invoice": "Рахунок за пакет {count} уроків",
+      "contract": "Договір на курс водіння кат. B",
+      "certificate": "Сертифікат закінчення теоретичної частини"
+    },
+    "deleteDialog": {
+      "title": "Видалити документ",
+      "description": "Ви впевнені, що хочете видалити документ \"{name}\"? Цю операцію не можна скасувати.",
+      "cancel": "Скасувати",
+      "confirm": "Видалити документ"
+    },
+    "toast": {
+      "documentDeleted": "Документ видалено",
+      "documentDeletedDescription": "Документ успішно видалено"
+    },
+    "alert": {
+      "expiringDocuments": "У вас {count} документ(и), термін дії яких закінчується протягом 30 днів. Не забудьте їх оновити."
+    },
+    "empty": {
+      "noDocuments": "Документи не знайдено"
+    },
+    "fileSize": {
+      "kb": "{size} КБ",
+      "mb": "{size} МБ",
+      "limit": "/ {limit} МБ"
+    }
+  }
 
     }

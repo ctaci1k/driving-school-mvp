@@ -411,5 +411,287 @@
       
       "currency": "{amount} грн"
     }
+  },
+  "lessons": {
+    "checkIn": {
+      "title": "Початок уроку",
+      "subtitle": "Виконайте всі перевірки перед початком",
+      
+      "buttons": {
+        "cancel": "Скасувати",
+        "back": "Назад",
+        "next": "Далі",
+        "startLesson": "Розпочати урок",
+        "starting": "Розпочинаємо...",
+        "callStudent": "Подзвонити учню",
+        "message": "Повідомлення",
+        "takePhoto": "Зробити фото",
+        "addDamagePhotos": "Додати фото пошкоджень"
+      },
+      
+      "student": {
+        "progress": "Прогрес",
+        "lessons": "Уроків: {count}",
+        "category": "Категорія"
+      },
+      
+      "steps": {
+        "title": "Етапи перевірки",
+        "current": "Крок {current} з {total}",
+        
+        "documents": {
+          "title": "Перевірка документів",
+          "description": "Перевірте документи учня",
+          "important": "Важливо",
+          "importantText": "Перевірте наявність та дійсність усіх документів перед початком уроку",
+          "required": "Обов'язково",
+          
+          "studentPresent": "Учень присутній",
+          "studentPresentDesc": "{name} прибув на урок вчасно",
+          "studentLicense": "Посвідчення водія учня",
+          "licenseNumber": "Номер посвідчення",
+          "studentCard": "Картка учня автошколи",
+          "studentCardDesc": "Для ідентифікації в системі",
+          "medicalCert": "Медична довідка",
+          "medicalCertDesc": "За потреби (перший урок або після хвороби)",
+          "identityConfirmed": "Особу учня підтверджено",
+          "identityConfirmedDesc": "Підтверджую, що це {name}"
+        },
+        
+        "vehicle": {
+          "title": "Огляд транспорту",
+          "description": "Зовнішній та внутрішній огляд",
+          "mileageStart": "Пробіг на початок (км)",
+          "lastMileage": "Останній: {mileage} км",
+          "fuelLevel": "Рівень палива",
+          "selectLevel": "Виберіть рівень",
+          "fuelFull": "Повний бак (100%)",
+          "fuel3_4": "3/4 бака (75%)",
+          "fuel1_2": "1/2 бака (50%)",
+          "fuel1_4": "1/4 бака (25%)",
+          "fuelReserve": "Резерв (<10%)",
+          
+          "exteriorCheck": "Зовнішній огляд",
+          "exteriorClean": "Кузов чистий, без видимих пошкоджень",
+          "describeDamages": "Опишіть виявлені проблеми або пошкодження...",
+          "lightsWorking": "Усі фари та покажчики повороту працюють",
+          "tiresOk": "Шини в нормальному стані, тиск достатній",
+          
+          "interiorCheck": "Внутрішній огляд",
+          "interiorClean": "Салон чистий та охайний",
+          "fluidsOk": "Рівень рідин (масло, охолоджуюча, омивач) в нормі",
+          "documentsPresent": "Документи на авто присутні",
+          "emergencyKitPresent": "Аптечка, вогнегасник, знак присутні",
+          "issuesWarning": "Виявлені проблеми будуть передані механіку після уроку"
+        },
+        
+        "safety": {
+          "title": "Безпека",
+          "description": "Перевірка систем безпеки",
+          "safetyFirst": "Безпека понад усе",
+          "safetyFirstDesc": "Переконайтеся, що всі системи безпеки працюють належним чином",
+          
+          "safetySystems": "Системи безпеки",
+          "seatbelts": "Ремені безпеки справні та застібаються",
+          "mirrors": "Дзеркала налаштовані для учня",
+          "brakes": "Гальма перевірені (робочі та стоянкові)",
+          "handbrake": "Ручне гальмо працює правильно",
+          "horn": "Звуковий сигнал працює",
+          
+          "studentBriefing": "Інструктаж учня",
+          "briefed": "Проведено інструктаж з техніки безпеки",
+          "emergencyProcedures": "Пояснено дії в надзвичайних ситуаціях",
+          "phoneOnSilent": "Телефони переведені в беззвучний режим"
+        },
+        
+        "photos": {
+          "title": "Фотодокументація",
+          "description": "Зробіть фото стану транспорту",
+          "instruction": "Зробіть фото для документації стану транспорту (необов'язково)",
+          "front": "Перед",
+          "back": "Зад",
+          "left": "Ліва сторона",
+          "right": "Права сторона",
+          "interior": "Салон",
+          "dashboard": "Панель приладів",
+          "damagesTitle": "Додаткові фото пошкоджень (якщо є)"
+        },
+        
+        "confirmation": {
+          "title": "Підтвердження",
+          "description": "Розпочати урок",
+          "summary": "Підсумок перевірки",
+          "student": "Учень:",
+          "lessonType": "Тип уроку:",
+          "practiceCity": "Практика - місто",
+          "time": "Час:",
+          "vehicle": "Транспорт:",
+          "initialMileage": "Початковий пробіг:",
+          "fuel": "Паливо:",
+          "notSpecified": "Не вказано",
+          
+          "checkResults": "Результати перевірки",
+          "documents": "Документи",
+          "safety": "Безпека",
+          
+          "additionalNotes": "Додаткові зауваження (необов'язково)",
+          "notesPlaceholder": "Будь-які коментарі щодо початку уроку...",
+          
+          "agreement": "Підтверджую правильність усіх перевірок",
+          "agreementDesc": "Транспорт готовий до уроку водіння, учня поінформовано про правила безпеки",
+          
+          "gpsActive": "GPS активний",
+          "gpsUnavailable": "GPS недоступний",
+          "online": "Онлайн",
+          "offline": "Офлайн",
+          "coordinates": "Координати:"
+        }
+      },
+      
+      "offlineMode": {
+        "title": "Офлайн режим",
+        "description": "Працюєте в офлайн режимі. Дані будуть збережені локально та синхронізовані після відновлення з'єднання."
+      },
+      
+      "minutes": "{duration} хв"
+    },
+    "today": {
+      "title": "Сьогоднішні уроки",
+      "dateFormat": "{date}",
+      
+      "stats": {
+        "completed": "Завершено",
+        "distance": "Км",
+        "earnings": "Заробіток",
+        "rating": "Оцінка",
+        "time": "Час",
+        "fuel": "Паливо",
+        "currency": "{amount} грн"
+      },
+      
+      "currentLesson": {
+        "title": "Поточний урок",
+        "inProgress": "В ПРОЦЕСІ",
+        "photos": "Фото",
+        "notes": "Нотатки",
+        "route": "Маршрут",
+        "details": "Деталі"
+      },
+      
+      "schedule": {
+        "title": "Розклад на сьогодні",
+        "timeUntil": {
+          "now": "Зараз",
+          "hours": "{hours}г {minutes}хв",
+          "minutes": "{minutes}хв"
+        },
+        "objectives": "{count} цілей",
+        "km": "{distance} км",
+        "start": "Розпочати",
+        "details": "Деталі"
+      },
+      
+      "lessonTypes": {
+        "practiceCity": "Практика - місто",
+        "practiceArea": "Практика - навчальний майданчик",
+        "examPrep": "Підготовка до іспиту",
+        "highway": "Практика - швидкісні дороги",
+        "difficult": "Практика - складні умови"
+      },
+      
+      "objectives": {
+        "parallelParking": "Паралельне паркування",
+        "intersections": "Проїзд через перехрестя",
+        "starting": "Рушання",
+        "braking": "Гальмування",
+        "turns": "Повороти",
+        "examRoute": "Екзаменаційний маршрут",
+        "emergencyBraking": "Екстрене гальмування",
+        "highwayDriving": "Рух по автомагістралі",
+        "overtaking": "Обгін",
+        "keepingDistance": "Дотримання дистанції",
+        "trafficJams": "Їзда в заторах",
+        "roundabout": "Круговий рух"
+      },
+      
+      "locations": {
+        "cityCenter": "Центр міста",
+        "practiceArea": "Навчальний майданчик",
+        "drivingSchool": "Автошкола",
+        "examRoute": "Екзаменаційний маршрут"
+      },
+      
+      "status": {
+        "completed": "Завершено",
+        "inProgress": "В процесі",
+        "upcoming": "Заплановано"
+      }
+    },
+    "list": {
+      "title": "Мої уроки",
+      "subtitle": "Керуйте своїми уроками водіння",
+      
+      "buttons": {
+        "addLesson": "Додати урок",
+        "export": "Експорт"
+      },
+      
+      "stats": {
+        "all": "Усі",
+        "completed": "Завершені",
+        "earnings": "Заробіток",
+        "rating": "Оцінка",
+        "distance": "Дистанція",
+        "unpaid": "Неоплачені",
+        "km": "{distance} км",
+        "currency": "{amount} грн"
+      },
+      
+      "filters": {
+        "searchPlaceholder": "Шукати за прізвищем або локацією...",
+        "allStatuses": "Усі статуси",
+        "allTypes": "Усі типи",
+        "period": {
+          "today": "Сьогодні",
+          "week": "Цей тиждень",
+          "month": "Цей місяць",
+          "all": "Усі"
+        }
+      },
+      
+      "status": {
+        "completed": "Завершено",
+        "scheduled": "Заплановано",
+        "cancelled": "Скасовано",
+        "noShow": "Неявка"
+      },
+      
+      "lessonTypes": {
+        "city": "Їзда в місті",
+        "practiceArea": "Навчальний майданчик",
+        "examRoute": "Екзаменаційний маршрут",
+        "internalExam": "Внутрішній іспит"
+      },
+      
+      "table": {
+        "title": "Список уроків",
+        "headers": {
+          "status": "Статус",
+          "dateTime": "Дата та час",
+          "student": "Курсант",
+          "lessonType": "Тип уроку",
+          "location": "Локація",
+          "vehicle": "Транспорт",
+          "duration": "Час",
+          "price": "Ціна",
+          "payment": "Оплата",
+          "rating": "Оцінка",
+          "actions": "Дії"
+        },
+        "minutes": "{duration} хв",
+        "paid": "Оплачено",
+        "toPay": "До оплати"
+      }
+    }
   }
 }

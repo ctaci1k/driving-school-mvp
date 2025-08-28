@@ -1,10 +1,11 @@
 // /app/[locale]/instructor/lessons/[id]/page.tsx
-// Szczegóły konkretnej lekcji
+// Деталі конкретного уроку
 
 'use client'
 
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   Calendar, Clock, MapPin, User, Phone, Mail, Car,
   Star, FileText, Camera, Navigation, Target, CheckCircle,
@@ -21,9 +22,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function LessonDetailPage() {
+  const t = useTranslations('instructor.lessons.detail')
   const params = useParams()
   const router = useRouter()
   const lessonId = params?.id as string
@@ -41,9 +43,9 @@ export default function LessonDetailPage() {
     
     student: {
       id: 's1',
-      name: 'Maria Kowalska',
+      name: 'Марія Коваленко',
       avatar: 'https://ui-avatars.com/api/?name=MK&background=10B981&color=fff',
-      phone: '+48501234569',
+      phone: '+380501234569',
       email: 'maria.k@email.com',
       lessonsCompleted: 24,
       totalLessons: 28,
@@ -51,28 +53,28 @@ export default function LessonDetailPage() {
       joinDate: '2024-01-05'
     },
     
-    type: 'Przygotowanie do egzaminu',
+    type: t('lessonTypes.examPreparation'),
     category: 'B',
     
     location: {
-      start: 'ul. Marszałkowska 100',
-      end: 'Plac manewrowy',
-      area: 'Trasa egzaminacyjna',
-      coordinates: { lat: 52.2297, lng: 21.0122 }
+      start: 'вул. Хрещатик 100',
+      end: t('locations.practiceArea'),
+      area: t('locations.examRoute'),
+      coordinates: { lat: 50.4501, lng: 30.5234 }
     },
     
     vehicle: {
       id: 'v1',
       model: 'Toyota Corolla',
-      number: 'WZ 1234 A',
+      number: 'АА 1234 КА',
       year: 2020
     },
     
     objectives: [
-      { id: 1, title: 'Trasa egzaminacyjna', completed: true },
-      { id: 2, title: 'Hamowanie awaryjne', completed: true },
-      { id: 3, title: 'Parkowanie równoległe', completed: true },
-      { id: 4, title: 'Zawracanie w ograniczonej przestrzeni', completed: false }
+      { id: 1, title: t('objectives.examRoute'), completed: true },
+      { id: 2, title: t('objectives.emergencyBraking'), completed: true },
+      { id: 3, title: t('objectives.parallelParking'), completed: true },
+      { id: 4, title: t('objectives.turningLimited'), completed: false }
     ],
     
     performance: {
@@ -84,7 +86,7 @@ export default function LessonDetailPage() {
         safety: 5
       },
       mistakes: 2,
-      improvements: ['Pewność przy parkowaniu', 'Szybkość podejmowania decyzji']
+      improvements: [t('performance.parkingConfidence'), t('performance.decisionSpeed')]
     },
     
     metrics: {
@@ -104,38 +106,38 @@ export default function LessonDetailPage() {
     },
     
     feedback: {
-      instructor: 'Doskonała lekcja! Maria pokazała wielki postęp. Gotowa do egzaminu w 90%.',
-      student: 'Dziękuję za cierpliwość! W końcu zrozumiałam parkowanie równoległe.',
+      instructor: t('feedback.instructorComment'),
+      student: t('feedback.studentComment'),
       studentRating: 5
     },
     
     photos: [
-      { id: 1, url: '/photo1.jpg', caption: 'Parkowanie' },
-      { id: 2, url: '/photo2.jpg', caption: 'Trasa' }
+      { id: 1, url: '/photo1.jpg', caption: 'Паркування' },
+      { id: 2, url: '/photo2.jpg', caption: 'Маршрут' }
     ],
     
     nextLesson: {
       date: '2024-02-05',
       time: '14:00',
-      type: 'Finalne przygotowanie'
+      type: t('lessonTypes.finalPreparation')
     }
   }
 
   const handleEditLesson = () => {
-    // Logika edytowania
+    // Логіка редагування
   }
 
   const handleShareLesson = () => {
-    // Logika udostępniania
+    // Логіка поділитися
   }
 
   const handleDownloadReport = () => {
-    // Logika pobierania raportu
+    // Логіка завантаження звіту
   }
 
   return (
     <div className="space-y-6">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Button
@@ -146,34 +148,38 @@ export default function LessonDetailPage() {
             <ChevronLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Szczegóły lekcji</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
             <p className="text-gray-600 mt-1">
-              {format(new Date(lesson.date), 'd MMMM yyyy', { locale: pl })} • {lesson.startTime} - {lesson.endTime}
+              {t('dateTime', {
+                date: format(new Date(lesson.date), 'd MMMM yyyy', { locale: uk }),
+                startTime: lesson.startTime,
+                endTime: lesson.endTime
+              })}
             </p>
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleShareLesson}>
             <Share className="w-4 h-4 mr-2" />
-            Udostępnij
+            {t('buttons.share')}
           </Button>
           <Button variant="outline" onClick={handleDownloadReport}>
             <Download className="w-4 h-4 mr-2" />
-            Raport
+            {t('buttons.report')}
           </Button>
           <Button onClick={handleEditLesson}>
             <Edit className="w-4 h-4 mr-2" />
-            Edytuj
+            {t('buttons.edit')}
           </Button>
         </div>
       </div>
 
-      {/* Podstawowe informacje */}
+      {/* Основна інформація */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Kursant */}
+        {/* Курсант */}
         <Card>
           <CardHeader>
-            <CardTitle>Kursant</CardTitle>
+            <CardTitle>{t('student.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-3 mb-4">
@@ -183,7 +189,7 @@ export default function LessonDetailPage() {
               </Avatar>
               <div>
                 <p className="font-semibold">{lesson.student.name}</p>
-                <p className="text-sm text-gray-500">ID: {lesson.student.id}</p>
+                <p className="text-sm text-gray-500">{t('student.id', {id: lesson.student.id})}</p>
               </div>
             </div>
             
@@ -198,58 +204,61 @@ export default function LessonDetailPage() {
               </div>
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-gray-400" />
-                <span>Z nami od {format(new Date(lesson.student.joinDate), 'd MMM yyyy', { locale: pl })}</span>
+                <span>{t('student.joinedDate', {date: format(new Date(lesson.student.joinDate), 'd MMM yyyy', { locale: uk })})}</span>
               </div>
             </div>
 
             <div className="mt-4 pt-4 border-t">
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-500">Postęp kursu</span>
+                <span className="text-sm text-gray-500">{t('student.courseProgress')}</span>
                 <span className="text-sm font-medium">{lesson.student.progress}%</span>
               </div>
               <Progress value={lesson.student.progress} className="h-2" />
               <p className="text-xs text-gray-500 mt-1">
-                {lesson.student.lessonsCompleted} z {lesson.student.totalLessons} lekcji
+                {t('student.lessonsCompleted', {
+                  completed: lesson.student.lessonsCompleted,
+                  total: lesson.student.totalLessons
+                })}
               </p>
             </div>
 
             <div className="flex gap-2 mt-4">
               <Button variant="outline" size="sm" className="flex-1">
                 <Phone className="w-4 h-4 mr-1" />
-                Zadzwoń
+                {t('buttons.call')}
               </Button>
               <Button variant="outline" size="sm" className="flex-1">
                 <MessageSquare className="w-4 h-4 mr-1" />
-                Napisz
+                {t('buttons.message')}
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Szczegóły lekcji */}
+        {/* Деталі уроку */}
         <Card>
           <CardHeader>
-            <CardTitle>Informacje o lekcji</CardTitle>
+            <CardTitle>{t('lessonInfo.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Typ lekcji</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.type')}</p>
                 <Badge variant="outline" className="mt-1">{lesson.type}</Badge>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Kategoria</p>
-                <p className="font-medium">Kategoria {lesson.category}</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.category')}</p>
+                <p className="font-medium">{t('lessonInfo.categoryB')}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Czas trwania</p>
-                <p className="font-medium">{lesson.duration} minut</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.duration')}</p>
+                <p className="font-medium">{t('lessonInfo.minutes', {minutes: lesson.duration})}</p>
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Lokalizacja</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.location')}</p>
                 <div className="flex items-start gap-2 mt-1">
                   <MapPin className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
@@ -260,7 +269,7 @@ export default function LessonDetailPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Pojazd</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.vehicle')}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <Car className="w-4 h-4 text-gray-400" />
                   <span className="font-medium">{lesson.vehicle.model}</span>
@@ -269,41 +278,41 @@ export default function LessonDetailPage() {
               </div>
 
               <div>
-                <p className="text-sm text-gray-500">Status</p>
+                <p className="text-sm text-gray-500">{t('lessonInfo.status')}</p>
                 <Badge variant="default" className="mt-1">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Zakończona
+                  {t('lessonInfo.completed')}
                 </Badge>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Płatność */}
+        {/* Оплата */}
         <Card>
           <CardHeader>
-            <CardTitle>Płatność</CardTitle>
+            <CardTitle>{t('payment.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center mb-4">
-              <p className="text-3xl font-bold">{lesson.payment.amount} zł</p>
+              <p className="text-3xl font-bold">{t('payment.amount', {amount: lesson.payment.amount})}</p>
               <Badge variant="default" className="mt-2">
                 <CheckCircle className="w-3 h-3 mr-1" />
-                Opłacone
+                {t('payment.paid')}
               </Badge>
             </div>
 
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Sposób płatności:</span>
+                <span className="text-gray-500">{t('payment.paymentMethod')}</span>
                 <span className="font-medium">
-                  {lesson.payment.method === 'cash' ? 'Gotówka' : 'Karta'}
+                  {lesson.payment.method === 'cash' ? t('payment.cash') : t('payment.card')}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Data:</span>
+                <span className="text-gray-500">{t('payment.date')}</span>
                 <span className="font-medium">
-                  {format(new Date(lesson.payment.date), 'd MMM yyyy', { locale: pl })}
+                  {format(new Date(lesson.payment.date), 'd MMM yyyy', { locale: uk })}
                 </span>
               </div>
             </div>
@@ -311,26 +320,26 @@ export default function LessonDetailPage() {
             <Alert className="mt-4">
               <DollarSign className="h-4 w-4" />
               <AlertDescription>
-                Płatność potwierdzona przez system
+                {t('payment.confirmed')}
               </AlertDescription>
             </Alert>
           </CardContent>
         </Card>
       </div>
 
-      {/* Karty z szczegółowymi informacjami */}
+      {/* Картки з детальною інформацією */}
       <Tabs defaultValue="objectives" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="objectives">Cele</TabsTrigger>
-          <TabsTrigger value="performance">Wyniki</TabsTrigger>
-          <TabsTrigger value="metrics">Metryki</TabsTrigger>
-          <TabsTrigger value="feedback">Opinie</TabsTrigger>
+          <TabsTrigger value="objectives">{t('tabs.objectives')}</TabsTrigger>
+          <TabsTrigger value="performance">{t('tabs.performance')}</TabsTrigger>
+          <TabsTrigger value="metrics">{t('tabs.metrics')}</TabsTrigger>
+          <TabsTrigger value="feedback">{t('tabs.feedback')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="objectives" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Cele lekcji</CardTitle>
+              <CardTitle>{t('objectives.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -350,23 +359,23 @@ export default function LessonDetailPage() {
                       </span>
                     </div>
                     <Badge variant={objective.completed ? 'default' : 'secondary'}>
-                      {objective.completed ? 'Wykonane' : 'Częściowo'}
+                      {objective.completed ? t('objectives.completed') : t('objectives.partial')}
                     </Badge>
                   </div>
                 ))}
               </div>
 
               <div className="mt-6">
-                <Label>Dodatkowe notatki</Label>
+                <Label>{t('objectives.additionalNotes')}</Label>
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Dodaj notatki o lekcji..."
+                  placeholder={t('objectives.notesPlaceholder')}
                   className="mt-2"
                 />
                 <Button className="mt-2">
                   <FileText className="w-4 h-4 mr-2" />
-                  Zapisz notatki
+                  {t('buttons.saveNotes')}
                 </Button>
               </div>
             </CardContent>
@@ -376,11 +385,11 @@ export default function LessonDetailPage() {
         <TabsContent value="performance" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Ocena wykonania</CardTitle>
+              <CardTitle>{t('performance.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-center mb-6">
-                <p className="text-sm text-gray-500 mb-2">Ocena ogólna</p>
+                <p className="text-sm text-gray-500 mb-2">{t('performance.overallRating')}</p>
                 <div className="flex justify-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -401,10 +410,10 @@ export default function LessonDetailPage() {
                   <div key={skill}>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm capitalize">
-                        {skill === 'confidence' && 'Pewność siebie'}
-                        {skill === 'technique' && 'Technika'}
-                        {skill === 'rules' && 'Znajomość przepisów'}
-                        {skill === 'safety' && 'Bezpieczeństwo'}
+                        {skill === 'confidence' && t('performance.confidence')}
+                        {skill === 'technique' && t('performance.technique')}
+                        {skill === 'rules' && t('performance.rules')}
+                        {skill === 'safety' && t('performance.safety')}
                       </span>
                       <span className="text-sm font-medium">{rating}/5</span>
                     </div>
@@ -415,14 +424,14 @@ export default function LessonDetailPage() {
 
               <div className="space-y-4">
                 <div>
-                  <p className="font-medium mb-2">Liczba błędów</p>
+                  <p className="font-medium mb-2">{t('performance.mistakes')}</p>
                   <Badge variant={lesson.performance.mistakes <= 2 ? 'default' : 'destructive'}>
-                    {lesson.performance.mistakes} błędów
+                    {t('performance.mistakesCount', {count: lesson.performance.mistakes})}
                   </Badge>
                 </div>
 
                 <div>
-                  <p className="font-medium mb-2">Wymaga poprawy</p>
+                  <p className="font-medium mb-2">{t('performance.needsImprovement')}</p>
                   <div className="flex flex-wrap gap-2">
                     {lesson.performance.improvements.map((item, index) => (
                       <Badge key={index} variant="outline">{item}</Badge>
@@ -437,44 +446,44 @@ export default function LessonDetailPage() {
         <TabsContent value="metrics" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Metryki jazdy</CardTitle>
+              <CardTitle>{t('metrics.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Gauge className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.distance} km</p>
-                  <p className="text-sm text-gray-500">Dystans</p>
+                  <p className="text-2xl font-bold">{t('metrics.km', {value: lesson.metrics.distance})}</p>
+                  <p className="text-sm text-gray-500">{t('metrics.distance')}</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Timer className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.avgSpeed} km/h</p>
-                  <p className="text-sm text-gray-500">Średnia prędkość</p>
+                  <p className="text-2xl font-bold">{t('metrics.kmh', {value: lesson.metrics.avgSpeed})}</p>
+                  <p className="text-sm text-gray-500">{t('metrics.avgSpeed')}</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Navigation className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.maxSpeed} km/h</p>
-                  <p className="text-sm text-gray-500">Maks. prędkość</p>
+                  <p className="text-2xl font-bold">{t('metrics.kmh', {value: lesson.metrics.maxSpeed})}</p>
+                  <p className="text-sm text-gray-500">{t('metrics.maxSpeed')}</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Fuel  className="w-6 h-6 mx-auto mb-2 text-gray-600" />
-                  <p className="text-2xl font-bold">{lesson.metrics.fuelUsed} l</p>
-                  <p className="text-sm text-gray-500">Zużycie paliwa</p>
+                  <p className="text-2xl font-bold">{t('metrics.liters', {value: lesson.metrics.fuelUsed})}</p>
+                  <p className="text-sm text-gray-500">{t('metrics.fuelUsed')}</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <AlertCircle className="w-6 h-6 mx-auto mb-2 text-yellow-600" />
                   <p className="text-2xl font-bold">{lesson.metrics.suddenBrakes}</p>
-                  <p className="text-sm text-gray-500">Gwałtowne hamowania</p>
+                  <p className="text-sm text-gray-500">{t('metrics.suddenBrakes')}</p>
                 </div>
 
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <Target className="w-6 h-6 mx-auto mb-2 text-green-600" />
                   <p className="text-2xl font-bold">{lesson.metrics.sharpTurns}</p>
-                  <p className="text-sm text-gray-500">Ostre zakręty</p>
+                  <p className="text-sm text-gray-500">{t('metrics.sharpTurns')}</p>
                 </div>
               </div>
             </CardContent>
@@ -485,7 +494,7 @@ export default function LessonDetailPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Opinia instruktora</CardTitle>
+                <CardTitle>{t('feedback.instructorTitle')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700">{lesson.feedback.instructor}</p>
@@ -494,7 +503,7 @@ export default function LessonDetailPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Opinia kursanta</CardTitle>
+                <CardTitle>{t('feedback.studentTitle')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-start justify-between mb-3">
@@ -518,12 +527,16 @@ export default function LessonDetailPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Następna lekcja */}
+      {/* Наступний урок */}
       {lesson.nextLesson && (
         <Alert>
           <Calendar className="h-4 w-4" />
           <AlertDescription>
-            <strong>Następna lekcja:</strong> {format(new Date(lesson.nextLesson.date), 'd MMMM', { locale: pl })} o {lesson.nextLesson.time} - {lesson.nextLesson.type}
+            <strong>{t('nextLesson.title')}</strong> {t('nextLesson.info', {
+              date: format(new Date(lesson.nextLesson.date), 'd MMMM', { locale: uk }),
+              time: lesson.nextLesson.time,
+              type: lesson.nextLesson.type
+            })}
           </AlertDescription>
         </Alert>
       )}

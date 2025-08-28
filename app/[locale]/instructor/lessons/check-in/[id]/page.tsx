@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   Camera, Check, X, AlertCircle, ChevronRight, ChevronLeft,
   FileCheck, Car, MapPin, User, Clock, Fuel, Gauge,
@@ -30,7 +31,7 @@ import {
 } from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 interface CheckInStep {
   id: string
@@ -40,45 +41,8 @@ interface CheckInStep {
   required: boolean
 }
 
-const checkInSteps: CheckInStep[] = [
-  {
-    id: 'documents',
-    title: 'Sprawdzenie dokumentów',
-    description: 'Sprawdź dokumenty ucznia',
-    icon: FileCheck,
-    required: true
-  },
-  {
-    id: 'vehicle',
-    title: 'Przegląd pojazdu',
-    description: 'Przegląd zewnętrzny i wewnętrzny',
-    icon: Car,
-    required: true
-  },
-  {
-    id: 'safety',
-    title: 'Bezpieczeństwo',
-    description: 'Sprawdzenie systemów bezpieczeństwa',
-    icon: Shield,
-    required: true
-  },
-  {
-    id: 'photos',
-    title: 'Dokumentacja zdjęciowa',
-    description: 'Zrób zdjęcia stanu pojazdu',
-    icon: Camera,
-    required: false
-  },
-  {
-    id: 'confirmation',
-    title: 'Potwierdzenie',
-    description: 'Rozpocznij lekcję',
-    icon: Check,
-    required: true
-  }
-]
-
 export default function LessonCheckInPage() {
+  const t = useTranslations('instructor.lessons.checkIn')
   const router = useRouter()
   const params = useParams()
   const lessonId = params?.id as string
@@ -89,6 +53,44 @@ export default function LessonCheckInPage() {
   const [isOnline, setIsOnline] = useState(true)
   const [batteryLevel, setBatteryLevel] = useState(85)
   const [gpsEnabled, setGpsEnabled] = useState(true)
+
+  const checkInSteps: CheckInStep[] = [
+    {
+      id: 'documents',
+      title: t('steps.documents.title'),
+      description: t('steps.documents.description'),
+      icon: FileCheck,
+      required: true
+    },
+    {
+      id: 'vehicle',
+      title: t('steps.vehicle.title'),
+      description: t('steps.vehicle.description'),
+      icon: Car,
+      required: true
+    },
+    {
+      id: 'safety',
+      title: t('steps.safety.title'),
+      description: t('steps.safety.description'),
+      icon: Shield,
+      required: true
+    },
+    {
+      id: 'photos',
+      title: t('steps.photos.title'),
+      description: t('steps.photos.description'),
+      icon: Camera,
+      required: false
+    },
+    {
+      id: 'confirmation',
+      title: t('steps.confirmation.title'),
+      description: t('steps.confirmation.description'),
+      icon: Check,
+      required: true
+    }
+  ]
 
   // Check-in data
   const [checkInData, setCheckInData] = useState({
@@ -150,9 +152,9 @@ export default function LessonCheckInPage() {
   const lesson = {
     id: lessonId,
     student: {
-      name: 'Maria Kowalczyk',
+      name: 'Марія Коваленко',
       avatar: 'https://ui-avatars.com/api/?name=MK&background=10B981&color=fff',
-      phone: '+48 501 234 567',
+      phone: '+380 501 234 567',
       licenseNumber: 'ABC123456',
       category: 'B',
       progress: 85,
@@ -161,10 +163,10 @@ export default function LessonCheckInPage() {
     type: 'city',
     duration: 90,
     startTime: '14:30',
-    location: 'ul. Mickiewicza 100',
+    location: 'вул. Шевченка 100',
     vehicle: {
       model: 'Toyota Corolla',
-      number: 'WA 1234K',
+      number: 'АА 1234 КА',
       lastMileage: 125450
     }
   }
@@ -297,9 +299,9 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <Alert>
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Ważne</AlertTitle>
+              <AlertTitle>{t('steps.documents.important')}</AlertTitle>
               <AlertDescription>
-                Sprawdź obecność i ważność wszystkich dokumentów przed rozpoczęciem lekcji
+                {t('steps.documents.importantText')}
               </AlertDescription>
             </Alert>
 
@@ -319,12 +321,12 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Uczeń obecny</p>
+                  <p className="font-medium">{t('steps.documents.studentPresent')}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    {lesson.student.name} przybył na lekcję na czas
+                    {t('steps.documents.studentPresentDesc', {name: lesson.student.name})}
                   </p>
                 </div>
-                <Badge variant="destructive">Obowiązkowe</Badge>
+                <Badge variant="destructive">{t('steps.documents.required')}</Badge>
               </label>
 
               <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -342,10 +344,10 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Prawo jazdy ucznia</p>
+                  <p className="font-medium">{t('steps.documents.studentLicense')}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <Input
-                      placeholder="Numer prawa jazdy"
+                      placeholder={t('steps.documents.licenseNumber')}
                       value={checkInData.documents.studentLicenseNumber}
                       onChange={(e) =>
                         setCheckInData(prev => ({
@@ -361,7 +363,7 @@ export default function LessonCheckInPage() {
                     <Badge variant="outline">{lesson.student.licenseNumber}</Badge>
                   </div>
                 </div>
-                <Badge variant="destructive">Obowiązkowe</Badge>
+                <Badge variant="destructive">{t('steps.documents.required')}</Badge>
               </label>
 
               <label className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -379,9 +381,9 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Legitymacja ucznia szkoły jazdy</p>
+                  <p className="font-medium">{t('steps.documents.studentCard')}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Do identyfikacji w systemie
+                    {t('steps.documents.studentCardDesc')}
                   </p>
                 </div>
               </label>
@@ -401,9 +403,9 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Zaświadczenie lekarskie</p>
+                  <p className="font-medium">{t('steps.documents.medicalCert')}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    W razie potrzeby (pierwsza lekcja lub po chorobie)
+                    {t('steps.documents.medicalCertDesc')}
                   </p>
                 </div>
               </label>
@@ -423,12 +425,12 @@ export default function LessonCheckInPage() {
                   className="mt-1"
                 />
                 <div className="flex-1">
-                  <p className="font-medium">Tożsamość ucznia potwierdzona</p>
+                  <p className="font-medium">{t('steps.documents.identityConfirmed')}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Potwierdzam, że to {lesson.student.name}
+                    {t('steps.documents.identityConfirmedDesc', {name: lesson.student.name})}
                   </p>
                 </div>
-                <Badge variant="destructive">Obowiązkowe</Badge>
+                <Badge variant="destructive">{t('steps.documents.required')}</Badge>
               </label>
             </div>
           </div>
@@ -439,7 +441,7 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Przebieg na początek (km)</Label>
+                <Label>{t('steps.vehicle.mileageStart')}</Label>
                 <Input
                   type="number"
                   placeholder={lesson.vehicle.lastMileage.toString()}
@@ -456,12 +458,12 @@ export default function LessonCheckInPage() {
                   className="mt-2 text-lg font-mono"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Ostatni: {lesson.vehicle.lastMileage} km
+                  {t('steps.vehicle.lastMileage', {mileage: lesson.vehicle.lastMileage})}
                 </p>
               </div>
 
               <div>
-                <Label>Poziom paliwa</Label>
+                <Label>{t('steps.vehicle.fuelLevel')}</Label>
                 <Select
                   value={checkInData.vehicle.fuelLevel}
                   onValueChange={(value) =>
@@ -475,14 +477,14 @@ export default function LessonCheckInPage() {
                   }
                 >
                   <SelectTrigger className="mt-2">
-                    <SelectValue placeholder="Wybierz poziom" />
+                    <SelectValue placeholder={t('steps.vehicle.selectLevel')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="full">Pełny bak (100%)</SelectItem>
-                    <SelectItem value="3/4">3/4 baka (75%)</SelectItem>
-                    <SelectItem value="1/2">1/2 baka (50%)</SelectItem>
-                    <SelectItem value="1/4">1/4 baka (25%)</SelectItem>
-                    <SelectItem value="reserve">Rezerwa (&lt;10%)</SelectItem>
+                    <SelectItem value="full">{t('steps.vehicle.fuelFull')}</SelectItem>
+                    <SelectItem value="3/4">{t('steps.vehicle.fuel3_4')}</SelectItem>
+                    <SelectItem value="1/2">{t('steps.vehicle.fuel1_2')}</SelectItem>
+                    <SelectItem value="1/4">{t('steps.vehicle.fuel1_4')}</SelectItem>
+                    <SelectItem value="reserve">{t('steps.vehicle.fuelReserve')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -491,7 +493,7 @@ export default function LessonCheckInPage() {
             <Separator />
 
             <div>
-              <Label className="text-base mb-3 block">Przegląd zewnętrzny</Label>
+              <Label className="text-base mb-3 block">{t('steps.vehicle.exteriorCheck')}</Label>
               <div className="space-y-2">
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                   <Checkbox
@@ -506,12 +508,12 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Karoseria czysta, bez widocznych uszkodzeń</span>
+                  <span>{t('steps.vehicle.exteriorClean')}</span>
                 </label>
 
                 {!checkInData.vehicle.exteriorClean && (
                   <Textarea
-                    placeholder="Opisz wykryte problemy lub uszkodzenia..."
+                    placeholder={t('steps.vehicle.describeDamages')}
                     value={checkInData.vehicle.exteriorDamages}
                     onChange={(e) =>
                       setCheckInData(prev => ({
@@ -539,7 +541,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Wszystkie światła i kierunkowskazy działają</span>
+                  <span>{t('steps.vehicle.lightsWorking')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -555,7 +557,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Opony w normalnym stanie, ciśnienie wystarczające</span>
+                  <span>{t('steps.vehicle.tiresOk')}</span>
                 </label>
               </div>
             </div>
@@ -563,7 +565,7 @@ export default function LessonCheckInPage() {
             <Separator />
 
             <div>
-              <Label className="text-base mb-3 block">Przegląd wewnętrzny</Label>
+              <Label className="text-base mb-3 block">{t('steps.vehicle.interiorCheck')}</Label>
               <div className="space-y-2">
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                   <Checkbox
@@ -578,7 +580,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Wnętrze czyste i schludne</span>
+                  <span>{t('steps.vehicle.interiorClean')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -594,7 +596,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Poziom płynów (olej, chłodząca, płyn do spryskiwaczy) w normie</span>
+                  <span>{t('steps.vehicle.fluidsOk')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -610,7 +612,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Dokumenty pojazdu obecne</span>
+                  <span>{t('steps.vehicle.documentsPresent')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -626,7 +628,7 @@ export default function LessonCheckInPage() {
                       }))
                     }
                   />
-                  <span>Apteczka, gaśnica, trójkąt obecne</span>
+                  <span>{t('steps.vehicle.emergencyKitPresent')}</span>
                 </label>
               </div>
             </div>
@@ -635,7 +637,7 @@ export default function LessonCheckInPage() {
               <Alert className="border-yellow-200 bg-yellow-50">
                 <AlertTriangle className="h-4 w-4 text-yellow-600" />
                 <AlertDescription className="text-yellow-800">
-                  Wykryte problemy zostaną przekazane mechanikowi po lekcji
+                  {t('steps.vehicle.issuesWarning')}
                 </AlertDescription>
               </Alert>
             )}
@@ -647,14 +649,14 @@ export default function LessonCheckInPage() {
           <div className="space-y-4">
             <Alert>
               <Shield className="h-4 w-4" />
-              <AlertTitle>Bezpieczeństwo przede wszystkim</AlertTitle>
+              <AlertTitle>{t('steps.safety.safetyFirst')}</AlertTitle>
               <AlertDescription>
-                Upewnij się, że wszystkie systemy bezpieczeństwa działają prawidłowo
+                {t('steps.safety.safetyFirstDesc')}
               </AlertDescription>
             </Alert>
 
             <div className="space-y-2">
-              <Label className="text-base mb-3 block">Systemy bezpieczeństwa</Label>
+              <Label className="text-base mb-3 block">{t('steps.safety.safetySystems')}</Label>
               
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                 <Checkbox
@@ -669,7 +671,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Pasy bezpieczeństwa sprawne i zapinające się</span>
+                <span>{t('steps.safety.seatbelts')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -685,7 +687,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Lusterka ustawione dla ucznia</span>
+                <span>{t('steps.safety.mirrors')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -701,7 +703,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Hamulce sprawdzone (robocze i postojowy)</span>
+                <span>{t('steps.safety.brakes')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -717,7 +719,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Hamulec ręczny działa prawidłowo</span>
+                <span>{t('steps.safety.handbrake')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -733,14 +735,14 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span>Klakson działa</span>
+                <span>{t('steps.safety.horn')}</span>
               </label>
             </div>
 
             <Separator />
 
             <div className="space-y-2">
-              <Label className="text-base mb-3 block">Instruktaż ucznia</Label>
+              <Label className="text-base mb-3 block">{t('steps.safety.studentBriefing')}</Label>
               
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
                 <Checkbox
@@ -755,7 +757,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Przeprowadzono instruktaż z techniki bezpieczeństwa</span>
+                <span className="font-medium">{t('steps.safety.briefed')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
@@ -771,7 +773,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Wyjaśniono działania w sytuacjach awaryjnych</span>
+                <span className="font-medium">{t('steps.safety.emergencyProcedures')}</span>
               </label>
 
               <label className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100">
@@ -787,7 +789,7 @@ export default function LessonCheckInPage() {
                     }))
                   }
                 />
-                <span className="font-medium">Telefony przełączone w tryb cichy</span>
+                <span className="font-medium">{t('steps.safety.phoneOnSilent')}</span>
               </label>
             </div>
           </div>
@@ -799,7 +801,7 @@ export default function LessonCheckInPage() {
             <Alert>
               <Camera className="h-4 w-4" />
               <AlertDescription>
-                Zrób zdjęcia do dokumentacji stanu pojazdu (opcjonalnie)
+                {t('steps.photos.instruction')}
               </AlertDescription>
             </Alert>
 
@@ -807,12 +809,7 @@ export default function LessonCheckInPage() {
               {['front', 'back', 'left', 'right', 'interior', 'dashboard'].map((side) => (
                 <div key={side}>
                   <Label className="mb-2 block capitalize">
-                    {side === 'front' && 'Przód'}
-                    {side === 'back' && 'Tył'}
-                    {side === 'left' && 'Lewa strona'}
-                    {side === 'right' && 'Prawa strona'}
-                    {side === 'interior' && 'Wnętrze'}
-                    {side === 'dashboard' && 'Deska rozdzielcza'}
+                    {t(`steps.photos.${side}`)}
                   </Label>
                   {checkInData.photos[side as keyof typeof checkInData.photos] ? (
                     <div className="relative">
@@ -844,7 +841,7 @@ export default function LessonCheckInPage() {
                       className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 hover:bg-blue-50 transition-colors"
                     >
                       <Camera className="w-8 h-8 text-gray-400 mb-2" />
-                      <span className="text-sm text-gray-500">Zrób zdjęcie</span>
+                      <span className="text-sm text-gray-500">{t('buttons.takePhoto')}</span>
                     </button>
                   )}
                 </div>
@@ -861,13 +858,13 @@ export default function LessonCheckInPage() {
             />
 
             <div>
-              <Label>Dodatkowe zdjęcia uszkodzeń (jeśli występują)</Label>
+              <Label>{t('steps.photos.damagesTitle')}</Label>
               <button
                 onClick={() => handlePhotoCapture('damage')}
                 className="w-full h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-red-500 hover:bg-red-50 transition-colors mt-2"
               >
                 <AlertTriangle className="w-6 h-6 text-gray-400 mr-2" />
-                <span className="text-sm text-gray-500">Dodaj zdjęcia uszkodzeń</span>
+                <span className="text-sm text-gray-500">{t('buttons.addDamagePhotos')}</span>
               </button>
             </div>
           </div>
@@ -879,37 +876,37 @@ export default function LessonCheckInPage() {
             {/* Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Podsumowanie sprawdzenia</CardTitle>
+                <CardTitle>{t('steps.confirmation.summary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Uczeń:</span>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.student')}</span>
                   <span className="font-medium">{lesson.student.name}</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Typ lekcji:</span>
-                  <Badge>Praktyka - miasto</Badge>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.lessonType')}</span>
+                  <Badge>{t('steps.confirmation.practiceCity')}</Badge>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Czas:</span>
-                  <span className="font-medium">{lesson.startTime} ({lesson.duration} min)</span>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.time')}</span>
+                  <span className="font-medium">{lesson.startTime} ({t('minutes', {duration: lesson.duration})})</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Pojazd:</span>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.vehicle')}</span>
                   <span className="font-medium">{lesson.vehicle.model} • {lesson.vehicle.number}</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Przebieg początkowy:</span>
-                  <span className="font-medium">{checkInData.vehicle.mileageStart || lesson.vehicle.lastMileage} km</span>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.initialMileage')}</span>
+                  <span className="font-medium">{checkInData.vehicle.mileageStart || lesson.vehicle.lastMileage} км</span>
                 </div>
                 
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded">
-                  <span className="text-sm text-gray-600">Paliwo:</span>
-                  <span className="font-medium">{checkInData.vehicle.fuelLevel || 'Nie podano'}</span>
+                  <span className="text-sm text-gray-600">{t('steps.confirmation.fuel')}</span>
+                  <span className="font-medium">{checkInData.vehicle.fuelLevel || t('steps.confirmation.notSpecified')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -923,7 +920,7 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Dokumenty</p>
+                  <p className="text-sm font-medium">{t('steps.confirmation.documents')}</p>
                 </CardContent>
               </Card>
               
@@ -934,7 +931,7 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Pojazd</p>
+                  <p className="text-sm font-medium">{t('steps.confirmation.vehicle')}</p>
                 </CardContent>
               </Card>
               
@@ -945,16 +942,16 @@ export default function LessonCheckInPage() {
                   ) : (
                     <XCircle className="w-8 h-8 text-red-500 mx-auto mb-2" />
                   )}
-                  <p className="text-sm font-medium">Bezpieczeństwo</p>
+                  <p className="text-sm font-medium">{t('steps.confirmation.safety')}</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Notes */}
             <div>
-              <Label>Dodatkowe uwagi (opcjonalnie)</Label>
+              <Label>{t('steps.confirmation.additionalNotes')}</Label>
               <Textarea
-                placeholder="Wszelkie komentarze dotyczące rozpoczęcia lekcji..."
+                placeholder={t('steps.confirmation.notesPlaceholder')}
                 value={checkInData.notes}
                 onChange={(e) =>
                   setCheckInData(prev => ({
@@ -981,10 +978,10 @@ export default function LessonCheckInPage() {
               />
               <div>
                 <p className="font-medium text-sm">
-                  Potwierdzam poprawność wszystkich sprawdzeń
+                  {t('steps.confirmation.agreement')}
                 </p>
                 <p className="text-xs text-gray-600 mt-1">
-                  Pojazd jest gotowy do lekcji nauki jazdy, uczeń został poinformowany o zasadach bezpieczeństwa
+                  {t('steps.confirmation.agreementDesc')}
                 </p>
               </div>
             </label>
@@ -1001,7 +998,7 @@ export default function LessonCheckInPage() {
                         <Navigation className="w-4 h-4 text-red-500" />
                       )}
                       <span className={gpsEnabled ? 'text-green-600' : 'text-red-600'}>
-                        GPS {gpsEnabled ? 'aktywny' : 'niedostępny'}
+                        {gpsEnabled ? t('steps.confirmation.gpsActive') : t('steps.confirmation.gpsUnavailable')}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1011,7 +1008,7 @@ export default function LessonCheckInPage() {
                         <WifiOff className="w-4 h-4 text-red-500" />
                       )}
                       <span className={isOnline ? 'text-green-600' : 'text-red-600'}>
-                        {isOnline ? 'Online' : 'Offline'}
+                        {isOnline ? t('steps.confirmation.online') : t('steps.confirmation.offline')}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -1025,7 +1022,7 @@ export default function LessonCheckInPage() {
                 </div>
                 {checkInData.location && (
                   <p className="text-xs text-gray-500 mt-2">
-                    Współrzędne: {checkInData.location.coords.latitude.toFixed(6)}, {checkInData.location.coords.longitude.toFixed(6)}
+                    {t('steps.confirmation.coordinates')} {checkInData.location.coords.latitude.toFixed(6)}, {checkInData.location.coords.longitude.toFixed(6)}
                   </p>
                 )}
               </CardContent>
@@ -1043,9 +1040,9 @@ export default function LessonCheckInPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Rozpoczęcie lekcji</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Wykonaj wszystkie sprawdzenia przed rozpoczęciem
+            {t('subtitle')}
           </p>
         </div>
         <Button
@@ -1053,7 +1050,7 @@ export default function LessonCheckInPage() {
           onClick={() => router.back()}
         >
           <X className="w-4 h-4 mr-2" />
-          Anuluj
+          {t('buttons.cancel')}
         </Button>
       </div>
 
@@ -1074,12 +1071,12 @@ export default function LessonCheckInPage() {
                     {lesson.student.phone}
                   </span>
                   <Badge variant="outline">{lesson.student.category}</Badge>
-                  <span>Lekcji: {lesson.student.lessonsCompleted}</span>
+                  <span>{t('student.lessons', {count: lesson.student.lessonsCompleted})}</span>
                 </div>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-500">Postęp</p>
+              <p className="text-sm text-gray-500">{t('student.progress')}</p>
               <div className="flex items-center gap-2 mt-1">
                 <Progress value={lesson.student.progress} className="w-24 h-2" />
                 <span className="text-sm font-medium">{lesson.student.progress}%</span>
@@ -1092,9 +1089,9 @@ export default function LessonCheckInPage() {
       {/* Progress Steps */}
       <Card>
         <CardHeader>
-          <CardTitle>Etapy sprawdzenia</CardTitle>
+          <CardTitle>{t('steps.title')}</CardTitle>
           <CardDescription>
-            Krok {currentStep + 1} z {checkInSteps.length}
+            {t('steps.current', {current: currentStep + 1, total: checkInSteps.length})}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1148,7 +1145,7 @@ export default function LessonCheckInPage() {
             disabled={currentStep === 0}
           >
             <ChevronLeft className="w-4 h-4 mr-2" />
-            Wstecz
+            {t('buttons.back')}
           </Button>
 
           {currentStep < checkInSteps.length - 1 ? (
@@ -1156,7 +1153,7 @@ export default function LessonCheckInPage() {
               onClick={() => setCurrentStep(currentStep + 1)}
               disabled={!canProceed()}
             >
-              Dalej
+              {t('buttons.next')}
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           ) : (
@@ -1168,12 +1165,12 @@ export default function LessonCheckInPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Rozpoczynamy...
+                  {t('buttons.starting')}
                 </>
               ) : (
                 <>
                   <Play className="w-4 h-4 mr-2" />
-                  Rozpocznij lekcję
+                  {t('buttons.startLesson')}
                 </>
               )}
             </Button>
@@ -1189,7 +1186,7 @@ export default function LessonCheckInPage() {
               window.location.href = `tel:${lesson.student.phone}`
             }}>
               <Phone className="w-4 h-4 mr-2" />
-              Zadzwoń do ucznia
+              {t('buttons.callStudent')}
             </Button>
           </CardContent>
         </Card>
@@ -1197,7 +1194,7 @@ export default function LessonCheckInPage() {
           <CardContent className="p-4">
             <Button variant="outline" className="w-full">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Wiadomość
+              {t('buttons.message')}
             </Button>
           </CardContent>
         </Card>
@@ -1207,9 +1204,9 @@ export default function LessonCheckInPage() {
       {!isOnline && (
         <Alert className="border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
-          <AlertTitle className="text-yellow-800">Tryb offline</AlertTitle>
+          <AlertTitle className="text-yellow-800">{t('offlineMode.title')}</AlertTitle>
           <AlertDescription className="text-yellow-700">
-            Pracujesz w trybie offline. Dane zostaną zapisane lokalnie i zsynchronizowane po przywróceniu połączenia.
+            {t('offlineMode.description')}
           </AlertDescription>
         </Alert>
       )}

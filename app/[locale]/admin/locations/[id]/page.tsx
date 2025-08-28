@@ -1,10 +1,11 @@
 // app/[locale]/admin/locations/[id]/page.tsx
-// Strona szczegółów lokalizacji - wyświetla pełne informacje o wybranej lokalizacji
+// Сторінка деталей локації - відображає повну інформацію про вибрану локацію
 
 'use client';
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { 
   ArrowLeft, 
   Edit, 
@@ -50,105 +51,106 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
-// Typy
+// Типи
 type LocationStatus = 'active' | 'inactive' | 'maintenance';
 
-// Mock data dla lokalizacji
-const mockLocation = {
-  id: 'loc-1',
-  name: 'Warszawa Centrum',
-  type: 'main',
-  status: 'active' as LocationStatus,
-  address: {
-    street: 'ul. Marszałkowska 123',
-    city: 'Warszawa',
-    postalCode: '00-001',
-    country: 'Polska'
-  },
-  coordinates: {
-    lat: 52.2297,
-    lng: 21.0122
-  },
-  contact: {
-    phone: '+48 22 123 45 67',
-    email: 'warszawa@szkola.pl',
-    website: 'www.szkola.pl/warszawa'
-  },
-  manager: {
-    id: 'mgr-1',
-    name: 'Jan Kowalski',
-    avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski',
-    email: 'jan.kowalski@szkola.pl',
-    phone: '+48 600 123 456'
-  },
-  stats: {
-    totalStudents: 145,
-    activeStudents: 87,
-    instructors: 12,
-    vehicles: 8,
-    monthlyLessons: 420,
-    revenue: 125450,
-    rating: 4.6,
-    reviews: 234
-  },
-  workingHours: [
-    { day: 'Poniedziałek', open: '08:00', close: '20:00' },
-    { day: 'Wtorek', open: '08:00', close: '20:00' },
-    { day: 'Środa', open: '08:00', close: '20:00' },
-    { day: 'Czwartek', open: '08:00', close: '20:00' },
-    { day: 'Piątek', open: '08:00', close: '20:00' },
-    { day: 'Sobota', open: '09:00', close: '16:00' },
-    { day: 'Niedziela', open: 'Zamknięte', close: '-' }
-  ],
-  facilities: [
-    'Parking',
-    'Sala wykładowa',
-    'Symulator jazdy',
-    'Wi-Fi',
-    'Kawiarnia',
-    'Klimatyzacja'
-  ],
-  createdAt: '2023-01-15',
-  updatedAt: '2024-12-20'
-};
-
-// Mock data dla wykresów
-const revenueData = [
-  { month: 'Sty', revenue: 95000, students: 65 },
-  { month: 'Lut', revenue: 102000, students: 72 },
-  { month: 'Mar', revenue: 98000, students: 68 },
-  { month: 'Kwi', revenue: 115000, students: 85 },
-  { month: 'Maj', revenue: 122000, students: 92 },
-  { month: 'Cze', revenue: 125450, students: 87 }
-];
-
-const categoryData = [
-  { name: 'Kategoria B', value: 65, color: '#3b82f6' },
-  { name: 'Kategoria A', value: 20, color: '#10b981' },
-  { name: 'Kategoria C', value: 10, color: '#f59e0b' },
-  { name: 'Inne', value: 5, color: '#6b7280' }
-];
-
-const instructorsList = [
-  { id: '1', name: 'Adam Nowak', students: 15, rating: 4.8, status: 'active' },
-  { id: '2', name: 'Ewa Wiśniewska', students: 12, rating: 4.9, status: 'active' },
-  { id: '3', name: 'Piotr Zieliński', students: 8, rating: 4.5, status: 'busy' },
-  { id: '4', name: 'Anna Mazur', students: 10, rating: 4.7, status: 'active' }
-];
-
-const vehiclesList = [
-  { id: '1', brand: 'Toyota Corolla', registration: 'WA 12345', status: 'active', category: 'B' },
-  { id: '2', brand: 'Volkswagen Golf', registration: 'WA 67890', status: 'maintenance', category: 'B' },
-  { id: '3', brand: 'Yamaha MT-07', registration: 'WA 11111', status: 'active', category: 'A' },
-  { id: '4', brand: 'Ford Focus', registration: 'WA 22222', status: 'active', category: 'B' }
-];
-
 export default function LocationDetailsPage() {
+  const t = useTranslations('admin.locations.details');
   const params = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Mock data для локації
+  const mockLocation = {
+    id: 'loc-1',
+    name: 'Варшава Центр',
+    type: 'main',
+    status: 'active' as LocationStatus,
+    address: {
+      street: 'вул. Маршалківська 123',
+      city: 'Варшава',
+      postalCode: '00-001',
+      country: 'Польща'
+    },
+    coordinates: {
+      lat: 52.2297,
+      lng: 21.0122
+    },
+    contact: {
+      phone: '+48 22 123 45 67',
+      email: 'warszawa@szkola.pl',
+      website: 'www.szkola.pl/warszawa'
+    },
+    manager: {
+      id: 'mgr-1',
+      name: 'Ян Ковальський',
+      avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski',
+      email: 'jan.kowalski@szkola.pl',
+      phone: '+48 600 123 456'
+    },
+    stats: {
+      totalStudents: 145,
+      activeStudents: 87,
+      instructors: 12,
+      vehicles: 8,
+      monthlyLessons: 420,
+      revenue: 125450,
+      rating: 4.6,
+      reviews: 234
+    },
+    workingHours: [
+      { day: 'monday', open: '08:00', close: '20:00' },
+      { day: 'tuesday', open: '08:00', close: '20:00' },
+      { day: 'wednesday', open: '08:00', close: '20:00' },
+      { day: 'thursday', open: '08:00', close: '20:00' },
+      { day: 'friday', open: '08:00', close: '20:00' },
+      { day: 'saturday', open: '09:00', close: '16:00' },
+      { day: 'sunday', open: 'closed', close: '-' }
+    ],
+    facilities: [
+      'parking',
+      'classroom',
+      'simulator',
+      'wifi',
+      'cafe',
+      'airConditioning'
+    ],
+    createdAt: '2023-01-15',
+    updatedAt: '2024-12-20'
+  };
+
+  // Mock data для графіків
+  const revenueData = [
+    { month: t('charts.months.jan'), revenue: 95000, students: 65 },
+    { month: t('charts.months.feb'), revenue: 102000, students: 72 },
+    { month: t('charts.months.mar'), revenue: 98000, students: 68 },
+    { month: t('charts.months.apr'), revenue: 115000, students: 85 },
+    { month: t('charts.months.may'), revenue: 122000, students: 92 },
+    { month: t('charts.months.jun'), revenue: 125450, students: 87 }
+  ];
+
+  const categoryData = [
+    { name: t('charts.categoryB'), value: 65, color: '#3b82f6' },
+    { name: t('charts.categoryA'), value: 20, color: '#10b981' },
+    { name: t('charts.categoryC'), value: 10, color: '#f59e0b' },
+    { name: t('charts.other'), value: 5, color: '#6b7280' }
+  ];
+
+  const instructorsList = [
+    { id: '1', name: 'Адам Новак', students: 15, rating: 4.8, status: 'active' },
+    { id: '2', name: 'Єва Вишневська', students: 12, rating: 4.9, status: 'active' },
+    { id: '3', name: 'Петро Зелінський', students: 8, rating: 4.5, status: 'busy' },
+    { id: '4', name: 'Анна Мазур', students: 10, rating: 4.7, status: 'active' }
+  ];
+
+  const vehiclesList = [
+    { id: '1', brand: 'Toyota Corolla', registration: 'WA 12345', status: 'active', category: 'B' },
+    { id: '2', brand: 'Volkswagen Golf', registration: 'WA 67890', status: 'maintenance', category: 'B' },
+    { id: '3', brand: 'Yamaha MT-07', registration: 'WA 11111', status: 'active', category: 'A' },
+    { id: '4', brand: 'Ford Focus', registration: 'WA 22222', status: 'active', category: 'B' }
+  ];
 
   const handleEdit = () => {
     console.log('Edit location:', params.id);
@@ -183,7 +185,7 @@ export default function LocationDetailsPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Nagłówek z breadcrumb */}
+      {/* Заголовок з breadcrumb */}
       <div className="mb-6">
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <Button
@@ -193,10 +195,10 @@ export default function LocationDetailsPage() {
             className="hover:bg-gray-100"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Powrót
+            {t('breadcrumb.back')}
           </Button>
           <span>/</span>
-          <span>Lokalizacje</span>
+          <span>{t('breadcrumb.locations')}</span>
           <span>/</span>
           <span className="text-gray-800 font-medium">{mockLocation.name}</span>
         </div>
@@ -211,14 +213,14 @@ export default function LocationDetailsPage() {
               <p className="text-gray-600">{mockLocation.address.street}, {mockLocation.address.city}</p>
             </div>
             <Badge className={`${statusColors[mockLocation.status]} ml-4`}>
-              {mockLocation.status === 'active' ? 'Aktywna' : 'Nieaktywna'}
+              {t(`status.${mockLocation.status}`)}
             </Badge>
           </div>
 
           <div className="flex items-center gap-2">
             <Button variant="outline" size="sm" onClick={handleEdit}>
               <Edit className="w-4 h-4 mr-2" />
-              Edytuj
+              {t('buttons.edit')}
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -228,10 +230,10 @@ export default function LocationDetailsPage() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => console.log('Duplicate')}>
-                  Duplikuj
+                  {t('buttons.duplicate')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => console.log('Export')}>
-                  Eksportuj dane
+                  {t('buttons.export')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
@@ -239,7 +241,7 @@ export default function LocationDetailsPage() {
                   className="text-red-600"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Usuń lokalizację
+                  {t('buttons.delete')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -247,7 +249,7 @@ export default function LocationDetailsPage() {
         </div>
       </div>
 
-      {/* Karty statystyk */}
+      {/* Картки статистик */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card className="bg-white border-gray-100">
           <CardContent className="p-6">
@@ -256,7 +258,7 @@ export default function LocationDetailsPage() {
               <span className="text-sm text-green-600 font-medium">+12%</span>
             </div>
             <p className="text-2xl font-bold text-gray-800">{mockLocation.stats.activeStudents}</p>
-            <p className="text-sm text-gray-600">Aktywnych kursantów</p>
+            <p className="text-sm text-gray-600">{t('stats.activeStudents')}</p>
           </CardContent>
         </Card>
 
@@ -267,7 +269,7 @@ export default function LocationDetailsPage() {
               <Badge variant="outline" className="text-xs">{mockLocation.stats.vehicles}</Badge>
             </div>
             <p className="text-2xl font-bold text-gray-800">{mockLocation.stats.instructors}</p>
-            <p className="text-sm text-gray-600">Instruktorów</p>
+            <p className="text-sm text-gray-600">{t('stats.instructors')}</p>
           </CardContent>
         </Card>
 
@@ -278,7 +280,7 @@ export default function LocationDetailsPage() {
               <span className="text-sm text-green-600 font-medium">+8%</span>
             </div>
             <p className="text-2xl font-bold text-gray-800">{mockLocation.stats.monthlyLessons}</p>
-            <p className="text-sm text-gray-600">Lekcji miesięcznie</p>
+            <p className="text-sm text-gray-600">{t('stats.monthlyLessons')}</p>
           </CardContent>
         </Card>
 
@@ -288,66 +290,66 @@ export default function LocationDetailsPage() {
               <DollarSign className="w-5 h-5 text-orange-600" />
               <TrendingUp className="w-4 h-4 text-green-600" />
             </div>
-            <p className="text-2xl font-bold text-gray-800">{mockLocation.stats.revenue.toLocaleString()} zł</p>
-            <p className="text-sm text-gray-600">Przychód miesięczny</p>
+            <p className="text-2xl font-bold text-gray-800">{mockLocation.stats.revenue.toLocaleString('uk-UA')} грн</p>
+            <p className="text-sm text-gray-600">{t('stats.monthlyRevenue')}</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Tabs z zawartością */}
+      {/* Tabs з вмістом */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-white border border-gray-100">
-          <TabsTrigger value="overview">Przegląd</TabsTrigger>
-          <TabsTrigger value="instructors">Instruktorzy</TabsTrigger>
-          <TabsTrigger value="vehicles">Pojazdy</TabsTrigger>
-          <TabsTrigger value="schedule">Harmonogram</TabsTrigger>
-          <TabsTrigger value="analytics">Analityka</TabsTrigger>
-          <TabsTrigger value="settings">Ustawienia</TabsTrigger>
+          <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="instructors">{t('tabs.instructors')}</TabsTrigger>
+          <TabsTrigger value="vehicles">{t('tabs.vehicles')}</TabsTrigger>
+          <TabsTrigger value="schedule">{t('tabs.schedule')}</TabsTrigger>
+          <TabsTrigger value="analytics">{t('tabs.analytics')}</TabsTrigger>
+          <TabsTrigger value="settings">{t('tabs.settings')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Informacje kontaktowe */}
+            {/* Контактна інформація */}
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle className="text-lg">Informacje kontaktowe</CardTitle>
+                <CardTitle className="text-lg">{t('sections.contactInfo')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
-                    <p className="text-sm text-gray-600">Telefon</p>
+                    <p className="text-sm text-gray-600">{t('sections.phone')}</p>
                     <p className="font-medium">{mockLocation.contact.phone}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Mail className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
-                    <p className="text-sm text-gray-600">Email</p>
+                    <p className="text-sm text-gray-600">{t('sections.email')}</p>
                     <p className="font-medium">{mockLocation.contact.email}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Globe className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
-                    <p className="text-sm text-gray-600">Strona www</p>
+                    <p className="text-sm text-gray-600">{t('sections.website')}</p>
                     <p className="font-medium">{mockLocation.contact.website}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
                   <Navigation className="w-4 h-4 text-gray-400 mt-1" />
                   <div>
-                    <p className="text-sm text-gray-600">Współrzędne</p>
+                    <p className="text-sm text-gray-600">{t('sections.coordinates')}</p>
                     <p className="font-medium">{mockLocation.coordinates.lat}, {mockLocation.coordinates.lng}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Menedżer */}
+            {/* Менеджер */}
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle className="text-lg">Menedżer lokalizacji</CardTitle>
+                <CardTitle className="text-lg">{t('sections.locationManager')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-4 mb-4">
@@ -363,23 +365,23 @@ export default function LocationDetailsPage() {
                   </div>
                 </div>
                 <Button variant="outline" size="sm" className="w-full">
-                  Zmień menedżera
+                  {t('buttons.changeManager')}
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Godziny pracy */}
+            {/* Години роботи */}
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle className="text-lg">Godziny pracy</CardTitle>
+                <CardTitle className="text-lg">{t('sections.workingHours')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {mockLocation.workingHours.map((day, index) => (
                     <div key={index} className="flex justify-between text-sm">
-                      <span className="text-gray-600">{day.day}</span>
+                      <span className="text-gray-600">{t(`days.${day.day}`)}</span>
                       <span className="font-medium">
-                        {day.open === 'Zamknięte' ? 'Zamknięte' : `${day.open} - ${day.close}`}
+                        {day.open === 'closed' ? t('days.closed') : `${day.open} - ${day.close}`}
                       </span>
                     </div>
                   ))}
@@ -388,26 +390,26 @@ export default function LocationDetailsPage() {
             </Card>
           </div>
 
-          {/* Udogodnienia */}
+          {/* Зручності */}
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle className="text-lg">Udogodnienia</CardTitle>
+              <CardTitle className="text-lg">{t('sections.facilities')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {mockLocation.facilities.map((facility, index) => (
                   <Badge key={index} variant="secondary" className="px-3 py-1">
-                    {facility}
+                    {t(`facilities.${facility}`)}
                   </Badge>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Wykres przychodów */}
+          {/* Графік доходів */}
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle className="text-lg">Przychody i liczba kursantów</CardTitle>
+              <CardTitle className="text-lg">{t('sections.revenueAndStudents')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -423,7 +425,7 @@ export default function LocationDetailsPage() {
                     dataKey="revenue"
                     stroke="#3b82f6"
                     strokeWidth={2}
-                    name="Przychód (zł)"
+                    name={t('sections.revenue')}
                   />
                   <Line
                     yAxisId="right"
@@ -431,7 +433,7 @@ export default function LocationDetailsPage() {
                     dataKey="students"
                     stroke="#10b981"
                     strokeWidth={2}
-                    name="Kursanci"
+                    name={t('sections.students')}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -443,9 +445,9 @@ export default function LocationDetailsPage() {
           <Card className="bg-white border-gray-100">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Instruktorzy ({instructorsList.length})</CardTitle>
+                <CardTitle>{t('tabs.instructors')} ({instructorsList.length})</CardTitle>
                 <Button size="sm">
-                  Przypisz instruktora
+                  {t('buttons.assignInstructor')}
                 </Button>
               </div>
             </CardHeader>
@@ -461,7 +463,7 @@ export default function LocationDetailsPage() {
                       />
                       <div>
                         <p className="font-medium text-gray-800">{instructor.name}</p>
-                        <p className="text-sm text-gray-600">{instructor.students} kursantów</p>
+                        <p className="text-sm text-gray-600">{t('studentCount', { count: instructor.students })}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -473,7 +475,7 @@ export default function LocationDetailsPage() {
                         variant={instructor.status === 'active' ? 'default' : 'secondary'}
                         className={instructor.status === 'active' ? 'bg-green-100 text-green-700' : ''}
                       >
-                        {instructor.status === 'active' ? 'Dostępny' : 'Zajęty'}
+                        {t(`instructorStatus.${instructor.status}`)}
                       </Badge>
                       <Button variant="ghost" size="sm">
                         <MoreVertical className="w-4 h-4" />
@@ -490,9 +492,9 @@ export default function LocationDetailsPage() {
           <Card className="bg-white border-gray-100">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Pojazdy ({vehiclesList.length})</CardTitle>
+                <CardTitle>{t('tabs.vehicles')} ({vehiclesList.length})</CardTitle>
                 <Button size="sm">
-                  Przypisz pojazd
+                  {t('buttons.assignVehicle')}
                 </Button>
               </div>
             </CardHeader>
@@ -513,13 +515,13 @@ export default function LocationDetailsPage() {
                             : 'bg-yellow-100 text-yellow-700'
                         }
                       >
-                        {vehicle.status === 'active' ? 'Aktywny' : 'Serwis'}
+                        {t(`vehicleStatus.${vehicle.status}`)}
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Kategoria: <span className="font-medium">{vehicle.category}</span></span>
+                      <span className="text-sm text-gray-600">{t('vehicleCategory')}: <span className="font-medium">{vehicle.category}</span></span>
                       <Button variant="ghost" size="sm">
-                        Szczegóły
+                        {t('buttons.viewDetails')}
                       </Button>
                     </div>
                   </div>
@@ -528,10 +530,10 @@ export default function LocationDetailsPage() {
             </CardContent>
           </Card>
 
-          {/* Wykres kategorii */}
+          {/* Графік категорій */}
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle className="text-lg">Podział według kategorii</CardTitle>
+              <CardTitle className="text-lg">{t('sections.categoryDistribution')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -561,7 +563,7 @@ export default function LocationDetailsPage() {
           <Alert className="bg-blue-50 border-blue-200">
             <AlertCircle className="h-4 w-4 text-blue-600" />
             <AlertDescription>
-              Harmonogram zajęć jest dostępny w module kalendarz.
+              {t('alerts.scheduleAvailable')}
             </AlertDescription>
           </Alert>
         </TabsContent>
@@ -570,7 +572,7 @@ export default function LocationDetailsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle className="text-lg">Oceny i opinie</CardTitle>
+                <CardTitle className="text-lg">{t('sections.ratingsAndReviews')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center gap-4 mb-4">
@@ -588,24 +590,24 @@ export default function LocationDetailsPage() {
                         />
                       ))}
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">{mockLocation.stats.reviews} opinii</p>
+                    <p className="text-sm text-gray-600 mt-1">{t('sections.reviews', { count: mockLocation.stats.reviews })}</p>
                   </div>
                 </div>
                 <Button variant="outline" size="sm" className="w-full">
-                  Zobacz wszystkie opinie
+                  {t('buttons.viewAllReviews')}
                 </Button>
               </CardContent>
             </Card>
 
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle className="text-lg">Wskaźniki wydajności</CardTitle>
+                <CardTitle className="text-lg">{t('sections.performanceIndicators')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-600">Wykorzystanie pojazdów</span>
+                      <span className="text-gray-600">{t('sections.vehicleUtilization')}</span>
                       <span className="font-medium">78%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -614,7 +616,7 @@ export default function LocationDetailsPage() {
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-600">Obłożenie instruktorów</span>
+                      <span className="text-gray-600">{t('sections.instructorLoad')}</span>
                       <span className="font-medium">85%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -623,7 +625,7 @@ export default function LocationDetailsPage() {
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-1">
-                      <span className="text-gray-600">Wskaźnik zdawalności</span>
+                      <span className="text-gray-600">{t('sections.passRate')}</span>
                       <span className="font-medium">92%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -639,41 +641,41 @@ export default function LocationDetailsPage() {
         <TabsContent value="settings" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Ustawienia lokalizacji</CardTitle>
+              <CardTitle>{t('sections.locationSettings')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <Alert className="bg-yellow-50 border-yellow-200">
                   <AlertCircle className="h-4 w-4 text-yellow-600" />
                   <AlertDescription>
-                    Zmiana ustawień lokalizacji może wpłynąć na dostępność usług dla kursantów.
+                    {t('alerts.settingsWarning')}
                   </AlertDescription>
                 </Alert>
                 <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
                   <div>
-                    <p className="font-medium text-gray-800">Status lokalizacji</p>
-                    <p className="text-sm text-gray-600">Dezaktywacja wstrzyma wszystkie rezerwacje</p>
+                    <p className="font-medium text-gray-800">{t('status.active')}</p>
+                    <p className="text-sm text-gray-600">{t('alerts.statusDescription')}</p>
                   </div>
                   <Button variant="outline" size="sm">
-                    Zmień status
+                    {t('buttons.changeStatus')}
                   </Button>
                 </div>
                 <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
                   <div>
-                    <p className="font-medium text-gray-800">Godziny pracy</p>
-                    <p className="text-sm text-gray-600">Dostosuj harmonogram działania</p>
+                    <p className="font-medium text-gray-800">{t('sections.workingHours')}</p>
+                    <p className="text-sm text-gray-600">{t('alerts.workingHoursDescription')}</p>
                   </div>
                   <Button variant="outline" size="sm">
-                    Edytuj godziny
+                    {t('buttons.editHours')}
                   </Button>
                 </div>
                 <div className="flex items-center justify-between p-4 border border-gray-100 rounded-lg">
                   <div>
-                    <p className="font-medium text-gray-800">Powiadomienia</p>
-                    <p className="text-sm text-gray-600">Zarządzaj alertami i komunikatami</p>
+                    <p className="font-medium text-gray-800">Сповіщення</p>
+                    <p className="text-sm text-gray-600">{t('alerts.notificationsDescription')}</p>
                   </div>
                   <Button variant="outline" size="sm">
-                    Konfiguruj
+                    {t('buttons.configure')}
                   </Button>
                 </div>
               </div>
@@ -682,22 +684,21 @@ export default function LocationDetailsPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Dialog usuwania */}
+      {/* Dialog видалення */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Usuń lokalizację</DialogTitle>
+            <DialogTitle>{t('deleteDialog.title')}</DialogTitle>
             <DialogDescription>
-              Czy na pewno chcesz usunąć lokalizację "{mockLocation.name}"? 
-              Ta operacja jest nieodwracalna i spowoduje usunięcie wszystkich powiązanych danych.
+              {t('deleteDialog.description', { name: mockLocation.name })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Anuluj
+              {t('buttons.cancel')}
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
-              Usuń lokalizację
+              {t('buttons.delete')}
             </Button>
           </DialogFooter>
         </DialogContent>

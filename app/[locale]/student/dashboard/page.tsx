@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   Calendar, 
   Clock, 
@@ -33,8 +34,8 @@ import Link from 'next/link';
 
 // Mock data
 const mockUserData = {
-  name: 'Jan Kowalski',
-  avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski&background=3B82F6&color=fff',
+  name: 'Іван Коваленко',
+  avatar: 'https://ui-avatars.com/api/?name=Ivan+Kovalenko&background=3B82F6&color=fff',
   credits: 12,
   packageExpiry: '2024-09-15',
   totalLessons: 24,
@@ -43,32 +44,32 @@ const mockUserData = {
     id: '1',
     date: '2024-08-28',
     time: '14:00',
-    instructor: 'Piotr Nowak',
-    instructorAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    type: 'Jazda miejska',
-    location: 'ul. Puławska 145',
-    vehicle: 'Toyota Yaris (WZ 12345)'
+    instructor: 'Петро Новак',
+    instructorAvatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff',
+    type: 'cityDriving',
+    location: 'вул. Хрещатик 145',
+    vehicle: 'Toyota Yaris (AA 1234 BB)'
   },
   upcomingLessons: [
-    { id: '2', date: '2024-08-30', time: '10:00', type: 'Parkowanie' },
-    { id: '3', date: '2024-09-02', time: '16:00', type: 'Jazda nocna' }
+    { id: '2', date: '2024-08-30', time: '10:00', type: 'parking' },
+    { id: '3', date: '2024-09-02', time: '16:00', type: 'nightDriving' }
   ],
   recentGrades: [
-    { skill: 'Parkowanie równoległe', grade: 4.5, trend: 'up' },
-    { skill: 'Zmiana pasów', grade: 4.0, trend: 'up' },
-    { skill: 'Rondo', grade: 3.5, trend: 'same' }
+    { skill: 'parallelParking', grade: 4.5, trend: 'up' },
+    { skill: 'laneChange', grade: 4.0, trend: 'up' },
+    { skill: 'roundabout', grade: 3.5, trend: 'same' }
   ],
   achievements: [
-    { id: '1', name: '10 lekcji', icon: Award, unlocked: true },
-    { id: '2', name: 'Pierwsza jazda nocna', icon: Award, unlocked: true },
-    { id: '3', name: 'Mistrz parkowania', icon: Award, unlocked: false }
+    { id: '1', name: '10lessons', icon: Award, unlocked: true },
+    { id: '2', name: 'firstNightDrive', icon: Award, unlocked: true },
+    { id: '3', name: 'parkingMaster', icon: Award, unlocked: false }
   ],
   notifications: [
-    { id: '1', type: 'reminder', message: 'Lekcja jutro o 14:00', time: '2 godz. temu' },
-    { id: '2', type: 'info', message: 'Nowe materiały do nauki', time: '1 dzień temu' }
+    { id: '1', type: 'reminder', messageKey: 'lessonTomorrow', time: '14:00', timeAgo: 2 },
+    { id: '2', type: 'info', messageKey: 'newMaterials', time: null, timeAgo: 1, isDay: true }
   ],
   examReadiness: 72,
-  weakPoints: ['Parkowanie tyłem', 'Rondo wielopasmowe'],
+  weakPoints: ['reverseParking', 'multiLaneRoundabout'],
   weather: {
     temp: 22,
     condition: 'sunny',
@@ -77,6 +78,7 @@ const mockUserData = {
 };
 
 export default function StudentDashboardPage() {
+  const t = useTranslations('student.dashboard');
   const [currentTime, setCurrentTime] = useState(new Date());
   
   useEffect(() => {
@@ -110,9 +112,9 @@ export default function StudentDashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Witaj ponownie, {mockUserData.name}!
+            {t('welcome', { name: mockUserData.name })}
           </h1>
-          <p className="text-gray-600">Twój postęp w nauce jazdy</p>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
         <Button variant="outline" size="icon" className="relative">
           <Bell className="h-5 w-5" />
@@ -123,7 +125,7 @@ export default function StudentDashboardPage() {
       {/* Next Lesson Card with Countdown */}
       <Card className="border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50">
         <CardHeader>
-          <CardTitle className="text-lg">Następna lekcja</CardTitle>
+          <CardTitle className="text-lg">{t('nextLesson.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-start justify-between">
@@ -135,7 +137,7 @@ export default function StudentDashboardPage() {
                 </Avatar>
                 <div>
                   <p className="font-semibold">{mockUserData.nextLesson.instructor}</p>
-                  <p className="text-sm text-gray-600">{mockUserData.nextLesson.type}</p>
+                  <p className="text-sm text-gray-600">{t(`lessonTypes.${mockUserData.nextLesson.type}`)}</p>
                 </div>
               </div>
               
@@ -157,24 +159,24 @@ export default function StudentDashboardPage() {
               </div>
 
               <div className="flex gap-2">
-                <Button size="sm">Szczegóły</Button>
-                <Button size="sm" variant="outline">Przełóż</Button>
+                <Button size="sm">{t('nextLesson.details')}</Button>
+                <Button size="sm" variant="outline">{t('nextLesson.reschedule')}</Button>
               </div>
             </div>
 
             <div className="text-center">
               <div className="bg-white rounded-lg p-4">
-                <p className="text-sm text-gray-600 mb-1">Pozostało</p>
+                <p className="text-sm text-gray-600 mb-1">{t('nextLesson.timeRemaining')}</p>
                 <div className="text-3xl font-bold text-blue-600">
                   {timeUntil.hours}:{String(timeUntil.minutes).padStart(2, '0')}
                 </div>
-                <p className="text-xs text-gray-500">godzin</p>
+                <p className="text-xs text-gray-500">{t('nextLesson.hours')}</p>
               </div>
               
               {/* Weather for lesson */}
               <div className="mt-3 flex items-center justify-center gap-2">
                 {getWeatherIcon()}
-                <span className="text-sm font-medium">{mockUserData.weather.temp}°C</span>
+                <span className="text-sm font-medium">{t('weather.temperature', { temp: mockUserData.weather.temp })}</span>
               </div>
             </div>
           </div>
@@ -188,15 +190,15 @@ export default function StudentDashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Kredyty</p>
+                <p className="text-sm text-gray-600">{t('stats.credits.title')}</p>
                 <p className="text-2xl font-bold">{mockUserData.credits}</p>
-                <p className="text-xs text-gray-500">Ważne do {mockUserData.packageExpiry}</p>
+                <p className="text-xs text-gray-500">{t('stats.credits.validUntil', { date: mockUserData.packageExpiry })}</p>
               </div>
               <CreditCard className="h-8 w-8 text-blue-500" />
             </div>
             <Link href="/student/payments/buy-package">
               <Button className="w-full mt-3" size="sm" variant="outline">
-                Dokup kredyty
+                {t('stats.credits.buyMore')}
               </Button>
             </Link>
           </CardContent>
@@ -207,9 +209,9 @@ export default function StudentDashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm text-gray-600">Postęp nauki</p>
+                <p className="text-sm text-gray-600">{t('stats.progress.title')}</p>
                 <p className="text-2xl font-bold">{mockUserData.completedLessons}/{mockUserData.totalLessons}</p>
-                <p className="text-xs text-gray-500">lekcji ukończonych</p>
+                <p className="text-xs text-gray-500">{t('stats.progress.lessonsCompleted')}</p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
             </div>
@@ -222,15 +224,15 @@ export default function StudentDashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Gotowość do egzaminu</p>
+                <p className="text-sm text-gray-600">{t('stats.examReadiness.title')}</p>
                 <p className="text-2xl font-bold">{mockUserData.examReadiness}%</p>
-                <p className="text-xs text-gray-500">Prawie gotowy!</p>
+                <p className="text-xs text-gray-500">{t('stats.examReadiness.almostReady')}</p>
               </div>
               <Target className="h-8 w-8 text-purple-500" />
             </div>
             <Link href="/student/progress/exam-readiness">
               <Button className="w-full mt-3" size="sm" variant="outline">
-                Sprawdź szczegóły
+                {t('stats.examReadiness.checkDetails')}
               </Button>
             </Link>
           </CardContent>
@@ -241,15 +243,15 @@ export default function StudentDashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Najbliższy wolny termin</p>
-                <p className="text-lg font-bold">Jutro 16:00</p>
-                <p className="text-xs text-gray-500">z Piotr Nowak</p>
+                <p className="text-sm text-gray-600">{t('stats.nextSlot.title')}</p>
+                <p className="text-lg font-bold">{t('stats.nextSlot.tomorrow')} 16:00</p>
+                <p className="text-xs text-gray-500">{t('stats.nextSlot.with')} Петро Новак</p>
               </div>
               <Calendar className="h-8 w-8 text-indigo-500" />
             </div>
             <Link href="/student/bookings/book">
               <Button className="w-full mt-3" size="sm">
-                Zarezerwuj
+                {t('stats.nextSlot.book')}
               </Button>
             </Link>
           </CardContent>
@@ -260,7 +262,7 @@ export default function StudentDashboardPage() {
         {/* Recent Grades */}
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="text-lg">Ostatnie oceny i feedback</CardTitle>
+            <CardTitle className="text-lg">{t('recentGrades.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -271,7 +273,7 @@ export default function StudentDashboardPage() {
                       <BookOpen className="h-5 w-5 text-blue-600" />
                     </div>
                     <div>
-                      <p className="font-medium">{grade.skill}</p>
+                      <p className="font-medium">{t(`skills.${grade.skill}`)}</p>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <Star
@@ -295,7 +297,7 @@ export default function StudentDashboardPage() {
             </div>
             <Link href="/student/progress">
               <Button className="w-full mt-4" variant="outline">
-                Zobacz wszystkie oceny
+                {t('recentGrades.viewAll')}
                 <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -305,31 +307,31 @@ export default function StudentDashboardPage() {
         {/* Quick Actions */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Szybkie akcje</CardTitle>
+            <CardTitle className="text-lg">{t('quickActions.title')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <Link href="/student/bookings/book" className="block">
               <Button className="w-full justify-start" variant="outline">
                 <Calendar className="h-4 w-4 mr-2" />
-                Zarezerwuj lekcję
+                {t('quickActions.bookLesson')}
               </Button>
             </Link>
             <Link href="/student/schedule" className="block">
               <Button className="w-full justify-start" variant="outline">
                 <Clock className="h-4 w-4 mr-2" />
-                Zobacz harmonogram
+                {t('quickActions.viewSchedule')}
               </Button>
             </Link>
             <Link href="/student/theory/materials" className="block">
               <Button className="w-full justify-start" variant="outline">
                 <BookOpen className="h-4 w-4 mr-2" />
-                Materiały do nauki
+                {t('quickActions.studyMaterials')}
               </Button>
             </Link>
             <Link href="/student/instructors" className="block">
               <Button className="w-full justify-start" variant="outline">
                 <User className="h-4 w-4 mr-2" />
-                Kontakt z instruktorem
+                {t('quickActions.contactInstructor')}
               </Button>
             </Link>
           </CardContent>
@@ -341,7 +343,7 @@ export default function StudentDashboardPage() {
         {/* Recent Notifications */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Powiadomienia</CardTitle>
+            <CardTitle className="text-lg">{t('notifications.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -355,8 +357,16 @@ export default function StudentDashboardPage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm">{notification.message}</p>
-                    <p className="text-xs text-gray-500">{notification.time}</p>
+                    <p className="text-sm">
+                      {notification.messageKey === 'lessonTomorrow' 
+                        ? t('notifications.lessonTomorrow', { time: notification.time })
+                        : t(`notifications.${notification.messageKey}`)}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {notification.isDay 
+                        ? t('notifications.dayAgo', { count: notification.timeAgo })
+                        : t('notifications.hoursAgo', { count: notification.timeAgo })}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -367,7 +377,7 @@ export default function StudentDashboardPage() {
         {/* Weak Points to Focus */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Obszary do poprawy</CardTitle>
+            <CardTitle className="text-lg">{t('weakPoints.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -375,15 +385,15 @@ export default function StudentDashboardPage() {
                 <div key={index} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <AlertCircle className="h-5 w-5 text-yellow-600" />
-                    <span className="text-sm font-medium">{point}</span>
+                    <span className="text-sm font-medium">{t(`skills.${point}`)}</span>
                   </div>
-                  <Badge variant="outline" className="text-xs">Ćwicz</Badge>
+                  <Badge variant="outline" className="text-xs">{t('weakPoints.practice')}</Badge>
                 </div>
               ))}
             </div>
             <Link href="/student/progress/skills">
               <Button className="w-full mt-4" variant="outline">
-                Plan poprawy
+                {t('weakPoints.improvementPlan')}
                 <ChevronRight className="h-4 w-4 ml-2" />
               </Button>
             </Link>
@@ -394,7 +404,7 @@ export default function StudentDashboardPage() {
       {/* Achievements */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Osiągnięcia</CardTitle>
+          <CardTitle className="text-lg">{t('achievements.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex gap-4">
@@ -418,14 +428,14 @@ export default function StudentDashboardPage() {
                       : 'text-gray-500'
                   }`} />
                 </div>
-                <p className="text-xs mt-2 text-center">{achievement.name}</p>
+                <p className="text-xs mt-2 text-center">{t(`achievements.${achievement.name}`)}</p>
               </div>
             ))}
             <Link href="/student/progress/achievements" className="flex flex-col items-center justify-center p-4">
               <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
                 <ChevronRight className="h-6 w-6 text-gray-600" />
               </div>
-              <p className="text-xs mt-2 text-gray-600">Zobacz wszystkie</p>
+              <p className="text-xs mt-2 text-gray-600">{t('achievements.viewAll')}</p>
             </Link>
           </div>
         </CardContent>

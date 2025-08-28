@@ -431,5 +431,312 @@
         "sunday": "Неділя"
       }
     }
+  },
+  
+  "lessons": {
+    "detail": {
+      "title": "Деталі уроку",
+      "dateTime": "{date} • {startTime} - {endTime}",
+      
+      "buttons": {
+        "share": "Поділитися",
+        "report": "Звіт",
+        "edit": "Редагувати",
+        "call": "Подзвонити",
+        "message": "Написати",
+        "saveNotes": "Зберегти нотатки"
+      },
+      
+      "student": {
+        "title": "Курсант",
+        "id": "ID: {id}",
+        "joinedDate": "З нами від {date}",
+        "courseProgress": "Прогрес курсу",
+        "lessonsCompleted": "{completed} з {total} уроків"
+      },
+      
+      "lessonInfo": {
+        "title": "Інформація про урок",
+        "type": "Тип уроку",
+        "category": "Категорія",
+        "categoryB": "Категорія B",
+        "duration": "Тривалість",
+        "minutes": "{minutes} хвилин",
+        "location": "Локація",
+        "vehicle": "Транспорт",
+        "status": "Статус",
+        "completed": "Завершено"
+      },
+      
+      "payment": {
+        "title": "Оплата",
+        "amount": "{amount} грн",
+        "paid": "Оплачено",
+        "paymentMethod": "Спосіб оплати:",
+        "cash": "Готівка",
+        "card": "Картка",
+        "date": "Дата:",
+        "confirmed": "Платіж підтверджено системою"
+      },
+      
+      "tabs": {
+        "objectives": "Цілі",
+        "performance": "Результати",
+        "metrics": "Метрики",
+        "feedback": "Відгуки"
+      },
+      
+      "objectives": {
+        "title": "Цілі уроку",
+        "completed": "Виконано",
+        "partial": "Частково",
+        "additionalNotes": "Додаткові нотатки",
+        "notesPlaceholder": "Додати нотатки про урок...",
+        "examRoute": "Екзаменаційний маршрут",
+        "emergencyBraking": "Екстрене гальмування",
+        "parallelParking": "Паралельне паркування",
+        "turningLimited": "Розворот в обмеженому просторі"
+      },
+      
+      "performance": {
+        "title": "Оцінка виконання",
+        "overallRating": "Загальна оцінка",
+        "confidence": "Впевненість",
+        "technique": "Техніка",
+        "rules": "Знання правил",
+        "safety": "Безпека",
+        "mistakes": "Кількість помилок",
+        "mistakesCount": "{count} помилок",
+        "needsImprovement": "Потребує покращення",
+        "parkingConfidence": "Впевненість при паркуванні",
+        "decisionSpeed": "Швидкість прийняття рішень"
+      },
+      
+      "metrics": {
+        "title": "Метрики водіння",
+        "distance": "Дистанція",
+        "avgSpeed": "Середня швидкість",
+        "maxSpeed": "Макс. швидкість",
+        "fuelUsed": "Витрата палива",
+        "suddenBrakes": "Різкі гальмування",
+        "sharpTurns": "Різкі повороти",
+        "km": "{value} км",
+        "kmh": "{value} км/год",
+        "liters": "{value} л"
+      },
+      
+      "feedback": {
+        "instructorTitle": "Відгук інструктора",
+        "studentTitle": "Відгук курсанта",
+        "instructorComment": "Відмінний урок! Марія показала великий прогрес. Готова до іспиту на 90%.",
+        "studentComment": "Дякую за терпіння! Нарешті зрозуміла паралельне паркування."
+      },
+      
+      "nextLesson": {
+        "title": "Наступний урок:",
+        "info": "{date} о {time} - {type}",
+        "finalPrep": "Фінальна підготовка"
+      },
+      
+      "lessonTypes": {
+        "examPreparation": "Підготовка до іспиту",
+        "finalPreparation": "Фінальна підготовка"
+      },
+      
+      "locations": {
+        "examRoute": "Екзаменаційний маршрут",
+        "practiceArea": "Навчальний майданчик"
+      }
+    }
+  },
+  "locations": {
+    "details": {
+      "breadcrumb": {
+        "back": "Повернутися",
+        "locations": "Локації"
+      },
+      "status": {
+        "active": "Активна",
+        "inactive": "Неактивна",
+        "maintenance": "Обслуговування"
+      },
+      "buttons": {
+        "edit": "Редагувати",
+        "duplicate": "Дублювати",
+        "export": "Експортувати дані",
+        "delete": "Видалити локацію",
+        "assignInstructor": "Призначити інструктора",
+        "assignVehicle": "Призначити автомобіль",
+        "changeManager": "Змінити менеджера",
+        "viewDetails": "Деталі",
+        "viewAllReviews": "Переглянути всі відгуки",
+        "changeStatus": "Змінити статус",
+        "editHours": "Редагувати години",
+        "configure": "Налаштувати",
+        "cancel": "Скасувати"
+      },
+      "stats": {
+        "activeStudents": "Активних учнів",
+        "instructors": "Інструкторів",
+        "monthlyLessons": "Уроків щомісяця",
+        "monthlyRevenue": "Місячний дохід"
+      },
+      "tabs": {
+        "overview": "Огляд",
+        "instructors": "Інструктори",
+        "vehicles": "Автомобілі",
+        "schedule": "Розклад",
+        "analytics": "Аналітика",
+        "settings": "Налаштування"
+      },
+      "sections": {
+        "contactInfo": "Контактна інформація",
+        "phone": "Телефон",
+        "email": "Email",
+        "website": "Веб-сайт",
+        "coordinates": "Координати",
+        "locationManager": "Менеджер локації",
+        "workingHours": "Години роботи",
+        "facilities": "Зручності",
+        "revenueAndStudents": "Доходи та кількість учнів",
+        "revenue": "Дохід (грн)",
+        "students": "Учні",
+        "categoryDistribution": "Розподіл за категоріями",
+        "ratingsAndReviews": "Оцінки та відгуки",
+        "reviews": "{count} відгуків",
+        "performanceIndicators": "Показники ефективності",
+        "vehicleUtilization": "Використання автомобілів",
+        "instructorLoad": "Завантаженість інструкторів",
+        "passRate": "Показник здачі",
+        "locationSettings": "Налаштування локації"
+      },
+      "instructorStatus": {
+        "available": "Доступний",
+        "busy": "Зайнятий"
+      },
+      "vehicleStatus": {
+        "active": "Активний",
+        "maintenance": "Сервіс"
+      },
+      "vehicleCategory": "Категорія",
+      "studentCount": "{count} учнів",
+      "days": {
+        "monday": "Понеділок",
+        "tuesday": "Вівторок",
+        "wednesday": "Середа",
+        "thursday": "Четвер",
+        "friday": "П'ятниця",
+        "saturday": "Субота",
+        "sunday": "Неділя",
+        "closed": "Зачинено"
+      },
+      "facilities": {
+        "parking": "Паркінг",
+        "classroom": "Навчальна кімната",
+        "simulator": "Симулятор водіння",
+        "wifi": "Wi-Fi",
+        "cafe": "Кав'ярня",
+        "airConditioning": "Кондиціонер"
+      },
+      "alerts": {
+        "scheduleAvailable": "Розклад занять доступний у модулі календар.",
+        "settingsWarning": "Зміна налаштувань локації може вплинути на доступність послуг для учнів.",
+        "statusDescription": "Деактивація призупинить всі бронювання",
+        "workingHoursDescription": "Налаштуйте розклад роботи",
+        "notificationsDescription": "Керуйте сповіщеннями та повідомленнями"
+      },
+      "deleteDialog": {
+        "title": "Видалити локацію",
+        "description": "Ви впевнені, що хочете видалити локацію \"{name}\"? Ця операція є незворотною і призведе до видалення всіх пов'язаних даних."
+      },
+      "charts": {
+        "months": {
+          "jan": "Січ",
+          "feb": "Лют",
+          "mar": "Бер",
+          "apr": "Кві",
+          "may": "Тра",
+          "jun": "Чер"
+        },
+        "categoryB": "Категорія B",
+        "categoryA": "Категорія A",
+        "categoryC": "Категорія C",
+        "other": "Інше"
+      }
+    },
+    "list": {
+      "title": "Локації",
+      "subtitle": "Управління філіями та офісами",
+      "buttons": {
+        "addLocation": "Додати локацію",
+        "details": "Деталі",
+        "edit": "Редагувати"
+      },
+      "stats": {
+        "locations": "Локацій",
+        "active": "Активних",
+        "students": "Учнів",
+        "instructors": "Інструкторів",
+        "vehicles": "Автомобілів",
+        "utilization": "Використання"
+      },
+      "filters": {
+        "searchPlaceholder": "Пошук за назвою, адресою або менеджером...",
+        "allCities": "Всі міста",
+        "allTypes": "Всі типи",
+        "mainOffices": "Головні офіси",
+        "branches": "Філії",
+        "allStatuses": "Всі статуси",
+        "active": "Активні",
+        "maintenance": "На обслуговуванні",
+        "inactive": "Неактивні"
+      },
+      "status": {
+        "active": "Активна",
+        "maintenance": "На обслуговуванні",
+        "inactive": "Неактивна"
+      },
+      "type": {
+        "main": "Головний офіс",
+        "branch": "Філія"
+      },
+      "table": {
+        "location": "Локація",
+        "type": "Тип",
+        "status": "Статус",
+        "manager": "Менеджер",
+        "students": "Учні",
+        "instructors": "Інструктори",
+        "utilization": "Використання",
+        "actions": "Дії"
+      },
+      "card": {
+        "students": "Учні",
+        "instructors": "Інструктори",
+        "vehicles": "Автомобілі",
+        "utilization": "Використання",
+        "manager": "Менеджер",
+        "lessonsPerMonth": "занять/місяць"
+      },
+      "amenities": {
+        "parking": "Паркінг",
+        "wifi": "Wi-Fi",
+        "cafe": "Кафе",
+        "simulator": "Симулятор",
+        "theory_room": "Теоретична кімната",
+        "practice_area": "Практична зона",
+        "waiting_area": "Зона очікування",
+        "disabled_access": "Доступ для інвалідів"
+      },
+      "map": {
+        "placeholder": "Інтерактивна карта буде доступна незабаром"
+      },
+      "schedule": {
+        "weekdays": "Будні",
+        "saturday": "Субота",
+        "sunday": "Неділя",
+        "closed": "Зачинено"
+      }
+    }
   }
 }
