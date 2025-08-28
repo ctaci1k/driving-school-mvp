@@ -37,23 +37,26 @@ const makeStudent = (p: {
 
 const LOC_WAW = makeLocation({
   id: 'loc-waw-plac',
-  label: 'Plac manewrowy Warszawa',
+  name: 'Plac manewrowy Warszawa',
   city: 'Warszawa',
   address: 'ul. Puławska 21',
+  type: 'plac'
 })
 
 const LOC_KRK = makeLocation({
   id: 'loc-krk-plac',
-  label: 'Plac manewrowy Kraków',
+  name: 'Plac manewrowy Kraków',
   city: 'Kraków',
   address: 'ul. Wadowicka 8',
+  type: 'plac'
 })
 
 const LOC_WRO = makeLocation({
   id: 'loc-wro-plac',
-  label: 'Plac manewrowy Wrocław',
+  name: 'Plac manewrowy Wrocław',
   city: 'Wrocław',
   address: 'ul. Grabiszyńska 12',
+  type: 'plac'
 })
 
 export const locations: Location[] = [LOC_WAW, LOC_KRK, LOC_WRO]
@@ -82,6 +85,24 @@ const tomorrow = new Date()
 tomorrow.setDate(tomorrow.getDate() + 1)
 const tomorrowISO = tomorrow.toISOString().slice(0, 10)
 
+const dayAfterTomorrow = new Date()
+dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2)
+const dayAfterTomorrowISO = dayAfterTomorrow.toISOString().slice(0, 10)
+
+const in3Days = new Date()
+in3Days.setDate(in3Days.getDate() + 3)
+const in3DaysISO = in3Days.toISOString().slice(0, 10)
+
+const in4Days = new Date()
+in4Days.setDate(in4Days.getDate() + 4)
+const in4DaysISO = in4Days.toISOString().slice(0, 10)
+
+const yesterday = new Date()
+yesterday.setDate(yesterday.getDate() - 1)
+
+const twoDaysAgo = new Date()
+twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
+
 const iso = (d: Date) => d.toISOString()
 
 // ---------------------------
@@ -89,6 +110,7 @@ const iso = (d: Date) => d.toISOString()
 // ---------------------------
 
 export const mockSlots: Slot[] = [
+  // Dziś - тільки один набір слотів без дублювання
   {
     id: 'slot-1',
     date: todayISO,
@@ -113,33 +135,144 @@ export const mockSlots: Slot[] = [
     startTime: '14:00',
     endTime: '16:00',
     status: 'zablokowany',
-    location: LOC_KRK,
-    notes: 'Serwis auta',
+    location: LOC_WAW,
+    notes: 'Przerwa obiadowa',
   },
   {
     id: 'slot-4',
+    date: todayISO,
+    startTime: '16:15',
+    endTime: '18:15',
+    status: 'zarezerwowany',
+    location: LOC_WAW,
+    student: ST_Piotr,
+    notes: 'Nauka parkowania',
+  },
+  
+  // Jutro
+  {
+    id: 'slot-5',
     date: tomorrowISO,
     startTime: '08:00',
     endTime: '10:00',
     status: 'zarezerwowany',
-    location: LOC_WRO,
+    location: LOC_WAW,
     student: ST_Piotr,
   },
   {
-    id: 'slot-5',
+    id: 'slot-6',
     date: tomorrowISO,
     startTime: '10:30',
     endTime: '12:30',
     status: 'dostępny',
-    location: LOC_WRO,
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-7',
+    date: tomorrowISO,
+    startTime: '14:00',
+    endTime: '16:00',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-8',
+    date: tomorrowISO,
+    startTime: '16:30',
+    endTime: '18:30',
+    status: 'zarezerwowany',
+    location: LOC_WAW,
+    student: students.find(s => s.id === 's-kasia')!,
+    notes: 'Przygotowanie do egzaminu',
+  },
+  
+  // Pojutrze
+  {
+    id: 'slot-9',
+    date: dayAfterTomorrowISO,
+    startTime: '09:00',
+    endTime: '11:00',
+    status: 'zarezerwowany',
+    location: LOC_WAW,
+    student: ST_Anna,
+  },
+  {
+    id: 'slot-10',
+    date: dayAfterTomorrowISO,
+    startTime: '11:30',
+    endTime: '13:30',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-11',
+    date: dayAfterTomorrowISO,
+    startTime: '15:00',
+    endTime: '17:00',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  
+  // Za 3 dni
+  {
+    id: 'slot-12',
+    date: in3DaysISO,
+    startTime: '08:00',
+    endTime: '10:00',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-13',
+    date: in3DaysISO,
+    startTime: '10:30',
+    endTime: '12:30',
+    status: 'zarezerwowany',
+    location: LOC_WAW,
+    student: ST_Piotr,
+  },
+  {
+    id: 'slot-14',
+    date: in3DaysISO,
+    startTime: '14:00',
+    endTime: '16:00',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  
+  // Za 4 dni
+  {
+    id: 'slot-15',
+    date: in4DaysISO,
+    startTime: '08:00',
+    endTime: '10:00',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-16',
+    date: in4DaysISO,
+    startTime: '10:30',
+    endTime: '12:30',
+    status: 'dostępny',
+    location: LOC_WAW,
+  },
+  {
+    id: 'slot-17',
+    date: in4DaysISO,
+    startTime: '14:00',
+    endTime: '16:00',
+    status: 'zarezerwowany',
+    location: LOC_WAW,
+    student: students.find(s => s.id === 's-kasia')!,
   },
 ]
 
 // ---------------------------
-// Templates
+// Working Hours
 // ---------------------------
 
-const baseWorkingHours: Record<string, WorkingHours> = {
+export const defaultWorkingHours: Record<string, WorkingHours> = {
   poniedziałek:   { enabled: true,  intervals: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }], slotDuration: 120, breakDuration: 15 },
   wtorek:         { enabled: true,  intervals: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }], slotDuration: 120, breakDuration: 15 },
   środa:          { enabled: true,  intervals: [{ start: '08:00', end: '12:00' }, { start: '14:00', end: '18:00' }], slotDuration: 120, breakDuration: 15 },
@@ -149,11 +282,15 @@ const baseWorkingHours: Record<string, WorkingHours> = {
   niedziela:      { enabled: false, intervals: [],                                                                   slotDuration: 120, breakDuration: 15 },
 }
 
+// ---------------------------
+// Templates
+// ---------------------------
+
 export const mockTemplates: ScheduleTemplate[] = [
   {
     id: 'template-standard',
     name: 'Tydzień standard',
-    workingHours: baseWorkingHours,
+    workingHours: defaultWorkingHours,
     isDefault: true,
     createdAt: new Date(),
   },
@@ -161,14 +298,14 @@ export const mockTemplates: ScheduleTemplate[] = [
     id: 'template-poranny',
     name: 'Tylko poranki',
     workingHours: {
-      ...baseWorkingHours,
-      poniedziałek: { ...baseWorkingHours.poniedziałek, intervals: [{ start: '08:00', end: '12:00' }] },
-      wtorek:       { ...baseWorkingHours.wtorek,       intervals: [{ start: '08:00', end: '12:00' }] },
-      środa:        { ...baseWorkingHours.środa,        intervals: [{ start: '08:00', end: '12:00' }] },
-      czwartek:     { ...baseWorkingHours.czwartek,     intervals: [{ start: '08:00', end: '12:00' }] },
-      piątek:       { ...baseWorkingHours.piątek,       intervals: [{ start: '08:00', end: '12:00' }] },
-      sobota:       { ...baseWorkingHours.sobota },
-      niedziela:    { ...baseWorkingHours.niedziela },
+      ...defaultWorkingHours,
+      poniedziałek: { ...defaultWorkingHours.poniedziałek, intervals: [{ start: '08:00', end: '12:00' }] },
+      wtorek:       { ...defaultWorkingHours.wtorek,       intervals: [{ start: '08:00', end: '12:00' }] },
+      środa:        { ...defaultWorkingHours.środa,        intervals: [{ start: '08:00', end: '12:00' }] },
+      czwartek:     { ...defaultWorkingHours.czwartek,     intervals: [{ start: '08:00', end: '12:00' }] },
+      piątek:       { ...defaultWorkingHours.piątek,       intervals: [{ start: '08:00', end: '12:00' }] },
+      sobota:       { ...defaultWorkingHours.sobota },
+      niedziela:    { ...defaultWorkingHours.niedziela },
     },
     isDefault: false,
     createdAt: new Date(),
@@ -178,18 +315,13 @@ export const mockTemplates: ScheduleTemplate[] = [
 // ---------------------------
 // Exceptions
 // ---------------------------
-//
-// Твій тип `Exception` вимагає `startDate` і `endDate`.
-// Додаємо їх як ISO-рядки (наприклад, цілий день).
 
 const mkDayRange = (isoDate: string) => {
   const start = new Date(isoDate + 'T00:00:00.000Z')
   const end = new Date(isoDate + 'T23:59:59.999Z')
   return { startDate: iso(start), endDate: iso(end) }
 }
-// ---------------------------
-// Exceptions
-// ---------------------------
+
 export const mockExceptions: Exception[] = [
   {
     id: 'ex-1',
@@ -210,7 +342,7 @@ export const mockExceptions: Exception[] = [
 // ---------------------------
 // Cancellation Requests
 // ---------------------------
-// У CancellationRequest є поле `student` (тип Student), тому робимо мінімальний обʼєкт.
+
 export const mockCancellationRequests: CancellationRequest[] = [
   {
     id: 'cr-1',
@@ -224,7 +356,7 @@ export const mockCancellationRequests: CancellationRequest[] = [
     },
     reason: 'Choroba',
     status: 'oczekujący',
-    requestDate: new Date(),   // ✅ typ Date
+    requestDate: yesterday, // Додано поле requestDate
   },
   {
     id: 'cr-2',
@@ -238,8 +370,6 @@ export const mockCancellationRequests: CancellationRequest[] = [
     },
     reason: 'Wyjazd służbowy',
     status: 'zatwierdzony',
-    requestDate: new Date(),   // ✅ typ Date
+    requestDate: twoDaysAgo, // Додано поле requestDate
   },
 ]
-
-

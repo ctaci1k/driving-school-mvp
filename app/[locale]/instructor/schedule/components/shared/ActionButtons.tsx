@@ -7,14 +7,12 @@ import React, { useState, useRef } from 'react'
 import { 
   Download, 
   Upload, 
-  Plus, 
   Settings, 
   Calendar,
   Clock,
   Copy,
   FileText,
   RefreshCw,
-  Wand2,
   ChevronDown
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -31,13 +29,11 @@ export default function ActionButtons({
   variant = 'default' 
 }: ActionButtonsProps) {
   const [showDropdown, setShowDropdown] = useState(false)
-  const [isGenerating, setIsGenerating] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   const { 
     exportSchedule, 
-    importSchedule, 
-    generateSlots,
+    importSchedule,
     refreshData 
   } = useScheduleContext()
   
@@ -101,31 +97,6 @@ export default function ActionButtons({
     }
   }
 
-  // Generowanie slotów
-  const handleGenerateSlots = async () => {
-    setIsGenerating(true)
-    try {
-      const startDate = new Date()
-      const endDate = new Date()
-      endDate.setDate(endDate.getDate() + 30) // Generuj na 30 dni
-      
-      await generateSlots(startDate, endDate)
-      
-      toast({
-        title: "Sukces",
-        description: "Wygenerowano sloty na najbliższe 30 dni",
-      })
-    } catch (error) {
-      toast({
-        title: "Błąd",
-        description: "Nie udało się wygenerować slotów",
-        variant: "destructive",
-      })
-    } finally {
-      setIsGenerating(false)
-    }
-  }
-
   // Odświeżanie danych
   const handleRefresh = async () => {
     try {
@@ -163,14 +134,6 @@ export default function ActionButtons({
           <div className="absolute top-full right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border z-50">
             <div className="py-1">
               <button
-                onClick={handleGenerateSlots}
-                disabled={isGenerating}
-                className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3"
-              >
-                <Wand2 className="w-4 h-4" />
-                Generuj sloty
-              </button>
-              <button
                 onClick={handleExport}
                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3"
               >
@@ -198,96 +161,72 @@ export default function ActionButtons({
     )
   }
 
-  // Wariant domyślny (desktop)
-  return (
-    <>
+  // Wariant kompaktowy
+  if (variant === 'compact') {
+    return (
       <div className={cn("flex items-center gap-2", className)}>
-        {/* Przycisk generowania slotów */}
-        <button
-          onClick={handleGenerateSlots}
-          disabled={isGenerating}
-          className={cn(
-            "flex items-center gap-2 px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors",
-            isGenerating && "opacity-50 cursor-not-allowed"
-          )}
-          title="Generuj sloty na podstawie godzin pracy"
-        >
-          {isGenerating ? (
-            <RefreshCw className="w-4 h-4 animate-spin" />
-          ) : (
-            <Wand2 className="w-4 h-4" />
-          )}
-          <span className="text-sm font-medium hidden xl:inline">
-            Generuj sloty
-          </span>
-        </button>
-
-        {/* Przycisk dodawania pojedynczego slotu */}
-        <button
-          className="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          title="Dodaj pojedynczy slot"
-        >
-          <Plus className="w-4 h-4" />
-          <span className="text-sm font-medium hidden xl:inline">
-            Dodaj slot
-          </span>
-        </button>
-
-        {/* Separator */}
-        <div className="w-px h-6 bg-gray-300" />
-
-        {/* Przycisk eksportu */}
         <button
           onClick={handleExport}
-          className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Eksportuj harmonogram do pliku"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          title="Eksportuj"
         >
           <Download className="w-4 h-4" />
-          <span className="text-sm hidden xl:inline">Eksportuj</span>
         </button>
-
-        {/* Przycisk importu */}
         <button
           onClick={handleImport}
-          className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Importuj harmonogram z pliku"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          title="Importuj"
         >
           <Upload className="w-4 h-4" />
-          <span className="text-sm hidden xl:inline">Importuj</span>
         </button>
-
-        {/* Separator */}
-        <div className="w-px h-6 bg-gray-300" />
-
-        {/* Przycisk kopiowania szablonu */}
-        <button
-          className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Kopiuj tydzień"
-        >
-          <Copy className="w-4 h-4" />
-          <span className="text-sm hidden xl:inline">Kopiuj tydzień</span>
-        </button>
-
-        {/* Przycisk raportu */}
-        <button
-          className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Generuj raport"
-        >
-          <FileText className="w-4 h-4" />
-          <span className="text-sm hidden xl:inline">Raport</span>
-        </button>
-
-        {/* Przycisk odświeżania */}
         <button
           onClick={handleRefresh}
-          className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Odśwież dane"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          title="Odśwież"
         >
           <RefreshCw className="w-4 h-4" />
         </button>
+        
+        {/* Hidden file input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          onChange={handleFileUpload}
+          className="hidden"
+        />
       </div>
+    )
+  }
 
-      {/* Ukryty input do uploadu plików */}
+  // Wariant domyślny
+  return (
+    <div className={cn("flex items-center gap-3", className)}>
+      <button
+        onClick={handleExport}
+        className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        <Download className="w-4 h-4" />
+        <span className="text-sm font-medium">Eksportuj</span>
+      </button>
+      
+      <button
+        onClick={handleImport}
+        className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        <Upload className="w-4 h-4" />
+        <span className="text-sm font-medium">Importuj</span>
+      </button>
+      
+      <button
+        onClick={handleRefresh}
+        className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
+      >
+        <RefreshCw className="w-4 h-4" />
+        <span className="text-sm font-medium">Odśwież</span>
+      </button>
+      
+      {/* Hidden file input */}
       <input
         ref={fileInputRef}
         type="file"
@@ -295,6 +234,6 @@ export default function ActionButtons({
         onChange={handleFileUpload}
         className="hidden"
       />
-    </>
+    </div>
   )
 }

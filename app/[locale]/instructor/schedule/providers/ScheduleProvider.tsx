@@ -58,6 +58,7 @@ interface ScheduleContextType {
   refreshData: () => Promise<void>
   exportSchedule: () => string
   importSchedule: (data: string) => Promise<void>
+  checkDayHasReservations: (date: Date) => boolean
 }
 
 // Domyślne godziny pracy
@@ -158,56 +159,124 @@ export function ScheduleProvider({
     occupancyRate: slots.length > 0 
       ? Math.round((slots.filter(s => s.status === 'zarezerwowany').length / slots.length) * 100)
       : 0,
-    weeklyHours: 40, // TODO: Calculate from actual slots
-    monthlyEarnings: 4500, // TODO: Calculate from completed lessons
-    upcomingLessons: slots.filter(s => s.status === 'zarezerwowany' && new Date(s.date) >= new Date()).length,
+    weeklyHours: slots.filter(s => {
+      const today = new Date()
+      const weekStart = new Date(today)
+      weekStart.setDate(today.getDate() - today.getDay() + 1)
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekStart.getDate() + 6)
+      const slotDate = new Date(s.date)
+      return slotDate >= weekStart && slotDate <= weekEnd && 
+             (s.status === 'zarezerwowany' || s.status === 'zakończony')
+    }).reduce((total, slot) => {
+      const start = new Date(`2000-01-01T${slot.startTime}`)
+      const end = new Date(`2000-01-01T${slot.endTime}`)
+      const hours = (end.getTime() - start.getTime()) / (1000 * 60 * 60)
+      return total + hours
+    }, 0),
+    monthlyEarnings: slots.filter(s => {
+      const today = new Date()
+      const slotDate = new Date(s.date)
+      return slotDate.getMonth() === today.getMonth() &&
+             slotDate.getFullYear() === today.getFullYear() &&
+             s.status === 'zakończony' &&
+             s.payment?.status === 'opłacony'
+    }).reduce((total, slot) => total + (slot.payment?.amount || 0), 0),
+    upcomingLessons: slots.filter(s => {
+      const today = new Date()
+      const slotDate = new Date(s.date)
+      return slotDate >= today && s.status === 'zarezerwowany'
+    }).length,
     pendingRequests: cancellationRequests.filter(r => r.status === 'oczekujący').length
   }
 
-  // Ładowanie danych przy montowaniu
+  // Ładowanie danych początkowych
   useEffect(() => {
+    const loadInitialData = async () => {
+      setIsLoading(true)
+      try {
+        // Załaduj dane z localStorage lub użyj mock data
+        const savedSlots = loadFromStorage('schedule_slots', null)
+        const savedWorkingHours = loadFromStorage('schedule_workingHours', null)
+        const savedTemplates = loadFromStorage('schedule_templates', null)
+        
+        if (savedSlots) {
+          setSlots(savedSlots)
+        } else {
+          setSlots(mockSlots)
+        }
+        
+        if (savedWorkingHours) {
+          setWorkingHours(savedWorkingHours)
+        } else {
+          setWorkingHours(defaultWorkingHours)
+        }
+        
+        if (savedTemplates) {
+          setTemplates(savedTemplates)
+        } else {
+          setTemplates(mockTemplates)
+        }
+        
+        setExceptions(mockExceptions)
+        setCancellationRequests(mockCancellationRequests)
+        
+      } catch (err) {
+        setError('Błąd ładowania danych')
+        console.error(err)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
     loadInitialData()
   }, [])
 
-  // Zapisywanie do localStorage przy zmianach
+  // Automatyczne zapisywanie
   useEffect(() => {
     if (!isLoading) {
       saveToStorage('schedule_slots', slots)
-      saveToStorage('schedule_working_hours', workingHours)
+      saveToStorage('schedule_workingHours', workingHours)
       saveToStorage('schedule_templates', templates)
-      saveToStorage('schedule_exceptions', exceptions)
     }
-  }, [slots, workingHours, templates, exceptions, isLoading])
+  }, [slots, workingHours, templates, isLoading])
 
-  // Funkcja ładowania początkowych danych
-  const loadInitialData = async () => {
-    try {
-      setIsLoading(true)
+  // 🆕 AUTOMATYCZNA GENERACJA SLOTÓW PO ZMIANIE GODZIN PRACY
+  useEffect(() => {
+    // Tylko jeśli dane są załadowane i mamy godziny pracy
+    if (!isLoading && Object.keys(workingHours).length > 0) {
+      // Generuj sloty na następne 30 dni
+      const startDate = new Date()
+      const endDate = new Date()
+      endDate.setDate(endDate.getDate() + 30)
       
-      // Ładowanie z localStorage lub użycie mock danych
-      const savedSlots = loadFromStorage('schedule_slots', mockSlots)
-      const savedWorkingHours = loadFromStorage('schedule_working_hours', defaultWorkingHours)
-      const savedTemplates = loadFromStorage('schedule_templates', mockTemplates)
-      const savedExceptions = loadFromStorage('schedule_exceptions', mockExceptions)
-      const savedRequests = loadFromStorage('schedule_requests', mockCancellationRequests)
-      
-      setSlots(savedSlots)
-      setWorkingHours(savedWorkingHours)
-      setTemplates(savedTemplates)
-      setExceptions(savedExceptions)
-      setCancellationRequests(savedRequests)
-    } catch (err) {
-      console.error('Błąd ładowania danych:', err)
-      setError('Nie udało się załadować danych harmonogramu')
-    } finally {
-      setIsLoading(false)
+      // Opóźnij generację o 500ms aby uniknąć wielokrotnych wywołań
+      const timeoutId = setTimeout(() => {
+        generateSlots(startDate, endDate)
+      }, 500)
+
+      return () => clearTimeout(timeoutId)
     }
-  }
+  }, [workingHours, isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 🆕 FUNKCJA SPRAWDZAJĄCA CZY DZIEŃ MA REZERWACJE
+  const checkDayHasReservations = useCallback((date: Date): boolean => {
+    // Sprawdź czy są jakiekolwiek sloty z rezerwacjami w danym dniu
+    const daySlots = slots.filter(slot => {
+      const slotDate = new Date(slot.date)
+      return (
+        slotDate.toDateString() === date.toDateString() &&
+        (slot.status === 'zarezerwowany' || slot.status === 'w_trakcie')
+      )
+    })
+    
+    return daySlots.length > 0
+  }, [slots])
 
   // Metody dla slotów
   const updateSlot = useCallback(async (slotId: string, updates: Partial<Slot>) => {
     try {
-      setSlots(prev => prev.map(slot => 
+      setSlots(prev => prev.map(slot =>
         slot.id === slotId ? { ...slot, ...updates } : slot
       ))
       toast({
@@ -262,28 +331,77 @@ export function ScheduleProvider({
     }
   }, [toast])
 
+  // 🔄 ZAKTUALIZOWANA FUNKCJA GENEROWANIA SLOTÓW Z OCHRONĄ REZERWACJI
   const generateSlots = useCallback(async (startDate: Date, endDate: Date) => {
     try {
       const newSlots: Slot[] = []
+      const skippedDays: string[] = []
       const currentDate = new Date(startDate)
+      let generatedCount = 0
+      let protectedCount = 0
       
       while (currentDate <= endDate) {
         const dayName = currentDate.toLocaleDateString('pl-PL', { weekday: 'long' }).toLowerCase()
         const dayWorkingHours = workingHours[dayName]
         
-        if (dayWorkingHours && dayWorkingHours.enabled) {
+        // Sprawdź czy dzień ma rezerwacje
+        const hasReservations = checkDayHasReservations(currentDate)
+        
+        if (hasReservations) {
+          // Zapisz informację o pominiętym dniu
+          skippedDays.push(currentDate.toLocaleDateString('pl-PL', { 
+            weekday: 'long', 
+            day: 'numeric', 
+            month: 'long' 
+          }))
+          protectedCount++
+        } else if (dayWorkingHours && dayWorkingHours.enabled) {
+          // Usuń tylko sloty ze statusem 'dostępny' dla tego dnia
+          const dateString = currentDate.toISOString().split('T')[0]
+          setSlots(prev => prev.filter(slot => {
+            const slotDate = new Date(slot.date).toISOString().split('T')[0]
+            return !(slotDate === dateString && slot.status === 'dostępny')
+          }))
+          
+          // Generuj nowe sloty
           const daySlots = generateSlotsFromWorkingHours(currentDate, dayWorkingHours)
           newSlots.push(...daySlots)
+          generatedCount++
         }
         
         currentDate.setDate(currentDate.getDate() + 1)
       }
       
-      setSlots(prev => [...prev, ...newSlots])
-      toast({
-        title: "Sukces",
-        description: `Wygenerowano ${newSlots.length} nowych slotów`,
-      })
+      // Dodaj nowe sloty
+      if (newSlots.length > 0) {
+        setSlots(prev => [...prev, ...newSlots])
+      }
+      
+      // Pokaż informację o wyniku
+      if (skippedDays.length > 0) {
+        toast({
+          title: "Generowanie slotów zakończone",
+          description: (
+            <div>
+              <p>Wygenerowano sloty dla {generatedCount} dni.</p>
+              <p className="mt-2 font-semibold">Pominięto {protectedCount} dni z rezerwacjami:</p>
+              <ul className="mt-1 text-sm">
+                {skippedDays.slice(0, 3).map((day, idx) => (
+                  <li key={idx}>• {day}</li>
+                ))}
+                {skippedDays.length > 3 && (
+                  <li>• i {skippedDays.length - 3} więcej...</li>
+                )}
+              </ul>
+            </div>
+          ),
+        })
+      } else {
+        toast({
+          title: "Sukces",
+          description: `Wygenerowano ${newSlots.length} nowych slotów dla ${generatedCount} dni`,
+        })
+      }
     } catch (err) {
       toast({
         title: "Błąd",
@@ -292,7 +410,7 @@ export function ScheduleProvider({
       })
       throw err
     }
-  }, [workingHours, toast])
+  }, [workingHours, checkDayHasReservations, toast])
 
   // Metody dla godzin pracy
   const updateWorkingHours = useCallback(async (day: string, hours: WorkingHours) => {
@@ -402,8 +520,11 @@ export function ScheduleProvider({
 
   // Pozostałe metody
   const refreshData = useCallback(async () => {
-    await loadInitialData()
-  }, [])
+    const startDate = new Date()
+    const endDate = new Date()
+    endDate.setDate(endDate.getDate() + 30)
+    await generateSlots(startDate, endDate)
+  }, [generateSlots])
 
   const exportSchedule = useCallback(() => {
     const data = {
@@ -462,7 +583,8 @@ export function ScheduleProvider({
     processCancellationRequest: async () => {}, // TODO: Implement
     refreshData,
     exportSchedule,
-    importSchedule
+    importSchedule,
+    checkDayHasReservations
   }
 
   return (

@@ -1,5 +1,5 @@
 // app/[locale]/instructor/schedule/page.tsx
-// Główna strona harmonogramu instruktora - zarządzanie zakładkami i nawigacją
+// Główna strona harmonogramu instruktora - nowoczesny design
 
 "use client"
 
@@ -7,14 +7,13 @@ import React, { useState, useEffect, Suspense, lazy } from 'react'
 import { 
   Calendar, Copy, AlertCircle, BarChart3, Settings, 
   ChevronLeft, ChevronRight, Plus, Download, Upload,
-  Clock, Users, Car, DollarSign, TrendingUp, Filter
+  Clock, Users, Car, DollarSign, TrendingUp, Filter,
+  Search, Menu, X, Bell, Grid3x3, List, CalendarDays
 } from 'lucide-react'
 import { useScheduleContext } from './providers/ScheduleProvider'
-import QuickStats from './components/shared/QuickStats'
-import SearchBar from './components/shared/SearchBar'
-import ActionButtons from './components/shared/ActionButtons'
-
-import { TabValue, ViewMode } from './types/enums'
+import  ActionButtons  from './components/shared/ActionButtons'
+import  WorkingHoursModal  from './components/modals/WorkingHoursModal'
+import  ExceptionModal  from './components/modals/ExceptionModal'
 import { formatDate, getCurrentWeek } from './utils/dateHelpers'
 import { cn } from '@/lib/utils'
 
@@ -24,7 +23,7 @@ const TemplatesTab = lazy(() => import('./components/tabs/TemplatesTab'))
 const RequestsTab = lazy(() => import('./components/tabs/RequestsTab'))
 const StatsTab = lazy(() => import('./components/tabs/StatsTab'))
 
-// Loading component dla Suspense
+// Loading component
 const TabLoader = () => (
   <div className="flex items-center justify-center h-96">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -32,289 +31,291 @@ const TabLoader = () => (
 )
 
 export default function SchedulePage() {
-  // Stan lokalny dla UI
-  const [activeTab, setActiveTab] = useState<TabValue>('kalendarz')
-  const [viewMode, setViewMode] = useState<ViewMode>('tydzień')
+  // Stan lokalny
+  const [activeView, setActiveView] = useState<'kalendarz' | 'szablony' | 'wnioski' | 'statystyki'>('kalendarz')
+  const [viewMode, setViewMode] = useState<'dzień' | 'tydzień' | 'miesiąc'>('tydzień')
   const [currentDate, setCurrentDate] = useState(new Date())
   const [searchTerm, setSearchTerm] = useState('')
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showWorkingHoursModal, setShowWorkingHoursModal] = useState(false)
+  const [showExceptionModal, setShowExceptionModal] = useState(false)
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
+  const [showSearch, setShowSearch] = useState(false)
 
   // Kontekst globalny
   const { 
     slots, 
-    workingHours, 
-    templates, 
-    exceptions,
-    cancellationRequests,
     stats,
+    cancellationRequests,
     isLoading,
     refreshData 
   } = useScheduleContext()
 
   // Obliczone wartości
-  const weekDates = getCurrentWeek(currentDate)
-  const weekLabel = `${formatDate(weekDates[0])} - ${formatDate(weekDates[6])}`
   const pendingRequestsCount = cancellationRequests?.filter(r => r.status === 'oczekujący').length || 0
+  
+  // Nawigacja dat
+  const handleDateNavigation = (direction: 'prev' | 'next' | 'today') => {
+    const newDate = new Date(currentDate)
+    
+    if (direction === 'today') {
+      setCurrentDate(new Date())
+    } else {
+      const days = viewMode === 'dzień' ? 1 : viewMode === 'tydzień' ? 7 : 30
+      newDate.setDate(newDate.getDate() + (direction === 'next' ? days : -days))
+      setCurrentDate(newDate)
+    }
+  }
 
-  // Efekty
+  // Format daty w zależności od widoku
+  const getDateLabel = () => {
+    if (viewMode === 'dzień') {
+      return currentDate.toLocaleDateString('pl-PL', { 
+        weekday: 'long', 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+      })
+    } else if (viewMode === 'tydzień') {
+      const weekDates = getCurrentWeek(currentDate)
+      return `${formatDate(weekDates[0])} - ${formatDate(weekDates[6])}`
+    } else {
+      return currentDate.toLocaleDateString('pl-PL', { 
+        month: 'long', 
+        year: 'numeric' 
+      })
+    }
+  }
+
   useEffect(() => {
-    // Odświeżanie danych przy montowaniu
     refreshData()
   }, [])
 
-  useEffect(() => {
-    // Zamknięcie mobilnego menu przy zmianie zakładki
-    setIsMobileMenuOpen(false)
-  }, [activeTab])
-
-  // Handlery nawigacji
-  const handlePreviousWeek = () => {
-    const newDate = new Date(currentDate)
-    newDate.setDate(newDate.getDate() - 7)
-    setCurrentDate(newDate)
-  }
-
-  const handleNextWeek = () => {
-    const newDate = new Date(currentDate)
-    newDate.setDate(newDate.getDate() + 7)
-    setCurrentDate(newDate)
-  }
-
-  const handleToday = () => {
-    setCurrentDate(new Date())
-  }
-
-  // Handler dla wyszukiwania
-  const handleSearch = (term: string) => {
-    setSearchTerm(term)
-    // Logika wyszukiwania zostanie obsłużona w komponencie zakładki
-  }
-
-  // Handler dla filtrów
-  const handleFilterToggle = () => {
-    setIsFilterOpen(!isFilterOpen)
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Nagłówek strony */}
-      <header className="bg-white border-b sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Górny pasek z tytułem i statystykami */}
-          <div className="py-4">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              {/* Tytuł i opis */}
-              <div className="flex-1">
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
-                  Harmonogram zajęć
-                </h1>
-                <p className="text-sm text-gray-500 mt-1">
-                  Zarządzaj swoim czasem pracy i rezerwacjami kursantów
-                </p>
-              </div>
-
-              {/* Przyciski akcji */}
-              <div className="flex items-center gap-2">
-                {/* Mobile menu toggle */}
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                      d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                  </svg>
-                </button>
-
-                {/* Desktop action buttons */}
-                <div className="hidden lg:flex items-center gap-2">
-                  <button
-                    onClick={() => {/* otwórz modal godzin pracy */}}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span className="text-sm font-medium">Godziny pracy</span>
-                  </button>
-
-                  <button
-                    onClick={() => {/* otwórz modal wyjątków */}}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span className="text-sm font-medium">Dodaj wyjątek</span>
-                  </button>
-                </div>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Główny kontener */}
+      <div className="max-w-7xl mx-auto p-4 lg:p-6">
+        
+        {/* Nagłówek strony - niezafixowany, nowoczesny design */}
+        <div className="mb-8">
+          {/* Tytuł i akcje */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
+                Harmonogram
+              </h1>
+              <p className="text-gray-500 mt-1">
+                Zarządzaj swoim czasem efektywnie
+              </p>
             </div>
 
-            {/* Szybkie statystyki */}
-            <QuickStats stats={stats} className="mt-4" />
-          </div>
-
-          {/* Pasek nawigacji z zakładkami */}
-          <nav className="flex space-x-1">
-            <TabButton
-              active={activeTab === 'kalendarz'}
-              onClick={() => setActiveTab('kalendarz')}
-              icon={<Calendar className="w-4 h-4" />}
-              label="Kalendarz"
-            />
-            
-            <TabButton
-              active={activeTab === 'szablony'}
-              onClick={() => setActiveTab('szablony')}
-              icon={<Copy className="w-4 h-4" />}
-              label="Szablony"
-            />
-            
-            <TabButton
-              active={activeTab === 'wnioski'}
-              onClick={() => setActiveTab('wnioski')}
-              icon={<AlertCircle className="w-4 h-4" />}
-              label="Wnioski"
-              badge={pendingRequestsCount > 0 ? pendingRequestsCount : undefined}
-            />
-            
-            <TabButton
-              active={activeTab === 'statystyki'}
-              onClick={() => setActiveTab('statystyki')}
-              icon={<BarChart3 className="w-4 h-4" />}
-              label="Statystyki"
-            />
-          </nav>
-        </div>
-      </header>
-
-      {/* Pasek narzędzi */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
-            {/* Nawigacja po datach (tylko dla kalendarza) */}
-            {activeTab === 'kalendarz' && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handlePreviousWeek}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  aria-label="Poprzedni tydzień"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                
-                <button
-                  onClick={handleToday}
-                  className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm font-medium"
-                >
-                  Dziś
-                </button>
-                
-                <button
-                  onClick={handleNextWeek}
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  aria-label="Następny tydzień"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-                
-                <div className="ml-2 lg:ml-4">
-                  <h2 className="text-sm lg:text-base font-semibold text-gray-900">
-                    {weekLabel}
-                  </h2>
-                </div>
-              </div>
-            )}
-
-            {/* Wyszukiwarka i filtry */}
-            <div className="flex items-center gap-2">
-              <SearchBar
-                value={searchTerm}
-                onChange={handleSearch}
-                placeholder="Szukaj kursanta, lokalizacji..."
-                className="flex-1 lg:w-64"
-              />
+            {/* Przyciski akcji - desktop */}
+            <div className="hidden lg:flex items-center gap-3">
+              <button
+                onClick={() => setShowSearch(!showSearch)}
+                className="p-2.5 hover:bg-white rounded-xl transition-all duration-200 hover:shadow-md"
+              >
+                <Search className="w-5 h-5 text-gray-600" />
+              </button>
               
               <button
-                onClick={handleFilterToggle}
-                className={cn(
-                  "p-2 rounded-lg transition-colors",
-                  isFilterOpen 
-                    ? "bg-blue-100 text-blue-600" 
-                    : "hover:bg-gray-100"
-                )}
-                aria-label="Filtry"
+                className="relative p-2.5 hover:bg-white rounded-xl transition-all duration-200 hover:shadow-md"
               >
-                <Filter className="w-5 h-5" />
+                <Bell className="w-5 h-5 text-gray-600" />
+                {pendingRequestsCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                )}
               </button>
 
-              {/* Przełącznik widoku (tylko dla kalendarza) */}
-              {activeTab === 'kalendarz' && (
-                <div className="hidden lg:flex items-center gap-1 border rounded-lg">
-                  <ViewModeButton
-                    active={viewMode === 'dzień'}
-                    onClick={() => setViewMode('dzień')}
-                    label="Dzień"
-                  />
-                  <ViewModeButton
-                    active={viewMode === 'tydzień'}
-                    onClick={() => setViewMode('tydzień')}
-                    label="Tydzień"
-                  />
-                  <ViewModeButton
-                    active={viewMode === 'miesiąc'}
-                    onClick={() => setViewMode('miesiąc')}
-                    label="Miesiąc"
-                  />
-                </div>
-              )}
+              <button
+                onClick={() => setShowWorkingHoursModal(true)}
+                className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                <Settings className="w-4 h-4" />
+                <span className="font-medium">Godziny pracy</span>
+              </button>
+
+              <button
+                onClick={() => setShowExceptionModal(true)}
+                className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="font-medium">Wyjątek</span>
+              </button>
             </div>
 
-            {/* Przyciski akcji */}
-            <ActionButtons className="hidden lg:flex" />
+            {/* Menu mobilne */}
+            <button
+              onClick={() => setShowMobileMenu(!showMobileMenu)}
+              className="lg:hidden p-2.5 hover:bg-white rounded-xl transition-all duration-200"
+            >
+              {showMobileMenu ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
 
-          {/* Panel filtrów (rozwijany) */}
-          {isFilterOpen && (
-            <div className="mt-3 p-4 bg-gray-50 rounded-lg">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                <select className="px-3 py-2 border rounded-lg text-sm">
-                  <option value="">Status: Wszystkie</option>
-                  <option value="dostępny">Dostępny</option>
-                  <option value="zarezerwowany">Zarezerwowany</option>
-                  <option value="zablokowany">Zablokowany</option>
-                </select>
-                
-                <select className="px-3 py-2 border rounded-lg text-sm">
-                  <option value="">Lokalizacja: Wszystkie</option>
-                  <option value="warszawa">Warszawa</option>
-                  <option value="krakow">Kraków</option>
-                  <option value="wroclaw">Wrocław</option>
-                </select>
-                
-                <select className="px-3 py-2 border rounded-lg text-sm">
-                  <option value="">Kursant: Wszyscy</option>
-                  <option value="anna-nowak">Anna Nowak</option>
-                  <option value="piotr-kowalski">Piotr Kowalski</option>
-                </select>
-                
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
-                >
-                  Zastosuj filtry
-                </button>
+          {/* Pasek wyszukiwania - animowany */}
+          {showSearch && (
+            <div className="mb-4 animate-in slide-in-from-top duration-200">
+              <div className="relative max-w-xl">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Szukaj kursanta, lokalizacji, terminu..."
+                  className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                />
               </div>
             </div>
           )}
-        </div>
-      </div>
 
-      {/* Główna treść - zakładki */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {isLoading ? (
-          <TabLoader />
-        ) : (
+          {/* Statystyki - karty */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <Calendar className="w-8 h-8 text-blue-500" />
+                <span className="text-2xl font-bold text-gray-900">{stats?.totalSlots || 0}</span>
+              </div>
+              <p className="text-sm text-gray-500">Wszystkie terminy</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <Users className="w-8 h-8 text-green-500" />
+                <span className="text-2xl font-bold text-gray-900">{stats?.bookedSlots || 0}</span>
+              </div>
+              <p className="text-sm text-gray-500">Zarezerwowane</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <Clock className="w-8 h-8 text-orange-500" />
+                <span className="text-2xl font-bold text-gray-900">{stats?.weeklyHours || 0}h</span>
+              </div>
+              <p className="text-sm text-gray-500">Godzin w tygodniu</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-xl shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <DollarSign className="w-8 h-8 text-purple-500" />
+                <span className="text-2xl font-bold text-gray-900">{stats?.monthlyEarnings || 0} zł</span>
+              </div>
+              <p className="text-sm text-gray-500">Przychód miesięczny</p>
+            </div>
+          </div>
+
+          {/* Nawigacja widoków - nowoczesne przyciski */}
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            {/* Przełącznik widoków */}
+            <div className="inline-flex bg-white rounded-xl shadow-sm p-1">
+              {(['kalendarz', 'szablony', 'wnioski', 'statystyki'] as const).map((view) => (
+                <button
+                  key={view}
+                  onClick={() => setActiveView(view)}
+                  className={cn(
+                    "px-4 py-2 rounded-lg font-medium transition-all duration-200",
+                    activeView === view
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    {view === 'kalendarz' && <Calendar className="w-4 h-4" />}
+                    {view === 'szablony' && <Copy className="w-4 h-4" />}
+                    {view === 'wnioski' && <AlertCircle className="w-4 h-4" />}
+                    {view === 'statystyki' && <BarChart3 className="w-4 h-4" />}
+                    <span className="hidden sm:inline">
+                      {view.charAt(0).toUpperCase() + view.slice(1)}
+                    </span>
+                  </span>
+                  {view === 'wnioski' && pendingRequestsCount > 0 && (
+                    <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs rounded-full">
+                      {pendingRequestsCount}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Kontrolki widoku kalendarza */}
+            {activeView === 'kalendarz' && (
+              <div className="flex items-center gap-3">
+                {/* Nawigacja dat */}
+                <div className="inline-flex items-center bg-white rounded-xl shadow-sm">
+                  <button
+                    onClick={() => handleDateNavigation('prev')}
+                    className="p-2.5 hover:bg-gray-100 rounded-l-xl transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  
+                  <button
+                    onClick={() => handleDateNavigation('today')}
+                    className="px-4 py-2 hover:bg-gray-100 transition-colors border-x"
+                  >
+                    <span className="font-medium text-sm">Dziś</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => handleDateNavigation('next')}
+                    className="p-2.5 hover:bg-gray-100 rounded-r-xl transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Typ widoku */}
+                <div className="inline-flex bg-white rounded-xl shadow-sm p-1">
+                  <button
+                    onClick={() => setViewMode('dzień')}
+                    className={cn(
+                      "p-2 rounded-lg transition-all duration-200",
+                      viewMode === 'dzień' 
+                        ? "bg-gray-800 text-white" 
+                        : "text-gray-600 hover:bg-gray-100"
+                    )}
+                    title="Widok dzienny"
+                  >
+                    <List className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('tydzień')}
+                    className={cn(
+                      "p-2 rounded-lg transition-all duration-200",
+                      viewMode === 'tydzień' 
+                        ? "bg-gray-800 text-white" 
+                        : "text-gray-600 hover:bg-gray-100"
+                    )}
+                    title="Widok tygodniowy"
+                  >
+                    <CalendarDays className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('miesiąc')}
+                    className={cn(
+                      "p-2 rounded-lg transition-all duration-200",
+                      viewMode === 'miesiąc' 
+                        ? "bg-gray-800 text-white" 
+                        : "text-gray-600 hover:bg-gray-100"
+                    )}
+                    title="Widok miesięczny"
+                  >
+                    <Grid3x3 className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Data */}
+                <div className="hidden sm:block px-4 py-2 bg-white rounded-xl shadow-sm">
+                  <p className="text-sm font-medium text-gray-900">{getDateLabel()}</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Główna zawartość */}
+        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <Suspense fallback={<TabLoader />}>
-            {activeTab === 'kalendarz' && (
+            {activeView === 'kalendarz' && (
               <CalendarTab
                 viewMode={viewMode}
                 currentDate={currentDate}
@@ -323,109 +324,79 @@ export default function SchedulePage() {
               />
             )}
             
-            {activeTab === 'szablony' && (
+            {activeView === 'szablony' && (
               <TemplatesTab searchTerm={searchTerm} />
             )}
             
-            {activeTab === 'wnioski' && (
+            {activeView === 'wnioski' && (
               <RequestsTab searchTerm={searchTerm} />
             )}
             
-            {activeTab === 'statystyki' && (
+            {activeView === 'statystyki' && (
               <StatsTab currentDate={currentDate} />
             )}
           </Suspense>
-        )}
-      </main>
+        </div>
 
-      {/* Mobile action menu */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden">
-          <div className="absolute right-0 top-0 h-full w-64 bg-white shadow-xl">
-            <div className="p-4">
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-              
-              <h3 className="font-semibold text-gray-900 mb-4">Menu</h3>
-              
-              <div className="space-y-2">
-                <button className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
-                  <Settings className="w-4 h-4" />
-                  <span className="text-sm">Godziny pracy</span>
+        {/* Mobilne menu - slide-out */}
+        {showMobileMenu && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            <div className="fixed inset-0 bg-black/50" onClick={() => setShowMobileMenu(false)} />
+            <div className="fixed right-0 top-0 h-full w-72 bg-white shadow-xl p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold">Menu</h2>
+                <button
+                  onClick={() => setShowMobileMenu(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  <X className="w-5 h-5" />
                 </button>
-                
-                <button className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
-                  <Plus className="w-4 h-4" />
-                  <span className="text-sm">Dodaj wyjątek</span>
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => {
+                    setShowWorkingHoursModal(true)
+                    setShowMobileMenu(false)
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  <Settings className="w-5 h-5" />
+                  <span className="font-medium">Godziny pracy</span>
                 </button>
-                
-                <button className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
-                  <Download className="w-4 h-4" />
-                  <span className="text-sm">Eksportuj</span>
+
+                <button
+                  onClick={() => {
+                    setShowExceptionModal(true)
+                    setShowMobileMenu(false)
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-colors"
+                >
+                  <Plus className="w-5 h-5" />
+                  <span className="font-medium">Dodaj wyjątek</span>
                 </button>
-                
-                <button className="w-full flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg">
-                  <Upload className="w-4 h-4" />
-                  <span className="text-sm">Importuj</span>
-                </button>
+
+                <ActionButtons variant="mobile" />
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Modale */}
+        {showWorkingHoursModal && (
+          <WorkingHoursModal
+            isOpen={showWorkingHoursModal}
+            onClose={() => setShowWorkingHoursModal(false)}
+          />
+        )}
+
+        {showExceptionModal && (
+          <ExceptionModal
+            isOpen={showExceptionModal}
+            onClose={() => setShowExceptionModal(false)}
+          />
+        )}
+      </div>
     </div>
   )
 }
-
-// Komponenty pomocnicze
-interface TabButtonProps {
-  active: boolean
-  onClick: () => void
-  icon: React.ReactNode
-  label: string
-  badge?: number
-}
-
-const TabButton: React.FC<TabButtonProps> = ({ active, onClick, icon, label, badge }) => (
-  <button
-    onClick={onClick}
-    className={cn(
-      "relative px-4 py-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-2",
-      active
-        ? "text-blue-600 border-blue-600"
-        : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
-    )}
-  >
-    {icon}
-    <span className="hidden sm:inline">{label}</span>
-    {badge && badge > 0 && (
-      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-        {badge}
-      </span>
-    )}
-  </button>
-)
-
-interface ViewModeButtonProps {
-  active: boolean
-  onClick: () => void
-  label: string
-}
-
-const ViewModeButton: React.FC<ViewModeButtonProps> = ({ active, onClick, label }) => (
-  <button
-    onClick={onClick}
-    className={cn(
-      "px-3 py-1.5 text-sm transition-colors",
-      active ? "bg-blue-100 text-blue-600" : "hover:bg-gray-100"
-    )}
-  >
-    {label}
-  </button>
-)

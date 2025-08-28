@@ -5,7 +5,7 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { 
-  ChevronLeft, ChevronRight, Clock, Plus, Calendar,
+  ChevronLeft, ChevronRight, Clock, Calendar,
   AlertCircle, MapPin, User, Car
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -234,66 +234,73 @@ export default function WeekView({
         </div>
       </div>
 
-      {/* Siatka tygodnia */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Kolumna z godzinami */}
+      {/* Siatka kalendarza */}
+      <div className="flex-1 flex overflow-auto">
         <TimeGrid />
-
-        {/* Dni tygodnia */}
-        <div className="flex-1 flex overflow-x-auto">
+        
+        {/* Dni tygodnia z slotami */}
+        <div className="flex-1 flex">
           {weekDays.map((day, dayIndex) => {
             const dayKey = formatDate(day)
             const daySlots = slotsByDay[dayKey] || []
-            const today = isToday(day)
-            const dayName = getPolishWeekDay(day).toLowerCase()
+            const isCurrentDay = isToday(day)
+            const dayName = day.toLocaleDateString('pl-PL', { weekday: 'long' }).toLowerCase()
             const dayWorkingHours = workingHours[dayName]
-
+            
             return (
               <div
-                key={dayKey}
-                className="flex-1 min-w-[120px] border-r relative"
+                key={dayIndex}
+                className="flex-1 border-r relative"
                 onMouseEnter={() => setHoveredDay(dayIndex)}
                 onMouseLeave={() => setHoveredDay(null)}
               >
                 {/* Nagłówek dnia */}
-                <DayHeader
-                  date={day}
-                  isToday={today}
+                <DayHeader 
+                  date={day} 
+                  isToday={isCurrentDay}
                   slotsCount={daySlots.length}
                 />
-
+                
                 {/* Siatka godzin */}
-                <div className="relative">
-                  {/* Linie godzinowe */}
+                <div className="relative" style={{ height: `${17 * 80}px` }}>
+                  {/* Linie godzin */}
                   {Array.from({ length: 17 }, (_, i) => (
                     <div
                       key={i}
-                      className="h-20 border-b border-gray-100"
+                      className="absolute w-full border-b border-gray-100"
+                      style={{ top: `${i * 80}px`, height: '80px' }}
                     />
                   ))}
-
-                  {/* Obszar godzin pracy */}
+                  
+                  {/* Obszary godzin pracy */}
                   {dayWorkingHours?.enabled && dayWorkingHours.intervals.map((interval, idx) => {
-                    const startHour = parseInt(interval.start.split(':')[0])
-                    const startMin = parseInt(interval.start.split(':')[1])
-                    const endHour = parseInt(interval.end.split(':')[0])
-                    const endMin = parseInt(interval.end.split(':')[1])
-                    
-                    const top = (startHour - 6) * 80 + (startMin / 60) * 80
-                    const height = ((endHour - startHour) * 80 + ((endMin - startMin) / 60) * 80)
+                    const [startH, startM] = interval.start.split(':').map(Number)
+                    const [endH, endM] = interval.end.split(':').map(Number)
+                    const startPos = (startH - 6) * 80 + (startM / 60) * 80
+                    const endPos = (endH - 6) * 80 + (endM / 60) * 80
                     
                     return (
                       <div
                         key={idx}
-                        className="absolute left-0 right-0 bg-green-50 opacity-30"
+                        className="absolute w-full bg-green-50 opacity-30"
                         style={{
-                          top: `${top}px`,
-                          height: `${height}px`
+                          top: `${startPos}px`,
+                          height: `${endPos - startPos}px`
                         }}
                       />
                     )
                   })}
-
+                  
+                  {/* Aktualna godzina */}
+                  {isCurrentDay && currentTimePosition !== null && (
+                    <div
+                      className="absolute w-full border-t-2 border-red-500 z-10"
+                      style={{ top: `${currentTimePosition - 64}px` }}
+                    >
+                      <div className="absolute -left-1 -top-1 w-3 h-3 bg-red-500 rounded-full" />
+                    </div>
+                  )}
+                  
                   {/* Sloty */}
                   {daySlots.map(slot => {
                     const position = getSlotPosition(slot)
@@ -302,7 +309,7 @@ export default function WeekView({
                         key={slot.id}
                         className="absolute left-1 right-1"
                         style={{
-                          top: `${position.top}px`,
+                          top: `${position.top - 64}px`,
                           height: `${position.height}px`
                         }}
                       >
@@ -310,34 +317,21 @@ export default function WeekView({
                           slot={slot}
                           view="compact"
                           onClick={() => handleSlotClick(slot)}
-                          onStatusChange={(status) => handleSlotStatusChange(slot.id, status)}
-                          className="h-full"
                         />
                       </div>
                     )
                   })}
 
-                  {/* Linia aktualnego czasu */}
-                  {today && currentTimePosition !== null && (
+                  {/* Wskaźnik aktualnej godziny dla dzisiejszego dnia */}
+                  {isCurrentDay && currentTimePosition !== null && (
                     <div
-                      className="absolute left-0 right-0 border-t-2 border-blue-500 z-10"
-                      style={{ top: `${currentTimePosition}px` }}
+                      className="absolute left-0 right-0 pointer-events-none"
+                      style={{ top: `${currentTimePosition - 64}px` }}
                     >
-                      <div className="absolute -left-1 -top-1 w-3 h-3 bg-blue-500 rounded-full" />
+                      <div className="relative">
+                        <div className="absolute -left-1 -top-1 w-3 h-3 bg-blue-500 rounded-full" />
+                      </div>
                     </div>
-                  )}
-
-                  {/* Przycisk dodawania (pokazuje się przy hover) */}
-                  {hoveredDay === dayIndex && (
-                    <button
-                      className="absolute top-2 right-2 p-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg z-20"
-                      onClick={() => {
-                        // Otwórz modal dodawania slotu dla tego dnia
-                        console.log('Dodaj slot dla', day)
-                      }}
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
                   )}
                 </div>
               </div>

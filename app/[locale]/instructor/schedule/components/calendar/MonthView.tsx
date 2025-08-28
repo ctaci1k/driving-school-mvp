@@ -5,7 +5,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { 
-  ChevronLeft, ChevronRight, Calendar, Plus,
+  ChevronLeft, ChevronRight, Calendar,
   Clock, User, MapPin, AlertCircle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -84,17 +84,11 @@ const DayCell: React.FC<{
           {date.getDate()}
         </span>
         
-        {isHovered && hasSlots && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              // Otwórz widok dnia
-              onDayClick?.(date)
-            }}
-            className="p-0.5 hover:bg-gray-200 rounded transition-colors"
-          >
-            <Plus className="w-3 h-3" />
-          </button>
+        {/* Pokazuje datę w hover bez przycisku */}
+        {isHovered && (
+          <span className="text-xs text-gray-500">
+            {date.toLocaleDateString('pl-PL', { weekday: 'short' })}
+          </span>
         )}
       </div>
 
@@ -135,6 +129,13 @@ const DayCell: React.FC<{
               +{slots.length - 3} więcej
             </div>
           )}
+        </div>
+      )}
+
+      {/* Brak slotów - informacja */}
+      {!hasSlots && isCurrentMonth && !past && (
+        <div className="text-xs text-gray-400 text-center mt-2">
+          Brak terminów
         </div>
       )}
 
@@ -396,6 +397,12 @@ export default function MonthView({
               <Clock className="w-3 h-3" />
               <span className="text-xs">Godziny pracy</span>
             </div>
+            {monthStats.total === 0 && (
+              <div className="flex items-center gap-1 text-amber-600">
+                <AlertCircle className="w-3 h-3" />
+                <span className="text-xs">Sloty generowane automatycznie przy zapisie godzin pracy</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

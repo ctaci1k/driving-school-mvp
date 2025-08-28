@@ -258,21 +258,19 @@ export default function DayView({
   // Formatowanie daty
   const dateLabel = currentDate.toLocaleDateString('pl-PL', {
     weekday: 'long',
-    year: 'numeric',
+    day: 'numeric',
     month: 'long',
-    day: 'numeric'
+    year: 'numeric'
   })
 
-  const isToday = isSameDay(currentDate, new Date())
-
   return (
-    <div className={cn("flex flex-col h-full bg-white rounded-lg", className)}>
-      {/* Nagłówek z nawigacją */}
-      <div className="flex items-center justify-between p-4 border-b">
+    <div className={cn("flex flex-col h-full bg-white", className)}>
+      {/* Nagłówek */}
+      <div className="flex items-center justify-between p-4 border-b bg-gray-50">
         <div className="flex items-center gap-2">
           <button
             onClick={handlePreviousDay}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
             aria-label="Poprzedni dzień"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -280,17 +278,14 @@ export default function DayView({
           
           <button
             onClick={handleToday}
-            className={cn(
-              "px-3 py-1.5 rounded-lg transition-colors text-sm font-medium",
-              isToday ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
-            )}
+            className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors text-sm font-medium"
           >
-            Dziś
+            Dzisiaj
           </button>
           
           <button
             onClick={handleNextDay}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
             aria-label="Następny dzień"
           >
             <ChevronRight className="w-5 h-5" />
@@ -307,35 +302,21 @@ export default function DayView({
         </div>
       </div>
 
-      {/* Informacja o godzinach pracy */}
-      {dayWorkingHours && !dayWorkingHours.enabled && (
-        <div className="p-4 bg-gray-50 border-b">
-          <div className="flex items-center gap-2 text-gray-600">
-            <AlertCircle className="w-5 h-5" />
-            <span className="text-sm">Dzień wolny od pracy</span>
-          </div>
-        </div>
-      )}
-
       {/* Timeline */}
-      <div 
-        ref={containerRef}
-        className="flex-1 overflow-y-auto relative"
-      >
+      <div className="flex-1 overflow-auto" ref={containerRef}>
         <div className="relative" style={{ minHeight: `${17 * 60}px` }}>
-          {/* Godziny i linie */}
-          {timelineHours.map((hour, index) => {
-            const isCurrentHour = isToday && 
-              hour === `${currentTime.getHours().toString().padStart(2, '0')}:00`
+          {/* Godziny */}
+          {timelineHours.map((hour, idx) => {
+            const isNow = currentTimePosition !== null && 
+                         Math.abs(currentTimePosition - (idx * 60)) < 30
             
             return (
-              <div
+              <div 
                 key={hour}
-                ref={isCurrentHour ? scrollToCurrentRef : undefined}
-                style={{ top: `${index * 60}px` }}
-                className="absolute w-full"
+                ref={isNow ? scrollToCurrentRef : undefined}
+                style={{ top: `${idx * 60}px` }}
               >
-                <TimeSlotMarker time={hour} isNow={false} />
+                <TimeSlotMarker time={hour} isNow={isNow} />
               </div>
             )
           })}
@@ -343,16 +324,10 @@ export default function DayView({
           {/* Linia aktualnego czasu */}
           {currentTimePosition !== null && (
             <div
+              className="absolute left-20 right-4 border-t-2 border-blue-600 z-10"
               style={{ top: `${currentTimePosition}px` }}
-              className="absolute w-full z-20"
             >
-              <TimeSlotMarker 
-                time={currentTime.toLocaleTimeString('pl-PL', { 
-                  hour: '2-digit', 
-                  minute: '2-digit' 
-                })} 
-                isNow={true} 
-              />
+              <div className="absolute -left-2 -top-2 w-4 h-4 bg-blue-600 rounded-full" />
             </div>
           )}
 
@@ -418,9 +393,12 @@ export default function DayView({
             </div>
           </div>
           
-          <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-            Generuj sloty
-          </button>
+          {daySlots.length === 0 && dayWorkingHours?.enabled && (
+            <div className="text-sm text-amber-600 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4" />
+              <span>Brak slotów - zostaną wygenerowane automatycznie przy zapisie godzin pracy</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

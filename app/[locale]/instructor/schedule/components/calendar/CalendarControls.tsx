@@ -1,387 +1,420 @@
-// app/[locale]/instructor/schedule/components/calendar/CalendarControls.tsx
-// Kontrolki nawigacji i filtrowania kalendarza
+// app/[locale]/instructor/schedule/components/tabs/CalendarTab.tsx
+// Zakładka kalendarza z importem komponentów widoków i obsługą zdarzeń
 
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react'
 import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Calendar,
-  Filter,
-  Download,
-  Upload,
-  Settings,
-  RefreshCw,
-  Grid3x3,
-  List,
-  CalendarDays
+  Download, Filter, Grid3x3, List, 
+  CalendarDays, Clock, AlertCircle, Settings
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { ViewMode } from '../../types/enums'
-import { format, addDays, addWeeks, addMonths, startOfWeek, endOfWeek } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { useScheduleContext } from '../../providers/ScheduleProvider'
+import { Slot, SlotStatus } from '../../types/schedule.types'
+import { isSameDay, formatDate } from '../../utils/dateHelpers'
 
-interface CalendarControlsProps {
+// Lazy loading komponentów widoków
+const WeekView = lazy(() => import('../calendar/WeekView'))
+const DayView = lazy(() => import('../calendar/DayView'))
+const MonthView = lazy(() => import('../calendar/MonthView'))
+
+// Loading component
+const ViewLoader = () => (
+  <div className="flex items-center justify-center h-96">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+      <p className="text-sm text-gray-500">Ładowanie kalendarza...</p>
+    </div>
+  </div>
+)
+
+interface CalendarTabProps {
+  viewMode: 'dzień' | 'tydzień' | 'miesiąc' | 'lista'
   currentDate: Date
-  viewMode: ViewMode
-  onDateChange: (date: Date) => void
-  onViewModeChange: (mode: ViewMode) => void
-  onFilterToggle?: () => void
-  onRefresh?: () => void
-  onExport?: () => void
-  onImport?: () => void
-  isFilterOpen?: boolean
-  className?: string
+  searchTerm?: string
+  onDateChange?: (date: Date) => void
+  onOpenWorkingHours?: () => void
 }
 
-export default function CalendarControls({
-  currentDate,
+// Komponent filtrów
+const FilterPanel: React.FC<{
+  filters: FilterState
+  onFilterChange: (filters: FilterState) => void
+  onClose: () => void
+}> = ({ filters, onFilterChange, onClose }) => {
+  return (
+    <div className="absolute top-12 right-0 w-80 bg-white rounded-lg shadow-lg border z-20 p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold">Filtry</h3>
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* Status */}
+      <div className="mb-4">
+        <label className="text-sm font-medium text-gray-700 mb-2 block">
+          Status
+        </label>
+        <div className="space-y-2">
+          {Object.entries({
+            'dostępny': 'Dostępne',
+            'zarezerwowany': 'Zarezerwowane',
+            'zablokowany': 'Zablokowane',
+            'zakończony': 'Zakończone',
+            'anulowany': 'Anulowane'
+          }).map(([value, label]) => (
+            <label key={value} className="flex items-center">
+              <input
+                type="checkbox"
+                checked={filters.status.includes(value as SlotStatus)}
+                onChange={(e) => {
+                  const newStatus = e.target.checked
+                    ? [...filters.status, value as SlotStatus]
+                    : filters.status.filter(s => s !== value)
+                  onFilterChange({ ...filters, status: newStatus })
+                }}
+                className="mr-2"
+              />
+              <span className="text-sm">{label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* Typ lekcji */}
+      <div className="mb-4">
+        <label className="text-sm font-medium text-gray-700 mb-2 block">
+          Typ zajęć
+        </label>
+        <select
+          value={filters.lessonType}
+          onChange={(e) => onFilterChange({ ...filters, lessonType: e.target.value })}
+          className="w-full px-3 py-2 border rounded-lg text-sm"
+        >
+          <option value="">Wszystkie</option>
+          <option value="jazda">Jazda w mieście</option>
+          <option value="plac">Plac manewrowy</option>
+          <option value="teoria">Teoria</option>
+          <option value="egzamin">Egzamin</option>
+        </select>
+      </div>
+
+      {/* Przyciski */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => onFilterChange({
+            status: [],
+            lessonType: '',
+            studentId: '',
+            showOnlyAvailable: false
+          })}
+          className="flex-1 px-3 py-2 border rounded-lg text-sm hover:bg-gray-50"
+        >
+          Wyczyść
+        </button>
+        <button
+          onClick={onClose}
+          className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+        >
+          Zastosuj
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// Stan filtrów
+interface FilterState {
+  status: SlotStatus[]
+  lessonType: string
+  studentId: string
+  showOnlyAvailable: boolean
+}
+
+export default function CalendarTab({
   viewMode,
+  currentDate,
+  searchTerm = '',
   onDateChange,
-  onViewModeChange,
-  onFilterToggle,
-  onRefresh,
-  onExport,
-  onImport,
-  isFilterOpen = false,
-  className
-}: CalendarControlsProps) {
-  const [showDatePicker, setShowDatePicker] = useState(false)
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth())
-  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear())
+  onOpenWorkingHours
+}: CalendarTabProps) {
+  const { 
+    slots, 
+    workingHours,
+    updateSlot,
+    deleteSlot,
+    createSlot
+  } = useScheduleContext()
 
-  // Nawigacja w czasie
-  const handlePrevious = () => {
-    let newDate = new Date(currentDate)
-    
-    switch (viewMode) {
-      case 'dzień':
-        newDate = addDays(currentDate, -1)
-        break
-      case 'tydzień':
-        newDate = addWeeks(currentDate, -1)
-        break
-      case 'miesiąc':
-        newDate = addMonths(currentDate, -1)
-        break
+  // Stan lokalny
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState<FilterState>({
+    status: [],
+    lessonType: '',
+    studentId: '',
+    showOnlyAvailable: false
+  })
+
+  // Filtrowanie slotów
+  const filteredSlots = useMemo(() => {
+    let filtered = [...slots]
+
+    // Filtr wyszukiwania
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase()
+      filtered = filtered.filter(slot =>
+        slot.student?.firstName.toLowerCase().includes(term) ||
+        slot.student?.lastName.toLowerCase().includes(term) ||
+        slot.location?.name.toLowerCase().includes(term) ||
+        slot.notes?.toLowerCase().includes(term)
+      )
     }
-    
-    onDateChange(newDate)
-  }
 
-  const handleNext = () => {
-    let newDate = new Date(currentDate)
-    
-    switch (viewMode) {
-      case 'dzień':
-        newDate = addDays(currentDate, 1)
-        break
-      case 'tydzień':
-        newDate = addWeeks(currentDate, 1)
-        break
-      case 'miesiąc':
-        newDate = addMonths(currentDate, 1)
-        break
+    // Filtr statusu
+    if (filters.status.length > 0) {
+      filtered = filtered.filter(slot => filters.status.includes(slot.status))
     }
-    
-    onDateChange(newDate)
-  }
 
-  const handleToday = () => {
-    onDateChange(new Date())
-  }
-
-  // Format wyświetlanej daty
-  const getDateLabel = () => {
-    switch (viewMode) {
-      case 'dzień':
-        return format(currentDate, 'EEEE, d MMMM yyyy', { locale: pl })
-      case 'tydzień':
-        const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 })
-        const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 })
-        return `${format(weekStart, 'd MMM', { locale: pl })} - ${format(weekEnd, 'd MMM yyyy', { locale: pl })}`
-      case 'miesiąc':
-        return format(currentDate, 'MMMM yyyy', { locale: pl })
-      default:
-        return format(currentDate, 'd MMMM yyyy', { locale: pl })
+    // Filtr typu lekcji
+    if (filters.lessonType) {
+      filtered = filtered.filter(slot => slot.lessonType === filters.lessonType)
     }
-  }
 
-  // Quick date picker
-  const handleQuickDateSelect = (date: Date) => {
-    onDateChange(date)
-    setShowDatePicker(false)
-  }
+    // Filtr studenta
+    if (filters.studentId) {
+      filtered = filtered.filter(slot => slot.student?.id === filters.studentId)
+    }
 
-  const handleMonthYearChange = () => {
-    const newDate = new Date(selectedYear, selectedMonth, 1)
-    onDateChange(newDate)
-    setShowDatePicker(false)
-  }
+    // Pokaż tylko dostępne
+    if (filters.showOnlyAvailable) {
+      filtered = filtered.filter(slot => slot.status === 'dostępny')
+    }
+
+    return filtered
+  }, [slots, searchTerm, filters])
+
+  // Handlery
+  const handleSlotClick = useCallback((slot: Slot) => {
+    setSelectedSlot(slot)
+    // Otwórz modal edycji
+  }, [])
+
+  const handleSlotEdit = useCallback(async (slotId: string, updates: Partial<Slot>) => {
+    try {
+      await updateSlot(slotId, updates)
+    } catch (error) {
+      console.error('Błąd aktualizacji slotu:', error)
+    }
+  }, [updateSlot])
+
+  const handleSlotDelete = useCallback(async (slotId: string) => {
+    if (confirm('Czy na pewno chcesz usunąć ten termin?')) {
+      try {
+        await deleteSlot(slotId)
+      } catch (error) {
+        console.error('Błąd usuwania slotu:', error)
+      }
+    }
+  }, [deleteSlot])
+
+  const handleExport = useCallback(() => {
+    // Eksport do CSV/iCal
+    const csv = filteredSlots.map(slot => ({
+      Data: formatDate(new Date(slot.date)),
+      Start: slot.startTime,
+      Koniec: slot.endTime,
+      Status: slot.status,
+      Kursant: slot.student ? `${slot.student.firstName} ${slot.student.lastName}` : '-',
+      Lokalizacja: slot.location?.name || '-'
+    }))
+
+    // Konwersja do CSV string
+    const csvString = [
+      Object.keys(csv[0] || {}).join(','),
+      ...csv.map(row => Object.values(row).join(','))
+    ].join('\n')
+
+    // Download
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `harmonogram_${formatDate(currentDate)}.csv`
+    link.click()
+  }, [filteredSlots, currentDate])
+
+  // Statystyki
+  const stats = useMemo(() => {
+    const dayStart = new Date(currentDate)
+    dayStart.setHours(0, 0, 0, 0)
+    const dayEnd = new Date(currentDate)
+    dayEnd.setHours(23, 59, 59, 999)
+
+    let relevantSlots = filteredSlots
+
+    if (viewMode === 'dzień') {
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
+        return isSameDay(slotDate, currentDate)
+      })
+    } else if (viewMode === 'tydzień') {
+      const weekStart = new Date(currentDate)
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1)
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekEnd.getDate() + 6)
+      
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
+        return slotDate >= weekStart && slotDate <= weekEnd
+      })
+    } else if (viewMode === 'miesiąc') {
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
+        return slotDate.getMonth() === currentDate.getMonth() &&
+               slotDate.getFullYear() === currentDate.getFullYear()
+      })
+    }
+
+    return {
+      total: relevantSlots.length,
+      dostępne: relevantSlots.filter(s => s.status === 'dostępny').length,
+      zarezerwowane: relevantSlots.filter(s => s.status === 'zarezerwowany').length,
+      zablokowane: relevantSlots.filter(s => s.status === 'zablokowany').length
+    }
+  }, [filteredSlots, viewMode, currentDate])
 
   return (
-    <div className={cn("bg-white border-b", className)}>
-      <div className="px-4 py-3">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          {/* Lewa sekcja - nawigacja w czasie */}
-          <div className="flex items-center gap-2">
-            {/* Przyciski nawigacji */}
-            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={handlePrevious}
-                className="p-1.5 hover:bg-white rounded transition-colors"
-                aria-label="Poprzedni okres"
-                title="Poprzedni okres"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              
-              <button
-                onClick={handleToday}
-                className="px-3 py-1 text-sm font-medium hover:bg-white rounded transition-colors"
-                title="Przejdź do dzisiaj"
-              >
-                Dziś
-              </button>
-              
-              <button
-                onClick={handleNext}
-                className="p-1.5 hover:bg-white rounded transition-colors"
-                aria-label="Następny okres"
-                title="Następny okres"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+    <div className="space-y-4">
+      {/* Nagłówek z akcjami */}
+      <div className="bg-white rounded-lg border p-4">
+        {/* Statystyki */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+              <span>Łącznie: {stats.total}</span>
             </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+              <span>Dostępne: {stats.dostępne}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+              <span>Zarezerwowane: {stats.zarezerwowane}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
+              <span>Zablokowane: {stats.zablokowane}</span>
+            </div>
+          </div>
 
-            {/* Wyświetlanie aktualnej daty */}
+          {/* Przyciski akcji */}
+          <div className="flex items-center gap-2">
+            {/* Przycisk ustawień godzin pracy */}
+            <button
+              onClick={onOpenWorkingHours}
+              className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+            >
+              <Settings className="w-4 h-4" />
+              <span>Godziny pracy</span>
+            </button>
+
             <div className="relative">
               <button
-                onClick={() => setShowDatePicker(!showDatePicker)}
-                className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Calendar className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-semibold capitalize">
-                  {getDateLabel()}
-                </span>
-              </button>
-
-              {/* Date picker dropdown */}
-              {showDatePicker && (
-                <div className="absolute top-full left-0 mt-2 p-4 bg-white rounded-lg shadow-lg border z-50 min-w-[280px]">
-                  <div className="space-y-3">
-                    {/* Szybki wybór */}
-                    <div>
-                      <p className="text-xs font-medium text-gray-500 mb-2">Szybki wybór</p>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button
-                          onClick={() => handleQuickDateSelect(new Date())}
-                          className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                        >
-                          Dziś
-                        </button>
-                        <button
-                          onClick={() => handleQuickDateSelect(addDays(new Date(), 1))}
-                          className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                        >
-                          Jutro
-                        </button>
-                        <button
-                          onClick={() => handleQuickDateSelect(addWeeks(new Date(), 1))}
-                          className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                        >
-                          Za tydzień
-                        </button>
-                        <button
-                          onClick={() => handleQuickDateSelect(addMonths(new Date(), 1))}
-                          className="px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
-                        >
-                          Za miesiąc
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Wybór miesiąca i roku */}
-                    <div>
-                      <p className="text-xs font-medium text-gray-500 mb-2">Wybierz miesiąc i rok</p>
-                      <div className="flex gap-2">
-                        <select
-                          value={selectedMonth}
-                          onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                          className="flex-1 px-2 py-1.5 text-sm border rounded"
-                        >
-                          {[
-                            'Styczeń', 'Luty', 'Marzec', 'Kwiecień', 
-                            'Maj', 'Czerwiec', 'Lipiec', 'Sierpień',
-                            'Wrzesień', 'Październik', 'Listopad', 'Grudzień'
-                          ].map((month, index) => (
-                            <option key={month} value={index}>
-                              {month}
-                            </option>
-                          ))}
-                        </select>
-                        <select
-                          value={selectedYear}
-                          onChange={(e) => setSelectedYear(Number(e.target.value))}
-                          className="px-2 py-1.5 text-sm border rounded"
-                        >
-                          {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - 2 + i).map(year => (
-                            <option key={year} value={year}>{year}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <button
-                        onClick={handleMonthYearChange}
-                        className="w-full mt-2 px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors"
-                      >
-                        Przejdź
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Środkowa sekcja - przełącznik widoku */}
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">Widok:</span>
-            <div className="flex items-center bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={() => onViewModeChange('dzień')}
+                onClick={() => setShowFilters(!showFilters)}
                 className={cn(
-                  "p-1.5 rounded transition-colors",
-                  viewMode === 'dzień' 
-                    ? "bg-white shadow-sm" 
-                    : "hover:bg-gray-200"
+                  "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm",
+                  showFilters || filters.status.length > 0 || filters.lessonType
+                    ? "bg-blue-100 text-blue-700 border border-blue-300"
+                    : "border hover:bg-gray-50"
                 )}
-                title="Widok dzienny"
-              >
-                <List className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => onViewModeChange('tydzień')}
-                className={cn(
-                  "p-1.5 rounded transition-colors",
-                  viewMode === 'tydzień' 
-                    ? "bg-white shadow-sm" 
-                    : "hover:bg-gray-200"
-                )}
-                title="Widok tygodniowy"
-              >
-                <CalendarDays className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => onViewModeChange('miesiąc')}
-                className={cn(
-                  "p-1.5 rounded transition-colors",
-                  viewMode === 'miesiąc' 
-                    ? "bg-white shadow-sm" 
-                    : "hover:bg-gray-200"
-                )}
-                title="Widok miesięczny"
-              >
-                <Grid3x3 className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Prawa sekcja - akcje */}
-          <div className="flex items-center gap-2">
-            {/* Filtrowanie */}
-            {onFilterToggle && (
-              <button
-                onClick={onFilterToggle}
-                className={cn(
-                  "flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors",
-                  isFilterOpen 
-                    ? "bg-blue-100 text-blue-600" 
-                    : "hover:bg-gray-100"
-                )}
-                title="Pokaż filtry"
               >
                 <Filter className="w-4 h-4" />
-                <span className="text-sm font-medium hidden sm:inline">Filtry</span>
-                {isFilterOpen && (
-                  <span className="text-xs bg-blue-600 text-white px-1.5 py-0.5 rounded-full">
-                    ON
+                <span>Filtry</span>
+                {(filters.status.length > 0 || filters.lessonType) && (
+                  <span className="bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {filters.status.length + (filters.lessonType ? 1 : 0)}
                   </span>
                 )}
               </button>
-            )}
 
-            {/* Odświeżanie */}
-            {onRefresh && (
-              <button
-                onClick={onRefresh}
-                className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Odśwież kalendarz"
-              >
-                <RefreshCw className="w-4 h-4" />
-              </button>
-            )}
-
-            {/* Separator */}
-            <div className="w-px h-6 bg-gray-300 hidden lg:block" />
-
-            {/* Import/Export */}
-            <div className="flex items-center gap-1 hidden lg:flex">
-              {onExport && (
-                <button
-                  onClick={onExport}
-                  className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Eksportuj kalendarz"
-                >
-                  <Download className="w-4 h-4" />
-                  <span className="text-sm hidden xl:inline">Eksportuj</span>
-                </button>
-              )}
-              
-              {onImport && (
-                <button
-                  onClick={onImport}
-                  className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-                  title="Importuj kalendarz"
-                >
-                  <Upload className="w-4 h-4" />
-                  <span className="text-sm hidden xl:inline">Importuj</span>
-                </button>
+              {showFilters && (
+                <FilterPanel
+                  filters={filters}
+                  onFilterChange={setFilters}
+                  onClose={() => setShowFilters(false)}
+                />
               )}
             </div>
 
-            {/* Ustawienia */}
             <button
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-              title="Ustawienia kalendarza"
+              onClick={handleExport}
+              className="flex items-center gap-2 px-3 py-1.5 border rounded-lg hover:bg-gray-50 text-sm"
             >
-              <Settings className="w-4 h-4" />
+              <Download className="w-4 h-4" />
+              <span>Eksportuj</span>
             </button>
           </div>
         </div>
 
-        {/* Mobile action buttons */}
-        <div className="flex items-center gap-2 mt-3 lg:hidden">
-          {onExport && (
-            <button
-              onClick={onExport}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              <span className="text-sm">Eksportuj</span>
-            </button>
+        {/* Alert o braku slotów - ZAKTUALIZOWANY */}
+        {stats.total === 0 && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="text-sm">
+              <p className="font-medium text-blue-800">Brak terminów w tym okresie</p>
+              <p className="text-blue-600 mt-1">
+                Sloty są generowane automatycznie na podstawie godzin pracy.
+                Kliknij przycisk "Godziny pracy" aby skonfigurować dostępność.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Widok kalendarza */}
+      <div className="bg-white rounded-lg border overflow-hidden">
+        <Suspense fallback={<ViewLoader />}>
+          {viewMode === 'dzień' && (
+            <DayView
+              currentDate={currentDate}
+              searchTerm={searchTerm}
+              onSlotClick={handleSlotClick}
+              onDateChange={onDateChange}
+            />
           )}
-          
-          {onImport && (
-            <button
-              onClick={onImport}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              <Upload className="w-4 h-4" />
-              <span className="text-sm">Importuj</span>
-            </button>
+
+          {viewMode === 'tydzień' && (
+            <WeekView
+              currentDate={currentDate}
+              searchTerm={searchTerm}
+              onSlotClick={handleSlotClick}
+              onDateChange={onDateChange}
+            />
           )}
-        </div>
+
+          {viewMode === 'miesiąc' && (
+            <MonthView
+              currentDate={currentDate}
+              searchTerm={searchTerm}
+              onSlotClick={handleSlotClick}
+              onDateChange={onDateChange || (() => {})}
+            />
+          )}
+
+          {viewMode === 'lista' && (
+            <div className="p-4">
+              <div className="text-center text-gray-500 py-8">
+                <List className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                <p>Widok listy w przygotowaniu</p>
+              </div>
+            </div>
+          )}
+        </Suspense>
       </div>
     </div>
   )
