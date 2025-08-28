@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Star,
   Calendar,
@@ -98,6 +99,7 @@ export default function InstructorProfilePage() {
   const router = useRouter();
   const params = useParams();
   const instructorId = params.id as string;
+  const t = useTranslations('student.instructorProfile');
 
   const [instructor, setInstructor] = useState<InstructorProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -113,19 +115,28 @@ export default function InstructorProfilePage() {
         coverPhoto: 'https://via.placeholder.com/1200x300?text=Cover+Photo',
         rating: 4.9,
         totalReviews: 124,
-        experience: '8 lat doświadczenia',
+        experience: t('experience', { years: 8 }),
         joinedDate: '2016-03-15',
-        bio: 'Jestem profesjonalnym instruktorem jazdy z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego. Moje podejście opiera się na budowaniu pewności siebie za kierownicą i nauce bezpiecznych technik jazdy. Każdego kursanta traktuję indywidualnie, dostosowując tempo i metodę nauki do jego potrzeb.',
-        specializations: ['Egzaminy', 'Jazda nocna', 'Autostrady', 'Parkowanie', 'Ruch miejski'],
-        languages: ['Polski', 'Angielski'],
-        categories: ['B', 'B automat'],
+        bio: t('bio.passionForTeaching'),
+        specializations: [
+          t('bio.exams'),
+          t('bio.nightDriving'),
+          t('bio.highways'),
+          t('about.specializations'),
+          t('bio.cityTraffic')
+        ],
+        languages: [t('bio.polish'), t('bio.english')],
+        categories: [t('bio.categoryB'), t('bio.categoryBAuto')],
         completedLessons: 1250,
         totalStudents: 215,
         successRate: 94,
-        responseTime: 'zazwyczaj w ciągu godziny',
+        responseTime: t('availability.usuallyWithinHour'),
         favorite: true,
         verified: true,
-        awards: ['Instruktor Roku 2023', 'Certyfikat Bezpiecznej Jazdy'],
+        awards: [
+          t('about.instructorOfYear', { year: 2023 }),
+          t('about.safeDrivingCertificate')
+        ],
         pricePerHour: 180,
         availability: {
           monday: ['08:00-12:00', '14:00-18:00'],
@@ -153,8 +164,8 @@ export default function InstructorProfilePage() {
             studentAvatar: 'https://ui-avatars.com/api/?name=Katarzyna+M&background=EC4899&color=fff',
             rating: 5,
             date: '2024-08-20',
-            comment: 'Świetny instruktor! Cierpliwy i profesjonalny. Dzięki niemu zdałam egzamin za pierwszym razem.',
-            lessonType: 'Przygotowanie do egzaminu'
+            comment: t('reviewComments.excellentInstructor'),
+            lessonType: t('recentReviews.examPreparation')
           },
           {
             id: '2',
@@ -162,8 +173,8 @@ export default function InstructorProfilePage() {
             studentAvatar: 'https://ui-avatars.com/api/?name=Michal+K&background=3B82F6&color=fff',
             rating: 5,
             date: '2024-08-15',
-            comment: 'Bardzo dobry kontakt, jasne tłumaczenie. Polecam każdemu!',
-            lessonType: 'Jazda standardowa'
+            comment: t('reviewComments.greatContact'),
+            lessonType: t('recentReviews.standardDriving')
           },
           {
             id: '3',
@@ -171,8 +182,8 @@ export default function InstructorProfilePage() {
             studentAvatar: 'https://ui-avatars.com/api/?name=Anna+W&background=8B5CF6&color=fff',
             rating: 4,
             date: '2024-08-10',
-            comment: 'Profesjonalne podejście, dobre rady. Nauczyłam się parkowania równoległego!',
-            lessonType: 'Parkowanie'
+            comment: t('reviewComments.professionalApproach'),
+            lessonType: t('recentReviews.parking')
           }
         ],
         myLessonsWithInstructor: 15,
@@ -181,7 +192,7 @@ export default function InstructorProfilePage() {
       setIsFavorite(true);
       setLoading(false);
     }, 1000);
-  }, [instructorId]);
+  }, [instructorId, t]);
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -211,7 +222,7 @@ export default function InstructorProfilePage() {
       <div className="p-6">
         <Alert>
           <AlertDescription>
-            Nie znaleziono instruktora
+            {t('notFound')}
           </AlertDescription>
         </Alert>
       </div>
@@ -219,13 +230,13 @@ export default function InstructorProfilePage() {
   }
 
   const dayNames = {
-    monday: 'Poniedziałek',
-    tuesday: 'Wtorek',
-    wednesday: 'Środa',
-    thursday: 'Czwartek',
-    friday: 'Piątek',
-    saturday: 'Sobota',
-    sunday: 'Niedziela'
+    monday: t('availability.monday'),
+    tuesday: t('availability.tuesday'),
+    wednesday: t('availability.wednesday'),
+    thursday: t('availability.thursday'),
+    friday: t('availability.friday'),
+    saturday: t('availability.saturday'),
+    sunday: t('availability.sunday')
   };
 
   return (
@@ -246,7 +257,7 @@ export default function InstructorProfilePage() {
               {instructor.verified && (
                 <Badge variant="secondary">
                   <CheckCircle className="w-3 h-3 mr-1" />
-                  Zweryfikowany
+                  {t('verified')}
                 </Badge>
               )}
             </div>
@@ -263,17 +274,17 @@ export default function InstructorProfilePage() {
           <div className="flex items-center gap-2">
             <Star className="w-5 h-5 text-yellow-500 fill-current" />
             <span className="text-lg font-semibold">{instructor.rating}</span>
-            <span className="text-muted-foreground">({instructor.totalReviews} opinii)</span>
+            <span className="text-muted-foreground">{t('reviews', { count: instructor.totalReviews })}</span>
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={toggleFavorite}>
             <Heart className={`w-4 h-4 mr-2 ${isFavorite ? 'text-red-500 fill-current' : ''}`} />
-            {isFavorite ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}
+            {isFavorite ? t('removeFromFavorites') : t('addToFavorites')}
           </Button>
           <Button onClick={() => router.push(`/student/bookings/book?instructor=${instructor.id}`)}>
             <Calendar className="w-4 h-4 mr-2" />
-            Zarezerwuj lekcję
+            {t('bookLesson')}
           </Button>
         </div>
       </div>
@@ -284,13 +295,13 @@ export default function InstructorProfilePage() {
           {/* About */}
           <Card>
             <CardHeader>
-              <CardTitle>O instruktorze</CardTitle>
+              <CardTitle>{t('about.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-muted-foreground">{instructor.bio}</p>
               
               <div>
-                <h4 className="font-medium mb-2">Specjalizacje</h4>
+                <h4 className="font-medium mb-2">{t('about.specializations')}</h4>
                 <div className="flex flex-wrap gap-2">
                   {instructor.specializations.map((spec, index) => (
                     <Badge key={index} variant="outline">
@@ -302,14 +313,14 @@ export default function InstructorProfilePage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium mb-2">Języki</h4>
+                  <h4 className="font-medium mb-2">{t('about.languages')}</h4>
                   <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm">{instructor.languages.join(', ')}</span>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">Kategorie</h4>
+                  <h4 className="font-medium mb-2">{t('about.categories')}</h4>
                   <div className="flex items-center gap-2">
                     <Car className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm">{instructor.categories.join(', ')}</span>
@@ -319,7 +330,7 @@ export default function InstructorProfilePage() {
 
               {instructor.awards.length > 0 && (
                 <div>
-                  <h4 className="font-medium mb-2">Osiągnięcia</h4>
+                  <h4 className="font-medium mb-2">{t('about.achievements')}</h4>
                   <div className="space-y-2">
                     {instructor.awards.map((award, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -336,42 +347,42 @@ export default function InstructorProfilePage() {
           {/* Stats */}
           <Card>
             <CardHeader>
-              <CardTitle>Statystyki</CardTitle>
+              <CardTitle>{t('stats.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">{instructor.completedLessons}</div>
-                  <p className="text-sm text-muted-foreground">Lekcji</p>
+                  <p className="text-sm text-muted-foreground">{t('stats.lessons')}</p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">{instructor.totalStudents}</div>
-                  <p className="text-sm text-muted-foreground">Kursantów</p>
+                  <p className="text-sm text-muted-foreground">{t('stats.students')}</p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">{instructor.successRate}%</div>
-                  <p className="text-sm text-muted-foreground">Skuteczność</p>
+                  <p className="text-sm text-muted-foreground">{t('stats.successRate')}</p>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-primary">
                     {new Date().getFullYear() - parseInt(instructor.joinedDate)}
                   </div>
-                  <p className="text-sm text-muted-foreground">Lat z nami</p>
+                  <p className="text-sm text-muted-foreground">{t('stats.yearsWithUs')}</p>
                 </div>
               </div>
 
               <Separator className="my-6" />
 
               <div className="space-y-4">
-                <h4 className="font-medium">Oceny szczegółowe</h4>
+                <h4 className="font-medium">{t('stats.detailedRatings')}</h4>
                 {Object.entries(instructor.stats).map(([key, value]) => (
                   <div key={key} className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="capitalize">
-                        {key === 'punctuality' ? 'Punktualność' :
-                         key === 'teaching' ? 'Nauczanie' :
-                         key === 'communication' ? 'Komunikacja' :
-                         'Cierpliwość'}
+                        {key === 'punctuality' ? t('stats.punctuality') :
+                         key === 'teaching' ? t('stats.teaching') :
+                         key === 'communication' ? t('stats.communication') :
+                         t('stats.patience')}
                       </span>
                       <span className="font-medium">{value}%</span>
                     </div>
@@ -385,7 +396,7 @@ export default function InstructorProfilePage() {
           {/* Reviews */}
           <Card>
             <CardHeader>
-              <CardTitle>Ostatnie opinie</CardTitle>
+              <CardTitle>{t('recentReviews.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ScrollArea className="h-[400px]">
@@ -403,7 +414,7 @@ export default function InstructorProfilePage() {
                           <div>
                             <p className="font-medium">{review.studentName}</p>
                             <p className="text-xs text-muted-foreground">
-                              {new Date(review.date).toLocaleDateString('pl-PL')} • {review.lessonType}
+                              {new Date(review.date).toLocaleDateString('uk-UA')} • {review.lessonType}
                             </p>
                           </div>
                         </div>
@@ -430,7 +441,7 @@ export default function InstructorProfilePage() {
               </ScrollArea>
               <div className="mt-4 text-center">
                 <Button variant="outline" className="w-full">
-                  Zobacz wszystkie opinie
+                  {t('recentReviews.viewAllReviews')}
                 </Button>
               </div>
             </CardContent>
@@ -442,12 +453,12 @@ export default function InstructorProfilePage() {
           {/* Quick Info */}
           <Card>
             <CardHeader>
-              <CardTitle>Informacje</CardTitle>
+              <CardTitle>{t('info.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Cena za godzinę</span>
-                <span className="font-semibold text-lg">{instructor.pricePerHour} PLN</span>
+                <span className="text-muted-foreground">{t('info.pricePerHour')}</span>
+                <span className="font-semibold text-lg">{t('info.currency', { amount: instructor.pricePerHour })}</span>
               </div>
               <Separator />
               <div className="space-y-3">
@@ -461,7 +472,7 @@ export default function InstructorProfilePage() {
                 </Button>
                 <Button variant="outline" className="w-full">
                   <MessageSquare className="w-4 h-4 mr-2" />
-                  Wyślij wiadomość
+                  {t('info.sendMessage')}
                 </Button>
               </div>
             </CardContent>
@@ -471,23 +482,23 @@ export default function InstructorProfilePage() {
           {instructor.myLessonsWithInstructor > 0 && (
             <Card className="border-primary/20 bg-primary/5">
               <CardHeader>
-                <CardTitle className="text-lg">Twoja historia</CardTitle>
+                <CardTitle className="text-lg">{t('yourHistory.title')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Ukończone lekcje</span>
+                  <span className="text-sm text-muted-foreground">{t('yourHistory.completedLessons')}</span>
                   <span className="font-semibold">{instructor.myLessonsWithInstructor}</span>
                 </div>
                 {instructor.lastLessonDate && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Ostatnia lekcja</span>
+                    <span className="text-sm text-muted-foreground">{t('yourHistory.lastLesson')}</span>
                     <span className="text-sm">
-                      {new Date(instructor.lastLessonDate).toLocaleDateString('pl-PL')}
+                      {new Date(instructor.lastLessonDate).toLocaleDateString('uk-UA')}
                     </span>
                   </div>
                 )}
                 <Button variant="outline" className="w-full">
-                  Zobacz historię lekcji
+                  {t('yourHistory.viewLessonHistory')}
                 </Button>
               </CardContent>
             </Card>
@@ -496,7 +507,7 @@ export default function InstructorProfilePage() {
           {/* Availability */}
           <Card>
             <CardHeader>
-              <CardTitle>Dostępność</CardTitle>
+              <CardTitle>{t('availability.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -506,7 +517,7 @@ export default function InstructorProfilePage() {
                       {dayNames[day as keyof typeof dayNames]}
                     </span>
                     <span className="font-medium">
-                      {hours.length > 0 ? hours.join(', ') : 'Niedostępny'}
+                      {hours.length > 0 ? hours.join(', ') : t('availability.unavailable')}
                     </span>
                   </div>
                 ))}
@@ -514,7 +525,7 @@ export default function InstructorProfilePage() {
               <Alert className="mt-4">
                 <Clock className="h-4 w-4" />
                 <AlertDescription className="text-xs">
-                  Czas odpowiedzi: {instructor.responseTime}
+                  {t('availability.responseTime')}: {instructor.responseTime}
                 </AlertDescription>
               </Alert>
             </CardContent>

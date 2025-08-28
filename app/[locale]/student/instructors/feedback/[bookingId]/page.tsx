@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Star,
   User,
@@ -58,21 +59,11 @@ interface FeedbackForm {
   improvements: string[];
 }
 
-const improvementOptions = [
-  'Więcej praktyki parkowania',
-  'Więcej jazdy w ruchu miejskim',
-  'Nauka jazdy autostradą',
-  'Techniki defensywnej jazdy',
-  'Manewry awaryjne',
-  'Jazda w trudnych warunkach',
-  'Więcej teorii',
-  'Przygotowanie do egzaminu'
-];
-
 export default function InstructorFeedbackPage() {
   const router = useRouter();
   const params = useParams();
   const bookingId = params.bookingId as string;
+  const t = useTranslations('student.instructorFeedback');
 
   const [booking, setBooking] = useState<BookingDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -90,6 +81,17 @@ export default function InstructorFeedbackPage() {
     improvements: []
   });
 
+  const improvementOptions = [
+    t('improvements.moreParking'),
+    t('improvements.moreCityDriving'),
+    t('improvements.highwayDriving'),
+    t('improvements.defensiveDriving'),
+    t('improvements.emergencyManeuvers'),
+    t('improvements.difficultConditions'),
+    t('improvements.moreTheory'),
+    t('improvements.examPreparation')
+  ];
+
   useEffect(() => {
     // Mock fetch booking details
     setTimeout(() => {
@@ -97,7 +99,7 @@ export default function InstructorFeedbackPage() {
         id: bookingId,
         date: '2024-08-25',
         time: '10:00',
-        lessonType: 'Jazda standardowa',
+        lessonType: t('lessonTypes.standard'),
         duration: 90,
         instructor: {
           id: '1',
@@ -112,13 +114,13 @@ export default function InstructorFeedbackPage() {
       });
       setLoading(false);
     }, 1000);
-  }, [bookingId]);
+  }, [bookingId, t]);
 
   const handleSubmit = async () => {
     if (feedback.overallRating === 0) {
       toast({
-        title: "Błąd",
-        description: "Proszę wybrać ogólną ocenę",
+        title: t('toast.error'),
+        description: t('errors.selectRating'),
         variant: "destructive"
       });
       return;
@@ -126,8 +128,8 @@ export default function InstructorFeedbackPage() {
 
     if (feedback.wouldRecommend === null) {
       toast({
-        title: "Błąd",
-        description: "Proszę odpowiedzieć, czy polecasz instruktora",
+        title: t('toast.error'),
+        description: t('errors.selectRecommendation'),
         variant: "destructive"
       });
       return;
@@ -142,8 +144,8 @@ export default function InstructorFeedbackPage() {
     setSubmitting(false);
     
     toast({
-      title: "Dziękujemy za opinię!",
-      description: "Twoja opinia pomoże nam ulepszyć nasze usługi"
+      title: t('toast.thankYou'),
+      description: t('toast.helpImprove')
     });
     
     setTimeout(() => {
@@ -158,6 +160,23 @@ export default function InstructorFeedbackPage() {
         ? prev.improvements.filter(i => i !== improvement)
         : [...prev.improvements, improvement]
     }));
+  };
+
+  const getRatingMessage = (rating: number) => {
+    switch (rating) {
+      case 5:
+        return t('overallRating.excellent');
+      case 4:
+        return t('overallRating.veryGood');
+      case 3:
+        return t('overallRating.okay');
+      case 2:
+        return t('overallRating.couldBeBetter');
+      case 1:
+        return t('overallRating.poor');
+      default:
+        return '';
+    }
   };
 
   if (loading) {
@@ -176,7 +195,7 @@ export default function InstructorFeedbackPage() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Nie znaleziono lekcji
+            {t('lessonNotFound')}
           </AlertDescription>
         </Alert>
       </div>
@@ -191,12 +210,12 @@ export default function InstructorFeedbackPage() {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-500" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Dziękujemy za opinię!</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('success.title')}</h2>
             <p className="text-muted-foreground mb-4">
-              Twoja opinia pomoże nam ulepszyć jakość naszych usług
+              {t('success.description')}
             </p>
             <p className="text-sm text-muted-foreground">
-              Przekierowanie do historii lekcji...
+              {t('redirecting')}
             </p>
           </CardContent>
         </Card>
@@ -216,9 +235,9 @@ export default function InstructorFeedbackPage() {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Oceń lekcję</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Podziel się swoją opinią na temat lekcji
+            {t('subtitle')}
           </p>
         </div>
       </div>
@@ -226,7 +245,7 @@ export default function InstructorFeedbackPage() {
       {/* Lesson Info */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Informacje o lekcji</CardTitle>
+          <CardTitle className="text-lg">{t('lessonInfo.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-start justify-between">
@@ -242,7 +261,7 @@ export default function InstructorFeedbackPage() {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
-                    {new Date(booking.date).toLocaleDateString('pl-PL')}
+                    {new Date(booking.date).toLocaleDateString('uk-UA')}
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
@@ -263,9 +282,9 @@ export default function InstructorFeedbackPage() {
       {/* Overall Rating */}
       <Card>
         <CardHeader>
-          <CardTitle>Ogólna ocena</CardTitle>
+          <CardTitle>{t('overallRating.title')}</CardTitle>
           <CardDescription>
-            Jak oceniasz swoją lekcję jazdy?
+            {t('overallRating.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -288,11 +307,7 @@ export default function InstructorFeedbackPage() {
           </div>
           {feedback.overallRating > 0 && (
             <p className="text-center mt-4 text-muted-foreground">
-              {feedback.overallRating === 5 && 'Wspaniale! 🎉'}
-              {feedback.overallRating === 4 && 'Bardzo dobrze! 👍'}
-              {feedback.overallRating === 3 && 'W porządku 👌'}
-              {feedback.overallRating === 2 && 'Mogło być lepiej 😐'}
-              {feedback.overallRating === 1 && 'Słabo 😞'}
+              {getRatingMessage(feedback.overallRating)}
             </p>
           )}
         </CardContent>
@@ -301,15 +316,15 @@ export default function InstructorFeedbackPage() {
       {/* Detailed Ratings */}
       <Card>
         <CardHeader>
-          <CardTitle>Szczegółowa ocena</CardTitle>
+          <CardTitle>{t('detailedRating.title')}</CardTitle>
           <CardDescription>
-            Oceń poszczególne aspekty lekcji
+            {t('detailedRating.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Punktualność</Label>
+              <Label>{t('detailedRating.punctuality')}</Label>
               <span className="text-sm font-medium">{feedback.punctuality}%</span>
             </div>
             <Slider
@@ -322,7 +337,7 @@ export default function InstructorFeedbackPage() {
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Umiejętności nauczania</Label>
+              <Label>{t('detailedRating.teachingSkills')}</Label>
               <span className="text-sm font-medium">{feedback.teaching}%</span>
             </div>
             <Slider
@@ -335,7 +350,7 @@ export default function InstructorFeedbackPage() {
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Komunikacja</Label>
+              <Label>{t('detailedRating.communication')}</Label>
               <span className="text-sm font-medium">{feedback.communication}%</span>
             </div>
             <Slider
@@ -348,7 +363,7 @@ export default function InstructorFeedbackPage() {
 
           <div className="space-y-2">
             <div className="flex justify-between">
-              <Label>Cierpliwość</Label>
+              <Label>{t('detailedRating.patience')}</Label>
               <span className="text-sm font-medium">{feedback.patience}%</span>
             </div>
             <Slider
@@ -364,9 +379,9 @@ export default function InstructorFeedbackPage() {
       {/* Recommendation */}
       <Card>
         <CardHeader>
-          <CardTitle>Rekomendacja</CardTitle>
+          <CardTitle>{t('recommendation.title')}</CardTitle>
           <CardDescription>
-            Czy poleciłbyś tego instruktora innym?
+            {t('recommendation.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -379,7 +394,7 @@ export default function InstructorFeedbackPage() {
               <Label htmlFor="recommend-yes" className="cursor-pointer">
                 <div className="flex items-center gap-2">
                   <ThumbsUp className="w-4 h-4 text-green-500" />
-                  Tak, zdecydowanie polecam
+                  {t('recommendation.yes')}
                 </div>
               </Label>
             </div>
@@ -388,7 +403,7 @@ export default function InstructorFeedbackPage() {
               <Label htmlFor="recommend-no" className="cursor-pointer">
                 <div className="flex items-center gap-2">
                   <ThumbsUp className="w-4 h-4 text-red-500 rotate-180" />
-                  Nie, nie polecam
+                  {t('recommendation.no')}
                 </div>
               </Label>
             </div>
@@ -399,17 +414,17 @@ export default function InstructorFeedbackPage() {
       {/* Written Feedback */}
       <Card>
         <CardHeader>
-          <CardTitle>Twoja opinia</CardTitle>
+          <CardTitle>{t('writtenFeedback.title')}</CardTitle>
           <CardDescription>
-            Podziel się swoimi przemyśleniami (opcjonalnie)
+            {t('writtenFeedback.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="comment">Komentarz</Label>
+            <Label htmlFor="comment">{t('writtenFeedback.commentLabel')}</Label>
             <Textarea
               id="comment"
-              placeholder="Co podobało Ci się najbardziej? Co można poprawić?"
+              placeholder={t('writtenFeedback.commentPlaceholder')}
               value={feedback.comment}
               onChange={(e) => setFeedback(prev => ({ ...prev, comment: e.target.value }))}
               className="mt-2"
@@ -418,9 +433,9 @@ export default function InstructorFeedbackPage() {
           </div>
 
           <div>
-            <Label>Obszary do poprawy</Label>
+            <Label>{t('writtenFeedback.areasToImprove')}</Label>
             <p className="text-sm text-muted-foreground mb-3">
-              Zaznacz obszary, które wymagają więcej uwagi
+              {t('writtenFeedback.areasDescription')}
             </p>
             <div className="flex flex-wrap gap-2">
               {improvementOptions.map((option) => (
@@ -445,18 +460,18 @@ export default function InstructorFeedbackPage() {
           onClick={() => router.back()}
           disabled={submitting}
         >
-          Anuluj
+          {t('buttons.cancel')}
         </Button>
         <Button
           onClick={handleSubmit}
           disabled={submitting}
         >
           {submitting ? (
-            <>Wysyłanie...</>
+            <>{t('buttons.submitting')}</>
           ) : (
             <>
               <Send className="w-4 h-4 mr-2" />
-              Wyślij opinię
+              {t('buttons.submit')}
             </>
           )}
         </Button>
@@ -465,8 +480,7 @@ export default function InstructorFeedbackPage() {
       <Alert>
         <MessageSquare className="h-4 w-4" />
         <AlertDescription>
-          Twoja opinia jest anonimowa i pomoże nam poprawić jakość naszych usług.
-          Instruktor otrzyma tylko konstruktywną informację zwrotną.
+          {t('alert.anonymous')}
         </AlertDescription>
       </Alert>
     </div>

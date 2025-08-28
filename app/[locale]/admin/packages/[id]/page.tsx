@@ -1,10 +1,11 @@
 // app/[locale]/admin/packages/[id]/page.tsx
-// Strona edycji pakietu - formularz do modyfikacji istniejącego pakietu szkoleniowego
+// Сторінка редагування пакету - форма для модифікації існуючого навчального пакету
 
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   ArrowLeft,
   Save,
@@ -56,7 +57,7 @@ import {
 } from '@/components/ui/table';
 import { toast } from '@/components/ui/use-toast';
 
-// Typy
+// Типи
 type PackageStatus = 'active' | 'inactive' | 'draft';
 type PackageCategory = 'A' | 'A1' | 'A2' | 'B' | 'B1' | 'C' | 'C1' | 'D' | 'T';
 type PaymentOption = 'full' | 'installments' | 'both';
@@ -109,8 +110,8 @@ interface PackageData {
 // Mock data
 const mockPackageData: PackageData = {
   id: 'pkg-1',
-  name: 'Pakiet Standard B',
-  description: 'Kompletny kurs prawa jazdy kategorii B z gwarancją zdania egzaminu',
+  name: 'Пакет Стандарт B',
+  description: 'Повний курс навчання водінню категорії B з гарантією складання іспиту',
   category: 'B',
   status: 'active',
   price: 3500,
@@ -122,13 +123,13 @@ const mockPackageData: PackageData = {
   additionalHours: 5,
   examAttempts: 2,
   features: [
-    { id: '1', name: 'Materiały szkoleniowe', included: true },
-    { id: '2', name: 'Dostęp do platformy e-learning', included: true },
-    { id: '3', name: 'Egzamin wewnętrzny', included: true },
-    { id: '4', name: 'Pierwsza poprawka gratis', included: true },
-    { id: '5', name: 'Jazdy w ruchu miejskim', included: true },
-    { id: '6', name: 'Jazdy nocne', included: false, value: '2' },
-    { id: '7', name: 'Jazdy autostradą', included: false, value: '1' }
+    { id: '1', name: 'Навчальні матеріали', included: true },
+    { id: '2', name: 'Доступ до платформи e-learning', included: true },
+    { id: '3', name: 'Внутрішній іспит', included: true },
+    { id: '4', name: 'Перша перездача безкоштовно', included: true },
+    { id: '5', name: 'Водіння в міському русі', included: true },
+    { id: '6', name: 'Нічне водіння', included: false, value: '2' },
+    { id: '7', name: 'Водіння на автостраді', included: false, value: '1' }
   ],
   paymentOptions: 'both',
   installmentMonths: 3,
@@ -140,8 +141,8 @@ const mockPackageData: PackageData = {
   instructors: ['ins-1', 'ins-2', 'ins-3'],
   vehicles: ['veh-1', 'veh-2'],
   priceModifiers: [
-    { id: '1', name: 'Zniżka studencka', type: 'percentage', value: 10, condition: 'Ważna legitymacja studencka' },
-    { id: '2', name: 'Promocja wiosenna', type: 'fixed', value: 200, condition: 'Zapisy do 31.03' }
+    { id: '1', name: 'Студентська знижка', type: 'percentage', value: 10, condition: 'Дійсний студентський квиток' },
+    { id: '2', name: 'Весняна акція', type: 'fixed', value: 200, condition: 'Запис до 31.03' }
   ],
   termsAndConditions: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   createdAt: '2024-01-01',
@@ -149,16 +150,16 @@ const mockPackageData: PackageData = {
 };
 
 const locationOptions = [
-  { id: 'loc-1', name: 'Warszawa Centrum' },
-  { id: 'loc-2', name: 'Warszawa Mokotów' },
-  { id: 'loc-3', name: 'Warszawa Praga' }
+  { id: 'loc-1', name: 'Варшава Центр' },
+  { id: 'loc-2', name: 'Варшава Мокотув' },
+  { id: 'loc-3', name: 'Варшава Прага' }
 ];
 
 const instructorOptions = [
-  { id: 'ins-1', name: 'Jan Kowalski' },
-  { id: 'ins-2', name: 'Anna Nowak' },
-  { id: 'ins-3', name: 'Piotr Wiśniewski' },
-  { id: 'ins-4', name: 'Maria Zielińska' }
+  { id: 'ins-1', name: 'Ян Ковальський' },
+  { id: 'ins-2', name: 'Анна Новак' },
+  { id: 'ins-3', name: 'Петро Вишнєвський' },
+  { id: 'ins-4', name: 'Марія Зєлінська' }
 ];
 
 const vehicleOptions = [
@@ -170,6 +171,8 @@ const vehicleOptions = [
 export default function PackageEditPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations('admin.packages.edit');
+  
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState<PackageData>(mockPackageData);
@@ -179,13 +182,13 @@ export default function PackageEditPage() {
   const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
 
-  // Obsługa zmian w formularzu
+  // Обробка змін в формі
   const handleInputChange = (field: keyof PackageData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setHasChanges(true);
   };
 
-  // Obsługa funkcji features
+  // Обробка функцій features
   const handleFeatureToggle = (featureId: string) => {
     setFormData(prev => ({
       ...prev,
@@ -217,7 +220,7 @@ export default function PackageEditPage() {
     setHasChanges(true);
   };
 
-  // Obsługa modyfikatorów cen
+  // Обробка модифікаторів цін
   const addPriceModifier = () => {
     const newModifier: PriceModifier = {
       id: Date.now().toString(),
@@ -241,16 +244,16 @@ export default function PackageEditPage() {
     setHasChanges(true);
   };
 
-  // Zapisywanie
+  // Збереження
   const handleSave = async () => {
     setSaving(true);
-    // Symulacja zapisu
+    // Симуляція збереження
     await new Promise(resolve => setTimeout(resolve, 1500));
     setSaving(false);
     setHasChanges(false);
     toast({
-      title: 'Pakiet zaktualizowany',
-      description: 'Zmiany zostały zapisane pomyślnie',
+      title: t('toast.saveSuccess'),
+      description: t('toast.saveSuccessDescription'),
     });
   };
 
@@ -279,7 +282,7 @@ export default function PackageEditPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Nagłówek */}
+      {/* Навігація та заголовок */}
       <div className="mb-6">
         <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <Button
@@ -289,12 +292,12 @@ export default function PackageEditPage() {
             className="hover:bg-gray-100"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
-            Powrót
+            {t('breadcrumb.back')}
           </Button>
           <span>/</span>
-          <span>Pakiety</span>
+          <span>{t('breadcrumb.packages')}</span>
           <span>/</span>
-          <span className="text-gray-800 font-medium">Edycja</span>
+          <span className="text-gray-800 font-medium">{t('breadcrumb.edit')}</span>
         </div>
 
         <div className="flex items-start justify-between">
@@ -303,7 +306,7 @@ export default function PackageEditPage() {
               <Package className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Edytuj pakiet</h1>
+              <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
               <p className="text-gray-600">{formData.name}</p>
             </div>
             <Badge className={
@@ -313,7 +316,7 @@ export default function PackageEditPage() {
                 ? 'bg-gray-100 text-gray-700 border-gray-200'
                 : 'bg-red-100 text-red-700 border-red-200'
             }>
-              {formData.status === 'active' ? 'Aktywny' : formData.status === 'draft' ? 'Szkic' : 'Nieaktywny'}
+              {t(`status.${formData.status}`)}
             </Badge>
           </div>
 
@@ -324,7 +327,7 @@ export default function PackageEditPage() {
               onClick={() => setShowPreview(!showPreview)}
             >
               {showPreview ? <EyeOff className="w-4 h-4 mr-2" /> : <Eye className="w-4 h-4 mr-2" />}
-              {showPreview ? 'Ukryj podgląd' : 'Podgląd'}
+              {showPreview ? t('buttons.hidePreview') : t('buttons.preview')}
             </Button>
             <Button
               variant="outline"
@@ -332,7 +335,7 @@ export default function PackageEditPage() {
               onClick={() => setDuplicateDialogOpen(true)}
             >
               <Copy className="w-4 h-4 mr-2" />
-              Duplikuj
+              {t('buttons.duplicate')}
             </Button>
             <Button
               variant="outline"
@@ -341,7 +344,7 @@ export default function PackageEditPage() {
               className="text-red-600 hover:bg-red-50"
             >
               <Trash2 className="w-4 h-4 mr-2" />
-              Usuń
+              {t('buttons.delete')}
             </Button>
             <Button
               size="sm"
@@ -349,11 +352,11 @@ export default function PackageEditPage() {
               disabled={!hasChanges || saving}
             >
               {saving ? (
-                <>Zapisywanie...</>
+                <>{t('buttons.saving')}</>
               ) : (
                 <>
                   <Save className="w-4 h-4 mr-2" />
-                  Zapisz zmiany
+                  {t('buttons.save')}
                 </>
               )}
             </Button>
@@ -361,81 +364,81 @@ export default function PackageEditPage() {
         </div>
       </div>
 
-      {/* Alert o niezapisanych zmianach */}
+      {/* Попередження про незбережені зміни */}
       {hasChanges && (
         <Alert className="mb-6 bg-yellow-50 border-yellow-200">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
           <AlertDescription className="text-yellow-800">
-            Masz niezapisane zmiany. Pamiętaj o zapisaniu przed opuszczeniem strony.
+            {t('alerts.unsavedChanges')}
           </AlertDescription>
         </Alert>
       )}
 
-      {/* Tabs z formularzem */}
+      {/* Таби з формою */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-white border border-gray-100">
-          <TabsTrigger value="general">Informacje ogólne</TabsTrigger>
-          <TabsTrigger value="pricing">Ceny i płatności</TabsTrigger>
-          <TabsTrigger value="content">Zawartość pakietu</TabsTrigger>
-          <TabsTrigger value="availability">Dostępność</TabsTrigger>
-          <TabsTrigger value="terms">Regulamin</TabsTrigger>
+          <TabsTrigger value="general">{t('tabs.general')}</TabsTrigger>
+          <TabsTrigger value="pricing">{t('tabs.pricing')}</TabsTrigger>
+          <TabsTrigger value="content">{t('tabs.content')}</TabsTrigger>
+          <TabsTrigger value="availability">{t('tabs.availability')}</TabsTrigger>
+          <TabsTrigger value="terms">{t('tabs.terms')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="general" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Podstawowe informacje</CardTitle>
-              <CardDescription>Nazwa i opis pakietu widoczne dla kursantów</CardDescription>
+              <CardTitle>{t('general.title')}</CardTitle>
+              <CardDescription>{t('general.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name">Nazwa pakietu *</Label>
+                  <Label htmlFor="name">{t('general.fields.name')}</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
-                    placeholder="np. Pakiet Standard B"
+                    placeholder={t('general.fields.namePlaceholder')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="category">Kategoria *</Label>
+                  <Label htmlFor="category">{t('general.fields.category')}</Label>
                   <Select
                     value={formData.category}
                     onValueChange={(value) => handleInputChange('category', value)}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Wybierz kategorię" />
+                      <SelectValue placeholder={t('general.fields.categoryPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="A">Kategoria A - Motocykle</SelectItem>
-                      <SelectItem value="A1">Kategoria A1</SelectItem>
-                      <SelectItem value="A2">Kategoria A2</SelectItem>
-                      <SelectItem value="B">Kategoria B - Samochody</SelectItem>
-                      <SelectItem value="B1">Kategoria B1</SelectItem>
-                      <SelectItem value="C">Kategoria C - Ciężarowe</SelectItem>
-                      <SelectItem value="C1">Kategoria C1</SelectItem>
-                      <SelectItem value="D">Kategoria D - Autobusy</SelectItem>
-                      <SelectItem value="T">Kategoria T - Ciągniki</SelectItem>
+                      <SelectItem value="A">{t('general.categories.A')}</SelectItem>
+                      <SelectItem value="A1">{t('general.categories.A1')}</SelectItem>
+                      <SelectItem value="A2">{t('general.categories.A2')}</SelectItem>
+                      <SelectItem value="B">{t('general.categories.B')}</SelectItem>
+                      <SelectItem value="B1">{t('general.categories.B1')}</SelectItem>
+                      <SelectItem value="C">{t('general.categories.C')}</SelectItem>
+                      <SelectItem value="C1">{t('general.categories.C1')}</SelectItem>
+                      <SelectItem value="D">{t('general.categories.D')}</SelectItem>
+                      <SelectItem value="T">{t('general.categories.T')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="description">Opis</Label>
+                <Label htmlFor="description">{t('general.fields.description')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Szczegółowy opis pakietu..."
+                  placeholder={t('general.fields.descriptionPlaceholder')}
                   rows={4}
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="duration">Czas trwania *</Label>
+                  <Label htmlFor="duration">{t('general.fields.duration')}</Label>
                   <div className="flex gap-2">
                     <Input
                       id="duration"
@@ -452,15 +455,15 @@ export default function PackageEditPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="days">Dni</SelectItem>
-                        <SelectItem value="weeks">Tygodnie</SelectItem>
-                        <SelectItem value="months">Miesiące</SelectItem>
+                        <SelectItem value="days">{t('general.durationUnits.days')}</SelectItem>
+                        <SelectItem value="weeks">{t('general.durationUnits.weeks')}</SelectItem>
+                        <SelectItem value="months">{t('general.durationUnits.months')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="status">{t('general.fields.status')}</Label>
                   <Select
                     value={formData.status}
                     onValueChange={(value) => handleInputChange('status', value)}
@@ -469,14 +472,14 @@ export default function PackageEditPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="active">Aktywny</SelectItem>
-                      <SelectItem value="inactive">Nieaktywny</SelectItem>
-                      <SelectItem value="draft">Szkic</SelectItem>
+                      <SelectItem value="active">{t('status.active')}</SelectItem>
+                      <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
+                      <SelectItem value="draft">{t('status.draft')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="maxStudents">Max. liczba kursantów</Label>
+                  <Label htmlFor="maxStudents">{t('general.fields.maxStudents')}</Label>
                   <Input
                     id="maxStudents"
                     type="number"
@@ -484,7 +487,10 @@ export default function PackageEditPage() {
                     onChange={(e) => handleInputChange('maxStudents', parseInt(e.target.value))}
                   />
                   <p className="text-sm text-gray-500 mt-1">
-                    Obecnie: {formData.currentStudents}/{formData.maxStudents}
+                    {t('general.fields.currentStudentsInfo', {
+                      current: formData.currentStudents,
+                      max: formData.maxStudents
+                    })}
                   </p>
                 </div>
               </div>
@@ -495,40 +501,43 @@ export default function PackageEditPage() {
         <TabsContent value="pricing" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Cennik</CardTitle>
-              <CardDescription>Ustaw cenę i opcje płatności</CardDescription>
+              <CardTitle>{t('pricing.title')}</CardTitle>
+              <CardDescription>{t('pricing.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="price">Cena podstawowa (zł) *</Label>
+                  <Label htmlFor="price">{t('pricing.fields.basePrice')}</Label>
                   <Input
                     id="price"
                     type="number"
                     value={formData.price}
                     onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
-                    placeholder="0.00"
+                    placeholder={t('pricing.fields.pricePlaceholder')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="discountedPrice">Cena promocyjna (zł)</Label>
+                  <Label htmlFor="discountedPrice">{t('pricing.fields.discountedPrice')}</Label>
                   <Input
                     id="discountedPrice"
                     type="number"
                     value={formData.discountedPrice || ''}
                     onChange={(e) => handleInputChange('discountedPrice', e.target.value ? parseFloat(e.target.value) : undefined)}
-                    placeholder="0.00"
+                    placeholder={t('pricing.fields.pricePlaceholder')}
                   />
                   {formData.discountedPrice && (
                     <p className="text-sm text-green-600 mt-1">
-                      Oszczędność: {formData.price - formData.discountedPrice} zł ({Math.round(((formData.price - formData.discountedPrice) / formData.price) * 100)}%)
+                      {t('pricing.fields.savings', {
+                        amount: formData.price - formData.discountedPrice,
+                        percent: Math.round(((formData.price - formData.discountedPrice) / formData.price) * 100)
+                      })}
                     </p>
                   )}
                 </div>
               </div>
 
               <div>
-                <Label>Opcje płatności</Label>
+                <Label>{t('pricing.fields.paymentOptions')}</Label>
                 <RadioGroup
                   value={formData.paymentOptions}
                   onValueChange={(value) => handleInputChange('paymentOptions', value)}
@@ -536,40 +545,42 @@ export default function PackageEditPage() {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="full" id="full" />
-                    <Label htmlFor="full" className="font-normal">Tylko płatność jednorazowa</Label>
+                    <Label htmlFor="full" className="font-normal">{t('pricing.paymentTypes.full')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="installments" id="installments" />
-                    <Label htmlFor="installments" className="font-normal">Tylko raty</Label>
+                    <Label htmlFor="installments" className="font-normal">{t('pricing.paymentTypes.installments')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="both" id="both" />
-                    <Label htmlFor="both" className="font-normal">Jednorazowa i raty</Label>
+                    <Label htmlFor="both" className="font-normal">{t('pricing.paymentTypes.both')}</Label>
                   </div>
                 </RadioGroup>
               </div>
 
               {(formData.paymentOptions === 'installments' || formData.paymentOptions === 'both') && (
                 <div>
-                  <Label htmlFor="installmentMonths">Liczba rat</Label>
+                  <Label htmlFor="installmentMonths">{t('pricing.fields.installments')}</Label>
                   <Select
                     value={formData.installmentMonths?.toString()}
                     onValueChange={(value) => handleInputChange('installmentMonths', parseInt(value))}
                   >
                     <SelectTrigger className="w-48">
-                      <SelectValue placeholder="Wybierz liczbę rat" />
+                      <SelectValue placeholder={t('pricing.fields.installmentsPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="2">2 raty</SelectItem>
-                      <SelectItem value="3">3 raty</SelectItem>
-                      <SelectItem value="4">4 raty</SelectItem>
-                      <SelectItem value="6">6 rat</SelectItem>
-                      <SelectItem value="12">12 rat</SelectItem>
+                      <SelectItem value="2">{t('pricing.installmentOptions.2')}</SelectItem>
+                      <SelectItem value="3">{t('pricing.installmentOptions.3')}</SelectItem>
+                      <SelectItem value="4">{t('pricing.installmentOptions.4')}</SelectItem>
+                      <SelectItem value="6">{t('pricing.installmentOptions.6')}</SelectItem>
+                      <SelectItem value="12">{t('pricing.installmentOptions.12')}</SelectItem>
                     </SelectContent>
                   </Select>
                   {formData.installmentMonths && (
                     <p className="text-sm text-gray-500 mt-1">
-                      Miesięczna rata: {Math.round((formData.discountedPrice || formData.price) / formData.installmentMonths)} zł
+                      {t('pricing.fields.monthlyPayment', {
+                        amount: Math.round((formData.discountedPrice || formData.price) / formData.installmentMonths)
+                      })}
                     </p>
                   )}
                 </div>
@@ -579,17 +590,17 @@ export default function PackageEditPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Modyfikatory cen</CardTitle>
-              <CardDescription>Dodatkowe zniżki i dopłaty</CardDescription>
+              <CardTitle>{t('pricing.modifiers.title')}</CardTitle>
+              <CardDescription>{t('pricing.modifiers.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Nazwa</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead>Wartość</TableHead>
-                    <TableHead>Warunek</TableHead>
+                    <TableHead>{t('pricing.modifiers.table.name')}</TableHead>
+                    <TableHead>{t('pricing.modifiers.table.type')}</TableHead>
+                    <TableHead>{t('pricing.modifiers.table.value')}</TableHead>
+                    <TableHead>{t('pricing.modifiers.table.condition')}</TableHead>
                     <TableHead className="w-[50px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -608,7 +619,7 @@ export default function PackageEditPage() {
                             }));
                             setHasChanges(true);
                           }}
-                          placeholder="Nazwa zniżki/dopłaty"
+                          placeholder={t('pricing.modifiers.table.namePlaceholder')}
                         />
                       </TableCell>
                       <TableCell>
@@ -628,8 +639,8 @@ export default function PackageEditPage() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="percentage">Procent</SelectItem>
-                            <SelectItem value="fixed">Kwota</SelectItem>
+                            <SelectItem value="percentage">{t('pricing.modifiers.types.percentage')}</SelectItem>
+                            <SelectItem value="fixed">{t('pricing.modifiers.types.fixed')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </TableCell>
@@ -662,7 +673,7 @@ export default function PackageEditPage() {
                             }));
                             setHasChanges(true);
                           }}
-                          placeholder="Warunek zastosowania"
+                          placeholder={t('pricing.modifiers.table.conditionPlaceholder')}
                         />
                       </TableCell>
                       <TableCell>
@@ -685,7 +696,7 @@ export default function PackageEditPage() {
                 className="mt-4"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Dodaj modyfikator
+                {t('buttons.addModifier')}
               </Button>
             </CardContent>
           </Card>
@@ -694,13 +705,13 @@ export default function PackageEditPage() {
         <TabsContent value="content" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Zajęcia</CardTitle>
-              <CardDescription>Liczba godzin teorii i praktyki</CardDescription>
+              <CardTitle>{t('content.lessons.title')}</CardTitle>
+              <CardDescription>{t('content.lessons.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="theoryHours">Godziny teorii *</Label>
+                  <Label htmlFor="theoryHours">{t('content.lessons.theoryHours')}</Label>
                   <Input
                     id="theoryHours"
                     type="number"
@@ -709,7 +720,7 @@ export default function PackageEditPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="practicalHours">Godziny praktyki *</Label>
+                  <Label htmlFor="practicalHours">{t('content.lessons.practicalHours')}</Label>
                   <Input
                     id="practicalHours"
                     type="number"
@@ -718,7 +729,7 @@ export default function PackageEditPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="additionalHours">Dodatkowe godziny</Label>
+                  <Label htmlFor="additionalHours">{t('content.lessons.additionalHours')}</Label>
                   <Input
                     id="additionalHours"
                     type="number"
@@ -729,7 +740,7 @@ export default function PackageEditPage() {
               </div>
 
               <div>
-                <Label htmlFor="examAttempts">Liczba podejść do egzaminu</Label>
+                <Label htmlFor="examAttempts">{t('content.lessons.examAttempts')}</Label>
                 <Input
                   id="examAttempts"
                   type="number"
@@ -743,8 +754,8 @@ export default function PackageEditPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Funkcje pakietu</CardTitle>
-              <CardDescription>Co zawiera pakiet</CardDescription>
+              <CardTitle>{t('content.features.title')}</CardTitle>
+              <CardDescription>{t('content.features.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -765,7 +776,7 @@ export default function PackageEditPage() {
                         }));
                         setHasChanges(true);
                       }}
-                      placeholder="Nazwa funkcji"
+                      placeholder={t('content.features.namePlaceholder')}
                       className="flex-1"
                     />
                     {feature.value !== undefined && (
@@ -780,7 +791,7 @@ export default function PackageEditPage() {
                           }));
                           setHasChanges(true);
                         }}
-                        placeholder="Wartość"
+                        placeholder={t('content.features.valuePlaceholder')}
                         className="w-24"
                       />
                     )}
@@ -801,7 +812,7 @@ export default function PackageEditPage() {
                 className="mt-4"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Dodaj funkcję
+                {t('buttons.addFeature')}
               </Button>
             </CardContent>
           </Card>
@@ -810,13 +821,13 @@ export default function PackageEditPage() {
         <TabsContent value="availability" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Okres ważności</CardTitle>
-              <CardDescription>Kiedy pakiet jest dostępny do zakupu</CardDescription>
+              <CardTitle>{t('availability.validity.title')}</CardTitle>
+              <CardDescription>{t('availability.validity.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="validFrom">Data rozpoczęcia *</Label>
+                  <Label htmlFor="validFrom">{t('availability.validity.startDate')}</Label>
                   <Input
                     id="validFrom"
                     type="date"
@@ -825,7 +836,7 @@ export default function PackageEditPage() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="validTo">Data zakończenia</Label>
+                  <Label htmlFor="validTo">{t('availability.validity.endDate')}</Label>
                   <Input
                     id="validTo"
                     type="date"
@@ -839,8 +850,8 @@ export default function PackageEditPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Lokalizacje</CardTitle>
-              <CardDescription>Gdzie dostępny jest pakiet</CardDescription>
+              <CardTitle>{t('availability.locations.title')}</CardTitle>
+              <CardDescription>{t('availability.locations.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -868,8 +879,8 @@ export default function PackageEditPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Instruktorzy</CardTitle>
-              <CardDescription>Którzy instruktorzy mogą prowadzić zajęcia</CardDescription>
+              <CardTitle>{t('availability.instructors.title')}</CardTitle>
+              <CardDescription>{t('availability.instructors.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -897,8 +908,8 @@ export default function PackageEditPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Pojazdy</CardTitle>
-              <CardDescription>Dostępne pojazdy dla tego pakietu</CardDescription>
+              <CardTitle>{t('availability.vehicles.title')}</CardTitle>
+              <CardDescription>{t('availability.vehicles.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -928,14 +939,14 @@ export default function PackageEditPage() {
         <TabsContent value="terms" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Regulamin i warunki</CardTitle>
-              <CardDescription>Zasady korzystania z pakietu</CardDescription>
+              <CardTitle>{t('terms.title')}</CardTitle>
+              <CardDescription>{t('terms.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={formData.termsAndConditions}
                 onChange={(e) => handleInputChange('termsAndConditions', e.target.value)}
-                placeholder="Wprowadź regulamin pakietu..."
+                placeholder={t('terms.placeholder')}
                 rows={15}
                 className="font-mono text-sm"
               />
@@ -944,44 +955,43 @@ export default function PackageEditPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Dialog duplikowania */}
+      {/* Діалог дублювання */}
       <Dialog open={duplicateDialogOpen} onOpenChange={setDuplicateDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Duplikuj pakiet</DialogTitle>
+            <DialogTitle>{t('dialogs.duplicate.title')}</DialogTitle>
             <DialogDescription>
-              Utworzysz kopię pakietu "{formData.name}". Nowy pakiet będzie miał status "Szkic".
+              {t('dialogs.duplicate.description', { name: formData.name })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDuplicateDialogOpen(false)}>
-              Anuluj
+              {t('buttons.cancel')}
             </Button>
             <Button onClick={handleDuplicate}>
               <Copy className="w-4 h-4 mr-2" />
-              Duplikuj
+              {t('dialogs.duplicate.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Dialog usuwania */}
+      {/* Діалог видалення */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Usuń pakiet</DialogTitle>
+            <DialogTitle>{t('dialogs.delete.title')}</DialogTitle>
             <DialogDescription>
-              Czy na pewno chcesz usunąć pakiet "{formData.name}"? 
-              Ta operacja jest nieodwracalna. Pakiet zostanie oznaczony jako usunięty, ale dane historyczne zostaną zachowane.
+              {t('dialogs.delete.description', { name: formData.name })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Anuluj
+              {t('buttons.cancel')}
             </Button>
             <Button variant="destructive" onClick={handleDelete}>
               <Trash2 className="w-4 h-4 mr-2" />
-              Usuń pakiet
+              {t('dialogs.delete.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

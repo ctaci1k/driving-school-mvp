@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/messages/page.tsx
+// app/[locale]/instructor/messages/page.tsx
 
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   MessageSquare, Search, Filter, Plus, Archive,
   Star, Pin, Trash2, MoreVertical, Send, 
@@ -32,10 +33,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { format, formatDistanceToNow } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function MessagesPage() {
   const router = useRouter()
+  const t = useTranslations('instructor.messages.main')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilter, setSelectedFilter] = useState('all')
 
@@ -45,13 +47,13 @@ export default function MessagesPage() {
       id: '1',
       type: 'individual',
       participant: {
-        name: 'Maria Nowak',
+        name: 'Марія Новак',
         avatar: 'https://ui-avatars.com/api/?name=MN&background=EC4899&color=fff',
-        role: 'Student',
+        role: t('roles.student'),
         status: 'online'
       },
       lastMessage: {
-        text: 'Dziękuję za dzisiejszą lekcję! Do zobaczenia w przyszłym tygodniu.',
+        text: 'Дякую за сьогоднішній урок! До зустрічі наступного тижня.',
         timestamp: new Date(Date.now() - 1000 * 60 * 30),
         isRead: true,
         sender: 'them'
@@ -64,13 +66,13 @@ export default function MessagesPage() {
       id: '2',
       type: 'individual',
       participant: {
-        name: 'Jan Kowalski',
-        avatar: 'https://ui-avatars.com/api/?name=JK&background=3B82F6&color=fff',
-        role: 'Student',
+        name: 'Іван Коваленко',
+        avatar: 'https://ui-avatars.com/api/?name=IK&background=3B82F6&color=fff',
+        role: t('roles.student'),
         status: 'offline'
       },
       lastMessage: {
-        text: 'Czy możemy przełożyć jutrzejszą lekcję na 16:00?',
+        text: 'Чи можемо перенести завтрашній урок на 16:00?',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
         isRead: false,
         sender: 'them'
@@ -83,13 +85,13 @@ export default function MessagesPage() {
       id: '3',
       type: 'group',
       participant: {
-        name: 'Grupa poniedziałkowa',
+        name: 'Група понеділкова',
         avatar: 'https://ui-avatars.com/api/?name=GP&background=10B981&color=fff',
-        role: 'Grupa',
+        role: t('roles.group'),
         memberCount: 8
       },
       lastMessage: {
-        text: 'Przypomnienie: jutro teoria o 18:00',
+        text: 'Нагадування: завтра теорія о 18:00',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5),
         isRead: true,
         sender: 'you'
@@ -102,13 +104,13 @@ export default function MessagesPage() {
       id: '4',
       type: 'individual',
       participant: {
-        name: 'Anna Wiśniewska',
-        avatar: 'https://ui-avatars.com/api/?name=AW&background=8B5CF6&color=fff',
-        role: 'Student',
+        name: 'Анна Вишневська',
+        avatar: 'https://ui-avatars.com/api/?name=AV&background=8B5CF6&color=fff',
+        role: t('roles.student'),
         status: 'away'
       },
       lastMessage: {
-        text: 'Mam pytanie odnośnie egzaminu praktycznego',
+        text: 'Маю питання щодо практичного іспиту',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24),
         isRead: false,
         sender: 'them'
@@ -121,13 +123,13 @@ export default function MessagesPage() {
       id: '5',
       type: 'individual',
       participant: {
-        name: 'Administracja',
+        name: 'Адміністрація',
         avatar: 'https://ui-avatars.com/api/?name=AD&background=F59E0B&color=fff',
-        role: 'Administracja',
+        role: t('roles.administration'),
         status: 'online'
       },
       lastMessage: {
-        text: 'Nowy harmonogram na luty jest już dostępny',
+        text: 'Новий розклад на лютий вже доступний',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48),
         isRead: true,
         sender: 'them'
@@ -140,13 +142,13 @@ export default function MessagesPage() {
       id: '6',
       type: 'individual',
       participant: {
-        name: 'Piotr Zieliński',
+        name: 'Петро Зеленський',
         avatar: 'https://ui-avatars.com/api/?name=PZ&background=EF4444&color=fff',
-        role: 'Student',
+        role: t('roles.student'),
         status: 'offline'
       },
       lastMessage: {
-        text: 'Potwierdzam obecność na zajęciach',
+        text: 'Підтверджую присутність на заняттях',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 72),
         isRead: true,
         sender: 'them'
@@ -159,11 +161,11 @@ export default function MessagesPage() {
 
   // Quick replies templates
   const quickReplies = [
-    { id: 1, text: 'Tak, potwierdzam' },
-    { id: 2, text: 'Nie mogę, przepraszam' },
-    { id: 3, text: 'Zobaczmy się o ustalonej godzinie' },
-    { id: 4, text: 'Proszę o kontakt telefoniczny' },
-    { id: 5, text: 'Dziękuję za wiadomość' }
+    { id: 1, text: t('quickReplies.templates.confirm') },
+    { id: 2, text: t('quickReplies.templates.unavailable') },
+    { id: 3, text: t('quickReplies.templates.meetingTime') },
+    { id: 4, text: t('quickReplies.templates.callRequest') },
+    { id: 5, text: t('quickReplies.templates.thanks') }
   ]
 
   // Filter conversations
@@ -190,14 +192,16 @@ export default function MessagesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Wiadomości</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600">
-            {totalUnread > 0 ? `${totalUnread} nieprzeczytanych` : 'Wszystkie przeczytane'}
+            {totalUnread > 0 
+              ? t('subtitle.unread', { count: totalUnread })
+              : t('subtitle.allRead')}
           </p>
         </div>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Nowa wiadomość
+          {t('newMessage')}
         </Button>
       </div>
 
@@ -206,7 +210,7 @@ export default function MessagesPage() {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Szukaj wiadomości lub osoby..."
+            placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -217,10 +221,10 @@ export default function MessagesPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Wszystkie</SelectItem>
-            <SelectItem value="unread">Nieprzeczytane</SelectItem>
-            <SelectItem value="groups">Grupy</SelectItem>
-            <SelectItem value="pinned">Przypięte</SelectItem>
+            <SelectItem value="all">{t('filters.all')}</SelectItem>
+            <SelectItem value="unread">{t('filters.unread')}</SelectItem>
+            <SelectItem value="groups">{t('filters.groups')}</SelectItem>
+            <SelectItem value="pinned">{t('filters.pinned')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -232,18 +236,18 @@ export default function MessagesPage() {
           <div className="lg:col-span-1">
             <Card className="h-full">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Konwersacje</CardTitle>
+                <CardTitle className="text-base">{t('conversationList.title')}</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 <div className="divide-y max-h-[calc(100vh-20rem)] overflow-y-auto">
                   {filteredConversations.map((conversation) => (
-<div
-  key={conversation.id}
-  onClick={() => handleConversationClick(conversation.id)}
-  className="w-full p-4 hover:bg-gray-50 transition-colors text-left cursor-pointer"
-  role="button"
-  tabIndex={0}
->
+                    <div
+                      key={conversation.id}
+                      onClick={() => handleConversationClick(conversation.id)}
+                      className="w-full p-4 hover:bg-gray-50 transition-colors text-left cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                    >
                       <div className="flex items-start gap-3">
                         <div className="relative">
                           <Avatar>
@@ -277,7 +281,7 @@ export default function MessagesPage() {
                             <span className="text-xs text-gray-500">
                               {formatDistanceToNow(conversation.lastMessage.timestamp, {
                                 addSuffix: false,
-                                locale: pl
+                                locale: uk
                               })}
                             </span>
                           </div>
@@ -287,7 +291,7 @@ export default function MessagesPage() {
                               !conversation.lastMessage.isRead ? 'font-medium text-gray-900' : 'text-gray-600'
                             }`}>
                               {conversation.lastMessage.sender === 'you' && (
-                                <span className="text-gray-400 mr-1">Ty:</span>
+                                <span className="text-gray-400 mr-1">{t('conversationList.you')}</span>
                               )}
                               {conversation.lastMessage.text}
                             </p>
@@ -304,7 +308,7 @@ export default function MessagesPage() {
                             </Badge>
                             {conversation.type === 'group' && (
                               <span className="text-xs text-gray-500">
-                                {conversation.participant.memberCount} członków
+                                {t('conversationList.members', { count: conversation.participant.memberCount })}
                               </span>
                             )}
                           </div>
@@ -318,22 +322,22 @@ export default function MessagesPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem>
-                              {conversation.isPinned ? 'Odepnij' : 'Przypnij'}
+                              {conversation.isPinned ? t('actions.unpin') : t('actions.pin')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                              {conversation.isMuted ? 'Włącz powiadomienia' : 'Wycisz'}
+                              {conversation.isMuted ? t('actions.unmute') : t('actions.mute')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                              Oznacz jako przeczytane
+                              {t('actions.markAsRead')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
                               <Archive className="w-4 h-4 mr-2" />
-                              Archiwizuj
+                              {t('actions.archive')}
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600">
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Usuń
+                              {t('actions.delete')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -351,14 +355,14 @@ export default function MessagesPage() {
               <div className="text-center p-8">
                 <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Wybierz konwersację
+                  {t('placeholder.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Kliknij na konwersację po lewej stronie, aby zobaczyć wiadomości
+                  {t('placeholder.description')}
                 </p>
                 <Button variant="outline">
                   <Plus className="w-4 h-4 mr-2" />
-                  Rozpocznij nową rozmowę
+                  {t('placeholder.startNew')}
                 </Button>
               </div>
             </Card>
@@ -369,7 +373,7 @@ export default function MessagesPage() {
       {/* Quick replies */}
       <Card className="mt-6">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Szybkie odpowiedzi</CardTitle>
+          <CardTitle className="text-base">{t('quickReplies.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">

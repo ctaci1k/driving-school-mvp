@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/messages/[chatId]/page.tsx
+// app/[locale]/instructor/messages/[chatId]/page.tsx
 
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   ArrowLeft, Send, Paperclip, MoreVertical, Phone, Video,
   Info, Search, Smile, Mic, Image, File, MapPin,
@@ -40,7 +41,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { format, isToday, isYesterday } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 interface Message {
   id: string
@@ -61,6 +62,7 @@ interface Message {
 export default function ChatPage() {
   const router = useRouter()
   const params = useParams()
+  const t = useTranslations('instructor.messages.chat')
   const chatId = params?.chatId as string
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -81,9 +83,9 @@ export default function ChatPage() {
     avatar: 'https://ui-avatars.com/api/?name=MN&background=EC4899&color=fff',
     status: 'online',
     lastSeen: new Date(),
-    phone: '+48 123 456 789',
+    phone: '+48 501 234 567',
     email: 'maria.nowak@example.com',
-    role: 'Student',
+    role: 'Kursant',
     lessonsCompleted: 15,
     nextLesson: '5 lutego, 14:00'
   }
@@ -100,7 +102,7 @@ export default function ChatPage() {
     },
     {
       id: '2',
-      text: 'Dzień dobry! Oczywiście, o co chodzi?',
+      text: 'Dzień dobry! Oczywiście, co konkretnie Panią interesuje?',
       type: 'text',
       sender: 'you',
       timestamp: new Date(Date.now() - 1000 * 60 * 55),
@@ -116,7 +118,7 @@ export default function ChatPage() {
     },
     {
       id: '4',
-      text: 'Jasne, możemy przesunąć na 15:00. Pasuje?',
+      text: 'Oczywiście, możemy przesunąć na 15:00. Pasuje Pani?',
       type: 'text',
       sender: 'you',
       timestamp: new Date(Date.now() - 1000 * 60 * 45),
@@ -140,7 +142,7 @@ export default function ChatPage() {
     },
     {
       id: '7',
-      text: 'Jeszcze jedno pytanie - czy mogłabym dostać materiały do nauki teorii?',
+      text: 'Jeszcze jedno pytanie - czy mogłabym otrzymać materiały do nauki teorii?',
       type: 'text',
       sender: 'them',
       timestamp: new Date(Date.now() - 1000 * 60 * 30),
@@ -148,7 +150,7 @@ export default function ChatPage() {
     },
     {
       id: '8',
-      text: 'Oczywiście, zaraz przesyłam.',
+      text: 'Oczywiście, zaraz prześlę.',
       type: 'text',
       sender: 'you',
       timestamp: new Date(Date.now() - 1000 * 60 * 25),
@@ -158,7 +160,7 @@ export default function ChatPage() {
       id: '9',
       type: 'file',
       attachments: [{
-        name: 'Materiały_do_teorii.pdf',
+        name: 'Materialy_do_teorii.pdf',
         size: '2.3 MB',
         url: '#'
       }],
@@ -245,7 +247,7 @@ export default function ChatPage() {
     if (isToday(date)) {
       return format(date, 'HH:mm')
     } else if (isYesterday(date)) {
-      return `Wczoraj ${format(date, 'HH:mm')}`
+      return t('timeFormat.yesterday', { time: format(date, 'HH:mm') })
     } else {
       return format(date, 'dd.MM.yyyy HH:mm')
     }
@@ -291,9 +293,9 @@ export default function ChatPage() {
                 <h2 className="font-semibold">{participant.name}</h2>
                 <p className="text-sm text-gray-500">
                   {participant.status === 'online' ? (
-                    <span className="text-green-600">Online</span>
+                    <span className="text-green-600">{t('header.online')}</span>
                   ) : (
-                    `Ostatnio widziany ${formatMessageTime(participant.lastSeen)}`
+                    t('header.lastSeen', { time: formatMessageTime(participant.lastSeen) })
                   )}
                 </p>
               </div>
@@ -322,7 +324,7 @@ export default function ChatPage() {
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
-                    <SheetTitle>Informacje o kontakcie</SheetTitle>
+                    <SheetTitle>{t('header.contactInfo')}</SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 space-y-4">
                     <div className="flex flex-col items-center">
@@ -340,19 +342,19 @@ export default function ChatPage() {
                     
                     <div className="space-y-3">
                       <div>
-                        <p className="text-sm text-gray-500">Telefon</p>
+                        <p className="text-sm text-gray-500">{t('header.phone')}</p>
                         <p className="font-medium">{participant.phone}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Email</p>
+                        <p className="text-sm text-gray-500">{t('header.email')}</p>
                         <p className="font-medium">{participant.email}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Ukończone lekcje</p>
+                        <p className="text-sm text-gray-500">{t('header.completedLessons')}</p>
                         <p className="font-medium">{participant.lessonsCompleted}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500">Następna lekcja</p>
+                        <p className="text-sm text-gray-500">{t('header.nextLesson')}</p>
                         <p className="font-medium">{participant.nextLesson}</p>
                       </div>
                     </div>
@@ -366,7 +368,7 @@ export default function ChatPage() {
           {showSearch && (
             <div className="mt-4">
               <Input
-                placeholder="Szukaj w konwersacji..."
+                placeholder={t('header.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full"
@@ -392,7 +394,7 @@ export default function ChatPage() {
                 {/* Reply reference */}
                 {message.replyTo && (
                   <div className="text-xs text-gray-500 mb-1 px-3">
-                    Odpowiedź na wiadomość
+                    {t('input.replyingTo')}
                   </div>
                 )}
                 
@@ -435,7 +437,7 @@ export default function ChatPage() {
                   }`}>
                     <span>
                       {formatMessageTime(message.timestamp)}
-                      {message.isEdited && ' (edytowano)'}
+                      {message.isEdited && ` ${t('messageStatus.edited')}`}
                     </span>
                     {message.sender === 'you' && (
                       <span className="ml-2">
@@ -453,6 +455,7 @@ export default function ChatPage() {
                       variant="ghost"
                       className="h-8 w-8"
                       onClick={() => setReplyingTo(message)}
+                      aria-label={t('messageActions.reply')}
                     >
                       <Reply className="w-4 h-4" />
                     </Button>
@@ -462,6 +465,7 @@ export default function ChatPage() {
                         variant="ghost"
                         className="h-8 w-8"
                         onClick={() => setEditingMessage(message.id)}
+                        aria-label={t('messageActions.edit')}
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -470,6 +474,7 @@ export default function ChatPage() {
                       size="icon"
                       variant="ghost"
                       className="h-8 w-8"
+                      aria-label={t('messageActions.copy')}
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
@@ -477,6 +482,7 @@ export default function ChatPage() {
                       size="icon"
                       variant="ghost"
                       className="h-8 w-8"
+                      aria-label={t('messageActions.star')}
                     >
                       <Star className="w-4 h-4" />
                     </Button>
@@ -485,6 +491,7 @@ export default function ChatPage() {
                         size="icon"
                         variant="ghost"
                         className="h-8 w-8 text-red-500 hover:text-red-600"
+                        aria-label={t('messageActions.delete')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -517,7 +524,7 @@ export default function ChatPage() {
         <div className="px-4 py-2 bg-gray-100 border-t">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-gray-500">Odpowiadasz na:</p>
+              <p className="text-xs text-gray-500">{t('input.replyingTo')}</p>
               <p className="text-sm truncate">{replyingTo.text}</p>
             </div>
             <Button
@@ -553,7 +560,7 @@ export default function ChatPage() {
             
             <div className="flex-1">
               <Textarea
-                placeholder="Napisz wiadomość..."
+                placeholder={t('input.placeholder')}
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 onKeyPress={(e) => {
@@ -606,3 +613,66 @@ export default function ChatPage() {
     </div>
   )
 }
+
+// ===== ПЕРЕКЛАДИ ДЛЯ ДОДАВАННЯ В locales/uk/instructor.json =====
+// Додати в секцію "messages":
+
+/*
+{
+  "messages": {
+    "chat": {
+      "header": {
+        "online": "Онлайн",
+        "lastSeen": "Останній раз в мережі {time}",
+        "contactInfo": "Інформація про контакт", 
+        "phone": "Телефон",
+        "email": "Email",
+        "completedLessons": "Пройдені уроки",
+        "nextLesson": "Наступний урок",
+        "searchPlaceholder": "Шукати в розмові..."
+      },
+      
+      "input": {
+        "placeholder": "Напишіть повідомлення...",
+        "replyingTo": "Відповідаєте на:",
+        "voiceRecording": "Запис голосового повідомлення"
+      },
+      
+      "messageStatus": {
+        "sending": "Надсилання",
+        "sent": "Надіслано",
+        "delivered": "Доставлено",
+        "read": "Прочитано",
+        "edited": "(відредаговано)"
+      },
+      
+      "messageActions": {
+        "reply": "Відповісти",
+        "edit": "Редагувати",
+        "copy": "Копіювати",
+        "star": "Додати в обране",
+        "forward": "Переслати",
+        "delete": "Видалити",
+        "download": "Завантажити"
+      },
+      
+      "typing": {
+        "indicator": "друкує..."
+      },
+      
+      "timeFormat": {
+        "today": "{time}",
+        "yesterday": "Вчора {time}",
+        "date": "{date} {time}"
+      },
+      
+      "attachments": {
+        "file": "Файл",
+        "image": "Зображення",
+        "voice": "Голосове повідомлення",
+        "location": "Геолокація"
+      }
+    }
+  }
+}
+*/

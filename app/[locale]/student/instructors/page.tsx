@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Star,
   User,
@@ -41,7 +42,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-
 interface Instructor {
   id: string;
   name: string;
@@ -71,6 +71,7 @@ interface Instructor {
 
 export default function StudentInstructorsPage() {
   const router = useRouter();
+  const t = useTranslations('student.instructorsList');
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,15 +88,15 @@ export default function StudentInstructorsPage() {
         avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
         rating: 4.9,
         totalReviews: 124,
-        experience: '8 lat',
-        specializations: ['Egzaminy', 'Jazda nocna', 'Autostrady'],
+        experience: t('card.years', { count: 8 }),
+        specializations: [t('filters.exams'), t('filters.nightDriving'), t('filters.highways')],
         completedLessons: 1250,
         successRate: 94,
         favorite: true,
-        nextAvailable: 'Jutro 14:00',
-        bio: 'Profesjonalny instruktor z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego.',
-        languages: ['Polski', 'Angielski'],
-        categories: ['B', 'B automat'],
+        nextAvailable: t('availability.tomorrow', { time: '14:00' }),
+        bio: t('bio.professional'),
+        languages: [t('languages.polish'), t('languages.english')],
+        categories: [t('categories.b'), t('categories.bAutomatic')],
         pricePerHour: 180,
         totalStudents: 215,
         myLessonsCount: 15,
@@ -113,15 +114,15 @@ export default function StudentInstructorsPage() {
         avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff',
         rating: 4.8,
         totalReviews: 98,
-        experience: '5 lat',
-        specializations: ['Parkowanie', 'Manewry', 'Miasto'],
+        experience: t('card.years', { count: 5 }),
+        specializations: [t('filters.parking'), 'Маневри', t('filters.city')],
         completedLessons: 890,
         successRate: 92,
         favorite: false,
-        nextAvailable: 'Dziś 18:00',
-        bio: 'Cierpliwa i dokładna. Uczę bezpiecznej i pewnej jazdy w ruchu miejskim.',
-        languages: ['Polski'],
-        categories: ['B'],
+        nextAvailable: t('availability.today', { time: '18:00' }),
+        bio: t('bio.patient'),
+        languages: [t('languages.polish')],
+        categories: [t('categories.b')],
         pricePerHour: 160,
         totalStudents: 156,
         myLessonsCount: 8,
@@ -139,15 +140,15 @@ export default function StudentInstructorsPage() {
         avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff',
         rating: 4.7,
         totalReviews: 156,
-        experience: '10 lat',
-        specializations: ['Początkujący', 'Manewry', 'Egzaminy'],
+        experience: t('card.years', { count: 10 }),
+        specializations: [t('filters.beginners'), 'Маневри', t('filters.exams')],
         completedLessons: 2100,
         successRate: 89,
         favorite: false,
-        nextAvailable: 'Poniedziałek 10:00',
-        bio: 'Doświadczony instruktor z indywidualnym podejściem do każdego kursanta.',
-        languages: ['Polski', 'Niemiecki'],
-        categories: ['B', 'C'],
+        nextAvailable: t('availability.monday', { time: '10:00' }),
+        bio: t('bio.experienced'),
+        languages: [t('languages.polish'), t('languages.german')],
+        categories: [t('categories.b'), t('categories.c')],
         pricePerHour: 200,
         totalStudents: 342,
         myLessonsCount: 0,
@@ -164,7 +165,7 @@ export default function StudentInstructorsPage() {
       setInstructors(mockInstructors);
       setLoading(false);
     }, 1000);
-  }, []);
+  }, [t]);
 
   const toggleFavorite = (instructorId: string) => {
     setInstructors(prev =>
@@ -215,9 +216,9 @@ export default function StudentInstructorsPage() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Instruktorzy</h1>
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Poznaj naszych instruktorów i wybierz najlepszego dla siebie
+          {t('subtitle')}
         </p>
       </div>
 
@@ -226,7 +227,7 @@ export default function StudentInstructorsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wszyscy instruktorzy
+              {t('stats.allInstructors')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -240,7 +241,7 @@ export default function StudentInstructorsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Moi instruktorzy
+              {t('stats.myInstructors')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -254,7 +255,7 @@ export default function StudentInstructorsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Ulubieni
+              {t('stats.favorites')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -269,16 +270,16 @@ export default function StudentInstructorsPage() {
       {/* Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList>
-          <TabsTrigger value="all">Wszyscy</TabsTrigger>
-          <TabsTrigger value="my">Moi instruktorzy</TabsTrigger>
-          <TabsTrigger value="favorites">Ulubieni</TabsTrigger>
+          <TabsTrigger value="all">{t('tabs.all')}</TabsTrigger>
+          <TabsTrigger value="my">{t('tabs.my')}</TabsTrigger>
+          <TabsTrigger value="favorites">{t('tabs.favorites')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedTab} className="space-y-4">
           {/* Filters */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Filtry</CardTitle>
+              <CardTitle className="text-lg">{t('filters.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -286,7 +287,7 @@ export default function StudentInstructorsPage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                     <Input
-                      placeholder="Szukaj instruktora lub specjalizacji..."
+                      placeholder={t('filters.searchPlaceholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-9"
@@ -295,16 +296,16 @@ export default function StudentInstructorsPage() {
                 </div>
                 <Select value={filterSpecialization} onValueChange={setFilterSpecialization}>
                   <SelectTrigger className="w-full sm:w-[200px]">
-                    <SelectValue placeholder="Specjalizacja" />
+                    <SelectValue placeholder={t('filters.specialization')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Wszystkie</SelectItem>
-                    <SelectItem value="Egzaminy">Egzaminy</SelectItem>
-                    <SelectItem value="Parkowanie">Parkowanie</SelectItem>
-                    <SelectItem value="Miasto">Miasto</SelectItem>
-                    <SelectItem value="Autostrady">Autostrady</SelectItem>
-                    <SelectItem value="Jazda nocna">Jazda nocna</SelectItem>
-                    <SelectItem value="Początkujący">Początkujący</SelectItem>
+                    <SelectItem value="all">{t('filters.allSpecializations')}</SelectItem>
+                    <SelectItem value={t('filters.exams')}>{t('filters.exams')}</SelectItem>
+                    <SelectItem value={t('filters.parking')}>{t('filters.parking')}</SelectItem>
+                    <SelectItem value={t('filters.city')}>{t('filters.city')}</SelectItem>
+                    <SelectItem value={t('filters.highways')}>{t('filters.highways')}</SelectItem>
+                    <SelectItem value={t('filters.nightDriving')}>{t('filters.nightDriving')}</SelectItem>
+                    <SelectItem value={t('filters.beginners')}>{t('filters.beginners')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -352,19 +353,19 @@ export default function StudentInstructorsPage() {
 
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Doświadczenie</span>
+                      <span className="text-muted-foreground">{t('card.experience')}</span>
                       <span className="font-medium">{instructor.experience}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Skuteczność</span>
+                      <span className="text-muted-foreground">{t('card.successRate')}</span>
                       <div className="flex items-center gap-2">
                         <Progress value={instructor.successRate} className="w-16 h-2" />
                         <span className="font-medium">{instructor.successRate}%</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Cena/h</span>
-                      <span className="font-medium">{instructor.pricePerHour} PLN</span>
+                      <span className="text-muted-foreground">{t('card.pricePerHour')}</span>
+                      <span className="font-medium">{t('card.currency', { amount: instructor.pricePerHour })}</span>
                     </div>
                   </div>
 
@@ -376,7 +377,7 @@ export default function StudentInstructorsPage() {
                     ))}
                     {instructor.specializations.length > 3 && (
                       <Badge variant="secondary" className="text-xs">
-                        +{instructor.specializations.length - 3}
+                        {t('card.moreSpecializations', { count: instructor.specializations.length - 3 })}
                       </Badge>
                     )}
                   </div>
@@ -386,7 +387,7 @@ export default function StudentInstructorsPage() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Sparkles className="w-4 h-4 text-primary" />
-                          <span className="text-sm font-medium">Twoje lekcje</span>
+                          <span className="text-sm font-medium">{t('card.yourLessons')}</span>
                         </div>
                         <span className="text-sm font-bold text-primary">
                           {instructor.myLessonsCount}
@@ -394,7 +395,7 @@ export default function StudentInstructorsPage() {
                       </div>
                       {instructor.lastLessonDate && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          Ostatnia: {new Date(instructor.lastLessonDate).toLocaleDateString('pl-PL')}
+                          {t('card.lastLesson')}: {new Date(instructor.lastLessonDate).toLocaleDateString('uk-UA')}
                         </p>
                       )}
                     </div>
@@ -402,7 +403,7 @@ export default function StudentInstructorsPage() {
 
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                     <Clock className="w-4 h-4" />
-                    <span>Najbliższy termin: {instructor.nextAvailable}</span>
+                    <span>{t('card.nearestSlot')}: {instructor.nextAvailable}</span>
                   </div>
 
                   <div className="flex gap-2">
@@ -410,7 +411,7 @@ export default function StudentInstructorsPage() {
                       className="flex-1"
                       onClick={() => router.push(`/student/instructors/${instructor.id}`)}
                     >
-                      Zobacz profil
+                      {t('card.viewProfile')}
                       <ChevronRight className="w-4 h-4 ml-1" />
                     </Button>
                     <Button
@@ -430,7 +431,7 @@ export default function StudentInstructorsPage() {
             <Card>
               <CardContent className="py-12 text-center">
                 <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">Nie znaleziono instruktorów</p>
+                <p className="text-muted-foreground">{t('noResults.title')}</p>
                 <Button
                   variant="outline"
                   className="mt-4"
@@ -440,7 +441,7 @@ export default function StudentInstructorsPage() {
                     setShowFavoritesOnly(false);
                   }}
                 >
-                  Wyczyść filtry
+                  {t('noResults.clearFilters')}
                 </Button>
               </CardContent>
             </Card>

@@ -693,5 +693,125 @@
         "toPay": "До оплати"
       }
     }
+  },
+  "messages": {
+    "chat": {
+      "header": {
+        "online": "Онлайн",
+        "lastSeen": "Останній раз в мережі {time}",
+        "contactInfo": "Інформація про контакт",
+        "phone": "Телефон",
+        "email": "Email",
+        "completedLessons": "Пройдені уроки",
+        "nextLesson": "Наступний урок",
+        "searchPlaceholder": "Шукати в розмові..."
+      },
+      
+      "input": {
+        "placeholder": "Напишіть повідомлення...",
+        "replyingTo": "Відповідаєте на:",
+        "voiceRecording": "Запис голосового повідомлення"
+      },
+      
+      "messageStatus": {
+        "sending": "Надсилання",
+        "sent": "Надіслано",
+        "delivered": "Доставлено",
+        "read": "Прочитано",
+        "edited": "(відредаговано)"
+      },
+      
+      "messageActions": {
+        "reply": "Відповісти",
+        "edit": "Редагувати",
+        "copy": "Копіювати",
+        "star": "Додати в обране",
+        "forward": "Переслати",
+        "delete": "Видалити",
+        "download": "Завантажити"
+      },
+      
+      "typing": {
+        "indicator": "друкує..."
+      },
+      
+      "timeFormat": {
+        "today": "{time}",
+        "yesterday": "Вчора {time}",
+        "date": "{date} {time}"
+      },
+      
+      "attachments": {
+        "file": "Файл",
+        "image": "Зображення",
+        "voice": "Голосове повідомлення",
+        "location": "Геолокація"
+      }
+    },
+    "main": {
+      "title": "Повідомлення",
+      "subtitle": {
+        "unread": "{count} непрочитаних",
+        "allRead": "Всі прочитані"
+      },
+      "newMessage": "Нове повідомлення",
+      
+      "search": {
+        "placeholder": "Шукати повідомлення або особу..."
+      },
+      
+      "filters": {
+        "all": "Всі",
+        "unread": "Непрочитані",
+        "groups": "Групи",
+        "pinned": "Закріплені"
+      },
+      
+      "conversationList": {
+        "title": "Розмови",
+        "you": "Ви:",
+        "members": "{count} учасників",
+        "timeAgo": "{time} тому"
+      },
+      
+      "status": {
+        "online": "В мережі",
+        "away": "Відійшов",
+        "offline": "Не в мережі"
+      },
+      
+      "actions": {
+        "pin": "Закріпити",
+        "unpin": "Відкріпити",
+        "mute": "Вимкнути сповіщення",
+        "unmute": "Увімкнути сповіщення",
+        "markAsRead": "Позначити як прочитане",
+        "archive": "Архівувати",
+        "delete": "Видалити"
+      },
+      
+      "placeholder": {
+        "title": "Виберіть розмову",
+        "description": "Клікніть на розмову з лівої сторони, щоб побачити повідомлення",
+        "startNew": "Почати нову розмову"
+      },
+      
+      "quickReplies": {
+        "title": "Швидкі відповіді",
+        "templates": {
+          "confirm": "Так, підтверджую",
+          "unavailable": "Не можу, вибачте",
+          "meetingTime": "Зустрінемося о домовленій годині",
+          "callRequest": "Прошу зв'язатися телефоном",
+          "thanks": "Дякую за повідомлення"
+        }
+      },
+      
+      "roles": {
+        "student": "Курсант",
+        "group": "Група",
+        "administration": "Адміністрація"
+      }
+    }
   }
 }

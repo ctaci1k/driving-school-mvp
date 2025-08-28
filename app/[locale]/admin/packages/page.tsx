@@ -1,8 +1,11 @@
 // app/[locale]/admin/packages/page.tsx
+// Сторінка списку пакетів - управління тарифними планами автошколи
+
 "use client";
 
 import React, { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Package, Plus, Edit2, Trash2, Eye, Copy, Archive,
   TrendingUp, Users, DollarSign, Clock, Calendar,
@@ -12,19 +15,18 @@ import {
   ChevronRight, Loader2, Shield, Sparkles, Crown
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 
-// Generate mock packages data with Polish content
+// Generate mock packages data
 const generatePackages = () => {
   return [
     {
       id: 'package-1',
-      name: 'Podstawowy',
-      description: 'Idealny dla początkujących. Zawiera podstawy prowadzenia pojazdu',
+      name: 'basic',
       icon: Shield,
       color: 'gray',
       credits: 10,
@@ -32,17 +34,6 @@ const generatePackages = () => {
       originalPrice: null,
       discount: 0,
       validity: 30,
-      features: [
-        '10 zajęć praktycznych po 90 min',
-        'Podstawowe przygotowanie teoretyczne',
-        'Materiały edukacyjne',
-        'Wsparcie instruktora'
-      ],
-      limitations: [
-        'Bez jazdy po autostradzie',
-        'Bez jazdy nocnej',
-        'Jeden instruktor'
-      ],
       popular: false,
       recommended: false,
       new: false,
@@ -57,8 +48,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-2',
-      name: 'Standard',
-      description: 'Najpopularniejszy wybór. Pełny kurs nauki jazdy',
+      name: 'standard',
       icon: Star,
       color: 'blue',
       credits: 20,
@@ -66,18 +56,6 @@ const generatePackages = () => {
       originalPrice: 2500,
       discount: 10,
       validity: 60,
-      features: [
-        '20 zajęć praktycznych po 90 min',
-        'Pełne przygotowanie teoretyczne',
-        'Testy online i symulator',
-        'Wybór instruktora',
-        'Jazda po autostradzie',
-        'Przygotowanie do egzaminu'
-      ],
-      limitations: [
-        'Bez wsparcia VIP',
-        'Standardowy harmonogram'
-      ],
       popular: true,
       recommended: true,
       new: false,
@@ -92,8 +70,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-3',
-      name: 'Premium',
-      description: 'Rozszerzony kurs z dodatkowymi możliwościami',
+      name: 'premium',
       icon: Zap,
       color: 'purple',
       credits: 30,
@@ -101,17 +78,6 @@ const generatePackages = () => {
       originalPrice: 3800,
       discount: 13,
       validity: 90,
-      features: [
-        '30 zajęć praktycznych po 90 min',
-        'Pełne przygotowanie teoretyczne',
-        'Osobisty menedżer',
-        'Priorytetowy wybór instruktora',
-        'Jazda nocna',
-        'Jazda po autostradzie',
-        'Jazda w trudnych warunkach',
-        '2 podejścia do egzaminu wliczone'
-      ],
-      limitations: [],
       popular: false,
       recommended: false,
       new: false,
@@ -126,8 +92,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-4',
-      name: 'VIP',
-      description: 'Maksymalny komfort i indywidualne podejście',
+      name: 'vip',
       icon: Crown,
       color: 'gold',
       credits: 50,
@@ -135,18 +100,6 @@ const generatePackages = () => {
       originalPrice: 7000,
       discount: 20,
       validity: 180,
-      features: [
-        '50 zajęć praktycznych po 90 min',
-        'Indywidualny program nauki',
-        'Osobisty menedżer 24/7',
-        'Top instruktorzy',
-        'Elastyczny harmonogram',
-        'Premium pojazdy',
-        'Nieograniczone podejścia do egzaminu',
-        'Towarzyszenie na egzaminie',
-        'Dodatkowe warsztaty'
-      ],
-      limitations: [],
       popular: false,
       recommended: false,
       new: true,
@@ -161,8 +114,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-5',
-      name: 'Intensywny',
-      description: 'Szybki kurs dla tych, którzy się spieszą',
+      name: 'intensive',
       icon: Sparkles,
       color: 'orange',
       credits: 15,
@@ -170,16 +122,6 @@ const generatePackages = () => {
       originalPrice: null,
       discount: 0,
       validity: 14,
-      features: [
-        '15 intensywnych zajęć',
-        'Codzienne zajęcia',
-        'Ekspresowa teoria',
-        'Przygotowanie do egzaminu w 2 tygodnie'
-      ],
-      limitations: [
-        'Wymaga pełnej dyspozycyjności',
-        'Bez weekendów'
-      ],
       popular: false,
       recommended: false,
       new: true,
@@ -194,8 +136,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-6',
-      name: 'Studencki',
-      description: 'Specjalna oferta dla studentów',
+      name: 'student',
       icon: Award,
       color: 'green',
       credits: 20,
@@ -203,16 +144,6 @@ const generatePackages = () => {
       originalPrice: 2200,
       discount: 15,
       validity: 90,
-      features: [
-        '20 zajęć praktycznych',
-        'Elastyczny harmonogram',
-        'Zniżka dla studentów',
-        'Materiały online'
-      ],
-      limitations: [
-        'Wymagana legitymacja studencka',
-        'Ograniczona liczba miejsc'
-      ],
       popular: false,
       recommended: false,
       new: false,
@@ -227,8 +158,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-7',
-      name: 'Firmowy',
-      description: 'Dla firm i organizacji',
+      name: 'corporate',
       icon: Users,
       color: 'indigo',
       credits: 100,
@@ -236,15 +166,6 @@ const generatePackages = () => {
       originalPrice: 12000,
       discount: 20,
       validity: 365,
-      features: [
-        'Pakiet dla 5 pracowników',
-        'Rabaty firmowe',
-        'Raportowanie dla firmy',
-        'Elastyczny harmonogram dla grupy'
-      ],
-      limitations: [
-        'Minimum 5 osób'
-      ],
       popular: false,
       recommended: false,
       new: false,
@@ -259,8 +180,7 @@ const generatePackages = () => {
     },
     {
       id: 'package-8',
-      name: 'Próbny',
-      description: 'Wypróbuj nasze usługi',
+      name: 'trial',
       icon: Gift,
       color: 'pink',
       credits: 3,
@@ -268,15 +188,6 @@ const generatePackages = () => {
       originalPrice: null,
       discount: 0,
       validity: 7,
-      features: [
-        '3 zajęcia próbne',
-        'Ocena poziomu',
-        'Konsultacja'
-      ],
-      limitations: [
-        'Jednorazowa oferta',
-        'Dla nowych klientów'
-      ],
       popular: false,
       recommended: false,
       new: false,
@@ -295,7 +206,8 @@ const generatePackages = () => {
 export default function AdminPackagesPage() {
   const router = useRouter();
   const params = useParams();
-  const locale = params.locale || 'pl';
+  const locale = params.locale || 'uk';
+  const t = useTranslations('admin.packages.list');
   
   const [packages] = useState(generatePackages());
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
@@ -320,9 +232,12 @@ export default function AdminPackagesPage() {
 
   // Filter packages
   const filteredPackages = packages.filter(pkg => {
+    const packageName = t(`packages.${pkg.name}.name`);
+    const packageDescription = t(`packages.${pkg.name}.description`);
+    
     const matchesSearch = 
-      pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      pkg.description.toLowerCase().includes(searchQuery.toLowerCase());
+      packageName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      packageDescription.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = filterCategory === 'all' || pkg.category === filterCategory;
     const matchesStatus = 
       filterStatus === 'all' ||
@@ -344,19 +259,19 @@ export default function AdminPackagesPage() {
 
   // Sales data for chart
   const salesData = [
-    { month: 'Sty', sales: 45000 },
-    { month: 'Lut', sales: 52000 },
-    { month: 'Mar', sales: 48000 },
-    { month: 'Kwi', sales: 61000 },
-    { month: 'Maj', sales: 58000 },
-    { month: 'Cze', sales: 65000 }
+    { month: t('charts.months.jan'), sales: 45000 },
+    { month: t('charts.months.feb'), sales: 52000 },
+    { month: t('charts.months.mar'), sales: 48000 },
+    { month: t('charts.months.apr'), sales: 61000 },
+    { month: t('charts.months.may'), sales: 58000 },
+    { month: t('charts.months.jun'), sales: 65000 }
   ];
 
   // Distribution data for pie chart
   const distributionData = packages
     .filter(p => p.active)
     .map(p => ({
-      name: p.name,
+      name: t(`packages.${p.name}.name`),
       value: p.activeUsers,
       color: getColorValue(p.color)
     }));
@@ -392,6 +307,7 @@ export default function AdminPackagesPage() {
   const PackageCard = ({ pkg }: { pkg: any }) => {
     const Icon = pkg.icon;
     const colorClasses = getColorClasses(pkg.color);
+    const packageFeatures = t.raw(`packages.${pkg.name}.features`) as string[];
 
     return (
       <div className={`bg-white rounded-xl shadow-sm border-2 ${pkg.popular ? 'border-blue-500' : 'border-gray-100'} hover:shadow-lg transition-shadow relative`}>
@@ -399,22 +315,22 @@ export default function AdminPackagesPage() {
         <div className="absolute top-4 right-4 flex flex-col gap-2">
           {pkg.popular && (
             <span className="px-2 py-1 bg-blue-500 text-white text-xs font-semibold rounded-full">
-              Popularny
+              {t('badges.popular')}
             </span>
           )}
           {pkg.recommended && (
             <span className="px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded-full">
-              Polecany
+              {t('badges.recommended')}
             </span>
           )}
           {pkg.new && (
             <span className="px-2 py-1 bg-purple-500 text-white text-xs font-semibold rounded-full">
-              Nowy
+              {t('badges.new')}
             </span>
           )}
           {!pkg.active && (
             <span className="px-2 py-1 bg-gray-500 text-white text-xs font-semibold rounded-full">
-              Nieaktywny
+              {t('badges.inactive')}
             </span>
           )}
         </div>
@@ -426,20 +342,20 @@ export default function AdminPackagesPage() {
               <Icon className={`w-8 h-8 ${colorClasses.text}`} />
             </div>
             <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-800">{pkg.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{pkg.description}</p>
+              <h3 className="text-xl font-bold text-gray-800">{t(`packages.${pkg.name}.name`)}</h3>
+              <p className="text-sm text-gray-600 mt-1">{t(`packages.${pkg.name}.description`)}</p>
             </div>
           </div>
 
           {/* Price */}
           <div className="mb-4">
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-gray-800">{pkg.price} zł</span>
+              <span className="text-3xl font-bold text-gray-800">{pkg.price} {t('currency')}</span>
               {pkg.originalPrice && (
                 <>
-                  <span className="text-lg text-gray-400 line-through">{pkg.originalPrice} zł</span>
+                  <span className="text-lg text-gray-400 line-through">{pkg.originalPrice} {t('currency')}</span>
                   <span className="px-2 py-1 bg-red-100 text-red-600 text-xs font-semibold rounded-full">
-                    -{pkg.discount}%
+                    {t('discount', { percent: pkg.discount })}
                   </span>
                 </>
               )}
@@ -447,28 +363,28 @@ export default function AdminPackagesPage() {
             <div className="flex items-center gap-3 mt-2 text-sm text-gray-600">
               <div className="flex items-center gap-1">
                 <Coins className="w-4 h-4" />
-                <span>{pkg.credits} kredytów</span>
+                <span>{pkg.credits} {t('packageCard.credits')}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                <span>{pkg.validity} dni</span>
+                <span>{pkg.validity} {t('packageCard.days')}</span>
               </div>
             </div>
           </div>
 
           {/* Features */}
           <div className="mb-4">
-            <p className="text-sm font-medium text-gray-700 mb-2">Zawiera:</p>
+            <p className="text-sm font-medium text-gray-700 mb-2">{t('packageCard.contains')}</p>
             <ul className="space-y-1">
-              {pkg.features.slice(0, 3).map((feature: string, idx: number) => (
+              {packageFeatures.slice(0, 3).map((feature: string, idx: number) => (
                 <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
                   <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" />
                   <span>{feature}</span>
                 </li>
               ))}
-              {pkg.features.length > 3 && (
+              {packageFeatures.length > 3 && (
                 <li className="text-sm text-blue-600 font-medium">
-                  +{pkg.features.length - 3} więcej
+                  {t('packageCard.more', { count: packageFeatures.length - 3 })}
                 </li>
               )}
             </ul>
@@ -477,18 +393,18 @@ export default function AdminPackagesPage() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 mb-4 pt-4 border-t border-gray-100">
             <div className="text-center">
-              <p className="text-xs text-gray-500">Użytkowników</p>
+              <p className="text-xs text-gray-500">{t('packageCard.users')}</p>
               <p className="text-lg font-semibold text-gray-800">{pkg.activeUsers}</p>
             </div>
             <div className="text-center">
-              <p className="text-xs text-gray-500">Ocena</p>
+              <p className="text-xs text-gray-500">{t('packageCard.rating')}</p>
               <div className="flex items-center justify-center gap-1">
                 <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                 <span className="text-lg font-semibold text-gray-800">{pkg.avgRating}</span>
               </div>
             </div>
             <div className="text-center">
-              <p className="text-xs text-gray-500">Odnowienia</p>
+              <p className="text-xs text-gray-500">{t('packageCard.renewals')}</p>
               <p className="text-lg font-semibold text-gray-800">{pkg.renewalRate}%</p>
             </div>
           </div>
@@ -499,13 +415,13 @@ export default function AdminPackagesPage() {
               onClick={() => handleViewPackage(pkg.id)}
               className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 text-sm font-medium"
             >
-              Szczegóły
+              {t('buttons.details')}
             </button>
             <button
               onClick={() => handleEditPackage(pkg.id)}
               className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 text-sm font-medium"
             >
-              Edytuj
+              {t('buttons.edit')}
             </button>
             <button className="px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100">
               <Copy className="w-4 h-4" />
@@ -521,20 +437,20 @@ export default function AdminPackagesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Pakiety</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie planami taryfowymi i pakietami</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Eksport
+            {t('buttons.export')}
           </button>
           <button 
             onClick={handleAddPackage}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
-            Nowy pakiet
+            {t('buttons.newPackage')}
           </button>
         </div>
       </div>
@@ -548,7 +464,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalPackages}</p>
-              <p className="text-xs text-gray-500">Łącznie pakietów</p>
+              <p className="text-xs text-gray-500">{t('stats.totalPackages')}</p>
             </div>
           </div>
         </div>
@@ -559,7 +475,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.activePackages}</p>
-              <p className="text-xs text-gray-500">Aktywnych</p>
+              <p className="text-xs text-gray-500">{t('stats.active')}</p>
             </div>
           </div>
         </div>
@@ -570,7 +486,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalUsers}</p>
-              <p className="text-xs text-gray-500">Użytkowników</p>
+              <p className="text-xs text-gray-500">{t('stats.users')}</p>
             </div>
           </div>
         </div>
@@ -580,8 +496,8 @@ export default function AdminPackagesPage() {
               <DollarSign className="w-5 h-5 text-green-600" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-800">{(stats.totalRevenue / 1000).toFixed(0)}k zł</p>
-              <p className="text-xs text-gray-500">Przychód</p>
+              <p className="text-2xl font-bold text-gray-800">{(stats.totalRevenue / 1000).toFixed(0)}k {t('currency')}</p>
+              <p className="text-xs text-gray-500">{t('stats.revenue')}</p>
             </div>
           </div>
         </div>
@@ -592,7 +508,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRating}</p>
-              <p className="text-xs text-gray-500">Śr. ocena</p>
+              <p className="text-xs text-gray-500">{t('stats.avgRating')}</p>
             </div>
           </div>
         </div>
@@ -603,7 +519,7 @@ export default function AdminPackagesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRenewal}%</p>
-              <p className="text-xs text-gray-500">Odnowienia</p>
+              <p className="text-xs text-gray-500">{t('stats.renewals')}</p>
             </div>
           </div>
         </div>
@@ -613,7 +529,7 @@ export default function AdminPackagesPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Sales Chart */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Sprzedaż miesięczna</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.monthlySales')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={salesData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -627,7 +543,7 @@ export default function AdminPackagesPage() {
 
         {/* Distribution Chart */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład użytkowników</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.userDistribution')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -665,7 +581,7 @@ export default function AdminPackagesPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj pakietów..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -677,14 +593,14 @@ export default function AdminPackagesPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie kategorie</option>
-              <option value="beginner">Początkujący</option>
-              <option value="standard">Standardowy</option>
-              <option value="premium">Premium</option>
-              <option value="vip">VIP</option>
-              <option value="intensive">Intensywny</option>
-              <option value="special">Specjalny</option>
-              <option value="corporate">Firmowy</option>
+              <option value="all">{t('filters.allCategories')}</option>
+              <option value="beginner">{t('categories.beginner')}</option>
+              <option value="standard">{t('categories.standard')}</option>
+              <option value="premium">{t('categories.premium')}</option>
+              <option value="vip">{t('categories.vip')}</option>
+              <option value="intensive">{t('categories.intensive')}</option>
+              <option value="special">{t('categories.special')}</option>
+              <option value="corporate">{t('categories.corporate')}</option>
             </select>
             
             <select
@@ -692,9 +608,9 @@ export default function AdminPackagesPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="active">Aktywne</option>
-              <option value="inactive">Nieaktywne</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="active">{t('filters.active')}</option>
+              <option value="inactive">{t('filters.inactive')}</option>
             </select>
           </div>
 
@@ -732,15 +648,15 @@ export default function AdminPackagesPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Pakiet</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cena</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kredyty</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Użytkownicy</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sprzedaż</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Przychód</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ocena</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.package')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.price')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.credits')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.users')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.sales')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.revenue')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.rating')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.status')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -750,21 +666,21 @@ export default function AdminPackagesPage() {
                       <div className="flex items-center gap-3">
                         <pkg.icon className="w-5 h-5 text-gray-500" />
                         <div>
-                          <p className="font-medium text-gray-800">{pkg.name}</p>
-                          <p className="text-sm text-gray-500">{pkg.category}</p>
+                          <p className="font-medium text-gray-800">{t(`packages.${pkg.name}.name`)}</p>
+                          <p className="text-sm text-gray-500">{t(`categories.${pkg.category}`)}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-4">
-                      <p className="font-semibold">{pkg.price} zł</p>
+                      <p className="font-semibold">{pkg.price} {t('currency')}</p>
                       {pkg.discount > 0 && (
-                        <span className="text-xs text-red-600">-{pkg.discount}%</span>
+                        <span className="text-xs text-red-600">{t('discount', { percent: pkg.discount })}</span>
                       )}
                     </td>
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.credits}</td>
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.activeUsers}</td>
                     <td className="px-4 py-4 text-sm text-gray-600">{pkg.purchaseCount}</td>
-                    <td className="px-4 py-4 text-sm font-semibold">{(pkg.revenue / 1000).toFixed(0)}k zł</td>
+                    <td className="px-4 py-4 text-sm font-semibold">{(pkg.revenue / 1000).toFixed(0)}k {t('currency')}</td>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -775,7 +691,7 @@ export default function AdminPackagesPage() {
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                         pkg.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                       }`}>
-                        {pkg.active ? 'Aktywny' : 'Nieaktywny'}
+                        {pkg.active ? t('table.statusActive') : t('table.statusInactive')}
                       </span>
                     </td>
                     <td className="px-4 py-4">
