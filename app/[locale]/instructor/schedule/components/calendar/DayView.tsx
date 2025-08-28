@@ -5,15 +5,19 @@
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { 
-  Clock, MapPin, User, Phone, Mail, AlertCircle, 
-  MoreVertical, Edit2, Trash2, Copy, CheckCircle,
-  XCircle, Calendar, Car, ChevronLeft, ChevronRight,
-  DollarSign 
+  Clock, MapPin, User, Plus, AlertCircle,
+  ChevronLeft, ChevronRight, Calendar
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
-import { Slot, SlotStatus } from '../../types/schedule.types'
-import { formatTime, isSameDay, addMinutes } from '../../utils/dateHelpers'
+import { Slot } from '../../types/schedule.types'
+import SlotCard from './SlotCard'
+import { 
+  formatTime, 
+  isSameDay, 
+  formatPolishDate,
+  getPolishWeekDay
+} from '../../utils/dateHelpers'
 
 interface DayViewProps {
   currentDate: Date
@@ -23,8 +27,11 @@ interface DayViewProps {
   className?: string
 }
 
-// Komponenty pomocnicze
-const TimeSlotMarker: React.FC<{ time: string; isNow?: boolean }> = ({ time, isNow }) => (
+// Marker czasu na timeline
+const TimeSlotMarker: React.FC<{ 
+  time: string
+  isNow?: boolean 
+}> = ({ time, isNow }) => (
   <div className={cn(
     "absolute left-0 w-full flex items-center",
     isNow && "z-20"
@@ -45,108 +52,6 @@ const TimeSlotMarker: React.FC<{ time: string; isNow?: boolean }> = ({ time, isN
   </div>
 )
 
-const SlotCard: React.FC<{
-  slot: Slot
-  onClick?: () => void
-  style?: React.CSSProperties
-}> = ({ slot, onClick, style }) => {
-  const statusColors = {
-    'dostępny': 'bg-green-100 border-green-300 text-green-900',
-    'zarezerwowany': 'bg-blue-100 border-blue-300 text-blue-900',
-    'zablokowany': 'bg-gray-100 border-gray-300 text-gray-700',
-    'zakończony': 'bg-gray-50 border-gray-200 text-gray-600',
-    'anulowany': 'bg-red-50 border-red-200 text-red-700',
-    'nieobecność': 'bg-orange-50 border-orange-200 text-orange-700',
-    'w_trakcie': 'bg-purple-50 border-purple-200 text-purple-700'
-  }
-
-  const statusIcons = {
-    'dostępny': <CheckCircle className="w-3 h-3" />,
-    'zarezerwowany': <Calendar className="w-3 h-3" />,
-    'zablokowany': <XCircle className="w-3 h-3" />,
-    'zakończony': <CheckCircle className="w-3 h-3" />,
-    'anulowany': <XCircle className="w-3 h-3" />,
-    'nieobecność': <AlertCircle className="w-3 h-3" />,
-    'w_trakcie': <Clock className="w-3 h-3" />
-  }
-
-  return (
-    <div
-      onClick={onClick}
-      style={style}
-      className={cn(
-        "absolute left-20 right-4 p-3 rounded-lg border-2 cursor-pointer transition-all hover:shadow-md",
-        statusColors[slot.status as keyof typeof statusColors],
-        "group"
-      )}
-    >
-      {/* Nagłówek */}
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-center gap-2">
-          {statusIcons[slot.status as keyof typeof statusIcons]}
-          <span className="text-sm font-semibold">
-            {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
-          </span>
-        </div>
-        <button className="opacity-0 group-hover:opacity-100 transition-opacity">
-          <MoreVertical className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* Treść */}
-      {slot.student ? (
-        <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <User className="w-3 h-3" />
-            <span className="text-sm font-medium">
-              {slot.student.firstName} {slot.student.lastName}
-            </span>
-          </div>
-          {slot.lessonType && (
-            <div className="flex items-center gap-2">
-              <Car className="w-3 h-3" />
-              <span className="text-xs">
-                {slot.lessonType === 'jazda' ? 'Jazda w mieście' : 
-                 slot.lessonType === 'plac' ? 'Plac manewrowy' :
-                 slot.lessonType === 'teoria' ? 'Zajęcia teoretyczne' :
-                 'Egzamin'}
-              </span>
-            </div>
-          )}
-          {slot.location && (
-            <div className="flex items-center gap-2">
-              <MapPin className="w-3 h-3" />
-              <span className="text-xs">{slot.location.name}</span>
-            </div>
-          )}
-          {slot.payment && (
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-3 h-3" />
-              <span className="text-xs">
-                {slot.payment.status === 'opłacony' ? 'Opłacone' :
-                 slot.payment.status === 'nieopłacony' ? 'Nieopłacone' :
-                 'Częściowo opłacone'}
-              </span>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="text-sm">
-          {slot.status === 'dostępny' && 'Wolny termin'}
-          {slot.status === 'zablokowany' && (slot.notes || 'Termin zablokowany')}
-        </div>
-      )}
-
-      {/* Notatka */}
-      {slot.notes && slot.status !== 'zablokowany' && (
-        <div className="mt-2 pt-2 border-t border-current border-opacity-20">
-          <p className="text-xs italic">{slot.notes}</p>
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function DayView({
   currentDate,
   searchTerm = '',
@@ -154,13 +59,12 @@ export default function DayView({
   onDateChange,
   className
 }: DayViewProps) {
-  const { slots, workingHours, updateSlot } = useScheduleContext()
-  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
+  const { slots, workingHours, generateSlots } = useScheduleContext()
   const [currentTime, setCurrentTime] = useState(new Date())
   const containerRef = useRef<HTMLDivElement>(null)
   const scrollToCurrentRef = useRef<HTMLDivElement>(null)
 
-  // Aktualizacja aktualnego czasu
+  // Aktualizacja aktualnego czasu co minutę
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 60000)
     return () => clearInterval(timer)
@@ -176,9 +80,9 @@ export default function DayView({
     }
   }, [currentDate])
 
-  // Filtrowanie slotów dla bieżącego dnia
+  // Filtrowanie slotów dla bieżącego dnia z wykrywaniem konfliktów
   const daySlots = useMemo(() => {
-    return slots.filter(slot => {
+    const filtered = slots.filter((slot: Slot) => {
       const slotDate = new Date(slot.date)
       if (!isSameDay(slotDate, currentDate)) return false
       
@@ -193,11 +97,52 @@ export default function DayView({
       }
       
       return true
+    }).sort((a: Slot, b: Slot) => {
+      const [aHour, aMin] = a.startTime.split(':').map(Number)
+      const [bHour, bMin] = b.startTime.split(':').map(Number)
+      return (aHour * 60 + aMin) - (bHour * 60 + bMin)
     })
+    
+    return filtered
   }, [slots, currentDate, searchTerm])
+  
+  // Wykrywanie konfliktów między slotami
+  const slotConflicts = useMemo(() => {
+    const conflicts = new Map<string, number>()
+    const endTimes: number[] = []
+    
+    daySlots.forEach((slot: Slot) => {
+      const [startHour, startMin] = slot.startTime.split(':').map(Number)
+      const [endHour, endMin] = slot.endTime.split(':').map(Number)
+      const startMinutes = startHour * 60 + startMin
+      const endMinutes = endHour * 60 + endMin
+      
+      // Znajdź pierwszą wolną kolumnę
+      let column = 0
+      for (let i = 0; i < endTimes.length; i++) {
+        if (startMinutes >= endTimes[i]) {
+          column = i
+          break
+        }
+      }
+      if (column === 0 && endTimes.length > 0 && startMinutes < endTimes[0]) {
+        column = endTimes.length
+      }
+      
+      conflicts.set(slot.id, column)
+      if (!endTimes[column] || endTimes[column] < endMinutes) {
+        endTimes[column] = endMinutes
+      }
+    })
+    
+    return {
+      columns: conflicts,
+      maxColumns: Math.max(1, ...Array.from(conflicts.values()).map(col => col + 1))
+    }
+  }, [daySlots])
 
   // Godziny pracy dla bieżącego dnia
-  const dayName = currentDate.toLocaleDateString('pl-PL', { weekday: 'long' }).toLowerCase()
+  const dayName = getPolishWeekDay(currentDate).toLowerCase()
   const dayWorkingHours = workingHours[dayName]
 
   // Generowanie godzin timeline (6:00 - 22:00)
@@ -211,13 +156,15 @@ export default function DayView({
 
   // Obliczanie pozycji slotu na timeline
   const getSlotPosition = (slot: Slot) => {
-    const startMinutes = parseInt(slot.startTime.split(':')[0]) * 60 + 
-                        parseInt(slot.startTime.split(':')[1])
-    const endMinutes = parseInt(slot.endTime.split(':')[0]) * 60 + 
-                      parseInt(slot.endTime.split(':')[1])
+    const [startHour, startMin] = slot.startTime.split(':').map(Number)
+    const [endHour, endMin] = slot.endTime.split(':').map(Number)
+    
+    const startMinutes = startHour * 60 + startMin
+    const endMinutes = endHour * 60 + endMin
     
     const baseMinutes = 6 * 60 // 6:00 jako punkt startowy
-    const pixelsPerMinute = 60 / 60 // 60px na godzinę
+    const pixelsPerHour = 80 // 80px na godzinę
+    const pixelsPerMinute = pixelsPerHour / 60
     
     return {
       top: (startMinutes - baseMinutes) * pixelsPerMinute,
@@ -231,7 +178,8 @@ export default function DayView({
     
     const nowMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
     const baseMinutes = 6 * 60
-    const pixelsPerMinute = 60 / 60
+    const pixelsPerHour = 80
+    const pixelsPerMinute = pixelsPerHour / 60
     
     if (nowMinutes < baseMinutes || nowMinutes > 22 * 60) return null
     
@@ -255,22 +203,34 @@ export default function DayView({
     onDateChange?.(new Date())
   }
 
-  // Formatowanie daty
-  const dateLabel = currentDate.toLocaleDateString('pl-PL', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
+  // Generowanie slotów dla dnia
+  const handleGenerateSlots = () => {
+    if (dayWorkingHours?.enabled) {
+      // generateSlots приймає (startDate, endDate)
+      const startDate = new Date(currentDate)
+      const endDate = new Date(currentDate)
+      generateSlots(startDate, endDate)
+    }
+  }
+
+  const isToday = isSameDay(currentDate, new Date())
+  const dateLabel = formatPolishDate(currentDate)
+
+  // Statystyki dnia
+  const dayStats = useMemo(() => ({
+    dostępne: daySlots.filter((s: Slot) => s.status === 'dostępny').length,
+    zarezerwowane: daySlots.filter((s: Slot) => s.status === 'zarezerwowany').length,
+    zablokowane: daySlots.filter((s: Slot) => s.status === 'zablokowany').length
+  }), [daySlots])
 
   return (
     <div className={cn("flex flex-col h-full bg-white", className)}>
-      {/* Nagłówek */}
+      {/* Nagłówek z nawigacją */}
       <div className="flex items-center justify-between p-4 border-b bg-gray-50">
         <div className="flex items-center gap-2">
           <button
             onClick={handlePreviousDay}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            className="p-2 hover:bg-white rounded-lg transition-colors"
             aria-label="Poprzedni dzień"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -278,45 +238,74 @@ export default function DayView({
           
           <button
             onClick={handleToday}
-            className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors text-sm font-medium"
+            className={cn(
+              "px-3 py-1.5 rounded-lg transition-colors text-sm font-medium",
+              isToday ? "bg-blue-600 text-white" : "bg-white hover:bg-gray-100"
+            )}
           >
-            Dzisiaj
+            Dziś
           </button>
           
           <button
             onClick={handleNextDay}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            className="p-2 hover:bg-white rounded-lg transition-colors"
             aria-label="Następny dzień"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
         </div>
 
-        <h2 className="text-lg font-semibold capitalize">
+        <h2 className="text-lg font-semibold">
           {dateLabel}
         </h2>
 
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Clock className="w-4 h-4" />
-          <span>{currentTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</span>
+        <div className="flex items-center gap-4">
+          {isToday && (
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Clock className="w-4 h-4" />
+              <span>{formatTime(currentTime)}</span>
+            </div>
+          )}
+          
+          <button
+            onClick={handleGenerateSlots}
+            className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Generuj sloty
+          </button>
         </div>
       </div>
 
+      {/* Informacja o dniu wolnym */}
+      {dayWorkingHours && !dayWorkingHours.enabled && (
+        <div className="p-4 bg-yellow-50 border-b border-yellow-200">
+          <div className="flex items-center gap-2 text-yellow-800">
+            <AlertCircle className="w-5 h-5" />
+            <span className="text-sm font-medium">Dzień wolny od pracy</span>
+          </div>
+        </div>
+      )}
+
       {/* Timeline */}
-      <div className="flex-1 overflow-auto" ref={containerRef}>
-        <div className="relative" style={{ minHeight: `${17 * 60}px` }}>
-          {/* Godziny */}
-          {timelineHours.map((hour, idx) => {
-            const isNow = currentTimePosition !== null && 
-                         Math.abs(currentTimePosition - (idx * 60)) < 30
+      <div 
+        ref={containerRef}
+        className="flex-1 overflow-y-auto relative bg-gray-50"
+      >
+        <div className="relative" style={{ height: `${17 * 80}px` }}>
+          {/* Godziny i linie */}
+          {timelineHours.map((hour, index) => {
+            const isCurrentHour = isToday && 
+              hour === `${currentTime.getHours().toString().padStart(2, '0')}:00`
             
             return (
-              <div 
+              <div
                 key={hour}
-                ref={isNow ? scrollToCurrentRef : undefined}
-                style={{ top: `${idx * 60}px` }}
+                ref={isCurrentHour ? scrollToCurrentRef : undefined}
+                style={{ top: `${index * 80}px` }}
+                className="absolute w-full"
               >
-                <TimeSlotMarker time={hour} isNow={isNow} />
+                <TimeSlotMarker time={hour} isNow={false} />
               </div>
             )
           })}
@@ -324,47 +313,31 @@ export default function DayView({
           {/* Linia aktualnego czasu */}
           {currentTimePosition !== null && (
             <div
-              className="absolute left-20 right-4 border-t-2 border-blue-600 z-10"
               style={{ top: `${currentTimePosition}px` }}
+              className="absolute w-full z-20 pointer-events-none"
             >
-              <div className="absolute -left-2 -top-2 w-4 h-4 bg-blue-600 rounded-full" />
+              <TimeSlotMarker 
+                time={formatTime(currentTime)} 
+                isNow={true} 
+              />
             </div>
           )}
 
-          {/* Sloty */}
-          {daySlots.map(slot => {
-            const position = getSlotPosition(slot)
-            return (
-              <SlotCard
-                key={slot.id}
-                slot={slot}
-                onClick={() => {
-                  setSelectedSlot(slot)
-                  onSlotClick?.(slot)
-                }}
-                style={{
-                  top: `${position.top}px`,
-                  height: `${position.height - 4}px`,
-                  minHeight: '60px'
-                }}
-              />
-            )
-          })}
-
-          {/* Obszary godzin pracy */}
+          {/* Obszary godzin pracy (tło) */}
           {dayWorkingHours?.enabled && dayWorkingHours.intervals.map((interval, idx) => {
-            const startMinutes = parseInt(interval.start.split(':')[0]) * 60 + 
-                               parseInt(interval.start.split(':')[1])
-            const endMinutes = parseInt(interval.end.split(':')[0]) * 60 + 
-                             parseInt(interval.end.split(':')[1])
+            const [startHour, startMin] = interval.start.split(':').map(Number)
+            const [endHour, endMin] = interval.end.split(':').map(Number)
+            
+            const startMinutes = startHour * 60 + startMin
+            const endMinutes = endHour * 60 + endMin
             
             const baseMinutes = 6 * 60
-            const pixelsPerMinute = 60 / 60
+            const pixelsPerMinute = 80 / 60
             
             return (
               <div
                 key={idx}
-                className="absolute left-20 right-4 bg-green-50 border-l-2 border-green-300 opacity-30"
+                className="absolute left-20 right-4 bg-white border-l-4 border-green-200"
                 style={{
                   top: `${(startMinutes - baseMinutes) * pixelsPerMinute}px`,
                   height: `${(endMinutes - startMinutes) * pixelsPerMinute}px`
@@ -372,33 +345,63 @@ export default function DayView({
               />
             )
           })}
+
+          {/* Sloty z obsługą konfliktów */}
+          {daySlots.map(slot => {
+            const position = getSlotPosition(slot)
+            const column = slotConflicts.columns.get(slot.id) || 0
+            const maxColumns = slotConflicts.maxColumns
+            const widthPercentage = 90 / maxColumns // 90% szerokości, 10% na padding
+            const leftOffset = 80 + (column * widthPercentage) // 80px dla kolumny czasu
+            
+            return (
+              <div
+                key={slot.id}
+                style={{
+                  position: 'absolute',
+                  top: `${position.top}px`,
+                  height: `${Math.max(position.height - 4, 60)}px`,
+                  left: `${leftOffset}px`,
+                  width: `calc(${widthPercentage}% - 8px)`,
+                  marginRight: '4px'
+                }}
+              >
+                <SlotCard
+                  slot={slot}
+                  view="expanded"
+                  showDate={false}
+                  showActions={true}
+                  onClick={() => onSlotClick?.(slot)}
+                  onEdit={() => onSlotClick?.(slot)}
+                  className="w-full h-full"
+                />
+              </div>
+            )
+          })}
         </div>
       </div>
 
       {/* Podsumowanie dnia */}
-      <div className="border-t p-4 bg-gray-50">
+      <div className="border-t p-4 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex gap-6 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-200 rounded-full" />
-              <span>Dostępne: {daySlots.filter(s => s.status === 'dostępny').length}</span>
+              <div className="w-3 h-3 bg-green-500 rounded-full" />
+              <span>Dostępne: <strong>{dayStats.dostępne}</strong></span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-200 rounded-full" />
-              <span>Zarezerwowane: {daySlots.filter(s => s.status === 'zarezerwowany').length}</span>
+              <div className="w-3 h-3 bg-blue-500 rounded-full" />
+              <span>Zarezerwowane: <strong>{dayStats.zarezerwowane}</strong></span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-gray-300 rounded-full" />
-              <span>Zablokowane: {daySlots.filter(s => s.status === 'zablokowany').length}</span>
+              <div className="w-3 h-3 bg-gray-400 rounded-full" />
+              <span>Zablokowane: <strong>{dayStats.zablokowane}</strong></span>
             </div>
           </div>
           
-          {daySlots.length === 0 && dayWorkingHours?.enabled && (
-            <div className="text-sm text-amber-600 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
-              <span>Brak slotów - zostaną wygenerowane automatycznie przy zapisie godzin pracy</span>
-            </div>
-          )}
+          <div className="text-sm text-gray-600">
+            Łącznie: <strong>{daySlots.length}</strong> terminów
+          </div>
         </div>
       </div>
     </div>
