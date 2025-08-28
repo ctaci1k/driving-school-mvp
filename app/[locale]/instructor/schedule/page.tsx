@@ -10,9 +10,10 @@ import {
   Clock, Users, Car, DollarSign, TrendingUp, Filter
 } from 'lucide-react'
 import { useScheduleContext } from './providers/ScheduleProvider'
-import { QuickStats } from './components/shared/QuickStats'
-import { SearchBar } from './components/shared/SearchBar'
-import { ActionButtons } from './components/shared/ActionButtons'
+import QuickStats from './components/shared/QuickStats'
+import SearchBar from './components/shared/SearchBar'
+import ActionButtons from './components/shared/ActionButtons'
+
 import { TabValue, ViewMode } from './types/enums'
 import { formatDate, getCurrentWeek } from './utils/dateHelpers'
 import { cn } from '@/lib/utils'
