@@ -77,7 +77,7 @@ export default function VehicleDetailsPage() {
 
   // Recent bookings
   const recentBookings = [
-    { id: 1, student: 'Anna Nowak', instructor: 'Jan Kowalski', date: '2024-01-30', time: '10:00-12:00', status: 'completed' },
+    { id: 1, student: 'Anna Nowak', instructor: 'Jan Kowalski', date: '2024-01-30', time: '09:00-11:00', status: 'completed' },
     { id: 2, student: 'Piotr Wiśniewski', instructor: 'Jan Kowalski', date: '2024-01-30', time: '14:00-16:00', status: 'completed' },
     { id: 3, student: 'Maria Lewandowska', instructor: 'Jan Kowalski', date: '2024-01-31', time: '08:00-10:00', status: 'scheduled' },
     { id: 4, student: 'Tomasz Duda', instructor: 'Jan Kowalski', date: '2024-01-31', time: '12:00-14:00', status: 'scheduled' }

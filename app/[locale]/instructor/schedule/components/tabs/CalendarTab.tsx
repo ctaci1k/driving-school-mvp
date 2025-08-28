@@ -5,8 +5,8 @@
 
 import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react'
 import { 
-  Plus, Download, Filter, Grid3x3, List, 
-  CalendarDays, Clock, AlertCircle 
+  Download, Filter, Grid3x3, List, 
+  CalendarDays, Clock, AlertCircle, Settings
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
@@ -33,6 +33,7 @@ interface CalendarTabProps {
   currentDate: Date
   searchTerm?: string
   onDateChange?: (date: Date) => void
+  onOpenWorkingHours?: () => void
 }
 
 // Komponent filtrów
@@ -138,15 +139,15 @@ export default function CalendarTab({
   viewMode,
   currentDate,
   searchTerm = '',
-  onDateChange
+  onDateChange,
+  onOpenWorkingHours
 }: CalendarTabProps) {
   const { 
     slots, 
     workingHours,
     updateSlot,
     deleteSlot,
-    createSlot,
-    generateSlots
+    createSlot
   } = useScheduleContext()
 
   // Stan lokalny
@@ -158,7 +159,6 @@ export default function CalendarTab({
     studentId: '',
     showOnlyAvailable: false
   })
-  const [isGenerating, setIsGenerating] = useState(false)
 
   // Filtrowanie slotów
   const filteredSlots = useMemo(() => {
@@ -222,22 +222,6 @@ export default function CalendarTab({
     }
   }, [deleteSlot])
 
-  const handleGenerateSlots = useCallback(async () => {
-    setIsGenerating(true)
-    try {
-      const startDate = new Date(currentDate)
-      startDate.setDate(startDate.getDate() - startDate.getDay() + 1) // Poniedziałek
-      const endDate = new Date(startDate)
-      endDate.setDate(endDate.getDate() + 6) // Niedziela
-
-      await generateSlots(startDate, endDate)
-    } catch (error) {
-      console.error('Błąd generowania slotów:', error)
-    } finally {
-      setIsGenerating(false)
-    }
-  }, [currentDate, generateSlots])
-
   const handleExport = useCallback(() => {
     // Eksport do CSV/iCal
     const csv = filteredSlots.map(slot => ({
@@ -245,60 +229,74 @@ export default function CalendarTab({
       Start: slot.startTime,
       Koniec: slot.endTime,
       Status: slot.status,
-      Kursant: slot.student ? `${slot.student.firstName} ${slot.student.lastName}` : '',
-      Lokalizacja: slot.location?.name || '',
-      Notatki: slot.notes || ''
+      Kursant: slot.student ? `${slot.student.firstName} ${slot.student.lastName}` : '-',
+      Lokalizacja: slot.location?.name || '-'
     }))
 
-    const csvContent = [
-      Object.keys(csv[0]).join(','),
+    // Konwersja do CSV string
+    const csvString = [
+      Object.keys(csv[0] || {}).join(','),
       ...csv.map(row => Object.values(row).join(','))
     ].join('\n')
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    // Download
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = `harmonogram_${formatDate(currentDate)}.csv`
     link.click()
   }, [filteredSlots, currentDate])
 
-  // Statystyki dla aktualnego widoku
+  // Statystyki
   const stats = useMemo(() => {
-    const viewSlots = filteredSlots.filter(slot => {
-      const slotDate = new Date(slot.date)
-      if (viewMode === 'dzień') {
+    const dayStart = new Date(currentDate)
+    dayStart.setHours(0, 0, 0, 0)
+    const dayEnd = new Date(currentDate)
+    dayEnd.setHours(23, 59, 59, 999)
+
+    let relevantSlots = filteredSlots
+
+    if (viewMode === 'dzień') {
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
         return isSameDay(slotDate, currentDate)
-      } else if (viewMode === 'tydzień') {
-        const weekStart = new Date(currentDate)
-        weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1)
-        const weekEnd = new Date(weekStart)
-        weekEnd.setDate(weekEnd.getDate() + 6)
+      })
+    } else if (viewMode === 'tydzień') {
+      const weekStart = new Date(currentDate)
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1)
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekEnd.getDate() + 6)
+      
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
         return slotDate >= weekStart && slotDate <= weekEnd
-      } else if (viewMode === 'miesiąc') {
+      })
+    } else if (viewMode === 'miesiąc') {
+      relevantSlots = filteredSlots.filter(slot => {
+        const slotDate = new Date(slot.date)
         return slotDate.getMonth() === currentDate.getMonth() &&
                slotDate.getFullYear() === currentDate.getFullYear()
-      }
-      return true
-    })
+      })
+    }
 
     return {
-      total: viewSlots.length,
-      dostępne: viewSlots.filter(s => s.status === 'dostępny').length,
-      zarezerwowane: viewSlots.filter(s => s.status === 'zarezerwowany').length,
-      zablokowane: viewSlots.filter(s => s.status === 'zablokowany').length
+      total: relevantSlots.length,
+      dostępne: relevantSlots.filter(s => s.status === 'dostępny').length,
+      zarezerwowane: relevantSlots.filter(s => s.status === 'zarezerwowany').length,
+      zablokowane: relevantSlots.filter(s => s.status === 'zablokowany').length
     }
   }, [filteredSlots, viewMode, currentDate])
 
   return (
     <div className="space-y-4">
-      {/* Pasek narzędzi */}
-      <div className="bg-white rounded-lg p-4 border">
+      {/* Nagłówek z akcjami */}
+      <div className="bg-white rounded-lg border p-4">
+        {/* Statystyki */}
         <div className="flex items-center justify-between mb-4">
-          {/* Statystyki */}
           <div className="flex items-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-              <span>Wszystkie: {stats.total}</span>
+              <span>Łącznie: {stats.total}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-400 rounded-full"></div>
@@ -316,22 +314,13 @@ export default function CalendarTab({
 
           {/* Przyciski akcji */}
           <div className="flex items-center gap-2">
+            {/* Przycisk ustawień godzin pracy */}
             <button
-              onClick={handleGenerateSlots}
-              disabled={isGenerating}
-              className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              onClick={onOpenWorkingHours}
+              className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
             >
-              {isGenerating ? (
-                <>
-                  <Clock className="w-4 h-4 animate-spin" />
-                  <span>Generowanie...</span>
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4" />
-                  <span>Generuj sloty</span>
-                </>
-              )}
+              <Settings className="w-4 h-4" />
+              <span>Godziny pracy</span>
             </button>
 
             <div className="relative">
@@ -372,14 +361,15 @@ export default function CalendarTab({
           </div>
         </div>
 
-        {/* Alert o braku slotów */}
+        {/* Alert o braku slotów - ZAKTUALIZOWANY */}
         {stats.total === 0 && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-start gap-2">
-            <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
+            <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-medium text-yellow-800">Brak terminów w tym okresie</p>
-              <p className="text-yellow-600 mt-1">
-                Kliknij "Generuj sloty" aby automatycznie utworzyć terminy na podstawie godzin pracy.
+              <p className="font-medium text-blue-800">Brak terminów w tym okresie</p>
+              <p className="text-blue-600 mt-1">
+                Sloty są generowane automatycznie na podstawie godzin pracy.
+                Kliknij przycisk "Godziny pracy" aby skonfigurować dostępność.
               </p>
             </div>
           </div>
@@ -414,56 +404,6 @@ export default function CalendarTab({
               onSlotClick={handleSlotClick}
               onDateChange={onDateChange || (() => {})}
             />
-          )}
-
-          {viewMode === 'lista' && (
-            <div className="p-4">
-              <div className="space-y-2">
-                {filteredSlots
-                  .sort((a, b) => {
-                    const dateA = new Date(`${a.date}T${a.startTime}`)
-                    const dateB = new Date(`${b.date}T${b.startTime}`)
-                    return dateA.getTime() - dateB.getTime()
-                  })
-                  .slice(0, 50)
-                  .map(slot => (
-                    <div
-                      key={slot.id}
-                      onClick={() => handleSlotClick(slot)}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div>
-                          <p className="font-medium text-sm">
-                            {formatDate(new Date(slot.date))}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {slot.startTime} - {slot.endTime}
-                          </p>
-                        </div>
-                        <div className={cn(
-                          'px-2 py-1 rounded text-xs font-medium',
-                          slot.status === 'dostępny' && 'bg-green-100 text-green-800',
-                          slot.status === 'zarezerwowany' && 'bg-blue-100 text-blue-800',
-                          slot.status === 'zablokowany' && 'bg-gray-100 text-gray-800'
-                        )}>
-                          {slot.status}
-                        </div>
-                      </div>
-                      {slot.student && (
-                        <p className="text-sm">
-                          {slot.student.firstName} {slot.student.lastName}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-              </div>
-              {filteredSlots.length > 50 && (
-                <p className="text-center text-sm text-gray-500 mt-4">
-                  Pokazano pierwsze 50 wyników
-                </p>
-              )}
-            </div>
           )}
         </Suspense>
       </div>

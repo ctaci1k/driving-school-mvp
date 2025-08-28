@@ -190,8 +190,8 @@ export const mockSlots: Slot[] = [
   {
     id: 'slot-9',
     date: dayAfterTomorrowISO,
-    startTime: '09:00',
-    endTime: '11:00',
+    startTime: '10:00',
+    endTime: '12:00',
     status: 'zarezerwowany',
     location: LOC_WAW,
     student: ST_Anna,

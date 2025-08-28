@@ -6,12 +6,13 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import { 
   ChevronLeft, ChevronRight, Clock, Calendar,
-  AlertCircle, MapPin, User, Car
+  AlertCircle, MapPin, User, Car, Info
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { Slot } from '../../types/schedule.types'
 import SlotCard from './SlotCard'
+import SlotEditModal from '../modals/SlotEditModal'
 import { 
   formatDate, formatTime, isSameDay, getCurrentWeek,
   getPolishWeekDay, formatPolishDate, isToday
@@ -83,6 +84,7 @@ export default function WeekView({
 }: WeekViewProps) {
   const { slots, workingHours, updateSlot } = useScheduleContext()
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
+  const [showSlotModal, setShowSlotModal] = useState(false)
   const [currentTime, setCurrentTime] = useState(new Date())
   const [hoveredDay, setHoveredDay] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -138,18 +140,22 @@ export default function WeekView({
 
   // Obliczanie pozycji slotu
   const getSlotPosition = (slot: Slot) => {
-    const startHour = parseInt(slot.startTime.split(':')[0])
-    const startMinute = parseInt(slot.startTime.split(':')[1])
-    const endHour = parseInt(slot.endTime.split(':')[0])
-    const endMinute = parseInt(slot.endTime.split(':')[1])
+    const [startH, startM] = slot.startTime.split(':').map(Number)
+    const [endH, endM] = slot.endTime.split(':').map(Number)
     
-    const startOffset = (startHour - 6) * 80 + (startMinute / 60) * 80
-    const duration = ((endHour - startHour) * 60 + (endMinute - startMinute))
-    const height = (duration / 60) * 80
+    // Konwersja na minuty od 6:00
+    const startMinutes = (startH - 6) * 60 + startM
+    const endMinutes = (endH - 6) * 60 + endM
+    
+    // 80px na godzinę = 80/60 px na minutę
+    const pixelsPerMinute = 80 / 60
+    
+    const top = startMinutes * pixelsPerMinute
+    const height = (endMinutes - startMinutes) * pixelsPerMinute
     
     return {
-      top: startOffset + 64, // 64px dla nagłówka
-      height: Math.max(height - 4, 30) // Minimalna wysokość
+      top: top + 64, // 64px dla nagłówka dnia
+      height: Math.max(height - 4, 20) // -4px dla marginesu, min 20px
     }
   }
 
@@ -173,6 +179,7 @@ export default function WeekView({
   // Obsługa kliknięcia na slot
   const handleSlotClick = (slot: Slot) => {
     setSelectedSlot(slot)
+    setShowSlotModal(true)
     onSlotClick?.(slot)
   }
 
@@ -304,20 +311,59 @@ export default function WeekView({
                   {/* Sloty */}
                   {daySlots.map(slot => {
                     const position = getSlotPosition(slot)
+                    const statusColors = {
+                      'dostępny': 'bg-green-100 border-green-300 text-green-800 hover:bg-green-200',
+                      'zarezerwowany': 'bg-blue-100 border-blue-300 text-blue-800 hover:bg-blue-200',
+                      'zablokowany': 'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200',
+                      'zakończony': 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100',
+                      'anulowany': 'bg-red-50 border-red-200 text-red-700 hover:bg-red-100',
+                      'nieobecność': 'bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100',
+                      'w_trakcie': 'bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100'
+                    }
+                    
                     return (
                       <div
                         key={slot.id}
                         className="absolute left-1 right-1"
                         style={{
                           top: `${position.top - 64}px`,
-                          height: `${position.height}px`
+                          height: `${position.height}px`,
+                          minHeight: '30px'
                         }}
                       >
-                        <SlotCard
-                          slot={slot}
-                          view="compact"
+                        <div
                           onClick={() => handleSlotClick(slot)}
-                        />
+                          className={cn(
+                            "h-full px-2 py-1 rounded border cursor-pointer transition-all hover:shadow-md flex flex-col justify-between overflow-hidden",
+                            statusColors[slot.status as keyof typeof statusColors]
+                          )}
+                        >
+                          {/* Czas */}
+                          <div className="text-xs font-bold">
+                            {formatTime(slot.startTime)} - {formatTime(slot.endTime)}
+                          </div>
+                          
+                          {/* Informacje o studencie - pokazuj tylko jeśli jest miejsce */}
+                          {position.height > 50 && slot.student && (
+                            <div className="text-xs truncate">
+                              <div className="font-medium truncate">
+                                {slot.student.firstName} {slot.student.lastName[0]}.
+                              </div>
+                              {position.height > 70 && slot.lessonType && (
+                                <div className="text-xs opacity-75">
+                                  {slot.lessonType === 'jazda' ? 'Jazda' : 
+                                   slot.lessonType === 'plac' ? 'Plac' :
+                                   slot.lessonType === 'teoria' ? 'Teoria' : 'Egzamin'}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          
+                          {/* Status dla wolnych terminów */}
+                          {!slot.student && slot.status === 'dostępny' && position.height > 40 && (
+                            <div className="text-xs italic">Wolny</div>
+                          )}
+                        </div>
                       </div>
                     )
                   })}
@@ -365,6 +411,23 @@ export default function WeekView({
           </div>
         </div>
       </div>
+
+      {/* Modal ze szczegółami slotu */}
+      {showSlotModal && selectedSlot && (
+        <SlotEditModal
+          isOpen={showSlotModal}
+          onClose={() => {
+            setShowSlotModal(false)
+            setSelectedSlot(null)
+          }}
+          slot={selectedSlot}
+          onSave={(updatedSlot) => {
+            updateSlot(updatedSlot.id, updatedSlot)
+            setShowSlotModal(false)
+            setSelectedSlot(null)
+          }}
+        />
+      )}
     </div>
   )
 }
