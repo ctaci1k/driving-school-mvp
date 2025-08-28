@@ -1,9 +1,8 @@
-// app/[locale]/student/bookings/book/page.tsx
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Calendar, Clock, Car, MapPin, Star, ChevronRight, ChevronLeft,
   Check, X, AlertCircle, Filter, Search, User, Award,
@@ -68,6 +67,8 @@ interface Location {
 
 export default function BookNewLessonPage() {
   const router = useRouter();
+  const t = useTranslations('student.bookingNew');
+  
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedType, setSelectedType] = useState('');
   const [selectedInstructor, setSelectedInstructor] = useState('');
@@ -86,14 +87,14 @@ export default function BookNewLessonPage() {
   const userCredits = 12;
   const lessonPrice = 180;
 
-  const monthNames = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 
-                     'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
+  const monthNames = t.raw('dateTime.months') as string[];
+  const weekDays = t.raw('dateTime.weekDays') as string[];
 
   const lessonTypes: LessonType[] = [
     {
       id: 'STANDARD',
-      name: 'Jazda standardowa',
-      description: 'Podstawowa lekcja jazdy w mieście',
+      name: t('lessonTypes.standard.name'),
+      description: t('lessonTypes.standard.description'),
       icon: Car,
       duration: 90,
       credits: 1,
@@ -103,8 +104,8 @@ export default function BookNewLessonPage() {
     },
     {
       id: 'HIGHWAY',
-      name: 'Jazda autostradą',
-      description: 'Nauka jazdy z wysokimi prędkościami',
+      name: t('lessonTypes.highway.name'),
+      description: t('lessonTypes.highway.description'),
       icon: Zap,
       duration: 120,
       credits: 2,
@@ -114,8 +115,8 @@ export default function BookNewLessonPage() {
     },
     {
       id: 'PARKING',
-      name: 'Parkowanie',
-      description: 'Parkowanie równoległe i prostopadłe',
+      name: t('lessonTypes.parking.name'),
+      description: t('lessonTypes.parking.description'),
       icon: Circle,
       duration: 60,
       credits: 1,
@@ -125,8 +126,8 @@ export default function BookNewLessonPage() {
     },
     {
       id: 'NIGHT',
-      name: 'Jazda nocna',
-      description: 'Jazda w warunkach ograniczonej widoczności',
+      name: t('lessonTypes.night.name'),
+      description: t('lessonTypes.night.description'),
       icon: Moon,
       duration: 90,
       credits: 2,
@@ -136,8 +137,8 @@ export default function BookNewLessonPage() {
     },
     {
       id: 'EXAM_PREP',
-      name: 'Przygotowanie do egzaminu',
-      description: 'Symulacja egzaminu państwowego',
+      name: t('lessonTypes.examPrep.name'),
+      description: t('lessonTypes.examPrep.description'),
       icon: GraduationCap,
       duration: 120,
       credits: 2,
@@ -150,28 +151,28 @@ export default function BookNewLessonPage() {
   const instructors: Instructor[] = [
     {
       id: '1',
-      name: 'Piotr Nowak',
+      name: 'Петро Новак',
       rating: 4.9,
       reviews: 124,
-      experience: '8 lat',
-      specializations: ['Egzaminy', 'Jazda nocna', 'Autostrady'],
+      experience: t('instructor.years', { count: 8 }),
+      specializations: [t('instructor.exams'), t('instructor.nightDriving'), t('instructor.highways')],
       completedLessons: 1250,
       successRate: 94,
-      avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-      nextAvailable: 'Jutro 14:00',
+      avatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff',
+      nextAvailable: t('instructor.tomorrow') + ' 14:00',
       favorite: true
     },
     {
       id: '2',
-      name: 'Anna Kowalczyk',
+      name: 'Анна Коваленко',
       rating: 4.8,
       reviews: 98,
-      experience: '5 lat',
-      specializations: ['Parkowanie', 'Manewry', 'Miasto'],
+      experience: t('instructor.years', { count: 5 }),
+      specializations: [t('instructor.parking'), t('instructor.maneuvers'), t('instructor.city')],
       completedLessons: 890,
       successRate: 92,
-      avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff',
-      nextAvailable: 'Dziś 18:00',
+      avatar: 'https://ui-avatars.com/api/?name=Anna+Kovalenko&background=8B5CF6&color=fff',
+      nextAvailable: t('instructor.today') + ' 18:00',
       favorite: false
     }
   ];
@@ -182,37 +183,37 @@ export default function BookNewLessonPage() {
       make: 'Toyota',
       model: 'Yaris',
       year: 2023,
-      transmission: 'Manual',
-      fuel: 'Benzyna',
-      registration: 'WZ 12345',
+      transmission: 'manual',
+      fuel: 'petrol',
+      registration: 'AA 1234 BB',
       image: 'https://via.placeholder.com/300x200?text=Toyota+Yaris',
-      features: ['ABS', 'ESP', 'Klimatyzacja', 'Parking sensors']
+      features: [t('vehicle.features.abs'), t('vehicle.features.esp'), t('vehicle.features.airCondition'), t('vehicle.features.parkingSensors')]
     },
     {
       id: '2',
       make: 'Volkswagen',
       model: 'Golf',
       year: 2022,
-      transmission: 'Manual',
-      fuel: 'Diesel',
-      registration: 'WZ 67890',
+      transmission: 'manual',
+      fuel: 'diesel',
+      registration: 'AA 5678 CC',
       image: 'https://via.placeholder.com/300x200?text=VW+Golf',
-      features: ['ABS', 'ESP', 'Klimatyzacja', 'Kamera cofania']
+      features: [t('vehicle.features.abs'), t('vehicle.features.esp'), t('vehicle.features.airCondition'), t('vehicle.features.rearCamera')]
     }
   ];
 
   const locations: Location[] = [
-    { id: '1', name: 'Centrum - ul. Puławska 145', distance: '2.3 km' },
-    { id: '2', name: 'Mokotów - ul. Wilanowska 89', distance: '4.1 km' },
-    { id: '3', name: 'Ursynów - al. KEN 36', distance: '0.8 km' }
+    { id: '1', name: 'Центр - вул. Хрещатик 145', distance: '2.3' },
+    { id: '2', name: 'Печерськ - вул. Лесі Українки 89', distance: '4.1' },
+    { id: '3', name: 'Позняки - вул. Урлівська 36', distance: '0.8' }
   ];
 
   const steps = [
-    { id: 1, name: 'Typ lekcji', icon: Car },
-    { id: 2, name: 'Instruktor', icon: User },
-    { id: 3, name: 'Data i czas', icon: Calendar },
-    { id: 4, name: 'Pojazd i miejsce', icon: MapPin },
-    { id: 5, name: 'Potwierdzenie', icon: Check }
+    { id: 1, name: t('steps.lessonType'), icon: Car },
+    { id: 2, name: t('steps.instructor'), icon: User },
+    { id: 3, name: t('steps.dateTime'), icon: Calendar },
+    { id: 4, name: t('steps.vehicleLocation'), icon: MapPin },
+    { id: 5, name: t('steps.confirmation'), icon: Check }
   ];
 
   // Helper functions for calendar with dynamic slots
@@ -352,19 +353,18 @@ export default function BookNewLessonPage() {
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-10 h-10 text-green-500" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Rezerwacja potwierdzona!</h2>
+            <h2 className="text-2xl font-bold mb-2">{t('success.title')}</h2>
             <p className="text-muted-foreground mb-4">
-              Twoja lekcja została zarezerwowana pomyślnie. 
-              Otrzymasz potwierdzenie na email.
+              {t('success.description')}
             </p>
             <div className="bg-muted rounded-lg p-4 mb-6">
               <p className="text-sm">
-                <strong>Data:</strong> {selectedDate}<br />
-                <strong>Godzina:</strong> {selectedTime}<br />
-                <strong>Instruktor:</strong> {instructors.find(i => i.id === selectedInstructor)?.name}
+                <strong>{t('success.date')}:</strong> {selectedDate}<br />
+                <strong>{t('success.time')}:</strong> {selectedTime}<br />
+                <strong>{t('success.instructor')}:</strong> {instructors.find(i => i.id === selectedInstructor)?.name}
               </p>
             </div>
-            <p className="text-sm text-muted-foreground">Przekierowanie do listy lekcji...</p>
+            <p className="text-sm text-muted-foreground">{t('success.redirecting')}</p>
           </CardContent>
         </Card>
       </div>
@@ -376,8 +376,8 @@ export default function BookNewLessonPage() {
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold">Zarezerwuj lekcję jazdy</h1>
-          <p className="text-muted-foreground mt-1">Wybierz odpowiedni termin i instruktora</p>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
 
         {/* Progress Steps */}
@@ -425,7 +425,7 @@ export default function BookNewLessonPage() {
             {/* Step 1: Lesson Type */}
             {currentStep === 1 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Wybierz typ lekcji</h2>
+                <h2 className="text-xl font-semibold">{t('lessonTypes.title')}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {lessonTypes.map((type) => {
                     const Icon = type.icon;
@@ -441,7 +441,7 @@ export default function BookNewLessonPage() {
                       >
                         {type.recommended && (
                           <Badge className="absolute -top-2 -right-2" variant="destructive">
-                            Polecane
+                            {t('lessonTypes.recommended')}
                           </Badge>
                         )}
                         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10 mb-3">
@@ -450,10 +450,10 @@ export default function BookNewLessonPage() {
                         <h3 className="font-semibold mb-1">{type.name}</h3>
                         <p className="text-sm text-muted-foreground mb-3">{type.description}</p>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">{type.duration} min</span>
+                          <span className="text-muted-foreground">{t('lessonTypes.duration', { minutes: type.duration })}</span>
                           <div className="text-right">
-                            <span className="font-semibold text-primary">{type.credits} kredyt</span>
-                            <span className="text-xs text-muted-foreground block">lub {type.price} PLN</span>
+                            <span className="font-semibold text-primary">{type.credits} {t('lessonTypes.credit', { count: type.credits })}</span>
+                            <span className="text-xs text-muted-foreground block">{t('lessonTypes.or')} {t('lessonTypes.currency', { amount: type.price })}</span>
                           </div>
                         </div>
                       </div>
@@ -466,14 +466,14 @@ export default function BookNewLessonPage() {
             {/* Step 2: Select Instructor */}
             {currentStep === 2 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Wybierz instruktora</h2>
+                <h2 className="text-xl font-semibold">{t('instructor.title')}</h2>
                 
                 <div className="flex flex-wrap gap-4">
                   <div className="flex-1 min-w-[200px]">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
                       <Input
-                        placeholder="Szukaj instruktora..."
+                        placeholder={t('instructor.searchPlaceholder')}
                         value={searchInstructor}
                         onChange={(e) => setSearchInstructor(e.target.value)}
                         className="pl-10"
@@ -508,7 +508,7 @@ export default function BookNewLessonPage() {
                                 <Star className="w-4 h-4 text-yellow-500 fill-current" />
                                 <span className="text-sm font-semibold">{instructor.rating}</span>
                               </div>
-                              <span className="text-sm text-muted-foreground">({instructor.reviews} opinii)</span>
+                              <span className="text-sm text-muted-foreground">({t('instructor.reviews', { count: instructor.reviews })})</span>
                             </div>
                           </div>
                         </div>
@@ -516,17 +516,17 @@ export default function BookNewLessonPage() {
 
                       <div className="grid grid-cols-2 gap-3 mb-3">
                         <div className="text-center p-2 bg-muted rounded-lg">
-                          <p className="text-xs text-muted-foreground">Doświadczenie</p>
+                          <p className="text-xs text-muted-foreground">{t('instructor.experience')}</p>
                           <p className="text-sm font-semibold">{instructor.experience}</p>
                         </div>
                         <div className="text-center p-2 bg-muted rounded-lg">
-                          <p className="text-xs text-muted-foreground">Skuteczność</p>
+                          <p className="text-xs text-muted-foreground">{t('instructor.successRate')}</p>
                           <p className="text-sm font-semibold text-green-600">{instructor.successRate}%</p>
                         </div>
                       </div>
 
                       <div className="mb-3">
-                        <p className="text-xs text-muted-foreground mb-1">Specjalizacje:</p>
+                        <p className="text-xs text-muted-foreground mb-1">{t('instructor.specializations')}:</p>
                         <div className="flex flex-wrap gap-1">
                           {instructor.specializations.map((spec, index) => (
                             <Badge key={index} variant="secondary">
@@ -538,7 +538,7 @@ export default function BookNewLessonPage() {
 
                       <div className="flex items-center gap-2 text-sm">
                         <Clock className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-muted-foreground">Najbliższy termin: {instructor.nextAvailable}</span>
+                        <span className="text-muted-foreground">{t('instructor.nextAvailable')}: {instructor.nextAvailable}</span>
                       </div>
                     </div>
                   ))}
@@ -546,10 +546,10 @@ export default function BookNewLessonPage() {
               </div>
             )}
 
-            {/* Step 3: Date & Time - UPDATED WITH INTERACTIVE CALENDAR */}
+            {/* Step 3: Date & Time */}
             {currentStep === 3 && (
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold">Wybierz datę i godzinę</h2>
+                <h2 className="text-xl font-semibold">{t('dateTime.title')}</h2>
                 
                 {/* Month Navigation */}
                 <Card>
@@ -590,7 +590,7 @@ export default function BookNewLessonPage() {
                     {/* Calendar Grid */}
                     <div className="grid grid-cols-7">
                       {/* Week day headers */}
-                      {['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'].map(day => (
+                      {weekDays.map(day => (
                         <div key={day} className="p-3 text-center text-sm font-medium text-muted-foreground border-b bg-muted/50">
                           {day}
                         </div>
@@ -652,13 +652,13 @@ export default function BookNewLessonPage() {
                                               onClick={() => setSelectedDate(dayInfo.dateString)}
                                               className="w-full text-xs px-1 py-0.5 text-primary hover:underline"
                                             >
-                                              +{dayInfo.availableSlots.length - 2} więcej
+                                              {t('dateTime.moreSlots', { count: dayInfo.availableSlots.length - 2 })}
                                             </button>
                                           )}
                                         </>
                                       ) : (
                                         <div className="text-xs text-muted-foreground text-center py-2">
-                                          Brak wolnych
+                                          {t('dateTime.noSlots')}
                                         </div>
                                       )}
                                     </>
@@ -666,13 +666,13 @@ export default function BookNewLessonPage() {
                                   
                                   {!selectedInstructor && !isPast && !isSunday && (
                                     <div className="text-xs text-muted-foreground text-center py-2">
-                                      Wybierz instruktora
+                                      {t('dateTime.selectInstructor')}
                                     </div>
                                   )}
                                   
                                   {(isPast || isSunday) && (
                                     <div className="text-xs text-muted-foreground text-center py-2">
-                                      {isSunday ? 'Niedziela' : 'Niedostępny'}
+                                      {isSunday ? t('dateTime.sunday') : t('dateTime.unavailable')}
                                     </div>
                                   )}
                                 </div>
@@ -688,17 +688,17 @@ export default function BookNewLessonPage() {
                       <div className="flex items-center justify-center gap-6 text-xs">
                         <div className="flex items-center gap-2">
                           <div className="w-4 h-4 bg-green-50 border border-green-200 rounded"></div>
-                          <span>Dostępny</span>
+                          <span>{t('dateTime.legendAvailable')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-4 h-4 bg-primary text-primary-foreground rounded flex items-center justify-center">
                             <Check className="w-3 h-3" />
                           </div>
-                          <span>Wybrany</span>
+                          <span>{t('dateTime.legendSelected')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="w-4 h-4 bg-muted border border-muted-foreground/20 rounded"></div>
-                          <span>Niedostępny</span>
+                          <span>{t('dateTime.legendUnavailable')}</span>
                         </div>
                       </div>
                     </div>
@@ -710,12 +710,12 @@ export default function BookNewLessonPage() {
                   <Alert className="border-green-200 bg-green-50">
                     <CheckCircle className="h-4 w-4 text-green-600" />
                     <AlertDescription className="text-green-700">
-                      <strong>Wybrano:</strong> {new Date(selectedDate).toLocaleDateString('pl-PL', {
+                      <strong>{t('dateTime.selected')}:</strong> {new Date(selectedDate).toLocaleDateString('uk-UA', {
                         weekday: 'long',
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
-                      })}, godz. {selectedTime}
+                      })}, {selectedTime}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -725,7 +725,7 @@ export default function BookNewLessonPage() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="text-base">
-                        Dostępne godziny - {new Date(selectedDate).toLocaleDateString('pl-PL', {
+                        {t('dateTime.availableHours')} - {new Date(selectedDate).toLocaleDateString('uk-UA', {
                           weekday: 'long',
                           day: 'numeric',
                           month: 'long'
@@ -744,14 +744,14 @@ export default function BookNewLessonPage() {
                             <div className="flex flex-col items-center">
                               <Clock className="w-4 h-4 mb-1" />
                               <span>{slot}</span>
-                              <span className="text-xs opacity-75">2 godziny</span>
+                              <span className="text-xs opacity-75">{t('dateTime.hours', { count: 2 })}</span>
                             </div>
                           </Button>
                         ))}
                       </div>
                       {getAvailableSlotsForDate(selectedDate).length === 0 && (
                         <p className="text-center text-muted-foreground py-4">
-                          Brak dostępnych terminów w tym dniu
+                          {t('dateTime.noSlotsForDay')}
                         </p>
                       )}
                     </CardContent>
@@ -762,7 +762,7 @@ export default function BookNewLessonPage() {
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      Najpierw wybierz instruktora, aby zobaczyć dostępne terminy
+                      {t('dateTime.selectInstructorFirst')}
                     </AlertDescription>
                   </Alert>
                 )}
@@ -773,7 +773,7 @@ export default function BookNewLessonPage() {
             {currentStep === 4 && (
               <div className="space-y-6">
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Dostępne pojazdy</h3>
+                  <h3 className="font-semibold">{t('vehicle.title')}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {vehicles.map((vehicle) => (
                       <div
@@ -792,9 +792,9 @@ export default function BookNewLessonPage() {
                         <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
                           <span>{vehicle.year}</span>
                           <span>•</span>
-                          <span>{vehicle.transmission}</span>
+                          <span>{t(`vehicle.transmission.${vehicle.transmission}`)}</span>
                           <span>•</span>
-                          <span>{vehicle.fuel}</span>
+                          <span>{t(`vehicle.fuel.${vehicle.fuel}`)}</span>
                         </div>
                         <div className="flex flex-wrap gap-1">
                           {vehicle.features.slice(0, 3).map((feature, index) => (
@@ -809,7 +809,7 @@ export default function BookNewLessonPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold">Miejsce rozpoczęcia</h3>
+                  <h3 className="font-semibold">{t('location.title')}</h3>
                   <RadioGroup value={selectedLocation} onValueChange={setSelectedLocation}>
                     {locations.map((location) => (
                       <div key={location.id} className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted">
@@ -820,7 +820,7 @@ export default function BookNewLessonPage() {
                               <MapPin className="w-4 h-4 text-muted-foreground" />
                               <span>{location.name}</span>
                             </div>
-                            <span className="text-sm text-muted-foreground">{location.distance}</span>
+                            <span className="text-sm text-muted-foreground">{t('location.distance', { distance: location.distance })}</span>
                           </div>
                         </Label>
                       </div>
@@ -833,23 +833,23 @@ export default function BookNewLessonPage() {
             {/* Step 5: Confirmation */}
             {currentStep === 5 && (
               <div className="space-y-6">
-                <h2 className="text-xl font-semibold">Podsumowanie rezerwacji</h2>
+                <h2 className="text-xl font-semibold">{t('summary.title')}</h2>
 
                 <Card>
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex items-center justify-between pb-4 border-b">
-                      <span className="text-muted-foreground">Typ lekcji</span>
+                      <span className="text-muted-foreground">{t('summary.lessonType')}</span>
                       <span className="font-semibold">
                         {lessonTypes.find(t => t.id === selectedType)?.name}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between pb-4 border-b">
-                      <span className="text-muted-foreground">Instruktor</span>
+                      <span className="text-muted-foreground">{t('summary.instructor')}</span>
                       <div className="flex items-center gap-2">
                         <img
                           src={instructors.find(i => i.id === selectedInstructor)?.avatar}
-                          alt="Instruktor"
+                          alt="Instructor"
                           className="w-8 h-8 rounded-full"
                         />
                         <span className="font-semibold">
@@ -859,19 +859,19 @@ export default function BookNewLessonPage() {
                     </div>
 
                     <div className="flex items-center justify-between pb-4 border-b">
-                      <span className="text-muted-foreground">Data i godzina</span>
+                      <span className="text-muted-foreground">{t('summary.dateTime')}</span>
                       <span className="font-semibold">{selectedDate}, {selectedTime}</span>
                     </div>
 
                     <div className="flex items-center justify-between pb-4 border-b">
-                      <span className="text-muted-foreground">Pojazd</span>
+                      <span className="text-muted-foreground">{t('summary.vehicle')}</span>
                       <span className="font-semibold">
                         {vehicles.find(v => v.id === selectedVehicle)?.make} {vehicles.find(v => v.id === selectedVehicle)?.model}
                       </span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Miejsce</span>
+                      <span className="text-muted-foreground">{t('summary.location')}</span>
                       <span className="font-semibold">
                         {locations.find(l => l.id === selectedLocation)?.name}
                       </span>
@@ -882,7 +882,7 @@ export default function BookNewLessonPage() {
                 {/* Payment Method */}
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Metoda płatności</CardTitle>
+                    <CardTitle className="text-lg">{t('payment.title')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div
@@ -894,13 +894,13 @@ export default function BookNewLessonPage() {
                       <div className="flex items-center gap-3">
                         <Coins className="w-5 h-5 text-primary" />
                         <div>
-                          <p className="font-medium">Użyj kredytów</p>
-                          <p className="text-sm text-muted-foreground">Dostępne: {userCredits} kredytów</p>
+                          <p className="font-medium">{t('payment.useCredits')}</p>
+                          <p className="text-sm text-muted-foreground">{t('payment.creditsAvailable', { count: userCredits })}</p>
                         </div>
                       </div>
                       <div className="text-right">
                         <p className="font-semibold text-primary">
-                          {lessonTypes.find(t => t.id === selectedType)?.credits || 0} kredyty
+                          {t('payment.creditsRequired', { count: lessonTypes.find(t => t.id === selectedType)?.credits || 0 })}
                         </p>
                       </div>
                     </div>
@@ -914,12 +914,12 @@ export default function BookNewLessonPage() {
                       <div className="flex items-center gap-3">
                         <CreditCard className="w-5 h-5 text-green-600" />
                         <div>
-                          <p className="font-medium">Zapłać online</p>
-                          <p className="text-sm text-muted-foreground">Przelewy24</p>
+                          <p className="font-medium">{t('payment.payOnline')}</p>
+                          <p className="text-sm text-muted-foreground">{t('payment.paymentService')}</p>
                         </div>
                       </div>
                       <p className="font-semibold text-green-600">
-                        {lessonTypes.find(t => t.id === selectedType)?.price || 0} PLN
+                        {t('lessonTypes.currency', { amount: lessonTypes.find(t => t.id === selectedType)?.price || 0 })}
                       </p>
                     </div>
                   </CardContent>
@@ -928,7 +928,7 @@ export default function BookNewLessonPage() {
                 <Alert className="border-yellow-200 bg-yellow-50">
                   <AlertCircle className="h-4 w-4 text-yellow-600" />
                   <AlertDescription>
-                    Możesz anulować lub przełożyć lekcję do 24h przed jej rozpoczęciem bez utraty kredytów.
+                    {t('alerts.cancellationPolicy')}
                   </AlertDescription>
                 </Alert>
               </div>
@@ -943,7 +943,7 @@ export default function BookNewLessonPage() {
               disabled={currentStep === 1}
             >
               <ChevronLeft className="w-4 h-4 mr-2" />
-              Wstecz
+              {t('buttons.back')}
             </Button>
 
             {currentStep < 5 ? (
@@ -951,7 +951,7 @@ export default function BookNewLessonPage() {
                 onClick={() => setCurrentStep(currentStep + 1)}
                 disabled={!canProceed()}
               >
-                Dalej
+                {t('buttons.next')}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             ) : (
@@ -963,12 +963,12 @@ export default function BookNewLessonPage() {
                 {isConfirming ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Potwierdzanie...
+                    {t('buttons.confirming')}
                   </>
                 ) : (
                   <>
                     <CheckCircle className="w-4 h-4 mr-2" />
-                    Potwierdź rezerwację
+                    {t('buttons.confirm')}
                   </>
                 )}
               </Button>

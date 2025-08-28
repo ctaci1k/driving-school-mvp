@@ -4,6 +4,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -95,9 +96,9 @@ const mockBookings: Booking[] = [
     date: '2024-12-23',
     startTime: '09:00',
     endTime: '10:30',
-    location: 'Warszawa Centrum',
+    location: 'warsawCenter',
     vehicle: 'Toyota Corolla (WA 12345)',
-    package: 'Pakiet Standard B'
+    package: 'standardB'
   },
   {
     id: 'bk-2',
@@ -110,8 +111,8 @@ const mockBookings: Booking[] = [
     date: '2024-12-23',
     startTime: '10:00',
     endTime: '11:30',
-    location: 'Sala wykładowa A',
-    package: 'Pakiet Premium B'
+    location: 'lectureHallA',
+    package: 'premiumB'
   },
   {
     id: 'bk-3',
@@ -124,9 +125,9 @@ const mockBookings: Booking[] = [
     date: '2024-12-23',
     startTime: '11:00',
     endTime: '12:30',
-    location: 'Warszawa Mokotów',
+    location: 'warsawMokotow',
     vehicle: 'Volkswagen Golf (WA 67890)',
-    package: 'Pakiet Standard B'
+    package: 'standardB'
   },
   {
     id: 'bk-4',
@@ -139,8 +140,8 @@ const mockBookings: Booking[] = [
     date: '2024-12-24',
     startTime: '08:00',
     endTime: '09:00',
-    location: 'WORD Warszawa',
-    package: 'Pakiet Standard B'
+    location: 'examCenter',
+    package: 'standardB'
   },
   {
     id: 'bk-5',
@@ -153,10 +154,10 @@ const mockBookings: Booking[] = [
     date: '2024-12-24',
     startTime: '14:00',
     endTime: '15:30',
-    location: 'Warszawa Centrum',
+    location: 'warsawCenter',
     vehicle: 'Toyota Corolla (WA 12345)',
-    notes: 'Odwołane przez kursanta - choroba',
-    package: 'Pakiet Intensywny B'
+    notes: 'cancelReason',
+    package: 'intensiveB'
   },
   // Więcej rezerwacji dla różnych dni
   ...Array.from({ length: 20 }, (_, i) => ({
@@ -170,9 +171,9 @@ const mockBookings: Booking[] = [
     date: `2024-12-${20 + (i % 10)}`,
     startTime: `${9 + (i % 8)}:00`,
     endTime: `${10 + (i % 8)}:30`,
-    location: ['Warszawa Centrum', 'Warszawa Mokotów', 'Sala wykładowa A'][i % 3],
+    location: ['warsawCenter', 'warsawMokotow', 'lectureHallA'][i % 3],
     vehicle: i % 3 === 0 ? `Vehicle ${i}` : undefined,
-    package: ['Pakiet Standard B', 'Pakiet Premium B', 'Pakiet Intensywny B'][i % 3]
+    package: ['standardB', 'premiumB', 'intensiveB'][i % 3]
   }))
 ];
 
@@ -182,16 +183,8 @@ const instructors = [
   { id: 'ins-3', name: 'Tomasz Wójcik' }
 ];
 
-const locations = [
-  'Warszawa Centrum',
-  'Warszawa Mokotów',
-  'Warszawa Praga',
-  'Sala wykładowa A',
-  'Sala wykładowa B',
-  'WORD Warszawa'
-];
-
 export default function BookingsCalendarPage() {
+  const t = useTranslations('admin.bookings.calendar');
   const [currentDate, setCurrentDate] = useState(new Date(2024, 11, 23)); // December 2024
   const [viewType, setViewType] = useState<ViewType>('month');
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
@@ -204,6 +197,25 @@ export default function BookingsCalendarPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const weekDays = [
+    t('weekDays.monday'),
+    t('weekDays.tuesday'),
+    t('weekDays.wednesday'),
+    t('weekDays.thursday'),
+    t('weekDays.friday'),
+    t('weekDays.saturday'),
+    t('weekDays.sunday')
+  ];
+
+  const locations = [
+    'warsawCenter',
+    'warsawMokotow',
+    'warsawPraga',
+    'lectureHallA',
+    'lectureHallB',
+    'examCenter'
+  ];
 
   // Funkcje pomocnicze do kalendarza
   const getDaysInMonth = (date: Date) => {
@@ -326,8 +338,8 @@ export default function BookingsCalendarPage() {
               <CalendarIcon className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Kalendarz rezerwacji</h1>
-              <p className="text-gray-600">Zarządzaj harmonogramem zajęć</p>
+              <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+              <p className="text-gray-600">{t('subtitle')}</p>
             </div>
           </div>
 
@@ -338,7 +350,7 @@ export default function BookingsCalendarPage() {
               onClick={() => setShowFilters(!showFilters)}
             >
               <Filter className="w-4 h-4 mr-2" />
-              Filtry
+              {t('buttons.filters')}
               {Object.values(filters).filter(f => f !== 'all').length > 0 && (
                 <Badge variant="secondary" className="ml-2">
                   {Object.values(filters).filter(f => f !== 'all').length}
@@ -351,14 +363,14 @@ export default function BookingsCalendarPage() {
               onClick={exportCalendar}
             >
               <Download className="w-4 h-4 mr-2" />
-              Eksportuj
+              {t('buttons.export')}
             </Button>
             <Button
               size="sm"
               onClick={() => console.log('New booking')}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Nowa rezerwacja
+              {t('buttons.newBooking')}
             </Button>
           </div>
         </div>
@@ -369,16 +381,16 @@ export default function BookingsCalendarPage() {
             <CardContent className="pt-6">
               <div className="grid grid-cols-4 gap-4">
                 <div>
-                  <Label htmlFor="instructor-filter">Instruktor</Label>
+                  <Label htmlFor="instructor-filter">{t('filters.instructor')}</Label>
                   <Select
                     value={filters.instructor}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, instructor: value }))}
                   >
                     <SelectTrigger id="instructor-filter">
-                      <SelectValue placeholder="Wszyscy" />
+                      <SelectValue placeholder={t('filters.placeholders.allInstructors')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Wszyscy</SelectItem>
+                      <SelectItem value="all">{t('filters.all')}</SelectItem>
                       {instructors.map(instructor => (
                         <SelectItem key={instructor.id} value={instructor.id}>
                           {instructor.name}
@@ -389,56 +401,56 @@ export default function BookingsCalendarPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="type-filter">Typ zajęć</Label>
+                  <Label htmlFor="type-filter">{t('filters.type')}</Label>
                   <Select
                     value={filters.type}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, type: value }))}
                   >
                     <SelectTrigger id="type-filter">
-                      <SelectValue placeholder="Wszystkie" />
+                      <SelectValue placeholder={t('filters.placeholders.allTypes')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Wszystkie</SelectItem>
-                      <SelectItem value="practice">Praktyka</SelectItem>
-                      <SelectItem value="theory">Teoria</SelectItem>
-                      <SelectItem value="exam">Egzamin</SelectItem>
+                      <SelectItem value="all">{t('filters.all')}</SelectItem>
+                      <SelectItem value="practice">{t('bookingTypes.practice')}</SelectItem>
+                      <SelectItem value="theory">{t('bookingTypes.theory')}</SelectItem>
+                      <SelectItem value="exam">{t('bookingTypes.exam')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="status-filter">Status</Label>
+                  <Label htmlFor="status-filter">{t('filters.status')}</Label>
                   <Select
                     value={filters.status}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, status: value }))}
                   >
                     <SelectTrigger id="status-filter">
-                      <SelectValue placeholder="Wszystkie" />
+                      <SelectValue placeholder={t('filters.placeholders.allStatuses')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Wszystkie</SelectItem>
-                      <SelectItem value="confirmed">Potwierdzone</SelectItem>
-                      <SelectItem value="pending">Oczekujące</SelectItem>
-                      <SelectItem value="cancelled">Anulowane</SelectItem>
-                      <SelectItem value="completed">Zakończone</SelectItem>
+                      <SelectItem value="all">{t('filters.all')}</SelectItem>
+                      <SelectItem value="confirmed">{t('bookingStatus.confirmed')}</SelectItem>
+                      <SelectItem value="pending">{t('bookingStatus.pending')}</SelectItem>
+                      <SelectItem value="cancelled">{t('bookingStatus.cancelled')}</SelectItem>
+                      <SelectItem value="completed">{t('bookingStatus.completed')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="location-filter">Lokalizacja</Label>
+                  <Label htmlFor="location-filter">{t('filters.location')}</Label>
                   <Select
                     value={filters.location}
                     onValueChange={(value) => setFilters(prev => ({ ...prev, location: value }))}
                   >
                     <SelectTrigger id="location-filter">
-                      <SelectValue placeholder="Wszystkie" />
+                      <SelectValue placeholder={t('filters.placeholders.allLocations')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">Wszystkie</SelectItem>
+                      <SelectItem value="all">{t('filters.all')}</SelectItem>
                       {locations.map(location => (
                         <SelectItem key={location} value={location}>
-                          {location}
+                          {t(`locations.${location}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -457,7 +469,7 @@ export default function BookingsCalendarPage() {
                     location: 'all'
                   })}
                 >
-                  Wyczyść filtry
+                  {t('filters.clear')}
                 </Button>
               </div>
             </CardContent>
@@ -471,6 +483,7 @@ export default function BookingsCalendarPage() {
               variant="outline"
               size="sm"
               onClick={() => navigateMonth('prev')}
+              aria-label={t('navigation.previousMonth')}
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -479,26 +492,27 @@ export default function BookingsCalendarPage() {
               size="sm"
               onClick={goToToday}
             >
-              Dzisiaj
+              {t('navigation.today')}
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => navigateMonth('next')}
+              aria-label={t('navigation.nextMonth')}
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
             <h2 className="text-xl font-semibold text-gray-800 ml-4">
-              {currentDate.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' })}
+              {currentDate.toLocaleDateString('uk-UA', { month: 'long', year: 'numeric' })}
             </h2>
           </div>
 
           <Tabs value={viewType} onValueChange={(value) => setViewType(value as ViewType)}>
             <TabsList className="bg-white border border-gray-100">
-              <TabsTrigger value="month">Miesiąc</TabsTrigger>
-              <TabsTrigger value="week">Tydzień</TabsTrigger>
-              <TabsTrigger value="day">Dzień</TabsTrigger>
-              <TabsTrigger value="list">Lista</TabsTrigger>
+              <TabsTrigger value="month">{t('viewTypes.month')}</TabsTrigger>
+              <TabsTrigger value="week">{t('viewTypes.week')}</TabsTrigger>
+              <TabsTrigger value="day">{t('viewTypes.day')}</TabsTrigger>
+              <TabsTrigger value="list">{t('viewTypes.list')}</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -510,7 +524,7 @@ export default function BookingsCalendarPage() {
           {viewType === 'month' && (
             <div className="grid grid-cols-7">
               {/* Nagłówki dni tygodnia */}
-              {['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz'].map(day => (
+              {weekDays.map(day => (
                 <div
                   key={day}
                   className="p-3 text-center text-sm font-medium text-gray-600 border-b border-gray-100"
@@ -565,8 +579,7 @@ export default function BookingsCalendarPage() {
                               </span>
                             </div>
                             <div className="text-xs opacity-75 truncate">
-                              {booking.type === 'practice' ? 'Praktyka' : 
-                               booking.type === 'theory' ? 'Teoria' : 'Egzamin'}
+                              {t(`bookingTypes.${booking.type}`)}
                             </div>
                           </div>
                         ))}
@@ -578,7 +591,7 @@ export default function BookingsCalendarPage() {
                               setViewType('day');
                             }}
                           >
-                            +{bookings.length - 3} więcej
+                            {t('messages.moreBookings', { count: bookings.length - 3 })}
                           </button>
                         )}
                       </div>
@@ -594,7 +607,7 @@ export default function BookingsCalendarPage() {
               <Alert className="bg-blue-50 border-blue-200">
                 <Info className="h-4 w-4 text-blue-600" />
                 <AlertDescription>
-                  Widok tygodniowy w przygotowaniu. Proszę użyć widoku miesięcznego lub listy.
+                  {t('messages.weekViewInProgress')}
                 </AlertDescription>
               </Alert>
             </div>
@@ -604,7 +617,7 @@ export default function BookingsCalendarPage() {
             <div className="p-6">
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">
-                  {currentDate.toLocaleDateString('pl-PL', { 
+                  {currentDate.toLocaleDateString('uk-UA', { 
                     weekday: 'long', 
                     year: 'numeric', 
                     month: 'long', 
@@ -628,13 +641,10 @@ export default function BookingsCalendarPage() {
                       <div>
                         <div className="flex items-center gap-2 mb-1">
                           <Badge className={typeColors[booking.type]}>
-                            {booking.type === 'practice' ? 'Praktyka' : 
-                             booking.type === 'theory' ? 'Teoria' : 'Egzamin'}
+                            {t(`bookingTypes.${booking.type}`)}
                           </Badge>
                           <Badge className={statusColors[booking.status]}>
-                            {booking.status === 'confirmed' ? 'Potwierdzony' :
-                             booking.status === 'pending' ? 'Oczekujący' :
-                             booking.status === 'cancelled' ? 'Anulowany' : 'Zakończony'}
+                            {t(`bookingStatus.${booking.status}`)}
                           </Badge>
                         </div>
                         <p className="font-medium text-gray-800">{booking.studentName}</p>
@@ -645,7 +655,7 @@ export default function BookingsCalendarPage() {
                           </span>
                           <span className="flex items-center gap-1">
                             <MapPin className="w-3 h-3" />
-                            {booking.location}
+                            {t(`locations.${booking.location}`)}
                           </span>
                           {booking.vehicle && (
                             <span className="flex items-center gap-1">
@@ -657,7 +667,7 @@ export default function BookingsCalendarPage() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" aria-label={t('buttons.view')}>
                         <Eye className="w-4 h-4" />
                       </Button>
                       <DropdownMenu>
@@ -669,11 +679,11 @@ export default function BookingsCalendarPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => console.log('Edit', booking.id)}>
                             <Edit className="w-4 h-4 mr-2" />
-                            Edytuj
+                            {t('actions.edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => console.log('Cancel', booking.id)}>
                             <XCircle className="w-4 h-4 mr-2" />
-                            Anuluj
+                            {t('actions.cancel')}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem 
@@ -681,7 +691,7 @@ export default function BookingsCalendarPage() {
                             className="text-red-600"
                           >
                             <Trash2 className="w-4 h-4 mr-2" />
-                            Usuń
+                            {t('actions.delete')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -691,7 +701,7 @@ export default function BookingsCalendarPage() {
                 {getBookingsForDate(currentDate).length === 0 && (
                   <div className="text-center py-12 text-gray-500">
                     <CalendarIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                    <p>Brak rezerwacji na ten dzień</p>
+                    <p>{t('messages.noBookings')}</p>
                   </div>
                 )}
               </div>
@@ -718,7 +728,7 @@ export default function BookingsCalendarPage() {
                       <div className="flex items-center gap-4">
                         <div className="text-center min-w-[80px]">
                           <p className="text-sm font-medium text-gray-800">
-                            {new Date(booking.date).toLocaleDateString('pl-PL', { 
+                            {new Date(booking.date).toLocaleDateString('uk-UA', { 
                               day: 'numeric', 
                               month: 'short' 
                             })}
@@ -729,13 +739,10 @@ export default function BookingsCalendarPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <Badge className={typeColors[booking.type]}>
-                              {booking.type === 'practice' ? 'Praktyka' : 
-                               booking.type === 'theory' ? 'Teoria' : 'Egzamin'}
+                              {t(`bookingTypes.${booking.type}`)}
                             </Badge>
                             <Badge className={statusColors[booking.status]}>
-                              {booking.status === 'confirmed' ? 'Potwierdzony' :
-                               booking.status === 'pending' ? 'Oczekujący' :
-                               booking.status === 'cancelled' ? 'Anulowany' : 'Zakończony'}
+                              {t(`bookingStatus.${booking.status}`)}
                             </Badge>
                           </div>
                           <p className="font-medium text-gray-800">{booking.studentName}</p>
@@ -746,7 +753,7 @@ export default function BookingsCalendarPage() {
                             </span>
                             <span className="flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
-                              {booking.location}
+                              {t(`locations.${booking.location}`)}
                             </span>
                             {booking.vehicle && (
                               <span className="flex items-center gap-1">
@@ -762,7 +769,7 @@ export default function BookingsCalendarPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" aria-label={t('buttons.view')}>
                           <Eye className="w-4 h-4" />
                         </Button>
                         <DropdownMenu>
@@ -774,11 +781,11 @@ export default function BookingsCalendarPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => console.log('Edit', booking.id)}>
                               <Edit className="w-4 h-4 mr-2" />
-                              Edytuj
+                              {t('actions.edit')}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => console.log('Cancel', booking.id)}>
                               <XCircle className="w-4 h-4 mr-2" />
-                              Anuluj
+                              {t('actions.cancel')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem 
@@ -786,7 +793,7 @@ export default function BookingsCalendarPage() {
                               className="text-red-600"
                             >
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Usuń
+                              {t('actions.delete')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -805,7 +812,7 @@ export default function BookingsCalendarPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Dzisiejsze rezerwacje</p>
+                <p className="text-sm text-gray-600">{t('stats.todayBookings')}</p>
                 <p className="text-2xl font-bold text-gray-800">12</p>
               </div>
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -819,7 +826,7 @@ export default function BookingsCalendarPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Oczekujące</p>
+                <p className="text-sm text-gray-600">{t('stats.pending')}</p>
                 <p className="text-2xl font-bold text-gray-800">5</p>
               </div>
               <div className="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -833,7 +840,7 @@ export default function BookingsCalendarPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Ten tydzień</p>
+                <p className="text-sm text-gray-600">{t('stats.thisWeek')}</p>
                 <p className="text-2xl font-bold text-gray-800">68</p>
               </div>
               <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
@@ -847,7 +854,7 @@ export default function BookingsCalendarPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Wykorzystanie</p>
+                <p className="text-sm text-gray-600">{t('stats.utilization')}</p>
                 <p className="text-2xl font-bold text-gray-800">78%</p>
               </div>
               <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -862,35 +869,32 @@ export default function BookingsCalendarPage() {
       <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Szczegóły rezerwacji</DialogTitle>
+            <DialogTitle>{t('details.title')}</DialogTitle>
           </DialogHeader>
           {selectedBooking && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Badge className={typeColors[selectedBooking.type]}>
-                  {selectedBooking.type === 'practice' ? 'Praktyka' : 
-                   selectedBooking.type === 'theory' ? 'Teoria' : 'Egzamin'}
+                  {t(`bookingTypes.${selectedBooking.type}`)}
                 </Badge>
                 <Badge className={statusColors[selectedBooking.status]}>
-                  {selectedBooking.status === 'confirmed' ? 'Potwierdzony' :
-                   selectedBooking.status === 'pending' ? 'Oczekujący' :
-                   selectedBooking.status === 'cancelled' ? 'Anulowany' : 'Zakończony'}
+                  {t(`bookingStatus.${selectedBooking.status}`)}
                 </Badge>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Kursant</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.student')}</p>
                   <p className="font-medium text-gray-800">{selectedBooking.studentName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Instruktor</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.instructor')}</p>
                   <p className="font-medium text-gray-800">{selectedBooking.instructorName}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Data</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.date')}</p>
                   <p className="font-medium text-gray-800">
-                    {new Date(selectedBooking.date).toLocaleDateString('pl-PL', {
+                    {new Date(selectedBooking.date).toLocaleDateString('uk-UA', {
                       weekday: 'long',
                       year: 'numeric',
                       month: 'long',
@@ -899,42 +903,42 @@ export default function BookingsCalendarPage() {
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Godzina</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.time')}</p>
                   <p className="font-medium text-gray-800">
                     {selectedBooking.startTime} - {selectedBooking.endTime}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Lokalizacja</p>
-                  <p className="font-medium text-gray-800">{selectedBooking.location}</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.location')}</p>
+                  <p className="font-medium text-gray-800">{t(`locations.${selectedBooking.location}`)}</p>
                 </div>
                 {selectedBooking.vehicle && (
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">Pojazd</p>
+                    <p className="text-sm text-gray-600 mb-1">{t('details.vehicle')}</p>
                     <p className="font-medium text-gray-800">{selectedBooking.vehicle}</p>
                   </div>
                 )}
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Pakiet</p>
-                  <p className="font-medium text-gray-800">{selectedBooking.package}</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.package')}</p>
+                  <p className="font-medium text-gray-800">{t(`packages.${selectedBooking.package}`)}</p>
                 </div>
               </div>
 
               {selectedBooking.notes && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Notatki</p>
-                  <p className="text-gray-800">{selectedBooking.notes}</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('details.notes')}</p>
+                  <p className="text-gray-800">{t(`details.${selectedBooking.notes}`)}</p>
                 </div>
               )}
             </div>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setDetailsDialogOpen(false)}>
-              Zamknij
+              {t('buttons.close')}
             </Button>
             <Button onClick={() => console.log('Edit booking', selectedBooking?.id)}>
               <Edit className="w-4 h-4 mr-2" />
-              Edytuj
+              {t('buttons.edit')}
             </Button>
           </DialogFooter>
         </DialogContent>

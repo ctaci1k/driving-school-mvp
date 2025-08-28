@@ -1,9 +1,10 @@
 // app/[locale]/instructor/earnings/page.tsx
-// Strona statystyk finansowych instruktora z detalami zarobków
+// Сторінка фінансової статистики інструктора з деталями заробітків
 
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   DollarSign, TrendingUp, Calendar, Download, Filter,
   CreditCard, FileText, Award, Clock, Car, Users,
@@ -37,9 +38,10 @@ import {
   PieChart as RePieChart, Pie, Cell, Legend
 } from 'recharts'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function InstructorEarnings() {
+  const t = useTranslations('instructor.earnings.main')
   const [selectedPeriod, setSelectedPeriod] = useState('month')
   const [selectedMonth, setSelectedMonth] = useState('february')
 
@@ -58,10 +60,10 @@ export default function InstructorEarnings() {
 
   // Previous months comparison
   const monthlyComparison = [
-    { month: 'Listopad', earnings: 18500, lessons: 48 },
-    { month: 'Grudzień', earnings: 21200, lessons: 56 },
-    { month: 'Styczeń', earnings: 22100, lessons: 58 },
-    { month: 'Luty', earnings: 24850, lessons: 65 }
+    { month: t('charts.months.november'), earnings: 18500, lessons: 48 },
+    { month: t('charts.months.december'), earnings: 21200, lessons: 56 },
+    { month: t('charts.months.january'), earnings: 22100, lessons: 58 },
+    { month: t('charts.months.february'), earnings: 24850, lessons: 65 }
   ]
 
   // Daily earnings for current month
@@ -87,10 +89,10 @@ export default function InstructorEarnings() {
 
   // Earnings by lesson type
   const earningsByType = [
-    { type: 'Praktyka - miasto', amount: 12500, percentage: 50.3, color: '#3B82F6' },
-    { type: 'Praktyka - trasa', amount: 6200, percentage: 24.9, color: '#10B981' },
-    { type: 'Przygotowanie do egzaminu', amount: 3800, percentage: 15.3, color: '#F59E0B' },
-    { type: 'Praktyka - plac', amount: 2350, percentage: 9.5, color: '#8B5CF6' }
+    { type: t('lessonTypes.practiceCity'), amount: 12500, percentage: 50.3, color: '#3B82F6' },
+    { type: t('lessonTypes.practiceRoute'), amount: 6200, percentage: 24.9, color: '#10B981' },
+    { type: t('lessonTypes.examPrep'), amount: 3800, percentage: 15.3, color: '#F59E0B' },
+    { type: t('lessonTypes.practiceArea'), amount: 2350, percentage: 9.5, color: '#8B5CF6' }
   ]
 
   // Detailed transactions
@@ -98,8 +100,8 @@ export default function InstructorEarnings() {
     {
       id: 1,
       date: '2024-02-03',
-      student: 'Maria Kowalczyk',
-      type: 'Przygotowanie do egzaminu',
+      student: 'Марія Коваленко',
+      type: t('lessonTypes.examPrep'),
       duration: 90,
       rate: 400,
       amount: 600,
@@ -110,8 +112,8 @@ export default function InstructorEarnings() {
     {
       id: 2,
       date: '2024-02-03',
-      student: 'Jan Nowak',
-      type: 'Praktyka - plac',
+      student: 'Іван Шевченко',
+      type: t('lessonTypes.practiceArea'),
       duration: 90,
       rate: 350,
       amount: 525,
@@ -122,8 +124,8 @@ export default function InstructorEarnings() {
     {
       id: 3,
       date: '2024-02-02',
-      student: 'Anna Wiśniewska',
-      type: 'Praktyka - miasto',
+      student: 'Анна Бондаренко',
+      type: t('lessonTypes.practiceCity'),
       duration: 90,
       rate: 400,
       amount: 600,
@@ -134,8 +136,8 @@ export default function InstructorEarnings() {
     {
       id: 4,
       date: '2024-02-02',
-      student: 'Andrzej Kowalski',
-      type: 'Praktyka - trasa',
+      student: 'Андрій Мельник',
+      type: t('lessonTypes.practiceRoute'),
       duration: 120,
       rate: 400,
       amount: 800,
@@ -146,8 +148,8 @@ export default function InstructorEarnings() {
     {
       id: 5,
       date: '2024-02-01',
-      student: 'Natalia Kamińska',
-      type: 'Praktyka - miasto',
+      student: 'Наталія Коваль',
+      type: t('lessonTypes.practiceCity'),
       duration: 90,
       rate: 400,
       amount: 600,
@@ -161,24 +163,24 @@ export default function InstructorEarnings() {
   const bonuses = [
     {
       id: 1,
-      title: 'Bonus za nowych uczniów',
-      description: '3 nowych uczniów w lutym',
+      title: t('bonusSection.newStudents'),
+      description: t('bonusSection.newStudentsDesc', {count: 3}),
       amount: 750,
       date: '2024-02-15',
       status: 'received'
     },
     {
       id: 2,
-      title: 'Bonus za jakość',
-      description: 'Ocena 4.9+ przez cały miesiąc',
+      title: t('bonusSection.quality'),
+      description: t('bonusSection.qualityDesc'),
       amount: 500,
       date: '2024-02-28',
       status: 'pending'
     },
     {
       id: 3,
-      title: 'Bonus za produktywność',
-      description: 'Ponad 60 lekcji w miesiącu',
+      title: t('bonusSection.productivity'),
+      description: t('bonusSection.productivityDesc'),
       amount: 250,
       date: '2024-02-28',
       status: 'pending'
@@ -189,8 +191,8 @@ export default function InstructorEarnings() {
   const nextPayout = {
     date: '2024-03-01',
     amount: 22365,
-    method: 'Przelew bankowy',
-    bank: 'PKO Bank Polski',
+    method: t('payouts.bankTransfer'),
+    bank: 'ПриватБанк',
     account: '****4521',
     status: 'scheduled'
   }
@@ -219,10 +221,8 @@ export default function InstructorEarnings() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Moje zarobki</h1>
-          <p className="text-gray-600 mt-1">
-            Statystyki finansowe i wypłaty
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
@@ -230,15 +230,15 @@ export default function InstructorEarnings() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="week">Tydzień</SelectItem>
-              <SelectItem value="month">Miesiąc</SelectItem>
-              <SelectItem value="quarter">Kwartał</SelectItem>
-              <SelectItem value="year">Rok</SelectItem>
+              <SelectItem value="week">{t('periods.week')}</SelectItem>
+              <SelectItem value="month">{t('periods.month')}</SelectItem>
+              <SelectItem value="quarter">{t('periods.quarter')}</SelectItem>
+              <SelectItem value="year">{t('periods.year')}</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
-            Raport
+            {t('buttons.report')}
           </Button>
         </div>
       </div>
@@ -248,12 +248,12 @@ export default function InstructorEarnings() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-gray-500">Ten miesiąc</p>
+              <p className="text-sm text-gray-500">{t('cards.thisMonth')}</p>
               <TrendingUp className={`w-4 h-4 ${currentMonthData.growth > 0 ? 'text-green-500' : 'text-red-500'}`} />
             </div>
-            <p className="text-3xl font-bold">{currentMonthData.total.toLocaleString()} zł</p>
+            <p className="text-3xl font-bold">{t('currency', {amount: currentMonthData.total.toLocaleString()})}</p>
             <p className={`text-sm mt-1 ${currentMonthData.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {currentMonthData.growth > 0 ? '+' : ''}{currentMonthData.growth}% od poprzedniego
+              {currentMonthData.growth > 0 ? '+' : ''}{t('cards.fromPrevious', {value: currentMonthData.growth})}
             </p>
           </CardContent>
         </Card>
@@ -261,12 +261,12 @@ export default function InstructorEarnings() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-gray-500">Na czysto</p>
+              <p className="text-sm text-gray-500">{t('cards.netIncome')}</p>
               <Wallet className="w-4 h-4 text-blue-500" />
             </div>
-            <p className="text-3xl font-bold">{currentMonthData.net.toLocaleString()} zł</p>
+            <p className="text-3xl font-bold">{t('currency', {amount: currentMonthData.net.toLocaleString()})}</p>
             <p className="text-sm text-gray-600 mt-1">
-              Po prowizji {((currentMonthData.commission / currentMonthData.total) * 100).toFixed(0)}%
+              {t('cards.afterCommission', {percent: ((currentMonthData.commission / currentMonthData.total) * 100).toFixed(0)})}
             </p>
           </CardContent>
         </Card>
@@ -274,12 +274,12 @@ export default function InstructorEarnings() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-gray-500">Lekcje</p>
+              <p className="text-sm text-gray-500">{t('cards.lessons')}</p>
               <Users className="w-4 h-4 text-purple-500" />
             </div>
             <p className="text-3xl font-bold">{currentMonthData.lessons}</p>
             <p className="text-sm text-gray-600 mt-1">
-              {currentMonthData.hours} godzin
+              {t('cards.hours', {hours: currentMonthData.hours})}
             </p>
           </CardContent>
         </Card>
@@ -287,12 +287,12 @@ export default function InstructorEarnings() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-gray-500">Bonusy</p>
+              <p className="text-sm text-gray-500">{t('cards.bonuses')}</p>
               <Award className="w-4 h-4 text-yellow-500" />
             </div>
-            <p className="text-3xl font-bold">{currentMonthData.bonus.toLocaleString()} zł</p>
+            <p className="text-3xl font-bold">{t('currency', {amount: currentMonthData.bonus.toLocaleString()})}</p>
             <p className="text-sm text-green-600 mt-1">
-              +3 osiągnięcia
+              {t('cards.achievements', {count: 3})}
             </p>
           </CardContent>
         </Card>
@@ -301,31 +301,37 @@ export default function InstructorEarnings() {
       {/* Target Progress */}
       <Card>
         <CardHeader>
-          <CardTitle>Cele i osiągnięcia</CardTitle>
+          <CardTitle>{t('goals.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div>
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium">Cel miesięczny</span>
+                <span className="text-sm font-medium">{t('goals.monthly')}</span>
                 <span className="text-sm text-gray-600">
-                  {goals.monthly.current.toLocaleString()} zł / {goals.monthly.target.toLocaleString()} zł
+                  {t('goals.amount', {
+                    current: goals.monthly.current.toLocaleString(),
+                    target: goals.monthly.target.toLocaleString()
+                  })}
                 </span>
               </div>
               <Progress value={goals.monthly.percentage} className="h-3" />
               {goals.monthly.percentage >= 100 && (
                 <Badge variant="default" className="mt-2">
                   <Award className="w-3 h-3 mr-1" />
-                  Cel osiągnięty!
+                  {t('goals.achieved')}
                 </Badge>
               )}
             </div>
 
             <div>
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium">Cel kwartalny</span>
+                <span className="text-sm font-medium">{t('goals.quarterly')}</span>
                 <span className="text-sm text-gray-600">
-                  {goals.quarterly.current.toLocaleString()} zł / {goals.quarterly.target.toLocaleString()} zł
+                  {t('goals.amount', {
+                    current: goals.quarterly.current.toLocaleString(),
+                    target: goals.quarterly.target.toLocaleString()
+                  })}
                 </span>
               </div>
               <Progress value={goals.quarterly.percentage} className="h-3" />
@@ -333,9 +339,12 @@ export default function InstructorEarnings() {
 
             <div>
               <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium">Cel roczny</span>
+                <span className="text-sm font-medium">{t('goals.yearly')}</span>
                 <span className="text-sm text-gray-600">
-                  {goals.yearly.current.toLocaleString()} zł / {goals.yearly.target.toLocaleString()} zł
+                  {t('goals.amount', {
+                    current: goals.yearly.current.toLocaleString(),
+                    target: goals.yearly.target.toLocaleString()
+                  })}
                 </span>
               </div>
               <Progress value={goals.yearly.percentage} className="h-3" />
@@ -347,19 +356,19 @@ export default function InstructorEarnings() {
       {/* Charts and Details */}
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Przegląd</TabsTrigger>
-          <TabsTrigger value="details">Szczegóły</TabsTrigger>
-          <TabsTrigger value="bonuses">Bonusy</TabsTrigger>
-          <TabsTrigger value="payout">Wypłaty</TabsTrigger>
-          <TabsTrigger value="analytics">Analityka</TabsTrigger>
+          <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="details">{t('tabs.details')}</TabsTrigger>
+          <TabsTrigger value="bonuses">{t('tabs.bonuses')}</TabsTrigger>
+          <TabsTrigger value="payout">{t('tabs.payouts')}</TabsTrigger>
+          <TabsTrigger value="analytics">{t('tabs.analytics')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6 space-y-6">
           {/* Daily earnings chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Zarobki dzienne</CardTitle>
-              <CardDescription>Luty 2024</CardDescription>
+              <CardTitle>{t('charts.dailyEarnings')}</CardTitle>
+              <CardDescription>{t('charts.february', {year: 2024})}</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -389,7 +398,7 @@ export default function InstructorEarnings() {
           {/* Monthly comparison */}
           <Card>
             <CardHeader>
-              <CardTitle>Porównanie miesięczne</CardTitle>
+              <CardTitle>{t('charts.monthlyComparison')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={250}>
@@ -407,7 +416,7 @@ export default function InstructorEarnings() {
           {/* Earnings by type */}
           <Card>
             <CardHeader>
-              <CardTitle>Zarobki wg typu lekcji</CardTitle>
+              <CardTitle>{t('charts.byLessonType')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -416,7 +425,7 @@ export default function InstructorEarnings() {
                     <div className="flex justify-between mb-2">
                       <span className="text-sm font-medium">{type.type}</span>
                       <span className="text-sm text-gray-600">
-                        {type.amount.toLocaleString()} zł ({type.percentage}%)
+                        {t('currency', {amount: type.amount.toLocaleString()})} ({type.percentage}%)
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -439,10 +448,10 @@ export default function InstructorEarnings() {
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
-                <CardTitle>Szczegóły transakcji</CardTitle>
+                <CardTitle>{t('transactions.title')}</CardTitle>
                 <Button variant="outline" size="sm">
                   <Filter className="w-4 h-4 mr-2" />
-                  Filtr
+                  {t('buttons.filter')}
                 </Button>
               </div>
             </CardHeader>
@@ -450,33 +459,33 @@ export default function InstructorEarnings() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Uczeń</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead>Czas trwania</TableHead>
-                    <TableHead>Stawka</TableHead>
-                    <TableHead>Kwota</TableHead>
-                    <TableHead>Prowizja</TableHead>
-                    <TableHead>Na czysto</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('transactions.headers.date')}</TableHead>
+                    <TableHead>{t('transactions.headers.student')}</TableHead>
+                    <TableHead>{t('transactions.headers.type')}</TableHead>
+                    <TableHead>{t('transactions.headers.duration')}</TableHead>
+                    <TableHead>{t('transactions.headers.rate')}</TableHead>
+                    <TableHead>{t('transactions.headers.amount')}</TableHead>
+                    <TableHead>{t('transactions.headers.commission')}</TableHead>
+                    <TableHead>{t('transactions.headers.net')}</TableHead>
+                    <TableHead>{t('transactions.headers.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {transactions.map((transaction) => (
                     <TableRow key={transaction.id}>
-                      <TableCell>{format(new Date(transaction.date), 'dd.MM', { locale: pl })}</TableCell>
+                      <TableCell>{format(new Date(transaction.date), 'dd.MM', { locale: uk })}</TableCell>
                       <TableCell className="font-medium">{transaction.student}</TableCell>
                       <TableCell>
                         <Badge variant="outline">{transaction.type}</Badge>
                       </TableCell>
-                      <TableCell>{transaction.duration} min</TableCell>
-                      <TableCell>{transaction.rate} zł</TableCell>
-                      <TableCell className="font-medium">{transaction.amount} zł</TableCell>
-                      <TableCell className="text-red-500">-{transaction.commission} zł</TableCell>
-                      <TableCell className="font-semibold text-green-600">{transaction.net} zł</TableCell>
+                      <TableCell>{t('transactions.minutes', {min: transaction.duration})}</TableCell>
+                      <TableCell>{t('currency', {amount: transaction.rate})}</TableCell>
+                      <TableCell className="font-medium">{t('currency', {amount: transaction.amount})}</TableCell>
+                      <TableCell className="text-red-500">-{t('currency', {amount: transaction.commission})}</TableCell>
+                      <TableCell className="font-semibold text-green-600">{t('currency', {amount: transaction.net})}</TableCell>
                       <TableCell>
                         <Badge variant={transaction.status === 'paid' ? 'default' : 'secondary'}>
-                          {transaction.status === 'paid' ? 'Opłacone' : 'Oczekuje'}
+                          {transaction.status === 'paid' ? t('transactions.status.paid') : t('transactions.status.pending')}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -491,7 +500,7 @@ export default function InstructorEarnings() {
           {/* Active bonuses */}
           <Card>
             <CardHeader>
-              <CardTitle>Aktywne bonusy</CardTitle>
+              <CardTitle>{t('bonusSection.active')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -504,13 +513,13 @@ export default function InstructorEarnings() {
                       <div>
                         <p className="font-semibold">{bonus.title}</p>
                         <p className="text-sm text-gray-600">{bonus.description}</p>
-                        <p className="text-xs text-gray-500 mt-1">Do {bonus.date}</p>
+                        <p className="text-xs text-gray-500 mt-1">{t('bonusSection.until', {date: bonus.date})}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-green-600">+{bonus.amount} zł</p>
+                      <p className="text-xl font-bold text-green-600">+{t('currency', {amount: bonus.amount})}</p>
                       <Badge variant={bonus.status === 'received' ? 'default' : 'secondary'}>
-                        {bonus.status === 'received' ? 'Otrzymano' : 'Oczekuje'}
+                        {bonus.status === 'received' ? t('bonusSection.received') : t('bonusSection.pending')}
                       </Badge>
                     </div>
                   </div>
@@ -522,27 +531,27 @@ export default function InstructorEarnings() {
           {/* Bonus opportunities */}
           <Card>
             <CardHeader>
-              <CardTitle>Możliwe bonusy</CardTitle>
-              <CardDescription>Spełnij warunki aby otrzymać dodatkowe bonusy</CardDescription>
+              <CardTitle>{t('bonusSection.opportunities')}</CardTitle>
+              <CardDescription>{t('bonusSection.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="p-4 border border-dashed border-gray-300 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="font-medium">Bonus za 80 lekcji</p>
-                    <span className="text-lg font-bold text-gray-400">+1,000 zł</span>
+                    <p className="font-medium">{t('bonusSection.lessons80')}</p>
+                    <span className="text-lg font-bold text-gray-400">+{t('currency', {amount: 1000})}</span>
                   </div>
                   <Progress value={81.25} className="h-2 mb-2" />
-                  <p className="text-sm text-gray-600">65 z 80 lekcji</p>
+                  <p className="text-sm text-gray-600">{t('bonusSection.lessons80Progress', {current: 65, target: 80})}</p>
                 </div>
 
                 <div className="p-4 border border-dashed border-gray-300 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="font-medium">Bonus za 5 zdanych egzaminów</p>
-                    <span className="text-lg font-bold text-gray-400">+1,500 zł</span>
+                    <p className="font-medium">{t('bonusSection.exams5')}</p>
+                    <span className="text-lg font-bold text-gray-400">+{t('currency', {amount: 1500})}</span>
                   </div>
                   <Progress value={60} className="h-2 mb-2" />
-                  <p className="text-sm text-gray-600">3 z 5 uczniów zdało</p>
+                  <p className="text-sm text-gray-600">{t('bonusSection.exams5Progress', {current: 3, target: 5})}</p>
                 </div>
               </div>
             </CardContent>
@@ -553,32 +562,32 @@ export default function InstructorEarnings() {
           {/* Next payout */}
           <Card>
             <CardHeader>
-              <CardTitle>Następna wypłata</CardTitle>
+              <CardTitle>{t('payouts.next')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="bg-green-50 rounded-lg p-6 border border-green-200">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-sm text-gray-600">Planowana data</p>
-                    <p className="text-lg font-semibold">{format(new Date(nextPayout.date), 'd MMMM yyyy', { locale: pl })}</p>
+                    <p className="text-sm text-gray-600">{t('payouts.plannedDate')}</p>
+                    <p className="text-lg font-semibold">{format(new Date(nextPayout.date), 'd MMMM yyyy', { locale: uk })}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm text-gray-600">Kwota do wypłaty</p>
-                    <p className="text-2xl font-bold text-green-600">{nextPayout.amount.toLocaleString()} zł</p>
+                    <p className="text-sm text-gray-600">{t('payouts.amountToPay')}</p>
+                    <p className="text-2xl font-bold text-green-600">{t('currency', {amount: nextPayout.amount.toLocaleString()})}</p>
                   </div>
                 </div>
 
                 <div className="space-y-2 border-t border-green-200 pt-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Metoda wypłaty:</span>
+                    <span className="text-gray-600">{t('payouts.method')}:</span>
                     <span className="font-medium">{nextPayout.method}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Bank:</span>
+                    <span className="text-gray-600">{t('payouts.bank')}:</span>
                     <span className="font-medium">{nextPayout.bank}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Konto:</span>
+                    <span className="text-gray-600">{t('payouts.account')}:</span>
                     <span className="font-medium">{nextPayout.account}</span>
                   </div>
                 </div>
@@ -589,48 +598,48 @@ export default function InstructorEarnings() {
           {/* Payout history */}
           <Card>
             <CardHeader>
-              <CardTitle>Historia wypłat</CardTitle>
+              <CardTitle>{t('payouts.history')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Okres</TableHead>
-                    <TableHead>Kwota</TableHead>
-                    <TableHead>Metoda</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Akcje</TableHead>
+                    <TableHead>{t('transactions.headers.date')}</TableHead>
+                    <TableHead>{t('payouts.period')}</TableHead>
+                    <TableHead>{t('transactions.headers.amount')}</TableHead>
+                    <TableHead>{t('payouts.method')}</TableHead>
+                    <TableHead>{t('transactions.headers.status')}</TableHead>
+                    <TableHead>Дії</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   <TableRow>
                     <TableCell>01.02.2024</TableCell>
-                    <TableCell>Styczeń 2024</TableCell>
-                    <TableCell className="font-semibold">22,100 zł</TableCell>
-                    <TableCell>Przelew bankowy</TableCell>
+                    <TableCell>{t('payouts.january2024')}</TableCell>
+                    <TableCell className="font-semibold">{t('currency', {amount: '22,100'})}</TableCell>
+                    <TableCell>{t('payouts.bankTransfer')}</TableCell>
                     <TableCell>
-                      <Badge variant="default">Wypłacone</Badge>
+                      <Badge variant="default">{t('payouts.status.paid')}</Badge>
                     </TableCell>
                     <TableCell>
                       <Button variant="ghost" size="sm">
                         <Receipt className="w-4 h-4 mr-2" />
-                        Pokwitowanie
+                        {t('buttons.receipt')}
                       </Button>
                     </TableCell>
                   </TableRow>
                   <TableRow>
                     <TableCell>01.01.2024</TableCell>
-                    <TableCell>Grudzień 2023</TableCell>
-                    <TableCell className="font-semibold">21,200 zł</TableCell>
-                    <TableCell>Przelew bankowy</TableCell>
+                    <TableCell>{t('payouts.december2023')}</TableCell>
+                    <TableCell className="font-semibold">{t('currency', {amount: '21,200'})}</TableCell>
+                    <TableCell>{t('payouts.bankTransfer')}</TableCell>
                     <TableCell>
-                      <Badge variant="default">Wypłacone</Badge>
+                      <Badge variant="default">{t('payouts.status.paid')}</Badge>
                     </TableCell>
                     <TableCell>
                       <Button variant="ghost" size="sm">
                         <Receipt className="w-4 h-4 mr-2" />
-                        Pokwitowanie
+                        {t('buttons.receipt')}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -645,21 +654,21 @@ export default function InstructorEarnings() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Średnie zarobki</CardTitle>
+                <CardTitle className="text-base">{t('analytics.averageEarnings')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Za lekcję:</span>
-                    <span className="font-semibold">{(currentMonthData.total / currentMonthData.lessons).toFixed(0)} zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.perLesson')}</span>
+                    <span className="font-semibold">{t('currency', {amount: (currentMonthData.total / currentMonthData.lessons).toFixed(0)})}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Za godzinę:</span>
-                    <span className="font-semibold">{(currentMonthData.total / currentMonthData.hours).toFixed(0)} zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.perHour')}</span>
+                    <span className="font-semibold">{t('currency', {amount: (currentMonthData.total / currentMonthData.hours).toFixed(0)})}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Za dzień:</span>
-                    <span className="font-semibold">{(currentMonthData.total / 17).toFixed(0)} zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.perDay')}</span>
+                    <span className="font-semibold">{t('currency', {amount: (currentMonthData.total / 17).toFixed(0)})}</span>
                   </div>
                 </div>
               </CardContent>
@@ -667,20 +676,20 @@ export default function InstructorEarnings() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Produktywność</CardTitle>
+                <CardTitle className="text-base">{t('analytics.productivity')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Lekcji/dzień:</span>
+                    <span className="text-sm text-gray-600">{t('analytics.lessonsPerDay')}</span>
                     <span className="font-semibold">{(currentMonthData.lessons / 17).toFixed(1)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Godzin/dzień:</span>
+                    <span className="text-sm text-gray-600">{t('analytics.hoursPerDay')}</span>
                     <span className="font-semibold">{(currentMonthData.hours / 17).toFixed(1)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Wykorzystanie:</span>
+                    <span className="text-sm text-gray-600">{t('analytics.utilization')}</span>
                     <span className="font-semibold">82%</span>
                   </div>
                 </div>
@@ -689,21 +698,21 @@ export default function InstructorEarnings() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Prognoza</CardTitle>
+                <CardTitle className="text-base">{t('analytics.forecast')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Do końca miesiąca:</span>
-                    <span className="font-semibold">{((currentMonthData.total / 17) * 11).toFixed(0)} zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.endOfMonth')}</span>
+                    <span className="font-semibold">{t('currency', {amount: ((currentMonthData.total / 17) * 11).toFixed(0)})}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Kwartał:</span>
-                    <span className="font-semibold">75,000 zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.quarter')}</span>
+                    <span className="font-semibold">{t('currency', {amount: '75,000'})}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Rok (prognoza):</span>
-                    <span className="font-semibold">285,000 zł</span>
+                    <span className="text-sm text-gray-600">{t('analytics.yearForecast')}</span>
+                    <span className="font-semibold">{t('currency', {amount: '285,000'})}</span>
                   </div>
                 </div>
               </CardContent>
@@ -713,28 +722,28 @@ export default function InstructorEarnings() {
           {/* Insights */}
           <Card>
             <CardHeader>
-              <CardTitle>Wgląd i rekomendacje</CardTitle>
+              <CardTitle>{t('analytics.insights')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <Alert>
                   <TrendingUp className="h-4 w-4" />
                   <AlertDescription>
-                    Twoje zarobki wzrosły o 12.5% w porównaniu z poprzednim miesiącem. Kontynuuj w tym tempie!
+                    {t('analytics.growthMessage', {percent: 12.5})}
                   </AlertDescription>
                 </Alert>
 
                 <Alert>
                   <Target className="h-4 w-4" />
                   <AlertDescription>
-                    Prawie osiągnąłeś miesięczny cel! Pozostało tylko 150 zł (1 lekcja).
+                    {t('analytics.goalMessage', {amount: 150, lessons: 1})}
                   </AlertDescription>
                 </Alert>
 
                 <Alert>
                   <Zap className="h-4 w-4" />
                   <AlertDescription>
-                    Najbardziej dochodowe dni: sobota i piątek. Rozważ zwiększenie liczby lekcji w te dni.
+                    {t('analytics.bestDaysMessage')}
                   </AlertDescription>
                 </Alert>
               </div>

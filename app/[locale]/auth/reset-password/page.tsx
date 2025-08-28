@@ -1,8 +1,10 @@
 // app/[locale]/(auth)/reset-password/page.tsx
+// Сторінка скидання паролю з перемикачем мов
+
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -15,7 +17,9 @@ import {
   EyeOff,
   CheckCircle,
   AlertCircle,
-  ShieldCheck
+  ShieldCheck,
+  Globe,
+  Check
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -24,6 +28,27 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Progress } from '@/components/ui/progress'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+
+// Типи
+interface Language {
+  code: string
+  name: string
+  flag: string
+}
+
+// Константи
+const AVAILABLE_LANGUAGES: Language[] = [
+  { code: 'pl', name: 'Polski', flag: '🇵🇱' },
+  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+]
 
 // Password strength checker
 const getPasswordStrength = (password: string): number => {
@@ -67,6 +92,7 @@ type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>
 
 export default function ResetPasswordPage() {
   const router = useRouter()
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const locale = useLocale()
   const t = useTranslations('auth.resetPassword')
@@ -77,6 +103,7 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [passwordStrength, setPasswordStrength] = useState(0)
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false)
   
   const token = searchParams.get('token')
   
@@ -104,6 +131,25 @@ export default function ResetPasswordPage() {
       setPasswordStrength(0)
     }
   }, [password])
+
+  const handleLanguageChange = (newLocale: string) => {
+    setIsChangingLanguage(true)
+    const segments = pathname.split('/')
+    segments[1] = newLocale
+    const newPath = segments.join('/')
+    
+    // Preserve the token query parameter
+    const url = new URL(window.location.href)
+    url.pathname = newPath
+    if (token) {
+      url.searchParams.set('token', token)
+    }
+    
+    router.push(url.pathname + url.search)
+    router.refresh()
+  }
+
+  const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === locale) || AVAILABLE_LANGUAGES[0]
   
   const onSubmit = async (data: ResetPasswordFormData) => {
     if (!token) {
@@ -136,11 +182,62 @@ export default function ResetPasswordPage() {
       setIsLoading(false)
     }
   }
+
+  // Language Switcher Component
+  const LanguageSwitcher = () => (
+    <div className="absolute top-4 right-4 z-10">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 px-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-sm"
+            disabled={isChangingLanguage}
+          >
+            {isChangingLanguage ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <>
+                <Globe className="h-4 w-4 mr-2 text-gray-600 dark:text-gray-400" />
+                <span className="mr-1">{currentLanguage.flag}</span>
+                <span className="hidden sm:inline-block text-gray-700 dark:text-gray-300">
+                  {currentLanguage.name}
+                </span>
+                <span className="sm:hidden text-gray-700 dark:text-gray-300">
+                  {currentLanguage.code.toUpperCase()}
+                </span>
+              </>
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent 
+          align="end" 
+          className="w-48 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+        >
+          {AVAILABLE_LANGUAGES.map((language) => (
+            <DropdownMenuItem
+              key={language.code}
+              onClick={() => handleLanguageChange(language.code)}
+              className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 focus:bg-gray-100 dark:focus:bg-gray-700"
+              disabled={isChangingLanguage}
+            >
+              <span className="mr-2">{language.flag}</span>
+              <span className="flex-1">{language.name}</span>
+              {language.code === locale && (
+                <Check className="h-4 w-4 ml-2 text-green-600 dark:text-green-400" />
+              )}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
   
   // Success state
   if (isSuccess) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4 relative">
+        <LanguageSwitcher />
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 w-12 h-12 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
@@ -181,7 +278,8 @@ export default function ResetPasswordPage() {
   // Error state - no token
   if (!token) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4 relative">
+        <LanguageSwitcher />
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <div className="mx-auto mb-4 w-12 h-12 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center">
@@ -215,7 +313,8 @@ export default function ResetPasswordPage() {
   
   // Form state
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4 relative">
+      <LanguageSwitcher />
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
@@ -245,12 +344,14 @@ export default function ResetPasswordPage() {
                   placeholder={t('newPasswordPlaceholder')}
                   className="pl-10 pr-10"
                   disabled={isLoading}
+                  autoComplete="new-password"
                   {...register('password')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -284,12 +385,14 @@ export default function ResetPasswordPage() {
                   placeholder={t('confirmPasswordPlaceholder')}
                   className="pl-10 pr-10"
                   disabled={isLoading}
+                  autoComplete="new-password"
                   {...register('confirmPassword')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="h-4 w-4" />

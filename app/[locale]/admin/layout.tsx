@@ -3,26 +3,49 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, Users, GraduationCap, UserCheck, Car,
   MapPin, Package, Calendar, CreditCard, FileText, Settings,
   Bell, Menu, X, ChevronDown, LogOut, User, Shield,
-  Sun, Moon, Search, Home, ChevronRight
+  Sun, Moon, Search, Home, ChevronRight, Globe, Check, Loader2
 } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
   params: { locale: string };
 }
 
+interface Language {
+  code: string;
+  name: string;
+  flag: string;
+}
+
+const AVAILABLE_LANGUAGES: Language[] = [
+  { code: 'pl', name: 'Polski', flag: '🇵🇱' },
+  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+];
+
 export default function AdminLayout({ children, params }: AdminLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(3);
+  const [isChangingLanguage, setIsChangingLanguage] = useState(false);
+
+  const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === params.locale) || AVAILABLE_LANGUAGES[0];
 
   const navigation = [
     { name: 'Dashboard', href: `/${params.locale}/admin/dashboard`, icon: LayoutDashboard },
@@ -72,6 +95,16 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
     });
 
     return breadcrumbs;
+  };
+
+  const handleLanguageChange = (newLocale: string) => {
+    setIsChangingLanguage(true);
+    const segments = pathname.split('/');
+    segments[1] = newLocale;
+    const newPath = segments.join('/');
+    
+    router.push(newPath);
+    router.refresh();
   };
 
   return (
@@ -202,6 +235,43 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                 <button className="p-2 rounded-lg hover:bg-gray-100">
                   <Search className="w-5 h-5 text-gray-600" />
                 </button>
+
+                {/* Language Switcher */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button 
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors"
+                      disabled={isChangingLanguage}
+                    >
+                      {isChangingLanguage ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-gray-600" />
+                      ) : (
+                        <>
+                          <Globe className="w-4 h-4 text-gray-600" />
+                          <span className="text-sm font-medium text-gray-700">
+                            {currentLanguage.flag} {currentLanguage.code.toUpperCase()}
+                          </span>
+                        </>
+                      )}
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    {AVAILABLE_LANGUAGES.map((language) => (
+                      <DropdownMenuItem
+                        key={language.code}
+                        onClick={() => handleLanguageChange(language.code)}
+                        className="cursor-pointer"
+                        disabled={isChangingLanguage}
+                      >
+                        <span className="mr-2">{language.flag}</span>
+                        <span className="flex-1">{language.name}</span>
+                        {language.code === params.locale && (
+                          <Check className="h-4 w-4 ml-2 text-green-600" />
+                        )}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
                 {/* Dark mode toggle */}
                 <button

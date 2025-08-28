@@ -1,0 +1,448 @@
+{
+    "bookingDetails": {
+        "title": "Деталі уроку",
+        "id": "ID: #{id}",
+        "invoice": "Рахунок",
+        "notFound": {
+            "title": "Не знайдено бронювання",
+            "description": "Бронювання з вказаним ID не існує."
+        },
+        "info": {
+            "title": "Інформація про урок",
+            "date": "Дата",
+            "time": "Час",
+            "duration": "{minutes} хвилин",
+            "type": "Тип уроку",
+            "notes": "Примітки"
+        },
+        "status": {
+            "upcoming": "Майбутній",
+            "inProgress": "В процесі",
+            "completed": "Завершено",
+            "cancelled": "Скасовано",
+            "noShow": "Не з'явився"
+        },
+        "instructor": {
+            "title": "Інструктор",
+            "experience": "{years} досвіду",
+            "sendMessage": "Надіслати повідомлення"
+        },
+        "vehicle": {
+            "title": "Транспортний засіб",
+            "year": "Рік {year}",
+            "transmission": {
+                "manual": "Механіка",
+                "automatic": "Автомат"
+            },
+            "fuel": {
+                "petrol": "Бензин",
+                "diesel": "Дизель",
+                "electric": "Електро",
+                "hybrid": "Гібрид"
+            }
+        },
+        "location": {
+            "title": "Місце зустрічі",
+            "openInMaps": "Відкрити в мапах"
+        },
+        "payment": {
+            "title": "Оплата",
+            "status": "Статус",
+            "paid": "Оплачено",
+            "unpaid": "Не оплачено",
+            "method": "Метод",
+            "credits": "Кредити ({count})",
+            "online": "Онлайн",
+            "cash": "Готівка",
+            "amount": "Сума",
+            "payNow": "Оплатити зараз",
+            "currency": "{amount} грн"
+        },
+        "actions": {
+            "title": "Дії",
+            "reschedule": "Перенести урок",
+            "cancel": "Скасувати урок"
+        },
+        "cancelDialog": {
+            "title": "Скасувати урок",
+            "description": "Ви впевнені, що хочете скасувати цей урок? Якщо ви скасуєте менше ніж за 24 години до початку, кредити не будуть повернуті.",
+            "reasonLabel": "Причина скасування (необов'язково)",
+            "reasonPlaceholder": "Вкажіть причину скасування...",
+            "keep": "Ні, залишити",
+            "confirm": "Так, скасувати",
+            "cancelling": "Скасування..."
+        },
+        "toast": {
+            "cancelled": "Урок скасовано",
+            "cancelledDescription": "Ваш урок успішно скасовано."
+        },
+        "alert": {
+            "cancellationInfo": "Ви можете скасувати або перенести урок за 24 години до його початку без втрати кредитів."
+        },
+        "lessonTypes": {
+            "standard": "Стандартне водіння",
+            "highway": "Автомагістраль",
+            "city": "Міське водіння",
+            "parking": "Паркування",
+            "exam": "Підготовка до іспиту"
+        }
+    },
+    "bookingNew": {
+            "highway": {
+                "name": "Автомагістраль",
+                "description": "Навчання водінню на високих швидкостях"
+            },
+            "parking": {
+                "name": "Паркування",
+                "description": "Паралельне та перпендикулярне паркування"
+            },
+            "night": {
+                "name": "Нічне водіння",
+                "description": "Водіння в умовах обмеженої видимості"
+            },
+            "examPrep": {
+                "name": "Підготовка до іспиту",
+                "description": "Симуляція державного іспиту"
+            },
+            "duration": "{minutes} хв",
+            "credit": "{count, plural, =1 {кредит} few {кредити} many {кредитів} other {кредитів}}",
+            "or": "або",
+            "currency": "{amount} грн",
+        "title": "Забронювати урок водіння",
+    "subtitle": "Оберіть відповідний час та інструктора",
+    "steps": {
+      "lessonType": "Тип уроку",
+      "instructor": "Інструктор",
+      "dateTime": "Дата і час",
+      "vehicleLocation": "Авто і місце",
+      "confirmation": "Підтвердження"
+    },
+    "lessonTypes": {
+      "title": "Оберіть тип уроку",
+      "recommended": "Рекомендовано",
+      "standard": {
+        "name": "Стандартне водіння",
+        "description": "Базовий урок водіння в місті"
+      },
+      "highway": {
+        "name": "Автомагістраль",
+        "description": "Навчання водінню на високих швидкостях"
+      },
+      "parking": {
+        "name": "Паркування",
+        "description": "Паралельне та перпендикулярне паркування"
+      },
+      "night": {
+        "name": "Нічне водіння",
+        "description": "Водіння в умовах обмеженої видимості"
+      },
+      "examPrep": {
+        "name": "Підготовка до іспиту",
+        "description": "Симуляція державного іспиту"
+      },
+      "duration": "{minutes} хв",
+      "credit": "{count, plural, =1 {кредит} few {кредити} many {кредитів} other {кредитів}}",
+      "or": "або",
+      "currency": "{amount} грн"
+    },
+    "instructor": {
+      "title": "Оберіть інструктора",
+      "searchPlaceholder": "Пошук інструктора...",
+      "experience": "Досвід",
+      "successRate": "Успішність",
+      "specializations": "Спеціалізації",
+      "nextAvailable": "Найближчий час",
+      "reviews": "{count} відгуків",
+      "completedLessons": "Проведених уроків",
+      "today": "Сьогодні",
+      "tomorrow": "Завтра",
+      "years": "{count} років",
+      "exams": "Іспити",
+      "nightDriving": "Нічне водіння",
+      "highways": "Автомагістралі",
+      "parking": "Паркування",
+      "maneuvers": "Маневри",
+      "city": "Місто"
+    },
+    "dateTime": {
+      "title": "Оберіть дату та час",
+      "months": [
+        "Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+        "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
+      ],
+      "weekDays": ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"],
+      "noSlots": "Немає вільних",
+      "moreSlots": "+{count} ще",
+      "selectInstructor": "Оберіть інструктора",
+      "sunday": "Неділя",
+      "unavailable": "Недоступно",
+      "selected": "Обрано",
+      "available": "Доступно",
+      "availableHours": "Доступні години",
+      "hours": "{count} години",
+      "noSlotsForDay": "Немає доступних термінів у цей день",
+      "selectInstructorFirst": "Спочатку оберіть інструктора, щоб побачити доступні терміни",
+      "legendAvailable": "Доступно",
+      "legendSelected": "Обрано",
+      "legendUnavailable": "Недоступно"
+    },
+    "vehicle": {
+      "title": "Доступні автомобілі",
+      "transmission": {
+        "manual": "Механіка",
+        "automatic": "Автомат"
+      },
+      "fuel": {
+        "petrol": "Бензин",
+        "diesel": "Дизель",
+        "electric": "Електро",
+        "hybrid": "Гібрид"
+      },
+      "features": {
+        "abs": "ABS",
+        "esp": "ESP",
+        "airCondition": "Кондиціонер",
+        "parkingSensors": "Датчики паркування",
+        "rearCamera": "Камера заднього виду"
+      }
+    },
+    "location": {
+      "title": "Місце початку",
+      "distance": "{distance} км"
+    },
+    "summary": {
+      "title": "Підсумок бронювання",
+      "lessonType": "Тип уроку",
+      "instructor": "Інструктор",
+      "dateTime": "Дата та час",
+      "vehicle": "Автомобіль",
+      "location": "Місце"
+    },
+    "payment": {
+      "title": "Метод оплати",
+      "useCredits": "Використати кредити",
+      "creditsAvailable": "Доступно: {count} кредитів",
+      "creditsRequired": "{count} кредити",
+      "payOnline": "Оплатити онлайн",
+      "paymentService": "Приват24"
+    },
+    "buttons": {
+      "back": "Назад",
+      "next": "Далі",
+      "confirm": "Підтвердити бронювання",
+      "confirming": "Підтвердження..."
+    },
+    "success": {
+      "title": "Бронювання підтверджено!",
+      "description": "Ваш урок успішно заброньовано. Ви отримаєте підтвердження на email.",
+      "date": "Дата",
+      "time": "Час",
+      "instructor": "Інструктор",
+      "redirecting": "Перенаправлення до списку уроків..."
+    },
+    "alerts": {
+      "cancellationPolicy": "Ви можете скасувати або перенести урок за 24 год до його початку без втрати кредитів."
+    }
+        },
+        "instructors": {
+    "schedule": {
+      "title": "Розклад інструкторів",
+      "subtitle": "Управління розкладом всіх інструкторів",
+      "buttons": {
+        "print": "Друк",
+        "download": "Завантажити",
+        "addLesson": "Додати заняття",
+        "today": "Сьогодні",
+        "showDetails": "Показати деталі",
+        "edit": "Редагувати"
+      },
+      "stats": {
+        "totalLessons": "Всього занять",
+        "confirmed": "Підтверджені",
+        "pending": "Очікують",
+        "cancelled": "Скасовані",
+        "plannedHours": "Заплановані години"
+      },
+      "viewModes": {
+        "week": "Тиждень",
+        "day": "День",
+        "list": "Список"
+      },
+      "filters": {
+        "allInstructors": "Всі інструктори",
+        "allLocations": "Всі локації"
+      },
+      "weekView": {
+        "weekNumber": "Тиждень {number}",
+        "instructor": "Інструктор",
+        "id": "ID",
+        "free": "Вільно"
+      },
+      "dayView": {
+        "time": "Час"
+      },
+      "listView": {
+        "time": "Час",
+        "instructor": "Інструктор",
+        "student": "Учень",
+        "lessonType": "Тип заняття",
+        "vehicle": "Автомобіль",
+        "location": "Локація",
+        "status": "Статус",
+        "actions": "Дії"
+      },
+      "lessonTypes": {
+        "practice": "Практика",
+        "track": "Майданчик",
+        "city": "Місто",
+        "parking": "Паркування",
+        "exam": "Екзамен",
+        "nightDriving": "Нічне водіння",
+        "highway": "Автострада"
+      },
+      "lessonStatus": {
+        "confirmed": "Підтверджено",
+        "pending": "Очікує",
+        "cancelled": "Скасовано"
+      },
+      "locations": {
+        "warsaw": "Варшава",
+        "trackKrakow": "Майданчик Краків",
+        "trackGdansk": "Майданчик Гданськ",
+        "examCenter": "Екзаменаційний центр",
+        "meetingWarsaw": "Збір: Варшава"
+      },
+      "weekDays": {
+        "monday": "Понеділок",
+        "tuesday": "Вівторок",
+        "wednesday": "Середа",
+        "thursday": "Четвер",
+        "friday": "П'ятниця",
+        "saturday": "Субота",
+        "sunday": "Неділя"
+      }
+    }
+  },
+   "bookingHistory": {
+    "title": "Історія уроків",
+    "subtitle": "Переглядайте вашу історію поїздок та прогрес",
+    "exportCSV": "Експортувати CSV",
+    "statistics": {
+      "completedLessons": "Завершені уроки",
+      "drivingHours": "Години водіння",
+      "averageRating": "Середня оцінка",
+      "totalSpent": "Витрачено загалом",
+      "currency": "{amount} грн"
+    },
+    "filters": {
+      "title": "Фільтри",
+      "searchPlaceholder": "Пошук за типом, інструктором або автомобілем...",
+      "status": {
+        "all": "Всі",
+        "completed": "Завершені",
+        "cancelled": "Скасовані",
+        "noShow": "Не з'явився"
+      }
+    },
+    "status": {
+      "completed": "Завершено",
+      "cancelled": "Скасовано",
+      "noShow": "Не з'явився"
+    },
+    "lessonTypes": {
+      "standard": "Стандартне водіння",
+      "highway": "Автомагістраль",
+      "parking": "Паркування",
+      "night": "Нічне водіння",
+      "maneuvers": "Маневри",
+      "examPrep": "Підготовка до іспиту"
+    },
+    "table": {
+      "date": "Дата",
+      "type": "Тип",
+      "instructor": "Інструктор",
+      "vehicle": "Автомобіль",
+      "status": "Статус",
+      "rating": "Оцінка",
+      "price": "Ціна",
+      "actions": "Дії"
+    },
+    "duration": "{minutes} хв",
+    "noResults": "Не знайдено уроків в історії",
+    "pagination": {
+      "previous": "Попередня",
+      "next": "Наступна"
+    }
+  },
+  "bookings": {
+    "title": "Мої уроки",
+    "subtitle": "Керуйте своїми уроками водіння",
+    "bookLesson": "Забронювати урок",
+    "stats": {
+      "allLessons": "Всі уроки",
+      "upcoming": "Майбутні",
+      "completed": "Завершені",
+      "drivingHours": "Години водіння"
+    },
+    "filters": {
+      "title": "Фільтри",
+      "searchPlaceholder": "Пошук за інструктором або типом...",
+      "status": {
+        "label": "Статус",
+        "all": "Всі",
+        "upcoming": "Майбутні",
+        "completed": "Завершені",
+        "cancelled": "Скасовані",
+        "noShow": "Не з'явився"
+      },
+      "period": {
+        "label": "Період",
+        "all": "Всі",
+        "today": "Сьогодні",
+        "week": "Цей тиждень",
+        "month": "Цей місяць"
+      }
+    },
+    "status": {
+      "upcoming": "Майбутній",
+      "completed": "Завершено",
+      "cancelled": "Скасовано",
+      "noShow": "Не з'явився"
+    },
+    "payment": {
+      "unpaid": "Не оплачено",
+      "pay": "Оплатити",
+      "price": "Ціна",
+      "currency": "{amount} грн"
+    },
+    "lessonTypes": {
+      "standard": "Стандартне водіння",
+      "parking": "Паркування",
+      "night": "Нічне водіння",
+      "highway": "Автомагістраль",
+      "maneuvers": "Маневри",
+      "examPrep": "Підготовка до іспиту"
+    },
+    "details": {
+      "instructor": "Інструктор",
+      "vehicle": "Автомобіль",
+      "location": "Локація"
+    },
+    "duration": "{minutes} хв",
+    "actions": {
+      "viewDetails": "Переглянути деталі",
+      "reschedule": "Перенести",
+      "cancel": "Скасувати",
+      "downloadInvoice": "Завантажити рахунок"
+    },
+    "empty": {
+      "noLessons": "Не знайдено уроків",
+      "clearFilters": "Очистити фільтри"
+    },
+    "alert": {
+      "upcomingLessons": "У вас {count} майбутніх уроків. Пам'ятайте про пунктуальність!"
+    }
+
+}
+
+    }

@@ -1,9 +1,8 @@
-// app/[locale]/student/bookings/[id]/page.tsx
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Calendar,
   Clock,
@@ -104,6 +103,7 @@ export default function BookingDetailsPage() {
   const router = useRouter();
   const params = useParams();
   const bookingId = params.id as string;
+  const t = useTranslations('student.bookingDetails');
   
   const [booking, setBooking] = useState<BookingDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -120,7 +120,7 @@ export default function BookingDetailsPage() {
         time: '10:00',
         endTime: '11:30',
         status: 'upcoming',
-        type: 'Jazda standardowa',
+        type: 'standard', // Changed to key for translation
         duration: 90,
         price: 180,
         paid: true,
@@ -128,34 +128,34 @@ export default function BookingDetailsPage() {
         creditsUsed: 1,
         instructor: {
           id: '1',
-          name: 'Piotr Nowak',
-          phone: '+48 123 456 789',
-          email: 'piotr.nowak@szkola.pl',
-          avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+          name: 'Петро Новак',
+          phone: '+38 067 123 4567',
+          email: 'petro.novak@school.ua',
+          avatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff',
           rating: 4.9,
-          experience: '8 lat'
+          experience: '8'
         },
         vehicle: {
           id: '1',
           make: 'Toyota',
           model: 'Yaris',
-          registration: 'WZ 12345',
+          registration: 'AA 1234 BB',
           year: 2023,
-          transmission: 'Manual',
-          fuel: 'Benzyna'
+          transmission: 'manual',
+          fuel: 'petrol'
         },
         location: {
-          name: 'Centrum - ul. Puławska 145',
-          address: 'ul. Puławska 145, 02-715 Warszawa',
+          name: 'Центр - вул. Хрещатик 145',
+          address: 'вул. Хрещатик 145, 01001 Київ',
           coordinates: {
-            lat: 52.2297,
-            lng: 21.0122
+            lat: 50.4501,
+            lng: 30.5234
           }
         },
-        notes: 'Proszę o powtórzenie parkowania równoległego',
+        notes: 'Прошу повторити паралельне паркування',
         invoice: {
-          number: 'FV/2024/08/001234',
-          url: '/invoices/FV-2024-08-001234.pdf'
+          number: 'INV/2024/08/001234',
+          url: '/invoices/INV-2024-08-001234.pdf'
         }
       });
       setLoading(false);
@@ -168,8 +168,8 @@ export default function BookingDetailsPage() {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     toast({
-      title: "Lekcja anulowana",
-      description: "Twoja lekcja została anulowana pomyślnie.",
+      title: t('toast.cancelled'),
+      description: t('toast.cancelledDescription'),
     });
     
     setIsCancelling(false);
@@ -179,11 +179,11 @@ export default function BookingDetailsPage() {
 
   const getStatusBadge = (status: BookingDetails['status']) => {
     const variants = {
-      upcoming: { label: 'Nadchodząca', className: 'bg-blue-100 text-blue-700', icon: Clock },
-      in_progress: { label: 'W trakcie', className: 'bg-yellow-100 text-yellow-700', icon: Car },
-      completed: { label: 'Zakończona', className: 'bg-green-100 text-green-700', icon: CheckCircle },
-      cancelled: { label: 'Anulowana', className: 'bg-gray-100 text-gray-700', icon: XCircle },
-      no_show: { label: 'Nieobecny', className: 'bg-red-100 text-red-700', icon: AlertTriangle }
+      upcoming: { label: t('status.upcoming'), className: 'bg-blue-100 text-blue-700', icon: Clock },
+      in_progress: { label: t('status.inProgress'), className: 'bg-yellow-100 text-yellow-700', icon: Car },
+      completed: { label: t('status.completed'), className: 'bg-green-100 text-green-700', icon: CheckCircle },
+      cancelled: { label: t('status.cancelled'), className: 'bg-gray-100 text-gray-700', icon: XCircle },
+      no_show: { label: t('status.noShow'), className: 'bg-red-100 text-red-700', icon: AlertTriangle }
     };
     return variants[status];
   };
@@ -211,10 +211,8 @@ export default function BookingDetailsPage() {
       <div className="p-6">
         <Alert>
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Nie znaleziono rezerwacji</AlertTitle>
-          <AlertDescription>
-            Rezerwacja o podanym ID nie istnieje.
-          </AlertDescription>
+          <AlertTitle>{t('notFound.title')}</AlertTitle>
+          <AlertDescription>{t('notFound.description')}</AlertDescription>
         </Alert>
       </div>
     );
@@ -236,8 +234,8 @@ export default function BookingDetailsPage() {
             <ChevronLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold">Szczegóły lekcji</h1>
-            <p className="text-muted-foreground mt-1">ID: #{booking.id}</p>
+            <h1 className="text-3xl font-bold">{t('title')}</h1>
+            <p className="text-muted-foreground mt-1">{t('id', { id: booking.id })}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -247,7 +245,7 @@ export default function BookingDetailsPage() {
           {booking.invoice && (
             <Button variant="outline">
               <Download className="h-4 w-4 mr-2" />
-              Faktura
+              {t('invoice')}
             </Button>
           )}
         </div>
@@ -260,7 +258,7 @@ export default function BookingDetailsPage() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Informacje o lekcji</CardTitle>
+                <CardTitle>{t('info.title')}</CardTitle>
                 <Badge className={statusInfo.className}>
                   <StatusIcon className="w-3 h-3 mr-1" />
                   {statusInfo.label}
@@ -274,9 +272,9 @@ export default function BookingDetailsPage() {
                     <Calendar className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Data</p>
+                    <p className="text-sm text-muted-foreground">{t('info.date')}</p>
                     <p className="font-medium">
-                      {new Date(booking.date).toLocaleDateString('pl-PL', {
+                      {new Date(booking.date).toLocaleDateString('uk-UA', {
                         weekday: 'long',
                         year: 'numeric',
                         month: 'long',
@@ -291,9 +289,9 @@ export default function BookingDetailsPage() {
                     <Clock className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Godzina</p>
+                    <p className="text-sm text-muted-foreground">{t('info.time')}</p>
                     <p className="font-medium">{booking.time} - {booking.endTime}</p>
-                    <p className="text-xs text-muted-foreground">{booking.duration} minut</p>
+                    <p className="text-xs text-muted-foreground">{t('info.duration', { minutes: booking.duration })}</p>
                   </div>
                 </div>
               </div>
@@ -301,15 +299,15 @@ export default function BookingDetailsPage() {
               <Separator />
 
               <div>
-                <p className="text-sm text-muted-foreground mb-2">Typ lekcji</p>
-                <p className="font-semibold text-lg">{booking.type}</p>
+                <p className="text-sm text-muted-foreground mb-2">{t('info.type')}</p>
+                <p className="font-semibold text-lg">{t(`lessonTypes.${booking.type}`)}</p>
               </div>
 
               {booking.notes && (
                 <>
                   <Separator />
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Notatki</p>
+                    <p className="text-sm text-muted-foreground mb-2">{t('info.notes')}</p>
                     <p className="text-sm">{booking.notes}</p>
                   </div>
                 </>
@@ -320,7 +318,7 @@ export default function BookingDetailsPage() {
           {/* Instructor Card */}
           <Card>
             <CardHeader>
-              <CardTitle>Instruktor</CardTitle>
+              <CardTitle>{t('instructor.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-start justify-between">
@@ -335,13 +333,13 @@ export default function BookingDetailsPage() {
                     <div className="flex items-center gap-2">
                       <Star className="w-4 h-4 text-yellow-500 fill-current" />
                       <span className="text-sm font-medium">{booking.instructor.rating}</span>
-                      <span className="text-sm text-muted-foreground">• {booking.instructor.experience} doświadczenia</span>
+                      <span className="text-sm text-muted-foreground">• {t('instructor.experience', { years: booking.instructor.experience })}</span>
                     </div>
                   </div>
                 </div>
                 <Button variant="outline" size="sm">
                   <MessageSquare className="w-4 h-4 mr-2" />
-                  Wyślij wiadomość
+                  {t('instructor.sendMessage')}
                 </Button>
               </div>
               
@@ -361,7 +359,7 @@ export default function BookingDetailsPage() {
           {/* Vehicle Card */}
           <Card>
             <CardHeader>
-              <CardTitle>Pojazd</CardTitle>
+              <CardTitle>{t('vehicle.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
@@ -374,12 +372,12 @@ export default function BookingDetailsPage() {
                       {booking.vehicle.make} {booking.vehicle.model}
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      {booking.vehicle.registration} • Rok {booking.vehicle.year}
+                      {booking.vehicle.registration} • {t('vehicle.year', { year: booking.vehicle.year })}
                     </p>
                   </div>
                 </div>
                 <Badge variant="outline">
-                  {booking.vehicle.transmission} • {booking.vehicle.fuel}
+                  {t(`vehicle.transmission.${booking.vehicle.transmission}`)} • {t(`vehicle.fuel.${booking.vehicle.fuel}`)}
                 </Badge>
               </div>
             </CardContent>
@@ -391,7 +389,7 @@ export default function BookingDetailsPage() {
           {/* Location Card */}
           <Card>
             <CardHeader>
-              <CardTitle>Miejsce spotkania</CardTitle>
+              <CardTitle>{t('location.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-start gap-3">
@@ -403,7 +401,7 @@ export default function BookingDetailsPage() {
               </div>
               <Button className="w-full" variant="outline">
                 <Navigation className="w-4 h-4 mr-2" />
-                Otwórz w mapach
+                {t('location.openInMaps')}
               </Button>
             </CardContent>
           </Card>
@@ -411,31 +409,31 @@ export default function BookingDetailsPage() {
           {/* Payment Card */}
           <Card>
             <CardHeader>
-              <CardTitle>Płatność</CardTitle>
+              <CardTitle>{t('payment.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Status</span>
+                <span className="text-muted-foreground">{t('payment.status')}</span>
                 <Badge variant={booking.paid ? "success" : "destructive"}>
-                  {booking.paid ? 'Opłacone' : 'Nieopłacone'}
+                  {booking.paid ? t('payment.paid') : t('payment.unpaid')}
                 </Badge>
               </div>
               
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Metoda</span>
+                <span className="text-muted-foreground">{t('payment.method')}</span>
                 <div className="flex items-center gap-2">
                   {booking.paymentMethod === 'credits' ? (
                     <>
                       <Coins className="w-4 h-4" />
-                      <span>Kredyty ({booking.creditsUsed})</span>
+                      <span>{t('payment.credits', { count: booking.creditsUsed })}</span>
                     </>
                   ) : booking.paymentMethod === 'online' ? (
                     <>
                       <CreditCard className="w-4 h-4" />
-                      <span>Online</span>
+                      <span>{t('payment.online')}</span>
                     </>
                   ) : (
-                    <span>Gotówka</span>
+                    <span>{t('payment.cash')}</span>
                   )}
                 </div>
               </div>
@@ -443,14 +441,14 @@ export default function BookingDetailsPage() {
               <Separator />
               
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Kwota</span>
-                <span className="text-xl font-bold">{booking.price} PLN</span>
+                <span className="text-muted-foreground">{t('payment.amount')}</span>
+                <span className="text-xl font-bold">{t('payment.currency', { amount: booking.price })}</span>
               </div>
 
               {!booking.paid && booking.status === 'upcoming' && (
                 <Button className="w-full">
                   <CreditCard className="w-4 h-4 mr-2" />
-                  Opłać teraz
+                  {t('payment.payNow')}
                 </Button>
               )}
             </CardContent>
@@ -460,7 +458,7 @@ export default function BookingDetailsPage() {
           {booking.status === 'upcoming' && (
             <Card>
               <CardHeader>
-                <CardTitle>Akcje</CardTitle>
+                <CardTitle>{t('actions.title')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button 
@@ -469,7 +467,7 @@ export default function BookingDetailsPage() {
                   onClick={() => router.push(`/student/schedule/reschedule/${booking.id}`)}
                 >
                   <Edit className="w-4 h-4 mr-2" />
-                  Przełóż lekcję
+                  {t('actions.reschedule')}
                 </Button>
                 <Button 
                   className="w-full text-destructive hover:text-destructive" 
@@ -477,7 +475,7 @@ export default function BookingDetailsPage() {
                   onClick={() => setCancelDialogOpen(true)}
                 >
                   <X className="w-4 h-4 mr-2" />
-                  Anuluj lekcję
+                  {t('actions.cancel')}
                 </Button>
               </CardContent>
             </Card>
@@ -487,7 +485,7 @@ export default function BookingDetailsPage() {
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              Możesz anulować lub przełożyć lekcję do 24 godzin przed jej rozpoczęciem bez utraty kredytów.
+              {t('alert.cancellationInfo')}
             </AlertDescription>
           </Alert>
         </div>
@@ -497,21 +495,21 @@ export default function BookingDetailsPage() {
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Anuluj lekcję</DialogTitle>
+            <DialogTitle>{t('cancelDialog.title')}</DialogTitle>
             <DialogDescription>
-              Czy na pewno chcesz anulować tę lekcję? Jeśli anulujesz mniej niż 24 godziny przed rozpoczęciem, kredyty nie zostaną zwrócone.
+              {t('cancelDialog.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
               <label htmlFor="reason" className="text-sm font-medium">
-                Powód anulowania (opcjonalnie)
+                {t('cancelDialog.reasonLabel')}
               </label>
               <Textarea
                 id="reason"
                 value={cancellationReason}
                 onChange={(e) => setCancellationReason(e.target.value)}
-                placeholder="Podaj powód anulowania..."
+                placeholder={t('cancelDialog.reasonPlaceholder')}
                 className="mt-2"
               />
             </div>
@@ -522,14 +520,14 @@ export default function BookingDetailsPage() {
               onClick={() => setCancelDialogOpen(false)}
               disabled={isCancelling}
             >
-              Nie, zachowaj
+              {t('cancelDialog.keep')}
             </Button>
             <Button
               variant="destructive"
               onClick={handleCancelBooking}
               disabled={isCancelling}
             >
-              {isCancelling ? 'Anulowanie...' : 'Tak, anuluj'}
+              {isCancelling ? t('cancelDialog.cancelling') : t('cancelDialog.confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

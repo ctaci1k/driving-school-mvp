@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { 
   Calendar, 
   Clock, 
@@ -75,6 +76,8 @@ interface Booking {
 
 export default function StudentBookingsPage() {
   const router = useRouter();
+  const t = useTranslations('student.bookings');
+  
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -90,18 +93,18 @@ export default function StudentBookingsPage() {
         time: '10:00',
         instructor: {
           id: '1',
-          name: 'Piotr Nowak',
-          avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff'
+          name: 'Петро Новак',
+          avatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff'
         },
         vehicle: {
           id: '1',
           make: 'Toyota',
           model: 'Yaris',
-          registration: 'WZ 12345'
+          registration: 'AA 1234 BB'
         },
-        location: 'Centrum - ul. Puławska 145',
+        location: 'Центр - вул. Хрещатик 145',
         status: 'upcoming',
-        type: 'Jazda standardowa',
+        type: 'standard',
         duration: 90,
         price: 180,
         paid: true
@@ -112,18 +115,18 @@ export default function StudentBookingsPage() {
         time: '14:00',
         instructor: {
           id: '2',
-          name: 'Anna Kowalczyk',
-          avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff'
+          name: 'Анна Коваленко',
+          avatar: 'https://ui-avatars.com/api/?name=Anna+Kovalenko&background=8B5CF6&color=fff'
         },
         vehicle: {
           id: '2',
           make: 'Volkswagen',
           model: 'Golf',
-          registration: 'WZ 67890'
+          registration: 'AA 5678 CC'
         },
-        location: 'Mokotów - ul. Wilanowska 89',
+        location: 'Печерськ - вул. Лесі Українки 89',
         status: 'upcoming',
-        type: 'Parkowanie',
+        type: 'parking',
         duration: 60,
         price: 120,
         paid: false
@@ -134,18 +137,18 @@ export default function StudentBookingsPage() {
         time: '16:00',
         instructor: {
           id: '1',
-          name: 'Piotr Nowak',
-          avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff'
+          name: 'Петро Новак',
+          avatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff'
         },
         vehicle: {
           id: '1',
           make: 'Toyota',
           model: 'Yaris',
-          registration: 'WZ 12345'
+          registration: 'AA 1234 BB'
         },
-        location: 'Centrum - ul. Puławska 145',
+        location: 'Центр - вул. Хрещатик 145',
         status: 'completed',
-        type: 'Jazda nocna',
+        type: 'night',
         duration: 90,
         price: 360,
         paid: true
@@ -162,16 +165,16 @@ export default function StudentBookingsPage() {
     const matchesStatus = selectedStatus === 'all' || booking.status === selectedStatus;
     const matchesSearch = searchQuery === '' || 
       booking.instructor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.type.toLowerCase().includes(searchQuery.toLowerCase());
+      t(`lessonTypes.${booking.type}`).toLowerCase().includes(searchQuery.toLowerCase());
     return matchesStatus && matchesSearch;
   });
 
   const getStatusBadge = (status: Booking['status']) => {
     const variants = {
-      upcoming: { label: 'Nadchodzące', className: 'bg-blue-100 text-blue-700' },
-      completed: { label: 'Zakończone', className: 'bg-green-100 text-green-700' },
-      cancelled: { label: 'Anulowane', className: 'bg-gray-100 text-gray-700' },
-      no_show: { label: 'Nieobecny', className: 'bg-red-100 text-red-700' }
+      upcoming: { label: t('status.upcoming'), className: 'bg-blue-100 text-blue-700' },
+      completed: { label: t('status.completed'), className: 'bg-green-100 text-green-700' },
+      cancelled: { label: t('status.cancelled'), className: 'bg-gray-100 text-gray-700' },
+      no_show: { label: t('status.noShow'), className: 'bg-red-100 text-red-700' }
     };
     return variants[status];
   };
@@ -208,9 +211,9 @@ export default function StudentBookingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Moje lekcje</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Zarządzaj swoimi lekcjami jazdy
+            {t('subtitle')}
           </p>
         </div>
         <Button 
@@ -218,7 +221,7 @@ export default function StudentBookingsPage() {
           className="w-full sm:w-auto"
         >
           <Calendar className="w-4 h-4 mr-2" />
-          Zarezerwuj lekcję
+          {t('bookLesson')}
         </Button>
       </div>
 
@@ -227,7 +230,7 @@ export default function StudentBookingsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wszystkie lekcje
+              {t('stats.allLessons')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -238,7 +241,7 @@ export default function StudentBookingsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Nadchodzące
+              {t('stats.upcoming')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -249,7 +252,7 @@ export default function StudentBookingsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Zakończone
+              {t('stats.completed')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -260,7 +263,7 @@ export default function StudentBookingsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Godziny jazdy
+              {t('stats.drivingHours')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -272,7 +275,7 @@ export default function StudentBookingsPage() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Filtry</CardTitle>
+          <CardTitle className="text-lg">{t('filters.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -280,7 +283,7 @@ export default function StudentBookingsPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Szukaj po instruktorze lub typie..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -289,25 +292,25 @@ export default function StudentBookingsPage() {
             </div>
             <Select value={selectedStatus} onValueChange={setSelectedStatus}>
               <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('filters.status.label')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="upcoming">Nadchodzące</SelectItem>
-                <SelectItem value="completed">Zakończone</SelectItem>
-                <SelectItem value="cancelled">Anulowane</SelectItem>
-                <SelectItem value="no_show">Nieobecny</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="upcoming">{t('filters.status.upcoming')}</SelectItem>
+                <SelectItem value="completed">{t('filters.status.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
+                <SelectItem value="no_show">{t('filters.status.noShow')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={dateRange} onValueChange={setDateRange}>
               <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Okres" />
+                <SelectValue placeholder={t('filters.period.label')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="today">Dzisiaj</SelectItem>
-                <SelectItem value="week">Ten tydzień</SelectItem>
-                <SelectItem value="month">Ten miesiąc</SelectItem>
+                <SelectItem value="all">{t('filters.period.all')}</SelectItem>
+                <SelectItem value="today">{t('filters.period.today')}</SelectItem>
+                <SelectItem value="week">{t('filters.period.week')}</SelectItem>
+                <SelectItem value="month">{t('filters.period.month')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -320,7 +323,7 @@ export default function StudentBookingsPage() {
           <Card>
             <CardContent className="py-12 text-center">
               <CalendarDays className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Nie znaleziono lekcji</p>
+              <p className="text-muted-foreground">{t('empty.noLessons')}</p>
               <Button 
                 className="mt-4"
                 variant="outline"
@@ -329,7 +332,7 @@ export default function StudentBookingsPage() {
                   setSearchQuery('');
                 }}
               >
-                Wyczyść filtry
+                {t('empty.clearFilters')}
               </Button>
             </CardContent>
           </Card>
@@ -345,20 +348,20 @@ export default function StudentBookingsPage() {
                       <div className="flex items-start justify-between">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <h3 className="font-semibold text-lg">{booking.type}</h3>
+                            <h3 className="font-semibold text-lg">{t(`lessonTypes.${booking.type}`)}</h3>
                             <Badge className={statusInfo.className}>
                               {statusInfo.label}
                             </Badge>
                             {!booking.paid && booking.status === 'upcoming' && (
                               <Badge variant="outline" className="text-orange-600 border-orange-600">
-                                Nieopłacone
+                                {t('payment.unpaid')}
                               </Badge>
                             )}
                           </div>
                           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              {new Date(booking.date).toLocaleDateString('pl-PL', {
+                              {new Date(booking.date).toLocaleDateString('uk-UA', {
                                 weekday: 'long',
                                 year: 'numeric',
                                 month: 'long',
@@ -367,7 +370,7 @@ export default function StudentBookingsPage() {
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
-                              {booking.time} ({booking.duration} min)
+                              {booking.time} ({t('duration', { minutes: booking.duration })})
                             </div>
                           </div>
                         </div>
@@ -380,24 +383,24 @@ export default function StudentBookingsPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => router.push(`/student/bookings/${booking.id}`)}>
                               <Eye className="w-4 h-4 mr-2" />
-                              Zobacz szczegóły
+                              {t('actions.viewDetails')}
                             </DropdownMenuItem>
                             {booking.status === 'upcoming' && (
                               <>
                                 <DropdownMenuItem onClick={() => router.push(`/student/schedule/reschedule/${booking.id}`)}>
                                   <Calendar className="w-4 h-4 mr-2" />
-                                  Przełóż
+                                  {t('actions.reschedule')}
                                 </DropdownMenuItem>
                                 <DropdownMenuItem className="text-red-600">
                                   <X className="w-4 h-4 mr-2" />
-                                  Anuluj
+                                  {t('actions.cancel')}
                                 </DropdownMenuItem>
                               </>
                             )}
                             {booking.status === 'completed' && (
                               <DropdownMenuItem>
                                 <Download className="w-4 h-4 mr-2" />
-                                Pobierz fakturę
+                                {t('actions.downloadInvoice')}
                               </DropdownMenuItem>
                             )}
                           </DropdownMenuContent>
@@ -412,7 +415,7 @@ export default function StudentBookingsPage() {
                             className="w-10 h-10 rounded-full"
                           />
                           <div>
-                            <p className="text-sm font-medium">Instruktor</p>
+                            <p className="text-sm font-medium">{t('details.instructor')}</p>
                             <p className="text-sm text-muted-foreground">{booking.instructor.name}</p>
                           </div>
                         </div>
@@ -422,7 +425,7 @@ export default function StudentBookingsPage() {
                             <Car className="w-5 h-5 text-muted-foreground" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium">Pojazd</p>
+                            <p className="text-sm font-medium">{t('details.vehicle')}</p>
                             <p className="text-sm text-muted-foreground">
                               {booking.vehicle.make} {booking.vehicle.model}
                             </p>
@@ -434,7 +437,7 @@ export default function StudentBookingsPage() {
                             <MapPin className="w-5 h-5 text-muted-foreground" />
                           </div>
                           <div>
-                            <p className="text-sm font-medium">Lokalizacja</p>
+                            <p className="text-sm font-medium">{t('details.location')}</p>
                             <p className="text-sm text-muted-foreground">{booking.location}</p>
                           </div>
                         </div>
@@ -444,13 +447,13 @@ export default function StudentBookingsPage() {
                     {/* Right Section - Actions */}
                     <div className="flex flex-row lg:flex-col items-center gap-2">
                       <div className="text-center">
-                        <p className="text-sm text-muted-foreground">Cena</p>
-                        <p className="text-xl font-bold">{booking.price} PLN</p>
+                        <p className="text-sm text-muted-foreground">{t('payment.price')}</p>
+                        <p className="text-xl font-bold">{t('payment.currency', { amount: booking.price })}</p>
                       </div>
                       {booking.status === 'upcoming' && !booking.paid && (
                         <Button size="sm" variant="outline" className="w-full">
                           <CreditCard className="w-4 h-4 mr-2" />
-                          Opłać
+                          {t('payment.pay')}
                         </Button>
                       )}
                     </div>
@@ -467,7 +470,7 @@ export default function StudentBookingsPage() {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Masz {stats.upcoming} nadchodzących lekcji. Pamiętaj o punktualności!
+            {t('alert.upcomingLessons', { count: stats.upcoming })}
           </AlertDescription>
         </Alert>
       )}

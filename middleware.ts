@@ -5,7 +5,7 @@ import createIntlMiddleware from 'next-intl/middleware';
 import {getToken} from 'next-auth/jwt';
 
 // Підтримувані локалі та дефолтна
-const locales = ['pl', 'uk', 'en'] as const;
+const locales = ['pl', 'uk', 'en', 'ru'] as const;
 type AppLocale = (typeof locales)[number];
 const defaultLocale: AppLocale = 'pl';
 
@@ -120,6 +120,6 @@ export const config = {
     // усе, крім системних шляхів та файлів з розширенням
     '/((?!_next|.*\\..*|favicon.ico|api).*)',
     '/',
-    '/(pl|uk|en)/:path*'
+    '/(pl|uk|en|ru)/:path*'
   ]
 };

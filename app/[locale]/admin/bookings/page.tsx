@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Calendar, Clock, User, Car, MapPin, CheckCircle,
   XCircle, AlertCircle, Filter, Search, Download,
@@ -11,7 +12,7 @@ import {
   RefreshCw, Loader2, FileText, CreditCard, Info
 } from 'lucide-react';
 import { format, addDays, startOfWeek, endOfWeek, isToday, isTomorrow } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis,
   CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell
@@ -42,7 +43,7 @@ const generateBookings = () => {
     'Kraków - Centrum, Rynek Główny 1'
   ];
   
-  const lessonTypes = ['Standardowa', 'Autostrada', 'Parkowanie', 'Nocna', 'Egzamin', 'Manewry'];
+  const lessonTypes = ['standard', 'highway', 'parking', 'night', 'exam', 'maneuvers'];
   const statuses = ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
   
   const bookings = [];
@@ -78,8 +79,8 @@ const generateBookings = () => {
       price: 180 + Math.floor(Math.random() * 4) * 50,
       paid: status === 'COMPLETED' || Math.random() > 0.3,
       rating: status === 'COMPLETED' ? (4 + Math.random()).toFixed(1) : null,
-      notes: Math.random() > 0.7 ? 'Dodatkowe uwagi dotyczące lekcji' : null,
-      cancelReason: status === 'CANCELLED' ? 'Choroba ucznia' : null,
+      notes: Math.random() > 0.7 ? 'additionalNotes' : null,
+      cancelReason: status === 'CANCELLED' ? 'studentIllness' : null,
       createdAt: addDays(date, -Math.floor(Math.random() * 7) - 1)
     });
   }
@@ -88,6 +89,7 @@ const generateBookings = () => {
 };
 
 export default function AdminBookingsPage() {
+  const t = useTranslations('admin.bookings');
   const [bookings] = useState(generateBookings());
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -101,7 +103,7 @@ export default function AdminBookingsPage() {
 
   // Get unique instructors
   const instructors = [...new Set(bookings.map(b => b.instructorName))];
-  const lessonTypes = [...new Set(bookings.map(b => b.type))];
+  const lessonTypes = ['standard', 'highway', 'parking', 'night', 'exam', 'maneuvers'];
 
   // Filter bookings
   const filteredBookings = bookings.filter(booking => {
@@ -153,27 +155,27 @@ export default function AdminBookingsPage() {
       b.date.toDateString() === date.toDateString()
     );
     return {
-      day: format(date, 'EEE', { locale: pl }),
+      day: format(date, 'EEE', { locale: uk }),
       bookings: dayBookings.length,
       revenue: dayBookings.filter(b => b.paid).reduce((sum, b) => sum + b.price, 0)
     };
   });
 
   const bookingsByStatus = [
-    { name: 'Zaplanowane', value: bookings.filter(b => b.status === 'SCHEDULED').length, color: '#3B82F6' },
-    { name: 'W trakcie', value: bookings.filter(b => b.status === 'IN_PROGRESS').length, color: '#F59E0B' },
-    { name: 'Zakończone', value: bookings.filter(b => b.status === 'COMPLETED').length, color: '#10B981' },
-    { name: 'Anulowane', value: bookings.filter(b => b.status === 'CANCELLED').length, color: '#EF4444' },
-    { name: 'Nieobecność', value: bookings.filter(b => b.status === 'NO_SHOW').length, color: '#6B7280' }
+    { name: t('filters.scheduled'), value: bookings.filter(b => b.status === 'SCHEDULED').length, color: '#3B82F6' },
+    { name: t('filters.inProgress'), value: bookings.filter(b => b.status === 'IN_PROGRESS').length, color: '#F59E0B' },
+    { name: t('filters.completed'), value: bookings.filter(b => b.status === 'COMPLETED').length, color: '#10B981' },
+    { name: t('filters.cancelled'), value: bookings.filter(b => b.status === 'CANCELLED').length, color: '#EF4444' },
+    { name: t('filters.noShow'), value: bookings.filter(b => b.status === 'NO_SHOW').length, color: '#6B7280' }
   ];
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      SCHEDULED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Calendar, label: 'Zaplanowane' },
-      IN_PROGRESS: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Timer, label: 'W trakcie' },
-      COMPLETED: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Zakończone' },
-      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Anulowane' },
-      NO_SHOW: { bg: 'bg-gray-100', text: 'text-gray-700', icon: AlertCircle, label: 'Nieobecność' }
+      SCHEDULED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Calendar, label: t('filters.scheduled') },
+      IN_PROGRESS: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Timer, label: t('filters.inProgress') },
+      COMPLETED: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: t('filters.completed') },
+      CANCELLED: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: t('filters.cancelled') },
+      NO_SHOW: { bg: 'bg-gray-100', text: 'text-gray-700', icon: AlertCircle, label: t('filters.noShow') }
     };
     return badges[status as keyof typeof badges] || badges.SCHEDULED;
   };
@@ -200,17 +202,17 @@ export default function AdminBookingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Rezerwacje</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie wszystkimi rezerwacjami i lekcjami</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Eksport
+            {t('buttons.export')}
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Calendar className="w-4 h-4" />
-            Nowa rezerwacja
+            {t('buttons.newBooking')}
           </button>
         </div>
       </div>
@@ -224,7 +226,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.todayTotal}</p>
-              <p className="text-xs text-gray-500">Dzisiaj</p>
+              <p className="text-xs text-gray-500">{t('stats.today')}</p>
             </div>
           </div>
         </div>
@@ -235,7 +237,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.todayCompleted}</p>
-              <p className="text-xs text-gray-500">Zakończone dzisiaj</p>
+              <p className="text-xs text-gray-500">{t('stats.completedToday')}</p>
             </div>
           </div>
         </div>
@@ -246,7 +248,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.weekTotal}</p>
-              <p className="text-xs text-gray-500">Ten tydzień</p>
+              <p className="text-xs text-gray-500">{t('stats.thisWeek')}</p>
             </div>
           </div>
         </div>
@@ -257,7 +259,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">zł{(stats.weekRevenue / 1000).toFixed(1)}k</p>
-              <p className="text-xs text-gray-500">Przychód tygodnia</p>
+              <p className="text-xs text-gray-500">{t('stats.weekRevenue')}</p>
             </div>
           </div>
         </div>
@@ -268,7 +270,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.cancellationRate}%</p>
-              <p className="text-xs text-gray-500">Anulacje</p>
+              <p className="text-xs text-gray-500">{t('stats.cancellations')}</p>
             </div>
           </div>
         </div>
@@ -279,7 +281,7 @@ export default function AdminBookingsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgRating}</p>
-              <p className="text-xs text-gray-500">Śr. ocena</p>
+              <p className="text-xs text-gray-500">{t('stats.avgRating')}</p>
             </div>
           </div>
         </div>
@@ -289,21 +291,21 @@ export default function AdminBookingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Bookings by Day */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rezerwacje w tygodniu</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.weeklyBookings')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={bookingsByDay}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="day" fontSize={12} />
               <YAxis fontSize={12} />
               <Tooltip />
-              <Bar dataKey="bookings" name="Rezerwacje" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="bookings" name={t('charts.bookings')} fill="#3B82F6" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Status Distribution */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład statusów</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.statusDistribution')}</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
@@ -344,7 +346,7 @@ export default function AdminBookingsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj po ID, uczniu lub instruktorze..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -356,10 +358,10 @@ export default function AdminBookingsPage() {
               onChange={(e) => setDateFilter(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie daty</option>
-              <option value="today">Dzisiaj</option>
-              <option value="tomorrow">Jutro</option>
-              <option value="week">Ten tydzień</option>
+              <option value="all">{t('filters.allDates')}</option>
+              <option value="today">{t('filters.today')}</option>
+              <option value="tomorrow">{t('filters.tomorrow')}</option>
+              <option value="week">{t('filters.thisWeek')}</option>
             </select>
             
             <select
@@ -367,12 +369,12 @@ export default function AdminBookingsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="SCHEDULED">Zaplanowane</option>
-              <option value="IN_PROGRESS">W trakcie</option>
-              <option value="COMPLETED">Zakończone</option>
-              <option value="CANCELLED">Anulowane</option>
-              <option value="NO_SHOW">Nieobecność</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="SCHEDULED">{t('filters.scheduled')}</option>
+              <option value="IN_PROGRESS">{t('filters.inProgress')}</option>
+              <option value="COMPLETED">{t('filters.completed')}</option>
+              <option value="CANCELLED">{t('filters.cancelled')}</option>
+              <option value="NO_SHOW">{t('filters.noShow')}</option>
             </select>
             
             <select
@@ -380,7 +382,7 @@ export default function AdminBookingsPage() {
               onChange={(e) => setFilterInstructor(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszyscy instruktorzy</option>
+              <option value="all">{t('filters.allInstructors')}</option>
               {instructors.map(instructor => (
                 <option key={instructor} value={instructor}>{instructor}</option>
               ))}
@@ -391,12 +393,14 @@ export default function AdminBookingsPage() {
             <button
               onClick={() => setViewMode('list')}
               className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'}`}
+              aria-label={t('viewModes.list')}
             >
               <FileText className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('calendar')}
               className={`p-2 rounded-lg ${viewMode === 'calendar' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600'}`}
+              aria-label={t('viewModes.calendar')}
             >
               <CalendarDays className="w-5 h-5" />
             </button>
@@ -415,14 +419,14 @@ export default function AdminBookingsPage() {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Uczeń</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Instruktor</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data i godzina</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Typ</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Płatność</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Akcje</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.id')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.student')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.instructor')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.dateTime')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.type')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.status')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.payment')}</th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{t('table.actions')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -455,7 +459,7 @@ export default function AdminBookingsPage() {
                         </div>
                       </td>
                       <td className="px-4 py-4">
-                        <p className="text-sm text-gray-600">{booking.type}</p>
+                        <p className="text-sm text-gray-600">{t(`lessonTypes.${booking.type}`)}</p>
                       </td>
                       <td className="px-4 py-4">
                         <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${statusBadge.bg} ${statusBadge.text}`}>
@@ -467,12 +471,12 @@ export default function AdminBookingsPage() {
                         {booking.paid ? (
                           <span className="inline-flex items-center gap-1 text-green-600">
                             <CheckCircle className="w-4 h-4" />
-                            <span className="text-sm">zł{booking.price}</span>
+                            <span className="text-sm">{t('table.price', { price: booking.price })}</span>
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1 text-gray-400">
                             <Clock className="w-4 h-4" />
-                            <span className="text-sm">Oczekuje</span>
+                            <span className="text-sm">{t('table.awaiting')}</span>
                           </span>
                         )}
                       </td>
@@ -481,13 +485,14 @@ export default function AdminBookingsPage() {
                           <button
                             onClick={() => setSelectedBooking(booking)}
                             className="p-1 hover:bg-gray-100 rounded-lg"
+                            aria-label={t('buttons.view')}
                           >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
-                          <button className="p-1 hover:bg-gray-100 rounded-lg">
+                          <button className="p-1 hover:bg-gray-100 rounded-lg" aria-label={t('buttons.edit')}>
                             <Edit2 className="w-4 h-4 text-gray-600" />
                           </button>
-                          <button className="p-1 hover:bg-red-50 rounded-lg">
+                          <button className="p-1 hover:bg-red-50 rounded-lg" aria-label={t('buttons.cancel')}>
                             <XCircle className="w-4 h-4 text-red-600" />
                           </button>
                         </div>
@@ -510,8 +515,10 @@ export default function AdminBookingsPage() {
               <ChevronLeft className="w-5 h-5" />
             </button>
             <h3 className="text-lg font-semibold text-gray-800">
-              {format(startOfWeek(currentWeek, { weekStartsOn: 1 }), 'dd MMM')} - 
-              {format(endOfWeek(currentWeek, { weekStartsOn: 1 }), 'dd MMM yyyy')}
+              {t('calendar.weekNavigation', {
+                startDate: format(startOfWeek(currentWeek, { weekStartsOn: 1 }), 'dd MMM', { locale: uk }),
+                endDate: format(endOfWeek(currentWeek, { weekStartsOn: 1 }), 'dd MMM yyyy', { locale: uk })
+              })}
             </h3>
             <button
               onClick={() => setCurrentWeek(addDays(currentWeek, 7))}
@@ -528,7 +535,7 @@ export default function AdminBookingsPage() {
                 {getWeekDays().map(day => (
                   <div key={day.toString()} className="p-2 text-center">
                     <p className="text-sm font-medium text-gray-700">
-                      {format(day, 'EEE', { locale: pl })}
+                      {format(day, 'EEE', { locale: uk })}
                     </p>
                     <p className="text-xs text-gray-500">
                       {format(day, 'dd MMM')}
@@ -553,13 +560,13 @@ export default function AdminBookingsPage() {
                           onClick={() => setSelectedBooking(booking)}
                         >
                           <p className="text-xs font-medium truncate">{booking.studentName}</p>
-                          <p className="text-xs truncate">{booking.type}</p>
+                          <p className="text-xs truncate">{t(`lessonTypes.${booking.type}`)}</p>
                         </div>
                       );
                     }
                     return (
                       <div key={day.toString()} className="p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
-                        <p className="text-xs text-gray-400 text-center">—</p>
+                        <p className="text-xs text-gray-400 text-center">{t('noData.emptySlot')}</p>
                       </div>
                     );
                   })}
@@ -577,10 +584,10 @@ export default function AdminBookingsPage() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-semibold text-gray-800">
-                  Szczegóły rezerwacji {selectedBooking.id}
+                  {t('details.title', { id: selectedBooking.id })}
                 </h2>
                 <p className="text-gray-500">
-                  {format(selectedBooking.date, 'dd MMMM yyyy', { locale: pl })}
+                  {format(selectedBooking.date, 'dd MMMM yyyy', { locale: uk })}
                 </p>
               </div>
               <button
@@ -594,7 +601,7 @@ export default function AdminBookingsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Student Info */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Uczeń</h3>
+                <h3 className="font-medium text-gray-800 mb-3">{t('details.studentInfo')}</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-gray-500" />
@@ -613,7 +620,7 @@ export default function AdminBookingsPage() {
 
               {/* Instructor Info */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Instruktor</h3>
+                <h3 className="font-medium text-gray-800 mb-3">{t('details.instructorInfo')}</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <User className="w-4 h-4 text-gray-500" />
@@ -632,31 +639,31 @@ export default function AdminBookingsPage() {
 
               {/* Lesson Details */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Szczegóły lekcji</h3>
+                <h3 className="font-medium text-gray-800 mb-3">{t('details.lessonDetails')}</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Typ:</span>
-                    <span className="text-sm font-medium">{selectedBooking.type}</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.type')}</span>
+                    <span className="text-sm font-medium">{t(`lessonTypes.${selectedBooking.type}`)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Godzina:</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.time')}</span>
                     <span className="text-sm font-medium">
                       {selectedBooking.startTime} - {selectedBooking.endTime}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Czas trwania:</span>
-                    <span className="text-sm font-medium">{selectedBooking.duration} min</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.duration')}</span>
+                    <span className="text-sm font-medium">{t('details.fields.durationValue', { duration: selectedBooking.duration })}</span>
                   </div>
                 </div>
               </div>
 
               {/* Payment & Status */}
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-3">Płatność i status</h3>
+                <h3 className="font-medium text-gray-800 mb-3">{t('details.paymentStatus')}</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Status:</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.status')}</span>
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                       getStatusBadge(selectedBooking.status).bg
                     } ${getStatusBadge(selectedBooking.status).text}`}>
@@ -664,20 +671,20 @@ export default function AdminBookingsPage() {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Cena:</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.price')}</span>
                     <span className="text-sm font-medium">zł{selectedBooking.price}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-500">Płatność:</span>
+                    <span className="text-sm text-gray-500">{t('details.fields.payment')}</span>
                     <span className={`text-sm font-medium ${
                       selectedBooking.paid ? 'text-green-600' : 'text-gray-400'
                     }`}>
-                      {selectedBooking.paid ? 'Opłacone' : 'Oczekuje'}
+                      {selectedBooking.paid ? t('details.fields.paid') : t('details.fields.unpaid')}
                     </span>
                   </div>
                   {selectedBooking.rating && (
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-500">Ocena:</span>
+                      <span className="text-sm text-gray-500">{t('details.fields.rating')}</span>
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                         <span className="text-sm font-medium">{selectedBooking.rating}</span>
@@ -690,7 +697,7 @@ export default function AdminBookingsPage() {
 
             {/* Location */}
             <div className="mt-6 bg-gray-50 rounded-lg p-4">
-              <h3 className="font-medium text-gray-800 mb-3">Lokalizacja</h3>
+              <h3 className="font-medium text-gray-800 mb-3">{t('details.location')}</h3>
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
                 <span className="text-sm">{selectedBooking.location}</span>
@@ -700,11 +707,11 @@ export default function AdminBookingsPage() {
             {/* Notes */}
             {(selectedBooking.notes || selectedBooking.cancelReason) && (
               <div className="mt-6 bg-yellow-50 rounded-lg p-4">
-                <h3 className="font-medium text-gray-800 mb-2">Uwagi</h3>
-                {selectedBooking.notes && <p className="text-sm text-gray-700">{selectedBooking.notes}</p>}
+                <h3 className="font-medium text-gray-800 mb-2">{t('details.notes')}</h3>
+                {selectedBooking.notes && <p className="text-sm text-gray-700">{t(`details.fields.${selectedBooking.notes}`)}</p>}
                 {selectedBooking.cancelReason && (
                   <p className="text-sm text-red-600 mt-2">
-                    <strong>Powód anulowania:</strong> {selectedBooking.cancelReason}
+                    <strong>{t('details.fields.cancelReason')}</strong> {t(`details.fields.${selectedBooking.cancelReason}`)}
                   </p>
                 )}
               </div>
@@ -712,18 +719,18 @@ export default function AdminBookingsPage() {
 
             <div className="flex gap-3 mt-6">
               <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                Edytuj
+                {t('buttons.edit')}
               </button>
               {selectedBooking.status === 'SCHEDULED' && (
                 <button className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                  Anuluj
+                  {t('buttons.cancel')}
                 </button>
               )}
               <button
                 onClick={() => setSelectedBooking(null)}
                 className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
               >
-                Zamknij
+                {t('buttons.close')}
               </button>
             </div>
           </div>

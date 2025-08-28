@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Grid, List, Star, Calendar, Eye, Phone, Mail, MapPin,
   Clock, Users, Car, Award, TrendingUp, AlertCircle,
@@ -11,9 +12,9 @@ import {
   GraduationCap, Activity, Loader2, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 
-// Funkcja dla stabilnych wartości
+// Функція для стабільних значень
 const getSeededValue = (index: number, max: number, seed: number = 1) => {
   return ((index * seed + 7) % max);
 };
@@ -29,12 +30,12 @@ const generateInstructors = () => {
   ];
 
   const specializations = [
-    'Egzaminy', 'Jazda nocna', 'Autostrady', 'Parkowanie', 
-    'Manewry', 'Miasto', 'Początkujący', 'Teoria'
+    'exams', 'nightDriving', 'highway', 'parking', 
+    'maneuvers', 'city', 'beginners', 'theory'
   ];
 
   const categories = ['B', 'B+E', 'C', 'C+E', 'D'];
-  const cities = ['Warszawa', 'Kraków', 'Wrocław'];
+  const cities = ['warsaw', 'krakow', 'wroclaw'];
 
   return names.map((name, index) => {
     const specializationIndices = [
@@ -56,7 +57,7 @@ const generateInstructors = () => {
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=10B981&color=fff`,
       rating: (4.0 + (index % 10) / 10).toFixed(1),
       reviews: 20 + (index * 7) % 180,
-      experience: `${(index % 10) + 1} lat`,
+      experience: (index % 10) + 1,
       specializations: specializationIndices.map(i => specializations[i]),
       categories: categoryIndices.map(i => categories[i]),
       completedLessons: 500 + (index * 83) % 1500,
@@ -74,9 +75,10 @@ const generateInstructors = () => {
 };
 
 export default function AdminInstructorsPage() {
+  const t = useTranslations('admin.instructors.list');
   const router = useRouter();
   const params = useParams();
-  const locale = params.locale || 'pl';
+  const locale = params.locale || 'uk';
   
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [instructors] = useState(generateInstructors());
@@ -94,9 +96,9 @@ export default function AdminInstructorsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      available: { bg: 'bg-green-100', text: 'text-green-700', label: 'Dostępny' },
-      busy: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'Zajęty' },
-      offline: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Offline' }
+      available: { bg: 'bg-green-100', text: 'text-green-700', label: t(`status.available`) },
+      busy: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: t(`status.busy`) },
+      offline: { bg: 'bg-gray-100', text: 'text-gray-700', label: t(`status.offline`) }
     };
     return badges[status as keyof typeof badges] || badges.offline;
   };
@@ -135,7 +137,7 @@ export default function AdminInstructorsPage() {
             <div>
               <h3 className="font-semibold text-gray-800">{instructor.name}</h3>
               <p className="text-sm text-gray-600">
-                {instructor.categories.join(', ')} • {instructor.experience}
+                {instructor.categories.join(', ')} • {t('experience', { years: instructor.experience })}
               </p>
             </div>
           </div>
@@ -146,7 +148,7 @@ export default function AdminInstructorsPage() {
         
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-sm text-gray-500">Ocena</p>
+            <p className="text-sm text-gray-500">{t('card.rating')}</p>
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
               <span className="font-semibold">{instructor.rating}</span>
@@ -154,25 +156,25 @@ export default function AdminInstructorsPage() {
             </div>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Kursanci</p>
+            <p className="text-sm text-gray-500">{t('card.students')}</p>
             <p className="font-semibold">{instructor.students}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Zajęć/tydzień</p>
+            <p className="text-sm text-gray-500">{t('card.lessonsPerWeek')}</p>
             <p className="font-semibold">{instructor.lessonsPerWeek}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Zdawalność</p>
+            <p className="text-sm text-gray-500">{t('card.passRate')}</p>
             <p className="font-semibold text-green-600">{instructor.successRate}%</p>
           </div>
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-2">Specjalizacje:</p>
+          <p className="text-sm text-gray-500 mb-2">{t('card.specializations')}</p>
           <div className="flex flex-wrap gap-1">
             {instructor.specializations.map((spec: string, idx: number) => (
               <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
-                {spec}
+                {t(`specializations.${spec}`)}
               </span>
             ))}
           </div>
@@ -181,7 +183,7 @@ export default function AdminInstructorsPage() {
         <div className="flex items-center justify-between text-sm text-gray-600 mb-4">
           <div className="flex items-center gap-1">
             <MapPin className="w-3 h-3" />
-            {instructor.location}
+            {t(`locations.${instructor.location}`)}
           </div>
           <div className="flex items-center gap-1">
             <Car className="w-3 h-3" />
@@ -195,14 +197,14 @@ export default function AdminInstructorsPage() {
             className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
           >
             <Eye className="w-4 h-4" />
-            Podgląd
+            {t('buttons.view')}
           </button>
           <button
             onClick={() => handleViewSchedule(instructor.id)}
             className="flex-1 px-3 py-2 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors flex items-center justify-center gap-2"
           >
             <Calendar className="w-4 h-4" />
-            Harmonogram
+            {t('buttons.schedule')}
           </button>
         </div>
       </div>
@@ -260,28 +262,28 @@ export default function AdminInstructorsPage() {
           <span className="text-sm font-medium text-green-600">{instructor.successRate}%</span>
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">
-          {instructor.earnings.toLocaleString()} zł
+          {instructor.earnings.toLocaleString('uk-UA')} zł
         </td>
         <td className="px-4 py-4">
           <div className="flex items-center gap-1">
             <button
               onClick={() => handleViewInstructor(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
-              title="Podgląd"
+              title={t('buttons.view')}
             >
               <Eye className="w-4 h-4 text-gray-600" />
             </button>
             <button
               onClick={() => handleEditInstructor(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
-              title="Edytuj"
+              title={t('buttons.edit')}
             >
               <Edit2 className="w-4 h-4 text-gray-600" />
             </button>
             <button
               onClick={() => handleViewSchedule(instructor.id)}
               className="p-1 hover:bg-gray-100 rounded-lg"
-              title="Harmonogram"
+              title={t('buttons.schedule')}
             >
               <Calendar className="w-4 h-4 text-gray-600" />
             </button>
@@ -295,8 +297,8 @@ export default function AdminInstructorsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Instruktorzy</h1>
-        <p className="text-gray-600 mt-1">Zarządzanie instruktorami szkoły jazdy</p>
+        <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+        <p className="text-gray-600 mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Stats */}
@@ -308,7 +310,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{instructors.length}</p>
-              <p className="text-xs text-gray-500">Łącznie instruktorów</p>
+              <p className="text-xs text-gray-500">{t('stats.totalInstructors')}</p>
             </div>
           </div>
         </div>
@@ -321,7 +323,7 @@ export default function AdminInstructorsPage() {
               <p className="text-2xl font-bold text-gray-800">
                 {instructors.filter(i => i.status === 'available').length}
               </p>
-              <p className="text-xs text-gray-500">Dostępnych teraz</p>
+              <p className="text-xs text-gray-500">{t('stats.availableNow')}</p>
             </div>
           </div>
         </div>
@@ -332,7 +334,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">4.8</p>
-              <p className="text-xs text-gray-500">Średnia ocena</p>
+              <p className="text-xs text-gray-500">{t('stats.averageRating')}</p>
             </div>
           </div>
         </div>
@@ -343,7 +345,7 @@ export default function AdminInstructorsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">89%</p>
-              <p className="text-xs text-gray-500">Średnia zdawalność</p>
+              <p className="text-xs text-gray-500">{t('stats.averagePassRate')}</p>
             </div>
           </div>
         </div>
@@ -357,7 +359,7 @@ export default function AdminInstructorsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj po nazwisku..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -369,10 +371,10 @@ export default function AdminInstructorsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="available">Dostępni</option>
-              <option value="busy">Zajęci</option>
-              <option value="offline">Offline</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="available">{t('filters.available')}</option>
+              <option value="busy">{t('filters.busy')}</option>
+              <option value="offline">{t('filters.offline')}</option>
             </select>
             
             <select
@@ -380,10 +382,10 @@ export default function AdminInstructorsPage() {
               onChange={(e) => setFilterLocation(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie lokalizacje</option>
-              <option value="Warszawa">Warszawa</option>
-              <option value="Kraków">Kraków</option>
-              <option value="Wrocław">Wrocław</option>
+              <option value="all">{t('filters.allLocations')}</option>
+              <option value="warsaw">{t('locations.warsaw')}</option>
+              <option value="krakow">{t('locations.krakow')}</option>
+              <option value="wroclaw">{t('locations.wroclaw')}</option>
             </select>
           </div>
           
@@ -392,12 +394,14 @@ export default function AdminInstructorsPage() {
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-2 rounded ${viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'}`}
+                aria-label="Grid view"
               >
                 <Grid className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-2 rounded ${viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'}`}
+                aria-label="List view"
               >
                 <List className="w-4 h-4" />
               </button>
@@ -408,7 +412,7 @@ export default function AdminInstructorsPage() {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
-              Dodaj instruktora
+              {t('buttons.addInstructor')}
             </button>
           </div>
         </div>
@@ -432,31 +436,31 @@ export default function AdminInstructorsPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Instruktor
+                    {t('table.instructor')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('table.status')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ocena
+                    {t('table.rating')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kategorie
+                    {t('table.categories')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kursanci
+                    {t('table.students')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Zajęć/tydzień
+                    {t('table.lessonsPerWeek')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Zdawalność
+                    {t('table.passRate')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Zarobki
+                    {t('table.earnings')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Akcje
+                    {t('table.actions')}
                   </th>
                 </tr>
               </thead>

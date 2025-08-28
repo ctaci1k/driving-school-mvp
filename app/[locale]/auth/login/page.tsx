@@ -44,9 +44,10 @@ interface Language {
 
 // Константи
 const AVAILABLE_LANGUAGES: Language[] = [
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
   { code: 'pl', name: 'Polski', flag: '🇵🇱' },
+  { code: 'uk', name: 'Українська', flag: '🇺🇦' },
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
 ]
 
 export default function LoginPage() {

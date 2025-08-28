@@ -3,6 +3,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   DollarSign, Calendar, Download, Filter, Search,
   ChevronLeft, ChevronRight, FileText, TrendingUp,
@@ -29,9 +30,10 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function EarningsHistoryPage() {
+  const t = useTranslations('instructor.earnings.history')
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
   const [filterPeriod, setFilterPeriod] = useState('all')
@@ -43,7 +45,7 @@ export default function EarningsHistoryPage() {
     {
       id: 'PAY001',
       date: '2024-02-01',
-      period: 'Styczeń 2024',
+      period: t('periods.january', {year: 2024}),
       amount: 5500,
       lessons: 58,
       hours: 87,
@@ -51,13 +53,13 @@ export default function EarningsHistoryPage() {
       deductions: 550,
       net: 4975,
       status: 'completed',
-      method: 'Przelew bankowy',
+      method: t('payments.method'),
       receipt: 'REC-2024-01'
     },
     {
       id: 'PAY002',
       date: '2024-01-01',
-      period: 'Grudzień 2023',
+      period: t('periods.december', {year: 2023}),
       amount: 5300,
       lessons: 56,
       hours: 84,
@@ -65,13 +67,13 @@ export default function EarningsHistoryPage() {
       deductions: 530,
       net: 4770,
       status: 'completed',
-      method: 'Przelew bankowy',
+      method: t('payments.method'),
       receipt: 'REC-2023-12'
     },
     {
       id: 'PAY003',
       date: '2023-12-01',
-      period: 'Listopad 2023',
+      period: t('periods.november', {year: 2023}),
       amount: 4625,
       lessons: 48,
       hours: 72,
@@ -79,13 +81,13 @@ export default function EarningsHistoryPage() {
       deductions: 462,
       net: 4163,
       status: 'completed',
-      method: 'Przelew bankowy',
+      method: t('payments.method'),
       receipt: 'REC-2023-11'
     },
     {
       id: 'PAY004',
       date: '2023-11-01',
-      period: 'Październik 2023',
+      period: t('periods.october', {year: 2023}),
       amount: 4950,
       lessons: 52,
       hours: 78,
@@ -93,7 +95,7 @@ export default function EarningsHistoryPage() {
       deductions: 495,
       net: 4455,
       status: 'completed',
-      method: 'Przelew bankowy',
+      method: t('payments.method'),
       receipt: 'REC-2023-10'
     }
   ]
@@ -104,7 +106,7 @@ export default function EarningsHistoryPage() {
       id: 'TR001',
       date: '2024-02-03',
       type: 'lesson',
-      description: 'Lekcja - Maria Kowalska',
+      description: t('transactions.descriptions.lesson', {student: 'Марія Коваленко'}),
       amount: 95,
       status: 'pending'
     },
@@ -112,7 +114,7 @@ export default function EarningsHistoryPage() {
       id: 'TR002',
       date: '2024-02-03',
       type: 'lesson',
-      description: 'Lekcja - Jan Nowak',
+      description: t('transactions.descriptions.lesson', {student: 'Іван Шевченко'}),
       amount: 95,
       status: 'pending'
     },
@@ -120,7 +122,7 @@ export default function EarningsHistoryPage() {
       id: 'TR003',
       date: '2024-02-02',
       type: 'lesson',
-      description: 'Lekcja - Elena Wiśniewska',
+      description: t('transactions.descriptions.lesson', {student: 'Олена Бондаренко'}),
       amount: 95,
       status: 'completed'
     },
@@ -128,7 +130,7 @@ export default function EarningsHistoryPage() {
       id: 'TR004',
       date: '2024-02-02',
       type: 'bonus',
-      description: 'Premia za jakość',
+      description: t('transactions.descriptions.qualityBonus'),
       amount: 125,
       status: 'completed'
     },
@@ -136,7 +138,7 @@ export default function EarningsHistoryPage() {
       id: 'TR005',
       date: '2024-02-01',
       type: 'deduction',
-      description: 'Prowizja platformy',
+      description: t('transactions.descriptions.platformFee'),
       amount: -56,
       status: 'completed'
     }
@@ -156,11 +158,11 @@ export default function EarningsHistoryPage() {
 
   const getStatusBadge = (status: string) => {
     if (status === 'completed') {
-      return <Badge variant="default">Wypłacone</Badge>
+      return <Badge variant="default">{t('payments.status.completed')}</Badge>
     } else if (status === 'pending') {
-      return <Badge variant="secondary">Oczekuje</Badge>
+      return <Badge variant="secondary">{t('payments.status.pending')}</Badge>
     } else {
-      return <Badge variant="destructive">Anulowane</Badge>
+      return <Badge variant="destructive">{t('payments.status.cancelled')}</Badge>
     }
   }
 
@@ -171,22 +173,31 @@ export default function EarningsHistoryPage() {
     return <AlertCircle className="w-4 h-4 text-gray-500" />
   }
 
+  const getTransactionTypeName = (type: string) => {
+    switch(type) {
+      case 'lesson': return t('transactions.types.lesson')
+      case 'bonus': return t('transactions.types.bonus')
+      case 'deduction': return t('transactions.types.deduction')
+      default: return t('transactions.types.other')
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Historia wypłat</h1>
-          <p className="text-gray-600 mt-1">Przegląd wszystkich wypłat i transakcji</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Filter className="w-4 h-4 mr-2" />
-            Filtr
+            {t('buttons.filter')}
           </Button>
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
-            Eksport
+            {t('buttons.export')}
           </Button>
         </div>
       </div>
@@ -197,8 +208,8 @@ export default function EarningsHistoryPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Łącznie zarobione</p>
-                <p className="text-2xl font-bold">{stats.totalEarned.toLocaleString()} zł</p>
+                <p className="text-sm text-gray-500">{t('stats.totalEarned')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: stats.totalEarned.toLocaleString()})}</p>
               </div>
               <DollarSign className="w-6 h-6 text-gray-400" />
             </div>
@@ -209,8 +220,8 @@ export default function EarningsHistoryPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Ten rok</p>
-                <p className="text-2xl font-bold">{stats.thisYear.toLocaleString()} zł</p>
+                <p className="text-sm text-gray-500">{t('stats.thisYear')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: stats.thisYear.toLocaleString()})}</p>
               </div>
               <Calendar className="w-6 h-6 text-blue-500" />
             </div>
@@ -221,8 +232,8 @@ export default function EarningsHistoryPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Ostatni miesiąc</p>
-                <p className="text-2xl font-bold">{stats.lastMonth.toLocaleString()} zł</p>
+                <p className="text-sm text-gray-500">{t('stats.lastMonth')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: stats.lastMonth.toLocaleString()})}</p>
               </div>
               <TrendingUp className="w-6 h-6 text-green-500" />
             </div>
@@ -233,8 +244,8 @@ export default function EarningsHistoryPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Średnia/miesiąc</p>
-                <p className="text-2xl font-bold">{stats.averagePerMonth.toLocaleString()} zł</p>
+                <p className="text-sm text-gray-500">{t('stats.averageMonth')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: stats.averagePerMonth.toLocaleString()})}</p>
               </div>
               <Clock className="w-6 h-6 text-gray-400" />
             </div>
@@ -244,8 +255,8 @@ export default function EarningsHistoryPage() {
 
       <Tabs defaultValue="payments" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="payments">Wypłaty</TabsTrigger>
-          <TabsTrigger value="transactions">Transakcje</TabsTrigger>
+          <TabsTrigger value="payments">{t('tabs.payments')}</TabsTrigger>
+          <TabsTrigger value="transactions">{t('tabs.transactions')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="payments" className="mt-6">
@@ -257,7 +268,7 @@ export default function EarningsHistoryPage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                     <Input
-                      placeholder="Wyszukaj według okresu lub numeru..."
+                      placeholder={t('search.placeholder')}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="pl-10"
@@ -269,10 +280,10 @@ export default function EarningsHistoryPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">Cały czas</SelectItem>
-                    <SelectItem value="year">Ten rok</SelectItem>
-                    <SelectItem value="quarter">Kwartał</SelectItem>
-                    <SelectItem value="month">Miesiąc</SelectItem>
+                    <SelectItem value="all">{t('periods.all')}</SelectItem>
+                    <SelectItem value="year">{t('periods.year')}</SelectItem>
+                    <SelectItem value="quarter">{t('periods.quarter')}</SelectItem>
+                    <SelectItem value="month">{t('periods.month')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -285,40 +296,40 @@ export default function EarningsHistoryPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Okres</TableHead>
-                    <TableHead>Kwota</TableHead>
-                    <TableHead>Lekcje</TableHead>
-                    <TableHead>Premie</TableHead>
-                    <TableHead>Potrącenia</TableHead>
-                    <TableHead>Do wypłaty</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Akcje</TableHead>
+                    <TableHead>{t('payments.headers.date')}</TableHead>
+                    <TableHead>{t('payments.headers.period')}</TableHead>
+                    <TableHead>{t('payments.headers.amount')}</TableHead>
+                    <TableHead>{t('payments.headers.lessons')}</TableHead>
+                    <TableHead>{t('payments.headers.bonuses')}</TableHead>
+                    <TableHead>{t('payments.headers.deductions')}</TableHead>
+                    <TableHead>{t('payments.headers.toPay')}</TableHead>
+                    <TableHead>{t('payments.headers.status')}</TableHead>
+                    <TableHead>{t('payments.headers.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {payments.map((payment) => (
                     <TableRow key={payment.id}>
                       <TableCell>
-                        {format(new Date(payment.date), 'd MMM yyyy', { locale: pl })}
+                        {format(new Date(payment.date), 'd MMM yyyy', { locale: uk })}
                       </TableCell>
                       <TableCell className="font-medium">{payment.period}</TableCell>
-                      <TableCell>{payment.amount.toLocaleString()} zł</TableCell>
+                      <TableCell>{t('currency', {amount: payment.amount.toLocaleString()})}</TableCell>
                       <TableCell>{payment.lessons}</TableCell>
                       <TableCell className="text-green-600">
-                        +{payment.bonus.toLocaleString()} zł
+                        +{t('currency', {amount: payment.bonus.toLocaleString()})}
                       </TableCell>
                       <TableCell className="text-red-600">
-                        -{payment.deductions.toLocaleString()} zł
+                        -{t('currency', {amount: payment.deductions.toLocaleString()})}
                       </TableCell>
                       <TableCell className="font-semibold">
-                        {payment.net.toLocaleString()} zł
+                        {t('currency', {amount: payment.net.toLocaleString()})}
                       </TableCell>
                       <TableCell>{getStatusBadge(payment.status)}</TableCell>
                       <TableCell>
                         <Button variant="ghost" size="sm">
                           <FileText className="w-4 h-4 mr-2" />
-                          Pokwitowanie
+                          {t('buttons.receipt')}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -329,7 +340,7 @@ export default function EarningsHistoryPage() {
               {/* Pagination */}
               <div className="flex items-center justify-between p-4 border-t">
                 <p className="text-sm text-gray-500">
-                  Pokazano 1-{payments.length} z {payments.length} wpisów
+                  {t('payments.pagination', {from: 1, to: payments.length, total: payments.length})}
                 </p>
                 <div className="flex gap-2">
                   <Button
@@ -361,35 +372,30 @@ export default function EarningsHistoryPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Typ</TableHead>
-                    <TableHead>Opis</TableHead>
-                    <TableHead>Kwota</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('transactions.headers.date')}</TableHead>
+                    <TableHead>{t('transactions.headers.type')}</TableHead>
+                    <TableHead>{t('transactions.headers.description')}</TableHead>
+                    <TableHead>{t('transactions.headers.amount')}</TableHead>
+                    <TableHead>{t('transactions.headers.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {transactions.map((transaction) => (
                     <TableRow key={transaction.id}>
                       <TableCell>
-                        {format(new Date(transaction.date), 'd MMM yyyy', { locale: pl })}
+                        {format(new Date(transaction.date), 'd MMM yyyy', { locale: uk })}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           {getTransactionIcon(transaction.type)}
-                          <span className="capitalize">{
-                            transaction.type === 'lesson' ? 'Lekcja' :
-                            transaction.type === 'bonus' ? 'Premia' :
-                            transaction.type === 'deduction' ? 'Potrącenie' :
-                            'Inne'
-                          }</span>
+                          <span className="capitalize">{getTransactionTypeName(transaction.type)}</span>
                         </div>
                       </TableCell>
                       <TableCell>{transaction.description}</TableCell>
                       <TableCell className={
                         transaction.amount > 0 ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'
                       }>
-                        {transaction.amount > 0 ? '+' : ''}{Math.abs(transaction.amount)} zł
+                        {transaction.amount > 0 ? '+' : ''}{t('currency', {amount: Math.abs(transaction.amount)})}
                       </TableCell>
                       <TableCell>{getStatusBadge(transaction.status)}</TableCell>
                     </TableRow>

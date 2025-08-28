@@ -34,7 +34,7 @@ export default async function LocaleLayout({
   children: React.ReactNode
   params: { locale: string }
 }) {
-  if (!['pl', 'en', 'uk'].includes(locale)) {
+  if (!['pl', 'en', 'uk', 'ru'].includes(locale)) {
     notFound()
   }
 

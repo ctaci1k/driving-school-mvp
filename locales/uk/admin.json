@@ -1,0 +1,435 @@
+{
+  "bookings": {
+    "calendar": {
+      "title": "Календар бронювань",
+      "subtitle": "Керуйте розкладом занять",
+      "navigation": {
+        "previousMonth": "Попередній місяць",
+        "nextMonth": "Наступний місяць",
+        "today": "Сьогодні",
+
+        "weekNavigation": "{startDate} - {endDate}"
+      },
+      "viewTypes": {
+        "month": "Місяць",
+        "week": "Тиждень",
+        "day": "День",
+        "list": "Список"
+      },
+      "weekDays": {
+        "monday": "Пн",
+        "tuesday": "Вт",
+        "wednesday": "Ср",
+        "thursday": "Чт",
+        "friday": "Пт",
+        "saturday": "Сб",
+        "sunday": "Нд"
+      },
+      "filters": {
+        "title": "Фільтри",
+        "instructor": "Інструктор",
+        "type": "Тип занять",
+        "status": "Статус",
+        "location": "Локація",
+        "all": "Всі",
+        "clear": "Очистити фільтри",
+        "placeholders": {
+          "allInstructors": "Всі",
+          "allTypes": "Всі",
+          "allStatuses": "Всі",
+          "allLocations": "Всі"
+        }
+      },
+      "bookingTypes": {
+        "practice": "Практика",
+        "theory": "Теорія",
+        "exam": "Іспит"
+      },
+      "bookingStatus": {
+        "confirmed": "Підтверджено",
+        "pending": "Очікує",
+        "cancelled": "Скасовано",
+        "completed": "Завершено"
+      },
+      "buttons": {
+        "filters": "Фільтри",
+        "export": "Експортувати",
+        "newBooking": "Нове бронювання",
+        "edit": "Редагувати",
+        "cancel": "Скасувати",
+        "delete": "Видалити",
+        "view": "Переглянути",
+        "close": "Закрити",
+        "save": "Зберегти"
+      },
+      "messages": {
+        "noBookings": "Немає бронювань на цей день",
+        "moreBookings": "+{count} більше",
+        "weekViewInProgress": "Тижневий вигляд у розробці. Будь ласка, використовуйте місячний вигляд або список.",
+        "loading": "Завантаження..."
+      },
+      "details": {
+        "title": "Деталі бронювання",
+        "student": "Студент",
+        "instructor": "Інструктор",
+        "date": "Дата",
+        "time": "Час",
+        "location": "Локація",
+        "vehicle": "Автомобіль",
+        "package": "Пакет",
+        "notes": "Нотатки",
+        "cancelReason": "Скасовано через студента - хвороба"
+      },
+      "stats": {
+        "todayBookings": "Сьогоднішні бронювання",
+        "pending": "Очікують",
+        "thisWeek": "Цей тиждень",
+        "utilization": "Використання"
+      },
+      "actions": {
+        "edit": "Редагувати",
+        "cancel": "Скасувати",
+        "delete": "Видалити"
+      },
+      "locations": {
+        "warsawCenter": "Варшава Центр",
+        "warsawMokotow": "Варшава Мокотув",
+        "warsawPraga": "Варшава Прага",
+        "lectureHallA": "Лекційна зала A",
+        "lectureHallB": "Лекційна зала B",
+        "examCenter": "WORD Варшава"
+      },
+      "packages": {
+        "standardB": "Пакет Стандарт B",
+        "premiumB": "Пакет Преміум B",
+        "intensiveB": "Пакет Інтенсив B"
+      }
+    },
+     "title": "Бронювання",
+    "subtitle": "Керування всіма бронюваннями та уроками",
+    "buttons": {
+      "export": "Експорт",
+      "newBooking": "Нове бронювання",
+      "edit": "Редагувати",
+      "cancel": "Скасувати",
+      "close": "Закрити",
+      "view": "Переглянути"
+    },
+    "stats": {
+      "today": "Сьогодні",
+      "completedToday": "Завершено сьогодні",
+      "thisWeek": "Цей тиждень",
+      "weekRevenue": "Дохід тижня",
+      "cancellations": "Скасування",
+      "avgRating": "Сер. оцінка"
+    },
+    "filters": {
+      "searchPlaceholder": "Пошук за ID, учнем або інструктором...",
+      "allDates": "Всі дати",
+      "today": "Сьогодні",
+      "tomorrow": "Завтра",
+      "thisWeek": "Цей тиждень",
+      "allStatuses": "Всі статуси",
+      "allInstructors": "Всі інструктори",
+      "scheduled": "Заплановано",
+      "inProgress": "В процесі",
+      "completed": "Завершено",
+      "cancelled": "Скасовано",
+      "noShow": "Неявка"
+    },
+    "table": {
+      "id": "ID",
+      "student": "Учень",
+      "instructor": "Інструктор",
+      "dateTime": "Дата і час",
+      "type": "Тип",
+      "status": "Статус",
+      "payment": "Оплата",
+      "actions": "Дії",
+      "price": "zł{price}",
+      "awaiting": "Очікує"
+    },
+    "lessonTypes": {
+      "standard": "Стандартна",
+      "highway": "Автострада",
+      "parking": "Паркування",
+      "night": "Нічна",
+      "exam": "Екзамен",
+      "maneuvers": "Маневри"
+    },
+    "charts": {
+      "weeklyBookings": "Бронювання за тиждень",
+      "statusDistribution": "Розподіл статусів",
+      "bookings": "Бронювання"
+    },
+
+    "details": {
+      "title": "Деталі бронювання {id}",
+      "studentInfo": "Учень",
+      "instructorInfo": "Інструктор",
+      "lessonDetails": "Деталі уроку",
+      "paymentStatus": "Оплата і статус",
+      "location": "Локація",
+      "notes": "Нотатки",
+      "fields": {
+        "type": "Тип:",
+        "time": "Час:",
+        "duration": "Тривалість:",
+        "durationValue": "{duration} хв",
+        "status": "Статус:",
+        "price": "Ціна:",
+        "payment": "Оплата:",
+        "paid": "Оплачено",
+        "unpaid": "Очікує",
+        "rating": "Оцінка:",
+        "cancelReason": "Причина скасування:",
+        "additionalNotes": "Додаткові нотатки щодо уроку",
+        "studentIllness": "Хвороба учня"
+      }
+    },
+    "viewModes": {
+      "list": "Список",
+      "calendar": "Календар"
+    },
+    "noData": {
+      "emptySlot": "—"
+    }
+  },
+   "dashboard": {
+    "title": "Панель керування",
+    "subtitle": "Вітаємо! Ось огляд вашої автошколи",
+    "loading": "Завантаження даних...",
+    "periods": {
+      "day": "Сьогодні",
+      "week": "Цей тиждень",
+      "month": "Цей місяць",
+      "year": "Цей рік"
+    },
+    "buttons": {
+      "export": "Експорт",
+      "refresh": "Оновити",
+      "details": "Деталі →",
+      "viewAll": "Вся активність →",
+      "allInstructors": "Всі інструктори →"
+    },
+    "stats": {
+      "totalRevenue": {
+        "title": "Загальний дохід",
+        "subtitle": "цього місяця"
+      },
+      "activeStudents": {
+        "title": "Активні учні",
+        "subtitle": "загалом зареєстровано: {total}",
+        "change": "+{count} на цьому тижні"
+      },
+      "todayLessons": {
+        "title": "Уроки сьогодні",
+        "subtitle": "{remaining} ще заплановано",
+        "change": "{completed} завершено"
+      },
+      "conversion": {
+        "title": "Конверсія",
+        "subtitle": "від реєстрації до оплати",
+        "change": "+{percent}% від минулого місяця"
+      }
+    },
+    "secondaryStats": {
+      "instructorsOnline": "Інструкторів онлайн",
+      "availableCars": "Доступних авто",
+      "newPayments": "Нових платежів",
+      "activeLocations": "Активних локацій"
+    },
+    "charts": {
+      "revenueTitle": "Динаміка доходів",
+      "revenueSubtitle": "Порівняння з попереднім періодом",
+      "currentPeriod": "Поточний період",
+      "previousPeriod": "Попередній період",
+      "packageDistribution": "Розподіл пакетів",
+      "bookingsByTime": "Бронювання за годинами",
+      "bookings": "бронювання"
+    },
+    "packages": {
+      "standard": "Стандарт",
+      "premium": "Преміум",
+      "vip": "VIP",
+      "basic": "Базовий"
+    },
+    "activities": {
+      "title": "Остання активність",
+      "bookingCreated": "забронював урок",
+      "paymentReceived": "оплатив пакет \"{package}\"",
+      "instructorOnline": "розпочав робочий день",
+      "bookingCancelled": "скасував урок на {time}",
+      "vehicleMaintenance": "{vehicle} потребує огляду",
+      "newRegistration": "зареєструвався як новий учень",
+      "examPassed": "успішно здав екзамен",
+      "reviewReceived": "залишив відгук {rating}★",
+      "timeAgo": {
+        "minutes": "{count} хвилин тому",
+        "hours": "{count} годин тому"
+      }
+    },
+    "topInstructors": {
+      "title": "Топ інструктори",
+      "lessonsUnit": "{count} уроків",
+      "rating": "{rating}★"
+    },
+    "quickActions": {
+      "title": "Швидкі дії",
+      "addUser": "Додати користувача",
+      "createBooking": "Створити бронювання",
+      "generateReport": "Створити звіт",
+      "massEmail": "Масова розсилка"
+    },
+    "alerts": {
+      "requiresAttention": "Потребує уваги",
+      "viewAll": "Переглянути всі →",
+      "pendingPayments": "{count} платежів очікують на підтвердження",
+      "vehicleInspection": "{vehicle} потребує технічного огляду за {days} днів",
+      "unconfirmedSchedule": "{count} інструкторів не підтвердили розклад на наступний тиждень"
+    }
+  },
+
+  "instructors": {
+    "list": {
+      "title": "Інструктори",
+      "subtitle": "Управління інструкторами автошколи",
+      "buttons": {
+        "addInstructor": "Додати інструктора",
+        "view": "Перегляд",
+        "schedule": "Розклад",
+        "edit": "Редагувати"
+      },
+      "stats": {
+        "totalInstructors": "Всього інструкторів",
+        "availableNow": "Доступних зараз",
+        "averageRating": "Середня оцінка",
+        "averagePassRate": "Середня прохідність"
+      },
+      "filters": {
+        "searchPlaceholder": "Пошук за прізвищем...",
+        "allStatuses": "Всі статуси",
+        "available": "Доступні",
+        "busy": "Зайняті",
+        "offline": "Оффлайн",
+        "allLocations": "Всі локації"
+      },
+      "status": {
+        "available": "Доступний",
+        "busy": "Зайнятий",
+        "offline": "Оффлайн"
+      },
+      "table": {
+        "instructor": "Інструктор",
+        "status": "Статус",
+        "rating": "Оцінка",
+        "categories": "Категорії",
+        "students": "Учні",
+        "lessonsPerWeek": "Уроків/тиждень",
+        "passRate": "Прохідність",
+        "earnings": "Заробіток",
+        "actions": "Дії"
+      },
+      "card": {
+        "rating": "Оцінка",
+        "students": "Учні",
+        "lessonsPerWeek": "Уроків/тиждень",
+        "passRate": "Прохідність",
+        "specializations": "Спеціалізації:"
+      },
+      "specializations": {
+        "exams": "Екзамени",
+        "nightDriving": "Нічне водіння",
+        "highway": "Автострада",
+        "parking": "Паркування",
+        "maneuvers": "Маневри",
+        "city": "Місто",
+        "beginners": "Початківці",
+        "theory": "Теорія"
+      },
+      "locations": {
+        "warsaw": "Варшава",
+        "krakow": "Краків",
+        "wroclaw": "Вроцлав"
+      },
+      "experience": "{years} років"
+    },
+    "schedule": {
+      "title": "Розклад інструкторів",
+      "subtitle": "Управління розкладом всіх інструкторів",
+      "buttons": {
+        "print": "Друк",
+        "download": "Завантажити",
+        "addLesson": "Додати заняття",
+        "today": "Сьогодні",
+        "showDetails": "Показати деталі",
+        "edit": "Редагувати"
+      },
+      "stats": {
+        "totalLessons": "Всього занять",
+        "confirmed": "Підтверджені",
+        "pending": "Очікують",
+        "cancelled": "Скасовані",
+        "plannedHours": "Заплановані години"
+      },
+      "viewModes": {
+        "week": "Тиждень",
+        "day": "День",
+        "list": "Список"
+      },
+      "filters": {
+        "allInstructors": "Всі інструктори",
+        "allLocations": "Всі локації"
+      },
+      "weekView": {
+        "weekNumber": "Тиждень {number}",
+        "instructor": "Інструктор",
+        "id": "ID",
+        "free": "Вільно"
+      },
+      "dayView": {
+        "time": "Час"
+      },
+      "listView": {
+        "time": "Час",
+        "instructor": "Інструктор",
+        "student": "Учень",
+        "lessonType": "Тип заняття",
+        "vehicle": "Автомобіль",
+        "location": "Локація",
+        "status": "Статус",
+        "actions": "Дії"
+      },
+      "lessonTypes": {
+        "practice": "Практика",
+        "track": "Майданчик",
+        "city": "Місто",
+        "parking": "Паркування",
+        "exam": "Екзамен",
+        "nightDriving": "Нічне водіння",
+        "highway": "Автострада"
+      },
+      "lessonStatus": {
+        "confirmed": "Підтверджено",
+        "pending": "Очікує",
+        "cancelled": "Скасовано"
+      },
+      "locations": {
+        "warsaw": "Варшава",
+        "trackKrakow": "Майданчик Краків",
+        "trackGdansk": "Майданчик Гданськ",
+        "examCenter": "Екзаменаційний центр",
+        "meetingWarsaw": "Збір: Варшава"
+      },
+      "weekDays": {
+        "monday": "Понеділок",
+        "tuesday": "Вівторок",
+        "wednesday": "Середа",
+        "thursday": "Четвер",
+        "friday": "П'ятниця",
+        "saturday": "Субота",
+        "sunday": "Неділя"
+      }
+    }
+  }
+}

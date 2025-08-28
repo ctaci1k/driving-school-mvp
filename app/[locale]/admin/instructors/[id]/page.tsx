@@ -1,532 +1,537 @@
-// app/[locale]/admin/instructors/[id]/page.tsx
-"use client";
+'use client';
 
-import React, { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
-  ArrowLeft, Edit, Save, X, Star, Calendar, Car, Users, Award,
-  Clock, TrendingUp, MapPin, Phone, Mail, Shield, AlertCircle,
-  CheckCircle, XCircle, MoreVertical, Download, Send, Trash2,
-  DollarSign, Activity, BarChart3, Eye, UserCheck, CreditCard
+  Calendar,
+  Clock,
+  MapPin,
+  User,
+  Car,
+  CreditCard,
+  Download,
+  MessageSquare,
+  Navigation,
+  Phone,
+  Mail,
+  Star,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  FileText,
+  Share2,
+  Edit,
+  X,
+  ChevronLeft,
+  Info,
+  Coins
 } from 'lucide-react';
-import { format, addDays, subDays } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/components/ui/use-toast';
 
-export default function InstructorProfilePage() {
-  const params = useParams();
+interface BookingDetails {
+  id: string;
+  date: string;
+  time: string;
+  endTime: string;
+  status: 'upcoming' | 'completed' | 'cancelled' | 'no_show' | 'in_progress';
+  type: string;
+  duration: number;
+  price: number;
+  paid: boolean;
+  paymentMethod: 'credits' | 'online' | 'cash';
+  creditsUsed?: number;
+  instructor: {
+    id: string;
+    name: string;
+    phone: string;
+    email: string;
+    avatar: string;
+    rating: number;
+    experience: string;
+  };
+  vehicle: {
+    id: string;
+    make: string;
+    model: string;
+    registration: string;
+    year: number;
+    transmission: string;
+    fuel: string;
+  };
+  location: {
+    name: string;
+    address: string;
+    coordinates: {
+      lat: number;
+      lng: number;
+    };
+  };
+  notes?: string;
+  feedback?: {
+    rating: number;
+    comment: string;
+    skills: {
+      parking: number;
+      traffic: number;
+      maneuvers: number;
+    };
+  };
+  cancellationReason?: string;
+  invoice?: {
+    number: string;
+    url: string;
+  };
+}
+
+export default function BookingDetailsPage() {
   const router = useRouter();
-  const [isEditing, setIsEditing] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const params = useParams();
+  const bookingId = params.id as string;
+  const t = useTranslations('student.bookingDetails');
+  
+  const [booking, setBooking] = useState<BookingDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [cancellationReason, setCancellationReason] = useState('');
+  const [isCancelling, setIsCancelling] = useState(false);
 
-  // Mock instructor data
-  const instructor = {
-    id: params.id,
-    firstName: 'Piotr',
-    lastName: 'Kowalski',
-    email: 'piotr.kowalski@driveschool.pl',
-    phone: '+48 601 234 567',
-    avatar: 'https://ui-avatars.com/api/?name=Piotr+Kowalski&background=10B981&color=fff',
-    dateOfBirth: '1985-03-15',
-    licenseNumber: 'DL123456',
-    categories: ['B', 'C', 'D'],
-    hireDate: '2020-01-15',
-    status: 'active',
-    rating: 4.9,
-    totalStudents: 245,
-    activeStudents: 18,
-    completedLessons: 1847,
-    successRate: 94,
-    monthlyRevenue: 8500,
-    address: 'ul. Marszałkowska 22, Warszawa',
-    emergencyContact: {
-      name: 'Maria Kowalska',
-      relation: 'Żona',
-      phone: '+48 601 987 654'
-    },
-    experience: '12 lat',
-    specializations: ['Początkujący', 'Egzaminy', 'Jazda nocna', 'Autostrada'],
-    languages: ['Polski', 'Angielski', 'Niemiecki'],
-    workingHours: {
-      monday: { start: '08:00', end: '18:00' },
-      tuesday: { start: '08:00', end: '18:00' },
-      wednesday: { start: '08:00', end: '18:00' },
-      thursday: { start: '08:00', end: '18:00' },
-      friday: { start: '08:00', end: '20:00' },
-      saturday: { start: '10:00', end: '16:00' },
-      sunday: null
-    },
-    vehicles: [
-      { id: 1, make: 'Toyota', model: 'Corolla', registration: 'WA 1234B', status: 'active' },
-      { id: 2, make: 'Volkswagen', model: 'Golf', registration: 'WA 5678C', status: 'maintenance' }
-    ],
-    documents: [
-      { id: 1, name: 'Prawo jazdy', type: 'license', uploadDate: '2024-01-10', status: 'verified' },
-      { id: 2, name: 'Zaświadczenie lekarskie', type: 'medical', uploadDate: '2024-01-05', status: 'verified' },
-      { id: 3, name: 'Uprawnienia instruktora', type: 'instructor', uploadDate: '2024-01-01', status: 'verified' }
-    ]
+  useEffect(() => {
+    // Mock fetch booking details
+    setTimeout(() => {
+      setBooking({
+        id: bookingId,
+        date: '2024-08-28',
+        time: '10:00',
+        endTime: '11:30',
+        status: 'upcoming',
+        type: 'standard', // Changed to key for translation
+        duration: 90,
+        price: 180,
+        paid: true,
+        paymentMethod: 'credits',
+        creditsUsed: 1,
+        instructor: {
+          id: '1',
+          name: 'Петро Новак',
+          phone: '+38 067 123 4567',
+          email: 'petro.novak@school.ua',
+          avatar: 'https://ui-avatars.com/api/?name=Petro+Novak&background=10B981&color=fff',
+          rating: 4.9,
+          experience: '8'
+        },
+        vehicle: {
+          id: '1',
+          make: 'Toyota',
+          model: 'Yaris',
+          registration: 'AA 1234 BB',
+          year: 2023,
+          transmission: 'manual',
+          fuel: 'petrol'
+        },
+        location: {
+          name: 'Центр - вул. Хрещатик 145',
+          address: 'вул. Хрещатик 145, 01001 Київ',
+          coordinates: {
+            lat: 50.4501,
+            lng: 30.5234
+          }
+        },
+        notes: 'Прошу повторити паралельне паркування',
+        invoice: {
+          number: 'INV/2024/08/001234',
+          url: '/invoices/INV-2024-08-001234.pdf'
+        }
+      });
+      setLoading(false);
+    }, 1000);
+  }, [bookingId]);
+
+  const handleCancelBooking = async () => {
+    setIsCancelling(true);
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    toast({
+      title: t('toast.cancelled'),
+      description: t('toast.cancelledDescription'),
+    });
+    
+    setIsCancelling(false);
+    setCancelDialogOpen(false);
+    router.push('/student/bookings');
   };
 
-  // Performance stats
-  const performanceStats = [
-    { label: 'Średnia ocena', value: instructor.rating, max: 5, type: 'rating' },
-    { label: 'Skuteczność kursantów', value: instructor.successRate, max: 100, type: 'percentage' },
-    { label: 'Obłożenie', value: 78, max: 100, type: 'percentage' },
-    { label: 'Punktualność', value: 96, max: 100, type: 'percentage' }
-  ];
+  const getStatusBadge = (status: BookingDetails['status']) => {
+    const variants = {
+      upcoming: { label: t('status.upcoming'), className: 'bg-blue-100 text-blue-700', icon: Clock },
+      in_progress: { label: t('status.inProgress'), className: 'bg-yellow-100 text-yellow-700', icon: Car },
+      completed: { label: t('status.completed'), className: 'bg-green-100 text-green-700', icon: CheckCircle },
+      cancelled: { label: t('status.cancelled'), className: 'bg-gray-100 text-gray-700', icon: XCircle },
+      no_show: { label: t('status.noShow'), className: 'bg-red-100 text-red-700', icon: AlertTriangle }
+    };
+    return variants[status];
+  };
 
-  // Recent students
-  const recentStudents = [
-    { id: 1, name: 'Jan Nowak', avatar: null, lessons: 12, progress: 75, nextLesson: '2024-02-01 10:00' },
-    { id: 2, name: 'Maria Wiśniewska', avatar: null, lessons: 8, progress: 60, nextLesson: '2024-02-01 14:00' },
-    { id: 3, name: 'Andrzej Lewandowski', avatar: null, lessons: 15, progress: 90, nextLesson: '2024-02-02 08:00' },
-    { id: 4, name: 'Oksana Wójcik', avatar: null, lessons: 5, progress: 35, nextLesson: '2024-02-02 16:00' },
-    { id: 5, name: 'Piotr Kamiński', avatar: null, lessons: 20, progress: 95, nextLesson: '2024-02-03 12:00' }
-  ];
+  if (loading) {
+    return (
+      <div className="p-6 space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <Skeleton className="h-64" />
+            <Skeleton className="h-48" />
+          </div>
+          <div className="space-y-6">
+            <Skeleton className="h-48" />
+            <Skeleton className="h-32" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  // Schedule for the week
-  const weekSchedule = [
-    { day: 'Pon', date: '29.01', lessons: 6, hours: '08:00-18:00', revenue: 720 },
-    { day: 'Wt', date: '30.01', lessons: 7, hours: '08:00-18:00', revenue: 840 },
-    { day: 'Śr', date: '31.01', lessons: 5, hours: '08:00-16:00', revenue: 600 },
-    { day: 'Czw', date: '01.02', lessons: 8, hours: '08:00-20:00', revenue: 960 },
-    { day: 'Pt', date: '02.02', lessons: 6, hours: '08:00-18:00', revenue: 720 },
-    { day: 'Sob', date: '03.02', lessons: 3, hours: '10:00-16:00', revenue: 360 },
-    { day: 'Ndz', date: '04.02', lessons: 0, hours: 'Wolne', revenue: 0 }
-  ];
+  if (!booking) {
+    return (
+      <div className="p-6">
+        <Alert>
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>{t('notFound.title')}</AlertTitle>
+          <AlertDescription>{t('notFound.description')}</AlertDescription>
+        </Alert>
+      </div>
+    );
+  }
 
-  // Reviews
-  const reviews = [
-    { id: 1, student: 'Jan Nowak', rating: 5, comment: 'Świetny instruktor! Wszystko tłumaczy bardzo zrozumiale.', date: '2024-01-28' },
-    { id: 2, student: 'Maria Wiśniewska', rating: 5, comment: 'Bardzo cierpliwy i uważny. Polecam!', date: '2024-01-25' },
-    { id: 3, student: 'Andrzej Lewandowski', rating: 4, comment: 'Profesjonalista w swojej dziedzinie.', date: '2024-01-20' }
-  ];
-
-  // Financial history
-  const financialHistory = [
-    { month: 'Styczeń 2024', revenue: 8500, lessons: 145, averagePrice: 59 },
-    { month: 'Grudzień 2023', revenue: 7780, lessons: 132, averagePrice: 59 },
-    { month: 'Listopad 2023', revenue: 8240, lessons: 140, averagePrice: 59 },
-    { month: 'Październik 2023', revenue: 7960, lessons: 135, averagePrice: 59 }
-  ];
-
-  const tabs = [
-    { id: 'overview', label: 'Przegląd', icon: Eye },
-    { id: 'schedule', label: 'Grafik', icon: Calendar },
-    { id: 'students', label: 'Kursanci', icon: Users },
-    { id: 'performance', label: 'Wydajność', icon: TrendingUp },
-    { id: 'financial', label: 'Finanse', icon: DollarSign },
-    { id: 'documents', label: 'Dokumenty', icon: Shield }
-  ];
+  const statusInfo = getStatusBadge(booking.status);
+  const StatusIcon = statusInfo.icon;
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => router.push('/admin/instructors')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.push('/student/bookings')}
           >
-            <ArrowLeft className="w-5 h-5 text-gray-600" />
-          </button>
+            <ChevronLeft className="h-5 w-5" />
+          </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Profil instruktora</h1>
-            <p className="text-sm text-gray-600">Szczegółowe informacje i zarządzanie</p>
+            <h1 className="text-3xl font-bold">{t('title')}</h1>
+            <p className="text-muted-foreground mt-1">{t('id', { id: booking.id })}</p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          {!isEditing ? (
-            <>
-              <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
-                <Download className="w-4 h-4" />
-                Eksport
-              </button>
-              <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
-                <Send className="w-4 h-4" />
-                Wiadomość
-              </button>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-              >
-                <Edit className="w-4 h-4" />
-                Edytuj
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                onClick={() => setIsEditing(false)}
-                className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
-              >
-                <X className="w-4 h-4" />
-                Anuluj
-              </button>
-              <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
-                <Save className="w-4 h-4" />
-                Zapisz
-              </button>
-            </>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="icon">
+            <Share2 className="h-4 w-4" />
+          </Button>
+          {booking.invoice && (
+            <Button variant="outline">
+              <Download className="h-4 w-4 mr-2" />
+              {t('invoice')}
+            </Button>
           )}
         </div>
       </div>
 
-      {/* Main Info Card */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="flex items-start gap-4">
-            <img
-              src={instructor.avatar}
-              alt={`${instructor.firstName} ${instructor.lastName}`}
-              className="w-24 h-24 rounded-full"
-            />
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800">
-                {instructor.firstName} {instructor.lastName}
-              </h2>
-              <div className="flex items-center gap-3 mt-2">
-                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  instructor.status === 'active' 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-700'
-                }`}>
-                  {instructor.status === 'active' ? 'Aktywny' : 'Nieaktywny'}
-                </span>
-                <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                  <span className="font-semibold">{instructor.rating}</span>
-                  <span className="text-gray-500 text-sm">({instructor.totalStudents} kursantów)</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Status Card */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>{t('info.title')}</CardTitle>
+                <Badge className={statusInfo.className}>
+                  <StatusIcon className="w-3 h-3 mr-1" />
+                  {statusInfo.label}
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Calendar className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('info.date')}</p>
+                    <p className="font-medium">
+                      {new Date(booking.date).toLocaleDateString('uk-UA', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{t('info.time')}</p>
+                    <p className="font-medium">{booking.time} - {booking.endTime}</p>
+                    <p className="text-xs text-muted-foreground">{t('info.duration', { minutes: booking.duration })}</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <Mail className="w-4 h-4" />
-                  {instructor.email}
-                </div>
-                <div className="flex items-center gap-1">
-                  <Phone className="w-4 h-4" />
-                  {instructor.phone}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1">
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-800">{instructor.activeStudents}</p>
-              <p className="text-xs text-gray-600">Aktywni kursanci</p>
-            </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-800">{instructor.completedLessons}</p>
-              <p className="text-xs text-gray-600">Przeprowadzonych lekcji</p>
-            </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-800">{instructor.successRate}%</p>
-              <p className="text-xs text-gray-600">Skuteczność</p>
-            </div>
-            <div className="text-center p-3 bg-gray-50 rounded-lg">
-              <p className="text-2xl font-bold text-gray-800">{instructor.monthlyRevenue} zł</p>
-              <p className="text-xs text-gray-600">Przychód/miesiąc</p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
-        <div className="border-b border-gray-200">
-          <div className="flex overflow-x-auto">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 border-b-2 transition-colors whitespace-nowrap ${
-                    activeTab === tab.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-transparent text-gray-600 hover:text-gray-800'
-                  }`}
+              <Separator />
+
+              <div>
+                <p className="text-sm text-muted-foreground mb-2">{t('info.type')}</p>
+                <p className="font-semibold text-lg">{t(`lessonTypes.${booking.type}`)}</p>
+              </div>
+
+              {booking.notes && (
+                <>
+                  <Separator />
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t('info.notes')}</p>
+                    <p className="text-sm">{booking.notes}</p>
+                  </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Instructor Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('instructor.title')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-4">
+                  <img
+                    src={booking.instructor.avatar}
+                    alt={booking.instructor.name}
+                    className="w-16 h-16 rounded-full"
+                  />
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-lg">{booking.instructor.name}</h3>
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                      <span className="text-sm font-medium">{booking.instructor.rating}</span>
+                      <span className="text-sm text-muted-foreground">• {t('instructor.experience', { years: booking.instructor.experience })}</span>
+                    </div>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm">
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  {t('instructor.sendMessage')}
+                </Button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <Button variant="outline" className="justify-start">
+                  <Phone className="w-4 h-4 mr-2" />
+                  {booking.instructor.phone}
+                </Button>
+                <Button variant="outline" className="justify-start">
+                  <Mail className="w-4 h-4 mr-2" />
+                  {booking.instructor.email}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Vehicle Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('vehicle.title')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Car className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">
+                      {booking.vehicle.make} {booking.vehicle.model}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {booking.vehicle.registration} • {t('vehicle.year', { year: booking.vehicle.year })}
+                    </p>
+                  </div>
+                </div>
+                <Badge variant="outline">
+                  {t(`vehicle.transmission.${booking.vehicle.transmission}`)} • {t(`vehicle.fuel.${booking.vehicle.fuel}`)}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Location Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('location.title')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-muted-foreground mt-1" />
+                <div className="space-y-1">
+                  <p className="font-medium">{booking.location.name}</p>
+                  <p className="text-sm text-muted-foreground">{booking.location.address}</p>
+                </div>
+              </div>
+              <Button className="w-full" variant="outline">
+                <Navigation className="w-4 h-4 mr-2" />
+                {t('location.openInMaps')}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Payment Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('payment.title')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">{t('payment.status')}</span>
+                <Badge variant={booking.paid ? "success" : "destructive"}>
+                  {booking.paid ? t('payment.paid') : t('payment.unpaid')}
+                </Badge>
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">{t('payment.method')}</span>
+                <div className="flex items-center gap-2">
+                  {booking.paymentMethod === 'credits' ? (
+                    <>
+                      <Coins className="w-4 h-4" />
+                      <span>{t('payment.credits', { count: booking.creditsUsed })}</span>
+                    </>
+                  ) : booking.paymentMethod === 'online' ? (
+                    <>
+                      <CreditCard className="w-4 h-4" />
+                      <span>{t('payment.online')}</span>
+                    </>
+                  ) : (
+                    <span>{t('payment.cash')}</span>
+                  )}
+                </div>
+              </div>
+              
+              <Separator />
+              
+              <div className="flex items-center justify-between">
+                <span className="text-muted-foreground">{t('payment.amount')}</span>
+                <span className="text-xl font-bold">{t('payment.currency', { amount: booking.price })}</span>
+              </div>
+
+              {!booking.paid && booking.status === 'upcoming' && (
+                <Button className="w-full">
+                  <CreditCard className="w-4 h-4 mr-2" />
+                  {t('payment.payNow')}
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Actions Card */}
+          {booking.status === 'upcoming' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('actions.title')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <Button 
+                  className="w-full" 
+                  variant="outline"
+                  onClick={() => router.push(`/student/schedule/reschedule/${booking.id}`)}
                 >
-                  <Icon className="w-4 h-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Tab Content */}
-        <div className="p-6">
-          {activeTab === 'overview' && (
-            <div className="space-y-6">
-              {/* Basic Info */}
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Podstawowe informacje</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm text-gray-600">Data urodzenia</label>
-                    <p className="font-medium text-gray-800">{format(new Date(instructor.dateOfBirth), 'dd MMMM yyyy', { locale: pl })}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Numer prawa jazdy</label>
-                    <p className="font-medium text-gray-800">{instructor.licenseNumber}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Kategorie</label>
-                    <div className="flex gap-2 mt-1">
-                      {instructor.categories.map(cat => (
-                        <span key={cat} className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">
-                          {cat}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Data zatrudnienia</label>
-                    <p className="font-medium text-gray-800">{format(new Date(instructor.hireDate), 'dd MMMM yyyy', { locale: pl })}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Doświadczenie</label>
-                    <p className="font-medium text-gray-800">{instructor.experience}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Adres</label>
-                    <p className="font-medium text-gray-800">{instructor.address}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Skills & Languages */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Specjalizacje</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {instructor.specializations.map(spec => (
-                      <span key={spec} className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full">
-                        {spec}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Języki</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {instructor.languages.map(lang => (
-                      <span key={lang} className="px-3 py-1 bg-purple-100 text-purple-700 text-sm rounded-full">
-                        {lang}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Emergency Contact */}
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Kontakt awaryjny</h4>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
-                      <label className="text-xs text-gray-600">Imię i nazwisko</label>
-                      <p className="font-medium text-gray-800">{instructor.emergencyContact.name}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-600">Relacja</label>
-                      <p className="font-medium text-gray-800">{instructor.emergencyContact.relation}</p>
-                    </div>
-                    <div>
-                      <label className="text-xs text-gray-600">Telefon</label>
-                      <p className="font-medium text-gray-800">{instructor.emergencyContact.phone}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                  <Edit className="w-4 h-4 mr-2" />
+                  {t('actions.reschedule')}
+                </Button>
+                <Button 
+                  className="w-full text-destructive hover:text-destructive" 
+                  variant="outline"
+                  onClick={() => setCancelDialogOpen(true)}
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  {t('actions.cancel')}
+                </Button>
+              </CardContent>
+            </Card>
           )}
 
-          {activeTab === 'schedule' && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-7 gap-3">
-                {weekSchedule.map((day) => (
-                  <div key={day.day} className={`text-center p-3 rounded-lg border ${
-                    day.lessons === 0 ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200'
-                  }`}>
-                    <p className="font-semibold text-gray-800">{day.day}</p>
-                    <p className="text-sm text-gray-600">{day.date}</p>
-                    <p className="text-2xl font-bold text-blue-600 my-2">{day.lessons}</p>
-                    <p className="text-xs text-gray-500">{day.hours}</p>
-                    {day.revenue > 0 && (
-                      <p className="text-sm font-semibold text-green-600 mt-2">{day.revenue} zł</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'students' && (
-            <div className="space-y-4">
-              {recentStudents.map((student) => (
-                <div key={student.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                      <UserCheck className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-gray-800">{student.name}</p>
-                      <p className="text-sm text-gray-600">{student.lessons} lekcji • Postęp: {student.progress}%</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-600">Następna lekcja</p>
-                    <p className="font-medium text-gray-800">{format(new Date(student.nextLesson), 'dd.MM HH:mm')}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {activeTab === 'performance' && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {performanceStats.map((stat) => (
-                  <div key={stat.label} className="p-4 bg-gray-50 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-2">{stat.label}</p>
-                    <div className="flex items-end gap-2">
-                      <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-                      <p className="text-sm text-gray-500">
-                        {stat.type === 'rating' ? `/ ${stat.max}` : '%'}
-                      </p>
-                    </div>
-                    <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="h-2 rounded-full bg-blue-500"
-                        style={{ width: `${(stat.value / stat.max) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Ostatnie opinie</h4>
-                <div className="space-y-3">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-gray-800">{review.student}</p>
-                          <div className="flex items-center gap-1 mt-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-4 h-4 ${
-                                  i < review.rating
-                                    ? 'text-yellow-500 fill-yellow-500'
-                                    : 'text-gray-300'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-sm text-gray-500">{format(new Date(review.date), 'dd.MM.yyyy')}</p>
-                      </div>
-                      <p className="text-gray-600">{review.comment}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'financial' && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-green-700">Bieżący miesiąc</p>
-                    <TrendingUp className="w-4 h-4 text-green-600" />
-                  </div>
-                  <p className="text-2xl font-bold text-gray-800">{instructor.monthlyRevenue} zł</p>
-                  <p className="text-sm text-green-600 mt-1">+8.5% od poprzedniego miesiąca</p>
-                </div>
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-blue-700">Średnia cena</p>
-                    <CreditCard className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <p className="text-2xl font-bold text-gray-800">59 zł</p>
-                  <p className="text-sm text-gray-600 mt-1">za lekcję</p>
-                </div>
-                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm text-purple-700">Zadłużenie</p>
-                    <AlertCircle className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <p className="text-2xl font-bold text-gray-800">0 zł</p>
-                  <p className="text-sm text-green-600 mt-1">Wszystkie rozliczenia przeprowadzone</p>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Historia przychodów</h4>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-sm font-semibold text-gray-700">Miesiąc</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Przychód</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Lekcje</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Średnia cena</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {financialHistory.map((month, index) => (
-                        <tr key={index} className="border-b border-gray-100">
-                          <td className="py-3 text-gray-800">{month.month}</td>
-                          <td className="py-3 text-right font-semibold text-gray-800">{month.revenue.toLocaleString('pl-PL')} zł</td>
-                          <td className="py-3 text-right text-gray-600">{month.lessons}</td>
-                          <td className="py-3 text-right text-gray-600">{month.averagePrice} zł</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'documents' && (
-            <div className="space-y-4">
-              {instructor.documents.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Shield className="w-5 h-5 text-gray-600" />
-                    <div>
-                      <p className="font-medium text-gray-800">{doc.name}</p>
-                      <p className="text-sm text-gray-600">Przesłano: {format(new Date(doc.uploadDate), 'dd.MM.yyyy')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                      doc.status === 'verified'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                    }`}>
-                      {doc.status === 'verified' ? 'Zweryfikowano' : 'W weryfikacji'}
-                    </span>
-                    <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-                      <Eye className="w-4 h-4 text-gray-600" />
-                    </button>
-                    <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-                      <Download className="w-4 h-4 text-gray-600" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Info Alert */}
+          <Alert>
+            <Info className="h-4 w-4" />
+            <AlertDescription>
+              {t('alert.cancellationInfo')}
+            </AlertDescription>
+          </Alert>
         </div>
       </div>
+
+      {/* Cancel Dialog */}
+      <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('cancelDialog.title')}</DialogTitle>
+            <DialogDescription>
+              {t('cancelDialog.description')}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="reason" className="text-sm font-medium">
+                {t('cancelDialog.reasonLabel')}
+              </label>
+              <Textarea
+                id="reason"
+                value={cancellationReason}
+                onChange={(e) => setCancellationReason(e.target.value)}
+                placeholder={t('cancelDialog.reasonPlaceholder')}
+                className="mt-2"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setCancelDialogOpen(false)}
+              disabled={isCancelling}
+            >
+              {t('cancelDialog.keep')}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleCancelBooking}
+              disabled={isCancelling}
+            >
+              {isCancelling ? t('cancelDialog.cancelling') : t('cancelDialog.confirm')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

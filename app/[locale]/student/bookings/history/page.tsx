@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Calendar,
   Clock,
@@ -74,6 +75,8 @@ interface Statistics {
 
 export default function BookingsHistoryPage() {
   const router = useRouter();
+  const t = useTranslations('student.bookingHistory');
+  
   const [bookings, setBookings] = useState<HistoricalBooking[]>([]);
   const [filteredBookings, setFilteredBookings] = useState<HistoricalBooking[]>([]);
   const [statistics, setStatistics] = useState<Statistics | null>(null);
@@ -96,8 +99,8 @@ export default function BookingsHistoryPage() {
         id: '1',
         date: '2024-08-20',
         time: '10:00',
-        type: 'Jazda standardowa',
-        instructor: 'Piotr Nowak',
+        type: 'standard',
+        instructor: 'Петро Новак',
         vehicle: 'Toyota Yaris',
         duration: 90,
         status: 'completed',
@@ -110,8 +113,8 @@ export default function BookingsHistoryPage() {
         id: '2',
         date: '2024-08-15',
         time: '14:00',
-        type: 'Parkowanie',
-        instructor: 'Anna Kowalczyk',
+        type: 'parking',
+        instructor: 'Анна Коваленко',
         vehicle: 'VW Golf',
         duration: 60,
         status: 'completed',
@@ -124,8 +127,8 @@ export default function BookingsHistoryPage() {
         id: '3',
         date: '2024-08-10',
         time: '16:00',
-        type: 'Jazda nocna',
-        instructor: 'Piotr Nowak',
+        type: 'night',
+        instructor: 'Петро Новак',
         vehicle: 'Toyota Yaris',
         duration: 90,
         status: 'cancelled',
@@ -137,8 +140,8 @@ export default function BookingsHistoryPage() {
         id: '4',
         date: '2024-08-05',
         time: '12:00',
-        type: 'Jazda autostradą',
-        instructor: 'Tomasz Wiśniewski',
+        type: 'highway',
+        instructor: 'Тарас Вишневський',
         vehicle: 'Škoda Fabia',
         duration: 120,
         status: 'completed',
@@ -151,8 +154,8 @@ export default function BookingsHistoryPage() {
         id: '5',
         date: '2024-07-30',
         time: '09:00',
-        type: 'Manewry',
-        instructor: 'Anna Kowalczyk',
+        type: 'maneuvers',
+        instructor: 'Анна Коваленко',
         vehicle: 'VW Golf',
         duration: 90,
         status: 'completed',
@@ -169,8 +172,8 @@ export default function BookingsHistoryPage() {
       totalHours: 45,
       averageRating: 4.6,
       successRate: 88,
-      favoriteInstructor: 'Piotr Nowak',
-      mostCommonType: 'Jazda standardowa',
+      favoriteInstructor: 'Петро Новак',
+      mostCommonType: 'standard',
       totalSpent: 4500
     };
 
@@ -187,11 +190,12 @@ export default function BookingsHistoryPage() {
 
     // Search filter
     if (searchQuery) {
-      filtered = filtered.filter(booking =>
-        booking.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        booking.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        booking.vehicle.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filtered.filter(booking => {
+        const localizedType = t(`lessonTypes.${booking.type}`);
+        return localizedType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          booking.instructor.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          booking.vehicle.toLowerCase().includes(searchQuery.toLowerCase());
+      });
     }
 
     // Status filter
@@ -209,7 +213,7 @@ export default function BookingsHistoryPage() {
 
     setFilteredBookings(filtered);
     setCurrentPage(1);
-  }, [searchQuery, statusFilter, dateRange, bookings]);
+  }, [searchQuery, statusFilter, dateRange, bookings, t]);
 
   const totalPages = Math.ceil(filteredBookings.length / itemsPerPage);
   const paginatedBookings = filteredBookings.slice(
@@ -219,9 +223,9 @@ export default function BookingsHistoryPage() {
 
   const getStatusBadge = (status: HistoricalBooking['status']) => {
     const variants = {
-      completed: { label: 'Zakończona', className: 'bg-green-100 text-green-700' },
-      cancelled: { label: 'Anulowana', className: 'bg-gray-100 text-gray-700' },
-      no_show: { label: 'Nieobecny', className: 'bg-red-100 text-red-700' }
+      completed: { label: t('status.completed'), className: 'bg-green-100 text-green-700' },
+      cancelled: { label: t('status.cancelled'), className: 'bg-gray-100 text-gray-700' },
+      no_show: { label: t('status.noShow'), className: 'bg-red-100 text-red-700' }
     };
     return variants[status];
   };
@@ -250,14 +254,14 @@ export default function BookingsHistoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Historia lekcji</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Przeglądaj swoją historię jazd i postępy
+            {t('subtitle')}
           </p>
         </div>
         <Button onClick={exportToCSV}>
           <Download className="w-4 h-4 mr-2" />
-          Eksportuj CSV
+          {t('exportCSV')}
         </Button>
       </div>
 
@@ -267,7 +271,7 @@ export default function BookingsHistoryPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Ukończone lekcje
+                {t('statistics.completedLessons')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -282,7 +286,7 @@ export default function BookingsHistoryPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Godziny jazdy
+                {t('statistics.drivingHours')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -296,7 +300,7 @@ export default function BookingsHistoryPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Średnia ocena
+                {t('statistics.averageRating')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -310,11 +314,11 @@ export default function BookingsHistoryPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                Wydane łącznie
+                {t('statistics.totalSpent')}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <span className="text-2xl font-bold">{statistics.totalSpent} PLN</span>
+              <span className="text-2xl font-bold">{t('statistics.currency', { amount: statistics.totalSpent })}</span>
             </CardContent>
           </Card>
         </div>
@@ -323,7 +327,7 @@ export default function BookingsHistoryPage() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Filtry</CardTitle>
+          <CardTitle className="text-lg">{t('filters.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col lg:flex-row gap-4">
@@ -331,7 +335,7 @@ export default function BookingsHistoryPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Szukaj po typie, instruktorze lub pojeździe..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -341,13 +345,13 @@ export default function BookingsHistoryPage() {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full lg:w-[180px]">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('filters.status.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="completed">Zakończone</SelectItem>
-                <SelectItem value="cancelled">Anulowane</SelectItem>
-                <SelectItem value="no_show">Nieobecne</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="completed">{t('filters.status.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
+                <SelectItem value="no_show">{t('filters.status.noShow')}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -379,7 +383,7 @@ export default function BookingsHistoryPage() {
               {paginatedBookings.length === 0 ? (
                 <div className="p-12 text-center">
                   <CalendarDays className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Nie znaleziono lekcji w historii</p>
+                  <p className="text-muted-foreground">{t('noResults')}</p>
                 </div>
               ) : (
                 paginatedBookings.map(booking => {
@@ -389,7 +393,7 @@ export default function BookingsHistoryPage() {
                       <div className="flex flex-col lg:flex-row justify-between gap-4">
                         <div className="flex-1 space-y-3">
                           <div className="flex items-center gap-3">
-                            <h3 className="font-semibold">{booking.type}</h3>
+                            <h3 className="font-semibold">{t(`lessonTypes.${booking.type}`)}</h3>
                             <Badge className={statusInfo.className}>
                               {statusInfo.label}
                             </Badge>
@@ -412,11 +416,11 @@ export default function BookingsHistoryPage() {
                           <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              {new Date(booking.date).toLocaleDateString('pl-PL')}
+                              {new Date(booking.date).toLocaleDateString('uk-UA')}
                             </div>
                             <div className="flex items-center gap-1">
                               <Clock className="w-4 h-4" />
-                              {booking.time} ({booking.duration} min)
+                              {booking.time} ({t('duration', { minutes: booking.duration })})
                             </div>
                             <div className="flex items-center gap-1">
                               <User className="w-4 h-4" />
@@ -430,7 +434,7 @@ export default function BookingsHistoryPage() {
                         </div>
                         
                         <div className="flex items-center gap-2">
-                          <span className="font-semibold">{booking.price} PLN</span>
+                          <span className="font-semibold">{t('statistics.currency', { amount: booking.price })}</span>
                           <Button
                             variant="ghost"
                             size="icon"
@@ -454,14 +458,14 @@ export default function BookingsHistoryPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Data</TableHead>
-                  <TableHead>Typ</TableHead>
-                  <TableHead>Instruktor</TableHead>
-                  <TableHead>Pojazd</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Ocena</TableHead>
-                  <TableHead>Cena</TableHead>
-                  <TableHead>Akcje</TableHead>
+                  <TableHead>{t('table.date')}</TableHead>
+                  <TableHead>{t('table.type')}</TableHead>
+                  <TableHead>{t('table.instructor')}</TableHead>
+                  <TableHead>{t('table.vehicle')}</TableHead>
+                  <TableHead>{t('table.status')}</TableHead>
+                  <TableHead>{t('table.rating')}</TableHead>
+                  <TableHead>{t('table.price')}</TableHead>
+                  <TableHead>{t('table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -470,9 +474,9 @@ export default function BookingsHistoryPage() {
                   return (
                     <TableRow key={booking.id}>
                       <TableCell>
-                        {new Date(booking.date).toLocaleDateString('pl-PL')}
+                        {new Date(booking.date).toLocaleDateString('uk-UA')}
                       </TableCell>
-                      <TableCell>{booking.type}</TableCell>
+                      <TableCell>{t(`lessonTypes.${booking.type}`)}</TableCell>
                       <TableCell>{booking.instructor}</TableCell>
                       <TableCell>{booking.vehicle}</TableCell>
                       <TableCell>
@@ -490,7 +494,7 @@ export default function BookingsHistoryPage() {
                           '-'
                         )}
                       </TableCell>
-                      <TableCell>{booking.price} PLN</TableCell>
+                      <TableCell>{t('statistics.currency', { amount: booking.price })}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1">
                           <Button
@@ -527,7 +531,7 @@ export default function BookingsHistoryPage() {
               disabled={currentPage === 1}
             >
               <ChevronLeft className="h-4 w-4" />
-              Poprzednia
+              {t('pagination.previous')}
             </Button>
             
             <div className="flex items-center gap-1">
@@ -562,7 +566,7 @@ export default function BookingsHistoryPage() {
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
             >
-              Następna
+              {t('pagination.next')}
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

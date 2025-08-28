@@ -2,6 +2,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   DollarSign, Calendar, TrendingUp, TrendingDown, Info,
   FileText, Download, Filter, ChevronRight, Clock,
@@ -34,15 +35,16 @@ import {
   PieChart as RePieChart, Pie, Cell, Legend
 } from 'recharts'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function EarningsDetailsPage() {
+  const t = useTranslations('instructor.earnings.details')
   const [selectedPeriod, setSelectedPeriod] = useState('month')
   const [selectedMonth, setSelectedMonth] = useState('february')
 
-  // Podział bieżącego okresu
+  // Поточний період
   const currentPeriod = {
-    period: 'Luty 2024',
+    period: t('period.february'),
     gross: 24850,
     net: 22365,
     lessons: 65,
@@ -50,7 +52,7 @@ export default function EarningsDetailsPage() {
     students: 15,
     
     breakdown: {
-      base: 19500,  // 65 lekcji * 300
+      base: 19500,  // 65 уроків * 300
       overtime: 2000,
       bonuses: {
         quality: 1000,
@@ -69,25 +71,25 @@ export default function EarningsDetailsPage() {
     }
   }
 
-  // Zarobki według typu lekcji
+  // Заробітки за типом уроків
   const earningsByType = [
-    { type: 'Praktyka - miasto', lessons: 30, amount: 9000, percentage: 36 },
-    { type: 'Praktyka - trasa', lessons: 15, amount: 5250, percentage: 21 },
-    { type: 'Przygotowanie do egzaminu', lessons: 10, amount: 4000, percentage: 16 },
-    { type: 'Praktyka - plac manewrowy', lessons: 8, amount: 2400, percentage: 10 },
-    { type: 'Jazda nocna', lessons: 2, amount: 800, percentage: 3 }
+    { type: t('lessonTypes.practiceCity'), lessons: 30, amount: 9000, percentage: 36 },
+    { type: t('lessonTypes.practiceRoute'), lessons: 15, amount: 5250, percentage: 21 },
+    { type: t('lessonTypes.examPrep'), lessons: 10, amount: 4000, percentage: 16 },
+    { type: t('lessonTypes.practiceArea'), lessons: 8, amount: 2400, percentage: 10 },
+    { type: t('lessonTypes.nightDriving'), lessons: 2, amount: 800, percentage: 3 }
   ]
 
-  // Zarobki według kursantów
+  // Заробітки за курсантами
   const earningsByStudent = [
-    { name: 'Maria Kowalska', lessons: 12, amount: 3600, status: 'active' },
-    { name: 'Jan Nowak', lessons: 10, amount: 3000, status: 'active' },
-    { name: 'Anna Wiśniewska', lessons: 9, amount: 2700, status: 'active' },
-    { name: 'Andrzej Kowalczyk', lessons: 8, amount: 2400, status: 'active' },
-    { name: 'Natalia Lewandowska', lessons: 7, amount: 2100, status: 'active' }
+    { name: 'Марія Коваленко', lessons: 12, amount: 3600, status: 'active' },
+    { name: 'Іван Шевченко', lessons: 10, amount: 3000, status: 'active' },
+    { name: 'Анна Бондаренко', lessons: 9, amount: 2700, status: 'active' },
+    { name: 'Андрій Мельник', lessons: 8, amount: 2400, status: 'active' },
+    { name: 'Наталія Коваль', lessons: 7, amount: 2100, status: 'active' }
   ]
 
-  // Dzienne zarobki dla wykresu
+  // Денні заробітки для графіку
   const dailyEarnings = [
     { day: '1', amount: 1200, lessons: 3 },
     { day: '2', amount: 1800, lessons: 4 },
@@ -98,13 +100,13 @@ export default function EarningsDetailsPage() {
     { day: '7', amount: 0, lessons: 0 }
   ]
 
-  // Historia bonusów
+  // Історія бонусів
   const bonusesHistory = [
     {
       id: 1,
       type: 'quality',
-      title: 'Bonus za jakość',
-      description: 'Ocena 4.9+ przez cały miesiąc',
+      title: t('bonusDetails.quality'),
+      description: t('bonusDetails.qualityDesc'),
       amount: 1000,
       status: 'received',
       date: '2024-02-28'
@@ -112,8 +114,8 @@ export default function EarningsDetailsPage() {
     {
       id: 2,
       type: 'punctuality',
-      title: 'Bonus za punktualność',
-      description: '100% terminowych zajęć',
+      title: t('bonusDetails.punctuality'),
+      description: t('bonusDetails.punctualityDesc'),
       amount: 500,
       status: 'received',
       date: '2024-02-28'
@@ -121,8 +123,8 @@ export default function EarningsDetailsPage() {
     {
       id: 3,
       type: 'newStudents',
-      title: 'Bonus za nowych kursantów',
-      description: '3 nowych kursantów',
+      title: t('bonusDetails.newStudents'),
+      description: t('bonusDetails.newStudentsDesc', {count: 3}),
       amount: 750,
       status: 'pending',
       date: '2024-02-28'
@@ -130,15 +132,15 @@ export default function EarningsDetailsPage() {
     {
       id: 4,
       type: 'examSuccess',
-      title: 'Bonus za zdane egzaminy',
-      description: '2 kursantów zdało egzamin',
+      title: t('bonusDetails.examSuccess'),
+      description: t('bonusDetails.examSuccessDesc', {count: 2}),
       amount: 600,
       status: 'pending',
       date: '2024-02-28'
     }
   ]
 
-  // Informacje podatkowe
+  // Податкова інформація
   const taxInfo = {
     taxRate: 5,
     socialSecurity: 1.5,
@@ -162,11 +164,11 @@ export default function EarningsDetailsPage() {
 
   return (
     <div className="space-y-6">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Szczegóły zarobków</h1>
-          <p className="text-gray-600 mt-1">Szczegółowe informacje o dochodach i wydatkach</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
@@ -174,27 +176,27 @@ export default function EarningsDetailsPage() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="week">Tydzień</SelectItem>
-              <SelectItem value="month">Miesiąc</SelectItem>
-              <SelectItem value="quarter">Kwartał</SelectItem>
-              <SelectItem value="year">Rok</SelectItem>
+              <SelectItem value="week">{t('period.week')}</SelectItem>
+              <SelectItem value="month">{t('period.month')}</SelectItem>
+              <SelectItem value="quarter">{t('period.quarter')}</SelectItem>
+              <SelectItem value="year">{t('period.year')}</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
-            Eksport
+            {t('buttons.export')}
           </Button>
         </div>
       </div>
 
-      {/* Karty podsumowujące */}
+      {/* Картки підсумків */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Dochód brutto</p>
-                <p className="text-2xl font-bold">zł{currentPeriod.gross.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">{t('summary.grossIncome')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: currentPeriod.gross.toLocaleString()})}</p>
               </div>
               <DollarSign className="w-6 h-6 text-gray-400" />
             </div>
@@ -205,8 +207,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Dochód netto</p>
-                <p className="text-2xl font-bold">zł{currentPeriod.net.toLocaleString()}</p>
+                <p className="text-sm text-gray-500">{t('summary.netIncome')}</p>
+                <p className="text-2xl font-bold">{t('currency', {amount: currentPeriod.net.toLocaleString()})}</p>
               </div>
               <TrendingUp className="w-6 h-6 text-green-500" />
             </div>
@@ -217,8 +219,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Potrącenia</p>
-                <p className="text-2xl font-bold text-red-600">zł{currentPeriod.breakdown.deductions.total}</p>
+                <p className="text-sm text-gray-500">{t('summary.deductions')}</p>
+                <p className="text-2xl font-bold text-red-600">{t('currency', {amount: currentPeriod.breakdown.deductions.total})}</p>
               </div>
               <TrendingDown className="w-6 h-6 text-red-500" />
             </div>
@@ -229,8 +231,8 @@ export default function EarningsDetailsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Bonusy</p>
-                <p className="text-2xl font-bold text-green-600">zł{currentPeriod.breakdown.bonuses.total}</p>
+                <p className="text-sm text-gray-500">{t('summary.bonuses')}</p>
+                <p className="text-2xl font-bold text-green-600">{t('currency', {amount: currentPeriod.breakdown.bonuses.total})}</p>
               </div>
               <Award className="w-6 h-6 text-yellow-500" />
             </div>
@@ -240,50 +242,50 @@ export default function EarningsDetailsPage() {
 
       <Tabs defaultValue="breakdown" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="breakdown">Podział</TabsTrigger>
-          <TabsTrigger value="bonuses">Bonusy</TabsTrigger>
-          <TabsTrigger value="deductions">Potrącenia</TabsTrigger>
-          <TabsTrigger value="students">Według kursantów</TabsTrigger>
-          <TabsTrigger value="analytics">Analityka</TabsTrigger>
+          <TabsTrigger value="breakdown">{t('tabs.breakdown')}</TabsTrigger>
+          <TabsTrigger value="bonuses">{t('tabs.bonuses')}</TabsTrigger>
+          <TabsTrigger value="deductions">{t('tabs.deductions')}</TabsTrigger>
+          <TabsTrigger value="students">{t('tabs.byStudents')}</TabsTrigger>
+          <TabsTrigger value="analytics">{t('tabs.analytics')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="breakdown" className="mt-6 space-y-6">
-          {/* Podział dochodów */}
+          {/* Розподіл доходів */}
           <Card>
             <CardHeader>
-              <CardTitle>Struktura dochodu</CardTitle>
+              <CardTitle>{t('structure.title')}</CardTitle>
               <CardDescription>{currentPeriod.period}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Dochód podstawowy ({currentPeriod.lessons} lekcji)</span>
-                    <span className="font-semibold">zł{currentPeriod.breakdown.base}</span>
+                    <span className="text-sm text-gray-600">{t('structure.baseIncome', {lessons: currentPeriod.lessons})}</span>
+                    <span className="font-semibold">{t('currency', {amount: currentPeriod.breakdown.base})}</span>
                   </div>
                   <Progress value={78} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Godziny nadliczbowe</span>
-                    <span className="font-semibold">zł{currentPeriod.breakdown.overtime}</span>
+                    <span className="text-sm text-gray-600">{t('structure.overtime')}</span>
+                    <span className="font-semibold">{t('currency', {amount: currentPeriod.breakdown.overtime})}</span>
                   </div>
                   <Progress value={8} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Bonusy</span>
-                    <span className="font-semibold text-green-600">zł{currentPeriod.breakdown.bonuses.total}</span>
+                    <span className="text-sm text-gray-600">{t('structure.bonuses')}</span>
+                    <span className="font-semibold text-green-600">{t('currency', {amount: currentPeriod.breakdown.bonuses.total})}</span>
                   </div>
                   <Progress value={11} className="h-2" />
                 </div>
 
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-600">Dodatkowy dochód</span>
-                    <span className="font-semibold">zł{currentPeriod.breakdown.additionalIncome}</span>
+                    <span className="text-sm text-gray-600">{t('structure.additionalIncome')}</span>
+                    <span className="font-semibold">{t('currency', {amount: currentPeriod.breakdown.additionalIncome})}</span>
                   </div>
                   <Progress value={2} className="h-2" />
                 </div>
@@ -291,18 +293,18 @@ export default function EarningsDetailsPage() {
 
               <div className="mt-6 pt-6 border-t">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Łącznie (brutto):</span>
-                  <span>zł{currentPeriod.gross.toLocaleString()}</span>
+                  <span>{t('structure.totalGross')}</span>
+                  <span>{t('currency', {amount: currentPeriod.gross.toLocaleString()})}</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Wykres zarobków według typu */}
+          {/* Графік заробітків за типом */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Według typu lekcji</CardTitle>
+                <CardTitle>{t('lessonTypes.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>
@@ -328,7 +330,7 @@ export default function EarningsDetailsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Lista według typów</CardTitle>
+                <CardTitle>{t('lessonTypes.list')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -342,8 +344,8 @@ export default function EarningsDetailsPage() {
                         <span className="text-sm">{type.type}</span>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">zł{type.amount}</p>
-                        <p className="text-xs text-gray-500">{type.lessons} lekcji</p>
+                        <p className="font-semibold">{t('currency', {amount: type.amount})}</p>
+                        <p className="text-xs text-gray-500">{t('lessonTypes.lessons', {count: type.lessons})}</p>
                       </div>
                     </div>
                   ))}
@@ -356,7 +358,7 @@ export default function EarningsDetailsPage() {
         <TabsContent value="bonuses" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Szczegóły bonusów</CardTitle>
+              <CardTitle>{t('bonusDetails.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -372,9 +374,9 @@ export default function EarningsDetailsPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-green-600">+zł{bonus.amount}</p>
+                      <p className="text-lg font-bold text-green-600">+{t('currency', {amount: bonus.amount})}</p>
                       <Badge variant={bonus.status === 'received' ? 'default' : 'secondary'}>
-                        {bonus.status === 'received' ? 'Otrzymano' : 'Oczekuje'}
+                        {bonus.status === 'received' ? t('bonusDetails.received') : t('bonusDetails.pending')}
                       </Badge>
                     </div>
                   </div>
@@ -384,7 +386,7 @@ export default function EarningsDetailsPage() {
               <Alert className="mt-4">
                 <Info className="h-4 w-4" />
                 <AlertDescription>
-                  Bonusy naliczane są automatycznie na koniec miesiąca przy spełnieniu warunków
+                  {t('bonusDetails.info')}
                 </AlertDescription>
               </Alert>
             </CardContent>
@@ -392,70 +394,70 @@ export default function EarningsDetailsPage() {
         </TabsContent>
 
         <TabsContent value="deductions" className="mt-6 space-y-6">
-          {/* Podział potrąceń */}
+          {/* Розподіл утримань */}
           <Card>
             <CardHeader>
-              <CardTitle>Potrącenia i podatki</CardTitle>
+              <CardTitle>{t('deductionDetails.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">prowizja platformy</p>
-                    <p className="text-sm text-gray-600">6% od dochodu brutto</p>
+                    <p className="font-medium">{t('deductionDetails.platformFee')}</p>
+                    <p className="text-sm text-gray-600">{t('deductionDetails.platformFeeDesc')}</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.platformFee}</p>
+                  <p className="text-lg font-semibold text-red-600">-{t('currency', {amount: currentPeriod.breakdown.deductions.platformFee})}</p>
                 </div>
 
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">Podatki</p>
-                    <p className="text-sm text-gray-600">PIT 5% + ZUS 1.5%</p>
+                    <p className="font-medium">{t('deductionDetails.taxes')}</p>
+                    <p className="text-sm text-gray-600">{t('deductionDetails.taxesDesc')}</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.taxes}</p>
+                  <p className="text-lg font-semibold text-red-600">-{t('currency', {amount: currentPeriod.breakdown.deductions.taxes})}</p>
                 </div>
 
                 <div className="flex justify-between p-3 bg-gray-50 rounded-lg">
                   <div>
-                    <p className="font-medium">Ubezpieczenie</p>
-                    <p className="text-sm text-gray-600">Dodatkowe ubezpieczenie</p>
+                    <p className="font-medium">{t('deductionDetails.insurance')}</p>
+                    <p className="text-sm text-gray-600">{t('deductionDetails.insuranceDesc')}</p>
                   </div>
-                  <p className="text-lg font-semibold text-red-600">-zł{currentPeriod.breakdown.deductions.insurance}</p>
+                  <p className="text-lg font-semibold text-red-600">-{t('currency', {amount: currentPeriod.breakdown.deductions.insurance})}</p>
                 </div>
               </div>
 
               <div className="mt-6 pt-6 border-t">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Łączne potrącenia:</span>
-                  <span className="text-red-600">-zł{currentPeriod.breakdown.deductions.total}</span>
+                  <span>{t('deductionDetails.totalDeductions')}</span>
+                  <span className="text-red-600">-{t('currency', {amount: currentPeriod.breakdown.deductions.total})}</span>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Informacje podatkowe */}
+          {/* Податкова інформація */}
           <Card>
             <CardHeader>
-              <CardTitle>Informacje podatkowe</CardTitle>
+              <CardTitle>{t('taxInfo.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <p className="text-sm text-gray-500">Roczny dochód (prognoza)</p>
-                  <p className="text-xl font-bold">zł{taxInfo.yearlyIncome.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">{t('taxInfo.yearlyIncome')}</p>
+                  <p className="text-xl font-bold">{t('currency', {amount: taxInfo.yearlyIncome.toLocaleString()})}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Podatki za rok</p>
-                  <p className="text-xl font-bold">zł{taxInfo.yearlyTax.toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">{t('taxInfo.yearlyTax')}</p>
+                  <p className="text-xl font-bold">{t('currency', {amount: taxInfo.yearlyTax.toLocaleString()})}</p>
                 </div>
               </div>
 
               <div className="space-y-2">
                 {taxInfo.quarterlyPayments.map((payment) => (
                   <div key={payment.quarter} className="flex justify-between p-2 border rounded">
-                    <span className="text-sm">{payment.quarter} - do {payment.due}</span>
+                    <span className="text-sm">{payment.quarter} - {t('taxInfo.due', {date: payment.due})}</span>
                     <Badge variant={payment.paid > 0 ? 'default' : 'secondary'}>
-                      {payment.paid > 0 ? `Opłacono zł${payment.paid}` : 'Oczekuje'}
+                      {payment.paid > 0 ? t('taxInfo.paid', {amount: payment.paid}) : t('taxInfo.pending')}
                     </Badge>
                   </div>
                 ))}
@@ -467,17 +469,17 @@ export default function EarningsDetailsPage() {
         <TabsContent value="students" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Zarobek według kursantów</CardTitle>
+              <CardTitle>{t('studentEarnings.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Kursant</TableHead>
-                    <TableHead>Lekcji</TableHead>
-                    <TableHead>Kwota</TableHead>
-                    <TableHead>Średnia cena</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('studentEarnings.headers.student')}</TableHead>
+                    <TableHead>{t('studentEarnings.headers.lessons')}</TableHead>
+                    <TableHead>{t('studentEarnings.headers.amount')}</TableHead>
+                    <TableHead>{t('studentEarnings.headers.averagePrice')}</TableHead>
+                    <TableHead>{t('studentEarnings.headers.status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -485,10 +487,10 @@ export default function EarningsDetailsPage() {
                     <TableRow key={student.name}>
                       <TableCell className="font-medium">{student.name}</TableCell>
                       <TableCell>{student.lessons}</TableCell>
-                      <TableCell className="font-semibold">zł{student.amount}</TableCell>
-                      <TableCell>zł{Math.round(student.amount / student.lessons)}</TableCell>
+                      <TableCell className="font-semibold">{t('currency', {amount: student.amount})}</TableCell>
+                      <TableCell>{t('currency', {amount: Math.round(student.amount / student.lessons)})}</TableCell>
                       <TableCell>
-                        <Badge variant="default">Aktywny</Badge>
+                        <Badge variant="default">{t('studentEarnings.active')}</Badge>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -501,7 +503,7 @@ export default function EarningsDetailsPage() {
         <TabsContent value="analytics" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Dynamika zarobków</CardTitle>
+              <CardTitle>{t('analytics.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>

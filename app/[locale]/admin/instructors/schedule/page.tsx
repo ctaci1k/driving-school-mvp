@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   Calendar, Clock, Users, Car, MapPin, Filter, Search, 
   ChevronLeft, ChevronRight, Download, Printer, RefreshCw,
@@ -9,9 +10,10 @@ import {
   Grid, List, CalendarDays, User, Star
 } from 'lucide-react';
 import { format, addDays, startOfWeek, endOfWeek, addWeeks, subWeeks } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 
 export default function InstructorsSchedulePage() {
+  const t = useTranslations('admin.instructors.schedule');
   const [viewMode, setViewMode] = useState<'week' | 'day' | 'list'>('week');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedInstructor, setSelectedInstructor] = useState('all');
@@ -19,7 +21,7 @@ export default function InstructorsSchedulePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Instruktorzy (mock)
+  // Інструктори (mock)
   const instructors = [
     { id: '1', name: 'Oleh Kowal', avatar: 'https://ui-avatars.com/api/?name=Oleh+Kowal&background=10B981&color=fff', color: 'bg-green-500' },
     { id: '2', name: 'Anna Lisenko', avatar: 'https://ui-avatars.com/api/?name=Anna+Lisenko&background=8B5CF6&color=fff', color: 'bg-purple-500' },
@@ -28,7 +30,7 @@ export default function InstructorsSchedulePage() {
     { id: '5', name: 'Wiktor Bondar', avatar: 'https://ui-avatars.com/api/?name=Wiktor+Bondar&background=3B82F6&color=fff', color: 'bg-blue-500' }
   ];
 
-  // Dane harmonogramu (mock)
+  // Дані розкладу (mock)
   const scheduleData = [
     {
       id: '1',
@@ -38,9 +40,9 @@ export default function InstructorsSchedulePage() {
       startTime: '08:00',
       endTime: '10:00',
       studentName: 'Jan Petrenko',
-      lessonType: 'Praktyka',
+      lessonType: 'practice',
       vehicleId: 'Toyota Corolla AA 1234 BB',
-      location: 'Warszawa',
+      location: 'warsaw',
       status: 'confirmed'
     },
     {
@@ -51,9 +53,9 @@ export default function InstructorsSchedulePage() {
       startTime: '10:00',
       endTime: '12:00',
       studentName: 'Maria Kowalenko',
-      lessonType: 'Tor',
+      lessonType: 'track',
       vehicleId: 'Toyota Corolla AA 1234 BB',
-      location: 'Tor Kraków',
+      location: 'trackKrakow',
       status: 'confirmed'
     },
     {
@@ -64,9 +66,9 @@ export default function InstructorsSchedulePage() {
       startTime: '09:00',
       endTime: '11:00',
       studentName: 'Andrzej Szewczenko',
-      lessonType: 'Miasto',
+      lessonType: 'city',
       vehicleId: 'VW Golf AA 5678 CC',
-      location: 'Warszawa',
+      location: 'warsaw',
       status: 'confirmed'
     },
     {
@@ -77,9 +79,9 @@ export default function InstructorsSchedulePage() {
       startTime: '14:00',
       endTime: '16:00',
       studentName: 'Oksana Melnyk',
-      lessonType: 'Parkowanie',
+      lessonType: 'parking',
       vehicleId: 'VW Golf AA 5678 CC',
-      location: 'Warszawa',
+      location: 'warsaw',
       status: 'pending'
     },
     {
@@ -90,9 +92,9 @@ export default function InstructorsSchedulePage() {
       startTime: '08:00',
       endTime: '10:00',
       studentName: 'Piotr Sydorenko',
-      lessonType: 'Egzamin',
+      lessonType: 'exam',
       vehicleId: 'Škoda Fabia AA 9012 DD',
-      location: 'Ośrodek egzaminacyjny',
+      location: 'examCenter',
       status: 'confirmed'
     },
     {
@@ -103,9 +105,9 @@ export default function InstructorsSchedulePage() {
       startTime: '12:00',
       endTime: '14:00',
       studentName: 'Natalia Kozak',
-      lessonType: 'Praktyka',
+      lessonType: 'practice',
       vehicleId: 'Škoda Fabia AA 9012 DD',
-      location: 'Warszawa',
+      location: 'warsaw',
       status: 'confirmed'
     },
     {
@@ -116,9 +118,9 @@ export default function InstructorsSchedulePage() {
       startTime: '10:00',
       endTime: '12:00',
       studentName: 'Bogdan Krawczuk',
-      lessonType: 'Jazda nocna',
+      lessonType: 'nightDriving',
       vehicleId: 'Renault Megane AA 3456 EE',
-      location: 'Warszawa',
+      location: 'warsaw',
       status: 'cancelled'
     },
     {
@@ -129,35 +131,35 @@ export default function InstructorsSchedulePage() {
       startTime: '16:00',
       endTime: '18:00',
       studentName: 'Tatiana Morozowa',
-      lessonType: 'Autostrada',
+      lessonType: 'highway',
       vehicleId: 'Honda Civic AA 7890 FF',
-      location: 'Zbiórka: Warszawa',
+      location: 'meetingWarsaw',
       status: 'confirmed'
     }
   ];
 
-  // Generowanie przedziałów czasowych do siatki harmonogramu
+  // Генерація часових слотів для сітки розкладу
   const timeSlots: string[] = [];
   for (let hour = 8; hour <= 20; hour++) {
     timeSlots.push(`${hour.toString().padStart(2, '0')}:00`);
   }
 
-  // Generowanie dni tygodnia
+  // Генерація днів тижня
   const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
   const weekDays: Date[] = [];
   for (let i = 0; i < 7; i++) {
     weekDays.push(addDays(weekStart, i));
   }
 
-  // Filtrowanie danych harmonogramu
+  // Фільтрація даних розкладу
   const filteredSchedule = scheduleData.filter(lesson => {
     if (selectedInstructor !== 'all' && lesson.instructorId !== selectedInstructor) return false;
-    if (selectedLocation !== 'all' && !lesson.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
+    if (selectedLocation !== 'all' && lesson.location !== selectedLocation) return false;
     if (searchQuery && !lesson.studentName.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
 
-  // Pobieranie zajęć dla konkretnego instruktora, dnia i godziny
+  // Отримання занять для конкретного інструктора, дня та часу
   const getLessonsForSlot = (instructorId: string, day: Date, time: string) => {
     return filteredSchedule.filter(lesson => {
       const lessonDate = format(lesson.date, 'yyyy-MM-dd');
@@ -186,9 +188,10 @@ export default function InstructorsSchedulePage() {
     }
   };
 
-  const locations = ['Warszawa', 'Tor Kraków', 'Tor Gdańsk', 'Ośrodek egzaminacyjny'];
+  const locations = ['warsaw', 'trackKrakow', 'trackGdansk', 'examCenter'];
+  const weekDayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-  // Statystyki
+  // Статистика
   const stats = {
     totalLessons: filteredSchedule.length,
     confirmed: filteredSchedule.filter(l => l.status === 'confirmed').length,
@@ -203,54 +206,60 @@ export default function InstructorsSchedulePage() {
 
   return (
     <div className="max-w-full">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Harmonogram instruktorów</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie harmonogramem wszystkich instruktorów</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+          <button 
+            className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+            aria-label={t('buttons.print')}
+          >
             <Printer className="w-4 h-4 text-gray-600" />
           </button>
-          <button className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+          <button 
+            className="p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50"
+            aria-label={t('buttons.download')}
+          >
             <Download className="w-4 h-4 text-gray-600" />
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Dodaj zajęcia
+            {t('buttons.addLesson')}
           </button>
         </div>
       </div>
 
-      {/* Statystyki */}
+      {/* Статистика */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Łącznie zajęć</p>
+          <p className="text-sm text-gray-600 mb-1">{t('stats.totalLessons')}</p>
           <p className="text-2xl font-bold text-gray-800">{stats.totalLessons}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Potwierdzone</p>
+          <p className="text-sm text-gray-600 mb-1">{t('stats.confirmed')}</p>
           <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Oczekujące</p>
+          <p className="text-sm text-gray-600 mb-1">{t('stats.pending')}</p>
           <p className="text-2xl font-bold text-yellow-600">{stats.pending}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Anulowane</p>
+          <p className="text-sm text-gray-600 mb-1">{t('stats.cancelled')}</p>
           <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <p className="text-sm text-gray-600 mb-1">Zaplanowane godziny</p>
+          <p className="text-sm text-gray-600 mb-1">{t('stats.plannedHours')}</p>
           <p className="text-2xl font-bold text-blue-600">{stats.totalHours}</p>
         </div>
       </div>
 
-      {/* Sterowanie */}
+      {/* Керування */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          {/* Nawigacja po datach */}
+          {/* Навігація по датах */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setCurrentDate(subWeeks(currentDate, 1))}
@@ -260,9 +269,9 @@ export default function InstructorsSchedulePage() {
             </button>
             <div className="text-center">
               <h3 className="font-semibold text-gray-800">
-                {format(weekStart, 'd MMMM', { locale: pl })} - {format(addDays(weekStart, 6), 'd MMMM yyyy', { locale: pl })}
+                {format(weekStart, 'd MMMM', { locale: uk })} - {format(addDays(weekStart, 6), 'd MMMM yyyy', { locale: uk })}
               </h3>
-              <p className="text-sm text-gray-600">Tydzień {format(currentDate, 'w', { locale: pl })}</p>
+              <p className="text-sm text-gray-600">{t('weekView.weekNumber', { number: format(currentDate, 'w', { locale: uk }) })}</p>
             </div>
             <button
               onClick={() => setCurrentDate(addWeeks(currentDate, 1))}
@@ -274,11 +283,11 @@ export default function InstructorsSchedulePage() {
               onClick={() => setCurrentDate(new Date())}
               className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-lg hover:bg-blue-200"
             >
-              Dziś
+              {t('buttons.today')}
             </button>
           </div>
 
-          {/* Przełącznik widoku */}
+          {/* Перемикач виду */}
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode('week')}
@@ -289,7 +298,7 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <CalendarDays className="w-4 h-4 inline mr-1" />
-              Tydzień
+              {t('viewModes.week')}
             </button>
             <button
               onClick={() => setViewMode('day')}
@@ -300,7 +309,7 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <Calendar className="w-4 h-4 inline mr-1" />
-              Dzień
+              {t('viewModes.day')}
             </button>
             <button
               onClick={() => setViewMode('list')}
@@ -311,18 +320,18 @@ export default function InstructorsSchedulePage() {
               }`}
             >
               <List className="w-4 h-4 inline mr-1" />
-              Lista
+              {t('viewModes.list')}
             </button>
           </div>
 
-          {/* Filtry */}
+          {/* Фільтри */}
           <div className="flex items-center gap-3">
             <select
               value={selectedInstructor}
               onChange={(e) => setSelectedInstructor(e.target.value)}
               className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszyscy instruktorzy</option>
+              <option value="all">{t('filters.allInstructors')}</option>
               {instructors.map(instructor => (
                 <option key={instructor.id} value={instructor.id}>{instructor.name}</option>
               ))}
@@ -332,9 +341,9 @@ export default function InstructorsSchedulePage() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie lokalizacje</option>
+              <option value="all">{t('filters.allLocations')}</option>
               {locations.map(location => (
-                <option key={location} value={location}>{location}</option>
+                <option key={location} value={location}>{t(`locations.${location}`)}</option>
               ))}
             </select>
             <button
@@ -347,7 +356,7 @@ export default function InstructorsSchedulePage() {
         </div>
       </div>
 
-      {/* Widoki harmonogramu */}
+      {/* Види розкладу */}
       {viewMode === 'week' && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
@@ -355,12 +364,12 @@ export default function InstructorsSchedulePage() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="sticky left-0 bg-gray-50 p-3 text-left text-sm font-semibold text-gray-700 w-40">
-                    Instruktor
+                    {t('weekView.instructor')}
                   </th>
                   {weekDays.map((day, index) => (
                     <th key={index} className="p-3 text-center text-sm font-semibold text-gray-700 border-l border-gray-200">
-                      <div>{format(day, 'EEEE', { locale: pl })}</div>
-                      <div className="text-xs text-gray-500">{format(day, 'd MMM', { locale: pl })}</div>
+                      <div>{t(`weekDays.${weekDayKeys[index]}`)}</div>
+                      <div className="text-xs text-gray-500">{format(day, 'd MMM', { locale: uk })}</div>
                     </th>
                   ))}
                 </tr>
@@ -377,7 +386,7 @@ export default function InstructorsSchedulePage() {
                         />
                         <div>
                           <p className="font-medium text-gray-800 text-sm">{instructor.name}</p>
-                          <p className="text-xs text-gray-500">ID: {instructor.id}</p>
+                          <p className="text-xs text-gray-500">{t('weekView.id')}: {instructor.id}</p>
                         </div>
                       </div>
                     </td>
@@ -398,16 +407,16 @@ export default function InstructorsSchedulePage() {
                               >
                                 <div className="font-semibold">{lesson.startTime} - {lesson.endTime}</div>
                                 <div className="mt-1">{lesson.studentName}</div>
-                                <div className="text-xs opacity-75">{lesson.lessonType}</div>
+                                <div className="text-xs opacity-75">{t(`lessonTypes.${lesson.lessonType}`)}</div>
                                 <div className="flex items-center justify-between mt-1">
                                   <MapPin className="w-3 h-3" />
-                                  <span className="text-xs">{lesson.location}</span>
+                                  <span className="text-xs">{t(`locations.${lesson.location}`)}</span>
                                 </div>
                               </div>
                             ))}
                             {dayLessons.length === 0 && (
                               <div className="text-center text-gray-400 text-xs py-8">
-                                Wolne
+                                {t('weekView.free')}
                               </div>
                             )}
                           </div>
@@ -429,7 +438,7 @@ export default function InstructorsSchedulePage() {
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="sticky left-0 bg-gray-50 p-3 text-left text-sm font-semibold text-gray-700 w-20">
-                    Godzina
+                    {t('dayView.time')}
                   </th>
                   {instructors.filter(i => selectedInstructor === 'all' || i.id === selectedInstructor).map((instructor) => (
                     <th key={instructor.id} className="p-3 text-center text-sm font-semibold text-gray-700 border-l border-gray-200">
@@ -464,7 +473,7 @@ export default function InstructorsSchedulePage() {
                                   className={`p-2 rounded-lg border text-xs ${getStatusColor(lesson.status)}`}
                                 >
                                   <div className="font-semibold">{lesson.studentName}</div>
-                                  <div>{lesson.lessonType}</div>
+                                  <div>{t(`lessonTypes.${lesson.lessonType}`)}</div>
                                   <div className="opacity-75">{lesson.vehicleId}</div>
                                 </div>
                               ))}
@@ -491,14 +500,14 @@ export default function InstructorsSchedulePage() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Godzina</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Instruktor</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Kursant</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Typ zajęć</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Pojazd</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Lokalizacja</th>
-                  <th className="p-3 text-left text-sm font-semibold text-gray-700">Status</th>
-                  <th className="p-3 text-center text-sm font-semibold text-gray-700">Akcje</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.time')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.instructor')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.student')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.lessonType')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.vehicle')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.location')}</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-700">{t('listView.status')}</th>
+                  <th className="p-3 text-center text-sm font-semibold text-gray-700">{t('listView.actions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -524,9 +533,9 @@ export default function InstructorsSchedulePage() {
                         </div>
                       </td>
                       <td className="p-3 text-sm text-gray-800">{lesson.studentName}</td>
-                      <td className="p-3 text-sm text-gray-800">{lesson.lessonType}</td>
+                      <td className="p-3 text-sm text-gray-800">{t(`lessonTypes.${lesson.lessonType}`)}</td>
                       <td className="p-3 text-sm text-gray-600">{lesson.vehicleId}</td>
-                      <td className="p-3 text-sm text-gray-600">{lesson.location}</td>
+                      <td className="p-3 text-sm text-gray-600">{t(`locations.${lesson.location}`)}</td>
                       <td className="p-3">
                         <div className="flex items-center gap-2">
                           <StatusIcon className="w-4 h-4" />
@@ -535,18 +544,22 @@ export default function InstructorsSchedulePage() {
                             lesson.status === 'pending' ? 'text-yellow-600' :
                             'text-red-600'
                           }`}>
-                            {lesson.status === 'confirmed' ? 'Potwierdzone' :
-                             lesson.status === 'pending' ? 'Oczekujące' :
-                             'Anulowane'}
+                            {t(`lessonStatus.${lesson.status}`)}
                           </span>
                         </div>
                       </td>
                       <td className="p-3">
                         <div className="flex items-center justify-center gap-1">
-                          <button className="p-1 hover:bg-gray-100 rounded transition-colors" aria-label="Pokaż szczegóły">
+                          <button 
+                            className="p-1 hover:bg-gray-100 rounded transition-colors" 
+                            aria-label={t('buttons.showDetails')}
+                          >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
-                          <button className="p-1 hover:bg-gray-100 rounded transition-colors" aria-label="Edytuj">
+                          <button 
+                            className="p-1 hover:bg-gray-100 rounded transition-colors" 
+                            aria-label={t('buttons.edit')}
+                          >
                             <Edit className="w-4 h-4 text-gray-600" />
                           </button>
                         </div>

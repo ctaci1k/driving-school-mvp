@@ -1,9 +1,10 @@
 // app/[locale]/instructor/dashboard/page.tsx
-// Strona główna instruktora z przeglądem dnia, statystykami i szybkimi akcjami
+// Головна сторінка інструктора з оглядом дня, статистикою та швидкими діями
 
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Calendar, Clock, DollarSign, Users, Car, TrendingUp, 
   ChevronRight, Phone, Navigation, Play, StopCircle,
@@ -21,9 +22,10 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
 import { format, addMinutes, isWithinInterval, startOfDay, endOfDay } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function InstructorDashboard() {
+  const t = useTranslations('instructor.dashboard')
   const [currentTime, setCurrentTime] = useState(new Date())
   const [currentLessonIndex, setCurrentLessonIndex] = useState<number | null>(null)
 
@@ -37,15 +39,15 @@ export default function InstructorDashboard() {
       status: 'completed',
       student: {
         id: 's1',
-        name: 'Anna Kowalska',
+        name: 'Анна Коваленко',
         avatar: 'https://ui-avatars.com/api/?name=AK&background=EC4899&color=fff',
-        phone: '+48501234567',
+        phone: '+380501234567',
         progress: 65
       },
-      type: 'Praktyka - miasto',
-      location: 'ul. Marszałkowska, 1',
-      vehicle: 'Toyota Corolla WA1234AA',
-      notes: 'Pracowaliśmy nad parkowaniem',
+      type: t('lesson.practiceCity'),
+      location: 'вул. Хрещатик, 1',
+      vehicle: 'Toyota Corolla АА1234АА',
+      notes: t('lesson.workedOnParking'),
       rating: 5
     },
     {
@@ -56,15 +58,15 @@ export default function InstructorDashboard() {
       status: 'completed',
       student: {
         id: 's2',
-        name: 'Jan Nowak',
-        avatar: 'https://ui-avatars.com/api/?name=JN&background=3B82F6&color=fff',
-        phone: '+48501234568',
+        name: 'Іван Шевченко',
+        avatar: 'https://ui-avatars.com/api/?name=IS&background=3B82F6&color=fff',
+        phone: '+380501234568',
         progress: 40
       },
-      type: 'Praktyka - początkujący',
-      location: 'ul. Piłsudskiego, 10',
-      vehicle: 'Toyota Corolla WA1234AA',
-      notes: 'Pierwsza lekcja, podstawowe umiejętności',
+      type: t('lesson.practiceBeginner'),
+      location: 'вул. Шевченка, 10',
+      vehicle: 'Toyota Corolla АА1234АА',
+      notes: t('lesson.firstLesson'),
       rating: 4
     },
     {
@@ -75,15 +77,15 @@ export default function InstructorDashboard() {
       status: 'completed',
       student: {
         id: 's3',
-        name: 'Maria Wiśniewska',
-        avatar: 'https://ui-avatars.com/api/?name=MW&background=10B981&color=fff',
-        phone: '+48501234569',
+        name: 'Марія Бондаренко',
+        avatar: 'https://ui-avatars.com/api/?name=MB&background=10B981&color=fff',
+        phone: '+380501234569',
         progress: 85
       },
-      type: 'Przygotowanie do egzaminu',
-      location: 'Autodrom',
-      vehicle: 'Toyota Corolla WA1234AA',
-      notes: 'Gotowa do egzaminu',
+      type: t('lesson.examPrep'),
+      location: 'Автодром',
+      vehicle: 'Toyota Corolla АА1234АА',
+      notes: t('lesson.readyForExam'),
       rating: 5
     },
     {
@@ -94,15 +96,15 @@ export default function InstructorDashboard() {
       status: 'in-progress',
       student: {
         id: 's4',
-        name: 'Andrzej Lewandowski',
-        avatar: 'https://ui-avatars.com/api/?name=AL&background=F59E0B&color=fff',
-        phone: '+48501234570',
+        name: 'Андрій Мельник',
+        avatar: 'https://ui-avatars.com/api/?name=AM&background=F59E0B&color=fff',
+        phone: '+380501234570',
         progress: 55
       },
-      type: 'Praktyka - trasa',
-      location: 'ul. Zwycięstwa, 50',
-      vehicle: 'Toyota Corolla WA1234AA',
-      timeUntil: 'Teraz',
+      type: t('lesson.practiceRoute'),
+      location: 'вул. Перемоги, 50',
+      vehicle: 'Toyota Corolla АА1234АА',
+      timeUntil: t('time.now'),
       notes: null,
       rating: null
     },
@@ -114,15 +116,15 @@ export default function InstructorDashboard() {
       status: 'upcoming',
       student: {
         id: 's5',
-        name: 'Natalia Wójcik',
-        avatar: 'https://ui-avatars.com/api/?name=NW&background=8B5CF6&color=fff',
-        phone: '+48501234571',
+        name: 'Наталія Коваль',
+        avatar: 'https://ui-avatars.com/api/?name=NK&background=8B5CF6&color=fff',
+        phone: '+380501234571',
         progress: 70
       },
-      type: 'Praktyka - jazda nocna',
-      location: 'ul. Kościuszki, 25',
-      vehicle: 'Toyota Corolla WA1234AA',
-      timeUntil: '2g 30min',
+      type: t('lesson.nightDriving'),
+      location: 'вул. Грушевського, 25',
+      vehicle: 'Toyota Corolla АА1234АА',
+      timeUntil: t('time.2h30min'),
       notes: null,
       rating: null
     },
@@ -134,15 +136,15 @@ export default function InstructorDashboard() {
       status: 'upcoming',
       student: {
         id: 's6',
-        name: 'Tomasz Kamiński',
-        avatar: 'https://ui-avatars.com/api/?name=TK&background=EF4444&color=fff',
-        phone: '+48501234572',
+        name: 'Тарас Петренко',
+        avatar: 'https://ui-avatars.com/api/?name=TP&background=EF4444&color=fff',
+        phone: '+380501234572',
         progress: 45
       },
-      type: 'Praktyka - miasto',
-      location: 'Plac Zamkowy',
-      vehicle: 'Toyota Corolla WA1234AA',
-      timeUntil: '4g 30min',
+      type: t('lesson.practiceCity'),
+      location: 'Майдан Незалежності',
+      vehicle: 'Toyota Corolla АА1234АА',
+      timeUntil: t('time.4h30min'),
       notes: null,
       rating: null
     }
@@ -161,29 +163,29 @@ export default function InstructorDashboard() {
 
   // Earnings chart data
   const earningsData = [
-    { day: 'Pon', amount: 1200 },
-    { day: 'Wt', amount: 1800 },
-    { day: 'Śr', amount: 1500 },
-    { day: 'Czw', amount: 2100 },
-    { day: 'Pt', amount: 1850 },
-    { day: 'Sob', amount: 2400 },
-    { day: 'Ndz', amount: 0 }
+    { day: t('days.mon'), amount: 1200 },
+    { day: t('days.tue'), amount: 1800 },
+    { day: t('days.wed'), amount: 1500 },
+    { day: t('days.thu'), amount: 2100 },
+    { day: t('days.fri'), amount: 1850 },
+    { day: t('days.sat'), amount: 2400 },
+    { day: t('days.sun'), amount: 0 }
   ]
 
   // Students progress
   const topStudents = [
-    { name: 'Maria Wiśniewska', progress: 85, lessons: 24, nextExam: '5 lut' },
-    { name: 'Natalia Wójcik', progress: 70, lessons: 18, nextExam: '12 lut' },
-    { name: 'Anna Kowalska', progress: 65, lessons: 15, nextExam: null },
-    { name: 'Andrzej Lewandowski', progress: 55, lessons: 12, nextExam: null },
-    { name: 'Tomasz Kamiński', progress: 45, lessons: 8, nextExam: null }
+    { name: 'Марія Бондаренко', progress: 85, lessons: 24, nextExam: '5 лют' },
+    { name: 'Наталія Коваль', progress: 70, lessons: 18, nextExam: '12 лют' },
+    { name: 'Анна Коваленко', progress: 65, lessons: 15, nextExam: null },
+    { name: 'Андрій Мельник', progress: 55, lessons: 12, nextExam: null },
+    { name: 'Тарас Петренко', progress: 45, lessons: 8, nextExam: null }
   ]
 
   // Achievements
   const recentAchievements = [
-    { id: 1, title: '100 lekcji', icon: Award, date: '2 dni temu', color: 'text-yellow-500' },
-    { id: 2, title: '5 gwiazdek tydzień', icon: Star, date: 'Wczoraj', color: 'text-blue-500' },
-    { id: 3, title: 'Najlepszy instruktor', icon: Trophy, date: 'Tydzień temu', color: 'text-purple-500' }
+    { id: 1, title: t('achievements.100Lessons'), icon: Award, date: t('achievements.daysAgo', {days: 2}), color: 'text-yellow-500' },
+    { id: 2, title: t('achievements.5StarsWeek'), icon: Star, date: t('achievements.yesterday'), color: 'text-blue-500' },
+    { id: 3, title: t('achievements.bestInstructor'), icon: Trophy, date: t('achievements.weekAgo'), color: 'text-purple-500' }
   ]
 
   // Update current time
@@ -235,10 +237,10 @@ export default function InstructorDashboard() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Dzień dobry, Piotrze! 👋
+          {t('greeting', {name: 'Петре'})}
         </h1>
         <p className="text-gray-600 mt-1">
-          {format(currentTime, 'EEEE, d MMMM yyyy', { locale: pl })}
+          {format(currentTime, 'EEEE, d MMMM yyyy', { locale: uk })}
         </p>
       </div>
 
@@ -248,9 +250,9 @@ export default function InstructorDashboard() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Dzisiaj</p>
-                <p className="text-2xl font-bold">350 zł</p>
-                <p className="text-xs text-green-600">+70 zł od wczoraj</p>
+                <p className="text-sm text-gray-500">{t('stats.today')}</p>
+                <p className="text-2xl font-bold">{t('stats.currency', {amount: 350})}</p>
+                <p className="text-xs text-green-600">{t('stats.fromYesterday', {amount: 70})}</p>
               </div>
               <div className="p-2 bg-green-100 rounded-lg">
                 <DollarSign className="w-6 h-6 text-green-600" />
@@ -263,7 +265,7 @@ export default function InstructorDashboard() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Lekcji</p>
+                <p className="text-sm text-gray-500">{t('stats.lessons')}</p>
                 <p className="text-2xl font-bold">3/6</p>
                 <Progress value={50} className="h-1 mt-1" />
               </div>
@@ -278,7 +280,7 @@ export default function InstructorDashboard() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Ocena</p>
+                <p className="text-sm text-gray-500">{t('stats.rating')}</p>
                 <p className="text-2xl font-bold">4.9</p>
                 <div className="flex gap-0.5 mt-1">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -300,9 +302,9 @@ export default function InstructorDashboard() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Ten tydzień</p>
-                <p className="text-2xl font-bold">28 godz</p>
-                <p className="text-xs text-gray-600">18 lekcji</p>
+                <p className="text-sm text-gray-500">{t('stats.thisWeek')}</p>
+                <p className="text-2xl font-bold">{t('stats.hours', {count: 28})}</p>
+                <p className="text-xs text-gray-600">{t('stats.lessonsCount', {count: 18})}</p>
               </div>
               <div className="p-2 bg-purple-100 rounded-lg">
                 <Clock className="w-6 h-6 text-purple-600" />
@@ -316,9 +318,9 @@ export default function InstructorDashboard() {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Harmonogram na dzisiaj</CardTitle>
+            <CardTitle>{t('timeline.title')}</CardTitle>
             <Button variant="outline" size="sm">
-              Zobacz wszystko
+              {t('timeline.viewAll')}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
@@ -379,7 +381,7 @@ export default function InstructorDashboard() {
                           </p>
                           {lesson.status === 'in-progress' && (
                             <Badge variant="default" className="animate-pulse">
-                              Trwa
+                              {t('timeline.inProgress')}
                             </Badge>
                           )}
                           {lesson.status === 'completed' && (
@@ -390,7 +392,7 @@ export default function InstructorDashboard() {
                       </div>
                       {lesson.timeUntil && lesson.status === 'upcoming' && (
                         <Badge variant="outline" className="ml-2">
-                          Za {lesson.timeUntil}
+                          {t('timeline.for', {time: lesson.timeUntil})}
                         </Badge>
                       )}
                     </div>
@@ -432,11 +434,11 @@ export default function InstructorDashboard() {
                         <>
                           <Button size="sm" variant="outline" className="flex-1">
                             <Phone className="w-4 h-4 mr-2" />
-                            Zadzwonić
+                            {t('buttons.call')}
                           </Button>
                           <Button size="sm" variant="outline" className="flex-1">
                             <Navigation className="w-4 h-4 mr-2" />
-                            Trasa
+                            {t('buttons.route')}
                           </Button>
                         </>
                       )}
@@ -444,17 +446,17 @@ export default function InstructorDashboard() {
                         <>
                           <Button size="sm" variant="outline" className="flex-1">
                             <Navigation className="w-4 h-4 mr-2" />
-                            Śledzić
+                            {t('buttons.track')}
                           </Button>
                           <Button size="sm" variant="destructive" className="flex-1">
                             <StopCircle className="w-4 h-4 mr-2" />
-                            Zakończyć
+                            {t('buttons.finish')}
                           </Button>
                         </>
                       )}
                       {lesson.status === 'completed' && (
                         <Button size="sm" variant="outline" className="w-full">
-                          Zobacz szczegóły
+                          {t('buttons.viewDetails')}
                         </Button>
                       )}
                     </div>
@@ -469,7 +471,7 @@ export default function InstructorDashboard() {
       {/* Earnings Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Zarobki za tydzień</CardTitle>
+          <CardTitle>{t('earnings.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={200}>
@@ -495,16 +497,16 @@ export default function InstructorDashboard() {
           </ResponsiveContainer>
           <div className="grid grid-cols-3 gap-4 mt-4 pt-4 border-t">
             <div className="text-center">
-              <p className="text-sm text-gray-500">Razem</p>
-              <p className="text-lg font-bold">{weeklyStats.totalEarnings} zł</p>
+              <p className="text-sm text-gray-500">{t('earnings.total')}</p>
+              <p className="text-lg font-bold">{t('stats.currency', {amount: weeklyStats.totalEarnings})}</p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-gray-500">Średnia/dzień</p>
-              <p className="text-lg font-bold">{Math.round(weeklyStats.totalEarnings / 7)} zł</p>
+              <p className="text-sm text-gray-500">{t('earnings.averagePerDay')}</p>
+              <p className="text-lg font-bold">{t('stats.currency', {amount: Math.round(weeklyStats.totalEarnings / 7)})}</p>
             </div>
             <div className="text-center">
-              <p className="text-sm text-gray-500">Bonusy</p>
-              <p className="text-lg font-bold text-green-600">+100 zł</p>
+              <p className="text-sm text-gray-500">{t('earnings.bonuses')}</p>
+              <p className="text-lg font-bold text-green-600">{t('earnings.bonus', {amount: 100})}</p>
             </div>
           </div>
         </CardContent>
@@ -514,9 +516,9 @@ export default function InstructorDashboard() {
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
-            <CardTitle>Postępy kursantów</CardTitle>
+            <CardTitle>{t('students.title')}</CardTitle>
             <Button variant="outline" size="sm">
-              Wszyscy kursanci
+              {t('students.allStudents')}
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
@@ -531,7 +533,7 @@ export default function InstructorDashboard() {
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">{student.name}</p>
-                    <p className="text-sm text-gray-500">{student.lessons} lekcji</p>
+                    <p className="text-sm text-gray-500">{t('students.lessonsCount', {count: student.lessons})}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
@@ -541,7 +543,7 @@ export default function InstructorDashboard() {
                       <span className="text-sm font-medium">{student.progress}%</span>
                     </div>
                     {student.nextExam && (
-                      <p className="text-xs text-gray-500 mt-1">Egzamin: {student.nextExam}</p>
+                      <p className="text-xs text-gray-500 mt-1">{t('students.exam', {date: student.nextExam})}</p>
                     )}
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400" />

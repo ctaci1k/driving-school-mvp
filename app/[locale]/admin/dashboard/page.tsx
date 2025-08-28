@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   DollarSign, Users, Calendar, TrendingUp, Car, GraduationCap,
   CreditCard, MapPin, Clock, ArrowUp, ArrowDown, MoreVertical,
@@ -15,9 +16,10 @@ import {
   Area, AreaChart
 } from 'recharts';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 
 export default function AdminDashboard() {
+  const t = useTranslations('admin.dashboard');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('week');
@@ -36,48 +38,48 @@ export default function AdminDashboard() {
   // Mock data
   const stats = [
     {
-      title: 'Całkowity przychód',
+      title: t('stats.totalRevenue.title'),
       value: 'zł125,450',
       change: '+12.5%',
       changeType: 'increase',
       icon: DollarSign,
       color: 'green',
-      subtitle: 'tego miesiąca'
+      subtitle: t('stats.totalRevenue.subtitle')
     },
     {
-      title: 'Aktywni uczniowie',
+      title: t('stats.activeStudents.title'),
       value: '284',
-      change: '+8 w tym tygodniu',
+      change: t('stats.activeStudents.change', { count: 8 }),
       changeType: 'increase',
       icon: Users,
       color: 'blue',
-      subtitle: 'łącznie zarejestrowanych: 1,245'
+      subtitle: t('stats.activeStudents.subtitle', { total: '1,245' })
     },
     {
-      title: 'Lekcje dzisiaj',
+      title: t('stats.todayLessons.title'),
       value: '18',
-      change: '6 zakończonych',
+      change: t('stats.todayLessons.change', { completed: 6 }),
       changeType: 'neutral',
       icon: Calendar,
       color: 'purple',
-      subtitle: '12 jeszcze zaplanowanych'
+      subtitle: t('stats.todayLessons.subtitle', { remaining: 12 })
     },
     {
-      title: 'Konwersja',
+      title: t('stats.conversion.title'),
       value: '72%',
-      change: '+5% od ostatniego miesiąca',
+      change: t('stats.conversion.change', { percent: 5 }),
       changeType: 'increase',
       icon: TrendingUp,
       color: 'orange',
-      subtitle: 'od rejestracji do płatności'
+      subtitle: t('stats.conversion.subtitle')
     }
   ];
 
   const secondaryStats = [
-    { title: 'Instruktorów online', value: '8/12', icon: GraduationCap, color: 'indigo' },
-    { title: 'Dostępnych aut', value: '14/15', icon: Car, color: 'teal' },
-    { title: 'Nowych płatności', value: '7', icon: CreditCard, color: 'pink' },
-    { title: 'Aktywnych lokalizacji', value: '3', icon: MapPin, color: 'cyan' }
+    { title: t('secondaryStats.instructorsOnline'), value: '8/12', icon: GraduationCap, color: 'indigo' },
+    { title: t('secondaryStats.availableCars'), value: '14/15', icon: Car, color: 'teal' },
+    { title: t('secondaryStats.newPayments'), value: '7', icon: CreditCard, color: 'pink' },
+    { title: t('secondaryStats.activeLocations'), value: '3', icon: MapPin, color: 'cyan' }
   ];
 
   // Revenue chart data
@@ -100,10 +102,10 @@ export default function AdminDashboard() {
 
   // Package distribution
   const packageData = [
-    { name: 'Standard', value: 45, color: '#3B82F6' },
-    { name: 'Premium', value: 30, color: '#8B5CF6' },
-    { name: 'VIP', value: 15, color: '#F59E0B' },
-    { name: 'Podstawowy', value: 10, color: '#10B981' }
+    { name: t('packages.standard'), value: 45, color: '#3B82F6' },
+    { name: t('packages.premium'), value: 30, color: '#8B5CF6' },
+    { name: t('packages.vip'), value: 15, color: '#F59E0B' },
+    { name: t('packages.basic'), value: 10, color: '#10B981' }
   ];
 
   // Recent activities
@@ -112,8 +114,9 @@ export default function AdminDashboard() {
       id: 1,
       type: 'booking_created',
       user: 'Jan Kowalski',
-      action: 'zarezerwował lekcję',
-      time: '5 minut temu',
+      action: 'bookingCreated',
+      time: 'minutes',
+      timeValue: 5,
       icon: Calendar,
       color: 'blue'
     },
@@ -121,9 +124,11 @@ export default function AdminDashboard() {
       id: 2,
       type: 'payment_received',
       user: 'Maria Nowak',
-      action: 'opłaciła pakiet "Standard"',
+      action: 'paymentReceived',
+      package: 'Standard',
       amount: 'zł3,500',
-      time: '12 minut temu',
+      time: 'minutes',
+      timeValue: 12,
       icon: CreditCard,
       color: 'green'
     },
@@ -131,8 +136,9 @@ export default function AdminDashboard() {
       id: 3,
       type: 'instructor_online',
       user: 'Piotr Wiśniewski',
-      action: 'rozpoczął dzień pracy',
-      time: '25 minut temu',
+      action: 'instructorOnline',
+      time: 'minutes',
+      timeValue: 25,
       icon: GraduationCap,
       color: 'purple'
     },
@@ -140,8 +146,10 @@ export default function AdminDashboard() {
       id: 4,
       type: 'booking_cancelled',
       user: 'Anna Wójcik',
-      action: 'anulowała lekcję na 14:00',
-      time: '1 godzinę temu',
+      action: 'bookingCancelled',
+      cancelTime: '14:00',
+      time: 'hours',
+      timeValue: 1,
       icon: XCircle,
       color: 'red'
     },
@@ -149,8 +157,10 @@ export default function AdminDashboard() {
       id: 5,
       type: 'vehicle_maintenance',
       user: 'System',
-      action: 'Toyota Yaris WZ 12345 wymaga przeglądu',
-      time: '2 godziny temu',
+      action: 'vehicleMaintenance',
+      vehicle: 'Toyota Yaris WZ 12345',
+      time: 'hours',
+      timeValue: 2,
       icon: Car,
       color: 'yellow'
     },
@@ -158,8 +168,9 @@ export default function AdminDashboard() {
       id: 6,
       type: 'new_registration',
       user: 'Andrzej Kowalczyk',
-      action: 'zarejestrował się jako nowy uczeń',
-      time: '3 godziny temu',
+      action: 'newRegistration',
+      time: 'hours',
+      timeValue: 3,
       icon: UserPlus,
       color: 'indigo'
     },
@@ -167,8 +178,9 @@ export default function AdminDashboard() {
       id: 7,
       type: 'exam_passed',
       user: 'Julia Kamińska',
-      action: 'pomyślnie zdała egzamin',
-      time: '4 godziny temu',
+      action: 'examPassed',
+      time: 'hours',
+      timeValue: 4,
       icon: Award,
       color: 'green'
     },
@@ -176,8 +188,10 @@ export default function AdminDashboard() {
       id: 8,
       type: 'review_received',
       user: 'Michał Lewandowski',
-      action: 'zostawił recenzję 5★',
-      time: '5 godzin temu',
+      action: 'reviewReceived',
+      rating: 5,
+      time: 'hours',
+      timeValue: 5,
       icon: Award,
       color: 'yellow'
     }
@@ -207,12 +221,31 @@ export default function AdminDashboard() {
     return colors[color] || colors.blue;
   };
 
+  const getActivityText = (activity: any) => {
+    switch(activity.action) {
+      case 'paymentReceived':
+        return t(`activities.${activity.action}`, { package: activity.package });
+      case 'bookingCancelled':
+        return t(`activities.${activity.action}`, { time: activity.cancelTime });
+      case 'vehicleMaintenance':
+        return t(`activities.${activity.action}`, { vehicle: activity.vehicle });
+      case 'reviewReceived':
+        return t(`activities.${activity.action}`, { rating: activity.rating });
+      default:
+        return t(`activities.${activity.action}`);
+    }
+  };
+
+  const getTimeAgo = (time: string, value: number) => {
+    return t(`activities.timeAgo.${time}`, { count: value });
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-600">Ładowanie danych...</p>
+          <p className="text-gray-600">{t('loading')}</p>
         </div>
       </div>
     );
@@ -223,10 +256,8 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Dashboard</h1>
-          <p className="text-gray-600 mt-1">
-            Witamy! Oto przegląd Twojej szkoły jazdy
-          </p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <select
@@ -234,21 +265,22 @@ export default function AdminDashboard() {
             onChange={(e) => setSelectedPeriod(e.target.value)}
             className="px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="day">Dzisiaj</option>
-            <option value="week">Ten tydzień</option>
-            <option value="month">Ten miesiąc</option>
-            <option value="year">Ten rok</option>
+            <option value="day">{t('periods.day')}</option>
+            <option value="week">{t('periods.week')}</option>
+            <option value="month">{t('periods.month')}</option>
+            <option value="year">{t('periods.year')}</option>
           </select>
           <button
             onClick={handleRefresh}
             disabled={refreshing}
             className="p-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50"
+            aria-label={t('buttons.refresh')}
           >
             <RefreshCw className={`w-5 h-5 text-gray-600 ${refreshing ? 'animate-spin' : ''}`} />
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             <Download className="w-5 h-5 inline mr-2" />
-            Eksport
+            {t('buttons.export')}
           </button>
         </div>
       </div>
@@ -322,11 +354,11 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Dynamika przychodów</h3>
-              <p className="text-sm text-gray-600">Porównanie z poprzednim okresem</p>
+              <h3 className="text-lg font-semibold text-gray-800">{t('charts.revenueTitle')}</h3>
+              <p className="text-sm text-gray-600">{t('charts.revenueSubtitle')}</p>
             </div>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Szczegóły →
+              {t('buttons.details')}
             </button>
           </div>
           <ResponsiveContainer width="100%" height={300}>
@@ -339,7 +371,7 @@ export default function AdminDashboard() {
               <Area
                 type="monotone"
                 dataKey="current"
-                name="Bieżący okres"
+                name={t('charts.currentPeriod')}
                 stroke="#3B82F6"
                 fill="#93BBFC"
                 fillOpacity={0.6}
@@ -347,7 +379,7 @@ export default function AdminDashboard() {
               <Area
                 type="monotone"
                 dataKey="previous"
-                name="Poprzedni okres"
+                name={t('charts.previousPeriod')}
                 stroke="#9CA3AF"
                 fill="#D1D5DB"
                 fillOpacity={0.4}
@@ -358,7 +390,7 @@ export default function AdminDashboard() {
 
         {/* Package Distribution */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rozkład pakietów</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.packageDistribution')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
@@ -398,14 +430,14 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Bookings by Time */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Rezerwacje według godzin</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.bookingsByTime')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <BarChart data={bookingsByTime}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="time" stroke="#9ca3af" fontSize={12} />
               <YAxis stroke="#9ca3af" fontSize={12} />
               <Tooltip />
-              <Bar dataKey="bookings" fill="#3B82F6" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="bookings" name={t('charts.bookings')} fill="#3B82F6" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -413,9 +445,9 @@ export default function AdminDashboard() {
         {/* Recent Activities */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Ostatnia aktywność</h3>
+            <h3 className="text-lg font-semibold text-gray-800">{t('activities.title')}</h3>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Cała aktywność →
+              {t('buttons.viewAll')}
             </button>
           </div>
           <div className="space-y-3 max-h-[300px] overflow-y-auto">
@@ -432,12 +464,12 @@ export default function AdminDashboard() {
                     <p className="text-sm text-gray-800">
                       <span className="font-medium">{activity.user}</span>
                       {' '}
-                      <span className="text-gray-600">{activity.action}</span>
+                      <span className="text-gray-600">{getActivityText(activity)}</span>
                       {activity.amount && (
                         <span className="font-semibold text-green-600"> {activity.amount}</span>
                       )}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                    <p className="text-xs text-gray-500 mt-1">{getTimeAgo(activity.time, activity.timeValue)}</p>
                   </div>
                 </div>
               );
@@ -451,9 +483,9 @@ export default function AdminDashboard() {
         {/* Top Instructors */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">Top instruktorzy</h3>
+            <h3 className="text-lg font-semibold text-gray-800">{t('topInstructors.title')}</h3>
             <button className="text-sm text-blue-600 hover:text-blue-700">
-              Wszyscy instruktorzy →
+              {t('buttons.allInstructors')}
             </button>
           </div>
           <div className="space-y-3">
@@ -466,7 +498,7 @@ export default function AdminDashboard() {
                   <div>
                     <p className="font-medium text-gray-800">{instructor.name}</p>
                     <p className="text-sm text-gray-600">
-                      {instructor.lessons} lekcji • {instructor.rating}★
+                      {t('topInstructors.lessonsUnit', { count: instructor.lessons })} • {t('topInstructors.rating', { rating: instructor.rating })}
                     </p>
                   </div>
                 </div>
@@ -478,31 +510,30 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Szybkie akcje</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('quickActions.title')}</h3>
           <div className="grid grid-cols-2 gap-3">
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all group">
               <UserPlus className="w-6 h-6 text-blue-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-blue-600">
-                Dodaj użytkownika
+                {t('quickActions.addUser')}
               </p>
-              
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-all group">
               <Calendar className="w-6 h-6 text-purple-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-purple-600">
-                Utwórz rezerwację
+                {t('quickActions.createBooking')}
               </p>
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-all group">
               <FileText className="w-6 h-6 text-green-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-green-600">
-                Generuj raport
+                {t('quickActions.generateReport')}
               </p>
             </button>
             <button className="p-4 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-all group">
               <Mail className="w-6 h-6 text-orange-600 mb-2" />
               <p className="text-sm font-medium text-gray-700 group-hover:text-orange-600">
-                Masowy mailing
+                {t('quickActions.massEmail')}
               </p>
             </button>
           </div>
@@ -514,15 +545,15 @@ export default function AdminDashboard() {
         <div className="flex items-start gap-3">
           <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <p className="font-medium text-yellow-800">Wymaga uwagi</p>
+            <p className="font-medium text-yellow-800">{t('alerts.requiresAttention')}</p>
             <ul className="mt-2 space-y-1 text-sm text-yellow-700">
-              <li>• 3 płatności oczekują na potwierdzenie</li>
-              <li>• Toyota Yaris (WZ 12345) wymaga przeglądu technicznego za 5 dni</li>
-              <li>• 2 instruktorów nie potwierdziło harmonogramu na przyszły tydzień</li>
+              <li>• {t('alerts.pendingPayments', { count: 3 })}</li>
+              <li>• {t('alerts.vehicleInspection', { vehicle: 'Toyota Yaris (WZ 12345)', days: 5 })}</li>
+              <li>• {t('alerts.unconfirmedSchedule', { count: 2 })}</li>
             </ul>
           </div>
           <button className="text-sm text-yellow-600 hover:text-yellow-700 font-medium">
-            Zobacz wszystkie →
+            {t('alerts.viewAll')}
           </button>
         </div>
       </div>
