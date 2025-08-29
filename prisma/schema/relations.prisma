@@ -1,23 +1,95 @@
-// prisma/schema/relations.prisma
+// relations.prisma - Communication and support module
 
-// ============================================
-// CROSS-MODULE RELATIONS
-// This file contains all relations between modules
-// Must be merged AFTER all model definitions
-// ============================================
+model Conversation {
+  id            String           @id @default(uuid())
+  type          ConversationType
+  name          String?
+  participants  Json             @default("[]")
+  lastMessageId String?          @unique @map("last_message_id")
+  pinned        Boolean          @default(false)
+  muted         Boolean          @default(false)
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
 
-// Note: This file is processed by prisma-merge to add
-// relations to existing models after they are all defined.
+  // Relations
+  messages      Message[]        @relation("ConversationMessages")
+  lastMessage   Message?         @relation("LastMessage", fields: [lastMessageId], references: [id])
 
-// ============================================
-// USER MODEL EXTENSIONS
-// ============================================
+  @@map("conversations")
+  @@index([type])
+}
 
-// These relations will be added to User model:
-// - examsConducted: ExamResult[] @relation("ExamInstructor")  
-// - feedbacksGiven: LessonFeedback[] @relation("InstructorFeedback")
+model Message {
+  id                 String        @id @default(uuid())
+  conversationId     String        @map("conversation_id")
+  senderId           String        @map("sender_id")
+  content            String?       @db.Text
+  type               MessageType   @default(text)
+  status             MessageStatus @default(sent)
+  attachments        Json          @default("[]")
+  sentAt             DateTime      @default(now()) @map("sent_at")
 
-// ============================================
-// IMPORTANT: Relations are defined in the models
-// where both sides of the relation are available
-// ============================================
+  // Relations
+  conversation       Conversation  @relation("ConversationMessages", fields: [conversationId], references: [id], onDelete: Cascade)
+  sender             User          @relation(fields: [senderId], references: [id])
+  lastMessageFor     Conversation? @relation("LastMessage")
+
+  @@map("messages")
+  @@index([conversationId, sentAt(sort: Desc)])
+  @@index([senderId])
+}
+
+model SupportTicket {
+  id          String         @id @default(uuid())
+  number      String         @unique
+  userId      String         @map("user_id")
+  subject     String
+  category    TicketCategory?
+  status      TicketStatus   @default(open)
+  priority    TicketPriority @default(medium)
+  assignedTo  String?        @map("assigned_to")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  user        User           @relation("UserTickets", fields: [userId], references: [id])
+  assignee    User?          @relation("AssignedTickets", fields: [assignedTo], references: [id])
+  messages    TicketMessage[]
+
+  @@map("support_tickets")
+  @@index([userId])
+  @@index([status])
+  @@index([assignedTo])
+}
+
+model TicketMessage {
+  id          String        @id @default(uuid())
+  ticketId    String        @map("ticket_id")
+  authorId    String        @map("author_id")
+  content     String        @db.Text
+  attachments Json          @default("[]")
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  // Relations
+  ticket      SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  author      User          @relation(fields: [authorId], references: [id])
+
+  @@map("ticket_messages")
+  @@index([ticketId])
+}
+
+model FAQ {
+  id               String   @id @default(uuid())
+  question         String   @db.Text
+  answer           String   @db.Text
+  category         String?
+  helpful          Int      @default(0)
+  notHelpful       Int      @default(0) @map("not_helpful")
+  tags             Json     @default("[]")
+  relatedQuestions Json     @default("[]") @map("related_questions")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("faq")
+  @@index([category])
+}

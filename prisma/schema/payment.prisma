@@ -1,662 +1,107 @@
-// prisma/schema/payment.prisma
+// payment.prisma - Payment and financial management module
 
-// ============================================
-// PAYMENT MODULE MODELS
-// All payment, package and financial related tables
-// ============================================
-
-// ============================================
-// PACKAGE - Learning packages/bundles
-// ============================================
 model Package {
- id            String   @id @default(cuid())
- 
- // ===== BASIC INFO =====
- name          String
- slug          String   @unique
- description   String?
- shortDescription String?
- 
- // ===== PACKAGE TYPE =====
- type          PackageType @default(STANDARD)
- category      PackageCategory @default(DRIVING_LESSONS)
- 
- // ===== CONTENTS =====
- credits       Int      // Number of credits
- lessonsIncluded Int    // Number of lessons
- 
- // Theory
- theoryLessonsIncluded Int     @default(0)
- theoryTestsIncluded   Int     @default(0)
- theoryUnlimited       Boolean @default(false)
- 
- // Practical
- practicalHours        Float   @default(0)
- practicalTestsIncluded Int    @default(0)
- 
- // Exam
- examIncluded          Boolean @default(false)
- examRetakeIncluded    Int     @default(0)
- 
- // ===== PRICING =====
- price         Decimal  @db.Decimal(10, 2)
- originalPrice Decimal? @db.Decimal(10, 2)  // For showing discount
- currency      String   @default("PLN")
- 
- // Tax
- taxRate       Float    @default(23)  // percentage
- priceIncludesTax Boolean @default(true)
- 
- // ===== VALIDITY =====
- validityDays  Int      // How long package is valid
- validityType  ValidityType @default(FROM_PURCHASE)
- 
- // Activation
- activationRequired Boolean @default(false)
- activationDeadlineDays Int? // Days to activate after purchase
- 
- // ===== RESTRICTIONS =====
- minAge        Int?
- maxAge        Int?
- 
- // Student Level
- forBeginners  Boolean  @default(true)
- forIntermediate Boolean @default(true)
- forAdvanced   Boolean  @default(true)
- 
- // Scheduling
- maxBookingsPerWeek Int?
- minDaysBetweenLessons Int?
- blackoutDates Json?   // Dates when package can't be used
- 
- // ===== DISPLAY =====
- isActive      Boolean  @default(true)
- isPublic      Boolean  @default(true)
- isFeatured    Boolean  @default(false)
- isPopular     Boolean  @default(false)
- 
- // Badges
- badges        String[] // ["BEST_VALUE", "LIMITED_TIME", "RECOMMENDED"]
- 
- // Sorting
- sortOrder     Int      @default(0)
- 
- // ===== CUSTOMIZATION =====
- color         String?  // Brand color for package
- icon          String?  // Icon identifier
- imageUrl      String?  // Package image
- 
- // ===== FEATURES =====
- features      String[] // List of included features
- highlights    String[] // Key selling points
- 
- // Additional Benefits
- freePickup    Boolean  @default(false)
- flexibleScheduling Boolean @default(true)
- onlineTheoryAccess Boolean @default(false)
- progressTracking Boolean   @default(true)
- certificateIncluded Boolean @default(true)
- 
- // ===== TERMS =====
- termsAndConditions String?
- cancellationPolicy String?
- refundPolicy      String?
- 
- // ===== METADATA =====
- tags          String[]
- searchKeywords String[]
- 
- // Analytics
- purchaseCount Int      @default(0)
- viewCount     Int      @default(0)
- conversionRate Float   @default(0)
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- createdBy String?
- 
- // Relations
- userPackages  UserPackage[]
- enrollments   Enrollment[]
- promotions    PackagePromotion[]
- 
- @@index([slug])
- @@index([type])
- @@index([isActive])
- @@index([sortOrder])
- @@map("packages")
+  id               String          @id @default(uuid())
+  name             String
+  description      String?         @db.Text
+  category         PackageCategory?
+  status           PackageStatus   @default(active)
+  price            Decimal         @db.Decimal(10, 2)
+  discountedPrice  Decimal?        @map("discounted_price") @db.Decimal(10, 2)
+  durationDays     Int             @map("duration_days")
+  theoryHours      Int             @default(0) @map("theory_hours")
+  practicalHours   Int             @default(0) @map("practical_hours")
+  additionalHours  Int             @default(0) @map("additional_hours")
+  examAttempts     Int             @default(1) @map("exam_attempts")
+  features         Json            @default("[]")
+  pricingRules     Json            @default("{}") @map("pricing_rules")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  studentPackages  StudentPackage[]
+  payments         Payment[]
+
+  @@map("packages")
+  @@index([category])
+  @@index([status])
 }
 
-// ============================================
-// USER PACKAGE - Purchased packages
-// ============================================
-model UserPackage {
- id            String   @id @default(cuid())
- userId        String
- user          User     @relation(fields: [userId], references: [id])
- packageId     String
- package       Package  @relation(fields: [packageId], references: [id])
- 
- // ===== PURCHASE INFO =====
- purchaseNumber String  @unique @default(cuid())
- purchasedAt   DateTime @default(now())
- purchasePrice Decimal  @db.Decimal(10, 2)
- 
- // Discount
- discountCode  String?
- discountAmount Decimal @db.Decimal(10, 2) @default(0)
- discountPercentage Float? // percentage
- 
- // Final Price
- finalPrice    Decimal  @db.Decimal(10, 2)
- 
- // ===== CREDITS & USAGE =====
- creditsTotal      Int
- creditsUsed       Int     @default(0)
- creditsRemaining  Int
- creditsExpired    Int     @default(0)
- 
- // ===== VALIDITY =====
- activatedAt   DateTime?
- expiresAt     DateTime
- status        PackageStatus @default(PENDING)
- 
- // Extension
- extendedDays  Int      @default(0)
- extendedBy    String?
- extendedAt    DateTime?
- 
- // ===== PAYMENT =====
- paymentId     String?  @unique
- payment       Payment? @relation(fields: [paymentId], references: [id])
- isPaid        Boolean  @default(false)
- 
- // ===== GIFT =====
- isGift        Boolean  @default(false)
- giftFrom      String?
- giftMessage   String?
- giftCode      String?  @unique
- 
- // ===== TRANSFER =====
- isTransferable Boolean @default(false)
- transferredTo  String?
- transferredAt  DateTime?
- 
- // ===== CANCELLATION =====
- cancelledAt   DateTime?
- cancelledBy   String?
- cancellationReason String?
- refundAmount  Decimal? @db.Decimal(10, 2)
- refundedAt    DateTime?
- 
- // ===== NOTES =====
- notes         String?
- internalNotes String?
- 
- // ===== METADATA =====
- source        String?  // How package was acquired
- campaign      String?  // Marketing campaign
- referrer      String?  // Referral source
- metadata      Json?
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@index([userId])
- @@index([packageId])
- @@index([status])
- @@index([purchaseNumber])
- @@index([expiresAt])
- @@map("user_packages")
+model StudentPackage {
+  id               String   @id @default(uuid())
+  studentId        String   @map("student_id")
+  packageId        String   @map("package_id")
+  purchaseDate     DateTime @default(now()) @map("purchase_date")
+  expiryDate       DateTime @map("expiry_date")
+  totalCredits     Int      @map("total_credits")
+  usedCredits      Int      @default(0) @map("used_credits")
+  remainingCredits Int?     @map("remaining_credits")
+  status           String   @default("active")
+  pricePaid        Decimal  @map("price_paid") @db.Decimal(10, 2)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  student          User     @relation(fields: [studentId], references: [id])
+  package          Package  @relation(fields: [packageId], references: [id])
+
+  @@map("student_packages")
+  @@index([studentId])
+  @@index([packageId])
+  @@index([status])
 }
 
-// ============================================
-// PAYMENT - Financial transactions
-// ============================================
 model Payment {
- id            String   @id @default(cuid())
- 
- // ===== USER =====
- userId        String
- user          User     @relation(fields: [userId], references: [id])
- 
- // ===== PAYMENT FOR =====
- bookingId     String?  @unique
- booking       Booking? 
- userPackageId String?  @unique
- userPackage   UserPackage?
- enrollmentId  String?
- enrollment    Enrollment? @relation(fields: [enrollmentId], references: [id])
- 
- // ===== AMOUNT =====
- amount        Decimal  @db.Decimal(10, 2)
- currency      String   @default("PLN")
- 
- // Tax
- taxAmount     Decimal  @db.Decimal(10, 2) @default(0)
- netAmount     Decimal  @db.Decimal(10, 2)
- 
- // ===== PAYMENT METHOD =====
- method        PaymentMethod @default(CARD)
- 
- // ===== STATUS =====
- status        PaymentStatus @default(PENDING)
- 
- // Status Timeline
- pendingAt     DateTime  @default(now())
- processingAt  DateTime?
- completedAt   DateTime?
- failedAt      DateTime?
- refundedAt    DateTime?
- 
- // ===== PAYMENT GATEWAY =====
- gateway       PaymentGateway @default(PRZELEWY24)
- 
- // Przelewy24
- p24SessionId  String?   @unique
- p24OrderId    String?   @unique
- p24Token      String?
- p24Sign       String?
- 
- // Stripe
- stripePaymentIntentId String? @unique
- stripeChargeId String?
- stripeRefundId String?
- 
- // PayPal
- paypalOrderId String?
- paypalCaptureId String?
- 
- // ===== TRANSACTION DETAILS =====
- transactionId String?   @unique
- referenceNumber String? @unique @default(cuid())
- 
- // Card Details (masked)
- cardLast4     String?
- cardBrand     String?
- cardCountry   String?
- 
- // Bank Transfer
- bankName      String?
- bankAccount   String?
- 
- // ===== INVOICE =====
- invoiceRequired Boolean @default(false)
- invoiceId     String?
- invoice       Invoice? @relation(fields: [invoiceId], references: [id])
- 
- // Invoice Data
- billingName   String?
- billingEmail  String?
- billingPhone  String?
- billingAddress String?
- billingCity   String?
- billingPostalCode String?
- billingCountry String?
- taxId         String?   // NIP/VAT number
- 
- // ===== REFUND =====
- isRefundable  Boolean  @default(true)
- refundAmount  Decimal? @db.Decimal(10, 2)
- refundReason  String?
- refundNotes   String?
- partialRefund Boolean  @default(false)
- 
- // ===== ERROR HANDLING =====
- failureReason String?
- failureCode   String?
- retryCount    Int      @default(0)
- maxRetries    Int      @default(3)
- nextRetryAt   DateTime?
- 
- // ===== FEES =====
- processingFee Decimal  @db.Decimal(10, 2) @default(0)
- gatewayFee    Decimal  @db.Decimal(10, 2) @default(0)
- netReceived   Decimal  @db.Decimal(10, 2)
- 
- // ===== METADATA =====
- description   String?
- notes         String?
- metadata      Json?
- 
- // Security
- ipAddress     String?
- userAgent     String?
- 
- // Webhooks
- webhookStatus String?
- webhookData   Json?
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@index([userId])
- @@index([status])
- @@index([method])
- @@index([referenceNumber])
- @@index([p24SessionId])
- @@index([stripePaymentIntentId])
- @@index([transactionId])
- @@map("payments")
+  id          String        @id @default(uuid())
+  studentId   String        @map("student_id")
+  bookingId   String?       @map("booking_id")
+  packageId   String?       @map("package_id")
+  invoiceId   String?       @unique @map("invoice_id")
+  amount      Decimal       @db.Decimal(10, 2)
+  currency    String        @default("PLN")
+  method      PaymentMethod?
+  status      PaymentStatus @default(pending)
+  paidAt      DateTime?     @map("paid_at")
+  metadata    Json          @default("{}")
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  // Relations
+  student     User          @relation("StudentPayments", fields: [studentId], references: [id])
+  booking     Booking?      @relation(fields: [bookingId], references: [id])
+  package     Package?      @relation(fields: [packageId], references: [id])
+  invoice     Invoice?      @relation(fields: [invoiceId], references: [id])
+
+  @@map("payments")
+  @@index([studentId, createdAt(sort: Desc)])
+  @@index([status])
+  @@index([bookingId])
+  @@index([packageId])
 }
 
-// ============================================
-// INVOICE - Billing documents
-// ============================================
 model Invoice {
- id            String   @id @default(cuid())
- 
- // Invoice Number
- invoiceNumber String   @unique
- invoiceSeries String   @default("FV")
- 
- // ===== PARTIES =====
- // Seller (Driving School)
- sellerName    String
- sellerAddress String
- sellerTaxId   String
- sellerEmail   String?
- sellerPhone   String?
- 
- // Buyer
- buyerId       String
- buyerName     String
- buyerAddress  String
- buyerTaxId    String?
- buyerEmail    String?
- buyerPhone    String?
- 
- // ===== DATES =====
- issueDate     DateTime @default(now())
- dueDate       DateTime
- saleDate      DateTime
- 
- // ===== AMOUNTS =====
- netAmount     Decimal  @db.Decimal(10, 2)
- taxAmount     Decimal  @db.Decimal(10, 2)
- grossAmount   Decimal  @db.Decimal(10, 2)
- currency      String   @default("PLN")
- 
- // ===== ITEMS =====
- items         InvoiceItem[]
- 
- // ===== PAYMENT =====
- paymentMethod String
- paymentStatus InvoiceStatus @default(UNPAID)
- paidAt        DateTime?
- 
- // Related Payment
- payments      Payment[]
- 
- // ===== NOTES =====
- notes         String?
- internalNotes String?
- 
- // ===== FILES =====
- pdfUrl        String?
- xmlUrl        String?
- 
- // ===== STATUS =====
- status        InvoiceStatus @default(DRAFT)
- sentAt        DateTime?
- viewedAt      DateTime?
- 
- // Corrections
- isCorrective  Boolean  @default(false)
- correctsInvoiceId String?
- correctionReason String?
- 
- // Cancellation
- isCancelled   Boolean  @default(false)
- cancelledAt   DateTime?
- cancelledBy   String?
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@index([invoiceNumber])
- @@index([buyerId])
- @@index([status])
- @@index([issueDate])
- @@map("invoices")
-}
+  id              String        @id @default(uuid())
+  number          String        @unique
+  type            InvoiceType   @default(regular)
+  status          InvoiceStatus @default(draft)
+  customerId      String        @map("customer_id")
+  issueDate       DateTime      @map("issue_date")
+  dueDate         DateTime      @map("due_date")
+  paymentDate     DateTime?     @map("payment_date")
+  subtotal        Decimal       @db.Decimal(10, 2)
+  taxRate         Decimal       @default(23.00) @map("tax_rate") @db.Decimal(5, 2)
+  taxAmount       Decimal       @map("tax_amount") @db.Decimal(10, 2)
+  total           Decimal       @db.Decimal(10, 2)
+  paid            Decimal       @default(0.00) @db.Decimal(10, 2)
+  due             Decimal?      @db.Decimal(10, 2)
+  items           Json          @default("[]")
+  billingDetails  Json          @default("{}") @map("billing_details")
+  createdAt       DateTime      @default(now()) @map("created_at")
 
-// ============================================
-// INVOICE ITEM - Line items on invoices
-// ============================================
-model InvoiceItem {
- id            String   @id @default(cuid())
- invoiceId     String
- invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
- 
- // Item Details
- position      Int
- name          String
- description   String?
- 
- // Quantities
- quantity      Float
- unit          String   @default("szt")
- 
- // Pricing
- unitPrice     Decimal  @db.Decimal(10, 2)
- netAmount     Decimal  @db.Decimal(10, 2)
- taxRate       Float
- taxAmount     Decimal  @db.Decimal(10, 2)
- grossAmount   Decimal  @db.Decimal(10, 2)
- 
- // Discount
- discountRate  Float?
- discountAmount Decimal? @db.Decimal(10, 2)
- 
- // Classification
- pkwiu         String?  // Polish classification
- gtu           String?  // GTU code
- 
- @@index([invoiceId])
- @@map("invoice_items")
-}
+  // Relations
+  customer        User          @relation("CustomerInvoices", fields: [customerId], references: [id])
+  payment         Payment?
 
-// ============================================
-// PACKAGE PROMOTION - Discounts and offers
-// ============================================
-model PackagePromotion {
- id            String   @id @default(cuid())
- 
- // Promotion Info
- name          String
- code          String   @unique
- description   String?
- 
- // ===== DISCOUNT =====
- discountType  DiscountType
- discountValue Float    // Amount or percentage
- 
- // Max Discount
- maxDiscountAmount Decimal? @db.Decimal(10, 2)
- 
- // ===== VALIDITY =====
- validFrom     DateTime
- validTo       DateTime
- isActive      Boolean  @default(true)
- 
- // ===== USAGE LIMITS =====
- usageLimit    Int?     // Total usage limit
- usageCount    Int      @default(0)
- usagePerUser  Int?     // Limit per user
- 
- // ===== CONDITIONS =====
- minPurchaseAmount Decimal? @db.Decimal(10, 2)
- 
- // Applicable Packages
- packageIds    String[] // Empty means all packages
- packages      Package[]
- 
- // User Restrictions
- newUsersOnly  Boolean  @default(false)
- userRoles     UserRole[]
- specificUserIds String[]
- 
- // ===== METADATA =====
- tags          String[]
- source        String?  // Marketing campaign
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- createdBy String?
- 
- @@index([code])
- @@index([isActive])
- @@index([validFrom, validTo])
- @@map("package_promotions")
-}
-
-// ============================================
-// PAYMENT SETTINGS - Configuration
-// ============================================
-model PaymentSettings {
- id            String   @id @default(cuid())
- 
- // ===== GENERAL =====
- acceptedMethods PaymentMethod[]
- defaultMethod  PaymentMethod @default(CARD)
- currency       String        @default("PLN")
- 
- // ===== TAX =====
- taxRate        Float         @default(23)
- taxIncluded    Boolean       @default(true)
- 
- // ===== CANCELLATION =====
- cancellationFeeHours Int     @default(24)  // Hours before lesson
- cancellationFeePercent Float  @default(50)  // Percentage of lesson price
- 
- // Late Cancellation
- lateCancellationHours Int    @default(6)
- lateCancellationFeePercent Float @default(100)
- 
- // No-show
- noShowFeePercent Float       @default(100)
- 
- // ===== REFUNDS =====
- refundEnabled  Boolean       @default(true)
- refundDays     Int          @default(14)
- refundFeePercent Float      @default(0)
- 
- // ===== PAYMENT TERMS =====
- paymentTermDays Int         @default(7)
- lateFeePercent Float        @default(5)
- 
- // ===== GATEWAY SETTINGS =====
- // Przelewy24
- p24Enabled     Boolean      @default(true)
- p24MerchantId  String?
- p24PosId       String?
- p24CrcKey      String?
- p24TestMode    Boolean      @default(false)
- 
- // Stripe
- stripeEnabled  Boolean      @default(false)
- stripePublicKey String?
- stripeSecretKey String?
- 
- // PayPal
- paypalEnabled  Boolean      @default(false)
- paypalClientId String?
- paypalSecretKey String?
- 
- // ===== NOTIFICATIONS =====
- sendPaymentReminders Boolean  @default(true)
- reminderDaysBefore   Int[]    @default([7, 3, 1])
- 
- updatedAt DateTime @updatedAt
- updatedBy String?
- 
- @@map("payment_settings")
-}
-
-// ============================================
-// ENUMS FOR PAYMENT MODULE
-// ============================================
-
-enum PackageType {
- STANDARD
- INTENSIVE
- EXAM_PREP
- REFRESHER
- THEORY_ONLY
- PRACTICAL_ONLY
- COMPLETE
- CUSTOM
-}
-
-enum PackageCategory {
- DRIVING_LESSONS
- THEORY_COURSE
- EXAM_PACKAGE
- REFRESHER_COURSE
- SPECIAL_TRAINING
-}
-
-enum ValidityType {
- FROM_PURCHASE
- FROM_ACTIVATION
- FROM_FIRST_USE
- FIXED_DATE
-}
-
-enum PackageStatus {
- PENDING
- ACTIVE
- PAUSED
- DEPLETED
- EXPIRED
- CANCELLED
-}
-
-enum PaymentStatus {
- PENDING
- PROCESSING
- COMPLETED
- FAILED
- REFUNDED
- CANCELLED
- EXPIRED
- PARTIALLY_REFUNDED
-}
-
-enum PaymentMethod {
- CARD
- BANK_TRANSFER
- TRANSFER
- P24
- PAYPAL
- CASH
- PACKAGE
- CREDITS
- BLIK
- GOOGLE_PAY
- APPLE_PAY
-}
-
-enum PaymentGateway {
- PRZELEWY24
- STRIPE
- PAYPAL
- MANUAL
- CASH
-}
-
-enum InvoiceStatus {
- DRAFT
- ISSUED
- SENT
- PAID
- UNPAID
- OVERDUE
- CANCELLED
-}
-
-enum DiscountType {
- PERCENTAGE
- FIXED_AMOUNT
+  @@map("invoices")
+  @@index([customerId])
+  @@index([status])
+  @@index([issueDate])
 }

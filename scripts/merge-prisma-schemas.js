@@ -236,19 +236,20 @@ async function main() {
   console.log('═'.repeat(50));
 
   // Define file order (base.prisma must be first)
-  const fileOrder = [
-    'base.prisma',
-    'enums.prisma',
-    'user.prisma',
-    'auth.prisma',
-    'notification.prisma',
-    'student.prisma',
-    'instructor.prisma',
-    'booking.prisma',
-    'payment.prisma',
-    'vehicle.prisma',
-    'location.prisma'
-  ];
+const fileOrder = [
+  'base.prisma',
+  'enums.prisma',
+  'user.prisma',
+  'auth.prisma',
+  'notification.prisma',
+  'student.prisma',
+  'instructor.prisma',
+  'booking.prisma',
+  'payment.prisma',
+  'vehicle.prisma',
+  'location.prisma',
+  'relations.prisma'  // <-- Додайте цей рядок
+];
 
   const schemaFiles = fileOrder
     .map(file => path.join(schemaDir, file))

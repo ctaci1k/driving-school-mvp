@@ -1,14 +1,165 @@
-// prisma/schema/base.prisma
-
-// ============================================
-// BASE CONFIGURATION FOR PRISMA
-// ============================================
+// base.prisma - Main configuration
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema", "prismaSchemaFolder"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// Enums used across the application
+enum Role {
+  student
+  instructor
+  admin
+}
+
+enum BookingType {
+  theory
+  practical
+  exam
+}
+
+enum BookingStatus {
+  scheduled
+  completed
+  cancelled
+  no_show
+}
+
+enum PaymentMethod {
+  cash
+  card
+  transfer
+  blik
+}
+
+enum PaymentStatus {
+  pending
+  completed
+  failed
+  refunded
+}
+
+enum DocumentType {
+  pdf
+  image
+  other
+}
+
+enum DocumentCategory {
+  license
+  medical
+  contract
+  certificate
+}
+
+enum DocumentStatus {
+  pending
+  verified
+  rejected
+  expired
+}
+
+enum PackageCategory {
+  basic
+  standard
+  premium
+  intensive
+}
+
+enum PackageStatus {
+  active
+  inactive
+  archived
+}
+
+enum LocationType {
+  branch
+  exam_center
+  meeting_point
+}
+
+enum LocationStatus {
+  active
+  inactive
+}
+
+enum VehicleTransmission {
+  manual
+  automatic
+}
+
+enum VehicleFuelType {
+  petrol
+  diesel
+  electric
+  hybrid
+}
+
+enum VehicleStatus {
+  available
+  in_use
+  maintenance
+}
+
+enum ConversationType {
+  direct
+  group
+  announcement
+}
+
+enum MessageType {
+  text
+  file
+  lesson_info
+}
+
+enum MessageStatus {
+  sent
+  delivered
+  read
+}
+
+enum TicketCategory {
+  technical
+  billing
+  scheduling
+  other
+}
+
+enum TicketStatus {
+  open
+  in_progress
+  resolved
+  closed
+}
+
+enum TicketPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+enum InvoiceType {
+  regular
+  proforma
+  correction
+}
+
+enum InvoiceStatus {
+  draft
+  issued
+  paid
+  cancelled
+}
+
+enum CancellationStatus {
+  pending
+  approved
+  rejected
 }

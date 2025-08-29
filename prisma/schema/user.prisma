@@ -1,151 +1,121 @@
-// prisma/schema/user.prisma
-
-// ============================================
-// USER & AUTHENTICATION MODELS
-// Core user model and authentication related tables
-// ============================================
+// user.prisma - User management module
 
 model User {
-    id            String    @id @default(cuid())
-    email         String    @unique
-    emailVerified DateTime?
-    passwordHash  String?
+  id                String   @id @default(uuid())
+  email             String   @unique
+  passwordHash      String   @map("password_hash")
+  firstName         String   @map("first_name")
+  lastName          String   @map("last_name")
+  phone             String?
+  avatarUrl         String?  @map("avatar_url")
+  role              Role
+  emailVerified     Boolean  @default(false) @map("email_verified")
+  phoneVerified     Boolean  @default(false) @map("phone_verified")
+  twoFactorEnabled  Boolean  @default(false) @map("two_factor_enabled")
+  twoFactorMethod   String?  @map("two_factor_method")
+  lastLogin         DateTime? @map("last_login")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
-    // Personal Information
-    firstName     String
-    lastName      String
-    phone         String?
-    phoneVerified DateTime?
-    avatar        String?
-    dateOfBirth   DateTime?
+  // Relations
+  student           Student?
+  instructor        Instructor?
+  
+  // Bookings relations
+  bookingsAsStudent    Booking[]  @relation("StudentBookings")
+  bookingsAsInstructor Booking[]  @relation("InstructorBookings")
+  
+  // Other relations
+  paymentsAsStudent    Payment[]  @relation("StudentPayments")
+  invoicesAsCustomer   Invoice[]  @relation("CustomerInvoices")
+  documents            Document[]
+  sentMessages         Message[]
+  supportTickets       SupportTicket[] @relation("UserTickets")
+  assignedTickets      SupportTicket[] @relation("AssignedTickets")
+  ticketMessages       TicketMessage[]
+  announcements        Announcement[]
+  cancellationRequests CancellationRequest[]
+  availabilitySlots    AvailabilitySlot[]
+  studentPackages      StudentPackage[]
 
-    // Emergency Contacts
-    emergencyContact String?
-    emergencyPhone   String?
-
-    // Role & Status
-    role   UserRole   @default(STUDENT)
-    status UserStatus @default(ACTIVE)
-
-    // Location (Multi-branch support)
-    locationId String?
-    location   Location? @relation(fields: [locationId], references: [id])
-
-    // Address
-    address    String?
-    city       String?
-    postalCode String?
-    country    String? @default("PL")
-
-    // Document Numbers
-    nationalId     String?
-    licenseNumber  String?
-    passportNumber String?
-
-    // Settings & Preferences
-    language           String  @default("pl")
-    timezone           String  @default("Europe/Warsaw")
-    emailNotifications Boolean @default(true)
-    smsNotifications   Boolean @default(true)
-    pushNotifications  Boolean @default(true)
-    marketingConsent   Boolean @default(false)
-
-    // Security
-    twoFactorEnabled    Boolean   @default(false)
-    twoFactorSecret     String?
-    lastPasswordChange  DateTime?
-    failedLoginAttempts Int       @default(0)
-    accountLockedUntil  DateTime?
-
-    // Activity Tracking
-    lastLoginAt    DateTime?
-    lastActivityAt DateTime?
-    loginCount     Int       @default(0)
-
-    // Timestamps
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    deletedAt DateTime? // Soft delete
-
-    // ============ RELATIONS ============
-
-    // Student Relations
-    studentProfile     StudentProfile?
-    studentProgress    StudentProgress?
-    studentPreferences StudentPreferences?
-    enrollments        Enrollment[]
-    studentBookings    Booking[]           @relation("StudentBookings")
-    examResults        ExamResult[]
-    userAchievements   UserAchievement[]
-    bookingRequests    BookingRequest[]
-    bookingWaitlists   BookingWaitlist[]
-    calendarSyncs      CalendarSync[]
-
-    // Instructor Relations
-    instructorProfile   InstructorProfile?
-    instructorBookings  Booking[]            @relation("InstructorBookings")
-    instructorSchedules InstructorSchedule[]
-    scheduleTemplates   ScheduleTemplate[]
-    scheduleExceptions  ScheduleException[]
-    examsConducted      ExamResult[]         @relation("ExamInstructor")
-    feedbacksGiven      LessonFeedback[]     @relation("InstructorFeedback")
-
-    // examsConducted and feedbacksGiven are defined in the target models
-
-    // Vehicle Relations
-    assignedVehicles Vehicle[] @relation("AssignedInstructor")
-
-    // Payment Relations
-    payments     Payment[]
-    userPackages UserPackage[]
-
-    // Auth Relations (from auth.prisma)
-    sessions           Session[]
-    refreshTokens      RefreshToken[]
-    passwordResets     PasswordReset[]
-    loginHistory       LoginHistory[]
-    emailVerifications EmailVerification[]
-    twoFactorAuth      TwoFactorAuth?
-    twoFactorTokens    TwoFactorToken[]
-    oauthAccounts      OAuthAccount[]
-    apiKeys            ApiKey[]
-    securityLogs       SecurityLog[]
-
-    // Communication Relations (from notification.prisma)
-    notifications        Notification[]
-    sentMessages         Message[]       @relation("SentMessages")
-    receivedMessages     Message[]       @relation("ReceivedMessages")
-    supportTickets       SupportTicket[]
-    supportTicketReplies TicketReply[]
-
-    // ============ INDEXES ============
-    @@index([email])
-    @@index([phone])
-    @@index([role])
-    @@index([status])
-    @@index([locationId])
-    @@index([deletedAt])
-    @@map("users")
+  @@map("users")
+  @@index([email])
+  @@index([role])
+  @@index([createdAt(sort: Desc)])
 }
 
-// ============================================
-// ENUMS FOR USER MODULE
-// ============================================
+model Student {
+  id                      String   @id
+  user                    User     @relation(fields: [id], references: [id], onDelete: Cascade)
+  pesel                   String?  @unique
+  birthDate               DateTime @map("birth_date")
+  address                 String?
+  city                    String?
+  postalCode              String?  @map("postal_code")
+  drivingLicenseNumber    String?  @map("driving_license_number")
+  licenseCategory         String?  @map("license_category")
+  theoryHoursCompleted    Int      @default(0) @map("theory_hours_completed")
+  practicalHoursCompleted Int      @default(0) @map("practical_hours_completed")
+  totalCredits            Int      @default(0) @map("total_credits")
+  usedCredits             Int      @default(0) @map("used_credits")
+  packageExpiry           DateTime? @map("package_expiry")
+  skillsProgress          Json     @default("{}") @map("skills_progress")
+  weatherPreferences      Json     @default("{}") @map("weather_preferences")
 
-enum UserRole {
-    STUDENT
-    INSTRUCTOR
-    ADMIN
-    BRANCH_MANAGER
-    DISPATCHER
-    ACCOUNTANT
-    SUPPORT
+  @@map("students")
 }
 
-enum UserStatus {
-    ACTIVE
-    INACTIVE
-    SUSPENDED
-    PENDING
-    BANNED
+model Instructor {
+  id                   String   @id
+  user                 User     @relation(fields: [id], references: [id], onDelete: Cascade)
+  licenseNumber        String   @unique @map("license_number")
+  licenseExpiry        DateTime @map("license_expiry")
+  yearsExperience      Int      @default(0) @map("years_experience")
+  rating               Decimal  @default(0.00) @db.Decimal(3, 2)
+  totalReviews         Int      @default(0) @map("total_reviews")
+  availabilitySchedule Json     @default("{}") @map("availability_schedule")
+  specializations      Json     @default("[]")
+  morningAvailable     Boolean  @default(true) @map("morning_available")
+  afternoonAvailable   Boolean  @default(true) @map("afternoon_available")
+  eveningAvailable     Boolean  @default(true) @map("evening_available")
+  weekendAvailable     Boolean  @default(false) @map("weekend_available")
+
+  // Relations
+  locations            InstructorLocation[]
+  vehicles             InstructorVehicle[]
+
+  @@map("instructors")
+}
+
+model Announcement {
+  id           String    @id @default(uuid())
+  title        String
+  content      String    @db.Text
+  authorId     String    @map("author_id")
+  author       User      @relation(fields: [authorId], references: [id])
+  important    Boolean   @default(false)
+  publishedAt  DateTime  @default(now()) @map("published_at")
+  expiresAt    DateTime? @map("expires_at")
+
+  @@map("announcements")
+}
+
+model Document {
+  id          String           @id @default(uuid())
+  userId      String           @map("user_id")
+  user        User             @relation(fields: [userId], references: [id])
+  name        String
+  type        DocumentType?
+  category    DocumentCategory?
+  fileUrl     String           @map("file_url")
+  sizeBytes   Int?             @map("size_bytes")
+  uploadDate  DateTime         @default(now()) @map("upload_date")
+  expiryDate  DateTime?        @map("expiry_date")
+  status      DocumentStatus   @default(pending)
+  description String?          @db.Text
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  @@map("documents")
+  @@index([userId])
+  @@index([status])
 }

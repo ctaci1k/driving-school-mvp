@@ -1,536 +1,108 @@
-// prisma/schema/booking.prisma
+// booking.prisma - Booking and scheduling module
 
-// ============================================
-// BOOKING MODULE MODELS
-// All booking, scheduling and lesson related tables
-// ============================================
-
-// ============================================
-// BOOKING - Core lesson booking model
-// ============================================
 model Booking {
- id            String   @id @default(cuid())
- 
- // ===== PARTICIPANTS =====
- studentId     String
- student       User     @relation("StudentBookings", fields: [studentId], references: [id])
- instructorId  String
- instructor    User     @relation("InstructorBookings", fields: [instructorId], references: [id])
- 
- // ===== VEHICLE & LOCATION =====
- vehicleId     String?
- vehicle       Vehicle? @relation(fields: [vehicleId], references: [id])
- locationId    String?
- location      Location? @relation(fields: [locationId], references: [id])
- 
- // Pickup/Dropoff
- pickupLocation   String?
- pickupLatitude   Float?
- pickupLongitude  Float?
- dropoffLocation  String?
- dropoffLatitude  Float?
- dropoffLongitude Float?
- 
+  id               String        @id @default(uuid())
+  studentId        String        @map("student_id")
+  instructorId     String        @map("instructor_id")
+  vehicleId        String?       @map("vehicle_id")
+  locationId       String?       @map("location_id")
+  startTime        DateTime      @map("start_time")
+  endTime          DateTime      @map("end_time")
+  type             BookingType
+  status           BookingStatus @default(scheduled)
+  notes            String?       @db.Text
+  price            Decimal?      @db.Decimal(10, 2)
+  durationMinutes  Int?          @map("duration_minutes")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
 
- 
- // ===== DATE & TIME =====
- date          DateTime
- startTime     String   // "09:00"
- endTime       String   // "11:00"
- duration      Int      @default(120) // minutes
- 
- // Time Tracking
- actualStartTime  String?
- actualEndTime    String?
- actualDuration   Int?    // minutes
- 
- // ===== LESSON DETAILS =====
- lessonType    LessonType    @default(STANDARD)
- lessonNumber  Int?          // Lesson number in sequence
- isFirstLesson Boolean       @default(false)
- isLastLesson  Boolean       @default(false)
- 
- // Exam Preparation
- isExamPrep    Boolean       @default(false)
- examType      ExamType?
- 
- // ===== STATUS =====
- status        BookingStatus @default(PENDING)
- 
- // Status History
- confirmedAt   DateTime?
- startedAt     DateTime?
- completedAt   DateTime?
- cancelledAt   DateTime?
- 
- // Cancellation
- cancelledBy   String?       // userId who cancelled
- cancellationReason String?
- cancellationFee Decimal?    @db.Decimal(10, 2)
- isLateCancellation Boolean  @default(false)
- 
- // No-show
- noShowReason  String?
- noShowFee     Decimal?      @db.Decimal(10, 2)
- 
- // ===== FINANCIAL =====
- price         Decimal       @db.Decimal(10, 2)
- isPaid        Boolean       @default(false)
- paymentMethod PaymentMethod?
- 
- // Package/Credits
- enrollmentId  String?
- enrollment    Enrollment?   @relation(fields: [enrollmentId], references: [id])
- usedCredits   Int          @default(0)
- 
- // Payment
- paymentId     String?       @unique
- payment       Payment?      @relation(fields: [paymentId], references: [id])
- 
- // Discounts
- discountCode  String?
- discountAmount Decimal?     @db.Decimal(10, 2)
- finalPrice    Decimal?      @db.Decimal(10, 2)
- 
- // ===== LESSON CONTENT =====
- objectives    String[]      // Lesson objectives
- topics        String[]      // Topics to cover
- 
- // Route Planning
- plannedRoute  String?
- actualRoute   String?
- kmDriven      Float?
- fuelUsed      Float?
- 
- // ===== ASSESSMENT =====
- feedback      LessonFeedback?
-   packageUsages PackageUsage[]
- 
- // Progress Tracking
- skillsPracticed String[]
- skillsImproved  String[]
- 
- // ===== WEATHER & CONDITIONS =====
- weatherConditions String?
- trafficConditions String?
- roadConditions    String?
- visibility        String?
- 
- // ===== NOTES =====
- studentNotes     String?    // Notes from student
- instructorNotes  String?    // Notes from instructor
- internalNotes    String?    // Admin notes
- 
- // ===== REMINDERS =====
- reminderSent     Boolean    @default(false)
- reminderSentAt   DateTime?
- confirmationSent Boolean    @default(false)
- 
- // ===== METADATA =====
- source          BookingSource @default(ONLINE)
- deviceType      String?       // mobile, desktop, tablet
- ipAddress       String?
- userAgent       String?
- 
- // Recurring
- isRecurring     Boolean       @default(false)
- recurringId     String?       // Group recurring bookings
- recurringRule   String?       // RRULE format
- 
- // Integration
- externalId      String?       // ID from external system
- googleEventId   String?       // Google Calendar event ID
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- createdBy String?  // userId who created booking
- updatedBy String?  // userId who last updated
- 
-  // Add rating field for completed lessons
-  rating          Float?    // Student's rating of the lesson (1-5)
-  ratingComment   String?   // Optional comment with rating
-  ratedAt         DateTime? // When the rating was given
-  
-    type   String?  @default("STANDARD")
-  notes  String?
+  // Relations
+  student          User          @relation("StudentBookings", fields: [studentId], references: [id])
+  instructor       User          @relation("InstructorBookings", fields: [instructorId], references: [id])
+  vehicle          Vehicle?      @relation(fields: [vehicleId], references: [id])
+  location         Location?     @relation(fields: [locationId], references: [id])
+  payment          Payment[]
+  cancellationRequest CancellationRequest?
 
-
- @@index([studentId])
- @@index([instructorId])
- @@index([vehicleId])
- @@index([locationId])
- @@index([date])
- @@index([startTime])
- @@index([status])
- @@index([enrollmentId])
- @@index([recurringId])
- @@map("bookings")
+  @@map("bookings")
+  @@index([studentId, startTime(sort: Desc)])
+  @@index([instructorId, startTime(sort: Desc)])
+  @@index([startTime])
+  @@index([status])
 }
 
-// ============================================
-// BOOKING REQUEST - Student requests for lessons
-// ============================================
-model BookingRequest {
- id            String   @id @default(cuid())
- studentId     String
- student       User     @relation(fields: [studentId], references: [id])
- 
- // ===== PREFERENCES =====
- preferredInstructorId String?
- preferredVehicleId    String?
- preferredLocationId   String?
- 
- // Date/Time Preferences
- preferredDates        DateTime[]
- preferredTimeSlots    String[]    // ["morning", "afternoon", "evening"]
- flexibleDates         Boolean     @default(false)
- 
- // ===== LESSON DETAILS =====
- lessonType           LessonType
- duration             Int         @default(120)
- numberOfLessons      Int         @default(1)
- 
- // ===== STATUS =====
- status               RequestStatus @default(PENDING)
- 
- // Processing
- processedAt          DateTime?
- processedBy          String?
- 
- // Matching
- matchedBookingIds    String[]
- partiallyMatched     Boolean     @default(false)
- 
- // ===== URGENCY =====
- isUrgent             Boolean     @default(false)
- urgencyReason        String?
- priority             Int         @default(0)
- 
- // ===== NOTES =====
- studentMessage       String?
- adminNotes           String?
- 
- // ===== EXPIRY =====
- expiresAt            DateTime
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@index([studentId])
- @@index([status])
- @@index([priority])
- @@index([expiresAt])
- @@map("booking_requests")
+model AvailabilitySlot {
+  id           String   @id @default(uuid())
+  instructorId String   @map("instructor_id")
+  date         DateTime @db.Date
+  startTime    DateTime @map("start_time") @db.Time
+  endTime      DateTime @map("end_time") @db.Time
+  isAvailable  Boolean  @default(true) @map("is_available")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  instructor   User     @relation(fields: [instructorId], references: [id])
+
+  @@map("availability_slots")
+  @@index([instructorId, date])
+  @@unique([instructorId, date, startTime])
 }
 
-// ============================================
-// BOOKING WAITLIST - For fully booked slots
-// ============================================
-model BookingWaitlist {
- id            String   @id @default(cuid())
- studentId     String
- student       User     @relation(fields: [studentId], references: [id])
- 
- // Desired Slot
- instructorId  String?
- date          DateTime
- startTime     String
- endTime       String
- 
- // Preferences
- alternativeInstructorOk Boolean @default(false)
- alternativeDateOk       Boolean @default(false)
- alternativeTimeOk       Boolean @default(false)
- 
- // Status
- status        WaitlistStatus @default(WAITING)
- position      Int
- 
- // Notification
- notified      Boolean    @default(false)
- notifiedAt    DateTime?
- responseDeadline DateTime?
- 
- // Outcome
- bookingId     String?    // If converted to booking
- expiredAt     DateTime?
- cancelledAt   DateTime?
- 
- createdAt DateTime @default(now())
- 
- @@index([studentId])
- @@index([instructorId])
- @@index([date])
- @@index([status])
- @@map("booking_waitlist")
+model CancellationRequest {
+  id          String             @id @default(uuid())
+  bookingId   String             @unique @map("booking_id")
+  requestedBy String             @map("requested_by")
+  reason      String?            @db.Text
+  status      CancellationStatus @default(pending)
+  createdAt   DateTime           @default(now()) @map("created_at")
+
+  // Relations
+  booking     Booking            @relation(fields: [bookingId], references: [id])
+  requester   User               @relation(fields: [requestedBy], references: [id])
+
+  @@map("cancellation_requests")
+  @@index([status])
 }
 
-// ============================================
-// LESSON PACKAGE USAGE - Track package consumption
-// ============================================
-model PackageUsage {
- id            String   @id @default(cuid())
- enrollmentId  String
- enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
- bookingId     String
- booking       Booking    @relation(fields: [bookingId], references: [id])
- 
- // Credits/Lessons Used
- creditsUsed   Int
- lessonsUsed   Int        @default(1)
- 
- // Balance
- creditsBefore Int
- creditsAfter  Int
- 
- // Type
- usageType     UsageType  @default(LESSON)
- 
- // Reversal (for cancellations)
- isReversed    Boolean    @default(false)
- reversedAt    DateTime?
- reversalReason String?
- 
- createdAt DateTime @default(now())
- 
- @@index([enrollmentId])
- @@index([bookingId])
- @@map("package_usage")
+model Location {
+  id              String         @id @default(uuid())
+  name            String
+  type            LocationType
+  status          LocationStatus @default(active)
+  address         String
+  city            String
+  postalCode      String         @map("postal_code")
+  country         String         @default("Poland")
+  lat             Decimal?       @db.Decimal(10, 8)
+  lng             Decimal?       @db.Decimal(11, 8)
+  phone           String?
+  email           String?
+  website         String?
+  workingHours    Json           @default("{}") @map("working_hours")
+  totalStudents   Int            @default(0) @map("total_students")
+  activeStudents  Int            @default(0) @map("active_students")
+  monthlyRevenue  Decimal        @default(0.00) @map("monthly_revenue") @db.Decimal(10, 2)
+  createdAt       DateTime       @default(now()) @map("created_at")
+
+  // Relations
+  vehicles        Vehicle[]
+  bookings        Booking[]
+  instructors     InstructorLocation[]
+
+  @@map("locations")
+  @@index([type])
+  @@index([status])
 }
 
-// ============================================
-// BOOKING RULES - Business rules for bookings
-// ============================================
-model BookingRule {
- id            String   @id @default(cuid())
- 
- // Rule Info
- name          String
- description   String
- category      RuleCategory
- 
- // Conditions
- ruleType      RuleType
- conditions    Json     // Complex conditions in JSON
- 
- // Actions
- actions       Json     // What happens when rule matches
- 
- // Application
- appliesToRole UserRole[]
- appliesToLessonType LessonType[]
- 
- // Priority & Status
- priority      Int      @default(0)
- isActive      Boolean  @default(true)
- 
- // Validity
- validFrom     DateTime?
- validTo       DateTime?
- 
- // Examples of rules:
- // - Minimum 24h advance booking
- // - Maximum 2 bookings per week for new students
- // - No bookings on holidays
- // - Instructor break time enforcement
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@index([category])
- @@index([isActive])
- @@map("booking_rules")
-}
+model InstructorLocation {
+  instructorId String   @map("instructor_id")
+  locationId   String   @map("location_id")
+  isPrimary    Boolean  @default(false) @map("is_primary")
 
-// ============================================
-// BOOKING CONFLICTS - Track scheduling conflicts
-// ============================================
-model BookingConflict {
- id            String   @id @default(cuid())
- 
- // Conflicting Bookings
- bookingId1    String
- bookingId2    String
- 
- // Conflict Details
- conflictType  ConflictType
- severity      ConflictSeverity
- 
- // Resolution
- status        ConflictStatus @default(UNRESOLVED)
- resolution    String?
- resolvedBy    String?
- resolvedAt    DateTime?
- 
- // Auto-resolution attempted
- autoResolved  Boolean    @default(false)
- 
- createdAt DateTime @default(now())
- 
- @@index([bookingId1])
- @@index([bookingId2])
- @@index([status])
- @@map("booking_conflicts")
-}
+  // Relations
+  instructor   Instructor @relation(fields: [instructorId], references: [id])
+  location     Location   @relation(fields: [locationId], references: [id])
 
-// ============================================
-// CALENDAR SYNC - External calendar integration
-// ============================================
-model CalendarSync {
- id            String   @id @default(cuid())
- userId        String
- user          User     @relation(fields: [userId], references: [id])
- 
- // Calendar Provider
- provider      CalendarProvider
- 
- // Authentication
- accessToken   String?
- refreshToken  String?
- tokenExpiry   DateTime?
- 
- // Calendar Details
- calendarId    String
- calendarName  String?
- 
- // Sync Settings
- syncDirection SyncDirection @default(BOTH)
- syncEnabled   Boolean       @default(true)
- 
- // Last Sync
- lastSyncAt    DateTime?
- lastSyncStatus String?
- syncErrors    Int          @default(0)
- 
- // Webhook (for real-time updates)
- webhookUrl    String?
- webhookSecret String?
- 
- createdAt DateTime @default(now())
- updatedAt DateTime @updatedAt
- 
- @@unique([userId, provider, calendarId])
- @@index([userId])
- @@map("calendar_syncs")
-}
-
-// ============================================
-// ENUMS FOR BOOKING MODULE
-// ============================================
-
-enum BookingStatus {
- PENDING
- CONFIRMED
- IN_PROGRESS
- COMPLETED
- CANCELLED
- NO_SHOW
- RESCHEDULED
-}
-
-enum LessonType {
- STANDARD
- CITY_TRAFFIC
- HIGHWAY
- PARKING
- EXAM_PREPARATION
- NIGHT_DRIVING
- MANEUVERS
- THEORY
- EMERGENCY_BRAKING
- HILL_START
- COUNTRY_ROADS
- ROUNDABOUTS
- FIRST_LESSON
- ASSESSMENT
- REFRESHER
-}
-
-enum BookingSource {
- ONLINE
- MOBILE_APP
- PHONE
- IN_PERSON
- ADMIN
- SYSTEM
- IMPORT
-}
-
-enum RequestStatus {
- PENDING
- PROCESSING
- MATCHED
- PARTIALLY_MATCHED
- NO_MATCH
- EXPIRED
- CANCELLED
-}
-
-enum WaitlistStatus {
- WAITING
- NOTIFIED
- ACCEPTED
- EXPIRED
- CANCELLED
-}
-
-enum UsageType {
- LESSON
- CANCELLATION_FEE
- NO_SHOW_FEE
- EXAM
- ADJUSTMENT
-}
-
-enum RuleCategory {
- SCHEDULING
- CANCELLATION
- PAYMENT
- ELIGIBILITY
- CAPACITY
- SAFETY
-}
-
-enum RuleType {
- ADVANCE_BOOKING
- CANCELLATION_WINDOW
- MAX_BOOKINGS
- MIN_INTERVAL
- BLACKOUT_DATES
- INSTRUCTOR_AVAILABILITY
-}
-
-enum ConflictType {
- DOUBLE_BOOKING
- INSTRUCTOR_OVERLAP
- VEHICLE_OVERLAP
- LOCATION_OVERLAP
- BREAK_TIME_VIOLATION
-}
-
-enum ConflictSeverity {
- LOW
- MEDIUM
- HIGH
- CRITICAL
-}
-
-enum ConflictStatus {
- UNRESOLVED
- RESOLVED
- IGNORED
- ESCALATED
-}
-
-enum CalendarProvider {
- GOOGLE
- OUTLOOK
- APPLE
- CALDAV
-}
-
-enum SyncDirection {
- TO_EXTERNAL
- FROM_EXTERNAL
- BOTH
+  @@id([instructorId, locationId])
+  @@map("instructor_locations")
 }

@@ -1,0 +1,3256 @@
+{
+  "timestamp": "2025-08-29T16:55:40.326Z",
+  "projectType": "Driving School LMS",
+  "modulesAnalyzed": [
+    "admin",
+    "instructor",
+    "student"
+  ],
+  "statistics": {
+    "mockDataFiles": 29,
+    "uniqueEntities": 23,
+    "relations": 5,
+    "businessRules": 7
+  },
+  "entities": [
+    {
+      "name": "package",
+      "module": "admin",
+      "fieldCount": 18,
+      "occurrences": [
+        "app/[locale]/admin/packages/[id]/page.tsx:111"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "price",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "discountedPrice",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "duration",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "durationUnit",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "theoryHours",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "practicalHours",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "additionalHours",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "examAttempts",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "features",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "included",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "value",
+          "types": [
+            "string",
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "condition",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "location",
+      "module": "admin",
+      "fieldCount": 25,
+      "occurrences": [
+        "app/[locale]/admin/locations/[id]/page.tsx:66"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "address",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "postalCode",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lat",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lng",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phone",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "website",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalStudents",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "activeStudents",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructors",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vehicles",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "monthlyLessons",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "revenue",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "rating",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "reviews",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "day",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "open",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "close",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "booking",
+      "module": "admin",
+      "fieldCount": 27,
+      "occurrences": [
+        "app/[locale]/admin/bookings/calendar/page.tsx:87",
+        "app/[locale]/student/bookings/page.tsx:89",
+        "app/[locale]/student/bookings/history/page.tsx:97"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string",
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "studentName",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "studentId",
+          "types": [
+            "string"
+          ],
+          "isFK": true,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructorName",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructorId",
+          "types": [
+            "string"
+          ],
+          "isFK": true,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "startTime",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "endTime",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "location",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vehicle",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "package",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "notes",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "length",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "time",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructor",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "make",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "model",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "registration",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "duration",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "rating",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "price",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "hasInvoice",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "hasFeedback",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "invoice",
+      "module": "admin",
+      "fieldCount": 37,
+      "occurrences": [
+        "app/[locale]/admin/payments/invoices/page.tsx:121",
+        "app/[locale]/student/payments/invoice/[id]/page.tsx:39"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string",
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "number",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "issueDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "dueDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "paymentDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "customer",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phone",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "address",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "isCompany",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "quantity",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "unitPrice",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vatRate",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "total",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "taxId",
+          "types": [
+            "string"
+          ],
+          "isFK": true,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "length",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "paymentMethod",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "company",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "postalCode",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "nip",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "regon",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "website",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "bank",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "accountNumber",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "studentId",
+          "types": [
+            "string"
+          ],
+          "isFK": true,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "tax",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "subtotal",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "taxAmount",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "discount",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "paid",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "due",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "module": "student",
+      "fieldCount": 26,
+      "occurrences": [
+        "app/[locale]/student/dashboard/page.tsx:36"
+      ],
+      "fields": [
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "credits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "packageExpiry",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalLessons",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "completedLessons",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "nextLesson",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "time",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": true
+        },
+        {
+          "name": "instructor",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructorAvatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "location",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vehicle",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "skill",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "grade",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "trend",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "icon",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "unlocked",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "messageKey",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "timeAgo",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "isDay",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "temp",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "condition",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "wind",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "conversation",
+      "module": "student",
+      "fieldCount": 16,
+      "occurrences": [
+        "app/[locale]/student/messages/page.tsx:51",
+        "app/[locale]/student/messages/[conversationId]/page.tsx:75"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": true
+        },
+        {
+          "name": "role",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastMessage",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastMessageTime",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "count",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "members",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "unread",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "online",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "pinned",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "muted",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastSeen",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phone",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "announcement",
+      "module": "student",
+      "fieldCount": 5,
+      "occurrences": [
+        "app/[locale]/student/messages/page.tsx:131"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "title",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "content",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "important",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "message",
+      "module": "student",
+      "fieldCount": 16,
+      "occurrences": [
+        "app/[locale]/student/messages/[conversationId]/page.tsx:87"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "sender",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "senderAvatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "content",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "time",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "isMe",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "attachment",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "size",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "url",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lessonInfo",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "location",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vehicle",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "ticket",
+      "module": "student",
+      "fieldCount": 17,
+      "occurrences": [
+        "app/[locale]/student/support/tickets/page.tsx:110"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "number",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "subject",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "priority",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "updatedAt",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastReply",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "agent",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "author",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "authorType",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "content",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "timestamp",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "messages",
+          "types": [],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "attachments",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "fAQ",
+      "module": "student",
+      "fieldCount": 8,
+      "occurrences": [
+        "app/[locale]/student/support/faq/page.tsx:84"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "question",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "answer",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "helpful",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "notHelpful",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "tags",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "relatedQuestions",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "availableSlot",
+      "module": "student",
+      "fieldCount": 8,
+      "occurrences": [
+        "app/[locale]/student/schedule/availability/page.tsx:46"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "dayName",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "slots",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "time",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructor",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "rating",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "instructor",
+      "module": "student",
+      "fieldCount": 12,
+      "occurrences": [
+        "app/[locale]/student/instructors/page.tsx:84"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "rating",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalReviews",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "experience",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "count",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "time",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "morning",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "afternoon",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "evening",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "weekend",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "document",
+      "module": "student",
+      "fieldCount": 12,
+      "occurrences": [
+        "app/[locale]/student/documents/page.tsx:115"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "category",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "size",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "uploadDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "expiryDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "verified",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "url",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "count",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "setting",
+      "module": "student",
+      "fieldCount": 38,
+      "occurrences": [
+        "app/[locale]/student/profile/settings/page.tsx:57"
+      ],
+      "fields": [
+        {
+          "name": "account",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "emailVerified",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phone",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phoneVerified",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "username",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "accountCreated",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastLogin",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "loginMethod",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "twoFactorEnabled",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "twoFactorMethod",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastPasswordChange",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "passwordStrength",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "activeSessions",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "trustedDevices",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastUsed",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "current",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "profileVisibility",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "showProgress",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "allowAnalytics",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "allowMarketing",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "dataRetention",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "shareWithPartners",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "theme",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "language",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "dateFormat",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "timeFormat",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "fontSize",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "reduceAnimations",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "defaultPaymentMethod",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "autoRenew",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "invoiceEmail",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "vatNumber",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "billingAddress",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "city",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "postalCode",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "country",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "statistic",
+      "module": "student",
+      "fieldCount": 8,
+      "occurrences": [
+        "app/[locale]/student/bookings/history/page.tsx:169"
+      ],
+      "fields": [
+        {
+          "name": "totalLessons",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "completedLessons",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalHours",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "averageRating",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "successRate",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "favoriteInstructor",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "mostCommonType",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalSpent",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "activePackage",
+      "module": "student",
+      "fieldCount": 13,
+      "occurrences": [
+        "app/[locale]/student/payments/page.tsx:47",
+        "app/[locale]/student/payments/packages/page.tsx:47"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "purchaseDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "expiryDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "usedCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "remainingCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "price",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lessons",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "instructor",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "expiredPackage",
+      "module": "student",
+      "fieldCount": 9,
+      "occurrences": [
+        "app/[locale]/student/payments/page.tsx:92",
+        "app/[locale]/student/payments/packages/page.tsx:92"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "purchaseDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "expiryDate",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "totalCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "usedCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "remainingCredits",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "price",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "slot",
+      "module": "instructor",
+      "fieldCount": 8,
+      "occurrences": [
+        "app/[locale]/instructor/schedule/data/mockData.ts:112"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "startTime",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "endTime",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "location",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "student",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "notes",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "template",
+      "module": "instructor",
+      "fieldCount": 8,
+      "occurrences": [
+        "app/[locale]/instructor/schedule/data/mockData.ts:289"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "workingHours",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "isDefault",
+          "types": [
+            "boolean"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "types": [
+            "Date"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "ek",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "intervals",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": true,
+          "nullable": false
+        },
+        {
+          "name": "end",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "exception",
+      "module": "instructor",
+      "fieldCount": 4,
+      "occurrences": [
+        "app/[locale]/instructor/schedule/data/mockData.ts:325"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "description",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "createdAt",
+          "types": [
+            "Date"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "cancellationRequest",
+      "module": "instructor",
+      "fieldCount": 7,
+      "occurrences": [
+        "app/[locale]/instructor/schedule/data/mockData.ts:346"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "slotId",
+          "types": [
+            "string"
+          ],
+          "isFK": true,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "student",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "firstName",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "lastName",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "email",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "phone",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "generateUser",
+      "module": "admin",
+      "fieldCount": 2,
+      "occurrences": [
+        "app/[locale]/admin/users/page.tsx:25"
+      ],
+      "fields": [
+        {
+          "name": "length",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "id",
+          "types": [
+            "number"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "generateLesson",
+      "module": "student",
+      "fieldCount": 4,
+      "occurrences": [
+        "app/[locale]/student/schedule/page.tsx:69"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "name",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "avatar",
+          "types": [
+            "string"
+          ],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "types": [],
+          "isFK": false,
+          "isArray": false,
+          "nullable": false
+        }
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "booking",
+      "to": "student",
+      "type": "one-to-many",
+      "field": "studentId"
+    },
+    {
+      "from": "booking",
+      "to": "instructor",
+      "type": "one-to-many",
+      "field": "instructorId"
+    },
+    {
+      "from": "invoice",
+      "to": "tax",
+      "type": "one-to-many",
+      "field": "taxId"
+    },
+    {
+      "from": "invoice",
+      "to": "student",
+      "type": "one-to-many",
+      "field": "studentId"
+    },
+    {
+      "from": "cancellationRequest",
+      "to": "slot",
+      "type": "one-to-many",
+      "field": "slotId"
+    }
+  ],
+  "businessRules": [
+    "Студент може мати лише одного активного інструктора",
+    "Урок не може бути заброньований на минулу дату",
+    "Інструктор не може мати 2 уроки одночасно",
+    "Студент повинен мати мінімум 30 годин практики перед екзаменом",
+    "Оплата повинна бути здійснена перед бронюванням",
+    "Автомобіль повинен мати активну страховку та техогляд",
+    "booking: повинен мати startTime < endTime"
+  ],
+  "recommendations": [
+    "ОСНОВНІ ТАБЛИЦІ:",
+    "• users (з полем role: student/instructor/admin)",
+    "• vehicles (автомобілі школи)",
+    "• bookings (бронювання уроків)",
+    "• payments (оплати)",
+    "• packages (пакети уроків)",
+    "\nJUNCTION ТАБЛИЦІ:",
+    "• user_packages (студент ↔ пакети)",
+    "• instructor_vehicles (інструктор ↔ авто)",
+    "• booking_skills (урок ↔ навички)",
+    "\nLOOKUP ТАБЛИЦІ:",
+    "• lesson_types (тип уроку: практика/теорія)",
+    "• payment_methods (готівка/картка/перевод)",
+    "• booking_statuses (заплановано/завершено/скасовано)",
+    "\nІНДЕКСИ:",
+    "• bookings: (instructor_id, date, time)",
+    "• payments: (user_id, created_at)",
+    "• vehicles: (registration_number)"
+  ],
+  "sqlExample": "\n-- Приклад нормалізованої структури для автошколи\n\nCREATE TABLE users (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    email VARCHAR(255) UNIQUE NOT NULL,\n    phone VARCHAR(20),\n    role VARCHAR(20) CHECK (role IN ('student', 'instructor', 'admin')),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE vehicles (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    registration_number VARCHAR(20) UNIQUE NOT NULL,\n    brand VARCHAR(50),\n    model VARCHAR(50),\n    year INT,\n    transmission VARCHAR(20) CHECK (transmission IN ('manual', 'automatic')),\n    fuel_type VARCHAR(20),\n    insurance_expiry DATE NOT NULL,\n    inspection_expiry DATE NOT NULL\n);\n\nCREATE TABLE bookings (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    student_id UUID REFERENCES users(id),\n    instructor_id UUID REFERENCES users(id),\n    vehicle_id UUID REFERENCES vehicles(id),\n    start_time TIMESTAMP NOT NULL,\n    end_time TIMESTAMP NOT NULL,\n    status VARCHAR(20) DEFAULT 'scheduled',\n    lesson_type VARCHAR(20) NOT NULL,\n    price DECIMAL(10, 2),\n    CONSTRAINT no_time_overlap CHECK (start_time < end_time)\n);\n\nCREATE TABLE payments (\n    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),\n    user_id UUID REFERENCES users(id),\n    booking_id UUID REFERENCES bookings(id),\n    amount DECIMAL(10, 2) NOT NULL CHECK (amount > 0),\n    currency VARCHAR(3) DEFAULT 'PLN',\n    method VARCHAR(20),\n    status VARCHAR(20) DEFAULT 'pending',\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Індекси для швидкого пошуку\nCREATE INDEX idx_bookings_instructor_date ON bookings(instructor_id, start_time);\nCREATE INDEX idx_bookings_student ON bookings(student_id);\nCREATE INDEX idx_payments_user ON payments(user_id, created_at DESC);\n"
+}
