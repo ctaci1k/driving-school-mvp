@@ -24,8 +24,58 @@
 ├── app
 │   ├── [locale]
 │   │   ├── admin
-│   │   │   └── admin-dashboard
-│   │   │       ├── layout.tsx
+│   │   │   ├── bookings
+│   │   │   │   ├── calendar
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── dashboard
+│   │   │   │   └── page.tsx
+│   │   │   ├── instructors
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── schedule
+│   │   │   │       └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── locations
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── packages
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── payments
+│   │   │   │   ├── invoices
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── payouts
+│   │   │   │       └── page.tsx
+│   │   │   ├── reports
+│   │   │   │   ├── analytics
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── export
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── settings
+│   │   │   │   ├── branches
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── notifications
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── students
+│   │   │   │   └── page.tsx
+│   │   │   ├── users
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── new
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── vehicles
+│   │   │       ├── [id]
+│   │   │       │   └── page.tsx
+│   │   │       ├── maintenance
+│   │   │       │   └── page.tsx
 │   │   │       └── page.tsx
 │   │   ├── auth
 │   │   │   ├── forgot-password
@@ -37,46 +87,167 @@
 │   │   │   └── reset-password
 │   │   │       └── page.tsx
 │   │   ├── client-providers.tsx
+│   │   ├── error.tsx
 │   │   ├── instructor
-│   │   │   └── instructor-dashboard
-│   │   │       ├── layout.tsx
-│   │   │       └── page.tsx
+│   │   │   ├── dashboard
+│   │   │   │   └── page.tsx
+│   │   │   ├── earnings
+│   │   │   │   ├── details
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── history
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── lessons
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── check-in
+│   │   │   │   │   └── [id]
+│   │   │   │   │       └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── today
+│   │   │   │       └── page.tsx
+│   │   │   ├── messages
+│   │   │   │   ├── [chatId]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── profile
+│   │   │   │   ├── documents
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── settings
+│   │   │   │       └── page.tsx
+│   │   │   ├── resources
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── upload
+│   │   │   │       └── page.tsx
+│   │   │   ├── schedule
+│   │   │   │   ├── components
+│   │   │   │   │   ├── ErrorBoundary.tsx
+│   │   │   │   │   ├── calendar
+│   │   │   │   │   │   ├── CalendarControls.tsx
+│   │   │   │   │   │   ├── DayView.tsx
+│   │   │   │   │   │   ├── MonthView.tsx
+│   │   │   │   │   │   ├── SlotCard.tsx
+│   │   │   │   │   │   └── WeekView.tsx
+│   │   │   │   │   ├── modals
+│   │   │   │   │   │   ├── ExceptionModal.tsx
+│   │   │   │   │   │   ├── SlotEditModal.tsx
+│   │   │   │   │   │   ├── TemplateModal.tsx
+│   │   │   │   │   │   └── WorkingHoursModal.tsx
+│   │   │   │   │   ├── shared
+│   │   │   │   │   │   ├── ActionButtons.tsx
+│   │   │   │   │   │   ├── QuickStats.tsx
+│   │   │   │   │   │   └── SearchBar.tsx
+│   │   │   │   │   └── tabs
+│   │   │   │   │       ├── CalendarTab.tsx
+│   │   │   │   │       ├── RequestsTab.tsx
+│   │   │   │   │       ├── StatsTab.tsx
+│   │   │   │   │       └── TemplatesTab.tsx
+│   │   │   │   ├── data
+│   │   │   │   │   └── mockData.ts
+│   │   │   │   ├── layout.tsx
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── providers
+│   │   │   │   │   └── ScheduleProvider.tsx
+│   │   │   │   ├── types
+│   │   │   │   │   ├── enums.ts
+│   │   │   │   │   └── schedule.types.ts
+│   │   │   │   └── utils
+│   │   │   │       ├── dateHelpers.ts
+│   │   │   │       ├── slotGenerator.ts
+│   │   │   │       └── storage.ts
+│   │   │   ├── settings
+│   │   │   │   └── page.tsx
+│   │   │   ├── students
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── vehicle
+│   │   │       ├── inspection
+│   │   │       │   └── page.tsx
+│   │   │       ├── page.tsx
+│   │   │       └── report-issue
+│   │   │           └── page.tsx
 │   │   ├── layout.tsx
+│   │   ├── not-found.tsx
 │   │   ├── page.tsx
 │   │   ├── payments
 │   │   │   └── return
 │   │   │       └── page.tsx
 │   │   ├── settings
 │   │   │   └── page.tsx
-│   │   ├── student
-│   │   │   ├── booking
-│   │   │   │   └── page.tsx
-│   │   │   ├── calendar
-│   │   │   │   └── page.tsx
-│   │   │   ├── dashboard
-│   │   │   │   ├── error.tsx
-│   │   │   │   ├── loading.tsx
-│   │   │   │   └── page.tsx
-│   │   │   ├── help
-│   │   │   │   └── page.tsx
-│   │   │   ├── layout.tsx
-│   │   │   ├── loading.tsx
-│   │   │   ├── messages
-│   │   │   │   └── page.tsx
-│   │   │   ├── payments
-│   │   │   │   └── page.tsx
-│   │   │   ├── profile
-│   │   │   │   └── page.tsx
-│   │   │   ├── progress
-│   │   │   │   └── page.tsx
-│   │   │   ├── resources
-│   │   │   │   └── page.tsx
-│   │   │   └── settings
-│   │   │       └── page.tsx
-│   │   ├── test-calendar
-│   │   │   └── page.tsx
-│   │   └── test-payment
-│   │       └── page.tsx
+│   │   └── student
+│   │       ├── bookings
+│   │       │   ├── [id]
+│   │       │   │   └── page.tsx
+│   │       │   ├── book
+│   │       │   │   └── page.tsx
+│   │       │   ├── history
+│   │       │   │   └── page.tsx
+│   │       │   └── page.tsx
+│   │       ├── dashboard
+│   │       │   └── page.tsx
+│   │       ├── documents
+│   │       │   ├── page.tsx
+│   │       │   └── upload
+│   │       │       └── page.tsx
+│   │       ├── instructors
+│   │       │   ├── [id]
+│   │       │   │   └── page.tsx
+│   │       │   ├── feedback
+│   │       │   │   └── [bookingId]
+│   │       │   │       └── page.tsx
+│   │       │   └── page.tsx
+│   │       ├── layout.tsx
+│   │       ├── messages
+│   │       │   ├── [conversationId]
+│   │       │   │   └── page.tsx
+│   │       │   └── page.tsx
+│   │       ├── payments
+│   │       │   ├── buy-package
+│   │       │   │   └── page.tsx
+│   │       │   ├── invoice
+│   │       │   │   └── [id]
+│   │       │   │       └── page.tsx
+│   │       │   ├── packages
+│   │       │   │   └── page.tsx
+│   │       │   └── page.tsx
+│   │       ├── profile
+│   │       │   ├── page.tsx
+│   │       │   ├── preferences
+│   │       │   │   └── page.tsx
+│   │       │   └── settings
+│   │       │       └── page.tsx
+│   │       ├── progress
+│   │       │   ├── achievements
+│   │       │   │   └── page.tsx
+│   │       │   ├── exam-readiness
+│   │       │   │   └── page.tsx
+│   │       │   ├── page.tsx
+│   │       │   └── skills
+│   │       │       └── page.tsx
+│   │       ├── schedule
+│   │       │   ├── availability
+│   │       │   │   └── page.tsx
+│   │       │   ├── page.tsx
+│   │       │   └── reschedule
+│   │       │       └── [id]
+│   │       │           └── page.tsx
+│   │       ├── support
+│   │       │   ├── faq
+│   │       │   │   └── page.tsx
+│   │       │   ├── page.tsx
+│   │       │   └── tickets
+│   │       │       └── page.tsx
+│   │       └── theory
+│   │           ├── classes
+│   │           │   └── page.tsx
+│   │           ├── materials
+│   │           │   └── page.tsx
+│   │           ├── page.tsx
+│   │           └── tests
+│   │               └── page.tsx
 │   ├── api
 │   │   ├── auth
 │   │   │   └── [...nextauth]
@@ -97,12 +268,10 @@
 │   │   └── webhooks
 │   │       └── p24
 │   │           └── route.ts
-│   ├── error.tsx
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── layout.tsx
 │   ├── loading.tsx
-│   ├── not-found.tsx
 │   ├── page.tsx
 │   ├── payments
 │   │   └── return
@@ -110,36 +279,35 @@
 │   └── providers
 │       └── trpc-provider.tsx
 ├── components
-│   ├── booking
-│   │   └── recurring-booking-modal.tsx
 │   ├── calendar
-│   │   ├── calendar-filters.tsx
-│   │   ├── calendar-navigation.tsx
-│   │   ├── conflict-detection.tsx
-│   │   ├── day-view.tsx
-│   │   ├── month-view.tsx
-│   │   ├── recurring-bookings.tsx
+│   │   ├── CalendarView.tsx
+│   │   ├── MonthView.tsx
 │   │   └── week-view.tsx
+│   ├── cards
+│   │   ├── MilestoneCard.tsx
+│   │   ├── RequirementCard.tsx
+│   │   └── StatsCard.tsx
+│   ├── charts
+│   │   ├── PredictionChart.tsx
+│   │   ├── ProgressChart.tsx
+│   │   ├── ReadinessGauge.tsx
+│   │   ├── SkillMatrix.tsx
+│   │   └── SkillsRadar.tsx
 │   ├── client-theme-provider.tsx
-│   ├── forms
-│   │   ├── booking-form.tsx
-│   │   └── schedule-form.tsx
-│   ├── layouts
-│   ├── payments
-│   │   └── PaymentButton.tsx
-│   ├── providers
-│   │   ├── dashboard-provider.tsx
-│   │   └── session-provider.tsx
-│   ├── pwa
-│   │   ├── push-notifications.tsx
-│   │   └── pwa-install-prompt.tsx
-│   ├── reports
-│   │   ├── DateRangePicker.tsx
-│   │   └── SimpleChart.tsx
-│   ├── student
-│   │   └── navigation.tsx
+│   ├── navigation
+│   │   ├── StudentHeader.tsx
+│   │   ├── StudentMobileNav.tsx
+│   │   └── StudentSidebar.tsx
+│   ├── schedule
+│   │   ├── LessonCard.tsx
+│   │   ├── LessonTypeSelector.tsx
+│   │   ├── QuickBooking.tsx
+│   │   ├── RecurringLessonDialog.tsx
+│   │   ├── StudentSelector.tsx
+│   │   └── TimeSlotPicker.tsx
 │   ├── theme-provider.tsx
 │   └── ui
+│       ├── ProgressBar.tsx
 │       ├── accordion.tsx
 │       ├── alert-dialog.tsx
 │       ├── alert.tsx
@@ -152,6 +320,7 @@
 │       ├── card.tsx
 │       ├── carousel.tsx
 │       ├── checkbox.tsx
+│       ├── command.tsx
 │       ├── credits-display.tsx
 │       ├── date-range-picker.tsx
 │       ├── dialog.tsx
@@ -167,8 +336,10 @@
 │       ├── scroll-area.tsx
 │       ├── select.tsx
 │       ├── separator.tsx
+│       ├── sheet.tsx
 │       ├── simple-table.tsx
 │       ├── skeleton.tsx
+│       ├── slider.tsx
 │       ├── stats-card.tsx
 │       ├── switch.tsx
 │       ├── table.tsx
@@ -179,6 +350,7 @@
 │       ├── toaster.tsx
 │       ├── tooltip.tsx
 │       └── use-toast.ts
+├── creator_tree_in_prog.txt
 ├── deploy.sh
 ├── dev-start.bat
 ├── docker
@@ -208,6 +380,8 @@
 │   ├── favicon.ico:Zone.Identifier
 │   ├── site.webmanifest
 │   └── site.webmanifest:Zone.Identifier
+├── hooks
+│   └── use-toast.tsx
 ├── i18n
 │   └── request.ts
 ├── i18n.ts
@@ -249,20 +423,58 @@
 │       ├── schedule.ts
 │       ├── user.ts
 │       └── vehicle.ts
+├── locales
+│   ├── en
+│   │   ├── admin.json
+│   │   ├── admin.json:Zone.Identifier
+│   │   ├── auth.json
+│   │   ├── auth.json:Zone.Identifier
+│   │   ├── common.json
+│   │   ├── common.json:Zone.Identifier
+│   │   ├── instructor.json
+│   │   ├── instructor.json:Zone.Identifier
+│   │   ├── student.json
+│   │   └── student.json:Zone.Identifier
+│   ├── pl
+│   │   ├── admin.json
+│   │   ├── admin.json:Zone.Identifier
+│   │   ├── auth.json
+│   │   ├── auth.json:Zone.Identifier
+│   │   ├── common.json
+│   │   ├── common.json:Zone.Identifier
+│   │   ├── instructor.json
+│   │   ├── instructor.json:Zone.Identifier
+│   │   ├── student.json
+│   │   └── student.json:Zone.Identifier
+│   ├── ru
+│   │   ├── admin.json
+│   │   ├── admin.json:Zone.Identifier
+│   │   ├── auth.json
+│   │   ├── auth.json:Zone.Identifier
+│   │   ├── common.json
+│   │   ├── common.json:Zone.Identifier
+│   │   ├── instructor.json
+│   │   ├── instructor.json:Zone.Identifier
+│   │   ├── student.json
+│   │   └── student.json:Zone.Identifier
+│   └── uk
+│       ├── admin.json
+│       ├── admin.json:Zone.Identifier
+│       ├── auth.json
+│       ├── auth.json:Zone.Identifier
+│       ├── common.json
+│       ├── common.json:Zone.Identifier
+│       ├── instructor.json
+│       ├── instructor.json:Zone.Identifier
+│       ├── student.json
+│       └── student.json:Zone.Identifier
 ├── manifest.json
-├── messages
-│   ├── en.json
-│   ├── pl.json
-│   ├── ru.json
-│   └── uk.json
 ├── middleware.ts
 ├── next-env.d.ts
 ├── next.config.js
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.js
-├── postcss.config.js:Zone.Identifier
-├── postcss.config.mjs
 ├── prisma
 │   ├── client.ts
 │   ├── migrations
@@ -288,6 +500,12 @@
 │   ├── schema.prisma
 │   └── seed
 │       ├── data
+│       │   ├── app
+│       │   │   └── [locale]
+│       │   │       └── student
+│       │   │           └── bookings
+│       │   │               └── book
+│       │   │                   └── page.tsx
 │       │   ├── bookings.js
 │       │   ├── locations.js
 │       │   ├── maintenanceLogs.js
@@ -306,6 +524,7 @@
 ├── prisma-merge.config.json
 ├── prisma.config.ts
 ├── prisma.config.ts:Zone.Identifier
+├── project_packaging.txt
 ├── project_structure.txt
 ├── public
 │   ├── file.svg
@@ -333,7 +552,6 @@
 │   │   └── icon-96x96.svg
 │   ├── manifest.json
 │   ├── next.svg
-│   ├── screenshots
 │   ├── sw.js
 │   ├── sw.js.map
 │   ├── vercel.svg
@@ -351,6 +569,7 @@
 │   ├── reset-database.sh
 │   └── setup-prisma.js
 ├── start-docker.ps1
+├── start_to_prisma
 ├── tailwind.config.ts
 ├── temp_schema.txt
 ├── tsconfig.json
@@ -359,4 +578,4 @@
 │   └── next-auth.d.ts
 └── vercel.json
 
-88 directories, 272 files
+173 directories, 406 files
