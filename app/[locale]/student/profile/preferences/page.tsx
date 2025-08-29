@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   ArrowLeft,
   Save,
@@ -53,86 +54,86 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 
-// Mock preferences data
-const mockPreferences = {
-  learning: {
-    preferredTime: 'afternoon',
-    weekDays: ['monday', 'wednesday', 'friday'],
-    weekendAvailable: true,
-    lessonDuration: 120,
-    intensityLevel: 'moderate',
-    preferredInstructor: 'any',
-    preferredVehicle: 'manual',
-    preferredLocation: 'city_center',
-    groupLessons: false,
-    theoryPreference: 'online'
-  },
-  notifications: {
-    email: true,
-    sms: true,
-    push: true,
-    reminderTime: 24,
-    cancelNotifications: true,
-    newsAndOffers: false,
-    lessonFeedback: true,
-    progressReports: true,
-    sound: true,
-    vibration: true
-  },
-  communication: {
-    preferredLanguage: 'pl',
-    preferredContact: 'phone',
-    availableHours: '09:00-18:00',
-    emergencyAlerts: true,
-    instructorMessages: true,
-    adminMessages: true,
-    groupMessages: false
-  },
-  goals: {
-    targetExamDate: '2024-10-15',
-    weeklyLessons: 2,
-    focusAreas: ['parking', 'highway', 'night'],
-    examType: 'standard',
-    additionalTraining: ['defensive', 'eco']
-  },
-  accessibility: {
-    largeText: false,
-    highContrast: false,
-    reducedMotion: false,
-    screenReader: false
-  }
-};
-
-const timePreferences = [
-  { value: 'morning', label: 'Rano (6:00-12:00)', icon: Sunrise },
-  { value: 'afternoon', label: 'Popołudnie (12:00-18:00)', icon: Sun },
-  { value: 'evening', label: 'Wieczór (18:00-22:00)', icon: Sunset }
-];
-
-const weekDays = [
-  { value: 'monday', label: 'Poniedziałek' },
-  { value: 'tuesday', label: 'Wtorek' },
-  { value: 'wednesday', label: 'Środa' },
-  { value: 'thursday', label: 'Czwartek' },
-  { value: 'friday', label: 'Piątek' },
-  { value: 'saturday', label: 'Sobota' },
-  { value: 'sunday', label: 'Niedziela' }
-];
-
-const focusAreas = [
-  { value: 'parking', label: 'Parkowanie', description: 'Równoległe i prostopadłe' },
-  { value: 'highway', label: 'Autostrada', description: 'Jazda z wysoką prędkością' },
-  { value: 'night', label: 'Jazda nocna', description: 'W warunkach ograniczonej widoczności' },
-  { value: 'city', label: 'Miasto', description: 'Ruch miejski i skrzyżowania' },
-  { value: 'maneuvers', label: 'Manewry', description: 'Zawracanie, cofanie' },
-  { value: 'hills', label: 'Wzniesienia', description: 'Ruszanie pod górkę' }
-];
-
 export default function PreferencesPage() {
   const router = useRouter();
-  const [preferences, setPreferences] = useState(mockPreferences);
+  const t = useTranslations('student.preferences');
   const [hasChanges, setHasChanges] = useState(false);
   const [activeTab, setActiveTab] = useState('learning');
+  
+  // Mock preferences data
+  const [preferences, setPreferences] = useState({
+    learning: {
+      preferredTime: 'afternoon',
+      weekDays: ['monday', 'wednesday', 'friday'],
+      weekendAvailable: true,
+      lessonDuration: 120,
+      intensityLevel: 'moderate',
+      preferredInstructor: 'any',
+      preferredVehicle: 'manual',
+      preferredLocation: 'city_center',
+      groupLessons: false,
+      theoryPreference: 'online'
+    },
+    notifications: {
+      email: true,
+      sms: true,
+      push: true,
+      reminderTime: 24,
+      cancelNotifications: true,
+      newsAndOffers: false,
+      lessonFeedback: true,
+      progressReports: true,
+      sound: true,
+      vibration: true
+    },
+    communication: {
+      preferredLanguage: 'pl',
+      preferredContact: 'phone',
+      availableHours: '09:00-18:00',
+      emergencyAlerts: true,
+      instructorMessages: true,
+      adminMessages: true,
+      groupMessages: false
+    },
+    goals: {
+      targetExamDate: '2024-10-15',
+      weeklyLessons: 2,
+      focusAreas: ['parking', 'highway', 'night'],
+      examType: 'standard',
+      additionalTraining: ['defensive', 'eco']
+    },
+    accessibility: {
+      largeText: false,
+      highContrast: false,
+      reducedMotion: false,
+      screenReader: false
+    }
+  });
+
+  const timePreferences = [
+    { value: 'morning', label: t('learning.morning'), icon: Sunrise },
+    { value: 'afternoon', label: t('learning.afternoon'), icon: Sun },
+    { value: 'evening', label: t('learning.evening'), icon: Sunset }
+  ];
+
+  const weekDays = [
+    { value: 'monday', label: t('schedule.monday') },
+    { value: 'tuesday', label: t('schedule.tuesday') },
+    { value: 'wednesday', label: t('schedule.wednesday') },
+    { value: 'thursday', label: t('schedule.thursday') },
+    { value: 'friday', label: t('schedule.friday') },
+    { value: 'saturday', label: t('schedule.saturday') },
+    { value: 'sunday', label: t('schedule.sunday') }
+  ];
+
+  const focusAreas = [
+    { value: 'parking', label: t('goals.parking'), description: t('goals.parkingDesc') },
+    { value: 'highway', label: t('goals.highway'), description: t('goals.highwayDesc') },
+    { value: 'night', label: t('goals.nightDriving'), description: t('goals.nightDrivingDesc') },
+    { value: 'city', label: t('goals.city'), description: t('goals.cityDesc') },
+    { value: 'maneuvers', label: t('goals.maneuvers'), description: t('goals.maneuversDesc') },
+    { value: 'hills', label: t('goals.hills'), description: t('goals.hillsDesc') }
+  ];
 
   const handleSave = () => {
     // Save preferences logic
@@ -180,19 +181,19 @@ export default function PreferencesPage() {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Preferencje nauki</h1>
-            <p className="text-gray-600">Dostosuj proces nauki do swoich potrzeb</p>
+            <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+            <p className="text-gray-600">{t('subtitle')}</p>
           </div>
         </div>
         
         {hasChanges && (
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={() => window.location.reload()}>
-              Anuluj
+              {t('cancel')}
             </Button>
             <Button onClick={handleSave}>
               <Save className="h-4 w-4 mr-2" />
-              Zapisz zmiany
+              {t('saveChanges')}
             </Button>
           </div>
         )}
@@ -202,31 +203,31 @@ export default function PreferencesPage() {
         <Alert className="border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
           <AlertDescription className="text-yellow-800">
-            Masz niezapisane zmiany. Pamiętaj o zapisaniu przed wyjściem.
+            {t('unsavedChanges')}
           </AlertDescription>
         </Alert>
       )}
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="learning">Nauka</TabsTrigger>
-          <TabsTrigger value="schedule">Harmonogram</TabsTrigger>
-          <TabsTrigger value="notifications">Powiadomienia</TabsTrigger>
-          <TabsTrigger value="goals">Cele</TabsTrigger>
+          <TabsTrigger value="learning">{t('tabs.learning')}</TabsTrigger>
+          <TabsTrigger value="schedule">{t('tabs.schedule')}</TabsTrigger>
+          <TabsTrigger value="notifications">{t('tabs.notifications')}</TabsTrigger>
+          <TabsTrigger value="goals">{t('tabs.goals')}</TabsTrigger>
         </TabsList>
 
         {/* Learning Preferences */}
         <TabsContent value="learning" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Preferencje czasowe</CardTitle>
+              <CardTitle>{t('learning.timePreferences')}</CardTitle>
               <CardDescription>
-                Kiedy najchętniej uczestniczysz w lekcjach?
+                {t('learning.whenPrefer')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <Label className="mb-3 block">Preferowana pora dnia</Label>
+                <Label className="mb-3 block">{t('learning.preferredTime')}</Label>
                 <RadioGroup
                   value={preferences.learning.preferredTime}
                   onValueChange={(value) => updatePreference('learning', 'preferredTime', value)}
@@ -256,12 +257,12 @@ export default function PreferencesPage() {
               </div>
 
               <div>
-                <Label className="mb-3 block">Preferowana długość lekcji</Label>
+                <Label className="mb-3 block">{t('learning.lessonDuration')}</Label>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">90 min</span>
-                    <span className="text-sm font-medium">{preferences.learning.lessonDuration} min</span>
-                    <span className="text-sm text-gray-600">180 min</span>
+                    <span className="text-sm text-gray-600">90 {t('learning.minutes', { count: '' }).trim()}</span>
+                    <span className="text-sm font-medium">{t('learning.minutes', { count: preferences.learning.lessonDuration })}</span>
+                    <span className="text-sm text-gray-600">180 {t('learning.minutes', { count: '' }).trim()}</span>
                   </div>
                   <Slider
                     value={[preferences.learning.lessonDuration]}
@@ -274,7 +275,7 @@ export default function PreferencesPage() {
               </div>
 
               <div>
-                <Label className="mb-3 block">Intensywność nauki</Label>
+                <Label className="mb-3 block">{t('learning.intensity')}</Label>
                 <Select
                   value={preferences.learning.intensityLevel}
                   onValueChange={(value) => updatePreference('learning', 'intensityLevel', value)}
@@ -286,19 +287,19 @@ export default function PreferencesPage() {
                     <SelectItem value="relaxed">
                       <div className="flex items-center gap-2">
                         <Coffee className="h-4 w-4" />
-                        <span>Spokojna (1 lekcja/tydzień)</span>
+                        <span>{t('learning.relaxed')}</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="moderate">
                       <div className="flex items-center gap-2">
                         <Target className="h-4 w-4" />
-                        <span>Umiarkowana (2-3 lekcje/tydzień)</span>
+                        <span>{t('learning.moderate')}</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="intensive">
                       <div className="flex items-center gap-2">
                         <Zap className="h-4 w-4" />
-                        <span>Intensywna (4+ lekcje/tydzień)</span>
+                        <span>{t('learning.intensive')}</span>
                       </div>
                     </SelectItem>
                   </SelectContent>
@@ -309,12 +310,12 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Preferencje instruktora i pojazdu</CardTitle>
+              <CardTitle>{t('learning.instructorVehicle')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Preferowany instruktor</Label>
+                  <Label>{t('learning.preferredInstructor')}</Label>
                   <Select
                     value={preferences.learning.preferredInstructor}
                     onValueChange={(value) => updatePreference('learning', 'preferredInstructor', value)}
@@ -323,16 +324,16 @@ export default function PreferencesPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="any">Dowolny</SelectItem>
-                      <SelectItem value="male">Mężczyzna</SelectItem>
-                      <SelectItem value="female">Kobieta</SelectItem>
-                      <SelectItem value="specific">Konkretny instruktor</SelectItem>
+                      <SelectItem value="any">{t('learning.any')}</SelectItem>
+                      <SelectItem value="male">{t('learning.male')}</SelectItem>
+                      <SelectItem value="female">{t('learning.female')}</SelectItem>
+                      <SelectItem value="specific">{t('learning.specific')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Preferowana skrzynia biegów</Label>
+                  <Label>{t('learning.preferredTransmission')}</Label>
                   <Select
                     value={preferences.learning.preferredVehicle}
                     onValueChange={(value) => updatePreference('learning', 'preferredVehicle', value)}
@@ -341,16 +342,16 @@ export default function PreferencesPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="manual">Manualna</SelectItem>
-                      <SelectItem value="automatic">Automatyczna</SelectItem>
-                      <SelectItem value="any">Bez znaczenia</SelectItem>
+                      <SelectItem value="manual">{t('learning.manual')}</SelectItem>
+                      <SelectItem value="automatic">{t('learning.automatic')}</SelectItem>
+                      <SelectItem value="any">{t('learning.noPreference')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label>Preferowana lokalizacja rozpoczęcia</Label>
+                <Label>{t('learning.preferredLocation')}</Label>
                 <Select
                   value={preferences.learning.preferredLocation}
                   onValueChange={(value) => updatePreference('learning', 'preferredLocation', value)}
@@ -359,18 +360,18 @@ export default function PreferencesPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="city_center">Centrum - ul. Puławska 145</SelectItem>
-                    <SelectItem value="mokotow">Mokotów - ul. Wilanowska 89</SelectItem>
-                    <SelectItem value="ursynow">Ursynów - al. KEN 36</SelectItem>
-                    <SelectItem value="home">Odbiór spod domu</SelectItem>
+                    <SelectItem value="city_center">{t('learning.cityCenter')}</SelectItem>
+                    <SelectItem value="mokotow">{t('learning.mokotow')}</SelectItem>
+                    <SelectItem value="ursynow">{t('learning.ursynow')}</SelectItem>
+                    <SelectItem value="home">{t('learning.homePickup')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                  <Label>Lekcje grupowe</Label>
-                  <p className="text-sm text-gray-600">Chcę uczestniczyć w zajęciach teoretycznych grupowych</p>
+                  <Label>{t('learning.groupLessons')}</Label>
+                  <p className="text-sm text-gray-600">{t('learning.groupLessonsDesc')}</p>
                 </div>
                 <Switch
                   checked={preferences.learning.groupLessons}
@@ -385,9 +386,9 @@ export default function PreferencesPage() {
         <TabsContent value="schedule" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Dostępność w tygodniu</CardTitle>
+              <CardTitle>{t('schedule.weekAvailability')}</CardTitle>
               <CardDescription>
-                Zaznacz dni, w których możesz uczestniczyć w lekcjach
+                {t('schedule.selectDays')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -412,8 +413,8 @@ export default function PreferencesPage() {
 
               <div className="mt-6 flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="space-y-1">
-                  <Label>Weekendy</Label>
-                  <p className="text-sm text-gray-600">Jestem dostępny również w weekendy</p>
+                  <Label>{t('schedule.weekends')}</Label>
+                  <p className="text-sm text-gray-600">{t('schedule.weekendsDesc')}</p>
                 </div>
                 <Switch
                   checked={preferences.learning.weekendAvailable}
@@ -425,24 +426,24 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Okresy niedostępności</CardTitle>
+              <CardTitle>{t('schedule.unavailablePeriods')}</CardTitle>
               <CardDescription>
-                Zaplanuj urlopy i przerwy w nauce
+                {t('schedule.planVacations')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="p-4 border rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <p className="font-medium">Urlop letni</p>
-                    <Badge>Aktywny</Badge>
+                    <p className="font-medium">{t('schedule.summerVacation')}</p>
+                    <Badge>{t('schedule.active')}</Badge>
                   </div>
                   <p className="text-sm text-gray-600">15.07.2024 - 30.07.2024</p>
                 </div>
                 
                 <Button variant="outline" className="w-full">
                   <Calendar className="h-4 w-4 mr-2" />
-                  Dodaj okres niedostępności
+                  {t('schedule.addUnavailable')}
                 </Button>
               </div>
             </CardContent>
@@ -453,9 +454,9 @@ export default function PreferencesPage() {
         <TabsContent value="notifications" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Kanały komunikacji</CardTitle>
+              <CardTitle>{t('notifications.channels')}</CardTitle>
               <CardDescription>
-                Wybierz, jak chcesz otrzymywać powiadomienia
+                {t('notifications.chooseHow')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -463,8 +464,8 @@ export default function PreferencesPage() {
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-gray-500" />
                   <div>
-                    <Label>Email</Label>
-                    <p className="text-sm text-gray-600">Ważne powiadomienia i podsumowania</p>
+                    <Label>{t('notifications.email')}</Label>
+                    <p className="text-sm text-gray-600">{t('notifications.emailDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -477,8 +478,8 @@ export default function PreferencesPage() {
                 <div className="flex items-center gap-3">
                   <MessageSquare className="h-5 w-5 text-gray-500" />
                   <div>
-                    <Label>SMS</Label>
-                    <p className="text-sm text-gray-600">Przypomnienia o lekcjach</p>
+                    <Label>{t('notifications.sms')}</Label>
+                    <p className="text-sm text-gray-600">{t('notifications.smsDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -491,8 +492,8 @@ export default function PreferencesPage() {
                 <div className="flex items-center gap-3">
                   <Smartphone className="h-5 w-5 text-gray-500" />
                   <div>
-                    <Label>Powiadomienia push</Label>
-                    <p className="text-sm text-gray-600">Natychmiastowe alerty w aplikacji</p>
+                    <Label>{t('notifications.push')}</Label>
+                    <p className="text-sm text-gray-600">{t('notifications.pushDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -505,11 +506,11 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Rodzaje powiadomień</CardTitle>
+              <CardTitle>{t('notifications.types')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label>Przypomnienia o lekcjach</Label>
+                <Label>{t('notifications.lessonReminders')}</Label>
                 <Select
                   value={String(preferences.notifications.reminderTime)}
                   onValueChange={(value) => updatePreference('notifications', 'reminderTime', parseInt(value))}
@@ -518,11 +519,11 @@ export default function PreferencesPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="1">1 godz.</SelectItem>
-                    <SelectItem value="2">2 godz.</SelectItem>
-                    <SelectItem value="6">6 godz.</SelectItem>
-                    <SelectItem value="24">24 godz.</SelectItem>
-                    <SelectItem value="48">48 godz.</SelectItem>
+                    <SelectItem value="1">{t('notifications.hours', { count: 1 })}</SelectItem>
+                    <SelectItem value="2">{t('notifications.hours', { count: 2 })}</SelectItem>
+                    <SelectItem value="6">{t('notifications.hours', { count: 6 })}</SelectItem>
+                    <SelectItem value="24">{t('notifications.hours', { count: 24 })}</SelectItem>
+                    <SelectItem value="48">{t('notifications.hours', { count: 48 })}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -531,10 +532,10 @@ export default function PreferencesPage() {
 
               <div className="space-y-3">
                 {[
-                  { key: 'cancelNotifications', label: 'Anulowania i zmiany terminów' },
-                  { key: 'lessonFeedback', label: 'Feedback po lekcjach' },
-                  { key: 'progressReports', label: 'Raporty postępów' },
-                  { key: 'newsAndOffers', label: 'Nowości i oferty specjalne' }
+                  { key: 'cancelNotifications', label: t('notifications.cancellations') },
+                  { key: 'lessonFeedback', label: t('notifications.lessonFeedback') },
+                  { key: 'progressReports', label: t('notifications.progressReports') },
+                  { key: 'newsAndOffers', label: t('notifications.newsOffers') }
                 ].map((item) => (
                   <div key={item.key} className="flex items-center justify-between">
                     <Label>{item.label}</Label>
@@ -550,13 +551,13 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Ustawienia dźwięku</CardTitle>
+              <CardTitle>{t('notifications.soundSettings')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Volume2 className="h-5 w-5 text-gray-500" />
-                  <Label>Dźwięk powiadomień</Label>
+                  <Label>{t('notifications.notificationSound')}</Label>
                 </div>
                 <Switch
                   checked={preferences.notifications.sound}
@@ -567,7 +568,7 @@ export default function PreferencesPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <Vibrate className="h-5 w-5 text-gray-500" />
-                  <Label>Wibracje</Label>
+                  <Label>{t('notifications.vibration')}</Label>
                 </div>
                 <Switch
                   checked={preferences.notifications.vibration}
@@ -582,14 +583,14 @@ export default function PreferencesPage() {
         <TabsContent value="goals" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Cel nauki</CardTitle>
+              <CardTitle>{t('goals.learningGoal')}</CardTitle>
               <CardDescription>
-                Określ swoje cele i priorytety w nauce jazdy
+                {t('goals.defineGoals')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Planowana data egzaminu</Label>
+                <Label>{t('goals.plannedExamDate')}</Label>
                 <Input
                   type="date"
                   value={preferences.goals.targetExamDate}
@@ -597,12 +598,12 @@ export default function PreferencesPage() {
                   className="mt-2"
                 />
                 <p className="text-sm text-gray-600 mt-1">
-                  Na podstawie tej daty dostosujemy intensywność nauki
+                  {t('goals.dateHelp')}
                 </p>
               </div>
 
               <div>
-                <Label>Liczba lekcji tygodniowo</Label>
+                <Label>{t('goals.weeklyLessons')}</Label>
                 <RadioGroup
                   value={String(preferences.goals.weeklyLessons)}
                   onValueChange={(value) => updatePreference('goals', 'weeklyLessons', parseInt(value))}
@@ -633,9 +634,9 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Obszary do skupienia</CardTitle>
+              <CardTitle>{t('goals.focusAreas')}</CardTitle>
               <CardDescription>
-                Wybierz umiejętności, które chcesz szczególnie ćwiczyć
+                {t('goals.chooseSkills')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -667,15 +668,15 @@ export default function PreferencesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Dodatkowe szkolenia</CardTitle>
+              <CardTitle>{t('goals.additionalTraining')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div className="flex items-center gap-3">
                   <Shield className="h-5 w-5 text-blue-500" />
                   <div>
-                    <p className="font-medium">Jazda defensywna</p>
-                    <p className="text-sm text-gray-600">Techniki bezpiecznej jazdy</p>
+                    <p className="font-medium">{t('goals.defensiveDriving')}</p>
+                    <p className="text-sm text-gray-600">{t('goals.defensiveDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -694,8 +695,8 @@ export default function PreferencesPage() {
                 <div className="flex items-center gap-3">
                   <Leaf className="h-5 w-5 text-green-500" />
                   <div>
-                    <p className="font-medium">Eco-driving</p>
-                    <p className="text-sm text-gray-600">Ekonomiczna jazda</p>
+                    <p className="font-medium">{t('goals.ecoDriving')}</p>
+                    <p className="text-sm text-gray-600">{t('goals.ecoDesc')}</p>
                   </div>
                 </div>
                 <Switch

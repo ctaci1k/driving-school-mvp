@@ -4,6 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   MessageSquare,
   Clock,
@@ -85,6 +86,7 @@ interface Message {
 
 export default function SupportTicketsPage() {
   const router = useRouter();
+  const t = useTranslations('student.support.tickets');
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
@@ -109,7 +111,7 @@ export default function SupportTicketsPage() {
       {
         id: '1',
         number: 'TKT-2024-001',
-        subject: 'Problem z rezerwacją lekcji',
+        subject: t('mockData.bookingProblem'),
         category: 'booking',
         status: 'open',
         priority: 'high',
@@ -123,16 +125,16 @@ export default function SupportTicketsPage() {
         messages: [
           {
             id: '1',
-            author: 'Ty',
+            author: t('detailsDialog.you'),
             authorType: 'student',
-            content: 'Nie mogę zarezerwować lekcji na przyszły tydzień. System pokazuje błąd.',
+            content: t('mockData.bookingError'),
             timestamp: '2024-08-25T10:00:00'
           },
           {
             id: '2',
             author: 'Anna Kowalska',
             authorType: 'agent',
-            content: 'Dziękujemy za zgłoszenie. Sprawdzamy problem i wkrótce go rozwiążemy.',
+            content: t('mockData.bookingReply'),
             timestamp: '2024-08-25T14:30:00'
           }
         ],
@@ -141,7 +143,7 @@ export default function SupportTicketsPage() {
       {
         id: '2',
         number: 'TKT-2024-002',
-        subject: 'Zwrot płatności',
+        subject: t('mockData.paymentRefund'),
         category: 'payment',
         status: 'resolved',
         priority: 'medium',
@@ -154,7 +156,7 @@ export default function SupportTicketsPage() {
       {
         id: '3',
         number: 'TKT-2024-003',
-        subject: 'Zmiana instruktora',
+        subject: t('mockData.instructorChange'),
         category: 'instructor',
         status: 'in_progress',
         priority: 'low',
@@ -174,7 +176,7 @@ export default function SupportTicketsPage() {
       setTickets(mockTickets);
       setLoading(false);
     }, 1000);
-  }, []);
+  }, [t]);
 
   const filteredTickets = tickets.filter(ticket => {
     const matchesSearch = searchQuery === '' || 
@@ -189,20 +191,20 @@ export default function SupportTicketsPage() {
 
   const getStatusBadge = (status: Ticket['status']) => {
     const variants = {
-      open: { label: 'Otwarty', className: 'bg-blue-100 text-blue-700' },
-      in_progress: { label: 'W trakcie', className: 'bg-yellow-100 text-yellow-700' },
-      resolved: { label: 'Rozwiązany', className: 'bg-green-100 text-green-700' },
-      closed: { label: 'Zamknięty', className: 'bg-gray-100 text-gray-700' }
+      open: { label: t('status.open'), className: 'bg-blue-100 text-blue-700' },
+      in_progress: { label: t('status.inProgress'), className: 'bg-yellow-100 text-yellow-700' },
+      resolved: { label: t('status.resolved'), className: 'bg-green-100 text-green-700' },
+      closed: { label: t('status.closed'), className: 'bg-gray-100 text-gray-700' }
     };
     return variants[status];
   };
 
   const getPriorityBadge = (priority: Ticket['priority']) => {
     const variants = {
-      low: { label: 'Niski', className: 'bg-gray-100 text-gray-700' },
-      medium: { label: 'Średni', className: 'bg-blue-100 text-blue-700' },
-      high: { label: 'Wysoki', className: 'bg-orange-100 text-orange-700' },
-      critical: { label: 'Krytyczny', className: 'bg-red-100 text-red-700' }
+      low: { label: t('priority.low'), className: 'bg-gray-100 text-gray-700' },
+      medium: { label: t('priority.medium'), className: 'bg-blue-100 text-blue-700' },
+      high: { label: t('priority.high'), className: 'bg-orange-100 text-orange-700' },
+      critical: { label: t('priority.critical'), className: 'bg-red-100 text-red-700' }
     };
     return variants[priority];
   };
@@ -210,8 +212,8 @@ export default function SupportTicketsPage() {
   const handleCreateTicket = async () => {
     if (!newTicketSubject || !newTicketCategory || !newTicketMessage) {
       toast({
-        title: "Błąd",
-        description: "Wypełnij wszystkie wymagane pola",
+        title: t('toast.error'),
+        description: t('toast.fillAllFields'),
         variant: "destructive"
       });
       return;
@@ -221,8 +223,8 @@ export default function SupportTicketsPage() {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     toast({
-      title: "Zgłoszenie utworzone",
-      description: "Otrzymasz odpowiedź w ciągu 24 godzin"
+      title: t('toast.created'),
+      description: t('toast.createdDescription')
     });
     
     setNewTicketDialog(false);
@@ -241,7 +243,7 @@ export default function SupportTicketsPage() {
     if (selectedTicket) {
       const newMessage: Message = {
         id: Date.now().toString(),
-        author: 'Ty',
+        author: t('detailsDialog.you'),
         authorType: 'student',
         content: replyMessage,
         timestamp: new Date().toISOString()
@@ -257,8 +259,8 @@ export default function SupportTicketsPage() {
     setIsSubmitting(false);
     
     toast({
-      title: "Odpowiedź wysłana",
-      description: "Twoja wiadomość została dodana do zgłoszenia"
+      title: t('toast.replySent'),
+      description: t('toast.replyDescription')
     });
   };
 
@@ -288,14 +290,14 @@ export default function SupportTicketsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Moje zgłoszenia</h1>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Zarządzaj swoimi zgłoszeniami do supportu
+            {t('subtitle')}
           </p>
         </div>
         <Button onClick={() => setNewTicketDialog(true)}>
           <Plus className="w-4 h-4 mr-2" />
-          Nowe zgłoszenie
+          {t('newTicket')}
         </Button>
       </div>
 
@@ -304,7 +306,7 @@ export default function SupportTicketsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Wszystkie zgłoszenia
+              {t('stats.allTickets')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -315,7 +317,7 @@ export default function SupportTicketsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Otwarte
+              {t('stats.open')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -326,7 +328,7 @@ export default function SupportTicketsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              W trakcie
+              {t('stats.inProgress')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -337,7 +339,7 @@ export default function SupportTicketsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Rozwiązane
+              {t('stats.resolved')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -349,7 +351,7 @@ export default function SupportTicketsPage() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Filtry</CardTitle>
+          <CardTitle className="text-lg">{t('filters.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -357,7 +359,7 @@ export default function SupportTicketsPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                 <Input
-                  placeholder="Szukaj zgłoszeń..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -370,24 +372,24 @@ export default function SupportTicketsPage() {
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="open">Otwarte</SelectItem>
-                <SelectItem value="in_progress">W trakcie</SelectItem>
-                <SelectItem value="resolved">Rozwiązane</SelectItem>
-                <SelectItem value="closed">Zamknięte</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="open">{t('filters.status.open')}</SelectItem>
+                <SelectItem value="in_progress">{t('filters.status.inProgress')}</SelectItem>
+                <SelectItem value="resolved">{t('filters.status.resolved')}</SelectItem>
+                <SelectItem value="closed">{t('filters.status.closed')}</SelectItem>
               </SelectContent>
             </Select>
             
             <Select value={filterPriority} onValueChange={setFilterPriority}>
               <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Priorytet" />
+                <SelectValue placeholder={t('newDialog.priority')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Wszystkie</SelectItem>
-                <SelectItem value="low">Niski</SelectItem>
-                <SelectItem value="medium">Średni</SelectItem>
-                <SelectItem value="high">Wysoki</SelectItem>
-                <SelectItem value="critical">Krytyczny</SelectItem>
+                <SelectItem value="all">{t('filters.priority.all')}</SelectItem>
+                <SelectItem value="low">{t('filters.priority.low')}</SelectItem>
+                <SelectItem value="medium">{t('filters.priority.medium')}</SelectItem>
+                <SelectItem value="high">{t('filters.priority.high')}</SelectItem>
+                <SelectItem value="critical">{t('filters.priority.critical')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -400,12 +402,12 @@ export default function SupportTicketsPage() {
           <Card>
             <CardContent className="py-12 text-center">
               <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">Nie masz jeszcze żadnych zgłoszeń</p>
+              <p className="text-muted-foreground">{t('empty.title')}</p>
               <Button 
                 className="mt-4"
                 onClick={() => setNewTicketDialog(true)}
               >
-                Utwórz pierwsze zgłoszenie
+                {t('empty.createFirst')}
               </Button>
             </CardContent>
           </Card>
@@ -445,11 +447,11 @@ export default function SupportTicketsPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => setSelectedTicket(ticket)}>
                               <Eye className="w-4 h-4 mr-2" />
-                              Zobacz szczegóły
+                              {t('actions.viewDetails')}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Archive className="w-4 h-4 mr-2" />
-                              Archiwizuj
+                              {t('actions.archive')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -458,16 +460,16 @@ export default function SupportTicketsPage() {
                       <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          Utworzono: {new Date(ticket.createdAt).toLocaleDateString('pl-PL')}
+                          {t('ticketCard.created')}: {new Date(ticket.createdAt).toLocaleDateString('uk-UA')}
                         </div>
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
-                          Ostatnia odpowiedź: {new Date(ticket.lastReply).toLocaleDateString('pl-PL')}
+                          {t('ticketCard.lastReply')}: {new Date(ticket.lastReply).toLocaleDateString('uk-UA')}
                         </div>
                         {ticket.attachments > 0 && (
                           <div className="flex items-center gap-1">
                             <Paperclip className="w-4 h-4" />
-                            {ticket.attachments} załącznik(i)
+                            {t('ticketCard.attachments', {count: ticket.attachments})}
                           </div>
                         )}
                       </div>
@@ -479,7 +481,7 @@ export default function SupportTicketsPage() {
                             <AvatarFallback>{ticket.agent.name[0]}</AvatarFallback>
                           </Avatar>
                           <span className="text-sm text-muted-foreground">
-                            Przypisany do: {ticket.agent.name}
+                            {t('ticketCard.assignedTo')}: {ticket.agent.name}
                           </span>
                         </div>
                       )}
@@ -500,64 +502,64 @@ export default function SupportTicketsPage() {
       <Dialog open={newTicketDialog} onOpenChange={setNewTicketDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Nowe zgłoszenie</DialogTitle>
+            <DialogTitle>{t('newDialog.title')}</DialogTitle>
             <DialogDescription>
-              Opisz swój problem, a nasz zespół pomoże Ci go rozwiązać
+              {t('newDialog.description')}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="subject">Temat *</Label>
+              <Label htmlFor="subject">{t('newDialog.subject')}</Label>
               <Input
                 id="subject"
                 value={newTicketSubject}
                 onChange={(e) => setNewTicketSubject(e.target.value)}
-                placeholder="Krótki opis problemu"
+                placeholder={t('newDialog.subjectPlaceholder')}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="category">Kategoria *</Label>
+                <Label htmlFor="category">{t('newDialog.category')}</Label>
                 <Select value={newTicketCategory} onValueChange={setNewTicketCategory}>
                   <SelectTrigger id="category">
-                    <SelectValue placeholder="Wybierz kategorię" />
+                    <SelectValue placeholder={t('newDialog.categoryPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="booking">Rezerwacje</SelectItem>
-                    <SelectItem value="payment">Płatności</SelectItem>
-                    <SelectItem value="instructor">Instruktorzy</SelectItem>
-                    <SelectItem value="technical">Problemy techniczne</SelectItem>
-                    <SelectItem value="account">Konto</SelectItem>
-                    <SelectItem value="other">Inne</SelectItem>
+                    <SelectItem value="booking">{t('newDialog.categories.booking')}</SelectItem>
+                    <SelectItem value="payment">{t('newDialog.categories.payment')}</SelectItem>
+                    <SelectItem value="instructor">{t('newDialog.categories.instructor')}</SelectItem>
+                    <SelectItem value="technical">{t('newDialog.categories.technical')}</SelectItem>
+                    <SelectItem value="account">{t('newDialog.categories.account')}</SelectItem>
+                    <SelectItem value="other">{t('newDialog.categories.other')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="priority">Priorytet</Label>
+                <Label htmlFor="priority">{t('newDialog.priority')}</Label>
                 <Select value={newTicketPriority} onValueChange={setNewTicketPriority}>
                   <SelectTrigger id="priority">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Niski</SelectItem>
-                    <SelectItem value="medium">Średni</SelectItem>
-                    <SelectItem value="high">Wysoki</SelectItem>
-                    <SelectItem value="critical">Krytyczny</SelectItem>
+                    <SelectItem value="low">{t('priority.low')}</SelectItem>
+                    <SelectItem value="medium">{t('priority.medium')}</SelectItem>
+                    <SelectItem value="high">{t('priority.high')}</SelectItem>
+                    <SelectItem value="critical">{t('priority.critical')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message">Opis problemu *</Label>
+              <Label htmlFor="message">{t('newDialog.message')}</Label>
               <Textarea
                 id="message"
                 value={newTicketMessage}
                 onChange={(e) => setNewTicketMessage(e.target.value)}
-                placeholder="Opisz szczegółowo swój problem..."
+                placeholder={t('newDialog.messagePlaceholder')}
                 rows={6}
               />
             </div>
@@ -569,10 +571,10 @@ export default function SupportTicketsPage() {
               onClick={() => setNewTicketDialog(false)}
               disabled={isSubmitting}
             >
-              Anuluj
+              {t('newDialog.cancel')}
             </Button>
             <Button onClick={handleCreateTicket} disabled={isSubmitting}>
-              {isSubmitting ? 'Wysyłanie...' : 'Utwórz zgłoszenie'}
+              {isSubmitting ? t('newDialog.creating') : t('newDialog.create')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -617,7 +619,7 @@ export default function SupportTicketsPage() {
                         <div className="flex items-center gap-2 mb-1">
                           <p className="font-medium text-sm">{message.author}</p>
                           <p className="text-xs text-muted-foreground">
-                            {new Date(message.timestamp).toLocaleString('pl-PL')}
+                            {new Date(message.timestamp).toLocaleString('uk-UA')}
                           </p>
                         </div>
                         <div className={`inline-block p-3 rounded-lg ${
@@ -637,7 +639,7 @@ export default function SupportTicketsPage() {
 
               <div className="flex gap-2">
                 <Input
-                  placeholder="Napisz odpowiedź..."
+                  placeholder={t('detailsDialog.replyPlaceholder')}
                   value={replyMessage}
                   onChange={(e) => setReplyMessage(e.target.value)}
                   onKeyPress={(e) => {

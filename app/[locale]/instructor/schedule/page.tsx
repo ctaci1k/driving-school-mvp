@@ -1,9 +1,10 @@
 // app/[locale]/instructor/schedule/page.tsx
-// Główna strona harmonogramu instruktora - nowoczesny design
+// Головна сторінка розкладу інструктора - сучасний дизайн
 
 "use client"
 
 import React, { useState, useEffect, Suspense, lazy } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Calendar, Copy, AlertCircle, BarChart3, Settings, 
   ChevronLeft, ChevronRight, Plus, Download, Upload,
@@ -17,22 +18,30 @@ import  ExceptionModal  from './components/modals/ExceptionModal'
 import { formatDate, getCurrentWeek } from './utils/dateHelpers'
 import { cn } from '@/lib/utils'
 
-// Lazy loading komponentów zakładek
+// Lazy loading компонентів вкладок
 const CalendarTab = lazy(() => import('./components/tabs/CalendarTab'))
 const TemplatesTab = lazy(() => import('./components/tabs/TemplatesTab'))
 const RequestsTab = lazy(() => import('./components/tabs/RequestsTab'))
 const StatsTab = lazy(() => import('./components/tabs/StatsTab'))
 
-// Loading component
+// Loading компонент
 const TabLoader = () => (
   <div className="flex items-center justify-center h-96">
     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
   </div>
 )
 
-export default function SchedulePage() {
-  // Stan lokalny
-  const [activeView, setActiveView] = useState<'kalendarz' | 'szablony' | 'wnioski' | 'statystyki'>('kalendarz')
+interface SchedulePageProps {
+  params: {
+    locale: string
+  }
+}
+
+export default function SchedulePage({ params }: SchedulePageProps) {
+  const t = useTranslations('instructor.schedule.main')
+  
+  // Локальний стан
+  const [activeView, setActiveView] = useState<'calendar' | 'templates' | 'requests' | 'statistics'>('calendar')
   const [viewMode, setViewMode] = useState<'dzień' | 'tydzień' | 'miesiąc'>('tydzień')
   const [currentDate, setCurrentDate] = useState(new Date())
   const [searchTerm, setSearchTerm] = useState('')
@@ -41,7 +50,7 @@ export default function SchedulePage() {
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [showSearch, setShowSearch] = useState(false)
 
-  // Kontekst globalny
+  // Глобальний контекст
   const { 
     slots, 
     stats,
@@ -50,10 +59,10 @@ export default function SchedulePage() {
     refreshData 
   } = useScheduleContext()
 
-  // Obliczone wartości
+  // Обчислені значення
   const pendingRequestsCount = cancellationRequests?.filter(r => r.status === 'oczekujący').length || 0
   
-  // Nawigacja dat
+  // Навігація дат
   const handleDateNavigation = (direction: 'prev' | 'next' | 'today') => {
     const newDate = new Date(currentDate)
     
@@ -66,10 +75,12 @@ export default function SchedulePage() {
     }
   }
 
-  // Format daty w zależności od widoku
+  // Формат дати залежно від вигляду
   const getDateLabel = () => {
+    const locale = params.locale === 'uk' ? 'uk-UA' : 'pl-PL'
+    
     if (viewMode === 'dzień') {
-      return currentDate.toLocaleDateString('pl-PL', { 
+      return currentDate.toLocaleDateString(locale, { 
         weekday: 'long', 
         day: 'numeric', 
         month: 'long', 
@@ -79,7 +90,7 @@ export default function SchedulePage() {
       const weekDates = getCurrentWeek(currentDate)
       return `${formatDate(weekDates[0])} - ${formatDate(weekDates[6])}`
     } else {
-      return currentDate.toLocaleDateString('pl-PL', { 
+      return currentDate.toLocaleDateString(locale, { 
         month: 'long', 
         year: 'numeric' 
       })
@@ -92,27 +103,28 @@ export default function SchedulePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {/* Główny kontener */}
+      {/* Головний контейнер */}
       <div className="max-w-7xl mx-auto p-4 lg:p-6">
         
-        {/* Nagłówek strony - niezafixowany, nowoczesny design */}
+        {/* Заголовок сторінки - нефіксований, сучасний дизайн */}
         <div className="mb-8">
-          {/* Tytuł i akcje */}
+          {/* Заголовок і дії */}
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
-                Harmonogram
+                {t('title')}
               </h1>
               <p className="text-gray-500 mt-1">
-                Zarządzaj swoim czasem efektywnie
+                {t('subtitle')}
               </p>
             </div>
 
-            {/* Przyciski akcji - desktop */}
+            {/* Кнопки дій - desktop */}
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={() => setShowSearch(!showSearch)}
                 className="p-2.5 hover:bg-white rounded-xl transition-all duration-200 hover:shadow-md"
+                title={t('buttons.search')}
               >
                 <Search className="w-5 h-5 text-gray-600" />
               </button>
@@ -131,7 +143,7 @@ export default function SchedulePage() {
                 className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <Settings className="w-4 h-4" />
-                <span className="font-medium">Godziny pracy</span>
+                <span className="font-medium">{t('buttons.workingHours')}</span>
               </button>
 
               <button
@@ -139,11 +151,11 @@ export default function SchedulePage() {
                 className="flex items-center gap-2 px-4 py-2.5 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <Plus className="w-4 h-4" />
-                <span className="font-medium">Wyjątek</span>
+                <span className="font-medium">{t('buttons.exception')}</span>
               </button>
             </div>
 
-            {/* Menu mobilne */}
+            {/* Мобільне меню */}
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
               className="lg:hidden p-2.5 hover:bg-white rounded-xl transition-all duration-200"
@@ -152,7 +164,7 @@ export default function SchedulePage() {
             </button>
           </div>
 
-          {/* Pasek wyszukiwania - animowany */}
+          {/* Рядок пошуку - анімований */}
           {showSearch && (
             <div className="mb-4 animate-in slide-in-from-top duration-200">
               <div className="relative max-w-xl">
@@ -161,21 +173,21 @@ export default function SchedulePage() {
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Szukaj kursanta, lokalizacji, terminu..."
+                  placeholder={t('search.placeholder')}
                   className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
                 />
               </div>
             </div>
           )}
 
-          {/* Statystyki - karty */}
+          {/* Статистика - картки */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <Calendar className="w-8 h-8 text-blue-500" />
                 <span className="text-2xl font-bold text-gray-900">{stats?.totalSlots || 0}</span>
               </div>
-              <p className="text-sm text-gray-500">Wszystkie terminy</p>
+              <p className="text-sm text-gray-500">{t('stats.allSlots')}</p>
             </div>
 
             <div className="bg-white p-4 rounded-xl shadow-sm">
@@ -183,31 +195,35 @@ export default function SchedulePage() {
                 <Users className="w-8 h-8 text-green-500" />
                 <span className="text-2xl font-bold text-gray-900">{stats?.bookedSlots || 0}</span>
               </div>
-              <p className="text-sm text-gray-500">Zarezerwowane</p>
+              <p className="text-sm text-gray-500">{t('stats.reserved')}</p>
             </div>
 
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <Clock className="w-8 h-8 text-orange-500" />
-                <span className="text-2xl font-bold text-gray-900">{stats?.weeklyHours || 0}h</span>
+                <span className="text-2xl font-bold text-gray-900">
+                  {t('stats.hoursUnit', { hours: stats?.weeklyHours || 0 })}
+                </span>
               </div>
-              <p className="text-sm text-gray-500">Godzin w tygodniu</p>
+              <p className="text-sm text-gray-500">{t('stats.weeklyHours')}</p>
             </div>
 
             <div className="bg-white p-4 rounded-xl shadow-sm">
               <div className="flex items-center justify-between mb-2">
                 <DollarSign className="w-8 h-8 text-purple-500" />
-                <span className="text-2xl font-bold text-gray-900">{stats?.monthlyEarnings || 0} zł</span>
+                <span className="text-2xl font-bold text-gray-900">
+                  {t('stats.currency', { amount: stats?.monthlyEarnings || 0 })}
+                </span>
               </div>
-              <p className="text-sm text-gray-500">Przychód miesięczny</p>
+              <p className="text-sm text-gray-500">{t('stats.monthlyIncome')}</p>
             </div>
           </div>
 
-          {/* Nawigacja widoków - nowoczesne przyciski */}
+          {/* Навігація видів - сучасні кнопки */}
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Przełącznik widoków */}
+            {/* Перемикач видів */}
             <div className="inline-flex bg-white rounded-xl shadow-sm p-1">
-              {(['kalendarz', 'szablony', 'wnioski', 'statystyki'] as const).map((view) => (
+              {(['calendar', 'templates', 'requests', 'statistics'] as const).map((view) => (
                 <button
                   key={view}
                   onClick={() => setActiveView(view)}
@@ -219,15 +235,15 @@ export default function SchedulePage() {
                   )}
                 >
                   <span className="flex items-center gap-2">
-                    {view === 'kalendarz' && <Calendar className="w-4 h-4" />}
-                    {view === 'szablony' && <Copy className="w-4 h-4" />}
-                    {view === 'wnioski' && <AlertCircle className="w-4 h-4" />}
-                    {view === 'statystyki' && <BarChart3 className="w-4 h-4" />}
+                    {view === 'calendar' && <Calendar className="w-4 h-4" />}
+                    {view === 'templates' && <Copy className="w-4 h-4" />}
+                    {view === 'requests' && <AlertCircle className="w-4 h-4" />}
+                    {view === 'statistics' && <BarChart3 className="w-4 h-4" />}
                     <span className="hidden sm:inline">
-                      {view.charAt(0).toUpperCase() + view.slice(1)}
+                      {t(`tabs.${view}`)}
                     </span>
                   </span>
-                  {view === 'wnioski' && pendingRequestsCount > 0 && (
+                  {view === 'requests' && pendingRequestsCount > 0 && (
                     <span className="ml-2 px-1.5 py-0.5 bg-red-500 text-white text-xs rounded-full">
                       {pendingRequestsCount}
                     </span>
@@ -236,10 +252,10 @@ export default function SchedulePage() {
               ))}
             </div>
 
-            {/* Kontrolki widoku kalendarza */}
-            {activeView === 'kalendarz' && (
+            {/* Контролі виду календаря */}
+            {activeView === 'calendar' && (
               <div className="flex items-center gap-3">
-                {/* Nawigacja dat */}
+                {/* Навігація дат */}
                 <div className="inline-flex items-center bg-white rounded-xl shadow-sm">
                   <button
                     onClick={() => handleDateNavigation('prev')}
@@ -252,7 +268,7 @@ export default function SchedulePage() {
                     onClick={() => handleDateNavigation('today')}
                     className="px-4 py-2 hover:bg-gray-100 transition-colors border-x"
                   >
-                    <span className="font-medium text-sm">Dziś</span>
+                    <span className="font-medium text-sm">{t('buttons.today')}</span>
                   </button>
                   
                   <button
@@ -263,7 +279,7 @@ export default function SchedulePage() {
                   </button>
                 </div>
 
-                {/* Typ widoku */}
+                {/* Тип виду */}
                 <div className="inline-flex bg-white rounded-xl shadow-sm p-1">
                   <button
                     onClick={() => setViewMode('dzień')}
@@ -273,7 +289,7 @@ export default function SchedulePage() {
                         ? "bg-gray-800 text-white" 
                         : "text-gray-600 hover:bg-gray-100"
                     )}
-                    title="Widok dzienny"
+                    title={t('viewModes.dayView')}
                   >
                     <List className="w-4 h-4" />
                   </button>
@@ -285,7 +301,7 @@ export default function SchedulePage() {
                         ? "bg-gray-800 text-white" 
                         : "text-gray-600 hover:bg-gray-100"
                     )}
-                    title="Widok tygodniowy"
+                    title={t('viewModes.weekView')}
                   >
                     <CalendarDays className="w-4 h-4" />
                   </button>
@@ -297,13 +313,13 @@ export default function SchedulePage() {
                         ? "bg-gray-800 text-white" 
                         : "text-gray-600 hover:bg-gray-100"
                     )}
-                    title="Widok miesięczny"
+                    title={t('viewModes.monthView')}
                   >
                     <Grid3x3 className="w-4 h-4" />
                   </button>
                 </div>
 
-                {/* Data */}
+                {/* Дата */}
                 <div className="hidden sm:block px-4 py-2 bg-white rounded-xl shadow-sm">
                   <p className="text-sm font-medium text-gray-900">{getDateLabel()}</p>
                 </div>
@@ -312,10 +328,10 @@ export default function SchedulePage() {
           </div>
         </div>
 
-        {/* Główna zawartość */}
+        {/* Головний вміст */}
         <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
           <Suspense fallback={<TabLoader />}>
-            {activeView === 'kalendarz' && (
+            {activeView === 'calendar' && (
               <CalendarTab
                 viewMode={viewMode}
                 currentDate={currentDate}
@@ -324,27 +340,27 @@ export default function SchedulePage() {
               />
             )}
             
-            {activeView === 'szablony' && (
+            {activeView === 'templates' && (
               <TemplatesTab searchTerm={searchTerm} />
             )}
             
-            {activeView === 'wnioski' && (
+            {activeView === 'requests' && (
               <RequestsTab searchTerm={searchTerm} />
             )}
             
-            {activeView === 'statystyki' && (
+            {activeView === 'statistics' && (
               <StatsTab currentDate={currentDate} />
             )}
           </Suspense>
         </div>
 
-        {/* Mobilne menu - slide-out */}
+        {/* Мобільне меню - slide-out */}
         {showMobileMenu && (
           <div className="fixed inset-0 z-50 lg:hidden">
             <div className="fixed inset-0 bg-black/50" onClick={() => setShowMobileMenu(false)} />
             <div className="fixed right-0 top-0 h-full w-72 bg-white shadow-xl p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold">Menu</h2>
+                <h2 className="text-xl font-bold">{t('mobileMenu.title')}</h2>
                 <button
                   onClick={() => setShowMobileMenu(false)}
                   className="p-2 hover:bg-gray-100 rounded-lg"
@@ -362,7 +378,7 @@ export default function SchedulePage() {
                   className="w-full flex items-center gap-3 px-4 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
                 >
                   <Settings className="w-5 h-5" />
-                  <span className="font-medium">Godziny pracy</span>
+                  <span className="font-medium">{t('mobileMenu.workingHours')}</span>
                 </button>
 
                 <button
@@ -373,7 +389,7 @@ export default function SchedulePage() {
                   className="w-full flex items-center gap-3 px-4 py-3 bg-gray-800 text-white rounded-xl hover:bg-gray-900 transition-colors"
                 >
                   <Plus className="w-5 h-5" />
-                  <span className="font-medium">Dodaj wyjątek</span>
+                  <span className="font-medium">{t('mobileMenu.addException')}</span>
                 </button>
 
                 <ActionButtons variant="mobile" />
@@ -382,7 +398,7 @@ export default function SchedulePage() {
           </div>
         )}
 
-        {/* Modale */}
+        {/* Модали */}
         {showWorkingHoursModal && (
           <WorkingHoursModal
             isOpen={showWorkingHoursModal}

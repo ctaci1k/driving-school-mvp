@@ -1,7 +1,8 @@
 // app/[locale]/admin/users/[id]/page.tsx
-"use client";
+'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Users, Search, Filter, Plus, Eye, Mail, Phone, MapPin,
   Calendar, GraduationCap, Car, Award, TrendingUp, AlertCircle,
@@ -11,7 +12,8 @@ import {
   Loader2, RefreshCw
 } from 'lucide-react';
 import { format, addDays } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { pl, uk } from 'date-fns/locale';
+import { useLocale } from 'next-intl';
 
 // Generate mock students data
 const generateStudents = () => {
@@ -26,7 +28,7 @@ const generateStudents = () => {
     'Robert Malinowski', 'Izabela Dudek', 'Mateusz Stępień', 'Karolina Górska',
     'Dariusz Pawlak', 'Sylwia Witkowska', 'Artur Walczak', 'Paulina Sikora',
     'Maciej Baran', 'Patrycja Rutkowska', 'Damian Sokołowski', 'Justyna Łukasik',
-    'Sebastian Zalewski', 'Weronika Czerwińska', 'Jakub Marciniak', 'Klaudia Brzeziń​ska',
+    'Sebastian Zalewski', 'Weronika Czerwińska', 'Jakub Marciniak', 'Klaudia Brzezińska',
     'Wojciech Konieczny', 'Martyna Szulc', 'Marek Czarnecki', 'Dominika Wasilewska'
   ];
 
@@ -66,7 +68,11 @@ const generateStudents = () => {
   }));
 };
 
-export default function AdminStudentsPage() {
+export default function AdminUsersDetailPage() {
+  const t = useTranslations('admin.users.detail');
+  const locale = useLocale();
+  const dateLocale = locale === 'uk' ? uk : pl;
+  
   const [students] = useState(generateStudents());
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -107,10 +113,30 @@ export default function AdminStudentsPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      ACTIVE: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Aktywny' },
-      ON_HOLD: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Wstrzymany' },
-      COMPLETED: { bg: 'bg-blue-100', text: 'text-blue-700', icon: Award, label: 'Ukończony' },
-      DROPPED: { bg: 'bg-red-100', text: 'text-red-700', icon: XCircle, label: 'Rezygnacja' }
+      ACTIVE: { 
+        bg: 'bg-green-100', 
+        text: 'text-green-700', 
+        icon: CheckCircle, 
+        label: t('status.active.label') 
+      },
+      ON_HOLD: { 
+        bg: 'bg-yellow-100', 
+        text: 'text-yellow-700', 
+        icon: Clock, 
+        label: t('status.onHold.label') 
+      },
+      COMPLETED: { 
+        bg: 'bg-blue-100', 
+        text: 'text-blue-700', 
+        icon: Award, 
+        label: t('status.completed.label') 
+      },
+      DROPPED: { 
+        bg: 'bg-red-100', 
+        text: 'text-red-700', 
+        icon: XCircle, 
+        label: t('status.dropped.label') 
+      }
     };
     return badges[status as keyof typeof badges] || badges.ACTIVE;
   };
@@ -144,17 +170,17 @@ export default function AdminStudentsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Kursanci</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie kursantami szkoły jazdy</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Eksport
+            {t('buttons.export')}
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <Plus className="w-4 h-4" />
-            Dodaj kursanta
+            {t('buttons.addStudent')}
           </button>
         </div>
       </div>
@@ -168,7 +194,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Łącznie</p>
+              <p className="text-xs text-gray-500">{t('stats.total')}</p>
             </div>
           </div>
         </div>
@@ -179,7 +205,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Aktywni</p>
+              <p className="text-xs text-gray-500">{t('stats.active')}</p>
             </div>
           </div>
         </div>
@@ -190,7 +216,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.completed}</p>
-              <p className="text-xs text-gray-500">Ukończyli</p>
+              <p className="text-xs text-gray-500">{t('stats.completed')}</p>
             </div>
           </div>
         </div>
@@ -201,7 +227,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgProgress}%</p>
-              <p className="text-xs text-gray-500">Śr. postęp</p>
+              <p className="text-xs text-gray-500">{t('stats.avgProgress')}</p>
             </div>
           </div>
         </div>
@@ -212,7 +238,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgAttendance}%</p>
-              <p className="text-xs text-gray-500">Frekwencja</p>
+              <p className="text-xs text-gray-500">{t('stats.attendance')}</p>
             </div>
           </div>
         </div>
@@ -223,7 +249,7 @@ export default function AdminStudentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.totalRevenue.toLocaleString()} zł</p>
-              <p className="text-xs text-gray-500">Przychód</p>
+              <p className="text-xs text-gray-500">{t('stats.revenue')}</p>
             </div>
           </div>
         </div>
@@ -237,7 +263,7 @@ export default function AdminStudentsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj kursantów..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -249,18 +275,18 @@ export default function AdminStudentsPage() {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="all">Wszystkie statusy</option>
-            <option value="ACTIVE">Aktywni</option>
-            <option value="ON_HOLD">Wstrzymani</option>
-            <option value="COMPLETED">Ukończeni</option>
-            <option value="DROPPED">Rezygnacje</option>
+            <option value="all">{t('filters.allStatuses')}</option>
+            <option value="ACTIVE">{t('filters.statuses.active')}</option>
+            <option value="ON_HOLD">{t('filters.statuses.onHold')}</option>
+            <option value="COMPLETED">{t('filters.statuses.completed')}</option>
+            <option value="DROPPED">{t('filters.statuses.dropped')}</option>
           </select>
           <select
             value={filterPackage}
             onChange={(e) => setFilterPackage(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="all">Wszystkie pakiety</option>
+            <option value="all">{t('filters.allPackages')}</option>
             <option value="Podstawowy">Podstawowy</option>
             <option value="Standard">Standard</option>
             <option value="Premium">Premium</option>
@@ -272,7 +298,7 @@ export default function AdminStudentsPage() {
             onChange={(e) => setFilterInstructor(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="all">Wszyscy instruktorzy</option>
+            <option value="all">{t('filters.allInstructors')}</option>
             <option value="Piotr Kowalski">Piotr Kowalski</option>
             <option value="Anna Nowak">Anna Nowak</option>
             <option value="Jan Wiśniewski">Jan Wiśniewski</option>
@@ -280,7 +306,7 @@ export default function AdminStudentsPage() {
           </select>
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Filter className="w-4 h-4" />
-            Więcej filtrów
+            {t('buttons.moreFilters')}
           </button>
         </div>
 
@@ -288,26 +314,26 @@ export default function AdminStudentsPage() {
         {selectedStudents.length > 0 && (
           <div className="mt-4 p-3 bg-blue-50 rounded-lg flex items-center justify-between">
             <span className="text-blue-700 font-medium">
-              Wybrano: {selectedStudents.length} kursantów
+              {t('bulkActions.selected', { count: selectedStudents.length })}
             </span>
             <div className="flex gap-2">
               <button 
                 onClick={() => handleBulkAction('message')}
                 className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50"
               >
-                Wyślij wiadomość
+                {t('bulkActions.sendMessage')}
               </button>
               <button 
                 onClick={() => handleBulkAction('export')}
                 className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50"
               >
-                Eksportuj
+                {t('bulkActions.export')}
               </button>
               <button 
                 onClick={() => setSelectedStudents([])}
                 className="px-3 py-1 bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50"
               >
-                Anuluj
+                {t('buttons.cancel')}
               </button>
             </div>
           </div>
@@ -329,25 +355,25 @@ export default function AdminStudentsPage() {
                   />
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Kursant
+                  {t('table.headers.student')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Pakiet
+                  {t('table.headers.package')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Instruktor
+                  {t('table.headers.instructor')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Postęp
+                  {t('table.headers.progress')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Następna lekcja
+                  {t('table.headers.nextLesson')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {t('table.headers.status')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Akcje
+                  {t('table.headers.actions')}
                 </th>
               </tr>
             </thead>
@@ -382,7 +408,7 @@ export default function AdminStudentsPage() {
                     <td className="px-6 py-4">
                       <div>
                         <p className="font-medium text-gray-900">{student.package}</p>
-                        <p className="text-sm text-gray-500">Kategoria {student.category}</p>
+                        <p className="text-sm text-gray-500">{t('table.category')} {student.category}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -392,7 +418,7 @@ export default function AdminStudentsPage() {
                       <div className="space-y-2">
                         <div>
                           <div className="flex justify-between text-xs mb-1">
-                            <span className="text-gray-500">Teoria</span>
+                            <span className="text-gray-500">{t('table.theory')}</span>
                             <span className="font-medium">{student.theoryProgress}%</span>
                           </div>
                           <div className="w-32 bg-gray-200 rounded-full h-2">
@@ -404,8 +430,13 @@ export default function AdminStudentsPage() {
                         </div>
                         <div>
                           <div className="flex justify-between text-xs mb-1">
-                            <span className="text-gray-500">Praktyka</span>
-                            <span className="font-medium">{student.practicalLessons.completed}/{student.practicalLessons.total}</span>
+                            <span className="text-gray-500">{t('table.practice')}</span>
+                            <span className="font-medium">
+                              {t('table.lessonsFormat', {
+                                completed: student.practicalLessons.completed,
+                                total: student.practicalLessons.total
+                              })}
+                            </span>
                           </div>
                           <div className="w-32 bg-gray-200 rounded-full h-2">
                             <div 
@@ -417,7 +448,7 @@ export default function AdminStudentsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <p className="text-gray-900">{format(student.nextLesson, 'dd MMM yyyy', { locale: pl })}</p>
+                      <p className="text-gray-900">{format(student.nextLesson, 'dd MMM yyyy', { locale: dateLocale })}</p>
                       <p className="text-sm text-gray-500">14:00-15:30</p>
                     </td>
                     <td className="px-6 py-4">
@@ -459,11 +490,11 @@ export default function AdminStudentsPage() {
         <div className="px-6 py-4 border-t border-gray-200">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Pokazano <span className="font-medium">{startIndex + 1}</span> -{' '}
-              <span className="font-medium">
-                {Math.min(startIndex + itemsPerPage, filteredStudents.length)}
-              </span>{' '}
-              z <span className="font-medium">{filteredStudents.length}</span> kursantów
+              {t('pagination.showing', {
+                from: startIndex + 1,
+                to: Math.min(startIndex + itemsPerPage, filteredStudents.length),
+                total: filteredStudents.length
+              })}
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -503,7 +534,7 @@ export default function AdminStudentsPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 flex items-center gap-3">
             <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
-            <span className="text-gray-700">Przetwarzanie...</span>
+            <span className="text-gray-700">{t('loading.processing')}</span>
           </div>
         </div>
       )}

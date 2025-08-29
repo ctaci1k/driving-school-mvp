@@ -1,8 +1,11 @@
+
 // app/[locale]/admin/users/new/page.tsx
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import {
   ArrowLeft, User, Mail, Phone, MapPin, Calendar, Shield,
   Lock, Eye, EyeOff, Save, Upload, Camera, UserPlus,
@@ -53,6 +56,9 @@ interface FormData {
 
 export default function AdminNewUserPage() {
   const router = useRouter();
+  const t = useTranslations('admin.users.new');
+  const locale = useLocale();
+  
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -63,7 +69,7 @@ export default function AdminNewUserPage() {
     firstName: '',
     lastName: '',
     email: '',
-    phone: '+48',
+    phone: locale === 'uk' ? '+380' : '+48',
     birthDate: '',
     gender: 'male',
     street: '',
@@ -74,7 +80,7 @@ export default function AdminNewUserPage() {
     confirmPassword: '',
     sendWelcomeEmail: true,
     emergencyName: '',
-    emergencyPhone: '+48',
+    emergencyPhone: locale === 'uk' ? '+380' : '+48',
     emergencyRelation: '',
     specializations: [],
     workingDays: []
@@ -88,53 +94,36 @@ export default function AdminNewUserPage() {
     'Jan Nowak',
     'Zofia Wiśniewska'
   ];
-  const specializations = [
-    'Jazda po mieście',
-    'Autostrada',
-    'Parkowanie',
-    'Jazda nocą',
-    'Jazda ekstremalna',
-    'Teoria'
-  ];
-  const weekDays = [
-    'Poniedziałek',
-    'Wtorek',
-    'Środa',
-    'Czwartek',
-    'Piątek',
-    'Sobota',
-    'Niedziela'
-  ];
 
   const validateStep = (stepNumber: number): boolean => {
     const newErrors: Partial<FormData> = {};
 
     if (stepNumber === 1) {
-      if (!formData.firstName) newErrors.firstName = 'Imię jest wymagane';
-      if (!formData.lastName) newErrors.lastName = 'Nazwisko jest wymagane';
-      if (!formData.email) newErrors.email = 'Email jest wymagany';
+      if (!formData.firstName) newErrors.firstName = t('errors.firstNameRequired');
+      if (!formData.lastName) newErrors.lastName = t('errors.lastNameRequired');
+      if (!formData.email) newErrors.email = t('errors.emailRequired');
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Nieprawidłowy format email';
+        newErrors.email = t('errors.emailInvalid');
       }
       if (!formData.phone || formData.phone.length < 11) {
-        newErrors.phone = 'Telefon jest wymagany';
+        newErrors.phone = t('errors.phoneRequired');
       }
-      if (!formData.birthDate) newErrors.birthDate = 'Data urodzenia jest wymagana';
+      if (!formData.birthDate) newErrors.birthDate = t('errors.birthDateRequired');
     }
 
     if (stepNumber === 2) {
-      if (!formData.street) newErrors.street = 'Ulica jest wymagana';
-      if (!formData.city) newErrors.city = 'Miasto jest wymagane';
-      if (!formData.postalCode) newErrors.postalCode = 'Kod pocztowy jest wymagany';
+      if (!formData.street) newErrors.street = t('errors.streetRequired');
+      if (!formData.city) newErrors.city = t('errors.cityRequired');
+      if (!formData.postalCode) newErrors.postalCode = t('errors.postalCodeRequired');
     }
 
     if (stepNumber === 3) {
-      if (!formData.password) newErrors.password = 'Hasło jest wymagane';
+      if (!formData.password) newErrors.password = t('errors.passwordRequired');
       if (formData.password.length < 8) {
-        newErrors.password = 'Hasło musi zawierać minimum 8 znaków';
+        newErrors.password = t('errors.passwordMinLength');
       }
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Hasła nie pasują do siebie';
+        newErrors.confirmPassword = t('errors.passwordsNotMatch');
       }
     }
 
@@ -158,7 +147,7 @@ export default function AdminNewUserPage() {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       console.log('Creating user:', formData);
-      router.push('/pl/admin/users');
+      router.push(`/${locale}/admin/users`);
     }
   };
 
@@ -190,14 +179,14 @@ export default function AdminNewUserPage() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <button
-          onClick={() => router.push('/pl/admin/users')}
+          onClick={() => router.push(`/${locale}/admin/users`)}
           className="p-2 hover:bg-gray-100 rounded-lg"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Tworzenie nowego użytkownika</h1>
-          <p className="text-gray-600 mt-1">Wypełnij wszystkie niezbędne informacje</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -231,12 +220,12 @@ export default function AdminNewUserPage() {
         {/* Step 1: Personal Information */}
         {step === 1 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Dane osobowe</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('personal.title')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Imię *
+                  {t('personal.firstName')}
                 </label>
                 <input
                   type="text"
@@ -245,7 +234,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.firstName ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Aleksander"
+                  placeholder={t('personal.firstNamePlaceholder')}
                 />
                 {errors.firstName && (
                   <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
@@ -254,7 +243,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nazwisko *
+                  {t('personal.lastName')}
                 </label>
                 <input
                   type="text"
@@ -263,7 +252,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.lastName ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="Kowalski"
+                  placeholder={t('personal.lastNamePlaceholder')}
                 />
                 {errors.lastName && (
                   <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
@@ -272,7 +261,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email *
+                  {t('personal.email')}
                 </label>
                 <input
                   type="email"
@@ -281,7 +270,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="example@email.com"
+                  placeholder={t('personal.emailPlaceholder')}
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -290,7 +279,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Telefon *
+                  {t('personal.phone')}
                 </label>
                 <input
                   type="tel"
@@ -299,7 +288,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.phone ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="+48123456789"
+                  placeholder={t('personal.phonePlaceholder')}
                 />
                 {errors.phone && (
                   <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
@@ -308,7 +297,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Data urodzenia *
+                  {t('personal.birthDate')}
                 </label>
                 <input
                   type="date"
@@ -325,16 +314,16 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Płeć
+                  {t('personal.gender')}
                 </label>
                 <select
                   value={formData.gender}
                   onChange={(e) => handleInputChange('gender', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="male">Mężczyzna</option>
-                  <option value="female">Kobieta</option>
-                  <option value="other">Inna</option>
+                  <option value="male">{t('personal.genderOptions.male')}</option>
+                  <option value="female">{t('personal.genderOptions.female')}</option>
+                  <option value="other">{t('personal.genderOptions.other')}</option>
                 </select>
               </div>
             </div>
@@ -344,12 +333,12 @@ export default function AdminNewUserPage() {
         {/* Step 2: Address */}
         {step === 2 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Adres</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('address.title')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ulica i numer domu *
+                  {t('address.street')}
                 </label>
                 <input
                   type="text"
@@ -358,7 +347,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.street ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="ul. Marszałkowska 1"
+                  placeholder={t('address.streetPlaceholder')}
                 />
                 {errors.street && (
                   <p className="mt-1 text-sm text-red-600">{errors.street}</p>
@@ -367,7 +356,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Miasto *
+                  {t('address.city')}
                 </label>
                 <select
                   value={formData.city}
@@ -389,7 +378,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Kod pocztowy *
+                  {t('address.postalCode')}
                 </label>
                 <input
                   type="text"
@@ -398,7 +387,7 @@ export default function AdminNewUserPage() {
                   className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.postalCode ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="00-001"
+                  placeholder={t('address.postalCodePlaceholder')}
                 />
                 {errors.postalCode && (
                   <p className="mt-1 text-sm text-red-600">{errors.postalCode}</p>
@@ -407,44 +396,44 @@ export default function AdminNewUserPage() {
             </div>
 
             <div className="border-t pt-6">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">Kontakt alarmowy</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-4">{t('address.emergencyContact')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Imię
+                    {t('address.emergencyName')}
                   </label>
                   <input
                     type="text"
                     value={formData.emergencyName}
                     onChange={(e) => handleInputChange('emergencyName', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Maria Kowalska"
+                    placeholder={t('address.emergencyNamePlaceholder')}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Telefon
+                    {t('address.emergencyPhone')}
                   </label>
                   <input
                     type="tel"
                     value={formData.emergencyPhone}
                     onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="+48123987654"
+                    placeholder={t('address.emergencyPhonePlaceholder')}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Relacja
+                    {t('address.emergencyRelation')}
                   </label>
                   <input
                     type="text"
                     value={formData.emergencyRelation}
                     onChange={(e) => handleInputChange('emergencyRelation', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                    placeholder="Matka"
+                    placeholder={t('address.emergencyRelationPlaceholder')}
                   />
                 </div>
               </div>
@@ -455,18 +444,18 @@ export default function AdminNewUserPage() {
         {/* Step 3: Account Settings */}
         {step === 3 && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Ustawienia konta</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('account.title')}</h2>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Rola użytkownika *
+                {t('account.role')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { value: 'STUDENT', label: 'Student', icon: User },
-                  { value: 'INSTRUCTOR', label: 'Instruktor', icon: GraduationCap },
-                  { value: 'MANAGER', label: 'Menedżer', icon: Users },
-                  { value: 'ADMIN', label: 'Administrator', icon: Shield }
+                  { value: 'STUDENT', label: t('account.roles.student'), icon: User },
+                  { value: 'INSTRUCTOR', label: t('account.roles.instructor'), icon: GraduationCap },
+                  { value: 'MANAGER', label: t('account.roles.manager'), icon: Users },
+                  { value: 'ADMIN', label: t('account.roles.admin'), icon: Shield }
                 ].map(role => (
                   <button
                     key={role.value}
@@ -494,7 +483,7 @@ export default function AdminNewUserPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Hasło *
+                  {t('account.password')}
                 </label>
                 <div className="relative">
                   <input
@@ -504,7 +493,7 @@ export default function AdminNewUserPage() {
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 pr-20 ${
                       errors.password ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Minimum 8 znaków"
+                    placeholder={t('account.passwordPlaceholder')}
                   />
                   <button
                     type="button"
@@ -517,7 +506,7 @@ export default function AdminNewUserPage() {
                     type="button"
                     onClick={generatePassword}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-700"
-                    title="Generuj hasło"
+                    title={t('buttons.generatePassword')}
                   >
                     <Lock className="w-5 h-5" />
                   </button>
@@ -529,7 +518,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Potwierdź hasło *
+                  {t('account.confirmPassword')}
                 </label>
                 <div className="relative">
                   <input
@@ -539,7 +528,7 @@ export default function AdminNewUserPage() {
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 pr-10 ${
                       errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    placeholder="Powtórz hasło"
+                    placeholder={t('account.confirmPasswordPlaceholder')}
                   />
                   <button
                     type="button"
@@ -564,7 +553,7 @@ export default function AdminNewUserPage() {
                 className="rounded border-gray-300"
               />
               <label htmlFor="sendWelcomeEmail" className="text-sm text-gray-700">
-                Wyślij powitalny email z danymi do logowania
+                {t('account.sendWelcomeEmail')}
               </label>
             </div>
           </div>
@@ -573,19 +562,19 @@ export default function AdminNewUserPage() {
         {/* Step 4: Role-specific Information (Student) */}
         {step === 4 && formData.role === 'STUDENT' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Informacje o studencie</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('studentInfo.title')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Pakiet szkoleniowy
+                  {t('studentInfo.package')}
                 </label>
                 <select
                   value={formData.package || ''}
                   onChange={(e) => handleInputChange('package', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Wybierz pakiet</option>
+                  <option value="">{t('studentInfo.selectPackage')}</option>
                   {packages.map(pkg => (
                     <option key={pkg} value={pkg}>{pkg}</option>
                   ))}
@@ -594,14 +583,14 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Kategoria
+                  {t('studentInfo.category')}
                 </label>
                 <select
                   value={formData.category || ''}
                   onChange={(e) => handleInputChange('category', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Wybierz kategorię</option>
+                  <option value="">{t('studentInfo.selectCategory')}</option>
                   {categories.map(cat => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
@@ -610,14 +599,14 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Instruktor
+                  {t('studentInfo.instructor')}
                 </label>
                 <select
                   value={formData.instructor || ''}
                   onChange={(e) => handleInputChange('instructor', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Przypisz później</option>
+                  <option value="">{t('studentInfo.assignLater')}</option>
                   {instructors.map(inst => (
                     <option key={inst} value={inst}>{inst}</option>
                   ))}
@@ -626,7 +615,7 @@ export default function AdminNewUserPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Data rozpoczęcia szkolenia
+                  {t('studentInfo.startDate')}
                 </label>
                 <input
                   type="date"
@@ -642,55 +631,55 @@ export default function AdminNewUserPage() {
         {/* Step 4: Role-specific Information (Instructor) */}
         {step === 4 && formData.role === 'INSTRUCTOR' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Informacje o instruktorze</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('instructorInfo.title')}</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Numer prawa jazdy
+                  {t('instructorInfo.licenseNumber')}
                 </label>
                 <input
                   type="text"
                   value={formData.licenseNumber || ''}
                   onChange={(e) => handleInputChange('licenseNumber', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="AA123456"
+                  placeholder={t('instructorInfo.licenseNumberPlaceholder')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Doświadczenie (lat)
+                  {t('instructorInfo.experience')}
                 </label>
                 <input
                   type="number"
                   value={formData.experience || ''}
                   onChange={(e) => handleInputChange('experience', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="5"
+                  placeholder={t('instructorInfo.experiencePlaceholder')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Stawka godzinowa (PLN)
+                  {t('instructorInfo.hourlyRate')}
                 </label>
                 <input
                   type="number"
                   value={formData.hourlyRate || ''}
                   onChange={(e) => handleInputChange('hourlyRate', parseInt(e.target.value))}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="200"
+                  placeholder={t('instructorInfo.hourlyRatePlaceholder')}
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Specjalizacje
+                {t('instructorInfo.specializations')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {specializations.map(spec => (
+                {['city', 'highway', 'parking', 'night', 'extreme', 'theory'].map(spec => (
                   <label key={spec} className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -705,7 +694,9 @@ export default function AdminNewUserPage() {
                       }}
                       className="rounded border-gray-300"
                     />
-                    <span className="text-sm text-gray-700">{spec}</span>
+                    <span className="text-sm text-gray-700">
+                      {t(`instructorInfo.specializationOptions.${spec}`)}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -713,10 +704,10 @@ export default function AdminNewUserPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Dni pracy
+                {t('instructorInfo.workingDays')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {weekDays.map(day => (
+                {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
                   <label key={day} className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -731,7 +722,9 @@ export default function AdminNewUserPage() {
                       }}
                       className="rounded border-gray-300"
                     />
-                    <span className="text-sm text-gray-700">{day}</span>
+                    <span className="text-sm text-gray-700">
+                      {t(`instructorInfo.weekDays.${day}`)}
+                    </span>
                   </label>
                 ))}
               </div>
@@ -742,52 +735,49 @@ export default function AdminNewUserPage() {
         {/* Step 5: Review */}
         {step === getTotalSteps() && (
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800">Podsumowanie danych</h2>
+            <h2 className="text-xl font-semibold text-gray-800">{t('review.title')}</h2>
 
             <div className="bg-gray-50 rounded-lg p-6 space-y-4">
               <div>
-                <h3 className="font-medium text-gray-800 mb-2">Dane osobowe</h3>
+                <h3 className="font-medium text-gray-800 mb-2">{t('review.personalData')}</h3>
                 <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                  <dt className="text-gray-500">Imię i Nazwisko:</dt>
+                  <dt className="text-gray-500">{t('review.fullName')}</dt>
                   <dd className="font-medium">{formData.firstName} {formData.lastName}</dd>
-                  <dt className="text-gray-500">Email:</dt>
+                  <dt className="text-gray-500">{t('review.email')}</dt>
                   <dd className="font-medium">{formData.email}</dd>
-                  <dt className="text-gray-500">Telefon:</dt>
+                  <dt className="text-gray-500">{t('review.phone')}</dt>
                   <dd className="font-medium">{formData.phone}</dd>
-                  <dt className="text-gray-500">Rola:</dt>
-                  <dd className="font-medium">
-                    {formData.role === 'STUDENT' && 'Student'}
-                    {formData.role === 'INSTRUCTOR' && 'Instruktor'}
-                    {formData.role === 'MANAGER' && 'Menedżer'}
-                    {formData.role === 'ADMIN' && 'Administrator'}
-                  </dd>
+                  <dt className="text-gray-500">{t('review.role')}</dt>
+                  <dd className="font-medium">{t(`account.roles.${formData.role.toLowerCase()}`)}</dd>
                 </dl>
               </div>
 
               {formData.role === 'STUDENT' && (
                 <div>
-                  <h3 className="font-medium text-gray-800 mb-2">Informacje szkoleniowe</h3>
+                  <h3 className="font-medium text-gray-800 mb-2">{t('review.trainingInfo')}</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <dt className="text-gray-500">Pakiet:</dt>
-                    <dd className="font-medium">{formData.package || 'Nie wybrano'}</dd>
-                    <dt className="text-gray-500">Kategoria:</dt>
-                    <dd className="font-medium">{formData.category || 'Nie wybrano'}</dd>
-                    <dt className="text-gray-500">Instruktor:</dt>
-                    <dd className="font-medium">{formData.instructor || 'Nie przypisano'}</dd>
+                    <dt className="text-gray-500">{t('review.package')}</dt>
+                    <dd className="font-medium">{formData.package || t('review.notSelected')}</dd>
+                    <dt className="text-gray-500">{t('review.category')}</dt>
+                    <dd className="font-medium">{formData.category || t('review.notSelected')}</dd>
+                    <dt className="text-gray-500">{t('review.instructor')}</dt>
+                    <dd className="font-medium">{formData.instructor || t('review.notAssigned')}</dd>
                   </dl>
                 </div>
               )}
 
               {formData.role === 'INSTRUCTOR' && (
                 <div>
-                  <h3 className="font-medium text-gray-800 mb-2">Informacje zawodowe</h3>
+                  <h3 className="font-medium text-gray-800 mb-2">{t('review.professionalInfo')}</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <dt className="text-gray-500">Doświadczenie:</dt>
-                    <dd className="font-medium">{formData.experience} lat</dd>
-                    <dt className="text-gray-500">Stawka:</dt>
-                    <dd className="font-medium">PLN {formData.hourlyRate}/godz</dd>
-                    <dt className="text-gray-500">Specjalizacje:</dt>
-                    <dd className="font-medium">{formData.specializations?.join(', ') || 'Nie podano'}</dd>
+                    <dt className="text-gray-500">{t('review.experience')}</dt>
+                    <dd className="font-medium">{t('review.years', { count: formData.experience })}</dd>
+                    <dt className="text-gray-500">{t('review.rate')}</dt>
+                    <dd className="font-medium">{t('review.perHour', { amount: formData.hourlyRate })}</dd>
+                    <dt className="text-gray-500">{t('review.specializations')}</dt>
+                    <dd className="font-medium">
+                      {formData.specializations?.map(s => t(`instructorInfo.specializationOptions.${s}`)).join(', ') || t('review.notSpecified')}
+                    </dd>
                   </dl>
                 </div>
               )}
@@ -796,8 +786,8 @@ export default function AdminNewUserPage() {
             <div className="bg-blue-50 rounded-lg p-4 flex items-start gap-3">
               <Info className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">Użytkownik zostanie utworzony z powyższymi danymi.</p>
-                <p>Upewnij się, że wszystkie informacje są poprawne przed zatwierdzeniem.</p>
+                <p className="font-medium mb-1">{t('review.confirmMessage')}</p>
+                <p>{t('review.checkData')}</p>
               </div>
             </div>
           </div>
@@ -811,7 +801,7 @@ export default function AdminNewUserPage() {
               className="px-6 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
               disabled={loading}
             >
-              Poprzedni
+              {t('buttons.previous')}
             </button>
           )}
           {step < getTotalSteps() ? (
@@ -819,10 +809,10 @@ export default function AdminNewUserPage() {
               onClick={handleNext}
               className={`px-6 py-2 rounded-lg text-white transition ${
                 loading ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
+              } ${step === 1 ? 'ml-auto' : ''}`}
               disabled={loading}
             >
-              Dalej
+              {t('buttons.next')}
             </button>
           ) : (
             <button
@@ -833,7 +823,7 @@ export default function AdminNewUserPage() {
               disabled={loading}
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {loading ? 'Zapisywanie...' : 'Zapisz'}
+              {loading ? t('buttons.saving') : t('buttons.save')}
             </button>
           )}
         </div>

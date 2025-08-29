@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/calendar/SlotCard.tsx
-// Komponent karty slotu - wyświetlanie informacji o slocie w różnych widokach
-
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Clock, MapPin, User, Phone, Mail, Car, 
   CreditCard, AlertCircle, MoreVertical, 
@@ -83,6 +82,7 @@ export default function SlotCard({
   onDelete,
   className
 }: SlotCardProps) {
+  const t = useTranslations('instructor.schedule.calendar.slotCard')
   const colors = STATUS_COLORS[slot.status]
   
   // Minimalna wersja - tylko czas i status
@@ -168,6 +168,7 @@ export default function SlotCard({
                   onEdit()
                 }}
                 className="p-0.5 hover:bg-white/50 rounded"
+                aria-label={t('aria.editSlot')}
               >
                 <Edit2 className="w-3 h-3" />
               </button>
@@ -179,6 +180,7 @@ export default function SlotCard({
                   onDelete()
                 }}
                 className="p-0.5 hover:bg-white/50 rounded text-red-600"
+                aria-label={t('aria.deleteSlot')}
               >
                 <Trash2 className="w-3 h-3" />
               </button>
@@ -214,10 +216,10 @@ export default function SlotCard({
           <div className="flex items-center gap-1">
             {LESSON_TYPE_ICONS[slot.lessonType]}
             <span className="text-xs text-gray-600">
-              {slot.lessonType === 'jazda' && 'Jazda'}
-              {slot.lessonType === 'plac' && 'Plac'}
-              {slot.lessonType === 'teoria' && 'Teoria'}
-              {slot.lessonType === 'egzamin' && 'Egzamin'}
+              {slot.lessonType === 'jazda' && t('lessonTypes.driving')}
+              {slot.lessonType === 'plac' && t('lessonTypes.practiceArea')}
+              {slot.lessonType === 'teoria' && t('lessonTypes.theory')}
+              {slot.lessonType === 'egzamin' && t('lessonTypes.exam')}
             </span>
           </div>
         )}
@@ -227,7 +229,10 @@ export default function SlotCard({
           <div className="flex items-center gap-1">
             <CreditCard className="w-3 h-3 text-amber-500 flex-shrink-0" />
             <span className="text-xs text-amber-700">
-              {slot.payment.status === 'nieopłacony' ? 'Nieopłacone' : 'Częściowo'}
+              {slot.payment.status === 'nieopłacony' 
+                ? t('payment.unpaid') 
+                : t('payment.partial')
+              }
             </span>
           </div>
         )}

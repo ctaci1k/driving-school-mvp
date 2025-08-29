@@ -3,6 +3,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   FileText,
   Video,
@@ -27,30 +28,31 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 export default function TheoryMaterialsPage() {
+  const t = useTranslations('student.theoryMaterials');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const categories = [
-    { id: 'all', name: 'Wszystkie', count: 42 },
-    { id: 'rules', name: 'Przepisy ruchu', count: 12 },
-    { id: 'signs', name: 'Znaki drogowe', count: 15 },
-    { id: 'safety', name: 'Bezpieczeństwo', count: 8 },
-    { id: 'mechanics', name: 'Budowa pojazdu', count: 7 }
+    { id: 'all', name: t('categories.all'), count: 42 },
+    { id: 'rules', name: t('categories.rules'), count: 12 },
+    { id: 'signs', name: t('categories.signs'), count: 15 },
+    { id: 'safety', name: t('categories.safety'), count: 8 },
+    { id: 'mechanics', name: t('categories.mechanics'), count: 7 }
   ];
 
   const materialTypes = [
-    { id: 'all', name: 'Wszystkie typy' },
-    { id: 'pdf', name: 'PDF', icon: FileText },
-    { id: 'video', name: 'Wideo', icon: Video },
-    { id: 'presentation', name: 'Prezentacje', icon: Image },
-    { id: 'quiz', name: 'Quizy', icon: CheckCircle2 }
+    { id: 'all', name: t('types.all') },
+    { id: 'pdf', name: t('types.pdf'), icon: FileText },
+    { id: 'video', name: t('types.video'), icon: Video },
+    { id: 'presentation', name: t('types.presentation'), icon: Image },
+    { id: 'quiz', name: t('types.quiz'), icon: CheckCircle2 }
   ];
 
   const materials = [
     {
       id: 1,
-      title: 'Kodeks drogowy - kompendium',
+      title: t('materials.trafficCode.title'),
       category: 'rules',
       type: 'pdf',
       size: '2.4 MB',
@@ -62,11 +64,11 @@ export default function TheoryMaterialsPage() {
       isNew: false,
       isPremium: false,
       completed: true,
-      description: 'Pełne kompendium przepisów ruchu drogowego'
+      description: t('materials.trafficCode.description')
     },
     {
       id: 2,
-      title: 'Znaki ostrzegawcze - prezentacja',
+      title: t('materials.warningSignsPresentation.title'),
       category: 'signs',
       type: 'presentation',
       size: '5.2 MB',
@@ -78,11 +80,11 @@ export default function TheoryMaterialsPage() {
       isNew: true,
       isPremium: false,
       completed: true,
-      description: 'Interaktywna prezentacja wszystkich znaków ostrzegawczych'
+      description: t('materials.warningSignsPresentation.description')
     },
     {
       id: 3,
-      title: 'Jazda w trudnych warunkach - kurs wideo',
+      title: t('materials.difficultConditions.title'),
       category: 'safety',
       type: 'video',
       size: '156 MB',
@@ -95,11 +97,11 @@ export default function TheoryMaterialsPage() {
       isPremium: true,
       completed: false,
       progress: 65,
-      description: 'Techniki jazdy w deszczu, śniegu i mgle'
+      description: t('materials.difficultConditions.description')
     },
     {
       id: 4,
-      title: 'Quiz - Pierwszeństwo przejazdu',
+      title: t('materials.priorityQuiz.title'),
       category: 'rules',
       type: 'quiz',
       size: null,
@@ -112,11 +114,11 @@ export default function TheoryMaterialsPage() {
       isPremium: false,
       completed: true,
       score: 92,
-      description: '30 pytań sprawdzających znajomość zasad pierwszeństwa'
+      description: t('materials.priorityQuiz.description')
     },
     {
       id: 5,
-      title: 'Budowa silnika - animacja 3D',
+      title: t('materials.engineConstruction.title'),
       category: 'mechanics',
       type: 'video',
       size: '89 MB',
@@ -129,11 +131,11 @@ export default function TheoryMaterialsPage() {
       isPremium: false,
       completed: false,
       progress: 30,
-      description: 'Animowana prezentacja budowy i działania silnika'
+      description: t('materials.engineConstruction.description')
     },
     {
       id: 6,
-      title: 'Znaki nakazu i zakazu - PDF',
+      title: t('materials.mandatoryProhibitorySignsPDF.title'),
       category: 'signs',
       type: 'pdf',
       size: '3.1 MB',
@@ -145,11 +147,11 @@ export default function TheoryMaterialsPage() {
       isNew: true,
       isPremium: false,
       completed: false,
-      description: 'Szczegółowy opis wszystkich znaków nakazu i zakazu'
+      description: t('materials.mandatoryProhibitorySignsPDF.description')
     },
     {
       id: 7,
-      title: 'Pierwsza pomoc - poradnik',
+      title: t('materials.firstAidGuide.title'),
       category: 'safety',
       type: 'pdf',
       size: '1.8 MB',
@@ -161,11 +163,11 @@ export default function TheoryMaterialsPage() {
       isNew: false,
       isPremium: false,
       completed: true,
-      description: 'Podstawy udzielania pierwszej pomocy'
+      description: t('materials.firstAidGuide.description')
     },
     {
       id: 8,
-      title: 'Manewry parkingowe - tutorial',
+      title: t('materials.parkingManeuversTutorial.title'),
       category: 'rules',
       type: 'video',
       size: '210 MB',
@@ -178,7 +180,7 @@ export default function TheoryMaterialsPage() {
       isPremium: true,
       completed: false,
       progress: 0,
-      description: 'Krok po kroku - wszystkie typy parkowania'
+      description: t('materials.parkingManeuversTutorial.description')
     }
   ];
 
@@ -209,10 +211,10 @@ export default function TheoryMaterialsPage() {
 
   const getTypeBadge = (type: string) => {
     const badges = {
-      pdf: { color: 'bg-red-100 text-red-700', label: 'PDF' },
-      video: { color: 'bg-blue-100 text-blue-700', label: 'Wideo' },
-      presentation: { color: 'bg-purple-100 text-purple-700', label: 'Prezentacja' },
-      quiz: { color: 'bg-green-100 text-green-700', label: 'Quiz' }
+      pdf: { color: 'bg-red-100 text-red-700', label: t('badges.pdf') },
+      video: { color: 'bg-blue-100 text-blue-700', label: t('badges.video') },
+      presentation: { color: 'bg-purple-100 text-purple-700', label: t('badges.presentation') },
+      quiz: { color: 'bg-green-100 text-green-700', label: t('badges.quiz') }
     };
     const badge = badges[type as keyof typeof badges];
     return badge ? <Badge className={badge.color}>{badge.label}</Badge> : null;
@@ -223,12 +225,12 @@ export default function TheoryMaterialsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Materiały do nauki</h1>
-          <p className="text-gray-600 mt-1">Dokumenty, prezentacje i materiały wideo</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <Button className="gap-2">
           <Folder className="h-4 w-4" />
-          Moja biblioteka
+          {t('buttons.myLibrary')}
         </Button>
       </div>
 
@@ -240,7 +242,7 @@ export default function TheoryMaterialsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Szukaj materiałów..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -278,7 +280,7 @@ export default function TheoryMaterialsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Recently Viewed */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Ostatnio przeglądane</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('sections.recentlyViewed')}</h2>
           <div className="space-y-3">
             {recentlyViewed.map((material) => {
               const Icon = getTypeIcon(material.type);
@@ -298,7 +300,7 @@ export default function TheoryMaterialsPage() {
 
         {/* Recommended */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Polecane dla Ciebie</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('sections.recommended')}</h2>
           <div className="space-y-3">
             {recommended.map((material) => {
               const Icon = getTypeIcon(material.type);
@@ -312,7 +314,7 @@ export default function TheoryMaterialsPage() {
                         <Star className="h-3 w-3 text-yellow-500 fill-current" />
                         <span className="text-xs text-gray-500">{material.rating}</span>
                       </div>
-                      <span className="text-xs text-gray-500">• {material.views} wyświetleń</span>
+                      <span className="text-xs text-gray-500">• {material.views} {t('metadata.views')}</span>
                     </div>
                   </div>
                   <ChevronRight className="h-4 w-4 text-gray-400" />
@@ -339,10 +341,10 @@ export default function TheoryMaterialsPage() {
                     </div>
                     {getTypeBadge(material.type)}
                     {material.isNew && (
-                      <Badge className="bg-green-100 text-green-700">Nowy</Badge>
+                      <Badge className="bg-green-100 text-green-700">{t('badges.new')}</Badge>
                     )}
                     {material.isPremium && (
-                      <Badge className="bg-yellow-100 text-yellow-700">Premium</Badge>
+                      <Badge className="bg-yellow-100 text-yellow-700">{t('badges.premium')}</Badge>
                     )}
                   </div>
                   {material.completed && (
@@ -360,7 +362,7 @@ export default function TheoryMaterialsPage() {
                 {material.type === 'video' && material.progress !== undefined && !material.completed && (
                   <div className="mb-3">
                     <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-gray-500">Postęp</span>
+                      <span className="text-gray-500">{t('metadata.progress')}</span>
                       <span className="font-medium">{material.progress}%</span>
                     </div>
                     <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -376,7 +378,7 @@ export default function TheoryMaterialsPage() {
                 {material.type === 'quiz' && material.score && (
                   <div className="mb-3 p-2 bg-green-50 rounded-lg">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600">Twój wynik</span>
+                      <span className="text-sm text-gray-600">{t('metadata.yourScore')}</span>
                       <span className="font-semibold text-green-700">{material.score}%</span>
                     </div>
                   </div>
@@ -386,7 +388,7 @@ export default function TheoryMaterialsPage() {
                 <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                   <div className="flex items-center gap-3">
                     {material.size && <span>{material.size}</span>}
-                    {material.pages && <span>{material.pages} stron</span>}
+                    {material.pages && <span>{t('metadata.pages', {count: material.pages})}</span>}
                     {material.duration && (
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
@@ -426,16 +428,16 @@ export default function TheoryMaterialsPage() {
                   {material.type === 'video' ? (
                     <Button size="sm" className="flex-1">
                       <PlayCircle className="h-4 w-4 mr-1" />
-                      {material.completed ? 'Obejrzyj ponownie' : material.progress ? 'Kontynuuj' : 'Rozpocznij'}
+                      {material.completed ? t('buttons.watchAgain') : material.progress ? t('buttons.continue') : t('buttons.start')}
                     </Button>
                   ) : material.type === 'quiz' ? (
                     <Button size="sm" className="flex-1">
-                      {material.completed ? 'Powtórz quiz' : 'Rozpocznij quiz'}
+                      {material.completed ? t('buttons.repeatQuiz') : t('buttons.startQuiz')}
                     </Button>
                   ) : (
                     <Button size="sm" className="flex-1">
                       <Eye className="h-4 w-4 mr-1" />
-                      {material.completed ? 'Zobacz ponownie' : 'Otwórz'}
+                      {material.completed ? t('buttons.viewAgain') : t('buttons.open')}
                     </Button>
                   )}
                   <Button size="sm" variant="outline">
@@ -451,7 +453,7 @@ export default function TheoryMaterialsPage() {
       {/* Load More */}
       <div className="flex justify-center">
         <Button variant="outline">
-          Załaduj więcej materiałów
+          {t('buttons.loadMore')}
         </Button>
       </div>
     </div>

@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/modals/TemplateModal.tsx
-// Modal do zarządzania szablonami harmonogramu
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   X, Save, Upload, Download, Copy, Trash2, Clock, 
   Calendar, FileText, Star, StarOff, Edit2, Check,
@@ -13,7 +12,7 @@ import { cn } from '@/lib/utils'
 import { ScheduleTemplate, WorkingHours } from '../../types/schedule.types'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 interface TemplateModalProps {
   isOpen: boolean
@@ -23,6 +22,7 @@ interface TemplateModalProps {
   onApply?: (template: ScheduleTemplate) => void
 }
 
+// Mock preset templates - залишаємо польською без перекладу
 const PRESET_TEMPLATES = [
   {
     name: 'Standardowy (8-16)',
@@ -78,6 +78,7 @@ export default function TemplateModal({
   mode = 'list',
   onApply
 }: TemplateModalProps) {
+  const t = useTranslations('instructor.schedule.modals.template')
   const { 
     templates, 
     createTemplate, 
@@ -208,7 +209,7 @@ export default function TemplateModal({
     const dataStr = JSON.stringify(template, null, 2)
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr)
     
-    const exportFileDefaultName = `szablon-${template.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.json`
+    const exportFileDefaultName = `template-${template.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.json`
     
     const linkElement = document.createElement('a')
     linkElement.setAttribute('href', dataUri)
@@ -226,7 +227,7 @@ export default function TemplateModal({
       try {
         const imported = JSON.parse(e.target?.result as string)
         await createTemplate({
-          name: `${imported.name} (importowany)`,
+          name: `${imported.name} ${t('imported')}`,
           description: imported.description,
           workingHours: imported.workingHours,
           isDefault: false
@@ -251,14 +252,10 @@ export default function TemplateModal({
           <div className="flex items-center justify-between p-6 border-b">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {currentMode === 'list' && 'Szablony harmonogramu'}
-                {currentMode === 'create' && 'Nowy szablon'}
-                {currentMode === 'edit' && 'Edytuj szablon'}
+                {t(`title.${currentMode}`)}
               </h2>
               <p className="text-sm text-gray-500 mt-1">
-                {currentMode === 'list' && 'Zarządzaj zapisanymi szablonami godzin pracy'}
-                {currentMode === 'create' && 'Utwórz nowy szablon harmonogramu'}
-                {currentMode === 'edit' && 'Modyfikuj istniejący szablon'}
+                {t(`subtitle.${currentMode}`)}
               </p>
             </div>
             <button
@@ -282,11 +279,11 @@ export default function TemplateModal({
                       className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
                       <Plus className="w-4 h-4" />
-                      Nowy szablon
+                      {t('buttons.newTemplate')}
                     </button>
                     <label className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
                       <Upload className="w-4 h-4" />
-                      Importuj
+                      {t('buttons.import')}
                       <input
                         type="file"
                         accept=".json"
@@ -300,7 +297,7 @@ export default function TemplateModal({
                 {/* Preset Templates */}
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-                    Szablony predefiniowane
+                    {t('sections.presetTemplates')}
                   </h3>
                   <div className="grid gap-3">
                     {PRESET_TEMPLATES.map((preset, index) => {
@@ -324,9 +321,9 @@ export default function TemplateModal({
                                 <h4 className="font-medium text-gray-900">{preset.name}</h4>
                                 <p className="text-sm text-gray-500 mt-1">{preset.description}</p>
                                 <div className="flex gap-4 mt-2 text-xs text-gray-400">
-                                  <span>{stats.workDays} dni</span>
-                                  <span>{stats.totalHours}h/tydzień</span>
-                                  <span>{stats.totalSlots} slotów</span>
+                                  <span>{t('stats.workDays', { count: stats.workDays })}</span>
+                                  <span>{t('stats.weeklyHours', { hours: stats.totalHours })}</span>
+                                  <span>{t('stats.totalSlots', { count: stats.totalSlots })}</span>
                                 </div>
                               </div>
                             </div>
@@ -342,7 +339,7 @@ export default function TemplateModal({
                               }}
                               className="px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50 transition-colors"
                             >
-                              Użyj
+                              {t('buttons.use')}
                             </button>
                           </div>
                         </div>
@@ -355,7 +352,7 @@ export default function TemplateModal({
                 {templates.length > 0 && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-500 uppercase mb-3">
-                      Twoje szablony
+                      {t('sections.userTemplates')}
                     </h3>
                     <div className="grid gap-3">
                       {templates.map(template => {
@@ -375,7 +372,7 @@ export default function TemplateModal({
                                     <h4 className="font-medium text-gray-900">{template.name}</h4>
                                     {template.isDefault && (
                                       <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">
-                                        Domyślny
+                                        {t('labels.default')}
                                       </span>
                                     )}
                                   </div>
@@ -383,10 +380,10 @@ export default function TemplateModal({
                                     <p className="text-sm text-gray-500 mt-1">{template.description}</p>
                                   )}
                                   <div className="flex gap-4 mt-2 text-xs text-gray-400">
-                                    <span>{stats.workDays} dni</span>
-                                    <span>{stats.totalHours}h/tydzień</span>
-                                    <span>{stats.totalSlots} slotów</span>
-                                    <span>Utworzono: {format(new Date(template.createdAt), 'dd.MM.yyyy')}</span>
+                                    <span>{t('stats.workDays', { count: stats.workDays })}</span>
+                                    <span>{t('stats.weeklyHours', { hours: stats.totalHours })}</span>
+                                    <span>{t('stats.totalSlots', { count: stats.totalSlots })}</span>
+                                    <span>{t('stats.created', { date: format(new Date(template.createdAt), 'dd.MM.yyyy') })}</span>
                                   </div>
                                 </div>
                               </div>
@@ -394,7 +391,7 @@ export default function TemplateModal({
                                 <button
                                   onClick={() => handleApplyTemplate(template)}
                                   className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                  title="Zastosuj szablon"
+                                  title={t('buttons.apply')}
                                 >
                                   <Check className="w-4 h-4" />
                                 </button>
@@ -410,21 +407,21 @@ export default function TemplateModal({
                                     setCurrentMode('edit')
                                   }}
                                   className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                                  title="Edytuj"
+                                  title={t('buttons.edit')}
                                 >
                                   <Edit2 className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => handleExport(template)}
                                   className="p-2 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
-                                  title="Eksportuj"
+                                  title={t('buttons.export')}
                                 >
                                   <Download className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => setShowDeleteConfirm(template.id)}
                                   className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                  title="Usuń"
+                                  title={t('buttons.delete')}
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -435,7 +432,7 @@ export default function TemplateModal({
                             {showDeleteConfirm === template.id && (
                               <div className="mt-3 p-3 bg-red-50 rounded-lg">
                                 <p className="text-sm text-red-700 mb-2">
-                                  Czy na pewno chcesz usunąć ten szablon?
+                                  {t('deleteConfirm.message')}
                                 </p>
                                 <div className="flex gap-2">
                                   <button
@@ -443,13 +440,13 @@ export default function TemplateModal({
                                     disabled={isLoading}
                                     className="px-3 py-1.5 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 disabled:opacity-50"
                                   >
-                                    {isLoading ? 'Usuwanie...' : 'Usuń'}
+                                    {isLoading ? t('buttons.deleting') : t('deleteConfirm.confirm')}
                                   </button>
                                   <button
                                     onClick={() => setShowDeleteConfirm(null)}
                                     className="px-3 py-1.5 text-gray-700 text-sm hover:bg-gray-200 rounded-lg"
                                   >
-                                    Anuluj
+                                    {t('buttons.cancel')}
                                   </button>
                                 </div>
                               </div>
@@ -465,10 +462,10 @@ export default function TemplateModal({
                   <div className="text-center py-12">
                     <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900 mb-2">
-                      Brak zapisanych szablonów
+                      {t('empty.title')}
                     </h3>
                     <p className="text-sm text-gray-500">
-                      Utwórz swój pierwszy szablon harmonogramu
+                      {t('empty.description')}
                     </p>
                   </div>
                 )}
@@ -481,25 +478,25 @@ export default function TemplateModal({
                 <div className="grid gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Nazwa szablonu
+                      {t('form.name')}
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="np. Harmonogram letni"
+                      placeholder={t('form.namePlaceholder')}
                       className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Opis (opcjonalnie)
+                      {t('form.description')}
                     </label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      placeholder="Krótki opis szablonu..."
+                      placeholder={t('form.descriptionPlaceholder')}
                       rows={2}
                       className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
                     />
@@ -513,8 +510,8 @@ export default function TemplateModal({
                       className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                     />
                     <div>
-                      <span className="font-medium text-sm">Ustaw jako domyślny</span>
-                      <p className="text-xs text-gray-500">Ten szablon będzie automatycznie używany dla nowych tygodni</p>
+                      <span className="font-medium text-sm">{t('form.setDefault')}</span>
+                      <p className="text-xs text-gray-500">{t('form.setDefaultDescription')}</p>
                     </div>
                   </label>
                 </div>
@@ -522,7 +519,7 @@ export default function TemplateModal({
                 {/* Working Hours Preview */}
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-medium text-gray-900">Godziny pracy w szablonie</h4>
+                    <h4 className="font-medium text-gray-900">{t('workingHours.title')}</h4>
                     <button
                       onClick={() => {
                         // Open working hours modal for editing
@@ -530,7 +527,7 @@ export default function TemplateModal({
                       className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
                     >
                       <Settings className="w-4 h-4" />
-                      Edytuj godziny
+                      {t('workingHours.editHours')}
                     </button>
                   </div>
                   
@@ -541,7 +538,7 @@ export default function TemplateModal({
                         <span className="text-gray-500">
                           {hours.enabled 
                             ? hours.intervals.map(i => `${i.start}-${i.end}`).join(', ')
-                            : 'Wolny'
+                            : t('workingHours.free')
                           }
                         </span>
                       </div>
@@ -551,11 +548,11 @@ export default function TemplateModal({
                   <div className="mt-3 pt-3 border-t">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-gray-500">Podsumowanie:</span>
+                        <span className="text-gray-500">{t('workingHours.summary')}:</span>
                         <div className="font-medium text-gray-900 mt-1">
                           {(() => {
                             const stats = calculateTemplateStats(formData.workingHours)
-                            return `${stats.workDays} dni • ${stats.totalHours}h/tydzień`
+                            return `${t('workingHours.days', { count: stats.workDays })} • ${t('workingHours.hoursPerWeek', { hours: stats.totalHours })}`
                           })()}
                         </div>
                       </div>
@@ -573,14 +570,14 @@ export default function TemplateModal({
                 onClick={onClose}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
               >
-                Zamknij
+                {t('buttons.close')}
               </button>
             ) : (
               <button
                 onClick={() => setCurrentMode('list')}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
               >
-                Wstecz
+                {t('buttons.back')}
               </button>
             )}
             
@@ -593,12 +590,12 @@ export default function TemplateModal({
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Zapisywanie...
+                    {t('buttons.saving')}
                   </>
                 ) : (
                   <>
                     <Save className="w-4 h-4" />
-                    {currentMode === 'create' ? 'Utwórz szablon' : 'Zapisz zmiany'}
+                    {currentMode === 'create' ? t('buttons.save') : t('buttons.saveChanges')}
                   </>
                 )}
               </button>

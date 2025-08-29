@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/profile/page.tsx
+// app/[locale]/instructor/profile/page.tsx
 
 'use client'
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   User, Mail, Phone, MapPin, Calendar, Award, Star,
   Car, Clock, Users, FileText, Upload, Camera, Edit,
@@ -29,48 +30,49 @@ import {
 } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function InstructorProfile() {
   const router = useRouter()
+  const t = useTranslations('instructor.profile.main')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [activeTab, setActiveTab] = useState('overview')
 
   // Profile data
   const [profile, setProfile] = useState({
-    firstName: 'Piotr',
-    lastName: 'Kowalski',
-    email: 'piotr.kowalski@autoszkoła.pl',
-    phone: '+48 501 234 567',
+    firstName: 'Петро',
+    lastName: 'Коваленко',
+    email: 'petro.kovalenko@autoshkola.ua',
+    phone: '+38 093 234 56 78',
     dateOfBirth: '1985-03-15',
-    address: 'ul. Główna 100',
-    city: 'Warszawa',
-    postalCode: '00-001',
-    avatar: 'https://ui-avatars.com/api/?name=Piotr+Kowalski&background=10B981&color=fff',
+    address: 'вул. Головна 100',
+    city: 'Київ',
+    postalCode: '01001',
+    avatar: 'https://ui-avatars.com/api/?name=Petro+Kovalenko&background=10B981&color=fff',
     
     // Professional info
     instructorId: 'INS-2024-001',
-    licenseNumber: 'PL123456789',
+    licenseNumber: 'UA123456789',
     licenseExpiry: '2026-05-20',
     experience: 8,
     categories: ['B', 'BE'],
-    languages: ['Polski', 'Angielski'],
-    specializations: ['Początkujący', 'Egzamin', 'Jazda nocna'],
+    languages: [t('languages.ukrainian'), t('languages.english')],
+    specializations: [t('specializations.beginners'), t('specializations.exam'), t('specializations.nightDriving')],
     
     // Employment
     employmentType: 'full-time',
     startDate: '2016-03-01',
-    department: 'Warszawa - Centrum',
-    workSchedule: 'Pon-Sob, 8:00-20:00',
+    department: 'Київ - Центр',
+    workSchedule: 'Пн-Сб, 8:00-20:00',
     
     // Bio
-    bio: 'Doświadczony instruktor nauki jazdy z 8-letnim stażem. Specjalizuję się w przygotowaniu początkujących kierowców oraz przygotowaniu do egzaminu. Indywidualne podejście do każdego kursanta.',
+    bio: 'Досвідчений інструктор з водіння з 8-річним стажем. Спеціалізуюся на підготовці початківців та підготовці до іспиту. Індивідуальний підхід до кожного курсанта.',
     
     // Emergency contact
-    emergencyContact: 'Maria Kowalska',
-    emergencyPhone: '+48 501 234 568',
-    emergencyRelation: 'Żona'
+    emergencyContact: 'Марія Коваленко',
+    emergencyPhone: '+38 093 234 56 79',
+    emergencyRelation: 'Дружина'
   })
 
   // Statistics
@@ -91,29 +93,29 @@ export default function InstructorProfile() {
   const achievements = [
     {
       id: 1,
-      title: 'Instruktor roku',
-      description: 'Najlepszy instruktor 2023',
+      title: t('achievements.instructorOfYear.title'),
+      description: t('achievements.instructorOfYear.description'),
       date: '2023-12-15',
       icon: Trophy
     },
     {
       id: 2,
-      title: '200+ absolwentów',
-      description: 'Przygotowano ponad 200 kursantów',
+      title: t('achievements.graduates200.title'),
+      description: t('achievements.graduates200.description'),
       date: '2023-08-20',
       icon: Users
     },
     {
       id: 3,
-      title: '5000 godzin',
-      description: 'Ponad 5000 godzin praktyki',
+      title: t('achievements.hours5000.title'),
+      description: t('achievements.hours5000.description'),
       date: '2023-05-10',
       icon: Clock
     },
     {
       id: 4,
-      title: 'Ocena 4.9+',
-      description: 'Średnia ocena powyżej 4.9',
+      title: t('achievements.rating49.title'),
+      description: t('achievements.rating49.description'),
       date: '2023-03-01',
       icon: Star
     }
@@ -121,12 +123,12 @@ export default function InstructorProfile() {
 
   // Performance metrics
   const performanceData = [
-    { month: 'Sty', students: 18, rating: 4.8 },
-    { month: 'Lut', students: 22, rating: 4.9 },
-    { month: 'Mar', students: 20, rating: 4.85 },
-    { month: 'Kwi', students: 25, rating: 4.92 },
-    { month: 'Maj', students: 23, rating: 4.88 },
-    { month: 'Cze', students: 21, rating: 4.9 }
+    { month: t('performance.months.jan'), students: 18, rating: 4.8 },
+    { month: t('performance.months.feb'), students: 22, rating: 4.9 },
+    { month: t('performance.months.mar'), students: 20, rating: 4.85 },
+    { month: t('performance.months.apr'), students: 25, rating: 4.92 },
+    { month: t('performance.months.may'), students: 23, rating: 4.88 },
+    { month: t('performance.months.jun'), students: 21, rating: 4.9 }
   ]
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +157,7 @@ export default function InstructorProfile() {
             <div className="relative">
               <Avatar className="h-24 w-24">
                 <AvatarImage src={profile.avatar} />
-                <AvatarFallback>PK</AvatarFallback>
+                <AvatarFallback>ПК</AvatarFallback>
               </Avatar>
               {isEditing && (
                 <button
@@ -183,7 +185,7 @@ export default function InstructorProfile() {
                   </h1>
                   <p className="text-gray-600">{profile.email}</p>
                   <div className="flex items-center gap-4 mt-2">
-                    <Badge variant="default">Instruktor</Badge>
+                    <Badge variant="default">{t('instructor')}</Badge>
                     <span className="text-sm text-gray-500">ID: {profile.instructorId}</span>
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
@@ -196,17 +198,17 @@ export default function InstructorProfile() {
                     <>
                       <Button variant="outline" onClick={() => setIsEditing(false)}>
                         <X className="w-4 h-4 mr-2" />
-                        Anuluj
+                        {t('cancel')}
                       </Button>
                       <Button onClick={handleSaveProfile}>
                         <Save className="w-4 h-4 mr-2" />
-                        Zapisz
+                        {t('save')}
                       </Button>
                     </>
                   ) : (
                     <Button onClick={() => setIsEditing(true)}>
                       <Edit className="w-4 h-4 mr-2" />
-                      Edytuj
+                      {t('edit')}
                     </Button>
                   )}
                 </div>
@@ -215,19 +217,19 @@ export default function InstructorProfile() {
               {/* Quick stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 <div>
-                  <p className="text-sm text-gray-500">Kursanci</p>
+                  <p className="text-sm text-gray-500">{t('stats.students')}</p>
                   <p className="text-xl font-bold">{stats.totalStudents}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Skuteczność</p>
+                  <p className="text-sm text-gray-500">{t('stats.successRate')}</p>
                   <p className="text-xl font-bold">{stats.successRate}%</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Doświadczenie</p>
-                  <p className="text-xl font-bold">{profile.experience} lat</p>
+                  <p className="text-sm text-gray-500">{t('stats.experience')}</p>
+                  <p className="text-xl font-bold">{t('stats.years', { count: profile.experience })}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Godziny</p>
+                  <p className="text-sm text-gray-500">{t('stats.hours')}</p>
                   <p className="text-xl font-bold">{stats.totalHours.toLocaleString()}</p>
                 </div>
               </div>
@@ -249,8 +251,8 @@ export default function InstructorProfile() {
                   <FileText className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Dokumenty</h3>
-                  <p className="text-sm text-gray-600">Certyfikaty i licencje</p>
+                  <h3 className="font-semibold">{t('navigation.documents.title')}</h3>
+                  <p className="text-sm text-gray-600">{t('navigation.documents.subtitle')}</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -269,8 +271,8 @@ export default function InstructorProfile() {
                   <Shield className="w-6 h-6 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Ustawienia</h3>
-                  <p className="text-sm text-gray-600">Preferencje i bezpieczeństwo</p>
+                  <h3 className="font-semibold">{t('navigation.settings.title')}</h3>
+                  <p className="text-sm text-gray-600">{t('navigation.settings.subtitle')}</p>
                 </div>
               </div>
               <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -282,16 +284,16 @@ export default function InstructorProfile() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Przegląd</TabsTrigger>
-          <TabsTrigger value="personal">Dane osobowe</TabsTrigger>
-          <TabsTrigger value="professional">Dane zawodowe</TabsTrigger>
+          <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="personal">{t('tabs.personal')}</TabsTrigger>
+          <TabsTrigger value="professional">{t('tabs.professional')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="mt-6 space-y-6">
           {/* Performance Chart */}
           <Card>
             <CardHeader>
-              <CardTitle>Wydajność w ostatnich miesiącach</CardTitle>
+              <CardTitle>{t('performance.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -315,7 +317,7 @@ export default function InstructorProfile() {
           {/* Achievements */}
           <Card>
             <CardHeader>
-              <CardTitle>Ostatnie osiągnięcia</CardTitle>
+              <CardTitle>{t('achievements.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -328,7 +330,7 @@ export default function InstructorProfile() {
                       <h4 className="font-semibold">{achievement.title}</h4>
                       <p className="text-sm text-gray-600">{achievement.description}</p>
                       <p className="text-xs text-gray-500 mt-1">
-                        {format(new Date(achievement.date), 'dd MMMM yyyy', { locale: pl })}
+                        {format(new Date(achievement.date), 'dd MMMM yyyy', { locale: uk })}
                       </p>
                     </div>
                   </div>
@@ -341,12 +343,12 @@ export default function InstructorProfile() {
         <TabsContent value="personal" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Informacje osobiste</CardTitle>
+              <CardTitle>{t('personalInfo.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Imię</Label>
+                  <Label>{t('personalInfo.firstName')}</Label>
                   <Input
                     value={profile.firstName}
                     onChange={(e) => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
@@ -354,7 +356,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Nazwisko</Label>
+                  <Label>{t('personalInfo.lastName')}</Label>
                   <Input
                     value={profile.lastName}
                     onChange={(e) => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
@@ -362,7 +364,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Email</Label>
+                  <Label>{t('personalInfo.email')}</Label>
                   <Input
                     type="email"
                     value={profile.email}
@@ -371,7 +373,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Telefon</Label>
+                  <Label>{t('personalInfo.phone')}</Label>
                   <Input
                     value={profile.phone}
                     onChange={(e) => setProfile(prev => ({ ...prev, phone: e.target.value }))}
@@ -379,7 +381,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Data urodzenia</Label>
+                  <Label>{t('personalInfo.dateOfBirth')}</Label>
                   <Input
                     type="date"
                     value={profile.dateOfBirth}
@@ -388,7 +390,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Miasto</Label>
+                  <Label>{t('personalInfo.city')}</Label>
                   <Input
                     value={profile.city}
                     onChange={(e) => setProfile(prev => ({ ...prev, city: e.target.value }))}
@@ -396,7 +398,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <Label>Adres</Label>
+                  <Label>{t('personalInfo.address')}</Label>
                   <Input
                     value={profile.address}
                     onChange={(e) => setProfile(prev => ({ ...prev, address: e.target.value }))}
@@ -406,7 +408,7 @@ export default function InstructorProfile() {
               </div>
 
               <div className="mt-6">
-                <Label>O mnie</Label>
+                <Label>{t('personalInfo.bio')}</Label>
                 <Textarea
                   value={profile.bio}
                   onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
@@ -419,12 +421,12 @@ export default function InstructorProfile() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Kontakt awaryjny</CardTitle>
+              <CardTitle>{t('emergencyContact.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <Label>Imię i nazwisko</Label>
+                  <Label>{t('emergencyContact.name')}</Label>
                   <Input
                     value={profile.emergencyContact}
                     onChange={(e) => setProfile(prev => ({ ...prev, emergencyContact: e.target.value }))}
@@ -432,7 +434,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Telefon</Label>
+                  <Label>{t('emergencyContact.phone')}</Label>
                   <Input
                     value={profile.emergencyPhone}
                     onChange={(e) => setProfile(prev => ({ ...prev, emergencyPhone: e.target.value }))}
@@ -440,7 +442,7 @@ export default function InstructorProfile() {
                   />
                 </div>
                 <div>
-                  <Label>Relacja</Label>
+                  <Label>{t('emergencyContact.relation')}</Label>
                   <Input
                     value={profile.emergencyRelation}
                     onChange={(e) => setProfile(prev => ({ ...prev, emergencyRelation: e.target.value }))}
@@ -455,39 +457,39 @@ export default function InstructorProfile() {
         <TabsContent value="professional" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Informacje zawodowe</CardTitle>
+              <CardTitle>{t('professionalInfo.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Numer licencji</Label>
+                  <Label>{t('professionalInfo.licenseNumber')}</Label>
                   <Input value={profile.licenseNumber} disabled />
                 </div>
                 <div>
-                  <Label>Ważna do</Label>
+                  <Label>{t('professionalInfo.validUntil')}</Label>
                   <Input type="date" value={profile.licenseExpiry} disabled />
                 </div>
                 <div>
-                  <Label>Staż pracy</Label>
-                  <Input value={`${profile.experience} lat`} disabled />
+                  <Label>{t('professionalInfo.workExperience')}</Label>
+                  <Input value={t('stats.years', { count: profile.experience })} disabled />
                 </div>
                 <div>
-                  <Label>Typ zatrudnienia</Label>
+                  <Label>{t('professionalInfo.employmentType')}</Label>
                   <Select value={profile.employmentType} disabled={!isEditing}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="full-time">Pełny etat</SelectItem>
-                      <SelectItem value="part-time">Część etatu</SelectItem>
-                      <SelectItem value="contract">Kontrakt</SelectItem>
+                      <SelectItem value="full-time">{t('professionalInfo.employmentTypes.fullTime')}</SelectItem>
+                      <SelectItem value="part-time">{t('professionalInfo.employmentTypes.partTime')}</SelectItem>
+                      <SelectItem value="contract">{t('professionalInfo.employmentTypes.contract')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="mt-6">
-                <Label>Kategorie</Label>
+                <Label>{t('professionalInfo.categories')}</Label>
                 <div className="flex gap-2 mt-2">
                   {profile.categories.map(cat => (
                     <Badge key={cat} variant="outline">{cat}</Badge>
@@ -496,7 +498,7 @@ export default function InstructorProfile() {
               </div>
 
               <div className="mt-6">
-                <Label>Specjalizacje</Label>
+                <Label>{t('professionalInfo.specializations')}</Label>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {profile.specializations.map(spec => (
                     <Badge key={spec} variant="secondary">{spec}</Badge>
@@ -505,7 +507,7 @@ export default function InstructorProfile() {
               </div>
 
               <div className="mt-6">
-                <Label>Języki</Label>
+                <Label>{t('professionalInfo.languages')}</Label>
                 <div className="flex gap-2 mt-2">
                   {profile.languages.map(lang => (
                     <Badge key={lang}>{lang}</Badge>

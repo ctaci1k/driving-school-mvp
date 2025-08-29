@@ -1,4 +1,5 @@
-// /app/[locale]/instructor/vehicle/report-issue/page.tsx
+// app/[locale]/instructor/vehicle/report-issue/page.tsx
+// Сторінка повідомлення про проблему з транспортом
 
 'use client'
 
@@ -25,8 +26,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useTranslations } from 'next-intl'
 
 export default function ReportIssuePage() {
+  const t = useTranslations('instructor.vehicle.reportIssue')
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -55,53 +58,53 @@ export default function ReportIssuePage() {
   }
 
   const issueCategories = [
-    { value: 'engine', label: 'Silnik', icon: '🔧' },
-    { value: 'transmission', label: 'Skrzynia biegów', icon: '⚙️' },
-    { value: 'brakes', label: 'Hamulce', icon: '🛑' },
-    { value: 'suspension', label: 'Zawieszenie', icon: '🚗' },
-    { value: 'electrical', label: 'Elektryka', icon: '⚡' },
-    { value: 'lights', label: 'Oświetlenie', icon: '💡' },
-    { value: 'tires', label: 'Opony', icon: '⭕' },
-    { value: 'interior', label: 'Wnętrze', icon: '🪑' },
-    { value: 'exterior', label: 'Nadwozie', icon: '🚙' },
-    { value: 'fluids', label: 'Płyny', icon: '💧' },
-    { value: 'other', label: 'Inne', icon: '📝' }
+    { value: 'engine', label: t('form.category.options.engine'), icon: '🔧' },
+    { value: 'transmission', label: t('form.category.options.transmission'), icon: '⚙️' },
+    { value: 'brakes', label: t('form.category.options.brakes'), icon: '🛑' },
+    { value: 'suspension', label: t('form.category.options.suspension'), icon: '🚗' },
+    { value: 'electrical', label: t('form.category.options.electrical'), icon: '⚡' },
+    { value: 'lights', label: t('form.category.options.lights'), icon: '💡' },
+    { value: 'tires', label: t('form.category.options.tires'), icon: '⭕' },
+    { value: 'interior', label: t('form.category.options.interior'), icon: '🪑' },
+    { value: 'exterior', label: t('form.category.options.exterior'), icon: '🚙' },
+    { value: 'fluids', label: t('form.category.options.fluids'), icon: '💧' },
+    { value: 'other', label: t('form.category.options.other'), icon: '📝' }
   ]
 
   const severityLevels = [
     { 
       value: 'low', 
-      label: 'Niska', 
-      description: 'Można kontynuować pracę',
+      label: t('form.severity.levels.low.label'), 
+      description: t('form.severity.levels.low.description'),
       color: 'text-green-600 bg-green-50' 
     },
     { 
       value: 'medium', 
-      label: 'Średnia', 
-      description: 'Wymaga uwagi wkrótce',
+      label: t('form.severity.levels.medium.label'), 
+      description: t('form.severity.levels.medium.description'),
       color: 'text-yellow-600 bg-yellow-50' 
     },
     { 
       value: 'high', 
-      label: 'Wysoka', 
-      description: 'Wymaga natychmiastowej uwagi',
+      label: t('form.severity.levels.high.label'), 
+      description: t('form.severity.levels.high.description'),
       color: 'text-orange-600 bg-orange-50' 
     },
     { 
       value: 'critical', 
-      label: 'Krytyczna', 
-      description: 'Nie można używać pojazdu',
+      label: t('form.severity.levels.critical.label'), 
+      description: t('form.severity.levels.critical.description'),
       color: 'text-red-600 bg-red-50' 
     }
   ]
 
   const commonIssues = [
-    'Dziwny dźwięk podczas jazdy',
-    'Wibracje kierownicy',
-    'Trudności z uruchomieniem',
-    'Wyciek płynu',
-    'Problemy z hamowaniem',
-    'Światła nie działają prawidłowo'
+    t('form.description.commonIssues.strangeSound'),
+    t('form.description.commonIssues.steeringVibration'),
+    t('form.description.commonIssues.startingDifficulty'),
+    t('form.description.commonIssues.fluidLeak'),
+    t('form.description.commonIssues.brakingProblems'),
+    t('form.description.commonIssues.lightsNotWorking')
   ]
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -154,9 +157,13 @@ export default function ReportIssuePage() {
           <ChevronLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Zgłoś problem</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600">
-            {vehicle.make} {vehicle.model} • {vehicle.registrationNumber}
+            {t('vehicleInfo', {
+              make: vehicle.make,
+              model: vehicle.model,
+              registrationNumber: vehicle.registrationNumber
+            })}
           </p>
         </div>
       </div>
@@ -166,7 +173,7 @@ export default function ReportIssuePage() {
         <Alert className="border-red-200 bg-red-50">
           <AlertTriangle className="h-4 w-4 text-red-600" />
           <AlertDescription className="text-red-800">
-            <strong>Problem krytyczny!</strong> Po zgłoszeniu pojazd zostanie automatycznie wycofany z użytku do czasu naprawy.
+            <strong>{t('alerts.critical.title')}</strong> {t('alerts.critical.description')}
           </AlertDescription>
         </Alert>
       )}
@@ -174,21 +181,21 @@ export default function ReportIssuePage() {
       {/* Main Form */}
       <Card>
         <CardHeader>
-          <CardTitle>Szczegóły problemu</CardTitle>
+          <CardTitle>{t('form.title')}</CardTitle>
           <CardDescription>
-            Opisz dokładnie problem, aby mechanik mógł szybko go rozwiązać
+            {t('form.subtitle')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Category Selection */}
           <div>
-            <Label>Kategoria problemu *</Label>
+            <Label>{t('form.category.label')}</Label>
             <Select 
               value={issueData.category} 
               onValueChange={(value) => setIssueData(prev => ({ ...prev, category: value }))}
             >
               <SelectTrigger className="mt-2">
-                <SelectValue placeholder="Wybierz kategorię" />
+                <SelectValue placeholder={t('form.category.placeholder')} />
               </SelectTrigger>
               <SelectContent>
                 {issueCategories.map(cat => (
@@ -205,7 +212,7 @@ export default function ReportIssuePage() {
 
           {/* Severity Level */}
           <div>
-            <Label>Poziom krytyczności *</Label>
+            <Label>{t('form.severity.label')}</Label>
             <RadioGroup 
               value={issueData.severity} 
               onValueChange={(value) => setIssueData(prev => ({ ...prev, severity: value }))}
@@ -230,15 +237,15 @@ export default function ReportIssuePage() {
 
           {/* Description */}
           <div>
-            <Label>Opis problemu *</Label>
+            <Label>{t('form.description.label')}</Label>
             <Textarea
               value={issueData.description}
               onChange={(e) => setIssueData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Opisz szczegółowo problem..."
+              placeholder={t('form.description.placeholder')}
               className="mt-2 h-32"
             />
             <div className="flex flex-wrap gap-2 mt-2">
-              <p className="text-xs text-gray-500">Szybkie opcje:</p>
+              <p className="text-xs text-gray-500">{t('form.description.quickOptions')}</p>
               {commonIssues.map((issue, idx) => (
                 <Badge 
                   key={idx}
@@ -258,7 +265,7 @@ export default function ReportIssuePage() {
           {/* When and Where */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label>Kiedy wystąpił problem</Label>
+              <Label>{t('form.when.label')}</Label>
               <Input
                 type="datetime-local"
                 value={issueData.occurredAt}
@@ -267,13 +274,13 @@ export default function ReportIssuePage() {
               />
             </div>
             <div>
-              <Label>Lokalizacja</Label>
+              <Label>{t('form.location.label')}</Label>
               <div className="relative mt-2">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
                   value={issueData.location}
                   onChange={(e) => setIssueData(prev => ({ ...prev, location: e.target.value }))}
-                  placeholder="np. ul. Główna 15, Warszawa"
+                  placeholder={t('form.location.placeholder')}
                   className="pl-10"
                 />
               </div>
@@ -282,7 +289,7 @@ export default function ReportIssuePage() {
 
           {/* Current Mileage */}
           <div>
-            <Label>Aktualny przebieg (km) *</Label>
+            <Label>{t('form.mileage.label')}</Label>
             <div className="relative mt-2">
               <Gauge className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <Input
@@ -294,7 +301,7 @@ export default function ReportIssuePage() {
               />
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Ostatni znany: {vehicle.currentMileage.toLocaleString()} km
+              {t('form.mileage.lastKnown', { mileage: vehicle.currentMileage.toLocaleString() })}
             </p>
           </div>
 
@@ -308,8 +315,8 @@ export default function ReportIssuePage() {
                 }
               />
               <div>
-                <p className="font-medium">Problem wpływa na bezpieczną eksploatację</p>
-                <p className="text-sm text-gray-600">Pojazd może stwarzać zagrożenie</p>
+                <p className="font-medium">{t('form.checkboxes.affectsOperation.label')}</p>
+                <p className="text-sm text-gray-600">{t('form.checkboxes.affectsOperation.description')}</p>
               </div>
             </label>
 
@@ -321,15 +328,15 @@ export default function ReportIssuePage() {
                 }
               />
               <div>
-                <p className="font-medium">Wymaga natychmiastowej uwagi</p>
-                <p className="text-sm text-gray-600">Mechanik powinien sprawdzić jak najszybciej</p>
+                <p className="font-medium">{t('form.checkboxes.needsImmediate.label')}</p>
+                <p className="text-sm text-gray-600">{t('form.checkboxes.needsImmediate.description')}</p>
               </div>
             </label>
           </div>
 
           {/* Image Upload */}
           <div>
-            <Label>Zdjęcia problemu</Label>
+            <Label>{t('form.images.label')}</Label>
             <div className="mt-2 space-y-4">
               <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
                 {uploadedImages.map((img, idx) => (
@@ -354,7 +361,7 @@ export default function ReportIssuePage() {
                     className="h-24 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 hover:bg-blue-50 transition-colors"
                   >
                     <Camera className="w-6 h-6 text-gray-400" />
-                    <span className="text-xs text-gray-500 mt-1">Dodaj</span>
+                    <span className="text-xs text-gray-500 mt-1">{t('buttons.addPhoto')}</span>
                   </button>
                 )}
               </div>
@@ -369,18 +376,18 @@ export default function ReportIssuePage() {
               />
 
               <p className="text-xs text-gray-500">
-                Maksymalnie 6 zdjęć. Zdjęcia pomogą mechanikowi szybciej zidentyfikować problem.
+                {t('form.images.maxFiles')}
               </p>
             </div>
           </div>
 
           {/* Additional Notes */}
           <div>
-            <Label>Dodatkowe uwagi (opcjonalne)</Label>
+            <Label>{t('form.additionalNotes.label')}</Label>
             <Textarea
               value={issueData.additionalNotes}
               onChange={(e) => setIssueData(prev => ({ ...prev, additionalNotes: e.target.value }))}
-              placeholder="Inne istotne informacje..."
+              placeholder={t('form.additionalNotes.placeholder')}
               className="mt-2 h-20"
             />
           </div>
@@ -392,7 +399,7 @@ export default function ReportIssuePage() {
             onClick={() => router.back()}
             disabled={isSubmitting}
           >
-            Anuluj
+            {t('buttons.cancel')}
           </Button>
           <Button 
             onClick={handleSubmit}
@@ -402,12 +409,12 @@ export default function ReportIssuePage() {
             {isSubmitting ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Wysyłanie...
+                {t('buttons.submitting')}
               </>
             ) : (
               <>
                 <Send className="w-4 h-4 mr-2" />
-                Zgłoś problem
+                {t('buttons.submit')}
               </>
             )}
           </Button>
@@ -420,12 +427,12 @@ export default function ReportIssuePage() {
           <div className="flex gap-3">
             <Info className="w-5 h-5 text-blue-500 mt-0.5" />
             <div className="text-sm text-gray-600">
-              <p className="font-medium mb-1">Co się dzieje po zgłoszeniu?</p>
+              <p className="font-medium mb-1">{t('info.title')}</p>
               <ul className="space-y-1 ml-4">
-                <li>• Mechanik otrzymuje powiadomienie</li>
-                <li>• Problem jest analizowany i priorytetyzowany</li>
-                <li>• Otrzymasz informację o planowanej naprawie</li>
-                <li>• W przypadku problemu krytycznego pojazd jest blokowany</li>
+                <li>• {t('info.steps.notification')}</li>
+                <li>• {t('info.steps.analysis')}</li>
+                <li>• {t('info.steps.feedback')}</li>
+                <li>• {t('info.steps.critical')}</li>
               </ul>
             </div>
           </div>

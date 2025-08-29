@@ -4,6 +4,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   ArrowLeft,
   Send,
@@ -53,143 +54,11 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Link from 'next/link';
 
-// Mock conversation data
-const mockConversation = {
-  id: '1',
-  type: 'direct',
-  name: 'Piotr Nowak',
-  avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-  role: 'Instruktor',
-  online: true,
-  lastSeen: 'Online',
-  phone: '+48 601 234 567',
-  email: 'piotr.nowak@drivetime.pl'
-};
-
-const mockMessages = [
-  {
-    id: '1',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: 'Cześć! Jak Ci minęła dzisiejsza lekcja?',
-    time: '14:30',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'text'
-  },
-  {
-    id: '2',
-    sender: 'Ja',
-    content: 'Cześć! Bardzo dobrze, czuję że robię postępy w parkowaniu równoległym 😊',
-    time: '14:32',
-    date: '2024-08-27',
-    isMe: true,
-    status: 'read',
-    type: 'text'
-  },
-  {
-    id: '3',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: 'Świetnie! Rzeczywiście dzisiaj poszło Ci dużo lepiej niż ostatnio.',
-    time: '14:33',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'text'
-  },
-  {
-    id: '4',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: 'Przesyłam Ci materiały do powtórki przed następną lekcją',
-    time: '14:34',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'text'
-  },
-  {
-    id: '5',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: '',
-    attachment: {
-      type: 'pdf',
-      name: 'Parkowanie_równoległe_instrukcja.pdf',
-      size: '2.3 MB',
-      url: '#'
-    },
-    time: '14:34',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'file'
-  },
-  {
-    id: '6',
-    sender: 'Ja',
-    content: 'Dzięki! Na pewno przejrzę przed piątkiem',
-    time: '14:35',
-    date: '2024-08-27',
-    isMe: true,
-    status: 'read',
-    type: 'text'
-  },
-  {
-    id: '7',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: '',
-    lessonInfo: {
-      date: '2024-08-30',
-      time: '14:00-16:00',
-      type: 'Jazda w ruchu miejskim',
-      location: 'ul. Puławska 145',
-      vehicle: 'Toyota Yaris (WZ 12345)'
-    },
-    time: '14:36',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'lesson'
-  },
-  {
-    id: '8',
-    sender: 'Ja',
-    content: 'Ok, do zobaczenia w piątek! 👍',
-    time: '14:37',
-    date: '2024-08-27',
-    isMe: true,
-    status: 'delivered',
-    type: 'text'
-  },
-  {
-    id: '9',
-    sender: 'Piotr Nowak',
-    senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    content: 'Świetnie Ci poszło dzisiaj! Do zobaczenia na następnej lekcji.',
-    time: '16:45',
-    date: '2024-08-27',
-    isMe: false,
-    status: 'read',
-    type: 'text'
-  }
-];
-
-const quickReplies = [
-  'Ok, dziękuję!',
-  'Do zobaczenia!',
-  'Rozumiem',
-  'Czy mogę przełożyć?',
-  'Potrzebuję pomocy',
-  'Super!'
-];
-
 export default function ConversationPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations('student.conversation');
+  
   const [message, setMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -201,6 +70,140 @@ export default function ConversationPage() {
   const [showSearch, setShowSearch] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Mock conversation data
+  const mockConversation = {
+    id: '1',
+    type: 'direct',
+    name: 'Piotr Nowak',
+    avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+    role: t('role'),
+    online: true,
+    lastSeen: t('online'),
+    phone: '+48 601 234 567',
+    email: 'piotr.nowak@szkola-jazdy.pl'
+  };
+
+  const mockMessages = [
+    {
+      id: '1',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: t('messages.greeting'),
+      time: '14:30',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'text'
+    },
+    {
+      id: '2',
+      sender: 'Я',
+      content: t('messages.progressResponse'),
+      time: '14:32',
+      date: '2024-08-27',
+      isMe: true,
+      status: 'read',
+      type: 'text'
+    },
+    {
+      id: '3',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: t('messages.encouragement'),
+      time: '14:33',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'text'
+    },
+    {
+      id: '4',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: t('messages.sendingMaterials'),
+      time: '14:34',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'text'
+    },
+    {
+      id: '5',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: '',
+      attachment: {
+        type: 'pdf',
+        name: t('attachments.parkingInstructions'),
+        size: '2.3',
+        url: '#'
+      },
+      time: '14:34',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'file'
+    },
+    {
+      id: '6',
+      sender: 'Я',
+      content: t('messages.thanksReview'),
+      time: '14:35',
+      date: '2024-08-27',
+      isMe: true,
+      status: 'read',
+      type: 'text'
+    },
+    {
+      id: '7',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: '',
+      lessonInfo: {
+        date: '2024-08-30',
+        time: '14:00-16:00',
+        type: t('lessonCard.cityDriving'),
+        location: 'ul. Puławska 145, Warszawa',
+        vehicle: 'Toyota Yaris (WZ 12345)'
+      },
+      time: '14:36',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'lesson'
+    },
+    {
+      id: '8',
+      sender: 'Я',
+      content: t('messages.seeYouFriday'),
+      time: '14:37',
+      date: '2024-08-27',
+      isMe: true,
+      status: 'delivered',
+      type: 'text'
+    },
+    {
+      id: '9',
+      sender: 'Piotr Nowak',
+      senderAvatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      content: t('messages.greatJob'),
+      time: '16:45',
+      date: '2024-08-27',
+      isMe: false,
+      status: 'read',
+      type: 'text'
+    }
+  ];
+
+  const quickReplies = [
+    t('quickReplies.ok'),
+    t('quickReplies.seeYou'),
+    t('quickReplies.understood'),
+    t('quickReplies.canIReschedule'),
+    t('quickReplies.needHelp'),
+    t('quickReplies.great')
+  ];
 
   useEffect(() => {
     scrollToBottom();
@@ -242,9 +245,9 @@ export default function ConversationPage() {
     const today = new Date().toISOString().split('T')[0];
     const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
     
-    if (date === today) return 'Dzisiaj';
-    if (date === yesterday) return 'Wczoraj';
-    return date;
+    if (date === today) return t('dateLabels.today');
+    if (date === yesterday) return t('dateLabels.yesterday');
+    return new Date(date).toLocaleDateString('uk-UA');
   };
 
   return (
@@ -302,20 +305,20 @@ export default function ConversationPage() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
                     <Bell className="h-4 w-4 mr-2" />
-                    Wycisz
+                    {t('header.mute')}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Star className="h-4 w-4 mr-2" />
-                    Oznacz gwiazdką
+                    {t('header.star')}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Archive className="h-4 w-4 mr-2" />
-                    Archiwizuj
+                    {t('header.archive')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-red-600">
                     <Trash2 className="h-4 w-4 mr-2" />
-                    Usuń konwersację
+                    {t('header.deleteConversation')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -327,7 +330,7 @@ export default function ConversationPage() {
             <div className="mt-3 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Szukaj w konwersacji..."
+                placeholder={t('header.searchInConversation')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9 pr-9"
@@ -394,7 +397,7 @@ export default function ConversationPage() {
                             <FileText className="h-8 w-8" />
                             <div className="flex-1">
                               <p className="font-medium text-sm">{msg.attachment.name}</p>
-                              <p className="text-xs opacity-75">{msg.attachment.size}</p>
+                              <p className="text-xs opacity-75">{t('attachments.fileSize', { size: msg.attachment.size })}</p>
                             </div>
                             <Button variant="ghost" size="icon">
                               <Download className="h-4 w-4" />
@@ -404,7 +407,7 @@ export default function ConversationPage() {
 
                         {msg.type === 'lesson' && msg.lessonInfo && (
                           <div className="space-y-2 p-2 bg-white/10 rounded">
-                            <p className="font-semibold">Następna lekcja:</p>
+                            <p className="font-semibold">{t('lessonCard.nextLesson')}:</p>
                             <div className="space-y-1 text-sm">
                               <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
@@ -420,7 +423,7 @@ export default function ConversationPage() {
                               </div>
                             </div>
                             <Button size="sm" variant="secondary" className="w-full">
-                              Zobacz szczegóły
+                              {t('lessonCard.viewDetails')}
                             </Button>
                           </div>
                         )}
@@ -500,7 +503,7 @@ export default function ConversationPage() {
 
               <div className="flex-1">
                 <Textarea
-                  placeholder="Napisz wiadomość..."
+                  placeholder={t('input.placeholder')}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
@@ -536,7 +539,7 @@ export default function ConversationPage() {
           <Card className="w-80 rounded-none border-y-0 border-r-0">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Informacje</h3>
+                <h3 className="font-semibold">{t('info.title')}</h3>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -560,11 +563,11 @@ export default function ConversationPage() {
 
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Telefon</p>
+                  <p className="text-sm text-gray-500 mb-1">{t('info.phone')}</p>
                   <p className="font-medium">{mockConversation.phone}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Email</p>
+                  <p className="text-sm text-gray-500 mb-1">{t('info.email')}</p>
                   <p className="font-medium">{mockConversation.email}</p>
                 </div>
               </div>
@@ -572,12 +575,12 @@ export default function ConversationPage() {
               <Separator />
 
               <div>
-                <h4 className="font-medium mb-3">Udostępnione pliki</h4>
+                <h4 className="font-medium mb-3">{t('attachments.sharedFiles')}</h4>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 p-2 bg-gray-50 rounded">
                     <FileText className="h-4 w-4 text-blue-500" />
                     <div className="flex-1 text-sm">
-                      <p className="font-medium">Parkowanie_instrukcja.pdf</p>
+                      <p className="font-medium">{t('attachments.parkingInstructions')}</p>
                       <p className="text-xs text-gray-500">2.3 MB • 27.08.2024</p>
                     </div>
                   </div>
@@ -587,12 +590,12 @@ export default function ConversationPage() {
               <Separator />
 
               <div>
-                <h4 className="font-medium mb-3">Nadchodzące lekcje</h4>
+                <h4 className="font-medium mb-3">{t('info.upcomingLessons')}</h4>
                 <Alert>
                   <Calendar className="h-4 w-4" />
                   <AlertDescription>
                     <strong>30.08.2024, 14:00-16:00</strong><br />
-                    Jazda w ruchu miejskim
+                    {t('lessonCard.cityDriving')}
                   </AlertDescription>
                 </Alert>
               </div>

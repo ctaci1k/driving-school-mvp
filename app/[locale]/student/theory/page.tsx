@@ -4,6 +4,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import { 
   BookOpen, 
   Video, 
@@ -27,6 +29,9 @@ import { Badge } from '@/components/ui/badge';
 import ProgressBar from '@/components/ui/ProgressBar';
 
 export default function TheoryPage() {
+  const t = useTranslations('student.theory');
+  const params = useParams();
+  const locale = params.locale as string;
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const overallProgress = 75;
@@ -37,20 +42,20 @@ export default function TheoryPage() {
   const averageScore = 82;
 
   const categories = [
-    { id: 'all', name: 'Wszystkie', count: 24 },
-    { id: 'rules', name: 'Przepisy ruchu', count: 8 },
-    { id: 'signs', name: 'Znaki drogowe', count: 6 },
-    { id: 'safety', name: 'Bezpieczeństwo', count: 5 },
-    { id: 'mechanics', name: 'Budowa pojazdu', count: 5 }
+    { id: 'all', name: t('categories.all'), count: 24 },
+    { id: 'rules', name: t('categories.rules'), count: 8 },
+    { id: 'signs', name: t('categories.signs'), count: 6 },
+    { id: 'safety', name: t('categories.safety'), count: 5 },
+    { id: 'mechanics', name: t('categories.mechanics'), count: 5 }
   ];
 
   const modules = [
     {
       id: 1,
-      title: 'Podstawowe przepisy ruchu',
+      title: t('modules.basicRules.title'),
       category: 'rules',
-      description: 'Zasady pierwszeństwa, ograniczenia prędkości',
-      duration: '2 godz.',
+      description: t('modules.basicRules.description'),
+      duration: t('modules.duration', {hours: '2'}),
       lessons: 4,
       completedLessons: 4,
       status: 'completed',
@@ -59,10 +64,10 @@ export default function TheoryPage() {
     },
     {
       id: 2,
-      title: 'Znaki drogowe - ostrzegawcze',
+      title: t('modules.warningSignsModule.title'),
       category: 'signs',
-      description: 'Znaki ostrzegające o niebezpieczeństwach',
-      duration: '1.5 godz.',
+      description: t('modules.warningSignsModule.description'),
+      duration: t('modules.duration', {hours: '1.5'}),
       lessons: 3,
       completedLessons: 3,
       status: 'completed',
@@ -71,10 +76,10 @@ export default function TheoryPage() {
     },
     {
       id: 3,
-      title: 'Znaki drogowe - nakazu i zakazu',
+      title: t('modules.mandatoryProhibitorySigns.title'),
       category: 'signs',
-      description: 'Znaki nakazujące i zabraniające',
-      duration: '2 godz.',
+      description: t('modules.mandatoryProhibitorySigns.description'),
+      duration: t('modules.duration', {hours: '2'}),
       lessons: 3,
       completedLessons: 2,
       status: 'in-progress',
@@ -83,10 +88,10 @@ export default function TheoryPage() {
     },
     {
       id: 4,
-      title: 'Manewry i parkowanie',
+      title: t('modules.maneuversParking.title'),
       category: 'rules',
-      description: 'Zasady wykonywania manewrów',
-      duration: '1.5 godz.',
+      description: t('modules.maneuversParking.description'),
+      duration: t('modules.duration', {hours: '1.5'}),
       lessons: 4,
       completedLessons: 4,
       status: 'completed',
@@ -95,10 +100,10 @@ export default function TheoryPage() {
     },
     {
       id: 5,
-      title: 'Jazda w różnych warunkach',
+      title: t('modules.drivingConditions.title'),
       category: 'safety',
-      description: 'Jazda nocą, w deszczu, zimą',
-      duration: '2 godz.',
+      description: t('modules.drivingConditions.description'),
+      duration: t('modules.duration', {hours: '2'}),
       lessons: 5,
       completedLessons: 3,
       status: 'in-progress',
@@ -107,10 +112,10 @@ export default function TheoryPage() {
     },
     {
       id: 6,
-      title: 'Pierwsza pomoc',
+      title: t('modules.firstAid.title'),
       category: 'safety',
-      description: 'Podstawy udzielania pierwszej pomocy',
-      duration: '1 godz.',
+      description: t('modules.firstAid.description'),
+      duration: t('modules.duration', {hours: '1'}),
       lessons: 2,
       completedLessons: 0,
       status: 'locked',
@@ -119,10 +124,10 @@ export default function TheoryPage() {
     },
     {
       id: 7,
-      title: 'Budowa i obsługa pojazdu',
+      title: t('modules.vehicleMaintenance.title'),
       category: 'mechanics',
-      description: 'Podstawowa wiedza techniczna',
-      duration: '1.5 godz.',
+      description: t('modules.vehicleMaintenance.description'),
+      duration: t('modules.duration', {hours: '1.5'}),
       lessons: 3,
       completedLessons: 2,
       status: 'in-progress',
@@ -131,10 +136,10 @@ export default function TheoryPage() {
     },
     {
       id: 8,
-      title: 'Dokumenty i ubezpieczenia',
+      title: t('modules.documentsInsurance.title'),
       category: 'rules',
-      description: 'Wymagane dokumenty, OC, AC',
-      duration: '1 godz.',
+      description: t('modules.documentsInsurance.description'),
+      duration: t('modules.duration', {hours: '1'}),
       lessons: 2,
       completedLessons: 0,
       status: 'locked',
@@ -146,37 +151,37 @@ export default function TheoryPage() {
   const upcomingClasses = [
     {
       id: 1,
-      title: 'Znaki drogowe - nakazu i zakazu',
+      title: t('modules.mandatoryProhibitorySigns.title'),
       date: '2024-01-25',
       time: '16:00-18:00',
       instructor: 'mgr Jan Kowalski',
       room: 'Sala 3',
-      type: 'wykład'
+      type: t('upcomingClasses.types.lecture')
     },
     {
       id: 2,
-      title: 'Jazda w różnych warunkach',
+      title: t('modules.drivingConditions.title'),
       date: '2024-01-26',
       time: '18:00-20:00',
       instructor: 'mgr Anna Nowak',
       room: 'Sala 1',
-      type: 'warsztaty'
+      type: t('upcomingClasses.types.workshop')
     },
     {
       id: 3,
-      title: 'Budowa i obsługa pojazdu',
+      title: t('modules.vehicleMaintenance.title'),
       date: '2024-01-27',
       time: '14:00-15:30',
       instructor: 'inż. Piotr Wiśniewski',
       room: 'Warsztat',
-      type: 'praktyka'
+      type: t('upcomingClasses.types.practice')
     }
   ];
 
   const recentTests = [
-    { name: 'Test z przepisów ruchu', score: 92, maxScore: 100, date: '2024-01-20' },
-    { name: 'Test ze znaków ostrzegawczych', score: 44, maxScore: 50, date: '2024-01-18' },
-    { name: 'Test z manewrów', score: 38, maxScore: 45, date: '2024-01-15' }
+    { name: t('recentTests.rulesTest'), score: 92, maxScore: 100, date: '2024-01-20' },
+    { name: t('recentTests.warningSignsTest'), score: 44, maxScore: 50, date: '2024-01-18' },
+    { name: t('recentTests.maneuversTest'), score: 38, maxScore: 45, date: '2024-01-15' }
   ];
 
   const filteredModules = modules.filter(
@@ -186,11 +191,11 @@ export default function TheoryPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-100 text-green-700">Ukończony</Badge>;
+        return <Badge className="bg-green-100 text-green-700">{t('status.completed')}</Badge>;
       case 'in-progress':
-        return <Badge className="bg-blue-100 text-blue-700">W trakcie</Badge>;
+        return <Badge className="bg-blue-100 text-blue-700">{t('status.inProgress')}</Badge>;
       case 'locked':
-        return <Badge className="bg-gray-100 text-gray-500">Zablokowany</Badge>;
+        return <Badge className="bg-gray-100 text-gray-500">{t('status.locked')}</Badge>;
       default:
         return null;
     }
@@ -201,20 +206,20 @@ export default function TheoryPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kurs teoretyczny</h1>
-          <p className="text-gray-600 mt-1">Przygotowanie do egzaminu teoretycznego</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/pl/student/theory/tests">
+          <Link href={`/${locale}/student/theory/tests`}>
             <Button variant="outline" className="gap-2">
               <FileText className="h-4 w-4" />
-              Testy próbne
+              {t('buttons.practiceTests')}
             </Button>
           </Link>
-          <Link href="/pl/student/theory/materials">
+          <Link href={`/${locale}/student/theory/materials`}>
             <Button className="gap-2">
               <BookOpen className="h-4 w-4" />
-              Materiały
+              {t('buttons.materials')}
             </Button>
           </Link>
         </div>
@@ -225,7 +230,7 @@ export default function TheoryPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Postęp kursu</span>
+              <span className="text-sm text-gray-600">{t('progress.courseProgress')}</span>
               <TrendingUp className="h-4 w-4 text-blue-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{overallProgress}%</p>
@@ -234,29 +239,29 @@ export default function TheoryPage() {
           
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Ukończone lekcje</span>
+              <span className="text-sm text-gray-600">{t('progress.completedLessons')}</span>
               <CheckCircle2 className="h-4 w-4 text-green-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{completedLessons}/{totalLessons}</p>
-            <p className="text-xs text-gray-500 mt-1">Pozostało {totalLessons - completedLessons} lekcji</p>
+            <p className="text-xs text-gray-500 mt-1">{t('progress.remaining', {count: totalLessons - completedLessons})}</p>
           </div>
           
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Godziny teorii</span>
+              <span className="text-sm text-gray-600">{t('progress.theoryHours')}</span>
               <Clock className="h-4 w-4 text-purple-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{hoursCompleted}h/{totalHours}h</p>
-            <p className="text-xs text-gray-500 mt-1">Wymagane minimum</p>
+            <p className="text-xs text-gray-500 mt-1">{t('progress.requiredMinimum')}</p>
           </div>
           
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Średni wynik</span>
+              <span className="text-sm text-gray-600">{t('progress.averageScore')}</span>
               <Star className="h-4 w-4 text-yellow-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{averageScore}%</p>
-            <p className="text-xs text-gray-500 mt-1">Z testów kontrolnych</p>
+            <p className="text-xs text-gray-500 mt-1">{t('progress.fromTests')}</p>
           </div>
         </div>
       </div>
@@ -304,7 +309,7 @@ export default function TheoryPage() {
 
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600">Postęp lekcji</span>
+                <span className="text-gray-600">{t('lessonProgress')}</span>
                 <span className="font-medium">{module.completedLessons}/{module.lessons}</span>
               </div>
               <ProgressBar 
@@ -314,7 +319,7 @@ export default function TheoryPage() {
 
               {module.status === 'completed' && (
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-sm text-gray-600">Wynik testu</span>
+                  <span className="text-sm text-gray-600">{t('testResult')}</span>
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 text-yellow-500 fill-current" />
                     <span className="font-semibold text-gray-900">{module.score}%</span>
@@ -325,7 +330,7 @@ export default function TheoryPage() {
               {module.nextClass && (
                 <div className="flex items-center gap-2 pt-2 text-sm text-blue-600">
                   <Calendar className="h-4 w-4" />
-                  <span>Następne zajęcia: {module.nextClass}</span>
+                  <span>{t('nextClass')}: {module.nextClass}</span>
                 </div>
               )}
 
@@ -336,7 +341,7 @@ export default function TheoryPage() {
                 </span>
                 {module.status !== 'locked' && (
                   <Button size="sm" variant={module.status === 'completed' ? 'outline' : 'default'}>
-                    {module.status === 'completed' ? 'Powtórz' : 'Kontynuuj'}
+                    {module.status === 'completed' ? t('buttons.repeat') : t('buttons.continue')}
                     <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
                 )}
@@ -351,9 +356,9 @@ export default function TheoryPage() {
         {/* Upcoming Classes */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Nadchodzące zajęcia</h2>
-            <Link href="/pl/student/theory/classes" className="text-sm text-blue-600 hover:text-blue-700">
-              Zobacz wszystkie
+            <h2 className="text-lg font-semibold text-gray-900">{t('upcomingClasses.title')}</h2>
+            <Link href={`/${locale}/student/theory/classes`} className="text-sm text-blue-600 hover:text-blue-700">
+              {t('buttons.viewAll')}
             </Link>
           </div>
           <div className="space-y-3">
@@ -387,9 +392,9 @@ export default function TheoryPage() {
         {/* Recent Tests */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Ostatnie testy</h2>
-            <Link href="/pl/student/theory/tests" className="text-sm text-blue-600 hover:text-blue-700">
-              Wszystkie testy
+            <h2 className="text-lg font-semibold text-gray-900">{t('recentTests.title')}</h2>
+            <Link href={`/${locale}/student/theory/tests`} className="text-sm text-blue-600 hover:text-blue-700">
+              {t('buttons.allTests')}
             </Link>
           </div>
           <div className="space-y-3">
@@ -413,10 +418,10 @@ export default function TheoryPage() {
               </div>
             ))}
           </div>
-          <Link href="/pl/student/theory/tests">
+          <Link href={`/${locale}/student/theory/tests`}>
             <Button variant="outline" className="w-full mt-4">
               <PlayCircle className="h-4 w-4 mr-2" />
-              Rozpocznij nowy test
+              {t('buttons.startNewTest')}
             </Button>
           </Link>
         </div>
@@ -427,12 +432,12 @@ export default function TheoryPage() {
         <div className="flex items-start gap-3">
           <AlertCircle className="h-5 w-5 text-green-600 mt-0.5" />
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Wskazówki do nauki</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">{t('studyTips.title')}</h3>
             <ul className="space-y-1 text-sm text-gray-600">
-              <li>• Ucz się systematycznie - 30 minut dziennie to lepiej niż 3 godziny raz w tygodniu</li>
-              <li>• Rozwiązuj testy próbne regularnie, aby śledzić postępy</li>
-              <li>• Zwróć szczególną uwagę na znaki drogowe - to 30% pytań na egzaminie</li>
-              <li>• Egzamin wymaga minimum 68 punktów z 74 możliwych</li>
+              <li>• {t('studyTips.tip1')}</li>
+              <li>• {t('studyTips.tip2')}</li>
+              <li>• {t('studyTips.tip3')}</li>
+              <li>• {t('studyTips.tip4')}</li>
             </ul>
           </div>
         </div>

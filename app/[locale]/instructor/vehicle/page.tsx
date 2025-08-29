@@ -1,4 +1,5 @@
-// /app/[locale]/instructor/vehicle/page.tsx
+// app/[locale]/instructor/vehicle/page.tsx
+// Головна сторінка керування транспортним засобом інструктора
 
 'use client'
 
@@ -33,9 +34,11 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
 
 export default function InstructorVehicle() {
+  const t = useTranslations('instructor.vehicle.main')
   const router = useRouter()
   const [mileageInput, setMileageInput] = useState('')
   const [fuelInput, setFuelInput] = useState('')
@@ -48,9 +51,9 @@ export default function InstructorVehicle() {
     year: 2020,
     registrationNumber: 'AA 1234 AA',
     vin: 'JT2BG22K1Y0123456',
-    color: 'Srebrny',
-    transmission: 'Manualna',
-    fuelType: 'Benzyna',
+    color: 'Сріблястий',
+    transmission: 'manual',
+    fuelType: 'gasoline',
     engineSize: '1.8L',
     
     // Current status
@@ -121,8 +124,8 @@ export default function InstructorVehicle() {
     {
       id: 1,
       date: '2024-01-25',
-      category: 'Opony',
-      description: 'Niskie ciśnienie w przednim lewym kole',
+      category: 'Шини',
+      description: 'Низький тиск у передньому лівому колесі',
       severity: 'low',
       status: 'resolved',
       resolvedDate: '2024-01-25'
@@ -130,8 +133,8 @@ export default function InstructorVehicle() {
     {
       id: 2,
       date: '2024-01-20',
-      category: 'Oświetlenie',
-      description: 'Nie działa lewy reflektor mijania',
+      category: 'Освітлення',
+      description: 'Не працює ліва фара ближнього світла',
       severity: 'medium',
       status: 'resolved',
       resolvedDate: '2024-01-21'
@@ -143,18 +146,18 @@ export default function InstructorVehicle() {
     {
       id: 1,
       date: '2024-01-15',
-      type: 'Przegląd okresowy',
+      type: 'periodicInspection',
       mileage: 120000,
       cost: 3500,
-      items: ['Wymiana oleju', 'Wymiana filtrów', 'Kontrola hamulców']
+      items: ['oilChange', 'filterChange', 'brakeCheck']
     },
     {
       id: 2,
       date: '2023-10-20',
-      type: 'Wymiana opon',
+      type: 'tireChange',
       mileage: 115000,
       cost: 8000,
-      items: ['Opony zimowe (4 szt.)']
+      items: ['winterTires']
     }
   ]
 
@@ -172,22 +175,26 @@ export default function InstructorVehicle() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mój pojazd</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            {vehicle.make} {vehicle.model} • {vehicle.registrationNumber}
+            {t('vehicleInfo', {
+              make: vehicle.make,
+              model: vehicle.model,
+              registrationNumber: vehicle.registrationNumber
+            })}
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Download className="w-4 h-4 mr-2" />
-            Raport
+            {t('buttons.report')}
           </Button>
           <Button 
             variant="destructive"
             onClick={() => router.push('/instructor/vehicle/report-issue')}
           >
             <AlertTriangle className="w-4 h-4 mr-2" />
-            Zgłoś problem
+            {t('buttons.reportIssue')}
           </Button>
         </div>
       </div>
@@ -195,41 +202,41 @@ export default function InstructorVehicle() {
       {/* Vehicle Overview */}
       <Card>
         <CardHeader>
-          <CardTitle>Informacje o pojeździe</CardTitle>
+          <CardTitle>{t('overview.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <p className="text-sm text-gray-500">Marka/Model</p>
+              <p className="text-sm text-gray-500">{t('overview.make')}</p>
               <p className="font-semibold">{vehicle.make} {vehicle.model}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Rok produkcji</p>
+              <p className="text-sm text-gray-500">{t('overview.year')}</p>
               <p className="font-semibold">{vehicle.year}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Skrzynia biegów</p>
-              <p className="font-semibold">{vehicle.transmission}</p>
+              <p className="text-sm text-gray-500">{t('overview.transmission')}</p>
+              <p className="font-semibold">{t(`overview.transmissionTypes.${vehicle.transmission}`)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Paliwo</p>
-              <p className="font-semibold">{vehicle.fuelType}</p>
+              <p className="text-sm text-gray-500">{t('overview.fuel')}</p>
+              <p className="font-semibold">{t(`overview.fuelTypes.${vehicle.fuelType}`)}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Kolor</p>
+              <p className="text-sm text-gray-500">{t('overview.color')}</p>
               <p className="font-semibold">{vehicle.color}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Pojemność silnika</p>
+              <p className="text-sm text-gray-500">{t('overview.engineSize')}</p>
               <p className="font-semibold">{vehicle.engineSize}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">VIN</p>
+              <p className="text-sm text-gray-500">{t('overview.vin')}</p>
               <p className="font-semibold text-xs">{vehicle.vin}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500">Status</p>
-              <Badge variant="default">Aktywny</Badge>
+              <p className="text-sm text-gray-500">{t('overview.status')}</p>
+              <Badge variant="default">{t('overview.statusActive')}</Badge>
             </div>
           </div>
         </CardContent>
@@ -240,29 +247,29 @@ export default function InstructorVehicle() {
         {/* Mileage */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Przebieg</CardTitle>
+            <CardTitle className="text-base">{t('mileage.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
                 <div className="flex items-baseline justify-between mb-2">
                   <span className="text-3xl font-bold">{vehicle.currentMileage}</span>
-                  <span className="text-sm text-gray-500">km</span>
+                  <span className="text-sm text-gray-500">{t('mileage.km')}</span>
                 </div>
-                <p className="text-sm text-gray-600">+{vehicle.todayMileage} km dzisiaj</p>
+                <p className="text-sm text-gray-600">{t('mileage.today', { km: vehicle.todayMileage })}</p>
               </div>
 
               <div>
-                <Label>Aktualizuj przebieg</Label>
+                <Label>{t('mileage.updateLabel')}</Label>
                 <div className="flex gap-2 mt-2">
                   <Input
                     type="number"
-                    placeholder="Nowy przebieg"
+                    placeholder={t('mileage.placeholder')}
                     value={mileageInput}
                     onChange={(e) => setMileageInput(e.target.value)}
                   />
                   <Button onClick={handleUpdateMileage} disabled={!mileageInput}>
-                    Aktualizuj
+                    {t('buttons.update')}
                   </Button>
                 </div>
               </div>
@@ -273,7 +280,7 @@ export default function InstructorVehicle() {
         {/* Fuel */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Paliwo</CardTitle>
+            <CardTitle className="text-base">{t('fuel.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -284,13 +291,13 @@ export default function InstructorVehicle() {
                 </div>
                 <Progress value={vehicle.fuelLevel} className={`h-3 ${vehicle.fuelLevel < 25 ? 'bg-red-100' : ''}`} />
                 {vehicle.fuelLevel < 25 && (
-                  <p className="text-sm text-red-600 mt-2">Niski poziom paliwa!</p>
+                  <p className="text-sm text-red-600 mt-2">{t('fuel.lowLevel')}</p>
                 )}
               </div>
 
               <div>
-                <Label>Zużycie</Label>
-                <p className="text-sm text-gray-600 mt-1">7.2 l/100km (średnie)</p>
+                <Label>{t('fuel.consumption')}</Label>
+                <p className="text-sm text-gray-600 mt-1">{t('fuel.average', { value: '7.2' })}</p>
               </div>
             </div>
           </CardContent>
@@ -299,7 +306,7 @@ export default function InstructorVehicle() {
         {/* Health */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Stan pojazdu</CardTitle>
+            <CardTitle className="text-base">{t('health.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -318,15 +325,15 @@ export default function InstructorVehicle() {
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Silnik</span>
+                  <span className="text-gray-600">{t('health.engine')}</span>
                   <span className="font-medium">{vehicle.engineHealth}%</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Hamulce</span>
+                  <span className="text-gray-600">{t('health.brakes')}</span>
                   <span className="font-medium text-yellow-600">{vehicle.brakesHealth}%</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Opony</span>
+                  <span className="text-gray-600">{t('health.tires')}</span>
                   <span className="font-medium text-yellow-600">{vehicle.tiresHealth}%</span>
                 </div>
               </div>
@@ -340,15 +347,18 @@ export default function InstructorVehicle() {
         {/* Upcoming Maintenance */}
         <Card>
           <CardHeader>
-            <CardTitle>Nadchodzące serwisowanie</CardTitle>
+            <CardTitle>{t('maintenance.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <Alert>
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Przegląd okresowy</AlertTitle>
+                <AlertTitle>{t('maintenance.periodicInspection')}</AlertTitle>
                 <AlertDescription>
-                  Za {vehicle.nextServiceMileage - vehicle.currentMileage} km lub {format(new Date(vehicle.nextServiceDate), 'd MMMM', { locale: pl })}
+                  {t('maintenance.inKmOrDate', {
+                    km: vehicle.nextServiceMileage - vehicle.currentMileage,
+                    date: format(new Date(vehicle.nextServiceDate), 'd MMMM', { locale: uk })
+                  })}
                 </AlertDescription>
               </Alert>
 
@@ -359,8 +369,8 @@ export default function InstructorVehicle() {
                       <Droplets className="w-4 h-4 text-blue-500" />
                     </div>
                     <div>
-                      <p className="font-medium">Wymiana oleju</p>
-                      <p className="text-sm text-gray-500">Za {vehicle.oilChangeIn} km</p>
+                      <p className="font-medium">{t('maintenance.oilChange')}</p>
+                      <p className="text-sm text-gray-500">{t('maintenance.inKm', { km: vehicle.oilChangeIn })}</p>
                     </div>
                   </div>
                   <Progress value={75} className="w-20 h-2" />
@@ -372,8 +382,8 @@ export default function InstructorVehicle() {
                       <RefreshCw className="w-4 h-4 text-green-500" />
                     </div>
                     <div>
-                      <p className="font-medium">Rotacja opon</p>
-                      <p className="text-sm text-gray-500">Za {vehicle.tireRotationIn} km</p>
+                      <p className="font-medium">{t('maintenance.tireRotation')}</p>
+                      <p className="text-sm text-gray-500">{t('maintenance.inKm', { km: vehicle.tireRotationIn })}</p>
                     </div>
                   </div>
                   <Progress value={85} className="w-20 h-2" />
@@ -386,7 +396,7 @@ export default function InstructorVehicle() {
         {/* Documents */}
         <Card>
           <CardHeader>
-            <CardTitle>Dokumenty</CardTitle>
+            <CardTitle>{t('documents.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -394,12 +404,12 @@ export default function InstructorVehicle() {
                 <div className="flex items-center gap-3">
                   <Shield className="w-5 h-5 text-blue-500" />
                   <div>
-                    <p className="font-medium">Ubezpieczenie</p>
-                    <p className="text-sm text-gray-500">Do {format(new Date(vehicle.insuranceExpiry), 'dd.MM.yyyy')}</p>
+                    <p className="font-medium">{t('documents.insurance')}</p>
+                    <p className="text-sm text-gray-500">{t('documents.validUntil', { date: format(new Date(vehicle.insuranceExpiry), 'dd.MM.yyyy') })}</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-green-600">
-                  Ważne
+                  {t('documents.valid')}
                 </Badge>
               </div>
 
@@ -407,12 +417,12 @@ export default function InstructorVehicle() {
                 <div className="flex items-center gap-3">
                   <FileCheck className="w-5 h-5 text-green-500" />
                   <div>
-                    <p className="font-medium">Przegląd techniczny</p>
-                    <p className="text-sm text-gray-500">Do {format(new Date(vehicle.inspectionExpiry), 'dd.MM.yyyy')}</p>
+                    <p className="font-medium">{t('documents.technicalInspection')}</p>
+                    <p className="text-sm text-gray-500">{t('documents.validUntil', { date: format(new Date(vehicle.inspectionExpiry), 'dd.MM.yyyy') })}</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-green-600">
-                  Ważny
+                  {t('documents.valid')}
                 </Badge>
               </div>
 
@@ -420,12 +430,12 @@ export default function InstructorVehicle() {
                 <div className="flex items-center gap-3">
                   <FileText className="w-5 h-5 text-purple-500" />
                   <div>
-                    <p className="font-medium">Rejestracja</p>
-                    <p className="text-sm text-gray-500">Do {format(new Date(vehicle.registrationExpiry), 'dd.MM.yyyy')}</p>
+                    <p className="font-medium">{t('documents.registration')}</p>
+                    <p className="text-sm text-gray-500">{t('documents.validUntil', { date: format(new Date(vehicle.registrationExpiry), 'dd.MM.yyyy') })}</p>
                   </div>
                 </div>
                 <Badge variant="outline" className="text-green-600">
-                  Ważna
+                  {t('documents.validFemale')}
                 </Badge>
               </div>
             </div>
@@ -436,17 +446,17 @@ export default function InstructorVehicle() {
       {/* Tabs for detailed information */}
       <Tabs defaultValue="checklist" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="checklist">Codzienna kontrola</TabsTrigger>
-          <TabsTrigger value="history">Historia</TabsTrigger>
-          <TabsTrigger value="statistics">Statystyki</TabsTrigger>
-          <TabsTrigger value="maintenance">Serwisowanie</TabsTrigger>
+          <TabsTrigger value="checklist">{t('tabs.checklist')}</TabsTrigger>
+          <TabsTrigger value="history">{t('tabs.history')}</TabsTrigger>
+          <TabsTrigger value="statistics">{t('tabs.statistics')}</TabsTrigger>
+          <TabsTrigger value="maintenance">{t('tabs.maintenance')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="checklist" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Codzienna kontrola</CardTitle>
-              <CardDescription>Sprawdź wszystkie punkty przed rozpoczęciem pracy</CardDescription>
+              <CardTitle>{t('dailyChecklist.title')}</CardTitle>
+              <CardDescription>{t('dailyChecklist.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -463,16 +473,7 @@ export default function InstructorVehicle() {
                         }
                       />
                       <span className="flex-1">
-                        {key === 'exteriorInspection' && 'Kontrola zewnętrzna nadwozia'}
-                        {key === 'interiorCleanliness' && 'Czystość wnętrza'}
-                        {key === 'lightsCheck' && 'Sprawdzenie wszystkich świateł'}
-                        {key === 'tiresCheck' && 'Stan opon i ciśnienie'}
-                        {key === 'fluidsCheck' && 'Poziom płynów'}
-                        {key === 'brakesTest' && 'Test hamulców'}
-                        {key === 'documentsPresent' && 'Obecność dokumentów'}
-                        {key === 'firstAidKit' && 'Apteczka'}
-                        {key === 'fireExtinguisher' && 'Gaśnica'}
-                        {key === 'warningTriangle' && 'Trójkąt ostrzegawczy'}
+                        {t(`dailyChecklist.items.${key}`)}
                       </span>
                     </label>
                   ))}
@@ -484,7 +485,7 @@ export default function InstructorVehicle() {
                   disabled={!Object.values(dailyChecks).every(v => v)}
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Potwierdź kontrolę
+                  {t('buttons.confirmCheck')}
                 </Button>
               </div>
             </CardContent>
@@ -494,7 +495,7 @@ export default function InstructorVehicle() {
         <TabsContent value="history" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Historia przebiegu</CardTitle>
+              <CardTitle>{t('history.mileageHistory')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={250}>
@@ -503,7 +504,7 @@ export default function InstructorVehicle() {
                   <XAxis dataKey="date" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="daily" stroke="#3B82F6" name="Dzienny przebieg (km)" />
+                  <Line type="monotone" dataKey="daily" stroke="#3B82F6" name={t('history.dailyMileage')} />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -511,7 +512,7 @@ export default function InstructorVehicle() {
 
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Ostatnie problemy</CardTitle>
+              <CardTitle>{t('history.recentIssues')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -525,19 +526,17 @@ export default function InstructorVehicle() {
                           issue.severity === 'medium' ? 'outline' :
                           'destructive'
                         }>
-                          {issue.severity === 'low' ? 'Niska' :
-                           issue.severity === 'medium' ? 'Średnia' :
-                           'Wysoka'}
+                          {t(`history.severity${issue.severity.charAt(0).toUpperCase() + issue.severity.slice(1)}`)}
                         </Badge>
                       </div>
                       <p className="text-sm text-gray-600">{issue.description}</p>
                       <p className="text-xs text-gray-500 mt-1">
                         {format(new Date(issue.date), 'dd.MM.yyyy')}
-                        {issue.status === 'resolved' && ` • Rozwiązano ${format(new Date(issue.resolvedDate), 'dd.MM.yyyy')}`}
+                        {issue.status === 'resolved' && ` • ${t('history.resolvedOn', { date: format(new Date(issue.resolvedDate), 'dd.MM.yyyy') })}`}
                       </p>
                     </div>
                     <Badge variant={issue.status === 'resolved' ? 'default' : 'secondary'}>
-                      {issue.status === 'resolved' ? 'Rozwiązano' : 'Aktywny'}
+                      {t(`history.${issue.status}`)}
                     </Badge>
                   </div>
                 ))}
@@ -550,7 +549,7 @@ export default function InstructorVehicle() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Zużycie paliwa</CardTitle>
+                <CardTitle>{t('statistics.fuelConsumption')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={200}>
@@ -570,12 +569,12 @@ export default function InstructorVehicle() {
                 </ResponsiveContainer>
                 <div className="mt-4 grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <p className="text-sm text-gray-500">Średnie zużycie</p>
-                    <p className="text-lg font-bold">7.1 l/100km</p>
+                    <p className="text-sm text-gray-500">{t('statistics.averageConsumption')}</p>
+                    <p className="text-lg font-bold">7.1 л/100км</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-sm text-gray-500">Koszty paliwa</p>
-                    <p className="text-lg font-bold">2,510 zł/mies.</p>
+                    <p className="text-sm text-gray-500">{t('statistics.fuelCosts')}</p>
+                    <p className="text-lg font-bold">2,510 грн{t('statistics.perMonth')}</p>
                   </div>
                 </div>
               </CardContent>
@@ -583,29 +582,29 @@ export default function InstructorVehicle() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Wykorzystanie pojazdu</CardTitle>
+                <CardTitle>{t('statistics.vehicleUsage')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-gray-600">Średni przebieg/dzień</span>
-                      <span className="font-semibold">85 km</span>
+                      <span className="text-sm text-gray-600">{t('statistics.averageMileagePerDay')}</span>
+                      <span className="font-semibold">85 {t('mileage.km')}</span>
                     </div>
                     <Progress value={85} className="h-2" />
                   </div>
 
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-gray-600">Godziny pracy/dzień</span>
-                      <span className="font-semibold">6.5 godz.</span>
+                      <span className="text-sm text-gray-600">{t('statistics.workHoursPerDay')}</span>
+                      <span className="font-semibold">6.5 {t('statistics.hours')}</span>
                     </div>
                     <Progress value={65} className="h-2" />
                   </div>
 
                   <div>
                     <div className="flex justify-between mb-2">
-                      <span className="text-sm text-gray-600">Wykorzystanie</span>
+                      <span className="text-sm text-gray-600">{t('statistics.utilization')}</span>
                       <span className="font-semibold">82%</span>
                     </div>
                     <Progress value={82} className="h-2" />
@@ -613,12 +612,12 @@ export default function InstructorVehicle() {
 
                   <div className="pt-4 border-t">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Ten miesiąc:</span>
-                      <span className="font-semibold">2,340 km</span>
+                      <span className="text-gray-600">{t('statistics.thisMonth')}</span>
+                      <span className="font-semibold">2,340 {t('mileage.km')}</span>
                     </div>
                     <div className="flex justify-between text-sm mt-2">
-                      <span className="text-gray-600">Ten rok:</span>
-                      <span className="font-semibold">25,467 km</span>
+                      <span className="text-gray-600">{t('statistics.thisYear')}</span>
+                      <span className="font-semibold">25,467 {t('mileage.km')}</span>
                     </div>
                   </div>
                 </div>
@@ -628,21 +627,21 @@ export default function InstructorVehicle() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Prognozowany przebieg</CardTitle>
+              <CardTitle>{t('statistics.projectedMileage')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-500">Za miesiąc</p>
-                  <p className="text-xl font-bold">2,550 km</p>
+                  <p className="text-sm text-gray-500">{t('statistics.inMonth')}</p>
+                  <p className="text-xl font-bold">2,550 {t('mileage.km')}</p>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-500">Za kwartał</p>
-                  <p className="text-xl font-bold">7,650 km</p>
+                  <p className="text-sm text-gray-500">{t('statistics.inQuarter')}</p>
+                  <p className="text-xl font-bold">7,650 {t('mileage.km')}</p>
                 </div>
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-500">Za rok</p>
-                  <p className="text-xl font-bold">30,600 km</p>
+                  <p className="text-sm text-gray-500">{t('statistics.inYear')}</p>
+                  <p className="text-xl font-bold">30,600 {t('mileage.km')}</p>
                 </div>
               </div>
             </CardContent>
@@ -652,7 +651,7 @@ export default function InstructorVehicle() {
         <TabsContent value="maintenance" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Historia serwisowania</CardTitle>
+              <CardTitle>{t('maintenanceHistory.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -660,17 +659,17 @@ export default function InstructorVehicle() {
                   <div key={maintenance.id} className="border rounded-lg p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p className="font-semibold">{maintenance.type}</p>
+                        <p className="font-semibold">{t(`maintenanceHistory.${maintenance.type}`)}</p>
                         <p className="text-sm text-gray-500">
-                          {format(new Date(maintenance.date), 'dd MMMM yyyy', { locale: pl })} • {maintenance.mileage.toLocaleString()} km
+                          {format(new Date(maintenance.date), 'dd MMMM yyyy', { locale: uk })} • {maintenance.mileage.toLocaleString()} {t('mileage.km')}
                         </p>
                       </div>
-                      <p className="text-lg font-bold">{maintenance.cost.toLocaleString()} zł</p>
+                      <p className="text-lg font-bold">{t('maintenanceHistory.currency', { amount: maintenance.cost.toLocaleString() })}</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {maintenance.items.map((item, index) => (
                         <Badge key={index} variant="secondary">
-                          {item}
+                          {t(`maintenanceHistory.items.${item}`)}
                         </Badge>
                       ))}
                     </div>
@@ -682,14 +681,14 @@ export default function InstructorVehicle() {
 
           <Card className="mt-6">
             <CardHeader>
-              <CardTitle>Zalecenia serwisowe</CardTitle>
+              <CardTitle>{t('recommendations.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <Alert>
                   <Info className="h-4 w-4" />
                   <AlertDescription>
-                    Na podstawie przebiegu i historii serwisowania zalecamy:
+                    {t('recommendations.based')}
                   </AlertDescription>
                 </Alert>
 
@@ -697,24 +696,24 @@ export default function InstructorVehicle() {
                   <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-yellow-600" />
                     <div className="flex-1">
-                      <p className="font-medium">Sprawdzić klocki hamulcowe</p>
-                      <p className="text-sm text-gray-600">Stan hamulców spadł do 75%</p>
+                      <p className="font-medium">{t('recommendations.checkBrakePads')}</p>
+                      <p className="text-sm text-gray-600">{t('recommendations.brakeWear')}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded-lg">
                     <AlertCircle className="w-5 h-5 text-yellow-600" />
                     <div className="flex-1">
-                      <p className="font-medium">Planowa wymiana opon</p>
-                      <p className="text-sm text-gray-600">Zużycie osiągnęło 70%</p>
+                      <p className="font-medium">{t('recommendations.planTireChange')}</p>
+                      <p className="text-sm text-gray-600">{t('recommendations.tireWear')}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
                     <Info className="w-5 h-5 text-blue-600" />
                     <div className="flex-1">
-                      <p className="font-medium">Wymiana filtra powietrza</p>
-                      <p className="text-sm text-gray-600">Zalecana za 2,000 km</p>
+                      <p className="font-medium">{t('recommendations.airFilterChange')}</p>
+                      <p className="text-sm text-gray-600">{t('recommendations.recommendedIn', { km: '2,000' })}</p>
                     </div>
                   </div>
                 </div>

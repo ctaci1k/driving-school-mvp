@@ -617,7 +617,7 @@
       "locations": {
         "cityCenter": "Центр міста",
         "practiceArea": "Навчальний майданчик",
-        "drivingSchool": "Автошкола",
+        "drivingSchool": "DenisDrive",
         "examRoute": "Екзаменаційний маршрут"
       },
       
@@ -813,5 +813,2338 @@
         "administration": "Адміністрація"
       }
     }
+  },
+  
+  "profile": {
+    "documents": {
+      "title": "Мої документи",
+      "subtitle": "Керуйте сертифікатами та ліцензіями",
+      "addDocument": "Додати документ",
+      
+      "alert": {
+        "title": "Документи, що потребують уваги",
+        "description": "У вас є {count} документ(ів), термін дії яких скоро закінчується. Подбайте про їх оновлення."
+      },
+      
+      "stats": {
+        "all": "Всі",
+        "active": "Активні",
+        "expiring": "Закінчуються",
+        "verified": "Верифіковані"
+      },
+      
+      "search": {
+        "placeholder": "Шукати документи..."
+      },
+      
+      "categories": {
+        "all": "Всі",
+        "required": "Обов'язкові",
+        "additional": "Додаткові",
+        "employment": "Працевлаштування",
+        "insurance": "Страхування"
+      },
+      
+      "table": {
+        "headers": {
+          "document": "Документ",
+          "issuer": "Видавець",
+          "number": "Номер",
+          "issueDate": "Дата видачі",
+          "expiryDate": "Дійсний до",
+          "status": "Статус",
+          "actions": "Дії"
+        },
+        "verified": "Верифіковано",
+        "daysLeft": "за {days} днів"
+      },
+      
+      "status": {
+        "active": "Активний",
+        "expiring": "Скоро закінчується",
+        "expired": "Прострочено"
+      },
+      
+      "actions": {
+        "preview": "Переглянути",
+        "download": "Завантажити",
+        "share": "Поділитися",
+        "edit": "Редагувати",
+        "delete": "Видалити"
+      },
+      
+      "upload": {
+        "title": "Додати новий документ",
+        "description": "Завантажте документ та заповніть інформацію",
+        "documentName": "Назва документа",
+        "documentNamePlaceholder": "напр. Ліцензія інструктора",
+        "documentType": "Тип документа",
+        "types": {
+          "license": "Ліцензія",
+          "certificate": "Сертифікат",
+          "medical": "Медична довідка",
+          "contract": "Договір",
+          "other": "Інше"
+        },
+        "issueDate": "Дата видачі",
+        "expiryDate": "Дійсний до",
+        "cancel": "Скасувати",
+        "save": "Зберегти документ"
+      },
+      
+      "documentTypes": {
+        "instructorLicense": "Ліцензія інструктора",
+        "drivingLicense": "Водійське посвідчення кат. B",
+        "medicalCertificate": "Медична довідка",
+        "firstAidCertificate": "Сертифікат першої допомоги",
+        "trainingCourse": "Курс підвищення кваліфікації",
+        "employmentContract": "Трудовий договір",
+        "liabilityInsurance": "Страховка відповідальності"
+      },
+      
+      "issuers": {
+        "ministry": "Міністерство Інфраструктури",
+        "cityOffice": "Міська рада",
+        "medicalCenter": "Медичний центр",
+        "redCross": "Червоний Хрест",
+        "instructorsAssociation": "Асоціація інструкторів",
+        "drivingSchool": "Автошкола Київ",
+        "insuranceCompany": "Страхова компанія"
+      }
+    },
+    "settings": {
+      "title": "Налаштування",
+      "subtitle": "Керуйте налаштуваннями та безпекою",
+      
+      "tabs": {
+        "notifications": "Сповіщення",
+        "privacy": "Приватність",
+        "display": "Відображення",
+        "security": "Безпека"
+      },
+      
+      "notifications": {
+        "channels": {
+          "title": "Канали сповіщень",
+          "description": "Виберіть, як отримувати сповіщення",
+          "email": {
+            "label": "Email",
+            "description": "Отримувати сповіщення на email"
+          },
+          "sms": {
+            "label": "SMS",
+            "description": "Отримувати SMS-сповіщення"
+          },
+          "push": {
+            "label": "Push",
+            "description": "Сповіщення в додатку"
+          }
+        },
+        "types": {
+          "title": "Типи сповіщень",
+          "description": "Виберіть, про що хочете отримувати сповіщення",
+          "newBooking": "Нові бронювання",
+          "cancellation": "Скасування",
+          "reminder": "Нагадування про уроки",
+          "payment": "Платежі",
+          "messages": "Повідомлення від курсантів",
+          "reviews": "Нові відгуки"
+        }
+      },
+      
+      "privacy": {
+        "profile": {
+          "title": "Видимість профілю",
+          "description": "Контролюйте, хто може бачити ваш профіль",
+          "public": "Публічний - всі можуть бачити",
+          "students": "Тільки курсанти",
+          "private": "Приватний - ніхто не може бачити",
+          "showPhone": "Показувати номер телефону",
+          "showEmail": "Показувати email",
+          "showRating": "Показувати рейтинг",
+          "showStatistics": "Показувати статистику"
+        },
+        "booking": {
+          "title": "Налаштування бронювання",
+          "onlineBooking": {
+            "label": "Онлайн бронювання",
+            "description": "Курсанти можуть бронювати онлайн"
+          },
+          "requireApproval": {
+            "label": "Потрібне підтвердження",
+            "description": "Вручну підтверджувати кожне бронювання"
+          },
+          "minAdvance": "Мін. завчасність",
+          "maxAdvance": "Макс. завчасність",
+          "hours": "{count} годин",
+          "days": "{count} днів"
+        }
+      },
+      
+      "display": {
+        "appearance": {
+          "title": "Вигляд",
+          "theme": "Тема",
+          "light": "Світла",
+          "dark": "Темна",
+          "system": "Системна",
+          "language": "Мова",
+          "dateFormat": "Формат дати",
+          "timeFormat": "Формат часу",
+          "24h": "24-годинний",
+          "12h": "12-годинний"
+        }
+      },
+      
+      "security": {
+        "status": {
+          "secure": "Ваш обліковий запис безпечний",
+          "lastPasswordChange": "Остання зміна пароля: {date}"
+        },
+        "password": {
+          "title": "Пароль",
+          "changePassword": "Змінити пароль",
+          "currentPassword": "Поточний пароль",
+          "newPassword": "Новий пароль",
+          "confirmPassword": "Підтвердити новий пароль"
+        },
+        "twoFactor": {
+          "title": "Двофакторна автентифікація",
+          "description": "Додатковий рівень захисту для вашого облікового запису",
+          "enabled": "2FA увімкнено",
+          "disabled": "2FA вимкнено",
+          "enabledDescription": "Ваш обліковий запис захищено 2FA",
+          "disabledDescription": "Увімкніть для кращого захисту",
+          "enable": "Увімкнути",
+          "disable": "Вимкнути",
+          "scanQR": "Скануйте код додатком автентифікації",
+          "verificationCode": "Код верифікації"
+        },
+        "sessions": {
+          "title": "Активні сеанси",
+          "description": "Наразі авторизовані пристрої",
+          "current": "Поточний",
+          "endSession": "Завершити",
+          "endAllOther": "Завершити всі інші сеанси",
+          "location": "{city} • {time}"
+        },
+        "account": {
+          "title": "Дії з обліковим записом",
+          "downloadData": "Завантажити дані",
+          "deleteAccount": "Видалити обліковий запис",
+          "deleteWarning": {
+            "title": "Видалити обліковий запис",
+            "description": "Ця дія незворотна. Всі дані буде назавжди видалено.",
+            "warning": "Увага!",
+            "consequences": "Видалення облікового запису призведе до:",
+            "dataLoss": "Втрати всіх даних",
+            "bookingsCancelled": "Скасування всіх бронювань",
+            "historyDeleted": "Видалення історії курсантів",
+            "noRecovery": "Неможливість відновлення",
+            "confirmText": "Введіть \"ВИДАЛИТИ\" для підтвердження",
+            "confirmPlaceholder": "ВИДАЛИТИ"
+          }
+        },
+        "buttons": {
+          "cancel": "Скасувати",
+          "save": "Зберегти",
+          "confirm": "Підтвердити"
+        }
+      }
+    },
+    "main": {
+      "instructor": "Інструктор",
+      "edit": "Редагувати",
+      "cancel": "Скасувати",
+      "save": "Зберегти",
+      
+      "stats": {
+        "students": "Курсанти",
+        "successRate": "Успішність",
+        "experience": "Досвід",
+        "hours": "Години",
+        "years": "{count} років"
+      },
+      
+      "navigation": {
+        "documents": {
+          "title": "Документи",
+          "subtitle": "Сертифікати та ліцензії"
+        },
+        "settings": {
+          "title": "Налаштування",
+          "subtitle": "Налаштування та безпека"
+        }
+      },
+      
+      "tabs": {
+        "overview": "Огляд",
+        "personal": "Персональні дані",
+        "professional": "Професійні дані"
+      },
+      
+      "performance": {
+        "title": "Продуктивність за останні місяці",
+        "months": {
+          "jan": "Січ",
+          "feb": "Лют",
+          "mar": "Бер",
+          "apr": "Кві",
+          "may": "Тра",
+          "jun": "Чер",
+          "jul": "Лип",
+          "aug": "Сер",
+          "sep": "Вер",
+          "oct": "Жов",
+          "nov": "Лис",
+          "dec": "Гру"
+        }
+      },
+      
+      "achievements": {
+        "title": "Останні досягнення",
+        "instructorOfYear": {
+          "title": "Інструктор року",
+          "description": "Найкращий інструктор 2023"
+        },
+        "graduates200": {
+          "title": "200+ випускників",
+          "description": "Підготовлено понад 200 курсантів"
+        },
+        "hours5000": {
+          "title": "5000 годин",
+          "description": "Понад 5000 годин практики"
+        },
+        "rating49": {
+          "title": "Оцінка 4.9+",
+          "description": "Середня оцінка вище 4.9"
+        }
+      },
+      
+      "personalInfo": {
+        "title": "Особиста інформація",
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "email": "Email",
+        "phone": "Телефон",
+        "dateOfBirth": "Дата народження",
+        "city": "Місто",
+        "address": "Адреса",
+        "postalCode": "Поштовий індекс",
+        "bio": "Про мене"
+      },
+      
+      "emergencyContact": {
+        "title": "Екстрений контакт",
+        "name": "Ім'я та прізвище",
+        "phone": "Телефон",
+        "relation": "Родинний зв'язок"
+      },
+      
+      "professionalInfo": {
+        "title": "Професійна інформація",
+        "licenseNumber": "Номер ліцензії",
+        "validUntil": "Дійсна до",
+        "workExperience": "Стаж роботи",
+        "employmentType": "Тип зайнятості",
+        "employmentTypes": {
+          "fullTime": "Повна зайнятість",
+          "partTime": "Часткова зайнятість",
+          "contract": "Контракт"
+        },
+        "categories": "Категорії",
+        "specializations": "Спеціалізації",
+        "languages": "Мови"
+      },
+      
+      "specializations": {
+        "beginners": "Початківці",
+        "exam": "Іспит",
+        "nightDriving": "Нічне водіння"
+      },
+      
+      "languages": {
+        "ukrainian": "Українська",
+        "polish": "Польська",
+        "english": "Англійська"
+      }
+    }
+  },
+  "resources": {
+    "upload": {
+      "title": "Додати матеріал",
+      "subtitle": "Поділіться навчальними матеріалами з курсантами",
+      
+      "uploadMethod": {
+        "title": "Метод завантаження",
+        "file": {
+          "label": "Завантажити файл",
+          "description": "Завантажити файл з диска"
+        },
+        "link": {
+          "label": "Вказати посилання",
+          "description": "YouTube, Google Drive, тощо"
+        }
+      },
+      
+      "fileUpload": {
+        "title": "Виберіть файл",
+        "description": "Максимальний розмір: 500 МБ. Формати: PDF, DOC, PPT, XLS, MP4, JPG, PNG",
+        "dragAndDrop": "Перетягніть файл сюди або клікніть для вибору",
+        "selectFile": "Вибрати файл",
+        "uploading": "Завантаження..."
+      },
+      
+      "linkInput": {
+        "title": "Адреса URL",
+        "description": "Вкажіть посилання на матеріал (YouTube, Google Drive, тощо)",
+        "placeholder": "https://..."
+      },
+      
+      "details": {
+        "title": "Деталі матеріалу",
+        "resourceTitle": "Назва *",
+        "titlePlaceholder": "напр. Правила дорожнього руху 2024",
+        "description": "Опис *",
+        "descriptionPlaceholder": "Опишіть вміст матеріалу...",
+        "category": "Категорія *",
+        "selectCategory": "Виберіть категорію",
+        "tags": "Теги",
+        "targetAudience": "Цільова аудиторія"
+      },
+      
+      "categories": {
+        "theory": "Теорія",
+        "practice": "Практика",
+        "tests": "Тести",
+        "presentations": "Презентації",
+        "videos": "Навчальні відео",
+        "documents": "Документи",
+        "additional": "Додаткові матеріали"
+      },
+      
+      "tags": {
+        "exam": "іспит",
+        "theory": "теорія",
+        "practice": "практика",
+        "parking": "паркування",
+        "maneuvers": "маневри",
+        "roadSigns": "дорожні знаки",
+        "regulations": "правила",
+        "firstAid": "перша допомога",
+        "safety": "безпека",
+        "categoryB": "категорія B",
+        "practiceArea": "навчальний майданчик",
+        "city": "місто",
+        "route": "маршрут"
+      },
+      
+      "audiences": {
+        "beginners": "Початківці",
+        "intermediate": "Середній рівень",
+        "advanced": "Просунутий рівень",
+        "exam": "Підготовка до іспиту",
+        "all": "Всі"
+      },
+      
+      "settings": {
+        "title": "Налаштування доступності",
+        "public": {
+          "label": "Публічний матеріал",
+          "description": "Всі курсанти зможуть бачити цей матеріал"
+        },
+        "allowDownload": {
+          "label": "Дозволити завантаження",
+          "description": "Курсанти зможуть завантажити матеріал"
+        },
+        "requireCompletion": {
+          "label": "Обов'язковий для перегляду",
+          "description": "Позначити як обов'язковий для ознайомлення"
+        },
+        "expiryDate": "Дата закінчення (необов'язково)"
+      },
+      
+      "additionalNotes": {
+        "title": "Додаткові нотатки",
+        "placeholder": "Інструкції для курсантів, підказки, тощо..."
+      },
+      
+      "info": "Після додавання матеріал буде одразу доступний для курсантів відповідно до обраних налаштувань.",
+      
+      "buttons": {
+        "cancel": "Скасувати",
+        "preview": "Попередній перегляд",
+        "save": "Зберегти матеріал",
+        "uploading": "Завантаження..."
+      }
+    },
+    "main": {
+      "title": "Навчальні матеріали",
+      "subtitle": "Керуйте матеріалами для курсантів",
+      "addMaterial": "Додати матеріал",
+      
+      "stats": {
+        "materials": "Матеріали",
+        "downloads": "Завантаження",
+        "views": "Перегляди",
+        "rating": "Оцінка",
+        "size": "Розмір",
+        "popular": "Популярний"
+      },
+      
+      "search": {
+        "placeholder": "Шукати матеріали..."
+      },
+      
+      "categories": {
+        "all": "Всі",
+        "theory": "Теорія",
+        "practice": "Практика",
+        "tests": "Тести",
+        "additional": "Додаткові"
+      },
+      
+      "sort": {
+        "date": "Найновіші",
+        "downloads": "Найпопулярніші",
+        "rating": "Найкраще оцінені",
+        "name": "За алфавітом"
+      },
+      
+      "actions": {
+        "preview": "Переглянути",
+        "download": "Завантажити",
+        "share": "Поділитися",
+        "edit": "Редагувати",
+        "delete": "Видалити"
+      },
+      
+      "recentActivity": {
+        "title": "Остання активність",
+        "download": "завантажив",
+        "view": "переглянув",
+        "rate": "оцінив",
+        "minutesAgo": "{count} хв тому",
+        "hoursAgo": "{count} год. тому"
+      },
+      
+      "storage": {
+        "title": "Використання простору",
+        "used": "Використано",
+        "documents": "Документи",
+        "videos": "Відео",
+        "presentations": "Презентації",
+        "images": "Зображення"
+      },
+      
+      "tip": {
+        "title": "Порада:",
+        "description": "Регулярно оновлюйте матеріали, щоб курсанти мали доступ до найновішої інформації."
+      },
+      
+      "resourceTypes": {
+        "pdf": "PDF документ",
+        "video": "Відео",
+        "presentation": "Презентація",
+        "image": "Зображення",
+        "file": "Файл"
+      }
+    }
+  },
+   "schedule": {
+    "calendar": {
+       "tab": {
+        "loading": "Завантаження календаря...",
+        
+        "filters": {
+          "title": "Фільтри",
+          "status": {
+            "label": "Статус",
+            "available": "Доступні",
+            "reserved": "Заброньовані",
+            "blocked": "Заблоковані",
+            "completed": "Завершені",
+            "cancelled": "Скасовані"
+          },
+          "lessonType": {
+            "label": "Тип занять",
+            "all": "Всі",
+            "driving": "Їзда в місті",
+            "practiceArea": "Навчальний майданчик",
+            "theory": "Теорія",
+            "exam": "Іспит"
+          },
+          "buttons": {
+            "clear": "Очистити",
+            "apply": "Застосувати"
+          }
+        },
+        
+        "stats": {
+          "total": "Всього",
+          "available": "Доступно",
+          "reserved": "Заброньовано",
+          "blocked": "Заблоковано"
+        },
+        
+        "actions": {
+          "workingHours": "Години роботи",
+          "filters": "Фільтри",
+          "export": "Експортувати"
+        },
+        
+        "alerts": {
+          "noSlots": {
+            "title": "Немає термінів у цей період",
+            "description": "Слоти генеруються автоматично на основі годин роботи. Натисніть кнопку \"Години роботи\" щоб налаштувати доступність."
+          }
+        },
+        
+        "confirmDelete": "Ви впевнені, що хочете видалити цей термін?",
+        
+        "export": {
+          "filename": "розклад_{date}.csv",
+          "headers": {
+            "date": "Дата",
+            "start": "Початок",
+            "end": "Кінець",
+            "status": "Статус",
+            "student": "Курсант",
+            "location": "Місце"
+          },
+          "error": "Помилка експорту"
+        },
+        
+        "errors": {
+          "updateSlot": "Помилка оновлення слоту",
+          "deleteSlot": "Помилка видалення слоту"
+        }
+      },
+      "dayView": {
+        "previousDay": "Попередній день",
+        "nextDay": "Наступний день",
+        "today": "Сьогодні",
+        "generateSlots": "Генерувати слоти",
+        "dayOff": "Вихідний день",
+        
+        "stats": {
+          "available": "Доступні",
+          "reserved": "Заброньовані",
+          "blocked": "Заблоковані",
+          "total": "Всього",
+          "slots": "термінів"
+        },
+        
+        "timeline": {
+          "currentTime": "Поточний час"
+        }
+      },
+      "loading": "Завантаження календаря...",
+      
+      "filters": {
+        "title": "Фільтри",
+        "status": {
+          "label": "Статус",
+          "available": "Доступні",
+          "reserved": "Заброньовані",
+          "blocked": "Заблоковані",
+          "completed": "Завершені",
+          "cancelled": "Скасовані"
+        },
+        "lessonType": {
+          "label": "Тип занять",
+          "all": "Всі",
+          "city": "Їзда в місті",
+          "practiceArea": "Навчальний майданчик",
+          "theory": "Теорія",
+          "exam": "Іспит"
+        },
+        "clear": "Очистити",
+        "apply": "Застосувати"
+      },
+      
+      "stats": {
+        "total": "Всього",
+        "available": "Доступно",
+        "reserved": "Заброньовано",
+        "blocked": "Заблоковано"
+      },
+      
+      "actions": {
+        "workingHours": "Години роботи",
+        "filters": "Фільтри",
+        "export": "Експортувати"
+      },
+      
+      "alerts": {
+        "noSlots": {
+          "title": "Немає термінів у цей період",
+          "description": "Слоти генеруються автоматично на основі годин роботи. Натисніть кнопку \"Години роботи\" щоб налаштувати доступність."
+        }
+      },
+      
+      "views": {
+        "day": "День",
+        "week": "Тиждень",
+        "month": "Місяць",
+        "list": "Список",
+        "listComingSoon": "Вигляд списку в розробці"
+      },
+      
+      "confirmDelete": "Ви впевнені, що хочете видалити цей термін?",
+      
+      "export": {
+        "filename": "розклад_{date}.csv",
+        "headers": {
+          "date": "Дата",
+          "start": "Початок",
+          "end": "Кінець",
+          "status": "Статус",
+          "student": "Курсант",
+          "location": "Місце"
+        }
+      },
+      "monthView": {
+        "navigation": {
+          "previousMonth": "Попередній місяць",
+          "nextMonth": "Наступний місяць",
+          "currentMonth": "Поточний місяць"
+        },
+        
+        "weekDays": {
+          "mon": "Пн",
+          "tue": "Вт",
+          "wed": "Ср",
+          "thu": "Чт",
+          "fri": "Пт",
+          "sat": "Сб",
+          "sun": "Нд"
+        },
+        
+        "dayCell": {
+          "noSlots": "Немає термінів",
+          "moreSlots": "+{count} більше",
+          "available": "{count} доступних",
+          "reserved": "{count} заброньованих",
+          "blocked": "{count} заблокованих"
+        },
+        
+        "stats": {
+          "title": "Терміни",
+          "total": "Терміни: {count}",
+          "available": "Доступні: {count}",
+          "reserved": "Заброньовані: {count}"
+        },
+        
+        "footer": {
+          "week": "Тиждень {number}",
+          "weekPlaceholder": "Тиждень —",
+          "legend": {
+            "today": "Сьогодні",
+            "weekend": "Вихідні",
+            "workingHours": "Години роботи",
+            "noSlotsWarning": "Слоти генеруються автоматично при збереженні годин роботи"
+          }
+        }
+      },
+      "slotCard": {
+        "status": {
+          "available": "Доступний",
+          "reserved": "Заброньований",
+          "blocked": "Заблокований",
+          "completed": "Завершено",
+          "cancelled": "Скасовано",
+          "noShow": "Неявка",
+          "inProgress": "В процесі"
+        },
+        
+        "lessonTypes": {
+          "driving": "Водіння",
+          "practiceArea": "Майданчик",
+          "theory": "Теорія",
+          "exam": "Іспит"
+        },
+        
+        "payment": {
+          "unpaid": "Неоплачено",
+          "partial": "Частково"
+        },
+        
+        "actions": {
+          "edit": "Редагувати",
+          "delete": "Видалити"
+        },
+        
+        "aria": {
+          "editSlot": "Редагувати термін",
+          "deleteSlot": "Видалити термін"
+        }
+      },
+      "weekView": {
+        "navigation": {
+          "previousWeek": "Попередній тиждень",
+          "nextWeek": "Наступний тиждень",
+          "currentWeek": "Поточний тиждень"
+        },
+        
+        "dayHeader": {
+          "slots": {
+            "one": "термін",
+            "few": "термини",
+            "many": "термінів"
+          }
+        },
+        
+        "slot": {
+          "free": "Вільний"
+        },
+        
+        "lessonTypes": {
+          "driving": "Водіння",
+          "practiceArea": "Майданчик",
+          "theory": "Теорія",
+          "exam": "Іспит"
+        },
+        
+        "legend": {
+          "available": "Доступний",
+          "reserved": "Заброньований",
+          "blocked": "Заблокований",
+          "cancelled": "Скасовано",
+          "noShow": "Неявка"
+        }
+      }
+    },"modals": {
+      "exception": {
+        "title": {
+          "create": "Додати виняток",
+          "edit": "Редагувати виняток"
+        },
+        "subtitle": "Заблокуйте вибрані дні в розкладі",
+        
+        "types": {
+          "label": "Тип винятку",
+          "vacation": {
+            "label": "Відпустка",
+            "description": "Запланована відпустка"
+          },
+          "sickness": {
+            "label": "Лікарняний",
+            "description": "Відсутність через хворобу"
+          },
+          "holiday": {
+            "label": "Свято",
+            "description": "Святкові та вихідні дні"
+          },
+          "training": {
+            "label": "Навчання",
+            "description": "Курси та професійне навчання"
+          },
+          "other": {
+            "label": "Інше",
+            "description": "Інші причини відсутності"
+          }
+        },
+        
+        "holidays": {
+          "label": "Швидкий вибір свят",
+          "placeholder": "Виберіть свято...",
+          "newYear": "Новий рік",
+          "epiphany": "Свято Богоявлення",
+          "labourDay": "День праці",
+          "constitutionDay": "День Конституції",
+          "assumptionDay": "Успіння Пресвятої Богородиці",
+          "allSaintsDay": "День всіх святих",
+          "independenceDay": "День Незалежності",
+          "christmas": "Різдво",
+          "christmasSecond": "Другий день Різдва"
+        },
+        
+        "dates": {
+          "startDate": "Дата початку",
+          "endDate": "Дата закінчення"
+        },
+        
+        "description": {
+          "label": "Опис (необов'язково)",
+          "placeholder": "Додайте деталі винятку..."
+        },
+        
+        "recurring": {
+          "label": "Циклічний виняток",
+          "description": "Повторювати цей виняток автоматично",
+          "yearly": "Щороку",
+          "monthly": "Щомісяця"
+        },
+        
+        "blockSlots": {
+          "label": "Заблокувати слоти",
+          "description": "Автоматично заблокувати всі слоти в цей період"
+        },
+        
+        "impact": {
+          "title": "Вплив на розклад",
+          "totalDays": "Кількість днів",
+          "workDays": "Робочі дні",
+          "reservedSlots": "Заброньовані слоти",
+          "availableSlots": "Доступні слоти",
+          "warning": "Увага: {count} заброньованих слотів потребують контакту з курсантами!"
+        },
+        
+        "preview": {
+          "show": "Показати слоти для блокування ({count})",
+          "hide": "Приховати слоти для блокування ({count})"
+        },
+        
+        "status": {
+          "reserved": "заброньовано",
+          "available": "доступно"
+        },
+        
+        "buttons": {
+          "cancel": "Скасувати",
+          "save": "Додати виняток",
+          "saveChanges": "Зберегти зміни",
+          "saving": "Збереження..."
+        }
+      },
+       "slotEdit": {
+        "title": {
+          "create": "Новий слот",
+          "edit": "Редагувати слот"
+        },
+        
+        "tabs": {
+          "details": "Деталі",
+          "student": "Курсант",
+          "payment": "Оплата",
+          "notes": "Нотатки"
+        },
+        
+        "status": {
+          "label": "Статус",
+          "available": "Доступний",
+          "reserved": "Заброньований",
+          "blocked": "Заблокований",
+          "completed": "Завершено",
+          "cancelled": "Скасовано",
+          "noShow": "Неявка",
+          "inProgress": "В процесі"
+        },
+        
+        "lessonType": {
+          "label": "Тип занять",
+          "driving": "Водіння в місті",
+          "practiceArea": "Навчальний майданчик",
+          "theory": "Теоретичні заняття",
+          "exam": "Іспит"
+        },
+        
+        "dateTime": {
+          "date": "Дата",
+          "startTime": "Час початку",
+          "endTime": "Час закінчення"
+        },
+        
+        "location": {
+          "label": "Локація",
+          "placeholder": "Виберіть локацію..."
+        },
+        
+        "student": {
+          "search": "Шукати курсанта",
+          "searchPlaceholder": "Введіть ім'я або прізвище...",
+          "selected": "Вибраний курсант",
+          "package": "Пакет",
+          "completedLessons": "Пройдені заняття",
+          "lessons": "занять"
+        },
+        
+        "payment": {
+          "status": {
+            "label": "Статус оплати",
+            "paid": "Оплачено",
+            "unpaid": "Неоплачено",
+            "partial": "Частково оплачено"
+          },
+          "method": {
+            "label": "Метод оплати",
+            "cash": "Готівка",
+            "transfer": "Переказ",
+            "card": "Картка"
+          },
+          "amount": "Сума (грн)",
+          "lessonPrice": "Ціна за заняття",
+          "toPay": "До оплати",
+          "currency": "{amount} грн"
+        },
+        
+        "notes": {
+          "label": "Нотатки до занять",
+          "placeholder": "Додайте нотатки, зауваження, план занять...",
+          "cancelReason": "Причина скасування",
+          "tips": {
+            "title": "Поради:",
+            "tip1": "Запишіть важливу інформацію про прогрес курсанта",
+            "tip2": "Занотуйте елементи для повторення на наступних заняттях",
+            "tip3": "Додайте зауваження про локацію або дорожні умови"
+          }
+        },
+        
+        "delete": {
+          "title": "Видалити слот",
+          "confirm": "Ви впевнені, що хочете видалити цей слот? Цю операцію не можна скасувати.",
+          "deleting": "Видалення..."
+        },
+        
+        "buttons": {
+          "cancel": "Скасувати",
+          "save": "Зберегти зміни",
+          "create": "Створити слот",
+          "delete": "Видалити",
+          "saving": "Збереження..."
+        }
+      },
+      "template": {
+        "title": {
+          "list": "Шаблони розкладу",
+          "create": "Новий шаблон",
+          "edit": "Редагувати шаблон"
+        },
+        "subtitle": {
+          "list": "Керуйте збереженими шаблонами годин роботи",
+          "create": "Створіть новий шаблон розкладу",
+          "edit": "Змініть існуючий шаблон"
+        },
+        
+        "buttons": {
+          "newTemplate": "Новий шаблон",
+          "import": "Імпортувати",
+          "use": "Використати",
+          "apply": "Застосувати шаблон",
+          "edit": "Редагувати",
+          "export": "Експортувати",
+          "delete": "Видалити",
+          "close": "Закрити",
+          "back": "Назад",
+          "save": "Створити шаблон",
+          "saveChanges": "Зберегти зміни",
+          "saving": "Збереження...",
+          "deleting": "Видалення...",
+          "cancel": "Скасувати"
+        },
+        
+        "sections": {
+          "presetTemplates": "Шаблони за замовчуванням",
+          "userTemplates": "Ваші шаблони"
+        },
+        
+        "form": {
+          "name": "Назва шаблону",
+          "namePlaceholder": "напр. Літній розклад",
+          "description": "Опис (необов'язково)",
+          "descriptionPlaceholder": "Короткий опис шаблону...",
+          "setDefault": "Встановити як основний",
+          "setDefaultDescription": "Цей шаблон буде автоматично використовуватися для нових тижнів"
+        },
+        
+        "workingHours": {
+          "title": "Години роботи в шаблоні",
+          "editHours": "Редагувати години",
+          "free": "Вільний",
+          "summary": "Підсумок",
+          "days": "{count} днів",
+          "hoursPerWeek": "{hours}год/тиждень"
+        },
+        
+        "stats": {
+          "workDays": "{count} днів",
+          "weeklyHours": "{hours}год/тиждень",
+          "totalSlots": "{count} слотів",
+          "avgHoursPerDay": "{hours}год/день",
+          "created": "Створено: {date}"
+        },
+        
+        "labels": {
+          "default": "Основний"
+        },
+        
+        "deleteConfirm": {
+          "message": "Ви впевнені, що хочете видалити цей шаблон?",
+          "confirm": "Видалити"
+        },
+        
+        "empty": {
+          "title": "Немає збережених шаблонів",
+          "description": "Створіть свій перший шаблон розкладу"
+        },
+        
+        "imported": "(імпортований)"
+      },
+      "workingHours": {
+        "title": "Години роботи",
+        "subtitle": "Налаштуйте свої години доступності",
+        
+        "days": {
+          "monday": "Понеділок",
+          "tuesday": "Вівторок",
+          "wednesday": "Середа",
+          "thursday": "Четвер",
+          "friday": "П'ятниця",
+          "saturday": "Субота",
+          "sunday": "Неділя"
+        },
+        
+        "intervals": {
+          "title": "Часові інтервали",
+          "add": "Додати інтервал",
+          "empty": "Немає інтервалів",
+          "emptyDescription": "Додайте інтервал щоб визначити години роботи",
+          "count": "{count} інтервалів"
+        },
+        
+        "settings": {
+          "workOnDay": "Працюю в {day}",
+          "copyToOthers": "Копіювати в інші дні",
+          "defaultLessonDuration": "Стандартна тривалість занять",
+          "breakBetweenLessons": "Перерва між заняттями"
+        },
+        
+        "durations": {
+          "slot": {
+            "60": "1 година",
+            "90": "1.5 години",
+            "120": "2 години",
+            "150": "2.5 години",
+            "180": "3 години"
+          },
+          "break": {
+            "0": "Без перерви",
+            "15": "15 хвилин",
+            "30": "30 хвилин",
+            "45": "45 хвилин",
+            "60": "1 година"
+          }
+        },
+        
+        "preview": {
+          "title": "Попередній перегляд згенерованих слотів",
+          "format": "{start} - {end}: {count} слотів по {duration} хв",
+          "withBreak": "(з {break} хв перервою)"
+        },
+        
+        "validation": {
+          "endAfterStart": "Час закінчення повинен бути пізніше часу початку",
+          "workingHours": "Години роботи мають бути між 6:00 та 22:00",
+          "overlapping": "Інтервали не можуть перетинатися"
+        },
+        
+        "warnings": {
+          "blockedDay": {
+            "title": "Цей день має заброньовані уроки",
+            "description": "Години роботи для цього дня не можуть бути змінені, поки існують бронювання."
+          },
+          "blockedDays": {
+            "title": "Увага: Дні з бронюваннями",
+            "description": "Наступні дні мають заброньовані уроки і їх години роботи не будуть змінені:",
+            "reservations": "{count} бронювань",
+            "continueMessage": "Зміни будуть застосовані тільки для днів без бронювань. Продовжити?",
+            "continue": "Продовжити"
+          },
+          "daysWithReservations": "{count} днів з бронюваннями"
+        },
+        
+        "success": {
+          "saved": "Години роботи оновлено. Слоти будуть згенеровані автоматично.",
+          "copiedAll": "Години скопійовано в інші дні",
+          "copiedLimited": "Скопійовано з обмеженнями",
+          "skippedDays": "Пропущено {count} днів з бронюваннями",
+          "savedWithLimitations": "Збережено з обмеженнями",
+          "skippedDaysDetail": "Пропущено дні з бронюваннями:",
+          "slotsNote": "Слоти будуть згенеровані автоматично для днів без бронювань."
+        },
+        
+        "errors": {
+          "validationErrors": "Виправте помилки валідації перед збереженням",
+          "saveFailed": "Не вдалося зберегти години роботи"
+        },
+        
+        "buttons": {
+          "cancel": "Скасувати",
+          "save": "Зберегти зміни",
+          "saving": "Збереження..."
+        }
+      }
+    },
+    "shared": {
+      "actionButtons": {
+        "actions": "Дії",
+        "export": "Експортувати",
+        "import": "Імпортувати",
+        "refresh": "Оновити",
+        "exportSchedule": "Експортувати розклад",
+        "importSchedule": "Імпортувати розклад",
+        "refreshData": "Оновити дані",
+        
+        "success": {
+          "exported": "Розклад експортовано",
+          "imported": "Розклад імпортовано",
+          "refreshed": "Дані оновлено"
+        },
+        
+        "errors": {
+          "exportFailed": "Не вдалося експортувати розклад",
+          "invalidFile": "Неправильний формат файлу",
+          "refreshFailed": "Не вдалося оновити дані"
+        },
+        
+        "tooltips": {
+          "export": "Експортувати",
+          "import": "Імпортувати",
+          "refresh": "Оновити"
+        }
+      },
+       "quickStats": {
+        "cards": {
+          "todayLessons": {
+            "title": "Сьогоднішні заняття",
+            "subtitle": "{count} заброньованих"
+          },
+          "occupancy": {
+            "title": "Завантаженість",
+            "subtitle": "{count} вільних слотів"
+          },
+          "monthlyIncome": {
+            "title": "Місячний дохід",
+            "subtitle": "{count} завершених",
+            "currency": "{amount} грн"
+          },
+          "pendingRequests": {
+            "title": "Очікуючі заявки",
+            "subtitle": {
+              "hasRequests": "Потребує уваги",
+              "noRequests": "Всі розглянуті"
+            }
+          }
+        },
+        
+        "mobile": {
+          "today": "Сьогодні",
+          "lessons": "занять",
+          "occupancy": "Завантаженість",
+          "reservations": "бронювань",
+          "month": "Місяць",
+          "currency": "грн",
+          "requests": "Заявки",
+          "pending": "очікує"
+        },
+        
+        "moreStats": {
+          "title": "Більше статистики",
+          "completed": "Завершено",
+          "cancelled": "Скасовано",
+          "noShow": "Неявки",
+          "efficiency": "Ефективність"
+        },
+        
+        "weekly": {
+          "summary": "Підсумок тижня:",
+          "workHours": "{hours} годин роботи",
+          "completedLessons": "{count} завершених занять",
+          "occupancyRate": "{rate}% завантаженості"
+        }
+      },
+       "searchBar": {
+        "placeholder": "Шукати курсанта, локацію, дату...",
+        "clear": "Очистити",
+        "advancedFilters": "Розширені фільтри",
+        
+        "suggestionTypes": {
+          "student": "курсант",
+          "location": "локація",
+          "date": "дата"
+        },
+        
+        "noResults": "Немає результатів для \"{query}\"",
+        "tryOtherKeywords": "Спробуйте інші ключові слова",
+        
+        "shortcuts": {
+          "navigation": "навігація",
+          "select": "вибрати",
+          "close": "закрити"
+        },
+        
+        "dateLabels": {
+          "today": "Сьогодні",
+          "tomorrow": "Завтра"
+        }
+      }
+
+
+    },
+    "requests": {
+      "title": "Заявки на скасування",
+      "subtitle": "Керуйте заявками курсантів на скасування занять",
+      
+      "status": {
+        "pending": "Очікує",
+        "approved": "Схвалено",
+        "rejected": "Відхилено",
+        "label": {
+          "pending": "Очікує",
+          "approved": "Схвалено",
+          "rejected": "Відхилено"
+        }
+      },
+      
+      "requestCard": {
+        "requestFrom": "Заявка від:",
+        "urgentWarning": "Заняття через {hours} годин!",
+        "lessonDate": "Дата занять",
+        "time": "Час",
+        "location": "Місце",
+        "payment": "Оплата",
+        "refund": "(повернення: {amount} грн)",
+        "cancellationReason": "Причина скасування:",
+        "comment": "Коментар:",
+        "processedBy": "Оброблено: {name} • {date}",
+        "viewDetails": "Переглянути деталі"
+      },
+      
+      "actions": {
+        "approve": "Схвалити",
+        "reject": "Відхилити",
+        "viewDetails": "Переглянути деталі"
+      },
+      
+      "stats": {
+        "all": "Всі",
+        "pending": "Очікують",
+        "approved": "Схвалені",
+        "rejected": "Відхилені",
+        "urgentRequests": {
+          "singular": "термінова заявка",
+          "plural": "термінові заявки"
+        }
+      },
+      
+      "filters": {
+        "all": "Всі",
+        "pending": "Очікують",
+        "approved": "Схвалені",
+        "rejected": "Відхилені",
+        "sortBy": "Сортувати:",
+        "byUrgency": "За терміновістю",
+        "byDate": "За датою"
+      },
+      
+      "processModal": {
+        "approveTitle": "Схвалення заявки",
+        "rejectTitle": "Відхилення заявки",
+        "student": "Курсант:",
+        "lessonTime": "Термін:",
+        "refundAmount": "Сума повернення",
+        "from": "з {amount} грн",
+        "comment": "Коментар",
+        "commentRequired": "(обов'язковий)",
+        "commentPlaceholder": {
+          "approve": "Додатковий коментар...",
+          "reject": "Вкажіть причину відхилення заявки..."
+        },
+        "confirmApprove": "Схвалити скасування",
+        "confirmReject": "Відхилити заявку",
+        "cancel": "Скасувати"
+      },
+      
+      "detailsModal": {
+        "title": "Деталі заявки",
+        "studentData": "Дані курсанта",
+        "fullName": "Ім'я та прізвище:",
+        "phone": "Телефон:",
+        "email": "Email:",
+        "history": "Історія",
+        "submittedAt": "Подано:",
+        "processedAt": "Оброблено:",
+        "close": "Закрити"
+      },
+      
+      "empty": {
+        "title": "Немає заявок",
+        "filtered": "Немає заявок, що відповідають вибраним критеріям",
+        "none": "Немає жодних заявок на скасування занять"
+      },
+      
+      "currency": "{amount} грн"
+    },
+     "stats": {
+      "title": "Статистика та звіти",
+      "subtitle": "Аналіз результатів і продуктивності",
+      
+      "periods": {
+        "week": "Тиждень",
+        "month": "Місяць",
+        "year": "Рік",
+        "weeklyStats": "Тижнева статистика",
+        "monthFormat": "{month} {year}",
+        "yearFormat": "Рік {year}"
+      },
+      
+      "downloadReport": "Завантажити звіт",
+      
+      "metrics": {
+        "completedLessons": "Завершені заняття",
+        "completedSubtitle": "з {total} запланованих",
+        "revenue": "Дохід",
+        "revenueSubtitle": "середн. {average} грн/заняття",
+        "occupancy": "Завантаженість",
+        "occupancySubtitle": "{completed}/{total}",
+        "cancellations": "Скасування",
+        "cancellationsSubtitle": "{rate}% від усіх",
+        "currency": "{amount} грн"
+      },
+      
+      "charts": {
+        "slotDistribution": "Розподіл термінів",
+        "weeklyActivity": "Заняття протягом тижня",
+        "hourlyDistribution": "Погодинний розподіл"
+      },
+      
+      "slotStatus": {
+        "completed": "Завершені",
+        "reserved": "Заброньовані",
+        "available": "Доступні",
+        "cancelled": "Скасовані",
+        "noShow": "Неявки"
+      },
+      
+      "weekDays": {
+        "mon": "Пн",
+        "tue": "Вт",
+        "wed": "Ср",
+        "thu": "Чт",
+        "fri": "Пт",
+        "sat": "Сб",
+        "sun": "Нд"
+      },
+      
+      "rankings": {
+        "topStudents": "Топ курсанти",
+        "popularHours": "Найпопулярніші години",
+        "lessonsLabel": "занять",
+        "revenueInfo": "{amount} грн доходу",
+        "hourFormat": "Година {hour}:00",
+        "percentOfAll": "{percent}% від усіх"
+      },
+      
+      "detailedStats": {
+        "title": "Детальна статистика",
+        "dailyAverage": "Середня кількість за день:",
+        "totalTime": "Загальний час:",
+        "hours": "{hours} годин",
+        "dailyRevenue": "Середній денний дохід:",
+        "cancellationRate": "Коефіцієнт скасувань:",
+        "absences": "Неявки:",
+        "freeSlots": "Вільні терміни:"
+      },
+      
+      "optimizationTips": {
+        "title": "Поради з оптимізації",
+        "lowOccupancy": "• Ваша завантаженість становить {rate}%. Розгляньте промо-акції або гнучкий графік.",
+        "highCancellations": "• Високий коефіцієнт скасувань ({rate}%). Перевірте причини відмов.",
+        "lowDailyAverage": "• Низька денна середня ({count} занять). Можете збільшити доступність."
+      },
+      
+      "report": {
+        "period": "Період",
+        "date": "Дата",
+        "statistics": "Статистика",
+        "allSlots": "Всі терміни",
+        "completedLessons": "Завершені заняття",
+        "cancelled": "Скасовані",
+        "absences": "Неявки",
+        "revenue": "Дохід",
+        "occupancy": "Завантаженість",
+        "dailyAverage": "Середньодобово",
+        "topStudents": "Топ курсанти",
+        "fullName": "Ім'я та прізвище",
+        "lessonCount": "Кількість занять"
+      }
+    },
+    "templates": {
+      "title": "Шаблони розкладу",
+      "subtitle": "Керуйте шаблонами робочих годин та швидко їх застосовуйте",
+      
+      "buttons": {
+        "newTemplate": "Новий шаблон",
+        "export": "Експортувати шаблони",
+        "import": "Імпортувати шаблони",
+        "apply": "Застосувати",
+        "edit": "Редагувати",
+        "duplicate": "Дублювати",
+        "setAsDefault": "Встановити як основний",
+        "delete": "Видалити",
+        "cancel": "Скасувати",
+        "saveChanges": "Зберегти зміни",
+        "createTemplate": "Створити шаблон"
+      },
+      
+      "filters": {
+        "all": "Всі",
+        "default": "Основні",
+        "custom": "Власні",
+        "count": "({count})"
+      },
+      
+      "card": {
+        "workDays": "дні роботи",
+        "weekly": "на тиждень",
+        "slotsPerDay": "слотів/день",
+        "workingDays": "Дні роботи:",
+        "createdAt": "Створено:",
+        "monday": "Пн",
+        "tuesday": "Вт",
+        "wednesday": "Ср",
+        "thursday": "Чт",
+        "friday": "Пт",
+        "saturday": "Сб",
+        "sunday": "Нд"
+      },
+      
+      "form": {
+        "editTitle": "Редагувати шаблон",
+        "newTitle": "Новий шаблон",
+        "templateName": "Назва шаблону",
+        "templateNamePlaceholder": "напр. Стандартний робочий тиждень",
+        "description": "Опис (необов'язково)",
+        "descriptionPlaceholder": "Короткий опис шаблону...",
+        "workingHours": "Робочі години",
+        "setAsDefault": "Встановити як основний шаблон",
+        "minutes": "{minutes} хв",
+        "days": {
+          "monday": "понеділок",
+          "tuesday": "вівторок",
+          "wednesday": "середа",
+          "thursday": "четвер",
+          "friday": "п'ятниця",
+          "saturday": "субота",
+          "sunday": "неділя"
+        }
+      },
+      
+      "empty": {
+        "title": "Немає шаблонів",
+        "description": "Створіть перший шаблон розкладу, щоб швидко застосовувати робочі години",
+        "createButton": "Створити шаблон"
+      },
+      
+      "confirmDelete": "Ви впевнені, що хочете видалити цей шаблон?",
+      
+      "export": {
+        "filename": "шаблони_розкладу_{date}.json"
+      },
+      
+      "import": {
+        "error": "Помилка імпорту"
+      }
+    },
+    "errorBoundary": {
+      "title": "Упс! Щось пішло не так",
+      "description": "Виникла неочікувана помилка. Вибачте за незручності.",
+      
+      "actions": {
+        "reload": "Оновити сторінку",
+        "goHome": "Повернутися до панелі"
+      },
+      
+      "technicalDetails": "Технічні деталі",
+      
+      "support": {
+        "contact": "Зв'язатися з технічною підтримкою",
+        "email": "support@avtoschool.ua"
+      }
+    },
+    "provider": {
+      "toast": {
+        "success": "Успіх",
+        "error": "Помилка",
+        "slot": {
+          "updated": "Слот оновлено",
+          "deleted": "Слот видалено",
+          "created": "Новий слот створено",
+          "updateError": "Не вдалося оновити слот",
+          "deleteError": "Не вдалося видалити слот",
+          "createError": "Не вдалося створити слот"
+        },
+        "workingHours": {
+          "updated": "Робочі години оновлено",
+          "updateError": "Не вдалося оновити робочі години"
+        },
+        "template": {
+          "created": "Шаблон створено",
+          "updated": "Шаблон оновлено",
+          "deleted": "Шаблон видалено",
+          "applied": "Шаблон застосовано",
+          "createError": "Не вдалося створити шаблон",
+          "updateError": "Не вдалося оновити шаблон",
+          "deleteError": "Не вдалося видалити шаблон",
+          "applyError": "Не вдалося застосувати шаблон"
+        },
+        "schedule": {
+          "imported": "Розклад імпортовано",
+          "importError": "Неправильний формат даних"
+        },
+        "slots": {
+          "generateTitle": "Генерація слотів завершена",
+          "generateDescription": "Згенеровано слоти для {generated} днів.",
+          "protectedDays": "Пропущено {protected} днів з бронюваннями:",
+          "moreSkipped": "і ще {count}...",
+          "generateSuccess": "Згенеровано {slots} нових слотів для {days} днів",
+          "generateError": "Не вдалося згенерувати слоти"
+        },
+        "dataLoadError": "Помилка завантаження даних"
+      },
+      "weekDays": {
+        "monday": "понеділок",
+        "tuesday": "вівторок",
+        "wednesday": "середа",
+        "thursday": "четвер",
+        "friday": "п'ятниця",
+        "saturday": "субота",
+        "sunday": "неділя"
+      }
+    }
+
+
+
+  },
+  "students": {
+    "profile": {
+      "title": "Профіль курсанта",
+      "back": "Назад",
+      "edit": "Редагувати",
+      "cancel": "Скасувати",
+      "save": "Зберегти",
+      
+      "status": {
+        "active": "Активний",
+        "inactive": "Неактивний",
+        "category": "Категорія",
+        "theoryPassed": "Теорія складена"
+      },
+      
+      "metrics": {
+        "progress": "Прогрес",
+        "lessons": "Заняття",
+        "practiceHours": "Годин практики",
+        "rating": "Оцінка"
+      },
+      
+      "tabs": {
+        "info": "Інформація",
+        "lessons": "Заняття",
+        "payments": "Платежі",
+        "exams": "Іспити",
+        "notes": "Нотатки"
+      },
+      
+      "info": {
+        "contactTitle": "Контактна інформація",
+        "phone": "Телефон",
+        "email": "Email",
+        "dateOfBirth": "Дата народження",
+        "address": "Адреса",
+        "emergencyContact": "Екстрений контакт",
+        "emergencyPhone": "Телефон екстреного контакту",
+        
+        "learningTitle": "Інформація про навчання",
+        "enrollmentDate": "Дата зарахування",
+        "packageType": "Пакет навчання",
+        "strongPoints": "Сильні сторони",
+        "weakPoints": "Потребує уваги"
+      },
+      
+      "lessons": {
+        "title": "Історія занять",
+        "type": "Тип заняття",
+        "completed": "Завершено",
+        "scheduled": "Заплановано",
+        "missed": "Пропущено",
+        "practiceTypes": {
+          "city": "Практика - місто",
+          "examPrep": "Підготовка до іспиту"
+        }
+      },
+      
+      "payments": {
+        "title": "Фінансова інформація",
+        "totalCost": "Загальна вартість",
+        "paid": "Оплачено",
+        "balance": "До оплати",
+        "nextPayment": "Наступний платіж",
+        "paymentHistory": "Історія платежів",
+        "description": "Опис",
+        "method": "Спосіб оплати",
+        "status": {
+          "completed": "Оплачено",
+          "pending": "Очікується"
+        },
+        "methods": {
+          "card": "Картка",
+          "cash": "Готівка",
+          "transfer": "Переказ"
+        },
+        "nextPaymentAlert": "Наступний платіж {amount} грн до {date}"
+      },
+      
+      "exams": {
+        "title": "Іспити",
+        "theoryExam": "Теоретичний іспит",
+        "practiceExam": "Практичний іспит",
+        "date": "Дата",
+        "plannedDate": "Запланована дата",
+        "attempts": "Спроб",
+        "status": {
+          "passed": "Складено",
+          "failed": "Не складено",
+          "scheduled": "Заплановано"
+        }
+      },
+      
+      "notes": {
+        "title": "Нотатки інструктора",
+        "placeholder": "Додати нотатки про курсанта..."
+      },
+      
+      "currency": "грн"
+    },
+     "main": {
+      "title": "Мої курсанти",
+      "subtitle": "Керування та відстеження прогресу курсантів",
+      "addStudent": "Додати курсанта",
+      
+      "stats": {
+        "total": "Загалом",
+        "active": "Активні",
+        "progress": "Прогрес",
+        "exams": "Іспити",
+        "hours": "Години",
+        "rating": "Оцінка"
+      },
+      
+      "search": {
+        "placeholder": "Шукати за ім'ям, email або телефоном..."
+      },
+      
+      "filters": {
+        "all": "Всі курсанти",
+        "active": "Активні",
+        "paused": "Призупинені",
+        "completed": "Завершили",
+        "sortBy": {
+          "name": "За ім'ям",
+          "progress": "За прогресом",
+          "lessons": "За уроками",
+          "rating": "За оцінкою"
+        }
+      },
+      
+      "tabs": {
+        "cards": "Картки",
+        "list": "Список"
+      },
+      
+      "card": {
+        "category": "категорія {category}",
+        "overallProgress": "Загальний прогрес",
+        "lessons": "Уроки",
+        "lessonsCount": "{completed}/{total}",
+        "rating": "Оцінка",
+        "status": {
+          "active": "Активний",
+          "paused": "Призупинений"
+        },
+        "payment": {
+          "overdue": "Заборгованість"
+        },
+        "exam": "Іспит: {date}",
+        "nextLesson": {
+          "title": "Наступний урок",
+          "dateTime": "{dateTime}"
+        },
+        "actions": {
+          "details": "Деталі",
+          "progress": "Прогрес",
+          "more": "Дії"
+        }
+      },
+      
+      "dropdown": {
+        "label": "Дії",
+        "profile": "Профіль",
+        "progress": "Прогрес",
+        "report": "Звіт",
+        "call": "Подзвонити",
+        "message": "Повідомлення"
+      },
+      
+      "table": {
+        "headers": {
+          "student": "Курсант",
+          "progress": "Прогрес",
+          "lessons": "Уроки",
+          "nextLesson": "Наступний",
+          "status": "Статус",
+          "actions": "Дії"
+        },
+        "lessonsFrom": "{completed} з {total}",
+        "noNextLesson": "-"
+      },
+      
+      "quickActions": {
+        "title": "Швидкі дії",
+        "generateReport": "Генерувати звіт",
+        "exportData": "Експорт даних",
+        "bulkMessage": "Масова розсилка",
+        "scheduleLessons": "Планувати уроки"
+      }
+    }
+  },
+  "vehicle": {
+    "inspection": {
+      "title": "Огляд транспорту",
+      "vehicleInfo": "{model} • {number} • {mileage} км",
+      
+      "buttons": {
+        "history": "Історія",
+        "save": "Зберегти",
+        "back": "Назад",
+        "next": "Далі",
+        "finishInspection": "Завершити огляд"
+      },
+      
+      "progress": {
+        "title": "Прогрес огляду",
+        "steps": "{current} з {total}"
+      },
+      
+      "steps": {
+        "exterior": "Огляд зовнішній",
+        "interior": "Салон",
+        "engine": "Двигун",
+        "safety": "Безпека",
+        "documents": "Документи"
+      },
+      
+      "exterior": {
+        "title": "Огляд зовнішній",
+        "subtitle": "Перевірте зовнішній стан транспорту",
+        
+        "bodyCondition": {
+          "label": "Стан кузова",
+          "good": "Добрий - без пошкоджень",
+          "minor": "Дрібні подряпини",
+          "major": "Значні пошкодження"
+        },
+        
+        "components": {
+          "label": "Перевірка компонентів",
+          "windowsClean": "Скло чисте та без тріщин",
+          "lightsWorking": "Всі ліхтарі працюють (ближні/дальні/поворотники/стоп-сигнали)",
+          "mirrorsClean": "Дзеркала чисті та правильно налаштовані",
+          "tirePressure": "Тиск у шинах відповідає нормі"
+        },
+        
+        "tiresCondition": {
+          "label": "Стан шин",
+          "good": "Добрий протектор (понад 4мм)",
+          "worn": "Зношені (2-4мм)",
+          "replace": "Потребують заміни (менше 2мм)"
+        }
+      },
+      
+      "interior": {
+        "title": "Огляд салону",
+        "subtitle": "Перевірте стан та чистоту салону",
+        
+        "components": {
+          "label": "Перевірка компонентів",
+          "seatbeltsWorking": "Ремені безпеки справні",
+          "dashboardClean": "Панель приладів чиста",
+          "controlsWorking": "Всі кнопки та перемикачі працюють",
+          "acHeatingWorking": "Кондиціонер/опалення працює"
+        },
+        
+        "cleanlinessLevel": {
+          "label": "Рівень чистоти",
+          "clean": "Чистий",
+          "acceptable": "Прийнятний",
+          "dirty": "Потребує прибирання"
+        }
+      },
+      
+      "engine": {
+        "title": "Перевірка двигуна",
+        "subtitle": "Перевірте рівні рідин та стан двигуна",
+        
+        "warning": {
+          "title": "Увага!",
+          "description": "Перевірку двигуна проводити тільки при вимкненому та охолодженому двигуні"
+        },
+        
+        "oilLevel": {
+          "label": "Рівень масла",
+          "normal": "Нормальний",
+          "low": "Низький",
+          "critical": "Критично низький"
+        },
+        
+        "coolantLevel": {
+          "label": "Рівень охолоджуючої рідини",
+          "normal": "Нормальний",
+          "low": "Низький",
+          "critical": "Критично низький"
+        },
+        
+        "components": {
+          "windshieldFluid": "Достатній рівень рідини омивача",
+          "noLeaks": "Відсутність витоків рідин"
+        }
+      },
+      
+      "safety": {
+        "title": "Перевірка безпеки",
+        "subtitle": "Перевірте всі системи безпеки",
+        
+        "components": {
+          "brakeTest": "Робочі гальма працюють ефективно",
+          "emergencyBrake": "Стоянкове гальмо утримує транспорт",
+          "hornWorking": "Звуковий сигнал працює",
+          "firstAidKit": "Аптечка присутня та укомплектована",
+          "fireExtinguisher": "Вогнегасник присутній та не прострочений",
+          "warningTriangle": "Знак аварійної зупинки присутній"
+        }
+      },
+      
+      "documents": {
+        "title": "Перевірка документів",
+        "subtitle": "Переконайтеся в наявності всіх необхідних документів",
+        
+        "items": {
+          "registration": "Свідоцтво про реєстрацію",
+          "insurance": "Страховий поліс (дійсний)",
+          "inspection": "Технічний огляд (дійсний)",
+          "driverLicense": "Посвідчення водія"
+        }
+      },
+      
+      "notes": {
+        "title": "Додаткові зауваження",
+        "placeholder": "Вкажіть будь-які додаткові спостереження або проблеми..."
+      },
+      
+      "previousInspections": {
+        "title": "Попередні огляди",
+        "type": {
+          "daily": "Щоденний"
+        },
+        "issues": "{count} проблем",
+        "status": {
+          "passed": "Пройдено",
+          "warning": "З зауваженнями",
+          "failed": "Не пройдено"
+        }
+      }
+    },
+    "reportIssue": {
+      "title": "Повідомити про проблему",
+      "vehicleInfo": "{make} {model} • {registrationNumber}",
+      
+      "buttons": {
+        "back": "Назад",
+        "cancel": "Скасувати",
+        "submit": "Повідомити про проблему",
+        "submitting": "Надсилання...",
+        "addPhoto": "Додати"
+      },
+      
+      "alerts": {
+        "critical": {
+          "title": "Критична проблема!",
+          "description": "Після повідомлення транспорт буде автоматично виведений з експлуатації до ремонту."
+        }
+      },
+      
+      "form": {
+        "title": "Деталі проблеми",
+        "subtitle": "Опишіть детально проблему, щоб механік міг швидко її вирішити",
+        
+        "category": {
+          "label": "Категорія проблеми *",
+          "placeholder": "Виберіть категорію",
+          "options": {
+            "engine": "Двигун",
+            "transmission": "Коробка передач",
+            "brakes": "Гальма",
+            "suspension": "Підвіска",
+            "electrical": "Електрика",
+            "lights": "Освітлення",
+            "tires": "Шини",
+            "interior": "Салон",
+            "exterior": "Кузов",
+            "fluids": "Рідини",
+            "other": "Інше"
+          }
+        },
+        
+        "severity": {
+          "label": "Рівень критичності *",
+          "levels": {
+            "low": {
+              "label": "Низький",
+              "description": "Можна продовжувати роботу"
+            },
+            "medium": {
+              "label": "Середній",
+              "description": "Потребує уваги найближчим часом"
+            },
+            "high": {
+              "label": "Високий",
+              "description": "Потребує негайної уваги"
+            },
+            "critical": {
+              "label": "Критичний",
+              "description": "Не можна використовувати транспорт"
+            }
+          }
+        },
+        
+        "description": {
+          "label": "Опис проблеми *",
+          "placeholder": "Опишіть детально проблему...",
+          "quickOptions": "Швидкі опції:",
+          "commonIssues": {
+            "strangeSound": "Дивний звук під час руху",
+            "steeringVibration": "Вібрація керма",
+            "startingDifficulty": "Труднощі із запуском",
+            "fluidLeak": "Витік рідини",
+            "brakingProblems": "Проблеми з гальмуванням",
+            "lightsNotWorking": "Освітлення не працює належним чином"
+          }
+        },
+        
+        "when": {
+          "label": "Коли виникла проблема"
+        },
+        
+        "location": {
+          "label": "Місцезнаходження",
+          "placeholder": "напр. вул. Головна 15, Київ"
+        },
+        
+        "mileage": {
+          "label": "Поточний пробіг (км) *",
+          "lastKnown": "Останній відомий: {mileage} км"
+        },
+        
+        "checkboxes": {
+          "affectsOperation": {
+            "label": "Проблема впливає на безпечну експлуатацію",
+            "description": "Транспорт може становити загрозу"
+          },
+          "needsImmediate": {
+            "label": "Потребує негайної уваги",
+            "description": "Механік повинен перевірити якнайшвидше"
+          }
+        },
+        
+        "images": {
+          "label": "Фото проблеми",
+          "maxFiles": "Максимум 6 фото. Фото допоможуть механіку швидше ідентифікувати проблему."
+        },
+        
+        "additionalNotes": {
+          "label": "Додаткові зауваження (необов'язково)",
+          "placeholder": "Інша важлива інформація..."
+        }
+      },
+      
+      "info": {
+        "title": "Що відбувається після повідомлення?",
+        "steps": {
+          "notification": "Механік отримує сповіщення",
+          "analysis": "Проблема аналізується та визначається пріоритет",
+          "feedback": "Ви отримаєте інформацію про заплановаий ремонт",
+          "critical": "У випадку критичної проблеми транспорт блокується"
+        }
+      }
+    },
+    "main": {
+      "title": "Мій транспорт",
+      "vehicleInfo": "{make} {model} • {registrationNumber}",
+      
+      "buttons": {
+        "report": "Звіт",
+        "reportIssue": "Повідомити про проблему",
+        "update": "Оновити",
+        "confirmCheck": "Підтвердити перевірку"
+      },
+      
+      "overview": {
+        "title": "Інформація про транспорт",
+        "make": "Марка/Модель",
+        "year": "Рік випуску",
+        "transmission": "Коробка передач",
+        "transmissionTypes": {
+          "manual": "Механічна",
+          "automatic": "Автоматична"
+        },
+        "fuel": "Паливо",
+        "fuelTypes": {
+          "gasoline": "Бензин",
+          "diesel": "Дизель",
+          "electric": "Електро",
+          "hybrid": "Гібрид"
+        },
+        "color": "Колір",
+        "engineSize": "Об'єм двигуна",
+        "vin": "VIN",
+        "status": "Статус",
+        "statusActive": "Активний"
+      },
+      
+      "mileage": {
+        "title": "Пробіг",
+        "km": "км",
+        "today": "+{km} км сьогодні",
+        "updateLabel": "Оновити пробіг",
+        "placeholder": "Новий пробіг"
+      },
+      
+      "fuel": {
+        "title": "Паливо",
+        "lowLevel": "Низький рівень палива!",
+        "consumption": "Витрата",
+        "average": "{value} л/100км (середня)"
+      },
+      
+      "health": {
+        "title": "Стан транспорту",
+        "engine": "Двигун",
+        "brakes": "Гальма",
+        "tires": "Шини"
+      },
+      
+      "maintenance": {
+        "title": "Майбутнє обслуговування",
+        "periodicInspection": "Періодичний огляд",
+        "inKmOrDate": "Через {km} км або {date}",
+        "oilChange": "Заміна масла",
+        "tireRotation": "Ротація шин",
+        "inKm": "Через {km} км"
+      },
+      
+      "documents": {
+        "title": "Документи",
+        "insurance": "Страхування",
+        "technicalInspection": "Технічний огляд",
+        "registration": "Реєстрація",
+        "validUntil": "До {date}",
+        "valid": "Дійсний",
+        "validFemale": "Дійсна"
+      },
+      
+      "tabs": {
+        "checklist": "Щоденна перевірка",
+        "history": "Історія",
+        "statistics": "Статистика",
+        "maintenance": "Обслуговування"
+      },
+      
+      "dailyChecklist": {
+        "title": "Щоденна перевірка",
+        "subtitle": "Перевірте всі пункти перед початком роботи",
+        "items": {
+          "exteriorInspection": "Зовнішній огляд кузова",
+          "interiorCleanliness": "Чистота салону",
+          "lightsCheck": "Перевірка всіх ліхтарів",
+          "tiresCheck": "Стан шин і тиск",
+          "fluidsCheck": "Рівень рідин",
+          "brakesTest": "Тест гальм",
+          "documentsPresent": "Наявність документів",
+          "firstAidKit": "Аптечка",
+          "fireExtinguisher": "Вогнегасник",
+          "warningTriangle": "Знак аварійної зупинки"
+        }
+      },
+      
+      "history": {
+        "mileageHistory": "Історія пробігу",
+        "dailyMileage": "Денний пробіг (км)",
+        "recentIssues": "Останні проблеми",
+        "severityLow": "Низька",
+        "severityMedium": "Середня",
+        "severityHigh": "Висока",
+        "resolved": "Вирішено",
+        "active": "Активна",
+        "resolvedOn": "Вирішено {date}"
+      },
+      
+      "statistics": {
+        "fuelConsumption": "Витрата палива",
+        "averageConsumption": "Середня витрата",
+        "fuelCosts": "Витрати на паливо",
+        "perMonth": "/міс.",
+        "vehicleUsage": "Використання транспорту",
+        "averageMileagePerDay": "Середній пробіг/день",
+        "workHoursPerDay": "Години роботи/день",
+        "utilization": "Використання",
+        "hours": "год.",
+        "thisMonth": "Цей місяць:",
+        "thisYear": "Цей рік:",
+        "projectedMileage": "Прогнозований пробіг",
+        "inMonth": "За місяць",
+        "inQuarter": "За квартал",
+        "inYear": "За рік"
+      },
+      
+      "maintenanceHistory": {
+        "title": "Історія обслуговування",
+        "periodicInspection": "Періодичний огляд",
+        "tireChange": "Заміна шин",
+        "items": {
+          "oilChange": "Заміна масла",
+          "filterChange": "Заміна фільтрів",
+          "brakeCheck": "Перевірка гальм",
+          "winterTires": "Зимові шини (4 шт.)"
+        },
+        "currency": "{amount} грн"
+      },
+      
+      "recommendations": {
+        "title": "Рекомендації з обслуговування",
+        "based": "На основі пробігу та історії обслуговування рекомендуємо:",
+        "checkBrakePads": "Перевірити гальмівні колодки",
+        "brakeWear": "Стан гальм знизився до 75%",
+        "planTireChange": "Планова заміна шин",
+        "tireWear": "Зношення досягло 70%",
+        "airFilterChange": "Заміна повітряного фільтра",
+        "recommendedIn": "Рекомендовано через {km} км"
+      }
+    }
+  },
+   "layout": {
+    "logo": {
+      "title": "DenisDrive",
+      "subtitle": "Портал інструктора"
+    },
+    
+    "navigation": {
+      "dashboard": "Панель керування",
+      "schedule": "Розклад",
+      "lessons": "Уроки",
+      "todayLessons": "Сьогоднішні",
+      "students": "Курсанти",
+      "earnings": "Заробіток",
+      "vehicle": "Транспорт",
+      "messages": "Повідомлення",
+      "resources": "Матеріали",
+      "profile": "Профіль",
+      "settings": "Налаштування"
+    },
+    
+    "bottomNav": {
+      "dashboard": "Головна",
+      "today": "Сьогодні",
+      "lessons": "Уроки",
+      "students": "Курсанти",
+      "menu": "Меню"
+    },
+    
+    "userStats": {
+      "rating": "Рейтинг",
+      "role": "Інструктор",
+      "today": "Сьогодні",
+      "lessons": "{completed}/{total} уроків",
+      "nextLesson": "Наступний"
+    },
+    
+    "breadcrumbs": {
+      "dashboard": "Панель керування",
+      "schedule": "Розклад",
+      "availability": "Доступність",
+      "exceptions": "Винятки",
+      "lessons": "Уроки",
+      "today": "Сьогоднішні",
+      "checkIn": "Реєстрація",
+      "students": "Курсанти",
+      "progress": "Прогрес",
+      "feedback": "Відгуки",
+      "earnings": "Заробіток",
+      "history": "Історія",
+      "details": "Деталі",
+      "vehicle": "Транспорт",
+      "inspection": "Огляд",
+      "reportIssue": "Повідомити про проблему",
+      "messages": "Повідомлення",
+      "resources": "Матеріали",
+      "upload": "Додати матеріал",
+      "profile": "Профіль",
+      "documents": "Документи",
+      "settings": "Налаштування"
+    },
+    
+    "languages": {
+      "pl": "Польська",
+      "uk": "Українська",
+      "en": "Англійська",
+      "ru": "Російська"
+    },
+    
+    "search": {
+      "placeholder": "Пошук..."
+    },
+    
+    "notifications": {
+      "title": "Сповіщення",
+      "markAllRead": "Позначити всі як прочитані",
+      "noNotifications": "Немає сповіщень",
+      "viewAll": "Переглянути всі",
+      "timeAgo": {
+        "minutes": "{count} хв тому",
+        "hours": "{count} год тому",
+        "days": "{count} дн тому"
+      },
+      "types": {
+        "newLesson": "Новий урок",
+        "reminder": "Нагадування",
+        "congratulations": "Вітаємо!"
+      },
+      "messages": {
+        "lessonBooked": "{name} забронював урок на завтра",
+        "lessonReminder": "Наступний урок через 30 хвилин",
+        "studentPassed": "Ваш учень склав іспит"
+      }
+    },
+    
+    "userMenu": {
+      "profile": "Переглянути профіль",
+      "settings": "Налаштування",
+      "help": "Довідка та підтримка",
+      "darkMode": "Темний режим",
+      "lightMode": "Світлий режим",
+      "logout": "Вийти"
+    },
+    
+    "quickActions": {
+      "settings": "Налаштування"
+    },
+    
+    "logout": {
+      "button": "Вийти"
+    }
   }
+  
+
+  
+  
 }

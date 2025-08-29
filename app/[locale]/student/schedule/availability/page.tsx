@@ -1,8 +1,9 @@
-// app/[locale]/student/schedule/availability/page.tsx
+// Шлях: /app/[locale]/student/schedule/availability/page.tsx
 
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Calendar,
   Clock,
@@ -46,14 +47,14 @@ const mockAvailableSlots = [
   {
     id: '1',
     date: '2024-08-29',
-    dayName: 'Czwartek',
+    dayName: 'Thursday',
     slots: [
       {
         id: 's1',
         time: '08:00',
-        instructor: { name: 'Piotr Nowak', avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff', rating: 4.9 },
+        instructor: { name: 'Петро Новак', avatar: 'https://ui-avatars.com/api/?name=Петро+Новак&background=10B981&color=fff', rating: 4.9 },
         vehicle: 'Toyota Yaris',
-        location: 'ul. Puławska 145',
+        location: 'вул. Пулавська 145',
         available: true,
         popular: false,
         discount: 0,
@@ -62,9 +63,9 @@ const mockAvailableSlots = [
       {
         id: 's2',
         time: '10:00',
-        instructor: { name: 'Anna Kowalczyk', avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff', rating: 4.8 },
+        instructor: { name: 'Анна Ковальчик', avatar: 'https://ui-avatars.com/api/?name=Анна+Ковальчик&background=8B5CF6&color=fff', rating: 4.8 },
         vehicle: 'VW Golf',
-        location: 'ul. Wilanowska 89',
+        location: 'вул. Вілановська 89',
         available: true,
         popular: true,
         discount: 10,
@@ -73,9 +74,9 @@ const mockAvailableSlots = [
       {
         id: 's3',
         time: '14:00',
-        instructor: { name: 'Piotr Nowak', avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff', rating: 4.9 },
+        instructor: { name: 'Петро Новак', avatar: 'https://ui-avatars.com/api/?name=Петро+Новак&background=10B981&color=fff', rating: 4.9 },
         vehicle: 'Toyota Yaris',
-        location: 'ul. Puławska 145',
+        location: 'вул. Пулавська 145',
         available: false,
         popular: true,
         discount: 0,
@@ -84,9 +85,9 @@ const mockAvailableSlots = [
       {
         id: 's4',
         time: '16:00',
-        instructor: { name: 'Tomasz Wiśniewski', avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff', rating: 4.7 },
+        instructor: { name: 'Томаш Вішневський', avatar: 'https://ui-avatars.com/api/?name=Томаш+Вішневський&background=F59E0B&color=fff', rating: 4.7 },
         vehicle: 'Škoda Fabia',
-        location: 'al. KEN 36',
+        location: 'ал. КЕН 36',
         available: true,
         popular: false,
         discount: 0,
@@ -95,9 +96,9 @@ const mockAvailableSlots = [
       {
         id: 's5',
         time: '18:00',
-        instructor: { name: 'Katarzyna Nowak', avatar: 'https://ui-avatars.com/api/?name=Katarzyna+Nowak&background=EC4899&color=fff', rating: 5.0 },
+        instructor: { name: 'Катерина Новак', avatar: 'https://ui-avatars.com/api/?name=Катерина+Новак&background=EC4899&color=fff', rating: 5.0 },
         vehicle: 'Toyota Yaris',
-        location: 'ul. Puławska 145',
+        location: 'вул. Пулавська 145',
         available: true,
         popular: false,
         discount: 15,
@@ -108,14 +109,14 @@ const mockAvailableSlots = [
   {
     id: '2',
     date: '2024-08-30',
-    dayName: 'Piątek',
+    dayName: 'Friday',
     slots: [
       {
         id: 's6',
         time: '09:00',
-        instructor: { name: 'Anna Kowalczyk', avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff', rating: 4.8 },
+        instructor: { name: 'Анна Ковальчик', avatar: 'https://ui-avatars.com/api/?name=Анна+Ковальчик&background=8B5CF6&color=fff', rating: 4.8 },
         vehicle: 'VW Golf',
-        location: 'ul. Wilanowska 89',
+        location: 'вул. Вілановська 89',
         available: true,
         popular: false,
         discount: 0,
@@ -124,9 +125,9 @@ const mockAvailableSlots = [
       {
         id: 's7',
         time: '11:00',
-        instructor: { name: 'Piotr Nowak', avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff', rating: 4.9 },
+        instructor: { name: 'Петро Новак', avatar: 'https://ui-avatars.com/api/?name=Петро+Новак&background=10B981&color=fff', rating: 4.9 },
         vehicle: 'Toyota Yaris',
-        location: 'ul. Puławska 145',
+        location: 'вул. Пулавська 145',
         available: true,
         popular: true,
         discount: 0,
@@ -135,9 +136,9 @@ const mockAvailableSlots = [
       {
         id: 's8',
         time: '15:00',
-        instructor: { name: 'Katarzyna Nowak', avatar: 'https://ui-avatars.com/api/?name=Katarzyna+Nowak&background=EC4899&color=fff', rating: 5.0 },
+        instructor: { name: 'Катерина Новак', avatar: 'https://ui-avatars.com/api/?name=Катерина+Новак&background=EC4899&color=fff', rating: 5.0 },
         vehicle: 'Toyota Yaris',
-        location: 'ul. Puławska 145',
+        location: 'вул. Пулавська 145',
         available: true,
         popular: false,
         discount: 20,
@@ -148,19 +149,20 @@ const mockAvailableSlots = [
 ];
 
 const instructors = [
-  { id: '1', name: 'Piotr Nowak', rating: 4.9 },
-  { id: '2', name: 'Anna Kowalczyk', rating: 4.8 },
-  { id: '3', name: 'Tomasz Wiśniewski', rating: 4.7 },
-  { id: '4', name: 'Katarzyna Nowak', rating: 5.0 }
+  { id: '1', name: 'Петро Новак', rating: 4.9 },
+  { id: '2', name: 'Анна Ковальчик', rating: 4.8 },
+  { id: '3', name: 'Томаш Вішневський', rating: 4.7 },
+  { id: '4', name: 'Катерина Новак', rating: 5.0 }
 ];
 
 const locations = [
-  { id: '1', name: 'ul. Puławska 145', distance: '2.3 km' },
-  { id: '2', name: 'ul. Wilanowska 89', distance: '4.1 km' },
-  { id: '3', name: 'al. KEN 36', distance: '0.8 km' }
+  { id: '1', name: 'вул. Пулавська 145', distance: '2.3 км' },
+  { id: '2', name: 'вул. Вілановська 89', distance: '4.1 км' },
+  { id: '3', name: 'ал. КЕН 36', distance: '0.8 км' }
 ];
 
 export default function AvailabilityPage() {
+  const t = useTranslations('student.availability');
   const [selectedDate, setSelectedDate] = useState('2024-08-29');
   const [selectedInstructor, setSelectedInstructor] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
@@ -190,10 +192,22 @@ export default function AvailabilityPage() {
 
   const getTimeRangeLabel = (time: string) => {
     const hour = parseInt(time.split(':')[0]);
-    if (hour < 9) return 'Poranek';
-    if (hour < 12) return 'Przedpołudnie';
-    if (hour < 17) return 'Popołudnie';
-    return 'Wieczór';
+    if (hour < 9) return t('timeLabels.morning');
+    if (hour < 12) return t('timeLabels.forenoon');
+    if (hour < 17) return t('timeLabels.afternoon');
+    return t('timeLabels.evening');
+  };
+
+  const getWeatherLabel = (weather: string) => {
+    return t(`weather.${weather}`);
+  };
+
+  const getDayName = (dayName: string) => {
+    const daysMap: { [key: string]: string } = {
+      'Thursday': t('days.thursday'),
+      'Friday': t('days.friday')
+    };
+    return daysMap[dayName] || dayName;
   };
 
   return (
@@ -201,13 +215,13 @@ export default function AvailabilityPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dostępne terminy</h1>
-          <p className="text-gray-600">Znajdź idealny termin na swoją następną lekcję</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
         <Link href="/student/bookings/book">
           <Button>
             <Calendar className="h-4 w-4 mr-2" />
-            Szybka rezerwacja
+            {t('buttons.quickBooking')}
           </Button>
         </Link>
       </div>
@@ -216,8 +230,7 @@ export default function AvailabilityPage() {
       <Alert className="border-blue-200 bg-blue-50">
         <Sparkles className="h-4 w-4 text-blue-600" />
         <AlertDescription>
-          <strong>Rekomendacja AI:</strong> Na podstawie Twojego postępu, polecamy lekcję parkowania z Anną Kowalczyk w piątek o 9:00. 
-          Pogoda będzie sprzyjająca, a ruch na drogach mniejszy.
+          <strong>{t('aiRecommendation.title')}:</strong> {t('aiRecommendation.message')}
         </AlertDescription>
       </Alert>
 
@@ -225,12 +238,12 @@ export default function AvailabilityPage() {
         {/* Filters Sidebar */}
         <Card className="lg:col-span-1 h-fit">
           <CardHeader>
-            <CardTitle className="text-lg">Filtry</CardTitle>
+            <CardTitle className="text-lg">{t('filters.title')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Date Range */}
             <div>
-              <Label>Zakres dat</Label>
+              <Label>{t('filters.dateRange')}</Label>
               <div className="mt-2 space-y-2">
                 <Button variant="outline" className="w-full justify-start">
                   <Calendar className="h-4 w-4 mr-2" />
@@ -241,13 +254,13 @@ export default function AvailabilityPage() {
 
             {/* Instructor */}
             <div>
-              <Label>Instruktor</Label>
+              <Label>{t('filters.instructor')}</Label>
               <Select value={selectedInstructor} onValueChange={setSelectedInstructor}>
                 <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Wszyscy" />
+                  <SelectValue placeholder={t('filters.allInstructors')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszyscy instruktorzy</SelectItem>
+                  <SelectItem value="all">{t('filters.allInstructors')}</SelectItem>
                   {instructors.map(instructor => (
                     <SelectItem key={instructor.id} value={instructor.id}>
                       <div className="flex items-center justify-between w-full">
@@ -265,13 +278,13 @@ export default function AvailabilityPage() {
 
             {/* Location */}
             <div>
-              <Label>Lokalizacja</Label>
+              <Label>{t('filters.location')}</Label>
               <Select value={selectedLocation} onValueChange={setSelectedLocation}>
                 <SelectTrigger className="mt-2">
-                  <SelectValue placeholder="Wszystkie" />
+                  <SelectValue placeholder={t('filters.allLocations')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszystkie lokalizacje</SelectItem>
+                  <SelectItem value="all">{t('filters.allLocations')}</SelectItem>
                   {locations.map(location => (
                     <SelectItem key={location.id} value={location.id}>
                       <div className="flex items-center justify-between w-full">
@@ -286,30 +299,30 @@ export default function AvailabilityPage() {
 
             {/* Time of Day */}
             <div>
-              <Label>Pora dnia</Label>
+              <Label>{t('filters.timeOfDay')}</Label>
               <RadioGroup value={selectedTimeRange} onValueChange={setSelectedTimeRange} className="mt-2">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="all" id="all" />
-                  <Label htmlFor="all">Cały dzień</Label>
+                  <Label htmlFor="all">{t('filters.allDay')}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="morning" id="morning" />
-                  <Label htmlFor="morning">Rano (6:00-12:00)</Label>
+                  <Label htmlFor="morning">{t('filters.morning')}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="afternoon" id="afternoon" />
-                  <Label htmlFor="afternoon">Popołudnie (12:00-18:00)</Label>
+                  <Label htmlFor="afternoon">{t('filters.afternoon')}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="evening" id="evening" />
-                  <Label htmlFor="evening">Wieczór (18:00-22:00)</Label>
+                  <Label htmlFor="evening">{t('filters.evening')}</Label>
                 </div>
               </RadioGroup>
             </div>
 
             {/* Price Range */}
             <div>
-              <Label>Zakres cenowy</Label>
+              <Label>{t('filters.priceRange')}</Label>
               <div className="mt-2 px-2">
                 <Slider
                   value={priceRange}
@@ -319,8 +332,8 @@ export default function AvailabilityPage() {
                   step={10}
                 />
                 <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>{priceRange[0]} PLN</span>
-                  <span>{priceRange[1]} PLN</span>
+                  <span>{priceRange[0]} {t('currency')}</span>
+                  <span>{priceRange[1]} {t('currency')}</span>
                 </div>
               </div>
             </div>
@@ -328,7 +341,7 @@ export default function AvailabilityPage() {
             {/* Additional Filters */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <Label htmlFor="discounted">Tylko promocje</Label>
+                <Label htmlFor="discounted">{t('filters.onlyDiscounts')}</Label>
                 <Switch
                   id="discounted"
                   checked={showOnlyDiscounted}
@@ -336,7 +349,7 @@ export default function AvailabilityPage() {
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="available">Tylko dostępne</Label>
+                <Label htmlFor="available">{t('filters.onlyAvailable')}</Label>
                 <Switch
                   id="available"
                   checked={showOnlyAvailable}
@@ -347,7 +360,7 @@ export default function AvailabilityPage() {
 
             <Button className="w-full" variant="outline">
               <X className="h-4 w-4 mr-2" />
-              Wyczyść filtry
+              {t('filters.clearFilters')}
             </Button>
           </CardContent>
         </Card>
@@ -361,23 +374,23 @@ export default function AvailabilityPage() {
                 <div className="flex items-center gap-4">
                   <Select value={sortBy} onValueChange={setSortBy}>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Sortuj" />
+                      <SelectValue placeholder={t('sort.label')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="time">Według czasu</SelectItem>
-                      <SelectItem value="price">Według ceny</SelectItem>
-                      <SelectItem value="rating">Według oceny</SelectItem>
-                      <SelectItem value="distance">Według odległości</SelectItem>
+                      <SelectItem value="time">{t('sort.byTime')}</SelectItem>
+                      <SelectItem value="price">{t('sort.byPrice')}</SelectItem>
+                      <SelectItem value="rating">{t('sort.byRating')}</SelectItem>
+                      <SelectItem value="distance">{t('sort.byDistance')}</SelectItem>
                     </SelectContent>
                   </Select>
                   <Badge variant="secondary">
-                    {mockAvailableSlots.reduce((acc, day) => acc + day.slots.filter(s => s.available).length, 0)} wolnych terminów
+                    {mockAvailableSlots.reduce((acc, day) => acc + day.slots.filter(s => s.available).length, 0)} {t('availableSlots')}
                   </Badge>
                 </div>
                 <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as any)}>
                   <TabsList>
-                    <TabsTrigger value="grid">Siatka</TabsTrigger>
-                    <TabsTrigger value="list">Lista</TabsTrigger>
+                    <TabsTrigger value="grid">{t('viewMode.grid')}</TabsTrigger>
+                    <TabsTrigger value="list">{t('viewMode.list')}</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
@@ -390,14 +403,14 @@ export default function AvailabilityPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg">{day.dayName}, {day.date}</CardTitle>
+                    <CardTitle className="text-lg">{getDayName(day.dayName)}, {day.date}</CardTitle>
                     <p className="text-sm text-gray-500 mt-1">
-                      {day.slots.filter(s => s.available).length} z {day.slots.length} terminów dostępnych
+                      {day.slots.filter(s => s.available).length} {t('of')} {day.slots.length} {t('slotsAvailable')}
                     </p>
                   </div>
                   <Badge variant="outline">
                     <TrendingUp className="h-3 w-3 mr-1" />
-                    Popularny dzień
+                    {t('popularDay')}
                   </Badge>
                 </div>
               </CardHeader>
@@ -452,7 +465,7 @@ export default function AvailabilityPage() {
                           </div>
                           <div className="flex items-center gap-2 text-sm text-gray-600">
                             {getWeatherIcon(slot.weather)}
-                            <span>Prognoza: {slot.weather === 'sunny' ? 'Słonecznie' : slot.weather === 'cloudy' ? 'Pochmurno' : 'Deszczowo'}</span>
+                            <span>{t('weatherForecast')}: {getWeatherLabel(slot.weather)}</span>
                           </div>
                         </div>
 
@@ -461,23 +474,23 @@ export default function AvailabilityPage() {
                             <p className="text-lg font-bold text-gray-900">
                               {slot.discount > 0 ? (
                                 <>
-                                  <span className="line-through text-gray-400 text-sm mr-2">180 PLN</span>
-                                  {180 - (180 * slot.discount / 100)} PLN
+                                  <span className="line-through text-gray-400 text-sm mr-2">180 {t('currency')}</span>
+                                  {180 - (180 * slot.discount / 100)} {t('currency')}
                                 </>
                               ) : (
-                                '180 PLN'
+                                `180 ${t('currency')}`
                               )}
                             </p>
                           </div>
                           {slot.available ? (
                             <Link href="/student/bookings/book">
                               <Button size="sm">
-                                Zarezerwuj
+                                {t('buttons.book')}
                               </Button>
                             </Link>
                           ) : (
                             <Button size="sm" disabled>
-                              Zajęte
+                              {t('buttons.taken')}
                             </Button>
                           )}
                         </div>
@@ -485,7 +498,7 @@ export default function AvailabilityPage() {
                         {slot.popular && (
                           <div className="mt-3 flex items-center gap-1 text-xs text-orange-600">
                             <Zap className="h-3 w-3" />
-                            <span>Popularny termin - rezerwuj szybko!</span>
+                            <span>{t('popularSlotWarning')}</span>
                           </div>
                         )}
                       </div>
@@ -533,14 +546,14 @@ export default function AvailabilityPage() {
                             </Badge>
                           )}
                           <span className="font-bold">
-                            {slot.discount > 0 ? 180 - (180 * slot.discount / 100) : 180} PLN
+                            {slot.discount > 0 ? 180 - (180 * slot.discount / 100) : 180} {t('currency')}
                           </span>
                           {slot.available ? (
                             <Link href="/student/bookings/book">
-                              <Button size="sm">Zarezerwuj</Button>
+                              <Button size="sm">{t('buttons.book')}</Button>
                             </Link>
                           ) : (
-                            <Button size="sm" disabled>Zajęte</Button>
+                            <Button size="sm" disabled>{t('buttons.taken')}</Button>
                           )}
                         </div>
                       </div>
@@ -554,7 +567,7 @@ export default function AvailabilityPage() {
           {/* Load More */}
           <div className="text-center">
             <Button variant="outline" className="w-full max-w-xs">
-              Pokaż więcej terminów
+              {t('buttons.showMore')}
               <ChevronRight className="h-4 w-4 ml-2" />
             </Button>
           </div>

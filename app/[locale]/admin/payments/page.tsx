@@ -1,8 +1,11 @@
 // app/[locale]/admin/payments/page.tsx
+// Головна сторінка платежів - управління фінансовими транзакціями
+
 "use client";
 
 import React, { useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   CreditCard, CheckCircle, XCircle, Clock, RotateCcw, Download,
   Filter, Search, Calendar, TrendingUp, TrendingDown, DollarSign,
@@ -11,34 +14,34 @@ import {
   Package, Coins, Wallet, PieChart, BarChart3, Activity
 } from 'lucide-react';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 import {
   LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
   Area, AreaChart
 } from 'recharts';
 
-// Helper function to format numbers consistently
+// Helper functions
 const formatCurrency = (amount: number) => {
-  return `${Math.abs(amount)} zł`;
+  return `${Math.abs(amount)} грн`;
 };
 
 const formatNumber = (num: number) => {
   return num.toString();
 };
 
-// Generate mock transactions with Polish data
+// Генерація тестових транзакцій з українськими даними
 const generateTransactions = () => {
   const users = [
-    'Jan Kowalski', 'Maria Nowak', 'Aleksander Wiśniewski', 'Julia Wójcik',
-    'Piotr Kamiński', 'Katarzyna Lewandowska', 'Andrzej Zieliński', 'Natalia Szymańska',
-    'Michał Woźniak', 'Magdalena Dąbrowska', 'Tomasz Kozłowski', 'Barbara Jankowska'
+    'Іван Коваленко', 'Марія Новак', 'Олександр Вишневський', 'Юлія Вовк',
+    'Петро Камінський', 'Катерина Левандовська', 'Андрій Зеленський', 'Наталія Шевченко',
+    'Михайло Возняк', 'Магдалена Дубровська', 'Тарас Козловський', 'Барбара Яковенко'
   ];
   
   const types = ['package', 'lesson', 'subscription', 'deposit', 'refund'];
-  const methods = ['Karta', 'Przelew', 'Gotówka', 'Przelewy24', 'PayPal'];
+  const methods = ['card', 'transfer', 'cash', 'przelewy24', 'paypal'];
   const statuses = ['completed', 'pending', 'failed', 'refunded'];
-  const packages = ['Standard', 'Premium', 'VIP', 'Podstawowy'];
+  const packages = ['standard', 'premium', 'vip', 'basic'];
 
   const transactions = [];
   
@@ -56,21 +59,17 @@ const generateTransactions = () => {
       userEmail: `user${i}@example.com`,
       userAvatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(users[i % users.length])}&background=3B82F6&color=fff`,
       type,
-      description: type === 'package' ? `Pakiet "${packages[i % packages.length]}"` :
-                   type === 'lesson' ? 'Pojedyncze zajęcia' :
-                   type === 'subscription' ? 'Miesięczna subskrypcja' :
-                   type === 'deposit' ? 'Depozyt na konto' :
-                   'Zwrot środków',
+      packageName: packages[i % packages.length],
       amount: isRefund ? -(500 + (i * 30) % 2500) : 
               500 + (i * 45) % 4500,
-      currency: 'PLN',
+      currency: 'UAH',
       method: methods[i % methods.length],
       status,
       date: subDays(new Date(), i % 30),
       processingFee: 10 + (i * 7) % 90,
       netAmount: 0, // Will calculate
       invoiceId: status === 'completed' ? `INV-2024-${String(i + 1).padStart(5, '0')}` : null,
-      refundReason: status === 'refunded' ? 'Anulowanie na prośbę klienta' : null
+      refundReason: status === 'refunded' ? 'Скасування на прохання клієнта' : null
     });
   }
   
@@ -88,7 +87,8 @@ const generateTransactions = () => {
 export default function AdminPaymentsPage() {
   const router = useRouter();
   const params = useParams();
-  const locale = params.locale || 'pl';
+  const locale = params.locale || 'uk';
+  const t = useTranslations('admin.payments.main');
   
   const [transactions] = useState(generateTransactions());
   const [searchQuery, setSearchQuery] = useState('');
@@ -110,14 +110,14 @@ export default function AdminPaymentsPage() {
   };
 
   // Filter transactions
-  const filteredTransactions = transactions.filter(t => {
+  const filteredTransactions = transactions.filter(transaction => {
     const matchesSearch = 
-      t.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      t.userEmail.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || t.status === filterStatus;
-    const matchesType = filterType === 'all' || t.type === filterType;
-    const matchesMethod = filterMethod === 'all' || t.method === filterMethod;
+      transaction.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transaction.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transaction.userEmail.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = filterStatus === 'all' || transaction.status === filterStatus;
+    const matchesType = filterType === 'all' || transaction.type === filterType;
+    const matchesMethod = filterMethod === 'all' || transaction.method === filterMethod;
     
     return matchesSearch && matchesStatus && matchesType && matchesMethod;
   });
@@ -125,61 +125,61 @@ export default function AdminPaymentsPage() {
   // Calculate stats
   const stats = {
     totalRevenue: transactions
-      .filter(t => t.status === 'completed' && t.amount > 0)
-      .reduce((sum, t) => sum + t.amount, 0),
+      .filter(trans => trans.status === 'completed' && trans.amount > 0)
+      .reduce((sum, trans) => sum + trans.amount, 0),
     pendingAmount: transactions
-      .filter(t => t.status === 'pending')
-      .reduce((sum, t) => sum + t.amount, 0),
+      .filter(trans => trans.status === 'pending')
+      .reduce((sum, trans) => sum + trans.amount, 0),
     refundedAmount: Math.abs(transactions
-      .filter(t => t.status === 'refunded' || t.type === 'refund')
-      .reduce((sum, t) => sum + t.amount, 0)),
+      .filter(trans => trans.status === 'refunded' || trans.type === 'refund')
+      .reduce((sum, trans) => sum + trans.amount, 0)),
     successRate: Math.round(
-      (transactions.filter(t => t.status === 'completed').length / transactions.length) * 100
+      (transactions.filter(trans => trans.status === 'completed').length / transactions.length) * 100
     ),
     avgTransaction: Math.round(
       transactions
-        .filter(t => t.status === 'completed' && t.amount > 0)
-        .reduce((sum, t, _, arr) => sum + t.amount / arr.length, 0)
+        .filter(trans => trans.status === 'completed' && trans.amount > 0)
+        .reduce((sum, trans, _, arr) => sum + trans.amount / arr.length, 0)
     ),
-    transactionsToday: transactions.filter(t => 
-      format(t.date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
+    transactionsToday: transactions.filter(trans => 
+      format(trans.date, 'yyyy-MM-dd') === format(new Date(), 'yyyy-MM-dd')
     ).length
   };
 
   // Revenue chart data
   const revenueData = Array.from({ length: 7 }, (_, i) => {
     const date = subDays(new Date(), 6 - i);
-    const dayTransactions = transactions.filter(t => 
-      format(t.date, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd') &&
-      t.status === 'completed'
+    const dayTransactions = transactions.filter(trans => 
+      format(trans.date, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd') &&
+      trans.status === 'completed'
     );
     
     return {
       date: format(date, 'dd.MM'),
-      revenue: dayTransactions.filter(t => t.amount > 0).reduce((sum, t) => sum + t.amount, 0),
-      refunds: Math.abs(dayTransactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0)),
+      revenue: dayTransactions.filter(trans => trans.amount > 0).reduce((sum, trans) => sum + trans.amount, 0),
+      refunds: Math.abs(dayTransactions.filter(trans => trans.amount < 0).reduce((sum, trans) => sum + trans.amount, 0)),
       transactions: dayTransactions.length
     };
   });
 
   // Define payment methods
-  const methods = ['Karta', 'Przelew', 'Gotówka', 'Przelewy24', 'PayPal'];
+  const methods = ['card', 'transfer', 'cash', 'przelewy24', 'paypal'];
   const methodColors = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444'];
 
   // Payment methods distribution
   const methodsData = methods.map((method, index) => ({
-    name: method,
-    value: transactions.filter(t => t.method === method && t.status === 'completed').length,
+    name: t(`methods.${method}`),
+    value: transactions.filter(trans => trans.method === method && trans.status === 'completed').length,
     amount: transactions
-      .filter(t => t.method === method && t.status === 'completed')
-      .reduce((sum, t) => sum + t.amount, 0)
+      .filter(trans => trans.method === method && trans.status === 'completed')
+      .reduce((sum, trans) => sum + trans.amount, 0)
   }));
 
   const paymentStatuses = {
-    completed: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100', label: 'Zakończona' },
-    pending: { icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100', label: 'Oczekująca' },
-    failed: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-100', label: 'Nieudana' },
-    refunded: { icon: RotateCcw, color: 'text-gray-600', bg: 'bg-gray-100', label: 'Zwrócona' }
+    completed: { icon: CheckCircle, color: 'text-green-600', bg: 'bg-green-100' },
+    pending: { icon: Clock, color: 'text-yellow-600', bg: 'bg-yellow-100' },
+    failed: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-100' },
+    refunded: { icon: RotateCcw, color: 'text-gray-600', bg: 'bg-gray-100' }
   };
 
   const typeIcons = {
@@ -198,13 +198,20 @@ export default function AdminPaymentsPage() {
     console.log('Processing refund for:', transactionId);
   };
 
+  const getTransactionDescription = (transaction: any) => {
+    if (transaction.type === 'package') {
+      return t('typeDescriptions.package', { name: t(`packages.${transaction.packageName}`) });
+    }
+    return t(`typeDescriptions.${transaction.type}`);
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Płatności</h1>
-          <p className="text-gray-600 mt-1">Zarządzanie transakcjami finansowymi</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <select
@@ -212,24 +219,24 @@ export default function AdminPaymentsPage() {
             onChange={(e) => setDateRange(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           >
-            <option value="today">Dzisiaj</option>
-            <option value="week">Ten tydzień</option>
-            <option value="month">Ten miesiąc</option>
-            <option value="year">Ten rok</option>
+            <option value="today">{t('dateRange.today')}</option>
+            <option value="week">{t('dateRange.week')}</option>
+            <option value="month">{t('dateRange.month')}</option>
+            <option value="year">{t('dateRange.year')}</option>
           </select>
           <button
             onClick={handleExport}
             className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            Eksport
+            {t('buttons.export')}
           </button>
           <button 
             onClick={handleCreateInvoice}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
           >
             <Receipt className="w-4 h-4" />
-            Utwórz fakturę
+            {t('buttons.createInvoice')}
           </button>
         </div>
       </div>
@@ -243,9 +250,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                {Math.round(stats.totalRevenue / 1000)}k zł
+                {Math.round(stats.totalRevenue / 1000)}k {t('currency')}
               </p>
-              <p className="text-xs text-gray-500">Całkowity przychód</p>
+              <p className="text-xs text-gray-500">{t('stats.totalRevenue')}</p>
             </div>
           </div>
         </div>
@@ -256,9 +263,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                {Math.round(stats.pendingAmount / 1000)}k zł
+                {Math.round(stats.pendingAmount / 1000)}k {t('currency')}
               </p>
-              <p className="text-xs text-gray-500">Oczekujące</p>
+              <p className="text-xs text-gray-500">{t('stats.pending')}</p>
             </div>
           </div>
         </div>
@@ -269,9 +276,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                {Math.round(stats.refundedAmount / 1000)}k zł
+                {Math.round(stats.refundedAmount / 1000)}k {t('currency')}
               </p>
-              <p className="text-xs text-gray-500">Zwrócone</p>
+              <p className="text-xs text-gray-500">{t('stats.refunded')}</p>
             </div>
           </div>
         </div>
@@ -282,7 +289,7 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.successRate}%</p>
-              <p className="text-xs text-gray-500">Sukces</p>
+              <p className="text-xs text-gray-500">{t('stats.successRate')}</p>
             </div>
           </div>
         </div>
@@ -293,9 +300,9 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">
-                {stats.avgTransaction} zł
+                {stats.avgTransaction} {t('currency')}
               </p>
-              <p className="text-xs text-gray-500">Średnia kwota</p>
+              <p className="text-xs text-gray-500">{t('stats.avgTransaction')}</p>
             </div>
           </div>
         </div>
@@ -306,7 +313,7 @@ export default function AdminPaymentsPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.transactionsToday}</p>
-              <p className="text-xs text-gray-500">Dzisiaj</p>
+              <p className="text-xs text-gray-500">{t('stats.todayTransactions')}</p>
             </div>
           </div>
         </div>
@@ -316,7 +323,7 @@ export default function AdminPaymentsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Revenue Chart */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Dynamika przychodów</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.revenueDynamics')}</h3>
           <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -327,7 +334,7 @@ export default function AdminPaymentsPage() {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                name="Przychód"
+                name={t('charts.revenue')}
                 stroke="#3B82F6"
                 fill="#93BBFC"
                 fillOpacity={0.6}
@@ -335,7 +342,7 @@ export default function AdminPaymentsPage() {
               <Area
                 type="monotone"
                 dataKey="refunds"
-                name="Zwroty"
+                name={t('charts.refunds')}
                 stroke="#EF4444"
                 fill="#FCA5A5"
                 fillOpacity={0.4}
@@ -346,7 +353,7 @@ export default function AdminPaymentsPage() {
 
         {/* Payment Methods */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Metody płatności</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('charts.paymentMethods')}</h3>
           <ResponsiveContainer width="100%" height={250}>
             <RePieChart>
               <Pie
@@ -376,7 +383,7 @@ export default function AdminPaymentsPage() {
                   <span className="text-sm text-gray-600">{method.name}</span>
                 </div>
                 <span className="text-sm font-semibold text-gray-800">
-                  {Math.round(method.amount / 1000)}k zł
+                  {Math.round(method.amount / 1000)}k {t('currency')}
                 </span>
               </div>
             ))}
@@ -396,7 +403,7 @@ export default function AdminPaymentsPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Transakcje
+              {t('tabs.transactions')}
             </button>
             <button
               onClick={() => {
@@ -409,7 +416,7 @@ export default function AdminPaymentsPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Faktury
+              {t('tabs.invoices')}
             </button>
             <button
               onClick={() => {
@@ -422,7 +429,7 @@ export default function AdminPaymentsPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Wypłaty instruktorom
+              {t('tabs.payouts')}
             </button>
           </div>
         </div>
@@ -434,7 +441,7 @@ export default function AdminPaymentsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Szukaj po ID, użytkowniku..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -446,11 +453,11 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="completed">Zakończone</option>
-              <option value="pending">Oczekujące</option>
-              <option value="failed">Nieudane</option>
-              <option value="refunded">Zwrócone</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="completed">{t('status.completed')}</option>
+              <option value="pending">{t('status.pending')}</option>
+              <option value="failed">{t('status.failed')}</option>
+              <option value="refunded">{t('status.refunded')}</option>
             </select>
             
             <select
@@ -458,12 +465,12 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterType(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie typy</option>
-              <option value="package">Pakiety</option>
-              <option value="lesson">Zajęcia</option>
-              <option value="subscription">Subskrypcja</option>
-              <option value="deposit">Depozyt</option>
-              <option value="refund">Zwrot</option>
+              <option value="all">{t('filters.allTypes')}</option>
+              <option value="package">{t('types.package')}</option>
+              <option value="lesson">{t('types.lesson')}</option>
+              <option value="subscription">{t('types.subscription')}</option>
+              <option value="deposit">{t('types.deposit')}</option>
+              <option value="refund">{t('types.refund')}</option>
             </select>
             
             <select
@@ -471,9 +478,9 @@ export default function AdminPaymentsPage() {
               onChange={(e) => setFilterMethod(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie metody</option>
+              <option value="all">{t('filters.allMethods')}</option>
               {methods.map(method => (
-                <option key={method} value={method}>{method}</option>
+                <option key={method} value={method}>{t(`methods.${method}`)}</option>
               ))}
             </select>
           </div>
@@ -486,28 +493,28 @@ export default function AdminPaymentsPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ID transakcji
+                    {t('table.transactionId')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Użytkownik
+                    {t('table.user')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Typ
+                    {t('table.type')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kwota
+                    {t('table.amount')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Metoda
+                    {t('table.method')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('table.status')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Data
+                    {t('table.date')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Akcje
+                    {t('table.actions')}
                   </th>
                 </tr>
               </thead>
@@ -516,14 +523,14 @@ export default function AdminPaymentsPage() {
                   <tr>
                     <td colSpan={8} className="px-4 py-12 text-center">
                       <Loader2 className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-500">Ładowanie...</p>
+                      <p className="text-gray-500">{t('messages.loading')}</p>
                     </td>
                   </tr>
                 ) : filteredTransactions.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-4 py-12 text-center">
                       <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-gray-500">Nie znaleziono transakcji</p>
+                      <p className="text-gray-500">{t('messages.noTransactions')}</p>
                     </td>
                   </tr>
                 ) : (
@@ -553,7 +560,7 @@ export default function AdminPaymentsPage() {
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-2">
                             <TypeIcon className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm text-gray-600">{transaction.description}</span>
+                            <span className="text-sm text-gray-600">{getTransactionDescription(transaction)}</span>
                           </div>
                         </td>
                         <td className="px-4 py-4">
@@ -571,12 +578,12 @@ export default function AdminPaymentsPage() {
                           </div>
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-600">
-                          {transaction.method}
+                          {t(`methods.${transaction.method}`)}
                         </td>
                         <td className="px-4 py-4">
                           <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${status.bg} ${status.color}`}>
                             <StatusIcon className="w-3 h-3" />
-                            {status.label}
+                            {t(`status.${transaction.status}`)}
                           </span>
                         </td>
                         <td className="px-4 py-4 text-sm text-gray-600">
@@ -587,7 +594,7 @@ export default function AdminPaymentsPage() {
                             <button
                               onClick={() => setSelectedTransaction(transaction)}
                               className="p-1 hover:bg-gray-100 rounded-lg"
-                              title="Podgląd"
+                              title={t('buttons.viewDetails')}
                             >
                               <Eye className="w-4 h-4 text-gray-600" />
                             </button>
@@ -596,14 +603,14 @@ export default function AdminPaymentsPage() {
                                 <button
                                   onClick={() => console.log('Download invoice', transaction.id)}
                                   className="p-1 hover:bg-gray-100 rounded-lg"
-                                  title="Pobierz fakturę"
+                                  title={t('buttons.downloadInvoice')}
                                 >
                                   <Download className="w-4 h-4 text-gray-600" />
                                 </button>
                                 <button
                                   onClick={() => handleRefund(transaction.id)}
                                   className="p-1 hover:bg-red-50 rounded-lg"
-                                  title="Zwrot środków"
+                                  title={t('buttons.refund')}
                                 >
                                   <RotateCcw className="w-4 h-4 text-red-600" />
                                 </button>

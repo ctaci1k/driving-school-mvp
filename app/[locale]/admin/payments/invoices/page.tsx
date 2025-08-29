@@ -1,10 +1,11 @@
 // app/[locale]/admin/payments/invoices/page.tsx
-// Strona faktur - zarządzanie fakturami, generowanie i wysyłka dokumentów księgowych
+// Сторінка рахунків - управління рахунками, генерація та відправка бухгалтерських документів
 
 'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   FileText,
   Download,
@@ -72,7 +73,7 @@ import { toast } from '@/components/ui/use-toast';
 import { DatePickerWithRange } from '@/components/ui/date-range-picker';
 import { cn } from '@/lib/utils';
 
-// Typy
+// Типи
 type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled' | 'refunded';
 type InvoiceType = 'standard' | 'proforma' | 'correction';
 type PaymentMethod = 'cash' | 'transfer' | 'card' | 'online';
@@ -128,16 +129,16 @@ const mockInvoices: Invoice[] = [
     paymentDate: '2024-12-10',
     customer: {
       id: 'cust-1',
-      name: 'Jan Kowalski',
-      email: 'jan.kowalski@email.com',
+      name: 'Іван Коваленко',
+      email: 'ivan.kovalenko@email.com',
       phone: '+48 600 123 456',
-      address: 'ul. Marszałkowska 10, 00-001 Warszawa',
+      address: 'вул. Маршалківська 10, 00-001 Варшава',
       isCompany: false
     },
     items: [
       {
         id: '1',
-        description: 'Pakiet Standard B - Kurs prawa jazdy',
+        description: 'Пакет Стандарт B - Курс водіння',
         quantity: 1,
         unitPrice: 2999,
         vatRate: 23,
@@ -162,17 +163,17 @@ const mockInvoices: Invoice[] = [
     dueDate: '2024-12-19',
     customer: {
       id: 'cust-2',
-      name: 'AutoSzkoła Partner Sp. z o.o.',
-      email: 'kontakt@partner.pl',
+      name: 'Автошкола Партнер ТОВ',
+      email: 'contact@partner.pl',
       phone: '+48 22 123 45 67',
-      address: 'ul. Prosta 20, 00-002 Warszawa',
+      address: 'вул. Проста 20, 00-002 Варшава',
       taxId: 'PL1234567890',
       isCompany: true
     },
     items: [
       {
         id: '1',
-        description: 'Pakiet Premium B - 5 kursantów',
+        description: 'Пакет Преміум B - 5 учнів',
         quantity: 5,
         unitPrice: 3500,
         vatRate: 23,
@@ -180,7 +181,7 @@ const mockInvoices: Invoice[] = [
       },
       {
         id: '2',
-        description: 'Dodatkowe godziny praktyki',
+        description: 'Додаткові години практики',
         quantity: 10,
         unitPrice: 120,
         vatRate: 23,
@@ -206,16 +207,16 @@ const mockInvoices: Invoice[] = [
     dueDate: '2024-12-04',
     customer: {
       id: 'cust-3',
-      name: 'Anna Nowak',
-      email: 'anna.nowak@email.com',
+      name: 'Анна Новак',
+      email: 'anna.novak@email.com',
       phone: '+48 700 234 567',
-      address: 'ul. Złota 44, 00-003 Warszawa',
+      address: 'вул. Золота 44, 00-003 Варшава',
       isCompany: false
     },
     items: [
       {
         id: '1',
-        description: 'Pakiet Intensywny A2',
+        description: 'Пакет Інтенсивний A2',
         quantity: 1,
         unitPrice: 2200,
         vatRate: 23,
@@ -230,7 +231,7 @@ const mockInvoices: Invoice[] = [
     createdAt: '2024-11-20',
     updatedAt: '2024-12-15'
   },
-  // Więcej faktur dla demonstracji
+  // Додаткові рахунки для демонстрації
   ...Array.from({ length: 10 }, (_, i) => ({
     id: `inv-${String(i + 4).padStart(3, '0')}`,
     number: `FV/2024/12/${String(i + 4).padStart(3, '0')}`,
@@ -240,17 +241,17 @@ const mockInvoices: Invoice[] = [
     dueDate: `2024-12-${String(i + 15).padStart(2, '0')}`,
     customer: {
       id: `cust-${i + 4}`,
-      name: `Klient ${i + 4}`,
-      email: `klient${i + 4}@email.com`,
+      name: `Клієнт ${i + 4}`,
+      email: `client${i + 4}@email.com`,
       phone: `+48 600 ${String(i).padStart(3, '0')} ${String(i).padStart(3, '0')}`,
-      address: `ul. Testowa ${i + 1}, 00-00${i} Warszawa`,
+      address: `вул. Тестова ${i + 1}, 00-00${i} Варшава`,
       isCompany: i % 2 === 0,
       taxId: i % 2 === 0 ? `PL${String(i).padStart(10, '0')}` : undefined
     },
     items: [
       {
         id: '1',
-        description: 'Usługa szkoleniowa',
+        description: 'Навчальна послуга',
         quantity: 1,
         unitPrice: 2000 + (i * 100),
         vatRate: 23,
@@ -270,6 +271,8 @@ const mockInvoices: Invoice[] = [
 
 export default function InvoicesPage() {
   const router = useRouter();
+  const t = useTranslations('admin.payments.invoices');
+  
   const [invoices] = useState<Invoice[]>(mockInvoices);
   const [selectedInvoices, setSelectedInvoices] = useState<string[]>([]);
   const [filters, setFilters] = useState({
@@ -289,7 +292,7 @@ export default function InvoicesPage() {
     invoice: null
   });
 
-  // Statystyki
+  // Статистика
   const stats = {
     total: invoices.length,
     totalValue: invoices.reduce((sum, inv) => sum + inv.total, 0),
@@ -301,7 +304,7 @@ export default function InvoicesPage() {
     overdueValue: invoices.filter(inv => inv.status === 'overdue').reduce((sum, inv) => sum + inv.total, 0)
   };
 
-  // Filtrowane faktury
+  // Фільтровані рахунки
   const filteredInvoices = invoices.filter(invoice => {
     if (filters.search && !invoice.number.toLowerCase().includes(filters.search.toLowerCase()) &&
         !invoice.customer.name.toLowerCase().includes(filters.search.toLowerCase())) {
@@ -319,21 +322,6 @@ export default function InvoicesPage() {
     overdue: 'bg-red-100 text-red-700',
     cancelled: 'bg-gray-100 text-gray-500',
     refunded: 'bg-purple-100 text-purple-700'
-  };
-
-  const statusLabels: Record<InvoiceStatus, string> = {
-    draft: 'Szkic',
-    sent: 'Wysłana',
-    paid: 'Opłacona',
-    overdue: 'Zaległa',
-    cancelled: 'Anulowana',
-    refunded: 'Zwrócona'
-  };
-
-  const typeLabels: Record<InvoiceType, string> = {
-    standard: 'Faktura VAT',
-    proforma: 'Proforma',
-    correction: 'Korekta'
   };
 
   const handleSelectAll = (checked: boolean) => {
@@ -355,8 +343,8 @@ export default function InvoicesPage() {
   const handleBulkAction = (action: string) => {
     console.log('Bulk action:', action, selectedInvoices);
     toast({
-      title: 'Akcja wykonana',
-      description: `${action} dla ${selectedInvoices.length} faktur`,
+      title: t('toast.actionCompleted'),
+      description: t('toast.bulkActionDescription', { action, count: selectedInvoices.length }),
     });
     setSelectedInvoices([]);
   };
@@ -368,8 +356,11 @@ export default function InvoicesPage() {
   const sendInvoice = () => {
     console.log('Sending invoice:', sendDialog.invoice?.id);
     toast({
-      title: 'Faktura wysłana',
-      description: `Faktura ${sendDialog.invoice?.number} została wysłana na adres ${sendDialog.invoice?.customer.email}`,
+      title: t('toast.invoiceSent'),
+      description: t('toast.invoiceSentDescription', {
+        number: sendDialog.invoice?.number,
+        email: sendDialog.invoice?.customer.email
+      }),
     });
     setSendDialog({ open: false, invoice: null });
   };
@@ -377,16 +368,16 @@ export default function InvoicesPage() {
   const handleDownloadInvoice = (invoice: Invoice) => {
     console.log('Download invoice:', invoice.id);
     toast({
-      title: 'Pobieranie faktury',
-      description: `Faktura ${invoice.number} została pobrana`,
+      title: t('toast.invoiceDownloaded'),
+      description: t('toast.invoiceDownloadedDescription', { number: invoice.number }),
     });
   };
 
   const handleDuplicateInvoice = (invoice: Invoice) => {
     console.log('Duplicate invoice:', invoice.id);
     toast({
-      title: 'Faktura zduplikowana',
-      description: `Utworzono kopię faktury ${invoice.number}`,
+      title: t('toast.invoiceDuplicated'),
+      description: t('toast.invoiceDuplicatedDescription', { number: invoice.number }),
     });
   };
 
@@ -406,7 +397,7 @@ export default function InvoicesPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -414,8 +405,8 @@ export default function InvoicesPage() {
               <FileText className="w-6 h-6 text-blue-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Faktury</h1>
-              <p className="text-gray-600">Zarządzaj dokumentami księgowymi</p>
+              <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+              <p className="text-gray-600">{t('subtitle')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -425,31 +416,31 @@ export default function InvoicesPage() {
               onClick={() => router.push('/admin/payments/invoices/settings')}
             >
               <Settings className="w-4 h-4 mr-2" />
-              Ustawienia
+              {t('buttons.settings')}
             </Button>
             <Button
               size="sm"
               onClick={() => router.push('/admin/payments/invoices/new')}
             >
               <Plus className="w-4 h-4 mr-2" />
-              Nowa faktura
+              {t('buttons.newInvoice')}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Karty statystyk */}
+      {/* Картки статистики */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <Card className="bg-white border-gray-100">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-2">
               <FileText className="w-5 h-5 text-blue-600" />
-              <span className="text-sm text-gray-500">Ten miesiąc</span>
+              <span className="text-sm text-gray-500">{t('stats.thisMonth')}</span>
             </div>
             <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-            <p className="text-sm text-gray-600">Wszystkich faktur</p>
+            <p className="text-sm text-gray-600">{t('stats.allInvoices')}</p>
             <p className="text-xs text-gray-500 mt-2">
-              Wartość: {stats.totalValue.toLocaleString('pl-PL')} zł
+              {t('stats.value')}: {stats.totalValue.toLocaleString('uk-UA')} {t('details.currency')}
             </p>
           </CardContent>
         </Card>
@@ -461,12 +452,12 @@ export default function InvoicesPage() {
               <Badge className="bg-green-100 text-green-700">{stats.paid}</Badge>
             </div>
             <p className="text-2xl font-bold text-gray-800">
-              {stats.paidValue.toLocaleString('pl-PL')} zł
+              {stats.paidValue.toLocaleString('uk-UA')} {t('details.currency')}
             </p>
-            <p className="text-sm text-gray-600">Opłacone</p>
+            <p className="text-sm text-gray-600">{t('stats.paid')}</p>
             <div className="flex items-center gap-1 mt-2">
               <TrendingUp className="w-3 h-3 text-green-600" />
-              <span className="text-xs text-green-600">+12% vs poprz. miesiąc</span>
+              <span className="text-xs text-green-600">{t('stats.vsLastMonth', { percent: 12 })}</span>
             </div>
           </CardContent>
         </Card>
@@ -478,11 +469,11 @@ export default function InvoicesPage() {
               <Badge className="bg-yellow-100 text-yellow-700">{stats.pending}</Badge>
             </div>
             <p className="text-2xl font-bold text-gray-800">
-              {stats.pendingValue.toLocaleString('pl-PL')} zł
+              {stats.pendingValue.toLocaleString('uk-UA')} {t('details.currency')}
             </p>
-            <p className="text-sm text-gray-600">Oczekujące</p>
+            <p className="text-sm text-gray-600">{t('stats.pending')}</p>
             <p className="text-xs text-gray-500 mt-2">
-              Średni czas: 7 dni
+              {t('stats.averageTime')}: 7 {t('stats.days')}
             </p>
           </CardContent>
         </Card>
@@ -494,18 +485,18 @@ export default function InvoicesPage() {
               <Badge className="bg-red-100 text-red-700">{stats.overdue}</Badge>
             </div>
             <p className="text-2xl font-bold text-gray-800">
-              {stats.overdueValue.toLocaleString('pl-PL')} zł
+              {stats.overdueValue.toLocaleString('uk-UA')} {t('details.currency')}
             </p>
-            <p className="text-sm text-gray-600">Zaległe</p>
+            <p className="text-sm text-gray-600">{t('stats.overdue')}</p>
             <div className="flex items-center gap-1 mt-2">
               <TrendingDown className="w-3 h-3 text-red-600" />
-              <span className="text-xs text-red-600">Wymaga interwencji</span>
+              <span className="text-xs text-red-600">{t('stats.requiresIntervention')}</span>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Filtry i akcje */}
+      {/* Фільтри та дії */}
       <Card className="bg-white border-gray-100 mb-6">
         <CardContent className="p-4">
           <div className="flex items-center justify-between gap-4">
@@ -513,7 +504,7 @@ export default function InvoicesPage() {
               <div className="relative flex-1 max-w-sm">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <Input
-                  placeholder="Szukaj po numerze lub kliencie..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={filters.search}
                   onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                   className="pl-10"
@@ -525,15 +516,15 @@ export default function InvoicesPage() {
                 onValueChange={(value) => setFilters({ ...filters, status: value })}
               >
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Status" />
+                  <SelectValue placeholder={t('filters.status')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszystkie</SelectItem>
-                  <SelectItem value="draft">Szkice</SelectItem>
-                  <SelectItem value="sent">Wysłane</SelectItem>
-                  <SelectItem value="paid">Opłacone</SelectItem>
-                  <SelectItem value="overdue">Zaległe</SelectItem>
-                  <SelectItem value="cancelled">Anulowane</SelectItem>
+                  <SelectItem value="all">{t('filters.all')}</SelectItem>
+                  <SelectItem value="draft">{t('status.draft')}</SelectItem>
+                  <SelectItem value="sent">{t('status.sent')}</SelectItem>
+                  <SelectItem value="paid">{t('status.paid')}</SelectItem>
+                  <SelectItem value="overdue">{t('status.overdue')}</SelectItem>
+                  <SelectItem value="cancelled">{t('status.cancelled')}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -542,13 +533,13 @@ export default function InvoicesPage() {
                 onValueChange={(value) => setFilters({ ...filters, type: value })}
               >
                 <SelectTrigger className="w-40">
-                  <SelectValue placeholder="Typ" />
+                  <SelectValue placeholder={t('filters.type')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszystkie</SelectItem>
-                  <SelectItem value="standard">Faktura VAT</SelectItem>
-                  <SelectItem value="proforma">Proforma</SelectItem>
-                  <SelectItem value="correction">Korekta</SelectItem>
+                  <SelectItem value="all">{t('filters.all')}</SelectItem>
+                  <SelectItem value="standard">{t('type.standard')}</SelectItem>
+                  <SelectItem value="proforma">{t('type.proforma')}</SelectItem>
+                  <SelectItem value="correction">{t('type.correction')}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -558,26 +549,26 @@ export default function InvoicesPage() {
             {selectedInvoices.length > 0 && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">
-                  Zaznaczono: {selectedInvoices.length}
+                  {t('filters.selected')}: {selectedInvoices.length}
                 </span>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm">
-                      Akcje
+                      {t('buttons.actions')}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onClick={() => handleBulkAction('send')}>
                       <Send className="w-4 h-4 mr-2" />
-                      Wyślij
+                      {t('buttons.send')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleBulkAction('download')}>
                       <Download className="w-4 h-4 mr-2" />
-                      Pobierz
+                      {t('buttons.download')}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => handleBulkAction('print')}>
                       <Printer className="w-4 h-4 mr-2" />
-                      Drukuj
+                      {t('buttons.print')}
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
@@ -585,7 +576,7 @@ export default function InvoicesPage() {
                       className="text-red-600"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Usuń
+                      {t('buttons.delete')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -595,7 +586,7 @@ export default function InvoicesPage() {
         </CardContent>
       </Card>
 
-      {/* Tabela faktur */}
+      {/* Таблиця рахунків */}
       <Card className="bg-white border-gray-100">
         <CardContent className="p-0">
           <Table>
@@ -607,12 +598,12 @@ export default function InvoicesPage() {
                     onCheckedChange={handleSelectAll}
                   />
                 </TableHead>
-                <TableHead>Numer</TableHead>
-                <TableHead>Klient</TableHead>
-                <TableHead>Data wystawienia</TableHead>
-                <TableHead>Termin płatności</TableHead>
-                <TableHead>Kwota</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('table.number')}</TableHead>
+                <TableHead>{t('table.client')}</TableHead>
+                <TableHead>{t('table.issueDate')}</TableHead>
+                <TableHead>{t('table.dueDate')}</TableHead>
+                <TableHead>{t('table.amount')}</TableHead>
+                <TableHead>{t('table.status')}</TableHead>
                 <TableHead className="w-12"></TableHead>
               </TableRow>
             </TableHeader>
@@ -628,7 +619,7 @@ export default function InvoicesPage() {
                   <TableCell>
                     <div>
                       <p className="font-medium text-gray-800">{invoice.number}</p>
-                      <p className="text-xs text-gray-500">{typeLabels[invoice.type]}</p>
+                      <p className="text-xs text-gray-500">{t(`type.${invoice.type}`)}</p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -643,7 +634,7 @@ export default function InvoicesPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {new Date(invoice.issueDate).toLocaleDateString('pl-PL')}
+                    {new Date(invoice.issueDate).toLocaleDateString('uk-UA')}
                   </TableCell>
                   <TableCell>
                     <div>
@@ -651,23 +642,25 @@ export default function InvoicesPage() {
                         "text-sm",
                         invoice.status === 'overdue' && "text-red-600 font-medium"
                       )}>
-                        {new Date(invoice.dueDate).toLocaleDateString('pl-PL')}
+                        {new Date(invoice.dueDate).toLocaleDateString('uk-UA')}
                       </p>
                       {invoice.status === 'overdue' && (
                         <p className="text-xs text-red-600">
-                          {Math.floor((new Date().getTime() - new Date(invoice.dueDate).getTime()) / (1000 * 60 * 60 * 24))} dni po terminie
+                          {t('table.daysOverdue', {
+                            days: Math.floor((new Date().getTime() - new Date(invoice.dueDate).getTime()) / (1000 * 60 * 60 * 24))
+                          })}
                         </p>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
                     <p className="font-semibold text-gray-800">
-                      {invoice.total.toLocaleString('pl-PL', { minimumFractionDigits: 2 })} zł
+                      {invoice.total.toLocaleString('uk-UA', { minimumFractionDigits: 2 })} {t('details.currency')}
                     </p>
                   </TableCell>
                   <TableCell>
                     <Badge className={statusColors[invoice.status]}>
-                      {statusLabels[invoice.status]}
+                      {t(`status.${invoice.status}`)}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -680,35 +673,35 @@ export default function InvoicesPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => setDetailsDialog({ open: true, invoice })}>
                           <Eye className="w-4 h-4 mr-2" />
-                          Podgląd
+                          {t('buttons.view')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleDownloadInvoice(invoice)}>
                           <Download className="w-4 h-4 mr-2" />
-                          Pobierz PDF
+                          {t('buttons.downloadPdf')}
                         </DropdownMenuItem>
                         {invoice.status === 'draft' && (
                           <DropdownMenuItem onClick={() => handleSendInvoice(invoice)}>
                             <Send className="w-4 h-4 mr-2" />
-                            Wyślij
+                            {t('buttons.send')}
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem onClick={() => window.print()}>
                           <Printer className="w-4 h-4 mr-2" />
-                          Drukuj
+                          {t('buttons.print')}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => handleDuplicateInvoice(invoice)}>
                           <Copy className="w-4 h-4 mr-2" />
-                          Duplikuj
+                          {t('buttons.duplicate')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => router.push(`/admin/payments/invoices/${invoice.id}/edit`)}>
                           <Edit className="w-4 h-4 mr-2" />
-                          Edytuj
+                          {t('buttons.edit')}
                         </DropdownMenuItem>
                         {invoice.status === 'paid' && (
                           <DropdownMenuItem onClick={() => console.log('Create correction')}>
                             <RefreshCw className="w-4 h-4 mr-2" />
-                            Wystaw korektę
+                            {t('buttons.createCorrection')}
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuSeparator />
@@ -717,7 +710,7 @@ export default function InvoicesPage() {
                           onClick={() => console.log('Delete invoice')}
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Usuń
+                          {t('buttons.delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -727,18 +720,18 @@ export default function InvoicesPage() {
             </TableBody>
           </Table>
 
-          {/* Paginacja */}
+          {/* Пагінація */}
           <div className="flex items-center justify-between p-4 border-t border-gray-100">
             <p className="text-sm text-gray-600">
-              Pokazywanie 1-10 z {filteredInvoices.length} wyników
+              {t('pagination.showing', { from: 1, to: 10, total: filteredInvoices.length })}
             </p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled>
                 <ChevronLeft className="w-4 h-4" />
-                Poprzednia
+                {t('buttons.previous')}
               </Button>
               <Button variant="outline" size="sm">
-                Następna
+                {t('buttons.next')}
                 <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
@@ -746,11 +739,11 @@ export default function InvoicesPage() {
         </CardContent>
       </Card>
 
-      {/* Dialog szczegółów faktury */}
+      {/* Діалог деталей рахунку */}
       <Dialog open={detailsDialog.open} onOpenChange={(open) => setDetailsDialog({ open, invoice: detailsDialog.invoice })}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Szczegóły faktury</DialogTitle>
+            <DialogTitle>{t('details.title')}</DialogTitle>
           </DialogHeader>
           {detailsDialog.invoice && (
             <div className="space-y-6">
@@ -758,12 +751,12 @@ export default function InvoicesPage() {
                 <div>
                   <h3 className="text-lg font-semibold">{detailsDialog.invoice.number}</h3>
                   <Badge className={statusColors[detailsDialog.invoice.status]}>
-                    {statusLabels[detailsDialog.invoice.status]}
+                    {t(`status.${detailsDialog.invoice.status}`)}
                   </Badge>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-600">Data wystawienia</p>
-                  <p className="font-medium">{new Date(detailsDialog.invoice.issueDate).toLocaleDateString('pl-PL')}</p>
+                  <p className="text-sm text-gray-600">{t('details.issueDate')}</p>
+                  <p className="font-medium">{new Date(detailsDialog.invoice.issueDate).toLocaleDateString('uk-UA')}</p>
                 </div>
               </div>
 
@@ -771,20 +764,20 @@ export default function InvoicesPage() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-medium mb-2">Sprzedawca</h4>
+                  <h4 className="font-medium mb-2">{t('details.seller')}</h4>
                   <p className="text-sm text-gray-600">
-                    AutoSzkoła Drive<br />
-                    ul. Marszałkowska 10<br />
-                    00-001 Warszawa<br />
-                    NIP: 1234567890
+                    {t('company.name')}<br />
+                    {t('company.address')}<br />
+                    {t('company.city')}<br />
+                    {t('company.taxId')}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-medium mb-2">Nabywca</h4>
+                  <h4 className="font-medium mb-2">{t('details.buyer')}</h4>
                   <p className="text-sm text-gray-600">
                     {detailsDialog.invoice.customer.name}<br />
                     {detailsDialog.invoice.customer.address}<br />
-                    {detailsDialog.invoice.customer.taxId && `NIP: ${detailsDialog.invoice.customer.taxId}`}
+                    {detailsDialog.invoice.customer.taxId && `${t('details.taxId')}: ${detailsDialog.invoice.customer.taxId}`}
                   </p>
                 </div>
               </div>
@@ -792,11 +785,11 @@ export default function InvoicesPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Opis</TableHead>
-                    <TableHead className="text-right">Ilość</TableHead>
-                    <TableHead className="text-right">Cena jedn.</TableHead>
-                    <TableHead className="text-right">VAT</TableHead>
-                    <TableHead className="text-right">Wartość</TableHead>
+                    <TableHead>{t('details.description')}</TableHead>
+                    <TableHead className="text-right">{t('details.quantity')}</TableHead>
+                    <TableHead className="text-right">{t('details.unitPrice')}</TableHead>
+                    <TableHead className="text-right">{t('details.vat')}</TableHead>
+                    <TableHead className="text-right">{t('details.value')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -804,9 +797,9 @@ export default function InvoicesPage() {
                     <TableRow key={item.id}>
                       <TableCell>{item.description}</TableCell>
                       <TableCell className="text-right">{item.quantity}</TableCell>
-                      <TableCell className="text-right">{item.unitPrice.toFixed(2)} zł</TableCell>
+                      <TableCell className="text-right">{item.unitPrice.toFixed(2)} {t('details.currency')}</TableCell>
                       <TableCell className="text-right">{item.vatRate}%</TableCell>
-                      <TableCell className="text-right font-medium">{item.total.toFixed(2)} zł</TableCell>
+                      <TableCell className="text-right font-medium">{item.total.toFixed(2)} {t('details.currency')}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -815,17 +808,17 @@ export default function InvoicesPage() {
               <div className="flex justify-end">
                 <div className="space-y-2 w-64">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Netto:</span>
-                    <span>{detailsDialog.invoice.subtotal.toFixed(2)} zł</span>
+                    <span className="text-gray-600">{t('details.subtotal')}:</span>
+                    <span>{detailsDialog.invoice.subtotal.toFixed(2)} {t('details.currency')}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">VAT:</span>
-                    <span>{detailsDialog.invoice.vatAmount.toFixed(2)} zł</span>
+                    <span className="text-gray-600">{t('details.vatAmount')}:</span>
+                    <span>{detailsDialog.invoice.vatAmount.toFixed(2)} {t('details.currency')}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-semibold">
-                    <span>Do zapłaty:</span>
-                    <span>{detailsDialog.invoice.total.toFixed(2)} zł</span>
+                    <span>{t('details.total')}:</span>
+                    <span>{detailsDialog.invoice.total.toFixed(2)} {t('details.currency')}</span>
                   </div>
                 </div>
               </div>
@@ -833,17 +826,17 @@ export default function InvoicesPage() {
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setDetailsDialog({ open: false, invoice: null })}>
-              Zamknij
+              {t('buttons.close')}
             </Button>
             {detailsDialog.invoice && (
               <>
                 <Button variant="outline" onClick={() => handleDownloadInvoice(detailsDialog.invoice!)}>
                   <Download className="w-4 h-4 mr-2" />
-                  Pobierz PDF
+                  {t('buttons.downloadPdf')}
                 </Button>
                 <Button onClick={() => handleSendInvoice(detailsDialog.invoice!)}>
                   <Send className="w-4 h-4 mr-2" />
-                  Wyślij
+                  {t('buttons.send')}
                 </Button>
               </>
             )}
@@ -851,47 +844,50 @@ export default function InvoicesPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog wysyłania faktury */}
+      {/* Діалог відправки рахунку */}
       <Dialog open={sendDialog.open} onOpenChange={(open) => setSendDialog({ open, invoice: sendDialog.invoice })}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Wyślij fakturę</DialogTitle>
+            <DialogTitle>{t('sendDialog.title')}</DialogTitle>
             <DialogDescription>
-              Faktura zostanie wysłana na adres email klienta
+              {t('sendDialog.description')}
             </DialogDescription>
           </DialogHeader>
           {sendDialog.invoice && (
             <div className="space-y-4">
               <div>
-                <Label>Odbiorca</Label>
+                <Label>{t('sendDialog.recipient')}</Label>
                 <Input value={sendDialog.invoice.customer.email} disabled />
               </div>
               <div>
-                <Label>Temat wiadomości</Label>
-                <Input defaultValue={`Faktura ${sendDialog.invoice.number}`} />
+                <Label>{t('sendDialog.subject')}</Label>
+                <Input defaultValue={t('sendDialog.defaultSubject', { number: sendDialog.invoice.number })} />
               </div>
               <div>
-                <Label>Treść wiadomości</Label>
+                <Label>{t('sendDialog.message')}</Label>
                 <textarea 
                   className="w-full h-32 p-3 border rounded-md"
-                  defaultValue={`Szanowni Państwo,\n\nW załączeniu przesyłamy fakturę nr ${sendDialog.invoice.number}.\n\nTermin płatności: ${new Date(sendDialog.invoice.dueDate).toLocaleDateString('pl-PL')}\n\nPozdrawiamy,\nAutoSzkoła Drive`}
+                  defaultValue={t('sendDialog.defaultMessage', {
+                    number: sendDialog.invoice.number,
+                    dueDate: new Date(sendDialog.invoice.dueDate).toLocaleDateString('uk-UA')
+                  })}
                 />
               </div>
               <Alert className="bg-blue-50 border-blue-200">
                 <Mail className="h-4 w-4 text-blue-600" />
                 <AlertDescription>
-                  Faktura w formacie PDF zostanie dołączona automatycznie
+                  {t('sendDialog.attachmentNote')}
                 </AlertDescription>
               </Alert>
             </div>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setSendDialog({ open: false, invoice: null })}>
-              Anuluj
+              {t('buttons.cancel')}
             </Button>
             <Button onClick={sendInvoice}>
               <Send className="w-4 h-4 mr-2" />
-              Wyślij
+              {t('sendDialog.send')}
             </Button>
           </DialogFooter>
         </DialogContent>

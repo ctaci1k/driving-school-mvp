@@ -1,5 +1,5 @@
 // app/[locale]/instructor/students/page.tsx
-// Strona zarządzania kursantami z wyszukiwaniem, filtrowaniem i szczegółowymi informacjami
+// Сторінка керування курсантами з пошуком, фільтруванням та детальною інформацією
 
 'use client'
 
@@ -41,8 +41,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 export default function InstructorStudents() {
+  const t = useTranslations('instructor.students.main')
   const [searchQuery, setSearchQuery] = useState('')
   const [filterStatus, setFilterStatus] = useState('all')
   const [sortBy, setSortBy] = useState('name')
@@ -209,14 +211,14 @@ export default function InstructorStudents() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Moi kursanci</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Zarządzanie i śledzenie postępów kursantów
+            {t('subtitle')}
           </p>
         </div>
         <Button>
           <Plus className="w-4 h-4 mr-2" />
-          Dodaj kursanta
+          {t('addStudent')}
         </Button>
       </div>
 
@@ -226,7 +228,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Łącznie</p>
+                <p className="text-sm text-gray-500">{t('stats.total')}</p>
                 <p className="text-2xl font-bold">{stats.totalStudents}</p>
               </div>
               <Users className="w-8 h-8 text-gray-400" />
@@ -238,7 +240,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Aktywni</p>
+                <p className="text-sm text-gray-500">{t('stats.active')}</p>
                 <p className="text-2xl font-bold">{stats.activeStudents}</p>
               </div>
               <CheckCircle className="w-8 h-8 text-green-500" />
@@ -250,7 +252,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Postęp</p>
+                <p className="text-sm text-gray-500">{t('stats.progress')}</p>
                 <p className="text-2xl font-bold">{stats.averageProgress}%</p>
               </div>
               <TrendingUp className="w-8 h-8 text-blue-500" />
@@ -262,7 +264,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Egzaminy</p>
+                <p className="text-sm text-gray-500">{t('stats.exams')}</p>
                 <p className="text-2xl font-bold">{stats.upcomingExams}</p>
               </div>
               <GraduationCap className="w-8 h-8 text-purple-500" />
@@ -274,7 +276,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Godziny</p>
+                <p className="text-sm text-gray-500">{t('stats.hours')}</p>
                 <p className="text-2xl font-bold">{stats.totalHours}</p>
               </div>
               <Clock className="w-8 h-8 text-orange-500" />
@@ -286,7 +288,7 @@ export default function InstructorStudents() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Ocena</p>
+                <p className="text-sm text-gray-500">{t('stats.rating')}</p>
                 <p className="text-2xl font-bold">{stats.averageRating}</p>
               </div>
               <Star className="w-8 h-8 text-yellow-500" />
@@ -301,7 +303,7 @@ export default function InstructorStudents() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
-              placeholder="Wyszukaj według imienia, email lub telefonu..."
+              placeholder={t('search.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -313,10 +315,10 @@ export default function InstructorStudents() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Wszyscy kursanci</SelectItem>
-            <SelectItem value="active">Aktywni</SelectItem>
-            <SelectItem value="paused">Wstrzymani</SelectItem>
-            <SelectItem value="completed">Ukończyli</SelectItem>
+            <SelectItem value="all">{t('filters.all')}</SelectItem>
+            <SelectItem value="active">{t('filters.active')}</SelectItem>
+            <SelectItem value="paused">{t('filters.paused')}</SelectItem>
+            <SelectItem value="completed">{t('filters.completed')}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={sortBy} onValueChange={setSortBy}>
@@ -324,10 +326,10 @@ export default function InstructorStudents() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="name">Według imienia</SelectItem>
-            <SelectItem value="progress">Według postępu</SelectItem>
-            <SelectItem value="lessons">Według lekcji</SelectItem>
-            <SelectItem value="rating">Według oceny</SelectItem>
+            <SelectItem value="name">{t('filters.sortBy.name')}</SelectItem>
+            <SelectItem value="progress">{t('filters.sortBy.progress')}</SelectItem>
+            <SelectItem value="lessons">{t('filters.sortBy.lessons')}</SelectItem>
+            <SelectItem value="rating">{t('filters.sortBy.rating')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -335,8 +337,8 @@ export default function InstructorStudents() {
       {/* Students Tabs */}
       <Tabs defaultValue="grid" className="w-full">
         <TabsList className="grid w-full max-w-[200px] grid-cols-2">
-          <TabsTrigger value="grid">Karty</TabsTrigger>
-          <TabsTrigger value="list">Lista</TabsTrigger>
+          <TabsTrigger value="grid">{t('tabs.cards')}</TabsTrigger>
+          <TabsTrigger value="list">{t('tabs.list')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="grid" className="mt-6">
@@ -352,7 +354,7 @@ export default function InstructorStudents() {
                       </Avatar>
                       <div>
                         <h3 className="font-semibold">{student.name}</h3>
-                        <p className="text-sm text-gray-500">kategoria {student.category}</p>
+                        <p className="text-sm text-gray-500">{t('card.category', { category: student.category })}</p>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -362,32 +364,32 @@ export default function InstructorStudents() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Akcje</DropdownMenuLabel>
+                        <DropdownMenuLabel>{t('dropdown.label')}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Link href={`/instructor/students/${student.id}`} className="flex items-center">
                             <User className="w-4 h-4 mr-2" />
-                            Profil
+                            {t('dropdown.profile')}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Link href={`/instructor/students/${student.id}/progress`} className="flex items-center">
                             <TrendingUp className="w-4 h-4 mr-2" />
-                            Postęp
+                            {t('dropdown.progress')}
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <FileText className="w-4 h-4 mr-2" />
-                          Raport
+                          {t('dropdown.report')}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Phone className="w-4 h-4 mr-2" />
-                          Zadzwoń
+                          {t('dropdown.call')}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <MessageSquare className="w-4 h-4 mr-2" />
-                          Wiadomość
+                          {t('dropdown.message')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -396,7 +398,7 @@ export default function InstructorStudents() {
                   {/* Progress */}
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Ogólny postęp</span>
+                      <span className="text-gray-600">{t('card.overallProgress')}</span>
                       <span className="font-medium">{student.progress}%</span>
                     </div>
                     <Progress value={student.progress} className="h-2" />
@@ -405,11 +407,11 @@ export default function InstructorStudents() {
                   {/* Stats */}
                   <div className="grid grid-cols-2 gap-2 mb-4 text-sm">
                     <div className="bg-gray-50 rounded p-2">
-                      <p className="text-gray-500">Lekcje</p>
-                      <p className="font-semibold">{student.lessonsCompleted}/{student.lessonsCompleted + student.lessonsRemaining}</p>
+                      <p className="text-gray-500">{t('card.lessons')}</p>
+                      <p className="font-semibold">{t('card.lessonsCount', { completed: student.lessonsCompleted, total: student.lessonsCompleted + student.lessonsRemaining })}</p>
                     </div>
                     <div className="bg-gray-50 rounded p-2">
-                      <p className="text-gray-500">Ocena</p>
+                      <p className="text-gray-500">{t('card.rating')}</p>
                       <div className="flex items-center gap-1">
                         <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                         <span className="font-semibold">{student.averageScore}</span>
@@ -420,14 +422,14 @@ export default function InstructorStudents() {
                   {/* Status badges */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
-                      {student.status === 'active' ? 'Aktywny' : 'Wstrzymany'}
+                      {student.status === 'active' ? t('card.status.active') : t('card.status.paused')}
                     </Badge>
                     {student.payments === 'overdue' && (
-                      <Badge variant="destructive">Zaległość</Badge>
+                      <Badge variant="destructive">{t('card.payment.overdue')}</Badge>
                     )}
                     {student.examDate && (
                       <Badge variant="outline">
-                        Egzamin: {student.examDate}
+                        {t('card.exam', { date: student.examDate })}
                       </Badge>
                     )}
                   </div>
@@ -435,8 +437,8 @@ export default function InstructorStudents() {
                   {/* Next lesson */}
                   {student.nextLesson && (
                     <div className="p-3 bg-blue-50 rounded-lg mb-4">
-                      <p className="text-sm font-medium text-blue-900">Następna lekcja</p>
-                      <p className="text-sm text-blue-700">{student.nextLesson}</p>
+                      <p className="text-sm font-medium text-blue-900">{t('card.nextLesson.title')}</p>
+                      <p className="text-sm text-blue-700">{t('card.nextLesson.dateTime', { dateTime: student.nextLesson })}</p>
                     </div>
                   )}
 
@@ -444,12 +446,12 @@ export default function InstructorStudents() {
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" className="flex-1" asChild>
                       <Link href={`/instructor/students/${student.id}`}>
-                        Szczegóły
+                        {t('card.actions.details')}
                       </Link>
                     </Button>
                     <Button size="sm" className="flex-1" asChild>
                       <Link href={`/instructor/students/${student.id}/progress`}>
-                        Postęp
+                        {t('card.actions.progress')}
                       </Link>
                     </Button>
                   </div>
@@ -466,12 +468,12 @@ export default function InstructorStudents() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Kursant</TableHead>
-                      <TableHead>Postęp</TableHead>
-                      <TableHead>Lekcje</TableHead>
-                      <TableHead>Następna</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Akcje</TableHead>
+                      <TableHead>{t('table.headers.student')}</TableHead>
+                      <TableHead>{t('table.headers.progress')}</TableHead>
+                      <TableHead>{t('table.headers.lessons')}</TableHead>
+                      <TableHead>{t('table.headers.nextLesson')}</TableHead>
+                      <TableHead>{t('table.headers.status')}</TableHead>
+                      <TableHead>{t('table.headers.actions')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -497,17 +499,17 @@ export default function InstructorStudents() {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {student.lessonsCompleted} z {student.lessonsCompleted + student.lessonsRemaining}
+                            {t('table.lessonsFrom', { completed: student.lessonsCompleted, total: student.lessonsCompleted + student.lessonsRemaining })}
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">
-                            {student.nextLesson || '-'}
+                            {student.nextLesson || t('table.noNextLesson')}
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant={student.status === 'active' ? 'default' : 'secondary'}>
-                            {student.status === 'active' ? 'Aktywny' : 'Wstrzymany'}
+                            {student.status === 'active' ? t('card.status.active') : t('card.status.paused')}
                           </Badge>
                         </TableCell>
                         <TableCell>
@@ -530,25 +532,25 @@ export default function InstructorStudents() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Szybkie akcje</CardTitle>
+          <CardTitle>{t('quickActions.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button variant="outline" className="justify-start">
               <FileText className="w-4 h-4 mr-2" />
-              Generuj raport
+              {t('quickActions.generateReport')}
             </Button>
             <Button variant="outline" className="justify-start">
               <Download className="w-4 h-4 mr-2" />
-              Eksport danych
+              {t('quickActions.exportData')}
             </Button>
             <Button variant="outline" className="justify-start">
               <MessageSquare className="w-4 h-4 mr-2" />
-              Masowa wysyłka
+              {t('quickActions.bulkMessage')}
             </Button>
             <Button variant="outline" className="justify-start">
               <Calendar className="w-4 h-4 mr-2" />
-              Planuj lekcje
+              {t('quickActions.scheduleLessons')}
             </Button>
           </div>
         </CardContent>

@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import {
   LayoutDashboard, Calendar, BookOpen, CreditCard, User,
   MessageSquare, Settings, Bell, Menu, X, ChevronDown,
@@ -42,6 +43,7 @@ const AVAILABLE_LANGUAGES: Language[] = [
 export default function StudentLayout({ children, params }: StudentLayoutProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations('student.studentLayout')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const [notificationsOpen, setNotificationsOpen] = useState(false)
@@ -51,58 +53,58 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
   const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === params.locale) || AVAILABLE_LANGUAGES[0]
 
   const navigation = [
-    { name: 'Dashboard', href: `/${params.locale}/student/dashboard`, icon: LayoutDashboard },
-    { name: 'Moje lekcje', href: `/${params.locale}/student/lessons`, icon: Calendar },
-    { name: 'Rezerwacja', href: `/${params.locale}/student/bookings`, icon: Clock },
-    { name: 'Postępy', href: `/${params.locale}/student/progress`, icon: Target },
-    { name: 'Materiały', href: `/${params.locale}/student/materials`, icon: BookOpen },
-    { name: 'Płatności', href: `/${params.locale}/student/payments`, icon: CreditCard },
-    { name: 'Dokumenty', href: `/${params.locale}/student/documents`, icon: FileText },
-    { name: 'Wiadomości', href: `/${params.locale}/student/messages`, icon: MessageSquare },
-    { name: 'Pomoc', href: `/${params.locale}/student/help`, icon: HelpCircle },
-    { name: 'Profil', href: `/${params.locale}/student/profile`, icon: User }
+    { name: t('navigation.dashboard'), href: `/${params.locale}/student/dashboard`, icon: LayoutDashboard },
+    { name: t('navigation.myLessons'), href: `/${params.locale}/student/lessons`, icon: Calendar },
+    { name: t('navigation.booking'), href: `/${params.locale}/student/bookings`, icon: Clock },
+    { name: t('navigation.progress'), href: `/${params.locale}/student/progress`, icon: Target },
+    { name: t('navigation.materials'), href: `/${params.locale}/student/materials`, icon: BookOpen },
+    { name: t('navigation.payments'), href: `/${params.locale}/student/payments`, icon: CreditCard },
+    { name: t('navigation.documents'), href: `/${params.locale}/student/documents`, icon: FileText },
+    { name: t('navigation.messages'), href: `/${params.locale}/student/messages`, icon: MessageSquare },
+    { name: t('navigation.help'), href: `/${params.locale}/student/help`, icon: HelpCircle },
+    { name: t('navigation.profile'), href: `/${params.locale}/student/profile`, icon: User }
   ]
 
   const bottomNavigation = [
-    { name: 'Home', href: `/${params.locale}/student/dashboard`, icon: Home },
-    { name: 'Lekcje', href: `/${params.locale}/student/lessons`, icon: Calendar },
-    { name: 'Rezerwuj', href: `/${params.locale}/student/bookings`, icon: Clock },
-    { name: 'Postępy', href: `/${params.locale}/student/progress`, icon: Target },
-    { name: 'Menu', action: 'menu', icon: Menu }
+    { name: t('bottomNav.home'), href: `/${params.locale}/student/dashboard`, icon: Home },
+    { name: t('bottomNav.lessons'), href: `/${params.locale}/student/lessons`, icon: Calendar },
+    { name: t('bottomNav.book'), href: `/${params.locale}/student/bookings`, icon: Clock },
+    { name: t('bottomNav.progress'), href: `/${params.locale}/student/progress`, icon: Target },
+    { name: t('bottomNav.menu'), action: 'menu', icon: Menu }
   ]
 
   const currentUser = {
     name: 'Jan Kowalski',
     email: 'jan.kowalski@example.com',
     avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski&background=3B82F6&color=fff',
-    role: 'Student',
+    role: t('role'),
     lessonsCompleted: 12,
     lessonsTotal: 30,
-    nextLesson: '15 grudnia, 14:00'
+    nextLesson: '15 грудня, 14:00'
   }
 
   const [notifications, setNotifications] = useState([
     {
       id: '1',
-      title: 'Następna lekcja',
-      message: 'Masz zaplanowaną lekcję jutro o 14:00',
-      time: '10 min temu',
+      title: t('notifications.nextLesson.title'),
+      message: t('notifications.nextLesson.message'),
+      time: t('notifications.timeAgo.minutes', {count: 10}),
       read: false,
       type: 'info'
     },
     {
       id: '2',
-      title: 'Nowe materiały',
-      message: 'Dodano nowe materiały do nauki',
-      time: '1 godz temu',
+      title: t('notifications.newMaterials.title'),
+      message: t('notifications.newMaterials.message'),
+      time: t('notifications.timeAgo.hours', {count: 1}),
       read: false,
       type: 'success'
     },
     {
       id: '3',
-      title: 'Przypomnienie o płatności',
-      message: 'Zbliża się termin płatności za pakiet',
-      time: '2 dni temu',
+      title: t('notifications.paymentReminder.title'),
+      message: t('notifications.paymentReminder.message'),
+      time: t('notifications.timeAgo.days', {count: 2}),
       read: true,
       type: 'warning'
     }
@@ -182,8 +184,8 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-gray-800 dark:text-white">DriveSchool</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Portal Studenta</p>
+              <h1 className="font-bold text-gray-800 dark:text-white">DenisDrive</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('portal')}</p>
             </div>
           </Link>
           <button
@@ -211,9 +213,9 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
           {/* Progress bar */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600 dark:text-gray-400">Postęp kursu</span>
+              <span className="text-gray-600 dark:text-gray-400">{t('courseProgress')}</span>
               <span className="font-medium text-gray-800 dark:text-white">
-                {currentUser.lessonsCompleted}/{currentUser.lessonsTotal} lekcji
+                {currentUser.lessonsCompleted}/{currentUser.lessonsTotal} {t('lessons')}
               </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
@@ -225,7 +227,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
           </div>
 
           <div className="mt-3 p-2 bg-white dark:bg-gray-800 rounded-lg">
-            <p className="text-xs text-gray-500 dark:text-gray-400">Następna lekcja</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{t('nextLesson')}</p>
             <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">
               {currentUser.nextLesson}
             </p>
@@ -250,7 +252,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
-                {item.name === 'Wiadomości' && unreadNotifications > 0 && (
+                {item.name === t('navigation.messages') && unreadNotifications > 0 && (
                   <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                     {unreadNotifications}
                   </span>
@@ -267,7 +269,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
             className="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg"
           >
             <Settings className="w-5 h-5" />
-            <span className="font-medium">Ustawienia</span>
+            <span className="font-medium">{t('navigation.settings')}</span>
           </Link>
         </div>
 
@@ -278,7 +280,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
             className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            <span className="text-sm font-medium">Wyloguj się</span>
+            <span className="text-sm font-medium">{t('userMenu.logout')}</span>
           </button>
         </div>
       </aside>
@@ -400,7 +402,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
                       />
                       <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
                         <div className="p-3 border-b border-gray-200 dark:border-gray-700">
-                          <h3 className="font-semibold text-gray-800 dark:text-white">Powiadomienia</h3>
+                          <h3 className="font-semibold text-gray-800 dark:text-white">{t('notifications.title')}</h3>
                         </div>
                         <div className="max-h-96 overflow-y-auto">
                           {notifications.map((notification) => (
@@ -463,28 +465,28 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           >
                             <User className="w-4 h-4" />
-                            <span className="text-sm">Profil</span>
+                            <span className="text-sm">{t('navigation.profile')}</span>
                           </Link>
                           <Link 
                             href={`/${params.locale}/student/progress`}
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           >
                             <Target className="w-4 h-4" />
-                            <span className="text-sm">Moje postępy</span>
+                            <span className="text-sm">{t('userMenu.myProgress')}</span>
                           </Link>
                           <Link 
                             href={`/${params.locale}/student/documents`}
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           >
                             <FileText className="w-4 h-4" />
-                            <span className="text-sm">Dokumenty</span>
+                            <span className="text-sm">{t('navigation.documents')}</span>
                           </Link>
                           <Link 
                             href={`/${params.locale}/student/settings`} 
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
                           >
                             <Settings className="w-4 h-4" />
-                            <span className="text-sm">Ustawienia</span>
+                            <span className="text-sm">{t('navigation.settings')}</span>
                           </Link>
                         </div>
                         <div className="p-1 border-t border-gray-200 dark:border-gray-700">
@@ -493,7 +495,7 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
                           >
                             <LogOut className="w-4 h-4" />
-                            <span className="text-sm">Wyloguj się</span>
+                            <span className="text-sm">{t('userMenu.logout')}</span>
                           </button>
                         </div>
                       </div>

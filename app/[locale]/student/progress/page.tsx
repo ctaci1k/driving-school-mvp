@@ -1,9 +1,10 @@
-// app/[locale]/student/progress/page.tsx
+// Шлях: /app/[locale]/student/progress/page.tsx
 
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { 
   TrendingUp, 
   Award, 
@@ -30,6 +31,7 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import MilestoneCard from '@/components/cards/MilestoneCard';
 
 export default function ProgressPage() {
+  const t = useTranslations('student.progress');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
 
   const overallProgress = 65;
@@ -48,37 +50,37 @@ export default function ProgressPage() {
   };
 
   const skills = [
-    { name: 'Parkowanie równoległe', score: 75, category: 'Manewry' },
-    { name: 'Parkowanie prostopadłe', score: 82, category: 'Manewry' },
-    { name: 'Jazda w mieście', score: 70, category: 'Jazda' },
-    { name: 'Jazda autostradą', score: 65, category: 'Jazda' },
-    { name: 'Znaki drogowe', score: 90, category: 'Teoria' },
-    { name: 'Pierwszeństwo', score: 85, category: 'Teoria' },
-    { name: 'Zawracanie', score: 60, category: 'Manewry' },
-    { name: 'Ruch okrężny', score: 72, category: 'Jazda' }
+    { name: t('skills.parallelParking'), score: 75, category: t('skillCategories.maneuvers') },
+    { name: t('skills.perpendicularParking'), score: 82, category: t('skillCategories.maneuvers') },
+    { name: t('skills.cityDriving'), score: 70, category: t('skillCategories.driving') },
+    { name: t('skills.highwayDriving'), score: 65, category: t('skillCategories.driving') },
+    { name: t('skills.roadSigns'), score: 90, category: t('skillCategories.theory') },
+    { name: t('skills.rightOfWay'), score: 85, category: t('skillCategories.theory') },
+    { name: t('skills.turning'), score: 60, category: t('skillCategories.maneuvers') },
+    { name: t('skills.roundabout'), score: 72, category: t('skillCategories.driving') }
   ];
 
   const recentAchievements = [
     {
       id: 1,
-      title: 'Pierwsza jazda nocna',
-      description: 'Ukończono pierwszą lekcję jazdy w nocy',
+      title: t('achievements.firstNightDrive.title'),
+      description: t('achievements.firstNightDrive.description'),
       icon: '🌙',
       date: '2024-01-15',
       points: 50
     },
     {
       id: 2,
-      title: 'Mistrz parkowania',
-      description: '5 perfekcyjnych parkowań z rzędu',
+      title: t('achievements.parkingMaster.title'),
+      description: t('achievements.parkingMaster.description'),
       icon: '🏆',
       date: '2024-01-12',
       points: 100
     },
     {
       id: 3,
-      title: '10 lekcji ukończonych',
-      description: 'Kamień milowy - 10 lekcji',
+      title: t('achievements.tenLessons.title'),
+      description: t('achievements.tenLessons.description'),
       icon: '🎯',
       date: '2024-01-10',
       points: 200
@@ -86,31 +88,31 @@ export default function ProgressPage() {
   ];
 
   const milestones = [
-    { title: 'Pierwsza lekcja', completed: true, date: '2023-11-15' },
-    { title: '10 godzin jazdy', completed: true, date: '2023-12-20' },
-    { title: 'Teoria zaliczona', completed: true, date: '2024-01-05' },
-    { title: '25 godzin jazdy', completed: true, date: '2024-01-18' },
-    { title: 'Egzamin wewnętrzny', completed: false, date: null },
-    { title: 'Egzamin państwowy', completed: false, date: null }
+    { title: t('milestones.firstLesson'), completed: true, date: '2023-11-15' },
+    { title: t('milestones.tenHours'), completed: true, date: '2023-12-20' },
+    { title: t('milestones.theoryPassed'), completed: true, date: '2024-01-05' },
+    { title: t('milestones.twentyFiveHours'), completed: true, date: '2024-01-18' },
+    { title: t('milestones.internalExam'), completed: false, date: null },
+    { title: t('milestones.stateExam'), completed: false, date: null }
   ];
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Mój postęp</h1>
-        <p className="text-gray-600 mt-1">Śledź swoje osiągnięcia i rozwój umiejętności</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="text-gray-600 mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Overall Progress */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Postęp ogólny</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('overallProgress.title')}</h2>
           <div className="flex items-center gap-2">
             <span className="text-3xl font-bold text-blue-600">{overallProgress}%</span>
             <div className="flex items-center text-green-600 text-sm">
               <ArrowUp className="h-4 w-4" />
-              <span>+5% w tym miesiącu</span>
+              <span>{t('overallProgress.monthlyIncrease')}</span>
             </div>
           </div>
         </div>
@@ -118,19 +120,19 @@ export default function ProgressPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Godziny jazdy</span>
-              <span className="text-sm font-medium">{hoursCompleted}/{hoursRequired}h</span>
+              <span className="text-sm text-gray-600">{t('overallProgress.drivingHours')}</span>
+              <span className="text-sm font-medium">{hoursCompleted}/{hoursRequired}{t('overallProgress.hoursUnit')}</span>
             </div>
             <ProgressBar value={(hoursCompleted / hoursRequired) * 100} className="mb-4" />
             
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Kurs teoretyczny</span>
+              <span className="text-sm text-gray-600">{t('overallProgress.theoryCourse')}</span>
               <span className="text-sm font-medium">{theoryCourseProgress}%</span>
             </div>
             <ProgressBar value={theoryCourseProgress} color="green" className="mb-4" />
             
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-600">Umiejętności praktyczne</span>
+              <span className="text-sm text-gray-600">{t('overallProgress.practicalSkills')}</span>
               <span className="text-sm font-medium">{practicalProgress}%</span>
             </div>
             <ProgressBar value={practicalProgress} color="purple" />
@@ -145,32 +147,32 @@ export default function ProgressPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
-          title="Ukończone lekcje"
+          title={t('stats.completedLessons.title')}
           value={stats.totalLessons}
           icon={Car}
           trend={{ value: 3, isPositive: true }}
-          subtitle="W tym miesiącu"
+          subtitle={t('stats.completedLessons.subtitle')}
         />
         <StatsCard
-          title="Średnia ocena"
+          title={t('stats.averageScore.title')}
           value={stats.averageScore.toFixed(1)}
           icon={Star}
           trend={{ value: 0.5, isPositive: true }}
-          subtitle="Z 10 punktów"
+          subtitle={t('stats.averageScore.subtitle')}
         />
         <StatsCard
-          title="Poprawa"
+          title={t('stats.improvement.title')}
           value={`${stats.improvement}%`}
           icon={TrendingUp}
           trend={{ value: stats.improvement, isPositive: true }}
-          subtitle="Od początku"
+          subtitle={t('stats.improvement.subtitle')}
         />
         <StatsCard
-          title="Pozycja w rankingu"
+          title={t('stats.ranking.title')}
           value={`${stats.ranking}/${stats.totalStudents}`}
           icon={Trophy}
           trend={{ value: 5, isPositive: true }}
-          subtitle="Wśród studentów"
+          subtitle={t('stats.ranking.subtitle')}
         />
       </div>
 
@@ -179,12 +181,12 @@ export default function ProgressPage() {
         {/* Skills Radar */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Umiejętności</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('skillsSection.title')}</h2>
             <Link 
-              href="/pl/student/progress/skills"
+              href="/uk/student/progress/skills"
               className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
             >
-              Zobacz szczegóły
+              {t('skillsSection.viewDetails')}
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
@@ -192,7 +194,7 @@ export default function ProgressPage() {
           
           {/* Top Skills */}
           <div className="mt-4 space-y-2">
-            <p className="text-sm font-medium text-gray-700">Najlepsze umiejętności:</p>
+            <p className="text-sm font-medium text-gray-700">{t('skillsSection.topSkills')}:</p>
             {skills
               .sort((a, b) => b.score - a.score)
               .slice(0, 3)
@@ -211,12 +213,12 @@ export default function ProgressPage() {
         {/* Recent Achievements */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Ostatnie osiągnięcia</h2>
+            <h2 className="text-lg font-semibold text-gray-900">{t('achievementsSection.title')}</h2>
             <Link 
-              href="/pl/student/progress/achievements"
+              href="/uk/student/progress/achievements"
               className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
             >
-              Zobacz wszystkie
+              {t('achievementsSection.viewAll')}
               <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
@@ -229,7 +231,7 @@ export default function ProgressPage() {
                   <p className="text-sm text-gray-600">{achievement.description}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-medium text-blue-600">+{achievement.points} pkt</p>
+                  <p className="text-sm font-medium text-blue-600">+{achievement.points} {t('achievementsSection.points')}</p>
                   <p className="text-xs text-gray-500">{achievement.date}</p>
                 </div>
               </div>
@@ -240,7 +242,7 @@ export default function ProgressPage() {
 
       {/* Milestones Timeline */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Kamienie milowe</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('milestonesSection.title')}</h2>
         <div className="space-y-4">
           {milestones.map((milestone, index) => (
             <MilestoneCard
@@ -258,47 +260,45 @@ export default function ProgressPage() {
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Gotowość do egzaminu</h2>
-            <p className="text-sm text-gray-600 mt-1">
-              Na podstawie Twoich wyników i postępów
-            </p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('examReadiness.title')}</h2>
+            <p className="text-sm text-gray-600 mt-1">{t('examReadiness.description')}</p>
           </div>
           <div className="text-center">
             <div className="relative inline-flex items-center justify-center">
               <Gauge className="h-16 w-16 text-blue-600" />
               <span className="absolute text-lg font-bold">{practicalProgress}%</span>
             </div>
-            <p className="text-sm text-gray-600 mt-2">Gotowość</p>
+            <p className="text-sm text-gray-600 mt-2">{t('examReadiness.readiness')}</p>
           </div>
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white rounded-lg p-3">
             <div className="flex items-center gap-2 text-green-600">
               <CheckCircle2 className="h-5 w-5" />
-              <span className="font-medium">Mocne strony</span>
+              <span className="font-medium">{t('examReadiness.strengths')}</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Teoria, parkowanie prostopadłe</p>
+            <p className="text-sm text-gray-600 mt-1">{t('examReadiness.strengthsList')}</p>
           </div>
           <div className="bg-white rounded-lg p-3">
             <div className="flex items-center gap-2 text-yellow-600">
               <AlertCircle className="h-5 w-5" />
-              <span className="font-medium">Do poprawy</span>
+              <span className="font-medium">{t('examReadiness.toImprove')}</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Jazda autostradą, zawracanie</p>
+            <p className="text-sm text-gray-600 mt-1">{t('examReadiness.improvementList')}</p>
           </div>
           <div className="bg-white rounded-lg p-3">
             <div className="flex items-center gap-2 text-blue-600">
               <Brain className="h-5 w-5" />
-              <span className="font-medium">Zalecenie</span>
+              <span className="font-medium">{t('examReadiness.recommendation')}</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Jeszcze 5-7 lekcji praktycznych</p>
+            <p className="text-sm text-gray-600 mt-1">{t('examReadiness.recommendationText')}</p>
           </div>
         </div>
         <Link 
-          href="/pl/student/progress/exam-readiness"
+          href="/uk/student/progress/exam-readiness"
           className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Sprawdź szczegółową analizę
+          {t('examReadiness.viewAnalysis')}
           <ChevronRight className="h-4 w-4" />
         </Link>
       </div>

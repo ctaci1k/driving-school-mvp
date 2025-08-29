@@ -1,5 +1,5 @@
 // app/[locale]/instructor/schedule/components/ErrorBoundary.tsx
-// Komponent Error Boundary do obsługi błędów w aplikacji
+// Компонент Error Boundary для обробки помилок в додатку
 
 'use client'
 
@@ -8,12 +8,41 @@ import { AlertTriangle, RefreshCw, Home, Mail } from 'lucide-react'
 
 interface Props {
   children: ReactNode
+  locale: string
+  translations?: {
+    title: string
+    description: string
+    actions: {
+      reload: string
+      goHome: string
+    }
+    technicalDetails: string
+    support: {
+      contact: string
+      email: string
+    }
+  }
 }
 
 interface State {
   hasError: boolean
   error: Error | null
   errorInfo: ErrorInfo | null
+}
+
+// Default translations fallback
+const defaultTranslations = {
+  title: 'Упс! Щось пішло не так',
+  description: 'Виникла неочікувана помилка. Вибачте за незручності.',
+  actions: {
+    reload: 'Оновити сторінку',
+    goHome: 'Повернутися до панелі'
+  },
+  technicalDetails: 'Технічні деталі',
+  support: {
+    contact: 'Зв\'язатися з технічною підтримкою',
+    email: 'support@avtoschool.ua'
+  }
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -27,7 +56,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): State {
-    // Aktualizuj stan, aby następny render pokazał UI błędu
+    // Оновити стан, щоб наступний рендер показав UI помилки
     return {
       hasError: true,
       error,
@@ -36,16 +65,16 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Możesz zalogować błąd do serwisu raportowania błędów
+    // Можна залогувати помилку до сервісу звітування помилок
     console.error('Error caught by boundary:', error, errorInfo)
     
-    // Zapisz szczegóły błędu w state
+    // Зберегти деталі помилки в state
     this.setState({
       error,
       errorInfo
     })
 
-    // Wyślij błąd do serwisu monitoringu (np. Sentry)
+    // Відправити помилку до сервісу моніторингу (напр. Sentry)
     if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
       // logErrorToService(error, errorInfo)
     }
@@ -64,10 +93,13 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   handleGoHome = () => {
-    window.location.href = '/instructor/dashboard'
+    const { locale } = this.props
+    window.location.href = `/${locale}/instructor/dashboard`
   }
 
   render() {
+    const t = this.props.translations || defaultTranslations
+
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -77,21 +109,21 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
             
             <h1 className="text-xl font-semibold text-center text-gray-900 mb-2">
-              Ups! Coś poszło nie tak
+              {t.title}
             </h1>
             
             <p className="text-sm text-gray-600 text-center mb-6">
-              Wystąpił nieoczekiwany błąd. Przepraszamy za utrudnienia.
+              {t.description}
             </p>
 
-            {/* Akcje naprawcze */}
+            {/* Дії відновлення */}
             <div className="space-y-3">
               <button
                 onClick={this.handleReload}
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
-                Odśwież stronę
+                {t.actions.reload}
               </button>
               
               <button
@@ -99,15 +131,15 @@ export class ErrorBoundary extends Component<Props, State> {
                 className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <Home className="w-4 h-4" />
-                Wróć do panelu
+                {t.actions.goHome}
               </button>
             </div>
 
-            {/* Szczegóły błędu (tylko w trybie deweloperskim) */}
+            {/* Деталі помилки (тільки в режимі розробки) */}
             {process.env.NODE_ENV === 'development' && this.state.error && (
               <details className="mt-6 p-4 bg-gray-100 rounded-lg">
                 <summary className="text-sm font-medium text-gray-700 cursor-pointer">
-                  Szczegóły techniczne
+                  {t.technicalDetails}
                 </summary>
                 <pre className="mt-2 text-xs text-gray-600 overflow-auto">
                   {this.state.error.toString()}
@@ -116,14 +148,14 @@ export class ErrorBoundary extends Component<Props, State> {
               </details>
             )}
 
-            {/* Link do wsparcia */}
+            {/* Посилання на підтримку */}
             <div className="mt-6 pt-6 border-t text-center">
               <a
-                href="mailto:support@szkola-jazdy.pl"
+                href={`mailto:${t.support.email}`}
                 className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
               >
                 <Mail className="w-4 h-4" />
-                Skontaktuj się z pomocą techniczną
+                {t.support.contact}
               </a>
             </div>
           </div>
@@ -133,4 +165,23 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return this.props.children
   }
+}
+
+// Wrapper component for use with hooks
+export function ErrorBoundaryWrapper({ 
+  children, 
+  locale = 'uk' 
+}: { 
+  children: ReactNode
+  locale?: string 
+}) {
+  // В реальному додатку тут можна використовувати useTranslations hook
+  // для отримання перекладів, але оскільки це клас-компонент,
+  // ми передаємо переклади через props
+  
+  return (
+    <ErrorBoundary locale={locale} translations={defaultTranslations}>
+      {children}
+    </ErrorBoundary>
+  )
 }

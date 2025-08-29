@@ -1,7 +1,9 @@
+
 // app/[locale]/admin/settings/page.tsx
-"use client";
+'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Settings, Building, Bell, CreditCard, Shield, Link2,
   Globe, Mail, Phone, MapPin, Clock, Calendar, User,
@@ -14,8 +16,9 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 
-
 export default function AdminSettingsPage() {
+  const t = useTranslations('admin.settings');
+  
   const [activeTab, setActiveTab] = useState('general');
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -110,7 +113,7 @@ export default function AdminSettingsPage() {
       id: 1,
       name: 'Google Calendar',
       icon: Calendar,
-      description: 'Synchronizacja harmonogramu z Google Calendar',
+      description: t('integrations.services.googleCalendar.description'),
       enabled: true,
       configured: true,
       lastSync: new Date('2024-01-15T10:30:00')
@@ -119,7 +122,7 @@ export default function AdminSettingsPage() {
       id: 2,
       name: 'Zoom',
       icon: Monitor,
-      description: 'Zajęcia online przez Zoom',
+      description: t('integrations.services.zoom.description'),
       enabled: false,
       configured: false,
       lastSync: null
@@ -128,7 +131,7 @@ export default function AdminSettingsPage() {
       id: 3,
       name: 'Mailchimp',
       icon: Mail,
-      description: 'Email marketing i kampanie',
+      description: t('integrations.services.mailchimp.description'),
       enabled: true,
       configured: true,
       lastSync: new Date('2024-01-14T15:45:00')
@@ -137,7 +140,7 @@ export default function AdminSettingsPage() {
       id: 4,
       name: 'Facebook Pixel',
       icon: Globe,
-      description: 'Śledzenie konwersji',
+      description: t('integrations.services.facebookPixel.description'),
       enabled: true,
       configured: true,
       lastSync: null
@@ -146,7 +149,7 @@ export default function AdminSettingsPage() {
       id: 5,
       name: 'Google Analytics',
       icon: FileText,
-      description: 'Analityka ruchu na stronie',
+      description: t('integrations.services.googleAnalytics.description'),
       enabled: true,
       configured: true,
       lastSync: null
@@ -155,7 +158,7 @@ export default function AdminSettingsPage() {
       id: 6,
       name: 'Telegram Bot',
       icon: MessageSquare,
-      description: 'Powiadomienia przez Telegram',
+      description: t('integrations.services.telegramBot.description'),
       enabled: false,
       configured: false,
       lastSync: null
@@ -230,14 +233,14 @@ export default function AdminSettingsPage() {
   };
 
   const tabs = [
-    { id: 'general', name: 'Ogólne', icon: Settings },
-    { id: 'school', name: 'Szkoła', icon: Building },
-    { id: 'notifications', name: 'Powiadomienia', icon: Bell },
-    { id: 'payments', name: 'Płatności', icon: CreditCard },
-    { id: 'security', name: 'Bezpieczeństwo', icon: Shield },
-    { id: 'integrations', name: 'Integracje', icon: Link2 },
-    { id: 'branches', name: 'Filie', icon: MapPin },
-    { id: 'templates', name: 'Szablony', icon: Mail }
+    { id: 'general', name: t('tabs.general'), icon: Settings },
+    { id: 'school', name: t('tabs.school'), icon: Building },
+    { id: 'notifications', name: t('tabs.notifications'), icon: Bell },
+    { id: 'payments', name: t('tabs.payments'), icon: CreditCard },
+    { id: 'security', name: t('tabs.security'), icon: Shield },
+    { id: 'integrations', name: t('tabs.integrations'), icon: Link2 },
+    { id: 'branches', name: t('tabs.branches'), icon: MapPin },
+    { id: 'templates', name: t('tabs.templates'), icon: Mail }
   ];
 
   return (
@@ -245,17 +248,17 @@ export default function AdminSettingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Ustawienia</h1>
-          <p className="text-gray-600 mt-1">Ustawienia systemowe i konfiguracja</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Download className="w-4 h-4" />
-            Eksport
+            {t('buttons.export')}
           </button>
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Upload className="w-4 h-4" />
-            Import
+            {t('buttons.import')}
           </button>
           <button
             onClick={handleSaveSettings}
@@ -263,11 +266,16 @@ export default function AdminSettingsPage() {
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50"
           >
             {loading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                {t('buttons.saving')}
+              </>
             ) : (
-              <Save className="w-4 h-4" />
+              <>
+                <Save className="w-4 h-4" />
+                {t('buttons.save')}
+              </>
             )}
-            Zapisz
           </button>
         </div>
       </div>
@@ -276,7 +284,7 @@ export default function AdminSettingsPage() {
       {saved && (
         <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center gap-3">
           <CheckCircle className="w-5 h-5 text-green-600" />
-          <p className="text-green-700">Ustawienia zostały pomyślnie zapisane!</p>
+          <p className="text-green-700">{t('messages.saveSuccess')}</p>
         </div>
       )}
 
@@ -308,12 +316,12 @@ export default function AdminSettingsPage() {
           {/* General Settings */}
           {activeTab === 'general' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia ogólne</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('general.title')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nazwa szkoły
+                    {t('general.fields.schoolName')}
                   </label>
                   <input
                     type="text"
@@ -325,7 +333,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
+                    {t('general.fields.email')}
                   </label>
                   <input
                     type="email"
@@ -337,7 +345,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Telefon
+                    {t('general.fields.phone')}
                   </label>
                   <input
                     type="tel"
@@ -349,7 +357,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Strona internetowa
+                    {t('general.fields.website')}
                   </label>
                   <input
                     type="url"
@@ -361,7 +369,7 @@ export default function AdminSettingsPage() {
                 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Adres
+                    {t('general.fields.address')}
                   </label>
                   <textarea
                     value={generalSettings.address}
@@ -373,30 +381,30 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Strefa czasowa
+                    {t('general.fields.timezone')}
                   </label>
                   <select
                     value={generalSettings.timezone}
                     onChange={(e) => setGeneralSettings({...generalSettings, timezone: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="Europe/Warsaw">Warszawa (UTC+1)</option>
-                    <option value="Europe/Kyiv">Kijów (UTC+2)</option>
+                    <option value="Europe/Warsaw">{t('general.timezones.warsaw')}</option>
+                    <option value="Europe/Kyiv">{t('general.timezones.kyiv')}</option>
                   </select>
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Język
+                    {t('general.fields.language')}
                   </label>
                   <select
                     value={generalSettings.language}
                     onChange={(e) => setGeneralSettings({...generalSettings, language: e.target.value})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="pl">Polski</option>
-                    <option value="en">English</option>
-                    <option value="uk">Українська</option>
+                    <option value="pl">{t('general.languages.pl')}</option>
+                    <option value="en">{t('general.languages.en')}</option>
+                    <option value="uk">{t('general.languages.uk')}</option>
                   </select>
                 </div>
               </div>
@@ -405,9 +413,9 @@ export default function AdminSettingsPage() {
                 <div className="flex items-start gap-3">
                   <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-800">Tryb konserwacji</h4>
+                    <h4 className="font-medium text-gray-800">{t('general.maintenanceMode.title')}</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Tymczasowo wyłącz dostęp użytkowników podczas prac technicznych
+                      {t('general.maintenanceMode.description')}
                     </p>
                     <button
                       onClick={() => setGeneralSettings({...generalSettings, maintenanceMode: !generalSettings.maintenanceMode})}
@@ -419,7 +427,7 @@ export default function AdminSettingsPage() {
                         <ToggleLeft className="w-8 h-5 text-gray-400" />
                       )}
                       <span className="text-sm font-medium">
-                        {generalSettings.maintenanceMode ? 'Włączony' : 'Wyłączony'}
+                        {generalSettings.maintenanceMode ? t('general.maintenanceMode.enabled') : t('general.maintenanceMode.disabled')}
                       </span>
                     </button>
                   </div>
@@ -431,12 +439,12 @@ export default function AdminSettingsPage() {
           {/* School Settings */}
           {activeTab === 'school' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia szkoły</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('school.title')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Czas trwania lekcji (minuty)
+                    {t('school.fields.lessonDuration')}
                   </label>
                   <input
                     type="number"
@@ -448,7 +456,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Czas bufora między lekcjami (minuty)
+                    {t('school.fields.bufferTime')}
                   </label>
                   <input
                     type="number"
@@ -460,7 +468,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Maks. rezerwacja z wyprzedzeniem (dni)
+                    {t('school.fields.maxAdvanceBooking')}
                   </label>
                   <input
                     type="number"
@@ -472,7 +480,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Min. czas do rezerwacji (godziny)
+                    {t('school.fields.minAdvanceBooking')}
                   </label>
                   <input
                     type="number"
@@ -484,7 +492,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Okres anulowania (godziny)
+                    {t('school.fields.cancellationPeriod')}
                   </label>
                   <input
                     type="number"
@@ -496,7 +504,7 @@ export default function AdminSettingsPage() {
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Minimalny wiek
+                    {t('school.fields.minAge')}
                   </label>
                   <input
                     type="number"
@@ -517,7 +525,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Zezwalaj na rezerwacje weekendowe
+                    {t('school.permissions.allowWeekendBookings')}
                   </span>
                 </label>
                 
@@ -529,7 +537,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Zezwalaj na lekcje nocne
+                    {t('school.permissions.allowNightLessons')}
                   </span>
                 </label>
                 
@@ -541,7 +549,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Wymagaj zaświadczenia lekarskiego
+                    {t('school.permissions.requireMedicalCertificate')}
                   </span>
                 </label>
                 
@@ -553,7 +561,7 @@ export default function AdminSettingsPage() {
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-700">
-                    Wymagaj zdania teorii przed praktyką
+                    {t('school.permissions.requireTheoryPass')}
                   </span>
                 </label>
               </div>
@@ -563,14 +571,14 @@ export default function AdminSettingsPage() {
           {/* Notification Settings */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia powiadomień</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('notifications.title')}</h3>
               
               <div className="space-y-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Kanały powiadomień</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">{t('notifications.channels.title')}</h4>
                   <div className="space-y-3">
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Powiadomienia email</span>
+                      <span className="text-sm font-medium text-gray-700">{t('notifications.channels.email')}</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, emailEnabled: !notificationSettings.emailEnabled})}
                       >
@@ -583,7 +591,7 @@ export default function AdminSettingsPage() {
                     </label>
                     
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Powiadomienia SMS</span>
+                      <span className="text-sm font-medium text-gray-700">{t('notifications.channels.sms')}</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, smsEnabled: !notificationSettings.smsEnabled})}
                       >
@@ -596,7 +604,7 @@ export default function AdminSettingsPage() {
                     </label>
                     
                     <label className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-700">Powiadomienia push</span>
+                      <span className="text-sm font-medium text-gray-700">{t('notifications.channels.push')}</span>
                       <button
                         onClick={() => setNotificationSettings({...notificationSettings, pushEnabled: !notificationSettings.pushEnabled})}
                       >
@@ -611,7 +619,7 @@ export default function AdminSettingsPage() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Typy powiadomień</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">{t('notifications.types.title')}</h4>
                   <div className="space-y-3">
                     <label className="flex items-center gap-3">
                       <input
@@ -620,7 +628,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, bookingConfirmation: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Potwierdzenie rezerwacji</span>
+                      <span className="text-sm text-gray-700">{t('notifications.types.bookingConfirmation')}</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -630,7 +638,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, bookingReminder: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Przypomnienie o lekcji</span>
+                      <span className="text-sm text-gray-700">{t('notifications.types.bookingReminder')}</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -640,7 +648,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, cancellationAlert: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Powiadomienie o anulowaniu</span>
+                      <span className="text-sm text-gray-700">{t('notifications.types.cancellationAlert')}</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -650,14 +658,14 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setNotificationSettings({...notificationSettings, paymentReminder: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Przypomnienie o płatności</span>
+                      <span className="text-sm text-gray-700">{t('notifications.types.paymentReminder')}</span>
                     </label>
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Czas przypomnienia przed lekcją (godziny)
+                    {t('notifications.reminderTime')}
                   </label>
                   <input
                     type="number"
@@ -673,20 +681,20 @@ export default function AdminSettingsPage() {
           {/* Payment Settings */}
           {activeTab === 'payments' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia płatności</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('payments.title')}</h3>
               
               <div className="space-y-4">
                 {/* Payment Providers */}
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Systemy płatności</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">{t('payments.providers.title')}</h4>
                   
                   <div className="space-y-4">
                     <div className="flex items-center justify-between pb-3 border-b">
                       <div className="flex items-center gap-3">
                         <CreditCard className="w-5 h-5 text-gray-600" />
                         <div>
-                          <p className="font-medium text-gray-800">Stripe</p>
-                          <p className="text-sm text-gray-500">Karty Visa, Mastercard</p>
+                          <p className="font-medium text-gray-800">{t('payments.providers.stripe.name')}</p>
+                          <p className="text-sm text-gray-500">{t('payments.providers.stripe.description')}</p>
                         </div>
                       </div>
                       <button
@@ -704,8 +712,8 @@ export default function AdminSettingsPage() {
                       <div className="flex items-center gap-3">
                         <Zap className="w-5 h-5 text-gray-600" />
                         <div>
-                          <p className="font-medium text-gray-800">Przelewy24</p>
-                          <p className="text-sm text-gray-500">Polskie przelewy bankowe</p>
+                          <p className="font-medium text-gray-800">{t('payments.providers.przelewy24.name')}</p>
+                          <p className="text-sm text-gray-500">{t('payments.providers.przelewy24.description')}</p>
                         </div>
                       </div>
                       <button
@@ -723,8 +731,8 @@ export default function AdminSettingsPage() {
                       <div className="flex items-center gap-3">
                         <DollarSign className="w-5 h-5 text-gray-600" />
                         <div>
-                          <p className="font-medium text-gray-800">Gotówka</p>
-                          <p className="text-sm text-gray-500">Płatność gotówką w biurze</p>
+                          <p className="font-medium text-gray-800">{t('payments.providers.cash.name')}</p>
+                          <p className="text-sm text-gray-500">{t('payments.providers.cash.description')}</p>
                         </div>
                       </div>
                       <button
@@ -744,7 +752,7 @@ export default function AdminSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Stawka podatku (%)
+                      {t('payments.fields.taxRate')}
                     </label>
                     <input
                       type="number"
@@ -756,7 +764,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Prefiks faktur
+                      {t('payments.fields.invoicePrefix')}
                     </label>
                     <input
                       type="text"
@@ -768,7 +776,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Termin płatności (dni)
+                      {t('payments.fields.paymentTerms')}
                     </label>
                     <input
                       type="number"
@@ -780,7 +788,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Kara za opóźnienie (%)
+                      {t('payments.fields.lateFeePercentage')}
                     </label>
                     <input
                       type="number"
@@ -797,15 +805,15 @@ export default function AdminSettingsPage() {
           {/* Security Settings */}
           {activeTab === 'security' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Ustawienia bezpieczeństwa</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('security.title')}</h3>
               
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-start gap-3">
                   <Shield className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-gray-800">Ważne</h4>
+                    <h4 className="font-medium text-gray-800">{t('security.warning.title')}</h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Zmiana ustawień bezpieczeństwa może wpłynąć na dostęp użytkowników do systemu
+                      {t('security.warning.description')}
                     </p>
                   </div>
                 </div>
@@ -815,7 +823,7 @@ export default function AdminSettingsPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Timeout sesji (minuty)
+                      {t('security.fields.sessionTimeout')}
                     </label>
                     <input
                       type="number"
@@ -827,7 +835,7 @@ export default function AdminSettingsPage() {
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Maks. prób logowania
+                      {t('security.fields.maxLoginAttempts')}
                     </label>
                     <input
                       type="number"
@@ -839,10 +847,10 @@ export default function AdminSettingsPage() {
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Wymagania dla hasła</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">{t('security.passwordRequirements.title')}</h4>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">Minimalna długość: {securitySettings.passwordMinLength} znaków</span>
+                      <span className="text-sm text-gray-700">{t('security.passwordRequirements.minLength', {length: securitySettings.passwordMinLength})}</span>
                       <input
                         type="range"
                         min="6"
@@ -860,7 +868,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireUppercase: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Wymagaj wielkich liter</span>
+                      <span className="text-sm text-gray-700">{t('security.passwordRequirements.requireUppercase')}</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -870,7 +878,7 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireNumber: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Wymagaj cyfr</span>
+                      <span className="text-sm text-gray-700">{t('security.passwordRequirements.requireNumber')}</span>
                     </label>
                     
                     <label className="flex items-center gap-3">
@@ -880,26 +888,26 @@ export default function AdminSettingsPage() {
                         onChange={(e) => setSecuritySettings({...securitySettings, passwordRequireSpecial: e.target.checked})}
                         className="rounded border-gray-300 text-blue-600"
                       />
-                      <span className="text-sm text-gray-700">Wymagaj znaków specjalnych</span>
+                      <span className="text-sm text-gray-700">{t('security.passwordRequirements.requireSpecial')}</span>
                     </label>
                   </div>
                 </div>
 
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-gray-800 mb-3">Kopia zapasowa</h4>
+                  <h4 className="font-medium text-gray-800 mb-3">{t('security.backup.title')}</h4>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-700">Automatyczna kopia zapasowa</p>
-                      <p className="text-xs text-gray-500 mt-1">Ostatnia: wczoraj, 02:00</p>
+                      <p className="text-sm text-gray-700">{t('security.backup.autoBackup')}</p>
+                      <p className="text-xs text-gray-500 mt-1">{t('security.backup.lastBackup')}</p>
                     </div>
                     <select
                       value={securitySettings.backupFrequency}
                       onChange={(e) => setSecuritySettings({...securitySettings, backupFrequency: e.target.value})}
                       className="px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="daily">Codziennie</option>
-                      <option value="weekly">Co tydzień</option>
-                      <option value="monthly">Co miesiąc</option>
+                      <option value="daily">{t('security.backup.frequency.daily')}</option>
+                      <option value="weekly">{t('security.backup.frequency.weekly')}</option>
+                      <option value="monthly">{t('security.backup.frequency.monthly')}</option>
                     </select>
                   </div>
                 </div>
@@ -910,7 +918,7 @@ export default function AdminSettingsPage() {
           {/* Integrations */}
           {activeTab === 'integrations' && (
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Integracje</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('integrations.title')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {integrations.map((integration) => {
@@ -950,25 +958,25 @@ export default function AdminSettingsPage() {
                           {integration.configured ? (
                             <>
                               <CheckCircle className="w-3 h-3" />
-                              Skonfigurowane
+                              {t('integrations.configured')}
                             </>
                           ) : (
                             <>
                               <Info className="w-3 h-3" />
-                              Nie skonfigurowane
+                              {t('integrations.notConfigured')}
                             </>
                           )}
                         </span>
                         
                         {integration.lastSync && (
                           <span className="text-xs text-gray-500">
-                            Ostatnia synchronizacja: {format(integration.lastSync, 'dd.MM HH:mm')}
+                            {t('integrations.lastSync')} {format(integration.lastSync, 'dd.MM HH:mm')}
                           </span>
                         )}
                       </div>
                       
                       <button className="mt-3 text-sm text-blue-600 hover:text-blue-700 font-medium">
-                        Skonfiguruj →
+                        {t('integrations.configure')}
                       </button>
                     </div>
                   );
@@ -981,10 +989,10 @@ export default function AdminSettingsPage() {
           {activeTab === 'branches' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Filie</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('branches.title')}</h3>
                 <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
                   <Plus className="w-4 h-4" />
-                  Dodaj filię
+                  {t('branches.addBranch')}
                 </button>
               </div>
               
@@ -1016,7 +1024,7 @@ export default function AdminSettingsPage() {
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           branch.active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                         }`}>
-                          {branch.active ? 'Aktywna' : 'Nieaktywna'}
+                          {branch.active ? t('branches.status.active') : t('branches.status.inactive')}
                         </span>
                         <button className="p-1 hover:bg-gray-100 rounded">
                           <Edit2 className="w-4 h-4 text-gray-600" />
@@ -1033,10 +1041,10 @@ export default function AdminSettingsPage() {
           {activeTab === 'templates' && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-800">Szablony wiadomości</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{t('templates.title')}</h3>
                 <button className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2 text-sm">
                   <Plus className="w-4 h-4" />
-                  Nowy szablon
+                  {t('templates.newTemplate')}
                 </button>
               </div>
               
@@ -1050,9 +1058,9 @@ export default function AdminSettingsPage() {
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-800">{template.name}</h4>
-                          <p className="text-sm text-gray-500 mt-1">Temat: {template.subject}</p>
+                          <p className="text-sm text-gray-500 mt-1">{t('templates.subject')} {template.subject}</p>
                           <p className="text-xs text-gray-400 mt-2">
-                            Ostatnie zmiany: {format(template.lastModified, 'dd.MM.yyyy')}
+                            {t('templates.lastModified')} {format(template.lastModified, 'dd.MM.yyyy')}
                           </p>
                         </div>
                       </div>

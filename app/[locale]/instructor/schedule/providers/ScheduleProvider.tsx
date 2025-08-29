@@ -1,9 +1,10 @@
 // app/[locale]/instructor/schedule/providers/ScheduleProvider.tsx
-// Provider kontekstu dla globalnego stanu harmonogramu
+// Provider контексту для глобального стану розкладу
 
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Slot, 
   WorkingHours, 
@@ -17,9 +18,9 @@ import { loadFromStorage, saveToStorage } from '../utils/storage'
 import { generateSlotsFromWorkingHours } from '../utils/slotGenerator'
 import { useToast } from '@/hooks/use-toast'
 
-// Typy dla kontekstu
+// Типи для контексту
 interface ScheduleContextType {
-  // Stan danych
+  // Стан даних
   slots: Slot[]
   workingHours: Record<string, WorkingHours>
   templates: ScheduleTemplate[]
@@ -27,41 +28,41 @@ interface ScheduleContextType {
   cancellationRequests: CancellationRequest[]
   stats: ScheduleStats
   
-  // Stan UI
+  // Стан UI
   isLoading: boolean
   error: string | null
   
-  // Metody dla slotów
+  // Методи для слотів
   updateSlot: (slotId: string, updates: Partial<Slot>) => Promise<void>
   deleteSlot: (slotId: string) => Promise<void>
   createSlot: (slot: Omit<Slot, 'id'>) => Promise<void>
   generateSlots: (startDate: Date, endDate: Date) => Promise<void>
   
-  // Metody dla godzin pracy
+  // Методи для робочих годин
   updateWorkingHours: (day: string, hours: WorkingHours) => Promise<void>
   applyWorkingHoursToWeek: (weekStart: Date) => Promise<void>
   
-  // Metody dla szablonów
+  // Методи для шаблонів
   createTemplate: (template: Omit<ScheduleTemplate, 'id' | 'createdAt'>) => Promise<void>
   updateTemplate: (templateId: string, updates: Partial<ScheduleTemplate>) => Promise<void>
   deleteTemplate: (templateId: string) => Promise<void>
   applyTemplate: (templateId: string) => Promise<void>
   
-  // Metody dla wyjątków
+  // Методи для винятків
   createException: (exception: Omit<Exception, 'id' | 'createdAt'>) => Promise<void>
   deleteException: (exceptionId: string) => Promise<void>
   
-  // Metody dla wniosków o anulowanie
+  // Методи для заявок на скасування
   processCancellationRequest: (requestId: string, action: 'approve' | 'reject', comment?: string) => Promise<void>
   
-  // Metody pomocnicze
+  // Допоміжні методи
   refreshData: () => Promise<void>
   exportSchedule: () => string
   importSchedule: (data: string) => Promise<void>
   checkDayHasReservations: (date: Date) => boolean
 }
 
-// Domyślne godziny pracy
+// Основні робочі години
 const defaultWorkingHours: Record<string, WorkingHours> = {
   poniedziałek: {
     enabled: true,
@@ -124,18 +125,21 @@ const defaultWorkingHours: Record<string, WorkingHours> = {
   }
 }
 
-// Utworzenie kontekstu
+// Створення контексту
 const ScheduleContext = createContext<ScheduleContextType | undefined>(undefined)
 
-// Provider komponent
+// Provider компонент
 export function ScheduleProvider({ 
   children, 
-  locale = 'pl' 
+  locale = 'uk' 
 }: { 
   children: ReactNode
   locale?: string 
 }) {
-  // Stan podstawowy
+  // Переклади
+  const t = useTranslations('instructor.schedule.provider')
+  
+  // Стан основний
   const [slots, setSlots] = useState<Slot[]>([])
   const [workingHours, setWorkingHours] = useState<Record<string, WorkingHours>>(defaultWorkingHours)
   const [templates, setTemplates] = useState<ScheduleTemplate[]>([])
@@ -144,10 +148,10 @@ export function ScheduleProvider({
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
-  // Hook dla powiadomień
+  // Hook для повідомлень
   const { toast } = useToast()
 
-  // Obliczanie statystyk
+  // Обчислення статистики
   const stats: ScheduleStats = {
     totalSlots: slots.length,
     bookedSlots: slots.filter(s => s.status === 'zarezerwowany').length,
@@ -190,12 +194,12 @@ export function ScheduleProvider({
     pendingRequests: cancellationRequests.filter(r => r.status === 'oczekujący').length
   }
 
-  // Ładowanie danych początkowych
+  // Завантаження початкових даних
   useEffect(() => {
     const loadInitialData = async () => {
       setIsLoading(true)
       try {
-        // Załaduj dane z localStorage lub użyj mock data
+        // Завантаж дані з localStorage або використовуй mock data
         const savedSlots = loadFromStorage('schedule_slots', null)
         const savedWorkingHours = loadFromStorage('schedule_workingHours', null)
         const savedTemplates = loadFromStorage('schedule_templates', null)
@@ -222,7 +226,7 @@ export function ScheduleProvider({
         setCancellationRequests(mockCancellationRequests)
         
       } catch (err) {
-        setError('Błąd ładowania danych')
+        setError(t('toast.dataLoadError'))
         console.error(err)
       } finally {
         setIsLoading(false)
@@ -230,9 +234,9 @@ export function ScheduleProvider({
     }
 
     loadInitialData()
-  }, [])
+  }, [t])
 
-  // Automatyczne zapisywanie
+  // Автоматичне збереження
   useEffect(() => {
     if (!isLoading) {
       saveToStorage('schedule_slots', slots)
@@ -241,16 +245,16 @@ export function ScheduleProvider({
     }
   }, [slots, workingHours, templates, isLoading])
 
-  // 🆕 AUTOMATYCZNA GENERACJA SLOTÓW PO ZMIANIE GODZIN PRACY
+  // 🆕 АВТОМАТИЧНА ГЕНЕРАЦІЯ СЛОТІВ ПІСЛЯ ЗМІНИ РОБОЧИХ ГОДИН
   useEffect(() => {
-    // Tylko jeśli dane są załadowane i mamy godziny pracy
+    // Тільки якщо дані завантажені і маємо робочі години
     if (!isLoading && Object.keys(workingHours).length > 0) {
-      // Generuj sloty na następne 30 dni
+      // Генеруй слоти на наступні 30 днів
       const startDate = new Date()
       const endDate = new Date()
       endDate.setDate(endDate.getDate() + 30)
       
-      // Opóźnij generację o 500ms aby uniknąć wielokrotnych wywołań
+      // Затримай генерацію на 500ms щоб уникнути багатократних викликів
       const timeoutId = setTimeout(() => {
         generateSlots(startDate, endDate)
       }, 500)
@@ -259,9 +263,9 @@ export function ScheduleProvider({
     }
   }, [workingHours, isLoading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 🆕 FUNKCJA SPRAWDZAJĄCA CZY DZIEŃ MA REZERWACJE
+  // 🆕 ФУНКЦІЯ ПЕРЕВІРКИ ЧИ ДЕНЬ МАЄ РЕЗЕРВАЦІЇ
   const checkDayHasReservations = useCallback((date: Date): boolean => {
-    // Sprawdź czy są jakiekolwiek sloty z rezerwacjami w danym dniu
+    // Перевір чи є будь-які слоти з резерваціями в даний день
     const daySlots = slots.filter(slot => {
       const slotDate = new Date(slot.date)
       return (
@@ -273,42 +277,42 @@ export function ScheduleProvider({
     return daySlots.length > 0
   }, [slots])
 
-  // Metody dla slotów
+  // Методи для слотів
   const updateSlot = useCallback(async (slotId: string, updates: Partial<Slot>) => {
     try {
       setSlots(prev => prev.map(slot =>
         slot.id === slotId ? { ...slot, ...updates } : slot
       ))
       toast({
-        title: "Sukces",
-        description: "Slot został zaktualizowany",
+        title: t('toast.success'),
+        description: t('toast.slot.updated'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się zaktualizować slotu",
+        title: t('toast.error'),
+        description: t('toast.slot.updateError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const deleteSlot = useCallback(async (slotId: string) => {
     try {
       setSlots(prev => prev.filter(slot => slot.id !== slotId))
       toast({
-        title: "Sukces",
-        description: "Slot został usunięty",
+        title: t('toast.success'),
+        description: t('toast.slot.deleted'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się usunąć slotu",
+        title: t('toast.error'),
+        description: t('toast.slot.deleteError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const createSlot = useCallback(async (slotData: Omit<Slot, 'id'>) => {
     try {
@@ -318,20 +322,20 @@ export function ScheduleProvider({
       }
       setSlots(prev => [...prev, newSlot])
       toast({
-        title: "Sukces",
-        description: "Nowy slot został utworzony",
+        title: t('toast.success'),
+        description: t('toast.slot.created'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się utworzyć slotu",
+        title: t('toast.error'),
+        description: t('toast.slot.createError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
-  // 🔄 ZAKTUALIZOWANA FUNKCJA GENEROWANIA SLOTÓW Z OCHRONĄ REZERWACJI
+  // 🔄 ОНОВЛЕНА ФУНКЦІЯ ГЕНЕРАЦІЇ СЛОТІВ З ЗАХИСТОМ РЕЗЕРВАЦІЙ
   const generateSlots = useCallback(async (startDate: Date, endDate: Date) => {
     try {
       const newSlots: Slot[] = []
@@ -344,26 +348,26 @@ export function ScheduleProvider({
         const dayName = currentDate.toLocaleDateString('pl-PL', { weekday: 'long' }).toLowerCase()
         const dayWorkingHours = workingHours[dayName]
         
-        // Sprawdź czy dzień ma rezerwacje
+        // Перевір чи день має резервації
         const hasReservations = checkDayHasReservations(currentDate)
         
         if (hasReservations) {
-          // Zapisz informację o pominiętym dniu
-          skippedDays.push(currentDate.toLocaleDateString('pl-PL', { 
+          // Збережи інформацію про пропущений день
+          skippedDays.push(currentDate.toLocaleDateString(locale === 'uk' ? 'uk-UA' : 'pl-PL', { 
             weekday: 'long', 
             day: 'numeric', 
             month: 'long' 
           }))
           protectedCount++
         } else if (dayWorkingHours && dayWorkingHours.enabled) {
-          // Usuń tylko sloty ze statusem 'dostępny' dla tego dnia
+          // Видали тільки слоти зі статусом 'dostępny' для цього дня
           const dateString = currentDate.toISOString().split('T')[0]
           setSlots(prev => prev.filter(slot => {
             const slotDate = new Date(slot.date).toISOString().split('T')[0]
             return !(slotDate === dateString && slot.status === 'dostępny')
           }))
           
-          // Generuj nowe sloty
+          // Генеруй нові слоти
           const daySlots = generateSlotsFromWorkingHours(currentDate, dayWorkingHours)
           newSlots.push(...daySlots)
           generatedCount++
@@ -372,25 +376,25 @@ export function ScheduleProvider({
         currentDate.setDate(currentDate.getDate() + 1)
       }
       
-      // Dodaj nowe sloty
+      // Додай нові слоти
       if (newSlots.length > 0) {
         setSlots(prev => [...prev, ...newSlots])
       }
       
-      // Pokaż informację o wyniku
+      // Покажи інформацію про результат
       if (skippedDays.length > 0) {
         toast({
-          title: "Generowanie slotów zakończone",
+          title: t('toast.slots.generateTitle'),
           description: (
             <div>
-              <p>Wygenerowano sloty dla {generatedCount} dni.</p>
-              <p className="mt-2 font-semibold">Pominięto {protectedCount} dni z rezerwacjami:</p>
+              <p>{t('toast.slots.generateDescription', { generated: generatedCount })}</p>
+              <p className="mt-2 font-semibold">{t('toast.slots.protectedDays', { protected: protectedCount })}</p>
               <ul className="mt-1 text-sm">
                 {skippedDays.slice(0, 3).map((day, idx) => (
                   <li key={idx}>• {day}</li>
                 ))}
                 {skippedDays.length > 3 && (
-                  <li>• i {skippedDays.length - 3} więcej...</li>
+                  <li>• {t('toast.slots.moreSkipped', { count: skippedDays.length - 3 })}</li>
                 )}
               </ul>
             </div>
@@ -398,48 +402,48 @@ export function ScheduleProvider({
         })
       } else {
         toast({
-          title: "Sukces",
-          description: `Wygenerowano ${newSlots.length} nowych slotów dla ${generatedCount} dni`,
+          title: t('toast.success'),
+          description: t('toast.slots.generateSuccess', { slots: newSlots.length, days: generatedCount }),
         })
       }
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się wygenerować slotów",
+        title: t('toast.error'),
+        description: t('toast.slots.generateError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [workingHours, checkDayHasReservations, toast])
+  }, [workingHours, checkDayHasReservations, toast, t, locale])
 
-  // Metody dla godzin pracy
+  // Методи для робочих годин
   const updateWorkingHours = useCallback(async (day: string, hours: WorkingHours) => {
     try {
       setWorkingHours(prev => ({ ...prev, [day]: hours }))
       toast({
-        title: "Sukces",
-        description: "Godziny pracy zostały zaktualizowane",
+        title: t('toast.success'),
+        description: t('toast.workingHours.updated'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się zaktualizować godzin pracy",
+        title: t('toast.error'),
+        description: t('toast.workingHours.updateError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const applyWorkingHoursToWeek = useCallback(async (weekStart: Date) => {
     try {
       await generateSlots(weekStart, new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000))
     } catch (err) {
-      console.error('Błąd stosowania godzin pracy:', err)
+      console.error('Помилка застосування робочих годин:', err)
       throw err
     }
   }, [generateSlots])
 
-  // Metody dla szablonów
+  // Методи для шаблонів
   const createTemplate = useCallback(async (templateData: Omit<ScheduleTemplate, 'id' | 'createdAt'>) => {
     try {
       const newTemplate: ScheduleTemplate = {
@@ -449,18 +453,18 @@ export function ScheduleProvider({
       }
       setTemplates(prev => [...prev, newTemplate])
       toast({
-        title: "Sukces",
-        description: "Szablon został utworzony",
+        title: t('toast.success'),
+        description: t('toast.template.created'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się utworzyć szablonu",
+        title: t('toast.error'),
+        description: t('toast.template.createError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const updateTemplate = useCallback(async (templateId: string, updates: Partial<ScheduleTemplate>) => {
     try {
@@ -468,35 +472,35 @@ export function ScheduleProvider({
         template.id === templateId ? { ...template, ...updates } : template
       ))
       toast({
-        title: "Sukces",
-        description: "Szablon został zaktualizowany",
+        title: t('toast.success'),
+        description: t('toast.template.updated'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się zaktualizować szablonu",
+        title: t('toast.error'),
+        description: t('toast.template.updateError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const deleteTemplate = useCallback(async (templateId: string) => {
     try {
       setTemplates(prev => prev.filter(template => template.id !== templateId))
       toast({
-        title: "Sukces",
-        description: "Szablon został usunięty",
+        title: t('toast.success'),
+        description: t('toast.template.deleted'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się usunąć szablonu",
+        title: t('toast.error'),
+        description: t('toast.template.deleteError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
   const applyTemplate = useCallback(async (templateId: string) => {
     try {
@@ -504,21 +508,21 @@ export function ScheduleProvider({
       if (template) {
         setWorkingHours(template.workingHours)
         toast({
-          title: "Sukces",
-          description: "Szablon został zastosowany",
+          title: t('toast.success'),
+          description: t('toast.template.applied'),
         })
       }
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się zastosować szablonu",
+        title: t('toast.error'),
+        description: t('toast.template.applyError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [templates, toast])
+  }, [templates, toast, t])
 
-  // Pozostałe metody
+  // Інші методи
   const refreshData = useCallback(async () => {
     const startDate = new Date()
     const endDate = new Date()
@@ -545,20 +549,20 @@ export function ScheduleProvider({
       if (parsed.templates) setTemplates(parsed.templates)
       if (parsed.exceptions) setExceptions(parsed.exceptions)
       toast({
-        title: "Sukces",
-        description: "Harmonogram został zaimportowany",
+        title: t('toast.success'),
+        description: t('toast.schedule.imported'),
       })
     } catch (err) {
       toast({
-        title: "Błąd",
-        description: "Nieprawidłowy format danych",
+        title: t('toast.error'),
+        description: t('toast.schedule.importError'),
         variant: "destructive",
       })
       throw err
     }
-  }, [toast])
+  }, [toast, t])
 
-  // Wartość kontekstu
+  // Значення контексту
   const value: ScheduleContextType = {
     slots,
     workingHours,
@@ -594,7 +598,7 @@ export function ScheduleProvider({
   )
 }
 
-// Hook do używania kontekstu
+// Hook для використання контексту
 export function useScheduleContext() {
   const context = useContext(ScheduleContext)
   if (context === undefined) {

@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/calendar/MonthView.tsx
-// Komponent widoku miesięcznego kalendarza z siatką dni i mini-slotami
-
 'use client'
 
 import React, { useState, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   ChevronLeft, ChevronRight, Calendar,
   Clock, User, MapPin, AlertCircle
@@ -36,6 +35,7 @@ const DayCell: React.FC<{
   onSlotClick?: (slot: Slot) => void
   onDayClick?: (date: Date) => void
 }> = ({ date, slots, isToday: today, isCurrentMonth, isPast: past, onSlotClick, onDayClick }) => {
+  const t = useTranslations('instructor.schedule.calendar.monthView')
   const [isHovered, setIsHovered] = useState(false)
   
   // Grupowanie slotów po statusie
@@ -87,7 +87,7 @@ const DayCell: React.FC<{
         {/* Pokazuje datę w hover bez przycisku */}
         {isHovered && (
           <span className="text-xs text-gray-500">
-            {date.toLocaleDateString('pl-PL', { weekday: 'short' })}
+            {date.toLocaleDateString('uk-UA', { weekday: 'short' })}
           </span>
         )}
       </div>
@@ -126,7 +126,7 @@ const DayCell: React.FC<{
           {/* Jeśli jest więcej slotów */}
           {slots.length > 3 && (
             <div className="text-xs text-gray-500 text-center">
-              +{slots.length - 3} więcej
+              {t('dayCell.moreSlots', { count: slots.length - 3 })}
             </div>
           )}
         </div>
@@ -135,7 +135,7 @@ const DayCell: React.FC<{
       {/* Brak slotów - informacja */}
       {!hasSlots && isCurrentMonth && !past && (
         <div className="text-xs text-gray-400 text-center mt-2">
-          Brak terminów
+          {t('dayCell.noSlots')}
         </div>
       )}
 
@@ -143,13 +143,22 @@ const DayCell: React.FC<{
       {isHovered && hasSlots && (
         <div className="absolute bottom-1 left-1 right-1 flex gap-1 justify-center">
           {slotStats.dostępny > 0 && (
-            <div className="w-2 h-2 bg-green-400 rounded-full" title={`${slotStats.dostępny} dostępnych`} />
+            <div 
+              className="w-2 h-2 bg-green-400 rounded-full" 
+              title={t('dayCell.available', { count: slotStats.dostępny })} 
+            />
           )}
           {slotStats.zarezerwowany > 0 && (
-            <div className="w-2 h-2 bg-blue-400 rounded-full" title={`${slotStats.zarezerwowany} zarezerwowanych`} />
+            <div 
+              className="w-2 h-2 bg-blue-400 rounded-full" 
+              title={t('dayCell.reserved', { count: slotStats.zarezerwowany })} 
+            />
           )}
           {slotStats.zablokowany > 0 && (
-            <div className="w-2 h-2 bg-gray-400 rounded-full" title={`${slotStats.zablokowany} zablokowanych`} />
+            <div 
+              className="w-2 h-2 bg-gray-400 rounded-full" 
+              title={t('dayCell.blocked', { count: slotStats.zablokowany })} 
+            />
           )}
         </div>
       )}
@@ -164,6 +173,7 @@ export default function MonthView({
   onDateChange,
   className
 }: MonthViewProps) {
+  const t = useTranslations('instructor.schedule.calendar.monthView')
   const { slots, workingHours } = useScheduleContext()
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [hoveredWeek, setHoveredWeek] = useState<number | null>(null)
@@ -287,9 +297,17 @@ export default function MonthView({
   }
 
   // Nazwy dni tygodnia
-  const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz']
+  const weekDays = [
+    t('weekDays.mon'),
+    t('weekDays.tue'),
+    t('weekDays.wed'),
+    t('weekDays.thu'),
+    t('weekDays.fri'),
+    t('weekDays.sat'),
+    t('weekDays.sun')
+  ]
 
-  // Formatowanie nazwy miesiąca
+  // Formatowanie nazwy miesiąca - użyj lokalnej funkcji jeśli dostępna
   const monthLabel = `${getPolishMonthName(currentDate)} ${currentDate.getFullYear()}`
 
   return (
@@ -300,7 +318,7 @@ export default function MonthView({
           <button
             onClick={handlePreviousMonth}
             className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-            aria-label="Poprzedni miesiąc"
+            aria-label={t('navigation.previousMonth')}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -309,13 +327,13 @@ export default function MonthView({
             onClick={handleToday}
             className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors text-sm font-medium"
           >
-            Obecny miesiąc
+            {t('navigation.currentMonth')}
           </button>
           
           <button
             onClick={handleNextMonth}
             className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-            aria-label="Następny miesiąc"
+            aria-label={t('navigation.nextMonth')}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -326,9 +344,9 @@ export default function MonthView({
         </h2>
 
         <div className="flex items-center gap-4 text-sm text-gray-600">
-          <span>Terminy: {monthStats.total}</span>
-          <span className="text-green-600">Dostępne: {monthStats.dostępne}</span>
-          <span className="text-blue-600">Zarezerwowane: {monthStats.zarezerwowane}</span>
+          <span>{t('stats.total', { count: monthStats.total })}</span>
+          <span className="text-green-600">{t('stats.available', { count: monthStats.dostępne })}</span>
+          <span className="text-blue-600">{t('stats.reserved', { count: monthStats.zarezerwowane })}</span>
         </div>
       </div>
 
@@ -380,27 +398,30 @@ export default function MonthView({
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-4">
             <span className="text-gray-600">
-              Tydzień {hoveredWeek !== null ? hoveredWeek + 1 : '—'}
+              {hoveredWeek !== null 
+                ? t('footer.week', { number: hoveredWeek + 1 })
+                : t('footer.weekPlaceholder')
+              }
             </span>
           </div>
           
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded" />
-              <span className="text-xs">Dziś</span>
+              <span className="text-xs">{t('footer.legend.today')}</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-gray-100 rounded" />
-              <span className="text-xs">Weekend</span>
+              <span className="text-xs">{t('footer.legend.weekend')}</span>
             </div>
             <div className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
-              <span className="text-xs">Godziny pracy</span>
+              <span className="text-xs">{t('footer.legend.workingHours')}</span>
             </div>
             {monthStats.total === 0 && (
               <div className="flex items-center gap-1 text-amber-600">
                 <AlertCircle className="w-3 h-3" />
-                <span className="text-xs">Sloty generowane automatycznie przy zapisie godzin pracy</span>
+                <span className="text-xs">{t('footer.legend.noSlotsWarning')}</span>
               </div>
             )}
           </div>

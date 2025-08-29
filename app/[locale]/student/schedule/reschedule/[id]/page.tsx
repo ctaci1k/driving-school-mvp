@@ -1,9 +1,10 @@
-// app/[locale]/student/schedule/reschedule/[id]/page.tsx
+// Шлях: /app/[locale]/student/schedule/reschedule/[id]/page.tsx
 
 'use client';
 
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Calendar,
   Clock,
@@ -40,7 +41,7 @@ const currentLesson = {
   id: '1',
   date: '2024-08-28',
   time: '14:00-16:00',
-  type: 'Jazda miejska',
+  type: 'cityDriving',
   instructor: {
     name: 'Piotr Nowak',
     avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
@@ -57,7 +58,7 @@ const availableSlots = [
   {
     id: 'slot1',
     date: '2024-08-30',
-    dayName: 'Piątek',
+    dayName: 'friday',
     time: '10:00-12:00',
     instructor: 'Piotr Nowak',
     available: true,
@@ -67,7 +68,7 @@ const availableSlots = [
   {
     id: 'slot2',
     date: '2024-08-30',
-    dayName: 'Piątek',
+    dayName: 'friday',
     time: '16:00-18:00',
     instructor: 'Piotr Nowak',
     available: true,
@@ -77,7 +78,7 @@ const availableSlots = [
   {
     id: 'slot3',
     date: '2024-09-02',
-    dayName: 'Poniedziałek',
+    dayName: 'monday',
     time: '08:00-10:00',
     instructor: 'Piotr Nowak',
     available: true,
@@ -87,7 +88,7 @@ const availableSlots = [
   {
     id: 'slot4',
     date: '2024-09-02',
-    dayName: 'Poniedziałek',
+    dayName: 'monday',
     time: '14:00-16:00',
     instructor: 'Piotr Nowak',
     available: true,
@@ -97,7 +98,7 @@ const availableSlots = [
   {
     id: 'slot5',
     date: '2024-09-03',
-    dayName: 'Wtorek',
+    dayName: 'tuesday',
     time: '12:00-14:00',
     instructor: 'Piotr Nowak',
     available: false,
@@ -107,7 +108,7 @@ const availableSlots = [
   {
     id: 'slot6',
     date: '2024-09-04',
-    dayName: 'Środa',
+    dayName: 'wednesday',
     time: '18:00-20:00',
     instructor: 'Piotr Nowak',
     available: true,
@@ -116,12 +117,10 @@ const availableSlots = [
   }
 ];
 
-const monthNames = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec',
-                    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-
 export default function ReschedulePage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations('student.reschedule');
   const [selectedSlot, setSelectedSlot] = useState<string>('');
   const [rescheduleReason, setRescheduleReason] = useState<string>('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -137,12 +136,15 @@ export default function ReschedulePage() {
   };
 
   const getWeatherLabel = (weather: string) => {
-    switch(weather) {
-      case 'sunny': return 'Słonecznie';
-      case 'cloudy': return 'Pochmurno';
-      case 'rainy': return 'Deszczowo';
-      default: return 'Brak prognozy';
-    }
+    return t(`weather.${weather}`);
+  };
+
+  const getDayName = (dayKey: string) => {
+    return t(`days.${dayKey}`);
+  };
+
+  const getLessonType = (typeKey: string) => {
+    return t(`lessonTypes.${typeKey}`);
   };
 
   const calculateTimeDifference = () => {
@@ -165,11 +167,11 @@ export default function ReschedulePage() {
   };
 
   const reasons = [
-    { id: 'sick', label: 'Choroba', icon: '🤒' },
-    { id: 'work', label: 'Obowiązki służbowe', icon: '💼' },
-    { id: 'personal', label: 'Sprawy osobiste', icon: '👤' },
-    { id: 'weather', label: 'Złe warunki pogodowe', icon: '🌧️' },
-    { id: 'other', label: 'Inny powód', icon: '📝' }
+    { id: 'sick', label: t('reasons.sick'), icon: '🤒' },
+    { id: 'work', label: t('reasons.work'), icon: '💼' },
+    { id: 'personal', label: t('reasons.personal'), icon: '👤' },
+    { id: 'weather', label: t('reasons.weather'), icon: '🌧️' },
+    { id: 'other', label: t('reasons.other'), icon: '📝' }
   ];
 
   return (
@@ -184,8 +186,8 @@ export default function ReschedulePage() {
           <ChevronLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Przełóż lekcję</h1>
-          <p className="text-gray-600">Wybierz nowy termin dla swojej lekcji</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -193,18 +195,17 @@ export default function ReschedulePage() {
       {!canRescheduleFreely ? (
         <Alert className="border-red-200 bg-red-50">
           <AlertTriangle className="h-4 w-4 text-red-600" />
-          <AlertTitle className="text-red-800">Uwaga - opłata za przełożenie</AlertTitle>
+          <AlertTitle className="text-red-800">{t('warning.title')}</AlertTitle>
           <AlertDescription className="text-red-700">
-            Przełożenie lekcji mniej niż 24 godziny przed jej rozpoczęciem wiąże się z opłatą w wysokości 50 PLN.
-            Pozostało {hoursUntilLesson} godzin do lekcji.
+            {t('warning.description', { hours: hoursUntilLesson })}
           </AlertDescription>
         </Alert>
       ) : (
         <Alert className="border-green-200 bg-green-50">
           <Check className="h-4 w-4 text-green-600" />
-          <AlertTitle className="text-green-800">Bezpłatne przełożenie</AlertTitle>
+          <AlertTitle className="text-green-800">{t('freeReschedule.title')}</AlertTitle>
           <AlertDescription className="text-green-700">
-            Możesz przełożyć tę lekcję bez dodatkowych opłat. Pozostało {hoursUntilLesson} godzin do lekcji.
+            {t('freeReschedule.description', { hours: hoursUntilLesson })}
           </AlertDescription>
         </Alert>
       )}
@@ -214,7 +215,7 @@ export default function ReschedulePage() {
         <div className="lg:col-span-1">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Obecny termin</CardTitle>
+              <CardTitle className="text-lg">{t('currentLesson.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -256,8 +257,8 @@ export default function ReschedulePage() {
                 <Separator />
 
                 <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-600 mb-1">Typ lekcji</p>
-                  <p className="font-semibold">{currentLesson.type}</p>
+                  <p className="text-xs text-gray-600 mb-1">{t('currentLesson.lessonType')}</p>
+                  <p className="font-semibold">{getLessonType(currentLesson.type)}</p>
                 </div>
               </div>
             </CardContent>
@@ -266,20 +267,20 @@ export default function ReschedulePage() {
           {/* Cancellation Policy */}
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle className="text-sm">Polityka przełożeń</CardTitle>
+              <CardTitle className="text-sm">{t('policy.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <p>Bezpłatne przełożenie do 24h przed lekcją</p>
+                <p>{t('policy.free24h')}</p>
               </div>
               <div className="flex items-start gap-2">
                 <AlertCircle className="h-4 w-4 text-yellow-500 mt-0.5" />
-                <p>50 PLN opłaty przy przełożeniu 12-24h przed</p>
+                <p>{t('policy.fee12to24h')}</p>
               </div>
               <div className="flex items-start gap-2">
                 <X className="h-4 w-4 text-red-500 mt-0.5" />
-                <p>Pełna opłata przy przełożeniu &lt;12h przed</p>
+                <p>{t('policy.fullFeeUnder12h')}</p>
               </div>
             </CardContent>
           </Card>
@@ -289,10 +290,8 @@ export default function ReschedulePage() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Wybierz nowy termin</CardTitle>
-              <CardDescription>
-                Dostępne terminy z tym samym instruktorem
-              </CardDescription>
+              <CardTitle className="text-lg">{t('newSlot.title')}</CardTitle>
+              <CardDescription>{t('newSlot.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -310,7 +309,7 @@ export default function ReschedulePage() {
                   >
                     {slot.recommended && (
                       <Badge className="absolute -top-2 -right-2 bg-green-500 text-white">
-                        Polecany
+                        {t('recommended')}
                       </Badge>
                     )}
 
@@ -321,7 +320,7 @@ export default function ReschedulePage() {
                         }`} />
                         <div>
                           <p className="font-semibold">
-                            {slot.dayName}, {slot.date}
+                            {getDayName(slot.dayName)}, {slot.date}
                           </p>
                           <p className="text-sm text-gray-600 mt-1">
                             {slot.time}
@@ -340,7 +339,7 @@ export default function ReschedulePage() {
                           </RadioGroup>
                         ) : (
                           <Badge variant="outline" className="text-red-600">
-                            Zajęte
+                            {t('taken')}
                           </Badge>
                         )}
                       </div>
@@ -351,7 +350,7 @@ export default function ReschedulePage() {
 
               {/* Reason for rescheduling */}
               <div className="mt-6 space-y-3">
-                <Label>Powód przełożenia (opcjonalnie)</Label>
+                <Label>{t('reasonLabel')}</Label>
                 <RadioGroup value={rescheduleReason} onValueChange={setRescheduleReason}>
                   <div className="grid grid-cols-2 gap-3">
                     {reasons.map(reason => (
@@ -373,7 +372,7 @@ export default function ReschedulePage() {
                   variant="outline"
                   onClick={() => router.back()}
                 >
-                  Anuluj
+                  {t('buttons.cancel')}
                 </Button>
                 <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
                   <DialogTrigger asChild>
@@ -381,29 +380,27 @@ export default function ReschedulePage() {
                       disabled={!selectedSlot}
                     >
                       <RefreshCw className="h-4 w-4 mr-2" />
-                      Przełóż lekcję
+                      {t('buttons.reschedule')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Potwierdzenie przełożenia</DialogTitle>
-                      <DialogDescription>
-                        Czy na pewno chcesz przełożyć lekcję na wybrany termin?
-                      </DialogDescription>
+                      <DialogTitle>{t('confirmDialog.title')}</DialogTitle>
+                      <DialogDescription>{t('confirmDialog.description')}</DialogDescription>
                     </DialogHeader>
                     
                     <div className="space-y-4 py-4">
                       <div className="bg-gray-50 rounded-lg p-4">
-                        <p className="text-sm text-gray-600 mb-2">Stary termin:</p>
+                        <p className="text-sm text-gray-600 mb-2">{t('confirmDialog.oldSlot')}:</p>
                         <p className="font-semibold">{currentLesson.date}, {currentLesson.time}</p>
                       </div>
                       
                       <ArrowRight className="h-4 w-4 mx-auto text-gray-400" />
                       
                       <div className="bg-blue-50 rounded-lg p-4">
-                        <p className="text-sm text-gray-600 mb-2">Nowy termin:</p>
+                        <p className="text-sm text-gray-600 mb-2">{t('confirmDialog.newSlot')}:</p>
                         <p className="font-semibold">
-                          {availableSlots.find(s => s.id === selectedSlot)?.dayName}, {' '}
+                          {getDayName(availableSlots.find(s => s.id === selectedSlot)?.dayName || '')}, {' '}
                           {availableSlots.find(s => s.id === selectedSlot)?.date}, {' '}
                           {availableSlots.find(s => s.id === selectedSlot)?.time}
                         </p>
@@ -413,7 +410,7 @@ export default function ReschedulePage() {
                         <Alert className="border-yellow-200 bg-yellow-50">
                           <CreditCard className="h-4 w-4 text-yellow-600" />
                           <AlertDescription>
-                            Za przełożenie zostanie pobrana opłata w wysokości 50 PLN
+                            {t('confirmDialog.feeWarning')}
                           </AlertDescription>
                         </Alert>
                       )}
@@ -425,13 +422,13 @@ export default function ReschedulePage() {
                         onClick={() => setShowConfirmDialog(false)}
                         disabled={isProcessing}
                       >
-                        Anuluj
+                        {t('buttons.cancel')}
                       </Button>
                       <Button
                         onClick={handleReschedule}
                         disabled={isProcessing}
                       >
-                        {isProcessing ? 'Przetwarzanie...' : 'Potwierdź przełożenie'}
+                        {isProcessing ? t('buttons.processing') : t('buttons.confirmReschedule')}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -442,9 +439,9 @@ export default function ReschedulePage() {
               <Alert className="mt-4">
                 <Info className="h-4 w-4" />
                 <AlertDescription>
-                  Szukasz terminu z innym instruktorem? 
+                  {t('otherInstructorsInfo')}
                   <Button variant="link" className="px-1" onClick={() => router.push('/student/schedule/availability')}>
-                    Zobacz wszystkie dostępne terminy
+                    {t('viewAllSlots')}
                   </Button>
                 </AlertDescription>
               </Alert>

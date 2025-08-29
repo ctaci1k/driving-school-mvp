@@ -1,9 +1,10 @@
-// app/[locale]/student/schedule/page.tsx
+// Шлях: /app/[locale]/student/schedule/page.tsx
 
 'use client';
 
 import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   Calendar,
   Clock,
@@ -55,16 +56,16 @@ import Link from 'next/link';
 
 // Unified lesson type configuration
 const lessonTypeConfig = {
-  STANDARD: { label: 'Jazda standardowa', icon: Car, color: 'blue' },
-  HIGHWAY: { label: 'Jazda autostradą', icon: Zap, color: 'purple' },
-  PARKING: { label: 'Parkowanie', icon: Circle, color: 'green' },
-  NIGHT: { label: 'Jazda nocna', icon: Moon, color: 'indigo' },
-  EXAM_PREP: { label: 'Egzamin próbny', icon: BookOpen, color: 'red' },
-  MANEUVERS: { label: 'Manewry', icon: RotateCw, color: 'teal' },
-  CITY: { label: 'Jazda miejska', icon: Sun, color: 'blue' }
+  STANDARD: { icon: Car, color: 'blue' },
+  HIGHWAY: { icon: Zap, color: 'purple' },
+  PARKING: { icon: Circle, color: 'green' },
+  NIGHT: { icon: Moon, color: 'indigo' },
+  EXAM_PREP: { icon: BookOpen, color: 'red' },
+  MANEUVERS: { icon: RotateCw, color: 'teal' },
+  CITY: { icon: Sun, color: 'blue' }
 };
 
-// Unified mock data generator
+// Unified mock data generator - МАКОВІ ДАНІ ЗАЛИШАЮТЬСЯ ПОЛЬСЬКОЮ
 const generateMockLessons = () => {
   const lessons = [];
   const startDate = new Date(2024, 7, 1); // August 2024
@@ -145,12 +146,9 @@ const generateMockLessons = () => {
   });
 };
 
-const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'];
-const monthNames = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 
-                    'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-
 export default function StudentSchedulePage() {
   const router = useRouter();
+  const t = useTranslations('student.schedule');
   const [mockLessons] = useState(generateMockLessons());
   const [currentView, setCurrentView] = useState<'month' | 'week' | 'list'>('month');
   const [currentDate, setCurrentDate] = useState(new Date(2024, 7, 27)); // August 27, 2024
@@ -158,6 +156,16 @@ export default function StudentSchedulePage() {
   const [showCancelled, setShowCancelled] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState<any>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+
+  const weekDays = [
+    t('weekDays.mon'), t('weekDays.tue'), t('weekDays.wed'), 
+    t('weekDays.thu'), t('weekDays.fri'), t('weekDays.sat'), t('weekDays.sun')
+  ];
+  const monthNames = [
+    t('months.january'), t('months.february'), t('months.march'), t('months.april'),
+    t('months.may'), t('months.june'), t('months.july'), t('months.august'),
+    t('months.september'), t('months.october'), t('months.november'), t('months.december')
+  ];
 
   // Get unique instructors for filter
   const uniqueInstructors = useMemo(() => {
@@ -281,15 +289,16 @@ export default function StudentSchedulePage() {
   };
 
   const getStatusBadge = (status: string) => {
+    const statusLabel = t(`statuses.${status}`);
     const badges = {
-      confirmed: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-200', label: 'Potwierdzone' },
-      pending: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-200', label: 'Oczekuje' },
-      cancelled: { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-200', label: 'Anulowane' },
-      completed: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200', label: 'Zakończone' },
-      in_progress: { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-200', label: 'W trakcie' }
+      confirmed: 'bg-green-100 text-green-800 border-green-200',
+      pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      cancelled: 'bg-red-100 text-red-800 border-red-200',
+      completed: 'bg-gray-100 text-gray-800 border-gray-200',
+      in_progress: 'bg-blue-100 text-blue-800 border-blue-200'
     };
-    const badge = badges[status as keyof typeof badges] || badges.confirmed;
-    return <Badge className={`${badge.bg} ${badge.text} ${badge.border}`}>{badge.label}</Badge>;
+    const badgeClass = badges[status as keyof typeof badges] || badges.confirmed;
+    return <Badge className={badgeClass}>{statusLabel}</Badge>;
   };
 
   const getLessonColor = (type: string) => {
@@ -370,26 +379,23 @@ export default function StudentSchedulePage() {
                   
                   <ScrollArea className="h-[70px]">
                     <div className="space-y-1">
-                      {dayLessons.slice(0, 3).map(lesson => {
-                        const config = lessonTypeConfig[lesson.type as keyof typeof lessonTypeConfig];
-                        return (
-                          <div
-                            key={lesson.id}
-                            className={`text-xs p-1 rounded cursor-pointer transition-all ${getLessonColor(lesson.type)}`}
-                            onClick={() => handleLessonClick(lesson)}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="font-medium truncate">
-                                {lesson.startTime}
-                              </span>
-                              {getLessonTypeIcon(lesson.type)}
-                            </div>
-                            <div className="text-xs opacity-75 truncate">
-                              {config?.label || lesson.type}
-                            </div>
+                      {dayLessons.slice(0, 3).map(lesson => (
+                        <div
+                          key={lesson.id}
+                          className={`text-xs p-1 rounded cursor-pointer transition-all ${getLessonColor(lesson.type)}`}
+                          onClick={() => handleLessonClick(lesson)}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium truncate">
+                              {lesson.startTime}
+                            </span>
+                            {getLessonTypeIcon(lesson.type)}
                           </div>
-                        );
-                      })}
+                          <div className="text-xs opacity-75 truncate">
+                            {t(`lessonTypes.${lesson.type.toLowerCase()}`)}
+                          </div>
+                        </div>
+                      ))}
                       {dayLessons.length > 3 && (
                         <button
                           className="text-xs text-blue-600 hover:text-blue-700 font-medium w-full text-left"
@@ -398,7 +404,7 @@ export default function StudentSchedulePage() {
                             setCurrentView('list');
                           }}
                         >
-                          +{dayLessons.length - 3} więcej
+                          +{dayLessons.length - 3} {t('more')}
                         </button>
                       )}
                     </div>
@@ -459,7 +465,7 @@ export default function StudentSchedulePage() {
                           onClick={() => handleLessonClick(lessonAtThisTime)}
                         >
                           <div className="text-xs font-semibold">
-                            {lessonTypeConfig[lessonAtThisTime.type as keyof typeof lessonTypeConfig]?.label}
+                            {t(`lessonTypes.${lessonAtThisTime.type.toLowerCase()}`)}
                           </div>
                           <div className="text-xs text-gray-600">{lessonAtThisTime.instructor.name}</div>
                           <div className="text-xs text-gray-500 mt-1">{lessonAtThisTime.location}</div>
@@ -480,82 +486,79 @@ export default function StudentSchedulePage() {
   const ListView = () => {
     return (
       <div className="space-y-3">
-        {filteredLessons.map(lesson => {
-          const config = lessonTypeConfig[lesson.type as keyof typeof lessonTypeConfig];
-          return (
-            <Card key={lesson.id} className={`${getLessonColor(lesson.type)}`}>
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start gap-4">
-                    <Avatar>
-                      <AvatarImage src={lesson.instructor.avatar} />
-                      <AvatarFallback>{lesson.instructor.name[0]}</AvatarFallback>
-                    </Avatar>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold">{config?.label || lesson.type}</h3>
-                        {getLessonTypeIcon(lesson.type)}
-                        {getStatusBadge(lesson.status)}
+        {filteredLessons.map(lesson => (
+          <Card key={lesson.id} className={`${getLessonColor(lesson.type)}`}>
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-4">
+                  <Avatar>
+                    <AvatarImage src={lesson.instructor.avatar} />
+                    <AvatarFallback>{lesson.instructor.name[0]}</AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold">{t(`lessonTypes.${lesson.type.toLowerCase()}`)}</h3>
+                      {getLessonTypeIcon(lesson.type)}
+                      {getStatusBadge(lesson.status)}
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>{lesson.date}</span>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{lesson.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          <span>{lesson.time}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
-                          <span>{lesson.instructor.name}</span>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        <span>{lesson.time}</span>
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-1">
-                          <Car className="h-4 w-4" />
-                          <span>{lesson.vehicle}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          <span>{lesson.location}</span>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <User className="h-4 w-4" />
+                        <span>{lesson.instructor.name}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <Car className="h-4 w-4" />
+                        <span>{lesson.vehicle}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />
+                        <span>{lesson.location}</span>
                       </div>
                     </div>
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">{lesson.credits} kredyt</Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => handleLessonClick(lesson)}>
-                          <Eye className="h-4 w-4 mr-2" />
-                          Szczegóły
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleEditLesson(lesson)}>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Przełóż
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          className="text-red-600"
-                          onClick={() => handleCancelLesson(lesson)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Anuluj
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">{lesson.credits} {t('credit')}</Badge>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleLessonClick(lesson)}>
+                        <Eye className="h-4 w-4 mr-2" />
+                        {t('actions.details')}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleEditLesson(lesson)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        {t('actions.reschedule')}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        className="text-red-600"
+                        onClick={() => handleCancelLesson(lesson)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {t('actions.cancel')}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     );
   };
@@ -578,19 +581,19 @@ export default function StudentSchedulePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Kalendarz lekcji</h1>
-          <p className="text-gray-600">Zarządzaj swoim harmonogramem jazd</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/student/bookings/book">
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Zarezerwuj lekcję
+              {t('buttons.bookLesson')}
             </Button>
           </Link>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
-            Eksportuj
+            {t('buttons.export')}
           </Button>
           <Button variant="outline" size="icon">
             <Share2 className="h-4 w-4" />
@@ -605,10 +608,10 @@ export default function StudentSchedulePage() {
             <div className="flex items-center gap-4">
               <Select value={selectedInstructor} onValueChange={setSelectedInstructor}>
                 <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="Wszyscy instruktorzy" />
+                  <SelectValue placeholder={t('filters.allInstructors')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Wszyscy instruktorzy</SelectItem>
+                  <SelectItem value="all">{t('filters.allInstructors')}</SelectItem>
                   {uniqueInstructors.map(name => (
                     <SelectItem key={name} value={name}>{name}</SelectItem>
                   ))}
@@ -622,23 +625,23 @@ export default function StudentSchedulePage() {
                   onCheckedChange={(checked) => setShowCancelled(checked as boolean)}
                 />
                 <label htmlFor="show-cancelled" className="text-sm">
-                  Pokaż anulowane
+                  {t('filters.showCancelled')}
                 </label>
               </div>
 
               <Link href="/student/schedule/availability">
                 <Button variant="outline" size="sm">
                   <Filter className="h-4 w-4 mr-2" />
-                  Dostępne terminy
+                  {t('filters.availableSlots')}
                 </Button>
               </Link>
             </div>
 
             <Tabs value={currentView} onValueChange={(v) => setCurrentView(v as any)}>
               <TabsList>
-                <TabsTrigger value="month">Miesiąc</TabsTrigger>
-                <TabsTrigger value="week">Tydzień</TabsTrigger>
-                <TabsTrigger value="list">Lista</TabsTrigger>
+                <TabsTrigger value="month">{t('views.month')}</TabsTrigger>
+                <TabsTrigger value="week">{t('views.week')}</TabsTrigger>
+                <TabsTrigger value="list">{t('views.list')}</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
@@ -669,11 +672,11 @@ export default function StudentSchedulePage() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center gap-6 text-sm flex-wrap">
-            <span className="font-medium text-gray-700">Legenda:</span>
+            <span className="font-medium text-gray-700">{t('legend.title')}:</span>
             {Object.entries(lessonTypeConfig).slice(0, 5).map(([key, config]) => (
               <div key={key} className="flex items-center gap-2">
                 <div className={`w-4 h-4 bg-${config.color}-500 rounded`}></div>
-                <span>{config.label}</span>
+                <span>{t(`lessonTypes.${key.toLowerCase()}`)}</span>
               </div>
             ))}
           </div>
@@ -686,9 +689,9 @@ export default function StudentSchedulePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Ten tydzień</p>
+                <p className="text-sm text-gray-600">{t('stats.thisWeek')}</p>
                 <p className="text-2xl font-bold">{thisWeekLessons.length}</p>
-                <p className="text-xs text-gray-500">lekcje</p>
+                <p className="text-xs text-gray-500">{t('stats.lessons')}</p>
               </div>
               <Calendar className="h-8 w-8 text-blue-500" />
             </div>
@@ -699,9 +702,9 @@ export default function StudentSchedulePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Ten miesiąc</p>
+                <p className="text-sm text-gray-600">{t('stats.thisMonth')}</p>
                 <p className="text-2xl font-bold">{thisMonthLessons.length}</p>
-                <p className="text-xs text-gray-500">lekcji</p>
+                <p className="text-xs text-gray-500">{t('stats.lessonsCount')}</p>
               </div>
               <Calendar className="h-8 w-8 text-green-500" />
             </div>
@@ -712,9 +715,9 @@ export default function StudentSchedulePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Godzin łącznie</p>
+                <p className="text-sm text-gray-600">{t('stats.totalHours')}</p>
                 <p className="text-2xl font-bold">{thisMonthLessons.length * 2}</p>
-                <p className="text-xs text-gray-500">w tym miesiącu</p>
+                <p className="text-xs text-gray-500">{t('stats.inThisMonth')}</p>
               </div>
               <Clock className="h-8 w-8 text-purple-500" />
             </div>
@@ -725,7 +728,7 @@ export default function StudentSchedulePage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Następna lekcja</p>
+                <p className="text-sm text-gray-600">{t('stats.nextLesson')}</p>
                 <p className="text-lg font-bold">
                   {upcomingLessons[0]?.date.split('-').slice(1).reverse().join('.')}
                 </p>
@@ -741,47 +744,47 @@ export default function StudentSchedulePage() {
       <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Szczegóły lekcji</DialogTitle>
+            <DialogTitle>{t('dialog.title')}</DialogTitle>
           </DialogHeader>
           {selectedLesson && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <Badge className={getLessonColor(selectedLesson.type).split(' ')[0]}>
-                  {lessonTypeConfig[selectedLesson.type as keyof typeof lessonTypeConfig]?.label}
+                  {t(`lessonTypes.${selectedLesson.type.toLowerCase()}`)}
                 </Badge>
                 {getStatusBadge(selectedLesson.status)}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Instruktor</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.instructor')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.instructor.name}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Data</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.date')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.date}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Godzina</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.time')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.time}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Lokalizacja</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.location')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Pojazd</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.vehicle')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.vehicle}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Kredyty</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.credits')}</p>
                   <p className="font-medium text-gray-800">{selectedLesson.credits}</p>
                 </div>
               </div>
 
               {selectedLesson.notes && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Notatki</p>
+                  <p className="text-sm text-gray-600 mb-1">{t('dialog.notes')}</p>
                   <p className="text-gray-800">{selectedLesson.notes}</p>
                 </div>
               )}
@@ -789,17 +792,17 @@ export default function StudentSchedulePage() {
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setDetailsDialogOpen(false)}>
-              Zamknij
+              {t('dialog.close')}
             </Button>
             {selectedLesson && selectedLesson.status === 'confirmed' && (
               <>
                 <Button variant="outline" onClick={() => handleEditLesson(selectedLesson)}>
                   <Edit className="w-4 h-4 mr-2" />
-                  Przełóż
+                  {t('dialog.reschedule')}
                 </Button>
                 <Button variant="destructive" onClick={() => handleCancelLesson(selectedLesson)}>
                   <X className="w-4 h-4 mr-2" />
-                  Anuluj
+                  {t('dialog.cancel')}
                 </Button>
               </>
             )}

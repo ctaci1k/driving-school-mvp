@@ -1,9 +1,10 @@
-// app/[locale]/student/support/faq/page.tsx
+// Шлях: /app/[locale]/student/support/faq/page.tsx
 
 'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   HelpCircle,
   Search,
@@ -58,6 +59,7 @@ interface Category {
 export default function SupportFAQPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations('student.faq');
   const initialSearch = searchParams.get('search') || '';
   const initialCategory = searchParams.get('category') || 'all';
   
@@ -68,17 +70,17 @@ export default function SupportFAQPage() {
   const [votedItems, setVotedItems] = useState<Set<string>>(new Set());
 
   const categories: Category[] = [
-    { id: 'all', name: 'Wszystkie', icon: BookOpen, count: 0, description: 'Wszystkie pytania' },
-    { id: 'rezerwacje', name: 'Rezerwacje', icon: Calendar, count: 12, description: 'Rezerwacje i harmonogram' },
-    { id: 'platnosci', name: 'Płatności', icon: CreditCard, count: 8, description: 'Płatności i faktury' },
-    { id: 'pojazdy', name: 'Pojazdy', icon: Car, count: 6, description: 'Pojazdy i wyposażenie' },
-    { id: 'instruktorzy', name: 'Instruktorzy', icon: Users, count: 7, description: 'Instruktorzy i oceny' },
-    { id: 'bezpieczenstwo', name: 'Bezpieczeństwo', icon: Shield, count: 5, description: 'Bezpieczeństwo i zasady' },
-    { id: 'konto', name: 'Konto', icon: Settings, count: 9, description: 'Ustawienia konta' }
+    { id: 'all', name: t('categories.all'), icon: BookOpen, count: 0, description: t('categories.allDescription') },
+    { id: 'rezerwacje', name: t('categories.bookings'), icon: Calendar, count: 12, description: t('categories.bookingsDescription') },
+    { id: 'platnosci', name: t('categories.payments'), icon: CreditCard, count: 8, description: t('categories.paymentsDescription') },
+    { id: 'pojazdy', name: t('categories.vehicles'), icon: Car, count: 6, description: t('categories.vehiclesDescription') },
+    { id: 'instruktorzy', name: t('categories.instructors'), icon: Users, count: 7, description: t('categories.instructorsDescription') },
+    { id: 'bezpieczenstwo', name: t('categories.safety'), icon: Shield, count: 5, description: t('categories.safetyDescription') },
+    { id: 'konto', name: t('categories.account'), icon: Settings, count: 9, description: t('categories.accountDescription') }
   ];
 
   useEffect(() => {
-    // Mock FAQ data
+    // Mock FAQ data - ЗАЛИШАЄМО ПОЛЬСЬКОЮ ЯК МАКОВІ ДАНІ
     const mockFAQ: FAQItem[] = [
       // Rezerwacje
       {
@@ -200,8 +202,8 @@ export default function SupportFAQPage() {
   const handleVote = (itemId: string, isHelpful: boolean) => {
     if (votedItems.has(itemId)) {
       toast({
-        title: "Już głosowałeś",
-        description: "Możesz ocenić każde pytanie tylko raz",
+        title: t('toast.alreadyVoted'),
+        description: t('toast.alreadyVotedDescription'),
         variant: "destructive"
       });
       return;
@@ -221,8 +223,8 @@ export default function SupportFAQPage() {
     setVotedItems(prev => new Set([...prev, itemId]));
 
     toast({
-      title: "Dziękujemy za opinię",
-      description: "Twoja ocena pomoże nam ulepszyć FAQ"
+      title: t('toast.thankYou'),
+      description: t('toast.thankYouDescription')
     });
   };
 
@@ -252,10 +254,8 @@ export default function SupportFAQPage() {
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-3xl font-bold">Często zadawane pytania</h1>
-          <p className="text-muted-foreground mt-1">
-            Znajdź odpowiedzi na najczęściej zadawane pytania
-          </p>
+          <h1 className="text-3xl font-bold">{t('title')}</h1>
+          <p className="text-muted-foreground mt-1">{t('subtitle')}</p>
         </div>
       </div>
 
@@ -265,7 +265,7 @@ export default function SupportFAQPage() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input
-              placeholder="Szukaj pytań..."
+              placeholder={t('searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
@@ -302,9 +302,7 @@ export default function SupportFAQPage() {
             <Card>
               <CardContent className="py-12 text-center">
                 <HelpCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">
-                  Nie znaleziono pytań pasujących do Twoich kryteriów
-                </p>
+                <p className="text-muted-foreground">{t('noResults')}</p>
                 <Button
                   variant="outline"
                   className="mt-4"
@@ -313,7 +311,7 @@ export default function SupportFAQPage() {
                     setSelectedCategory('all');
                   }}
                 >
-                  Wyczyść filtry
+                  {t('clearFilters')}
                 </Button>
               </CardContent>
             </Card>
@@ -344,7 +342,7 @@ export default function SupportFAQPage() {
                     <div className="flex items-center justify-between pl-8">
                       <div className="flex items-center gap-4">
                         <span className="text-sm text-muted-foreground">
-                          Czy to było pomocne?
+                          {t('wasHelpful')}
                         </span>
                         <div className="flex items-center gap-2">
                           <Button
@@ -370,7 +368,7 @@ export default function SupportFAQPage() {
                       
                       {item.relatedQuestions && item.relatedQuestions.length > 0 && (
                         <div className="text-sm text-muted-foreground">
-                          Zobacz też: {item.relatedQuestions.length} powiązanych pytań
+                          {t('seeAlso', { count: item.relatedQuestions.length })}
                         </div>
                       )}
                     </div>
@@ -385,20 +383,18 @@ export default function SupportFAQPage() {
       {/* Still need help? */}
       <Card className="bg-primary/5 border-primary/20">
         <CardHeader>
-          <CardTitle>Nie znalazłeś odpowiedzi?</CardTitle>
-          <CardDescription>
-            Nasz zespół support jest gotowy, aby Ci pomóc
-          </CardDescription>
+          <CardTitle>{t('needHelp.title')}</CardTitle>
+          <CardDescription>{t('needHelp.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex gap-3">
             <Button onClick={() => router.push('/student/support/tickets')}>
               <MessageSquare className="w-4 h-4 mr-2" />
-              Utwórz zgłoszenie
+              {t('needHelp.createTicket')}
             </Button>
             <Button variant="outline" onClick={() => router.push('/student/support')}>
               <HelpCircle className="w-4 h-4 mr-2" />
-              Centrum pomocy
+              {t('needHelp.helpCenter')}
             </Button>
           </div>
         </CardContent>

@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/modals/SlotEditModal.tsx
-// Modal do edycji slotów - zmiana statusu, dodawanie kursanta, notatki
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   X, Calendar, Clock, User, MapPin, Car, CreditCard, 
   AlertCircle, Save, Trash2, Phone, Mail, Hash, BookOpen,
@@ -18,7 +17,7 @@ import {
 } from '../../types/schedule.types'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 interface SlotEditModalProps {
   isOpen: boolean
@@ -30,35 +29,6 @@ interface SlotEditModalProps {
   initialDate?: Date
   initialTime?: string
 }
-
-const STATUS_OPTIONS: { value: SlotStatus; label: string; color: string; icon: React.ReactNode }[] = [
-  { value: 'dostępny', label: 'Dostępny', color: 'text-green-600 bg-green-50', icon: <CheckCircle className="w-4 h-4" /> },
-  { value: 'zarezerwowany', label: 'Zarezerwowany', color: 'text-blue-600 bg-blue-50', icon: <Calendar className="w-4 h-4" /> },
-  { value: 'zablokowany', label: 'Zablokowany', color: 'text-gray-600 bg-gray-50', icon: <XCircle className="w-4 h-4" /> },
-  { value: 'zakończony', label: 'Zakończony', color: 'text-gray-500 bg-gray-50', icon: <CheckCircle className="w-4 h-4" /> },
-  { value: 'anulowany', label: 'Anulowany', color: 'text-red-600 bg-red-50', icon: <XCircle className="w-4 h-4" /> },
-  { value: 'nieobecność', label: 'Nieobecność', color: 'text-orange-600 bg-orange-50', icon: <AlertCircle className="w-4 h-4" /> },
-  { value: 'w_trakcie', label: 'W trakcie', color: 'text-yellow-600 bg-yellow-50', icon: <Loader2 className="w-4 h-4 animate-spin" /> }
-]
-
-const LESSON_TYPES = [
-  { value: 'jazda', label: 'Jazda w mieście', icon: <Car className="w-4 h-4" /> },
-  { value: 'plac', label: 'Plac manewrowy', icon: <MapPin className="w-4 h-4" /> },
-  { value: 'teoria', label: 'Zajęcia teoretyczne', icon: <BookOpen className="w-4 h-4" /> },
-  { value: 'egzamin', label: 'Egzamin', icon: <CheckCircle className="w-4 h-4" /> }
-]
-
-const PAYMENT_STATUSES = [
-  { value: 'opłacony', label: 'Opłacone', color: 'text-green-600' },
-  { value: 'nieopłacony', label: 'Nieopłacone', color: 'text-red-600' },
-  { value: 'częściowo', label: 'Częściowo opłacone', color: 'text-orange-600' }
-]
-
-const PAYMENT_METHODS = [
-  { value: 'gotówka', label: 'Gotówka' },
-  { value: 'przelew', label: 'Przelew' },
-  { value: 'karta', label: 'Karta' }
-]
 
 // Mock data - w przyszłości z API
 const MOCK_STUDENTS: Student[] = [
@@ -87,6 +57,7 @@ export default function SlotEditModal({
   initialDate,
   initialTime
 }: SlotEditModalProps) {
+  const t = useTranslations('instructor.schedule.modals.slotEdit')
   const { updateSlot, createSlot, deleteSlot } = useScheduleContext()
   const [isLoading, setIsLoading] = useState(false)
   const [activeTab, setActiveTab] = useState<'details' | 'student' | 'payment' | 'notes'>('details')
@@ -105,6 +76,36 @@ export default function SlotEditModal({
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
   const [searchStudent, setSearchStudent] = useState('')
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
+  // Status options configuration
+  const STATUS_OPTIONS: { value: SlotStatus; label: string; color: string; icon: React.ReactNode }[] = [
+    { value: 'dostępny', label: t('status.available'), color: 'text-green-600 bg-green-50', icon: <CheckCircle className="w-4 h-4" /> },
+    { value: 'zarezerwowany', label: t('status.reserved'), color: 'text-blue-600 bg-blue-50', icon: <Calendar className="w-4 h-4" /> },
+    { value: 'zablokowany', label: t('status.blocked'), color: 'text-gray-600 bg-gray-50', icon: <XCircle className="w-4 h-4" /> },
+    { value: 'zakończony', label: t('status.completed'), color: 'text-gray-500 bg-gray-50', icon: <CheckCircle className="w-4 h-4" /> },
+    { value: 'anulowany', label: t('status.cancelled'), color: 'text-red-600 bg-red-50', icon: <XCircle className="w-4 h-4" /> },
+    { value: 'nieobecność', label: t('status.noShow'), color: 'text-orange-600 bg-orange-50', icon: <AlertCircle className="w-4 h-4" /> },
+    { value: 'w_trakcie', label: t('status.inProgress'), color: 'text-yellow-600 bg-yellow-50', icon: <Loader2 className="w-4 h-4 animate-spin" /> }
+  ]
+
+  const LESSON_TYPES = [
+    { value: 'jazda', label: t('lessonType.driving'), icon: <Car className="w-4 h-4" /> },
+    { value: 'plac', label: t('lessonType.practiceArea'), icon: <MapPin className="w-4 h-4" /> },
+    { value: 'teoria', label: t('lessonType.theory'), icon: <BookOpen className="w-4 h-4" /> },
+    { value: 'egzamin', label: t('lessonType.exam'), icon: <CheckCircle className="w-4 h-4" /> }
+  ]
+
+  const PAYMENT_STATUSES = [
+    { value: 'opłacony', label: t('payment.status.paid'), color: 'text-green-600' },
+    { value: 'nieopłacony', label: t('payment.status.unpaid'), color: 'text-red-600' },
+    { value: 'częściowo', label: t('payment.status.partial'), color: 'text-orange-600' }
+  ]
+
+  const PAYMENT_METHODS = [
+    { value: 'gotówka', label: t('payment.method.cash') },
+    { value: 'przelew', label: t('payment.method.transfer') },
+    { value: 'karta', label: t('payment.method.card') }
+  ]
 
   // Initialize form data
   useEffect(() => {
@@ -165,7 +166,6 @@ export default function SlotEditModal({
 
       if (mode === 'create') {
         await createSlot(slotData as Omit<Slot, 'id'>)
-        // Не передаємо результат, бо createSlot повертає void
         onClose()
       } else if (slot) {
         await updateSlot(slot.id, slotData)
@@ -232,11 +232,11 @@ export default function SlotEditModal({
           <div className="flex items-center justify-between p-6 border-b">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {mode === 'create' ? 'Nowy slot' : 'Edytuj slot'}
+                {t(`title.${mode}`)}
               </h2>
               {formData.date && (
                 <p className="text-sm text-gray-500 mt-1">
-                  {format(new Date(formData.date), 'EEEE, d MMMM yyyy', { locale: pl })}
+                  {format(new Date(formData.date), 'EEEE, d MMMM yyyy', { locale: uk })}
                   {formData.startTime && ` • ${formData.startTime} - ${formData.endTime}`}
                 </p>
               )}
@@ -252,10 +252,10 @@ export default function SlotEditModal({
           {/* Tabs */}
           <div className="flex border-b">
             {[
-              { key: 'details', label: 'Szczegóły', icon: <Calendar className="w-4 h-4" /> },
-              { key: 'student', label: 'Kursant', icon: <User className="w-4 h-4" /> },
-              { key: 'payment', label: 'Płatność', icon: <CreditCard className="w-4 h-4" /> },
-              { key: 'notes', label: 'Notatki', icon: <MessageSquare className="w-4 h-4" /> }
+              { key: 'details', label: t('tabs.details'), icon: <Calendar className="w-4 h-4" /> },
+              { key: 'student', label: t('tabs.student'), icon: <User className="w-4 h-4" /> },
+              { key: 'payment', label: t('tabs.payment'), icon: <CreditCard className="w-4 h-4" /> },
+              { key: 'notes', label: t('tabs.notes'), icon: <MessageSquare className="w-4 h-4" /> }
             ].map(tab => (
               <button
                 key={tab.key}
@@ -280,7 +280,7 @@ export default function SlotEditModal({
               <div className="space-y-6">
                 {/* Status */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('status.label')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     {STATUS_OPTIONS.map(option => (
                       <button
@@ -302,7 +302,7 @@ export default function SlotEditModal({
 
                 {/* Lesson Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Typ zajęć</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('lessonType.label')}</label>
                   <div className="grid grid-cols-2 gap-2">
                     {LESSON_TYPES.map(type => (
                       <button
@@ -325,7 +325,7 @@ export default function SlotEditModal({
                 {/* Date and Time */}
                 <div className="grid grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Data</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('dateTime.date')}</label>
                     <input
                       type="date"
                       value={formData.date}
@@ -334,7 +334,7 @@ export default function SlotEditModal({
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Godzina rozpoczęcia</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('dateTime.startTime')}</label>
                     <input
                       type="time"
                       value={formData.startTime}
@@ -343,7 +343,7 @@ export default function SlotEditModal({
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Godzina zakończenia</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('dateTime.endTime')}</label>
                     <input
                       type="time"
                       value={formData.endTime}
@@ -355,7 +355,7 @@ export default function SlotEditModal({
 
                 {/* Location */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Lokalizacja</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('location.label')}</label>
                   <select
                     value={selectedLocation?.id || ''}
                     onChange={(e) => {
@@ -364,7 +364,7 @@ export default function SlotEditModal({
                     }}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
-                    <option value="">Wybierz lokalizację...</option>
+                    <option value="">{t('location.placeholder')}</option>
                     {MOCK_LOCATIONS.map(location => (
                       <option key={location.id} value={location.id}>
                         {location.name} - {location.city}
@@ -380,10 +380,10 @@ export default function SlotEditModal({
               <div className="space-y-4">
                 {/* Search */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Szukaj kursanta</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('student.search')}</label>
                   <input
                     type="text"
-                    placeholder="Wpisz imię lub nazwisko..."
+                    placeholder={t('student.searchPlaceholder')}
                     value={searchStudent}
                     onChange={(e) => setSearchStudent(e.target.value)}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -424,7 +424,7 @@ export default function SlotEditModal({
                             {student.packageType}
                           </span>
                           <div className="text-xs text-gray-500 mt-1">
-                            {student.lessonsCompleted} zajęć
+                            {student.lessonsCompleted} {t('student.lessons')}
                           </div>
                         </div>
                       </div>
@@ -437,10 +437,10 @@ export default function SlotEditModal({
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="font-medium text-blue-900">
-                          Wybrany kursant: {selectedStudent.firstName} {selectedStudent.lastName}
+                          {t('student.selected')}: {selectedStudent.firstName} {selectedStudent.lastName}
                         </div>
                         <div className="text-sm text-blue-700 mt-1">
-                          Pakiet: {selectedStudent.packageType} • Ukończone zajęcia: {selectedStudent.lessonsCompleted}
+                          {t('student.package')}: {selectedStudent.packageType} • {t('student.completedLessons')}: {selectedStudent.lessonsCompleted}
                         </div>
                       </div>
                       <button
@@ -460,7 +460,7 @@ export default function SlotEditModal({
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Status płatności</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('payment.status.label')}</label>
                     <select
                       value={formData.payment?.status || 'nieopłacony'}
                       onChange={(e) => setFormData(prev => ({
@@ -482,7 +482,7 @@ export default function SlotEditModal({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Metoda płatności</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{t('payment.method.label')}</label>
                     <select
                       value={formData.payment?.method || 'gotówka'}
                       onChange={(e) => setFormData(prev => ({
@@ -505,7 +505,7 @@ export default function SlotEditModal({
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Kwota (PLN)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('payment.amount')}</label>
                   <div className="relative">
                     <Euro className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
@@ -527,11 +527,11 @@ export default function SlotEditModal({
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <div className="text-sm text-gray-600">
                     <div className="flex justify-between mb-2">
-                      <span>Cena za zajęcia:</span>
-                      <span className="font-medium">120 PLN</span>
+                      <span>{t('payment.lessonPrice')}:</span>
+                      <span className="font-medium">{t('payment.currency', { amount: 120 })}</span>
                     </div>
                     <div className="flex justify-between mb-2">
-                      <span>Status:</span>
+                      <span>{t('status.label')}:</span>
                       <span className={cn(
                         "font-medium",
                         PAYMENT_STATUSES.find(s => s.value === formData.payment?.status)?.color
@@ -541,9 +541,11 @@ export default function SlotEditModal({
                     </div>
                     <div className="border-t pt-2 mt-2">
                       <div className="flex justify-between">
-                        <span className="font-medium">Do zapłaty:</span>
+                        <span className="font-medium">{t('payment.toPay')}:</span>
                         <span className="font-bold text-lg">
-                          {formData.payment?.status === 'opłacony' ? 0 : formData.payment?.amount || 0} PLN
+                          {t('payment.currency', { 
+                            amount: formData.payment?.status === 'opłacony' ? 0 : formData.payment?.amount || 0 
+                          })}
                         </span>
                       </div>
                     </div>
@@ -556,11 +558,11 @@ export default function SlotEditModal({
             {activeTab === 'notes' && (
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Notatki do zajęć</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('notes.label')}</label>
                   <textarea
                     value={formData.notes || ''}
                     onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-                    placeholder="Dodaj notatki, uwagi, plan zajęć..."
+                    placeholder={t('notes.placeholder')}
                     rows={6}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                   />
@@ -571,7 +573,7 @@ export default function SlotEditModal({
                     <div className="flex items-start gap-2">
                       <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                       <div>
-                        <div className="font-medium text-red-900">Powód anulowania</div>
+                        <div className="font-medium text-red-900">{t('notes.cancelReason')}</div>
                         <div className="text-sm text-red-700 mt-1">{formData.cancelReason}</div>
                       </div>
                     </div>
@@ -580,11 +582,11 @@ export default function SlotEditModal({
 
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="text-sm text-blue-700">
-                    <div className="font-medium mb-2">Wskazówki:</div>
+                    <div className="font-medium mb-2">{t('notes.tips.title')}</div>
                     <ul className="space-y-1 list-disc list-inside">
-                      <li>Zapisz ważne informacje o postępach kursanta</li>
-                      <li>Zanotuj elementy do powtórzenia na następnych zajęciach</li>
-                      <li>Dodaj uwagi o lokalizacji lub warunkach drogowych</li>
+                      <li>{t('notes.tips.tip1')}</li>
+                      <li>{t('notes.tips.tip2')}</li>
+                      <li>{t('notes.tips.tip3')}</li>
                     </ul>
                   </div>
                 </div>
@@ -610,7 +612,7 @@ export default function SlotEditModal({
                 onClick={onClose}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
               >
-                Anuluj
+                {t('buttons.cancel')}
               </button>
               <button
                 onClick={handleSave}
@@ -620,12 +622,12 @@ export default function SlotEditModal({
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Zapisywanie...
+                    {t('buttons.saving')}
                   </>
                 ) : (
                   <>
                     <Save className="w-4 h-4" />
-                    {mode === 'create' ? 'Utwórz slot' : 'Zapisz zmiany'}
+                    {mode === 'create' ? t('buttons.create') : t('buttons.save')}
                   </>
                 )}
               </button>
@@ -636,23 +638,23 @@ export default function SlotEditModal({
           {showDeleteConfirm && (
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-xl">
               <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Usuń slot</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('delete.title')}</h3>
                 <p className="text-gray-600 mb-4">
-                  Czy na pewno chcesz usunąć ten slot? Tej operacji nie można cofnąć.
+                  {t('delete.confirm')}
                 </p>
                 <div className="flex justify-end gap-2">
                   <button
                     onClick={() => setShowDeleteConfirm(false)}
                     className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    Anuluj
+                    {t('buttons.cancel')}
                   </button>
                   <button
                     onClick={handleDelete}
                     disabled={isLoading}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
                   >
-                    {isLoading ? 'Usuwanie...' : 'Usuń'}
+                    {isLoading ? t('delete.deleting') : t('buttons.delete')}
                   </button>
                 </div>
               </div>

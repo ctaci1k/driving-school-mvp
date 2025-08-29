@@ -1,5 +1,5 @@
 // app/[locale]/instructor/schedule/components/tabs/StatsTab.tsx
-// Zakładka statystyk z wykresami, metrykami i generowaniem raportów
+// Вкладка статистики з графіками, метриками та генерацією звітів
 
 'use client'
 
@@ -15,6 +15,7 @@ import {
   XCircle
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { Slot } from '../../types/schedule.types'
 import { 
@@ -27,7 +28,7 @@ interface StatsTabProps {
   className?: string
 }
 
-// Komponent karty metryki
+// Компонент картки метрики
 const StatCard: React.FC<{
   title: string
   value: string | number
@@ -68,7 +69,7 @@ const StatCard: React.FC<{
   )
 }
 
-// Komponent wykresu słupkowego
+// Компонент стовпчикової діаграми
 const BarChart: React.FC<{
   data: { label: string; value: number; color?: string }[]
   height?: number
@@ -99,13 +100,13 @@ const BarChart: React.FC<{
   )
 }
 
-// Komponent wykresu kołowego
+// Компонент кругової діаграми
 const PieChartSimple: React.FC<{
   data: { label: string; value: number; color: string }[]
   size?: number
 }> = ({ data, size = 150 }) => {
   const total = data.reduce((sum, item) => sum + item.value, 0)
-  let currentAngle = -90 // Start od góry
+  let currentAngle = -90 // Початок зверху
   
   const paths = data.map((item, index) => {
     const percentage = total > 0 ? (item.value / total) * 100 : 0
@@ -162,7 +163,7 @@ const PieChartSimple: React.FC<{
   )
 }
 
-// Komponent tabeli rankingowej
+// Компонент рейтингової таблиці
 const RankingTable: React.FC<{
   title: string
   data: { name: string; value: number; subtitle?: string }[]
@@ -206,12 +207,13 @@ export default function StatsTab({
   currentDate,
   className
 }: StatsTabProps) {
+  const t = useTranslations('instructor.schedule.stats')
   const { slots, cancellationRequests, stats } = useScheduleContext()
   
   const [period, setPeriod] = useState<'week' | 'month' | 'year'>('month')
   const [showDetails, setShowDetails] = useState(false)
 
-  // Obliczanie statystyk
+  // Обчислення статистики
   const periodStats = useMemo(() => {
     let periodSlots: Slot[] = []
     let previousPeriodSlots: Slot[] = []
@@ -261,7 +263,7 @@ export default function StatsTab({
       })
     }
     
-    // Oblicz metryki
+    // Обчислення метрик
     const completed = periodSlots.filter(s => s.status === 'zakończony').length
     const cancelled = periodSlots.filter(s => s.status === 'anulowany').length
     const noShow = periodSlots.filter(s => s.status === 'nieobecność').length
@@ -278,7 +280,7 @@ export default function StatsTab({
       .filter(s => s.status === 'zakończony' && s.payment)
       .reduce((sum, s) => sum + (s.payment?.amount || 0), 0)
     
-    // Oblicz trendy
+    // Обчислення трендів
     const completedTrend = prevCompleted > 0 
       ? Math.round(((completed - prevCompleted) / prevCompleted) * 100)
       : 0
@@ -287,20 +289,20 @@ export default function StatsTab({
       ? Math.round(((earnings - prevEarnings) / prevEarnings) * 100)
       : 0
     
-    // Statystyki po dniach tygodnia
+    // Статистика за днями тижня
     const byWeekDay = {
-      'Pon': 0, 'Wt': 0, 'Śr': 0, 'Czw': 0, 'Pt': 0, 'Sob': 0, 'Niedz': 0
+      'Пн': 0, 'Вт': 0, 'Ср': 0, 'Чт': 0, 'Пт': 0, 'Сб': 0, 'Нд': 0
     }
     
     periodSlots.forEach(slot => {
       const day = new Date(slot.date).getDay()
-      const dayNames = ['Niedz', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob']
+      const dayNames = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
       if (slot.status === 'zakończony') {
         byWeekDay[dayNames[day] as keyof typeof byWeekDay]++
       }
     })
     
-    // Statystyki po godzinach
+    // Статистика за годинами
     const byHour: Record<number, number> = {}
     periodSlots.forEach(slot => {
       if (slot.status === 'zakończony') {
@@ -309,7 +311,7 @@ export default function StatsTab({
       }
     })
     
-    // Top kursanci
+    // Топ курсанти
     const studentStats: Record<string, { name: string; count: number; earnings: number }> = {}
     periodSlots.forEach(slot => {
       if (slot.student && slot.status === 'zakończony') {
@@ -353,9 +355,9 @@ export default function StatsTab({
     }
   }, [slots, currentDate, period])
 
-  // Dane dla wykresów
+  // Дані для графіків
   const weekDayData = Object.entries(periodStats.byWeekDay).map(([day, value]) => ({
-    label: day,
+    label: t(`weekDays.${day.toLowerCase()}`),
     value,
     color: value > 10 ? 'bg-green-500' : value > 5 ? 'bg-yellow-500' : 'bg-gray-400'
   }))
@@ -369,31 +371,31 @@ export default function StatsTab({
     }))
 
   const statusData = [
-    { label: 'Zakończone', value: periodStats.completed, color: 'bg-green-500' },
-    { label: 'Zarezerwowane', value: periodStats.booked, color: 'bg-blue-500' },
-    { label: 'Dostępne', value: periodStats.available, color: 'bg-gray-400' },
-    { label: 'Anulowane', value: periodStats.cancelled, color: 'bg-red-500' },
-    { label: 'Nieobecności', value: periodStats.noShow, color: 'bg-orange-500' }
+    { label: t('slotStatus.completed'), value: periodStats.completed, color: 'bg-green-500' },
+    { label: t('slotStatus.reserved'), value: periodStats.booked, color: 'bg-blue-500' },
+    { label: t('slotStatus.available'), value: periodStats.available, color: 'bg-gray-400' },
+    { label: t('slotStatus.cancelled'), value: periodStats.cancelled, color: 'bg-red-500' },
+    { label: t('slotStatus.noShow'), value: periodStats.noShow, color: 'bg-orange-500' }
   ]
 
-  // Generowanie raportu
+  // Генерація звіту
   const generateReport = () => {
     const reportData = {
-      okres: period === 'week' ? 'Tydzień' : period === 'month' ? 'Miesiąc' : 'Rok',
-      data: formatDate(currentDate),
-      statystyki: {
-        'Wszystkie terminy': periodStats.total,
-        'Zakończone zajęcia': periodStats.completed,
-        'Anulowane': periodStats.cancelled,
-        'Nieobecności': periodStats.noShow,
-        'Przychód': `${periodStats.earnings} zł`,
-        'Zajętość': `${periodStats.occupancyRate}%`,
-        'Średnio dziennie': periodStats.averagePerDay
+      [t('report.period')]: t(`periods.${period}`),
+      [t('report.date')]: formatDate(currentDate),
+      [t('report.statistics')]: {
+        [t('report.allSlots')]: periodStats.total,
+        [t('report.completedLessons')]: periodStats.completed,
+        [t('report.cancelled')]: periodStats.cancelled,
+        [t('report.absences')]: periodStats.noShow,
+        [t('report.revenue')]: t('metrics.currency', { amount: periodStats.earnings }),
+        [t('report.occupancy')]: `${periodStats.occupancyRate}%`,
+        [t('report.dailyAverage')]: periodStats.averagePerDay
       },
-      'Top kursanci': periodStats.topStudents.map(s => ({
-        'Imię i nazwisko': s.name,
-        'Liczba zajęć': s.count,
-        'Przychód': `${s.earnings} zł`
+      [t('report.topStudents')]: periodStats.topStudents.map(s => ({
+        [t('report.fullName')]: s.name,
+        [t('report.lessonCount')]: s.count,
+        [t('report.revenue')]: t('metrics.currency', { amount: s.earnings })
       }))
     }
 
@@ -402,24 +404,22 @@ export default function StatsTab({
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `raport_${period}_${formatDate(currentDate)}.json`
+    link.download = `report_${period}_${formatDate(currentDate)}.json`
     link.click()
   }
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="bg-white rounded-lg p-4 border">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold">Statystyki i raporty</h2>
-            <p className="text-sm text-gray-600">
-              Analiza wyników i wydajności
-            </p>
+            <h2 className="text-lg font-semibold">{t('title')}</h2>
+            <p className="text-sm text-gray-600">{t('subtitle')}</p>
           </div>
           
           <div className="flex items-center gap-2">
-            {/* Wybór okresu */}
+            {/* Вибір періоду */}
             <div className="flex items-center gap-1 border rounded-lg p-1">
               <button
                 onClick={() => setPeriod('week')}
@@ -428,7 +428,7 @@ export default function StatsTab({
                   period === 'week' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
                 )}
               >
-                Tydzień
+                {t('periods.week')}
               </button>
               <button
                 onClick={() => setPeriod('month')}
@@ -437,7 +437,7 @@ export default function StatsTab({
                   period === 'month' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
                 )}
               >
-                Miesiąc
+                {t('periods.month')}
               </button>
               <button
                 onClick={() => setPeriod('year')}
@@ -446,7 +446,7 @@ export default function StatsTab({
                   period === 'year' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
                 )}
               >
-                Rok
+                {t('periods.year')}
               </button>
             </div>
             
@@ -455,112 +455,122 @@ export default function StatsTab({
               className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
             >
               <Download className="w-4 h-4" />
-              Pobierz raport
+              {t('downloadReport')}
             </button>
           </div>
         </div>
 
-        {/* Okres */}
+        {/* Період */}
         <div className="text-center py-2 bg-gray-50 rounded-lg">
           <p className="text-sm text-gray-600">
-            {period === 'week' && 'Statystyki tygodniowe'}
-            {period === 'month' && `${getPolishMonthName(currentDate)} ${currentDate.getFullYear()}`}
-            {period === 'year' && `Rok ${currentDate.getFullYear()}`}
+            {period === 'week' && t('periods.weeklyStats')}
+            {period === 'month' && t('periods.monthFormat', { 
+              month: getPolishMonthName(currentDate), 
+              year: currentDate.getFullYear() 
+            })}
+            {period === 'year' && t('periods.yearFormat', { year: currentDate.getFullYear() })}
           </p>
         </div>
       </div>
 
-      {/* Główne metryki */}
+      {/* Головні метрики */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <StatCard
-          title="Zakończone zajęcia"
+          title={t('metrics.completedLessons')}
           value={periodStats.completed}
-          subtitle={`z ${periodStats.total} zaplanowanych`}
+          subtitle={t('metrics.completedSubtitle', { total: periodStats.total })}
           icon={<CheckCircle className="w-5 h-5" />}
           trend={{ value: periodStats.completedTrend, isPositive: periodStats.completedTrend > 0 }}
           color="green"
         />
         
         <StatCard
-          title="Przychód"
-          value={`${periodStats.earnings} zł`}
-          subtitle={`śr. ${periodStats.completed > 0 ? Math.round(periodStats.earnings / periodStats.completed) : 0} zł/zajęcia`}
+          title={t('metrics.revenue')}
+          value={t('metrics.currency', { amount: periodStats.earnings })}
+          subtitle={t('metrics.revenueSubtitle', { 
+            average: periodStats.completed > 0 ? Math.round(periodStats.earnings / periodStats.completed) : 0 
+          })}
           icon={<DollarSign className="w-5 h-5" />}
           trend={{ value: periodStats.earningsTrend, isPositive: periodStats.earningsTrend > 0 }}
           color="blue"
         />
         
         <StatCard
-          title="Zajętość"
+          title={t('metrics.occupancy')}
           value={`${periodStats.occupancyRate}%`}
-          subtitle={`${periodStats.completed}/${periodStats.total}`}
+          subtitle={t('metrics.occupancySubtitle', { 
+            completed: periodStats.completed, 
+            total: periodStats.total 
+          })}
           icon={<Activity className="w-5 h-5" />}
           color="purple"
         />
         
         <StatCard
-          title="Anulowania"
+          title={t('metrics.cancellations')}
           value={periodStats.cancelled + periodStats.noShow}
-          subtitle={`${periodStats.cancellationRate}% wszystkich`}
+          subtitle={t('metrics.cancellationsSubtitle', { rate: periodStats.cancellationRate })}
           icon={<XCircle className="w-5 h-5" />}
           color="red"
         />
       </div>
 
-      {/* Wykresy */}
+      {/* Графіки */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Wykres statusów */}
+        {/* Графік статусів */}
         <div className="bg-white rounded-lg border p-4">
-          <h3 className="font-medium text-gray-900 mb-4">Podział terminów</h3>
+          <h3 className="font-medium text-gray-900 mb-4">{t('charts.slotDistribution')}</h3>
           <PieChartSimple data={statusData} />
         </div>
 
-        {/* Wykres po dniach tygodnia */}
+        {/* Графік за днями тижня */}
         <div className="bg-white rounded-lg border p-4">
-          <h3 className="font-medium text-gray-900 mb-4">Zajęcia w tygodniu</h3>
+          <h3 className="font-medium text-gray-900 mb-4">{t('charts.weeklyActivity')}</h3>
           <BarChart data={weekDayData} />
         </div>
       </div>
 
-      {/* Wykres godzinowy */}
+      {/* Графік за годинами */}
       <div className="bg-white rounded-lg border p-4">
-        <h3 className="font-medium text-gray-900 mb-4">Rozkład godzinowy</h3>
+        <h3 className="font-medium text-gray-900 mb-4">{t('charts.hourlyDistribution')}</h3>
         <BarChart data={hourData} height={150} />
       </div>
 
-      {/* Rankingi */}
+      {/* Рейтинги */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <RankingTable
-          title="Top kursanci"
+          title={t('rankings.topStudents')}
           data={periodStats.topStudents.map(s => ({
             name: s.name,
             value: s.count,
-            subtitle: `${s.earnings} zł przychodu`
+            subtitle: t('rankings.revenueInfo', { amount: s.earnings })
           }))}
-          valueLabel="zajęć"
+          valueLabel={t('rankings.lessonsLabel')}
         />
         
         <RankingTable
-          title="Najpopularniejsze godziny"
+          title={t('rankings.popularHours')}
           data={Object.entries(periodStats.byHour)
             .sort(([, a], [, b]) => b - a)
             .slice(0, 5)
             .map(([hour, count]) => ({
-              name: `Godzina ${hour}:00`,
+              name: t('rankings.hourFormat', { hour }),
               value: count,
-              subtitle: `${Math.round((count / periodStats.completed) * 100)}% wszystkich`
+              subtitle: t('rankings.percentOfAll', { 
+                percent: Math.round((count / periodStats.completed) * 100) 
+              })
             }))}
-          valueLabel="zajęć"
+          valueLabel={t('rankings.lessonsLabel')}
         />
       </div>
 
-      {/* Szczegółowe statystyki */}
+      {/* Детальна статистика */}
       <div className="bg-white rounded-lg border">
         <button
           onClick={() => setShowDetails(!showDetails)}
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
         >
-          <span className="font-medium text-gray-900">Szczegółowe statystyki</span>
+          <span className="font-medium text-gray-900">{t('detailedStats.title')}</span>
           {showDetails ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
         </button>
         
@@ -568,29 +578,31 @@ export default function StatsTab({
           <div className="border-t p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
               <div>
-                <p className="text-gray-600">Średnia dzienna:</p>
-                <p className="font-semibold">{periodStats.averagePerDay} zajęć</p>
+                <p className="text-gray-600">{t('detailedStats.dailyAverage')}</p>
+                <p className="font-semibold">{periodStats.averagePerDay} {t('rankings.lessonsLabel')}</p>
               </div>
               <div>
-                <p className="text-gray-600">Łączny czas:</p>
-                <p className="font-semibold">{periodStats.completed * 2} godzin</p>
+                <p className="text-gray-600">{t('detailedStats.totalTime')}</p>
+                <p className="font-semibold">{t('detailedStats.hours', { hours: periodStats.completed * 2 })}</p>
               </div>
               <div>
-                <p className="text-gray-600">Średni przychód dzienny:</p>
+                <p className="text-gray-600">{t('detailedStats.dailyRevenue')}</p>
                 <p className="font-semibold">
-                  {Math.round(periodStats.earnings / (period === 'week' ? 7 : 30))} zł
+                  {t('metrics.currency', { 
+                    amount: Math.round(periodStats.earnings / (period === 'week' ? 7 : 30)) 
+                  })}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Współczynnik anulowań:</p>
+                <p className="text-gray-600">{t('detailedStats.cancellationRate')}</p>
                 <p className="font-semibold">{periodStats.cancellationRate}%</p>
               </div>
               <div>
-                <p className="text-gray-600">Nieobecności:</p>
+                <p className="text-gray-600">{t('detailedStats.absences')}</p>
                 <p className="font-semibold">{periodStats.noShow}</p>
               </div>
               <div>
-                <p className="text-gray-600">Wolne terminy:</p>
+                <p className="text-gray-600">{t('detailedStats.freeSlots')}</p>
                 <p className="font-semibold">{periodStats.available}</p>
               </div>
             </div>
@@ -598,25 +610,25 @@ export default function StatsTab({
         )}
       </div>
 
-      {/* Porady */}
+      {/* Поради */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-start gap-3">
           <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
           <div className="text-sm">
-            <p className="font-medium text-blue-900 mb-1">Wskazówki optymalizacji</p>
+            <p className="font-medium text-blue-900 mb-1">{t('optimizationTips.title')}</p>
             {periodStats.occupancyRate < 70 && (
               <p className="text-blue-700">
-                • Twoja zajętość wynosi {periodStats.occupancyRate}%. Rozważ promocje lub elastyczne godziny.
+                {t('optimizationTips.lowOccupancy', { rate: periodStats.occupancyRate })}
               </p>
             )}
             {periodStats.cancellationRate > 15 && (
               <p className="text-blue-700">
-                • Wysoki współczynnik anulowań ({periodStats.cancellationRate}%). Sprawdź przyczyny rezygnacji.
+                {t('optimizationTips.highCancellations', { rate: periodStats.cancellationRate })}
               </p>
             )}
             {periodStats.averagePerDay < 3 && (
               <p className="text-blue-700">
-                • Niska średnia dzienna ({periodStats.averagePerDay} zajęć). Możesz zwiększyć dostępność.
+                {t('optimizationTips.lowDailyAverage', { count: periodStats.averagePerDay })}
               </p>
             )}
           </div>

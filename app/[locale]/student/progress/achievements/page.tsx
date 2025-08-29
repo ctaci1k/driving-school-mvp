@@ -1,8 +1,9 @@
-// app/[locale]/student/progress/achievements/page.tsx
+// Шлях: /app/[locale]/student/progress/achievements/page.tsx
 
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   Trophy, 
   Star, 
@@ -34,6 +35,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 export default function AchievementsPage() {
+  const t = useTranslations('student.achievements');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [showOnlyUnlocked, setShowOnlyUnlocked] = useState(false);
 
@@ -50,18 +52,18 @@ export default function AchievementsPage() {
   const currentLevelPoints = 150;
 
   const categories = [
-    { id: 'all', name: 'Wszystkie', icon: Trophy },
-    { id: 'skills', name: 'Umiejętności', icon: Target },
-    { id: 'milestones', name: 'Kamienie milowe', icon: Flag },
-    { id: 'special', name: 'Specjalne', icon: Star },
-    { id: 'social', name: 'Społecznościowe', icon: Users }
+    { id: 'all', name: t('categories.all'), icon: Trophy },
+    { id: 'skills', name: t('categories.skills'), icon: Target },
+    { id: 'milestones', name: t('categories.milestones'), icon: Flag },
+    { id: 'special', name: t('categories.special'), icon: Star },
+    { id: 'social', name: t('categories.social'), icon: Users }
   ];
 
   const achievements = [
     {
       id: '1',
-      title: 'Pierwsza jazda',
-      description: 'Ukończ swoją pierwszą lekcję jazdy',
+      title: t('items.firstDrive.title'),
+      description: t('items.firstDrive.description'),
       icon: Car,
       category: 'milestones',
       points: 50,
@@ -72,8 +74,8 @@ export default function AchievementsPage() {
     },
     {
       id: '2',
-      title: 'Mistrz parkowania',
-      description: 'Wykonaj 5 perfekcyjnych parkowań równoległych z rzędu',
+      title: t('items.parkingMaster.title'),
+      description: t('items.parkingMaster.description'),
       icon: Medal,
       category: 'skills',
       points: 100,
@@ -84,8 +86,8 @@ export default function AchievementsPage() {
     },
     {
       id: '3',
-      title: 'Nocny jeźdźca',
-      description: 'Ukończ 3 lekcje jazdy nocnej',
+      title: t('items.nightRider.title'),
+      description: t('items.nightRider.description'),
       icon: Moon,
       category: 'skills',
       points: 150,
@@ -96,8 +98,8 @@ export default function AchievementsPage() {
     },
     {
       id: '4',
-      title: 'Teoretyk',
-      description: 'Zdaj egzamin teoretyczny za pierwszym razem',
+      title: t('items.theorist.title'),
+      description: t('items.theorist.description'),
       icon: BookOpen,
       category: 'milestones',
       points: 200,
@@ -108,8 +110,8 @@ export default function AchievementsPage() {
     },
     {
       id: '5',
-      title: 'Maraton drogowy',
-      description: 'Przejedź łącznie 500 km podczas lekcji',
+      title: t('items.roadMarathon.title'),
+      description: t('items.roadMarathon.description'),
       icon: Road,
       category: 'milestones',
       points: 300,
@@ -119,8 +121,8 @@ export default function AchievementsPage() {
     },
     {
       id: '6',
-      title: 'Perfekcjonista',
-      description: 'Uzyskaj ocenę 10/10 w 5 lekcjach z rzędu',
+      title: t('items.perfectionist.title'),
+      description: t('items.perfectionist.description'),
       icon: Star,
       category: 'skills',
       points: 250,
@@ -130,8 +132,8 @@ export default function AchievementsPage() {
     },
     {
       id: '7',
-      title: 'Speed Demon',
-      description: 'Ukończ kurs jazdy autostradowej',
+      title: t('items.speedDemon.title'),
+      description: t('items.speedDemon.description'),
       icon: Zap,
       category: 'skills',
       points: 150,
@@ -141,8 +143,8 @@ export default function AchievementsPage() {
     },
     {
       id: '8',
-      title: 'Pomocna dłoń',
-      description: 'Poleć szkołę jazdy 3 znajomym',
+      title: t('items.helpingHand.title'),
+      description: t('items.helpingHand.description'),
       icon: Heart,
       category: 'social',
       points: 100,
@@ -153,8 +155,8 @@ export default function AchievementsPage() {
     },
     {
       id: '9',
-      title: 'Wczesny ptak',
-      description: 'Ukończ 10 lekcji rozpoczynających się przed 8:00',
+      title: t('items.earlyBird.title'),
+      description: t('items.earlyBird.description'),
       icon: Sun,
       category: 'special',
       points: 100,
@@ -164,8 +166,8 @@ export default function AchievementsPage() {
     },
     {
       id: '10',
-      title: 'Mistrz manewrów',
-      description: 'Opanuj wszystkie wymagane manewry na poziomie 80%+',
+      title: t('items.maneuverMaster.title'),
+      description: t('items.maneuverMaster.description'),
       icon: GitBranch,
       category: 'skills',
       points: 400,
@@ -175,8 +177,8 @@ export default function AchievementsPage() {
     },
     {
       id: '11',
-      title: 'Złota rączka',
-      description: 'Zdaj egzamin praktyczny za pierwszym razem',
+      title: t('items.goldenWheel.title'),
+      description: t('items.goldenWheel.description'),
       icon: Crown,
       category: 'milestones',
       points: 500,
@@ -186,8 +188,8 @@ export default function AchievementsPage() {
     },
     {
       id: '12',
-      title: 'Regularny student',
-      description: 'Nie opuść żadnej zaplanowanej lekcji przez 2 miesiące',
+      title: t('items.regularStudent.title'),
+      description: t('items.regularStudent.description'),
       icon: Calendar,
       category: 'special',
       points: 150,
@@ -219,13 +221,7 @@ export default function AchievementsPage() {
   };
 
   const getRarityLabel = (rarity: string) => {
-    const labels = {
-      common: 'Zwykłe',
-      rare: 'Rzadkie',
-      epic: 'Epickie',
-      legendary: 'Legendarne'
-    };
-    return labels[rarity as keyof typeof labels] || 'Zwykłe';
+    return t(`rarity.${rarity}`);
   };
 
   return (
@@ -233,12 +229,12 @@ export default function AchievementsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Osiągnięcia</h1>
-          <p className="text-gray-600 mt-1">Zdobywaj odznaki i punkty za swoje postępy</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <Button variant="outline" className="gap-2">
           <Share2 className="h-4 w-4" />
-          Udostępnij
+          {t('buttons.share')}
         </Button>
       </div>
 
@@ -246,8 +242,8 @@ export default function AchievementsPage() {
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Poziom {currentLevel}</h2>
-            <p className="text-sm text-gray-600">Łącznie zdobyte punkty: {totalPoints}</p>
+            <h2 className="text-lg font-semibold text-gray-900">{t('level.title', { level: currentLevel })}</h2>
+            <p className="text-sm text-gray-600">{t('level.totalPoints', { points: totalPoints })}</p>
           </div>
           <div className="text-center">
             <div className="relative inline-flex items-center justify-center">
@@ -255,19 +251,19 @@ export default function AchievementsPage() {
                 <Crown className="h-10 w-10 text-yellow-500" />
               </div>
               <span className="absolute -bottom-2 bg-blue-600 text-white text-xs px-2 py-0.5 rounded-full">
-                Lvl {currentLevel}
+                {t('level.badge', { level: currentLevel })}
               </span>
             </div>
           </div>
         </div>
         <div>
           <div className="flex items-center justify-between text-sm mb-2">
-            <span className="text-gray-600">Postęp do poziomu {currentLevel + 1}</span>
-            <span className="font-medium">{currentLevelPoints}/{pointsToNextLevel} pkt</span>
+            <span className="text-gray-600">{t('level.progress', { nextLevel: currentLevel + 1 })}</span>
+            <span className="font-medium">{currentLevelPoints}/{pointsToNextLevel} {t('level.points')}</span>
           </div>
           <ProgressBar value={(currentLevelPoints / pointsToNextLevel) * 100} color="blue" />
           <p className="text-xs text-gray-500 mt-2">
-            Zdobądź {pointsToNextLevel - currentLevelPoints} punktów, aby awansować
+            {t('level.pointsNeeded', { points: pointsToNextLevel - currentLevelPoints })}
           </p>
         </div>
       </div>
@@ -279,7 +275,7 @@ export default function AchievementsPage() {
             <Trophy className="h-8 w-8 text-yellow-500" />
             <span className="text-2xl font-bold text-gray-900">{unlockedCount}/{totalAchievements}</span>
           </div>
-          <p className="text-sm text-gray-600">Odblokowane</p>
+          <p className="text-sm text-gray-600">{t('stats.unlocked')}</p>
           <ProgressBar value={completionPercentage} color="yellow" className="mt-2" />
         </div>
         
@@ -288,7 +284,7 @@ export default function AchievementsPage() {
             <Gem className="h-8 w-8 text-purple-500" />
             <span className="text-2xl font-bold text-gray-900">{totalPoints}</span>
           </div>
-          <p className="text-sm text-gray-600">Łączne punkty</p>
+          <p className="text-sm text-gray-600">{t('stats.totalPoints')}</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4">
@@ -296,7 +292,7 @@ export default function AchievementsPage() {
             <Flame className="h-8 w-8 text-orange-500" />
             <span className="text-2xl font-bold text-gray-900">7</span>
           </div>
-          <p className="text-sm text-gray-600">Seria dni</p>
+          <p className="text-sm text-gray-600">{t('stats.streak')}</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4">
@@ -304,7 +300,7 @@ export default function AchievementsPage() {
             <Medal className="h-8 w-8 text-blue-500" />
             <span className="text-2xl font-bold text-gray-900">2</span>
           </div>
-          <p className="text-sm text-gray-600">Legendarne</p>
+          <p className="text-sm text-gray-600">{t('stats.legendary')}</p>
         </div>
       </div>
 
@@ -341,7 +337,7 @@ export default function AchievementsPage() {
               }`}
             >
               <Filter className="h-4 w-4" />
-              <span className="text-sm">Tylko odblokowane</span>
+              <span className="text-sm">{t('filters.onlyUnlocked')}</span>
             </button>
           </div>
         </div>
@@ -400,7 +396,7 @@ export default function AchievementsPage() {
               {!achievement.unlocked && achievement.progress && (
                 <div className="mb-3">
                   <div className="flex items-center justify-between text-xs mb-1">
-                    <span className="text-gray-500">Postęp</span>
+                    <span className="text-gray-500">{t('progress.label')}</span>
                     <span className="font-medium">
                       {achievement.progress.current}/{achievement.progress.total}
                     </span>
@@ -416,7 +412,7 @@ export default function AchievementsPage() {
                     <Star className="h-4 w-4 fill-current" />
                     <span className="text-sm font-semibold">{achievement.points}</span>
                   </div>
-                  <span className="text-xs text-gray-500">punktów</span>
+                  <span className="text-xs text-gray-500">{t('points')}</span>
                 </div>
                 
                 {achievement.unlocked && achievement.unlockedDate && (
@@ -433,7 +429,7 @@ export default function AchievementsPage() {
 
       {/* Upcoming Achievements */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Blisko odblokowania</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('upcoming.title')}</h2>
         <div className="space-y-3">
           {achievements
             .filter(a => !a.unlocked && a.progress)
@@ -463,7 +459,7 @@ export default function AchievementsPage() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-semibold text-yellow-600">+{achievement.points}</p>
-                    <p className="text-xs text-gray-500">punktów</p>
+                    <p className="text-xs text-gray-500">{t('points')}</p>
                   </div>
                 </div>
               );

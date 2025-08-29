@@ -3,6 +3,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   User,
   Mail,
@@ -17,6 +18,7 @@ import {
   Save,
   X,
   Check,
+  CheckCircle,
   AlertCircle,
   Shield,
   Clock,
@@ -32,8 +34,7 @@ import {
   Activity,
   Users,
   BookOpen,
-  Settings,
-  CheckCircle
+  Settings
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -49,71 +50,71 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import Link from 'next/link';
 
-// Mock data
-const mockProfile = {
-  id: 'STU-2024-0123',
-  firstName: 'Jan',
-  lastName: 'Kowalski',
-  email: 'jan.kowalski@example.com',
-  phone: '+48 601 234 567',
-  birthDate: '1998-05-15',
-  address: 'ul. Wilanowska 89/15',
-  city: 'Warszawa',
-  postalCode: '02-765',
-  avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski&background=3B82F6&color=fff',
-  
-  // License info
-  licenseNumber: 'PKK123456789',
-  licenseCategories: ['B'],
-  medicalCertExpiry: '2025-03-15',
-  theoryExamDate: '2024-06-15',
-  theoryExamStatus: 'passed',
-  
-  // Learning progress
-  totalLessons: 24,
-  completedLessons: 15,
-  totalHours: 30,
-  averageScore: 4.2,
-  joinDate: '2024-06-01',
-  estimatedExamDate: '2024-10-15',
-  
-  // Emergency contact
-  emergencyContact: {
-    name: 'Anna Kowalska',
-    relation: 'Żona',
-    phone: '+48 602 345 678'
-  },
-  
-  // Documents
-  documents: [
-    { id: '1', name: 'PKK', type: 'pdf', uploadDate: '2024-06-01', status: 'verified' },
-    { id: '2', name: 'Badanie lekarskie', type: 'pdf', uploadDate: '2024-05-28', status: 'verified' },
-    { id: '3', name: 'Dowód osobisty', type: 'jpg', uploadDate: '2024-06-01', status: 'verified' }
-  ],
-  
-  // Achievements
-  achievements: [
-    { id: '1', name: 'Pierwsza lekcja', icon: '🚗', unlocked: true, date: '2024-06-05' },
-    { id: '2', name: '10 lekcji', icon: '🎯', unlocked: true, date: '2024-07-20' },
-    { id: '3', name: 'Teoria zdana', icon: '📚', unlocked: true, date: '2024-06-15' },
-    { id: '4', name: 'Mistrz parkowania', icon: '🏆', unlocked: false, progress: 75 },
-    { id: '5', name: 'Nocny jeździec', icon: '🌙', unlocked: true, date: '2024-08-10' }
-  ],
-  
-  // Statistics
-  stats: {
-    punctuality: 95,
-    attendance: 100,
-    progressRate: 62,
-    skillsImprovement: 85
-  }
-};
-
 export default function ProfilePage() {
+  const t = useTranslations('student.profile');
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState(mockProfile);
   const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Mock data
+  const [profileData, setProfileData] = useState({
+    id: 'STU-2024-0123',
+    firstName: 'Jan',
+    lastName: 'Kowalski',
+    email: 'jan.kowalski@example.com',
+    phone: '+48 601 234 567',
+    birthDate: '1998-05-15',
+    address: 'ul. Wilanowska 89/15',
+    city: 'Warszawa',
+    postalCode: '02-765',
+    avatar: 'https://ui-avatars.com/api/?name=Jan+Kowalski&background=3B82F6&color=fff',
+    
+    // License info
+    licenseNumber: 'PKK123456789',
+    licenseCategories: ['B'],
+    medicalCertExpiry: '2025-03-15',
+    theoryExamDate: '2024-06-15',
+    theoryExamStatus: 'passed',
+    
+    // Learning progress
+    totalLessons: 24,
+    completedLessons: 15,
+    totalHours: 30,
+    averageScore: 4.2,
+    joinDate: '2024-06-01',
+    estimatedExamDate: '2024-10-15',
+    
+    // Emergency contact
+    emergencyContact: {
+      name: 'Anna Kowalska',
+      relation: t('details.wife'),
+      phone: '+48 602 345 678'
+    },
+    
+    // Documents
+    documents: [
+      { id: '1', name: 'PKK', type: 'pdf', uploadDate: '2024-06-01', status: 'verified' },
+      { id: '2', name: t('documents.types.medical'), type: 'pdf', uploadDate: '2024-05-28', status: 'verified' },
+      { id: '3', name: t('documents.types.id'), type: 'jpg', uploadDate: '2024-06-01', status: 'verified' }
+    ],
+    
+    // Achievements
+    achievements: [
+      { id: '1', name: t('achievements.firstLesson'), icon: '🚗', unlocked: true, date: '2024-06-05' },
+      { id: '2', name: t('achievements.lessons10'), icon: '🎯', unlocked: true, date: '2024-07-20' },
+      { id: '3', name: t('achievements.theoryPassed'), icon: '📚', unlocked: true, date: '2024-06-15' },
+      { id: '4', name: t('achievements.parkingMaster'), icon: '🏆', unlocked: false, progress: 75 },
+      { id: '5', name: t('achievements.nightRider'), icon: '🌙', unlocked: true, date: '2024-08-10' }
+    ],
+    
+    // Statistics
+    stats: {
+      punctuality: 95,
+      attendance: 100,
+      progressRate: 62,
+      skillsImprovement: 85
+    }
+  });
 
   const handleSaveProfile = () => {
     // Save profile logic
@@ -128,22 +129,22 @@ export default function ProfilePage() {
   const getExamStatusBadge = (status: string) => {
     switch(status) {
       case 'passed':
-        return <Badge className="bg-green-100 text-green-700">Zdany</Badge>;
+        return <Badge className="bg-green-100 text-green-700">{t('overview.passed')}</Badge>;
       case 'failed':
-        return <Badge className="bg-red-100 text-red-700">Niezaliczony</Badge>;
+        return <Badge className="bg-red-100 text-red-700">{t('overview.failed')}</Badge>;
       default:
-        return <Badge>Oczekuje</Badge>;
+        return <Badge>{t('overview.pending')}</Badge>;
     }
   };
 
   const getDocumentStatusBadge = (status: string) => {
     switch(status) {
       case 'verified':
-        return <Badge className="bg-green-100 text-green-700">Zweryfikowany</Badge>;
+        return <Badge className="bg-green-100 text-green-700">{t('documents.verified')}</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-700">W weryfikacji</Badge>;
+        return <Badge className="bg-yellow-100 text-yellow-700">{t('documents.inVerification')}</Badge>;
       default:
-        return <Badge>Przesłany</Badge>;
+        return <Badge>{t('documents.uploaded')}</Badge>;
     }
   };
 
@@ -152,31 +153,31 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mój profil</h1>
-          <p className="text-gray-600">Zarządzaj swoimi danymi i dokumentami</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <Link href="/student/profile/preferences">
             <Button variant="outline">
               <Settings className="h-4 w-4 mr-2" />
-              Preferencje
+              {t('preferences')}
             </Button>
           </Link>
           {isEditing ? (
             <>
               <Button variant="outline" onClick={() => setIsEditing(false)}>
                 <X className="h-4 w-4 mr-2" />
-                Anuluj
+                {t('cancel')}
               </Button>
               <Button onClick={handleSaveProfile}>
                 <Save className="h-4 w-4 mr-2" />
-                Zapisz zmiany
+                {t('saveChanges')}
               </Button>
             </>
           ) : (
             <Button onClick={() => setIsEditing(true)}>
               <Edit className="h-4 w-4 mr-2" />
-              Edytuj profil
+              {t('editProfile')}
             </Button>
           )}
         </div>
@@ -211,7 +212,7 @@ export default function ProfilePage() {
               <p className="text-gray-500">ID: {profileData.id}</p>
               
               <div className="flex items-center justify-center gap-2 mt-3">
-                <Badge>Kursant aktywny</Badge>
+                <Badge>{t('activeStudent')}</Badge>
                 <Badge variant="outline">
                   <Star className="h-3 w-3 mr-1" />
                   {profileData.averageScore}
@@ -221,7 +222,7 @@ export default function ProfilePage() {
               {/* Quick Stats */}
               <div className="mt-6 space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Postęp kursu</span>
+                  <span className="text-gray-600">{t('stats.courseProgress')}</span>
                   <span className="font-medium">{profileData.stats.progressRate}%</span>
                 </div>
                 <Progress value={profileData.stats.progressRate} />
@@ -231,13 +232,13 @@ export default function ProfilePage() {
                     <p className="text-2xl font-bold text-blue-600">
                       {profileData.completedLessons}
                     </p>
-                    <p className="text-xs text-gray-600">Ukończonych lekcji</p>
+                    <p className="text-xs text-gray-600">{t('stats.completedLessons')}</p>
                   </div>
                   <div className="text-center p-3 bg-gray-50 rounded-lg">
                     <p className="text-2xl font-bold text-green-600">
                       {profileData.totalHours}h
                     </p>
-                    <p className="text-xs text-gray-600">Godzin jazdy</p>
+                    <p className="text-xs text-gray-600">{t('stats.drivingHours')}</p>
                   </div>
                 </div>
               </div>
@@ -249,30 +250,30 @@ export default function ProfilePage() {
         <div className="lg:col-span-2 space-y-6">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">Przegląd</TabsTrigger>
-              <TabsTrigger value="details">Dane osobowe</TabsTrigger>
-              <TabsTrigger value="documents">Dokumenty</TabsTrigger>
-              <TabsTrigger value="achievements">Osiągnięcia</TabsTrigger>
+              <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+              <TabsTrigger value="details">{t('tabs.details')}</TabsTrigger>
+              <TabsTrigger value="documents">{t('tabs.documents')}</TabsTrigger>
+              <TabsTrigger value="achievements">{t('tabs.achievements')}</TabsTrigger>
             </TabsList>
 
             {/* Overview Tab */}
             <TabsContent value="overview" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Informacje o kursie</CardTitle>
+                  <CardTitle>{t('overview.courseInfo')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-gray-600">Data rozpoczęcia</Label>
+                      <Label className="text-gray-600">{t('overview.startDate')}</Label>
                       <p className="font-medium">{profileData.joinDate}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-600">Planowany egzamin</Label>
+                      <Label className="text-gray-600">{t('overview.plannedExam')}</Label>
                       <p className="font-medium">{profileData.estimatedExamDate}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-600">Kategoria</Label>
+                      <Label className="text-gray-600">{t('overview.category')}</Label>
                       <div className="flex gap-2 mt-1">
                         {profileData.licenseCategories.map(cat => (
                           <Badge key={cat} variant="outline">{cat}</Badge>
@@ -280,7 +281,7 @@ export default function ProfilePage() {
                       </div>
                     </div>
                     <div>
-                      <Label className="text-gray-600">Nr PKK</Label>
+                      <Label className="text-gray-600">{t('overview.pkkNumber')}</Label>
                       <p className="font-medium">{profileData.licenseNumber}</p>
                     </div>
                   </div>
@@ -288,12 +289,12 @@ export default function ProfilePage() {
                   <Separator />
 
                   <div>
-                    <Label className="text-gray-600 mb-2">Egzamin teoretyczny</Label>
+                    <Label className="text-gray-600 mb-2">{t('overview.theoryExam')}</Label>
                     <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <CheckCircle className="h-5 w-5 text-green-600" />
                         <div>
-                          <p className="font-medium">Zdany</p>
+                          <p className="font-medium">{t('overview.passed')}</p>
                           <p className="text-sm text-gray-600">{profileData.theoryExamDate}</p>
                         </div>
                       </div>
@@ -302,16 +303,16 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <Label className="text-gray-600 mb-2">Badanie lekarskie</Label>
+                    <Label className="text-gray-600 mb-2">{t('overview.medicalCert')}</Label>
                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <Shield className="h-5 w-5 text-blue-600" />
                         <div>
-                          <p className="font-medium">Ważne do</p>
+                          <p className="font-medium">{t('overview.validUntil')}</p>
                           <p className="text-sm text-gray-600">{profileData.medicalCertExpiry}</p>
                         </div>
                       </div>
-                      <Badge className="bg-blue-100 text-blue-700">Aktualne</Badge>
+                      <Badge className="bg-blue-100 text-blue-700">{t('overview.current')}</Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -320,34 +321,34 @@ export default function ProfilePage() {
               {/* Statistics */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Statystyki</CardTitle>
+                  <CardTitle>{t('overview.statistics')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Punktualność</span>
+                        <span className="text-gray-600">{t('overview.punctuality')}</span>
                         <span className="font-medium">{profileData.stats.punctuality}%</span>
                       </div>
                       <Progress value={profileData.stats.punctuality} />
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Frekwencja</span>
+                        <span className="text-gray-600">{t('overview.attendance')}</span>
                         <span className="font-medium">{profileData.stats.attendance}%</span>
                       </div>
                       <Progress value={profileData.stats.attendance} />
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Postęp nauki</span>
+                        <span className="text-gray-600">{t('overview.learningProgress')}</span>
                         <span className="font-medium">{profileData.stats.progressRate}%</span>
                       </div>
                       <Progress value={profileData.stats.progressRate} />
                     </div>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Poprawa umiejętności</span>
+                        <span className="text-gray-600">{t('overview.skillsImprovement')}</span>
                         <span className="font-medium">{profileData.stats.skillsImprovement}%</span>
                       </div>
                       <Progress value={profileData.stats.skillsImprovement} />
@@ -361,12 +362,12 @@ export default function ProfilePage() {
             <TabsContent value="details" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Dane osobowe</CardTitle>
+                  <CardTitle>{t('details.personalData')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">Imię</Label>
+                      <Label htmlFor="firstName">{t('details.firstName')}</Label>
                       <Input
                         id="firstName"
                         value={profileData.firstName}
@@ -375,7 +376,7 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Nazwisko</Label>
+                      <Label htmlFor="lastName">{t('details.lastName')}</Label>
                       <Input
                         id="lastName"
                         value={profileData.lastName}
@@ -384,7 +385,7 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{t('details.email')}</Label>
                       <Input
                         id="email"
                         type="email"
@@ -394,7 +395,7 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="phone">Telefon</Label>
+                      <Label htmlFor="phone">{t('details.phone')}</Label>
                       <Input
                         id="phone"
                         value={profileData.phone}
@@ -403,7 +404,7 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="birthDate">Data urodzenia</Label>
+                      <Label htmlFor="birthDate">{t('details.birthDate')}</Label>
                       <Input
                         id="birthDate"
                         type="date"
@@ -413,7 +414,7 @@ export default function ProfilePage() {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="licenseNumber">Numer PKK</Label>
+                      <Label htmlFor="licenseNumber">{t('details.pkkNumber')}</Label>
                       <Input
                         id="licenseNumber"
                         value={profileData.licenseNumber}
@@ -425,10 +426,10 @@ export default function ProfilePage() {
                   <Separator />
 
                   <div>
-                    <h4 className="font-medium mb-3">Adres zamieszkania</h4>
+                    <h4 className="font-medium mb-3">{t('details.address')}</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="col-span-2">
-                        <Label htmlFor="address">Ulica i numer</Label>
+                        <Label htmlFor="address">{t('details.streetAndNumber')}</Label>
                         <Input
                           id="address"
                           value={profileData.address}
@@ -437,7 +438,7 @@ export default function ProfilePage() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="postalCode">Kod pocztowy</Label>
+                        <Label htmlFor="postalCode">{t('details.postalCode')}</Label>
                         <Input
                           id="postalCode"
                           value={profileData.postalCode}
@@ -446,7 +447,7 @@ export default function ProfilePage() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="city">Miasto</Label>
+                        <Label htmlFor="city">{t('details.city')}</Label>
                         <Input
                           id="city"
                           value={profileData.city}
@@ -460,24 +461,24 @@ export default function ProfilePage() {
                   <Separator />
 
                   <div>
-                    <h4 className="font-medium mb-3">Kontakt awaryjny</h4>
+                    <h4 className="font-medium mb-3">{t('details.emergencyContact')}</h4>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label>Imię i nazwisko</Label>
+                        <Label>{t('details.contactName')}</Label>
                         <Input
                           value={profileData.emergencyContact.name}
                           disabled={!isEditing}
                         />
                       </div>
                       <div>
-                        <Label>Relacja</Label>
+                        <Label>{t('details.relation')}</Label>
                         <Input
                           value={profileData.emergencyContact.relation}
                           disabled={!isEditing}
                         />
                       </div>
                       <div className="col-span-2">
-                        <Label>Telefon kontaktowy</Label>
+                        <Label>{t('details.contactPhone')}</Label>
                         <Input
                           value={profileData.emergencyContact.phone}
                           disabled={!isEditing}
@@ -494,10 +495,10 @@ export default function ProfilePage() {
               <Card>
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle>Dokumenty</CardTitle>
+                    <CardTitle>{t('documents.title')}</CardTitle>
                     <Button onClick={() => setShowUploadDialog(true)}>
                       <Upload className="h-4 w-4 mr-2" />
-                      Dodaj dokument
+                      {t('documents.addDocument')}
                     </Button>
                   </div>
                 </CardHeader>
@@ -510,7 +511,7 @@ export default function ProfilePage() {
                           <div>
                             <p className="font-medium">{doc.name}</p>
                             <p className="text-sm text-gray-500">
-                              Przesłano {doc.uploadDate}
+                              {t('documents.uploadDate')} {doc.uploadDate}
                             </p>
                           </div>
                         </div>
@@ -530,7 +531,7 @@ export default function ProfilePage() {
                   <Alert className="mt-4">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription>
-                      Wszystkie dokumenty są bezpiecznie przechowywane i dostępne tylko dla autoryzowanego personelu.
+                      {t('documents.securityNote')}
                     </AlertDescription>
                   </Alert>
                 </CardContent>
@@ -541,9 +542,12 @@ export default function ProfilePage() {
             <TabsContent value="achievements" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Osiągnięcia</CardTitle>
+                  <CardTitle>{t('achievements.title')}</CardTitle>
                   <CardDescription>
-                    Odblokowano {profileData.achievements.filter(a => a.unlocked).length} z {profileData.achievements.length}
+                    {t('achievements.unlockedCount', { 
+                      unlocked: profileData.achievements.filter(a => a.unlocked).length,
+                      total: profileData.achievements.length
+                    })}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -583,41 +587,41 @@ export default function ProfilePage() {
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Dodaj dokument</DialogTitle>
+            <DialogTitle>{t('documents.dialog.title')}</DialogTitle>
             <DialogDescription>
-              Prześlij wymagane dokumenty do weryfikacji
+              {t('documents.dialog.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label>Typ dokumentu</Label>
+              <Label>{t('documents.dialog.documentType')}</Label>
               <Select>
                 <SelectTrigger>
-                  <SelectValue placeholder="Wybierz typ dokumentu" />
+                  <SelectValue placeholder={t('documents.dialog.selectType')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="id">Dowód osobisty</SelectItem>
-                  <SelectItem value="medical">Badanie lekarskie</SelectItem>
-                  <SelectItem value="pkk">PKK</SelectItem>
-                  <SelectItem value="other">Inny</SelectItem>
+                  <SelectItem value="id">{t('documents.types.id')}</SelectItem>
+                  <SelectItem value="medical">{t('documents.types.medical')}</SelectItem>
+                  <SelectItem value="pkk">{t('documents.types.pkk')}</SelectItem>
+                  <SelectItem value="other">{t('documents.types.other')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label>Plik</Label>
+              <Label>{t('documents.dialog.file')}</Label>
               <Input type="file" accept=".pdf,.jpg,.png" />
               <p className="text-xs text-gray-500 mt-1">
-                Maksymalny rozmiar: 10MB. Formaty: PDF, JPG, PNG
+                {t('documents.dialog.maxSize')}
               </p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
-              Anuluj
+              {t('cancel')}
             </Button>
             <Button>
               <Upload className="h-4 w-4 mr-2" />
-              Prześlij
+              {t('documents.dialog.upload')}
             </Button>
           </DialogFooter>
         </DialogContent>

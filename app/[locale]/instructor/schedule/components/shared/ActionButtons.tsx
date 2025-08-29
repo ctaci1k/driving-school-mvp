@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/shared/ActionButtons.tsx
-// Komponent z przyciskami akcji globalnych dla harmonogramu
-
 'use client'
 
 import React, { useState, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Download, 
   Upload, 
@@ -28,6 +27,7 @@ export default function ActionButtons({
   className, 
   variant = 'default' 
 }: ActionButtonsProps) {
+  const t = useTranslations('instructor.schedule.shared.actionButtons')
   const [showDropdown, setShowDropdown] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
@@ -47,20 +47,20 @@ export default function ActionButtons({
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `harmonogram_${new Date().toISOString().split('T')[0]}.json`
+      a.download = `schedule_${new Date().toISOString().split('T')[0]}.json`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
       
       toast({
-        title: "Sukces",
-        description: "Harmonogram został wyeksportowany",
+        title: t('success.exported'),
+        description: t('success.exported'),
       })
     } catch (error) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się wyeksportować harmonogramu",
+        title: t('errors.exportFailed'),
+        description: t('errors.exportFailed'),
         variant: "destructive",
       })
     }
@@ -80,13 +80,13 @@ export default function ActionButtons({
       await importSchedule(text)
       
       toast({
-        title: "Sukces",
-        description: "Harmonogram został zaimportowany",
+        title: t('success.imported'),
+        description: t('success.imported'),
       })
     } catch (error) {
       toast({
-        title: "Błąd",
-        description: "Nieprawidłowy format pliku",
+        title: t('errors.invalidFile'),
+        description: t('errors.invalidFile'),
         variant: "destructive",
       })
     }
@@ -102,13 +102,13 @@ export default function ActionButtons({
     try {
       await refreshData()
       toast({
-        title: "Sukces",
-        description: "Dane zostały odświeżone",
+        title: t('success.refreshed'),
+        description: t('success.refreshed'),
       })
     } catch (error) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się odświeżyć danych",
+        title: t('errors.refreshFailed'),
+        description: t('errors.refreshFailed'),
         variant: "destructive",
       })
     }
@@ -123,7 +123,7 @@ export default function ActionButtons({
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           <Settings className="w-4 h-4" />
-          <span className="text-sm font-medium">Akcje</span>
+          <span className="text-sm font-medium">{t('actions')}</span>
           <ChevronDown className={cn(
             "w-4 h-4 transition-transform",
             showDropdown && "rotate-180"
@@ -138,21 +138,21 @@ export default function ActionButtons({
                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3"
               >
                 <Download className="w-4 h-4" />
-                Eksportuj harmonogram
+                {t('exportSchedule')}
               </button>
               <button
                 onClick={handleImport}
                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3"
               >
                 <Upload className="w-4 h-4" />
-                Importuj harmonogram
+                {t('importSchedule')}
               </button>
               <button
                 onClick={handleRefresh}
                 className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-3"
               >
                 <RefreshCw className="w-4 h-4" />
-                Odśwież dane
+                {t('refreshData')}
               </button>
             </div>
           </div>
@@ -168,21 +168,21 @@ export default function ActionButtons({
         <button
           onClick={handleExport}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Eksportuj"
+          title={t('tooltips.export')}
         >
           <Download className="w-4 h-4" />
         </button>
         <button
           onClick={handleImport}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Importuj"
+          title={t('tooltips.import')}
         >
           <Upload className="w-4 h-4" />
         </button>
         <button
           onClick={handleRefresh}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Odśwież"
+          title={t('tooltips.refresh')}
         >
           <RefreshCw className="w-4 h-4" />
         </button>
@@ -207,7 +207,7 @@ export default function ActionButtons({
         className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
       >
         <Download className="w-4 h-4" />
-        <span className="text-sm font-medium">Eksportuj</span>
+        <span className="text-sm font-medium">{t('export')}</span>
       </button>
       
       <button
@@ -215,7 +215,7 @@ export default function ActionButtons({
         className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
       >
         <Upload className="w-4 h-4" />
-        <span className="text-sm font-medium">Importuj</span>
+        <span className="text-sm font-medium">{t('import')}</span>
       </button>
       
       <button
@@ -223,7 +223,7 @@ export default function ActionButtons({
         className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
       >
         <RefreshCw className="w-4 h-4" />
-        <span className="text-sm font-medium">Odśwież</span>
+        <span className="text-sm font-medium">{t('refresh')}</span>
       </button>
       
       {/* Hidden file input */}

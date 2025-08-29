@@ -1,9 +1,9 @@
 // app/[locale]/instructor/schedule/components/tabs/CalendarTab.tsx
-// Zakładka kalendarza z importem komponentów widoków i obsługą zdarzeń
 
 'use client'
 
 import React, { useState, useCallback, useMemo, lazy, Suspense } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Download, Filter, Grid3x3, List, 
   CalendarDays, Clock, AlertCircle, Settings
@@ -13,39 +13,44 @@ import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { Slot, SlotStatus } from '../../types/schedule.types'
 import { isSameDay, formatDate } from '../../utils/dateHelpers'
 
-// Lazy loading komponentów widoków
+// Lazy loading компонентів видоків
 const WeekView = lazy(() => import('../calendar/WeekView'))
 const DayView = lazy(() => import('../calendar/DayView'))
 const MonthView = lazy(() => import('../calendar/MonthView'))
 
 // Loading component
-const ViewLoader = () => (
-  <div className="flex items-center justify-center h-96">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-      <p className="text-sm text-gray-500">Ładowanie kalendarza...</p>
+const ViewLoader = () => {
+  const t = useTranslations('instructor.schedule.calendar')
+  return (
+    <div className="flex items-center justify-center h-96">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+        <p className="text-sm text-gray-500">{t('loading')}</p>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 interface CalendarTabProps {
-  viewMode: 'dzień' | 'tydzień' | 'miesiąc' | 'lista'
+  viewMode: 'день' | 'тиждень' | 'місяць' | 'список'
   currentDate: Date
   searchTerm?: string
   onDateChange?: (date: Date) => void
   onOpenWorkingHours?: () => void
 }
 
-// Komponent filtrów
+// Компонент фільтрів
 const FilterPanel: React.FC<{
   filters: FilterState
   onFilterChange: (filters: FilterState) => void
   onClose: () => void
 }> = ({ filters, onFilterChange, onClose }) => {
+  const t = useTranslations('instructor.schedule.calendar.filters')
+  
   return (
     <div className="absolute top-12 right-0 w-80 bg-white rounded-lg shadow-lg border z-20 p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold">Filtry</h3>
+        <h3 className="font-semibold">{t('title')}</h3>
         <button
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600"
@@ -54,18 +59,18 @@ const FilterPanel: React.FC<{
         </button>
       </div>
 
-      {/* Status */}
+      {/* Статус */}
       <div className="mb-4">
         <label className="text-sm font-medium text-gray-700 mb-2 block">
-          Status
+          {t('status.label')}
         </label>
         <div className="space-y-2">
           {Object.entries({
-            'dostępny': 'Dostępne',
-            'zarezerwowany': 'Zarezerwowane',
-            'zablokowany': 'Zablokowane',
-            'zakończony': 'Zakończone',
-            'anulowany': 'Anulowane'
+            'dostępny': t('status.available'),
+            'zarezerwowany': t('status.reserved'),
+            'zablokowany': t('status.blocked'),
+            'zakończony': t('status.completed'),
+            'anulowany': t('status.cancelled')
           }).map(([value, label]) => (
             <label key={value} className="flex items-center">
               <input
@@ -85,25 +90,25 @@ const FilterPanel: React.FC<{
         </div>
       </div>
 
-      {/* Typ lekcji */}
+      {/* Тип уроку */}
       <div className="mb-4">
         <label className="text-sm font-medium text-gray-700 mb-2 block">
-          Typ zajęć
+          {t('lessonType.label')}
         </label>
         <select
           value={filters.lessonType}
           onChange={(e) => onFilterChange({ ...filters, lessonType: e.target.value })}
           className="w-full px-3 py-2 border rounded-lg text-sm"
         >
-          <option value="">Wszystkie</option>
-          <option value="jazda">Jazda w mieście</option>
-          <option value="plac">Plac manewrowy</option>
-          <option value="teoria">Teoria</option>
-          <option value="egzamin">Egzamin</option>
+          <option value="">{t('lessonType.all')}</option>
+          <option value="city">{t('lessonType.city')}</option>
+          <option value="practiceArea">{t('lessonType.practiceArea')}</option>
+          <option value="theory">{t('lessonType.theory')}</option>
+          <option value="exam">{t('lessonType.exam')}</option>
         </select>
       </div>
 
-      {/* Przyciski */}
+      {/* Кнопки */}
       <div className="flex gap-2">
         <button
           onClick={() => onFilterChange({
@@ -114,20 +119,20 @@ const FilterPanel: React.FC<{
           })}
           className="flex-1 px-3 py-2 border rounded-lg text-sm hover:bg-gray-50"
         >
-          Wyczyść
+          {t('clear')}
         </button>
         <button
           onClick={onClose}
           className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
         >
-          Zastosuj
+          {t('apply')}
         </button>
       </div>
     </div>
   )
 }
 
-// Stan filtrów
+// Стан фільтрів
 interface FilterState {
   status: SlotStatus[]
   lessonType: string
@@ -142,6 +147,7 @@ export default function CalendarTab({
   onDateChange,
   onOpenWorkingHours
 }: CalendarTabProps) {
+  const t = useTranslations('instructor.schedule.calendar')
   const { 
     slots, 
     workingHours,
@@ -150,7 +156,7 @@ export default function CalendarTab({
     createSlot
   } = useScheduleContext()
 
-  // Stan lokalny
+  // Локальний стан
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
   const [showFilters, setShowFilters] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
@@ -160,11 +166,11 @@ export default function CalendarTab({
     showOnlyAvailable: false
   })
 
-  // Filtrowanie slotów
+  // Фільтрування слотів
   const filteredSlots = useMemo(() => {
     let filtered = [...slots]
 
-    // Filtr wyszukiwania
+    // Фільтр пошуку
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter(slot =>
@@ -175,22 +181,22 @@ export default function CalendarTab({
       )
     }
 
-    // Filtr statusu
+    // Фільтр статусу
     if (filters.status.length > 0) {
       filtered = filtered.filter(slot => filters.status.includes(slot.status))
     }
 
-    // Filtr typu lekcji
+    // Фільтр типу уроку
     if (filters.lessonType) {
       filtered = filtered.filter(slot => slot.lessonType === filters.lessonType)
     }
 
-    // Filtr studenta
+    // Фільтр студента
     if (filters.studentId) {
       filtered = filtered.filter(slot => slot.student?.id === filters.studentId)
     }
 
-    // Pokaż tylko dostępne
+    // Показати тільки доступні
     if (filters.showOnlyAvailable) {
       filtered = filtered.filter(slot => slot.status === 'dostępny')
     }
@@ -198,56 +204,56 @@ export default function CalendarTab({
     return filtered
   }, [slots, searchTerm, filters])
 
-  // Handlery
+  // Обробники
   const handleSlotClick = useCallback((slot: Slot) => {
     setSelectedSlot(slot)
-    // Otwórz modal edycji
+    // Відкрити модал редагування
   }, [])
 
   const handleSlotEdit = useCallback(async (slotId: string, updates: Partial<Slot>) => {
     try {
       await updateSlot(slotId, updates)
     } catch (error) {
-      console.error('Błąd aktualizacji slotu:', error)
+      console.error('Помилка оновлення слоту:', error)
     }
   }, [updateSlot])
 
   const handleSlotDelete = useCallback(async (slotId: string) => {
-    if (confirm('Czy na pewno chcesz usunąć ten termin?')) {
+    if (confirm(t('confirmDelete'))) {
       try {
         await deleteSlot(slotId)
       } catch (error) {
-        console.error('Błąd usuwania slotu:', error)
+        console.error('Помилка видалення слоту:', error)
       }
     }
-  }, [deleteSlot])
+  }, [deleteSlot, t])
 
   const handleExport = useCallback(() => {
-    // Eksport do CSV/iCal
+    // Експорт в CSV/iCal
     const csv = filteredSlots.map(slot => ({
-      Data: formatDate(new Date(slot.date)),
-      Start: slot.startTime,
-      Koniec: slot.endTime,
-      Status: slot.status,
-      Kursant: slot.student ? `${slot.student.firstName} ${slot.student.lastName}` : '-',
-      Lokalizacja: slot.location?.name || '-'
+      [t('export.headers.date')]: formatDate(new Date(slot.date)),
+      [t('export.headers.start')]: slot.startTime,
+      [t('export.headers.end')]: slot.endTime,
+      [t('export.headers.status')]: slot.status,
+      [t('export.headers.student')]: slot.student ? `${slot.student.firstName} ${slot.student.lastName}` : '-',
+      [t('export.headers.location')]: slot.location?.name || '-'
     }))
 
-    // Konwersja do CSV string
+    // Конвертація в CSV рядок
     const csvString = [
       Object.keys(csv[0] || {}).join(','),
       ...csv.map(row => Object.values(row).join(','))
     ].join('\n')
 
-    // Download
+    // Завантаження
     const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' })
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
-    link.download = `harmonogram_${formatDate(currentDate)}.csv`
+    link.download = t('export.filename', { date: formatDate(currentDate) })
     link.click()
-  }, [filteredSlots, currentDate])
+  }, [filteredSlots, currentDate, t])
 
-  // Statystyki
+  // Статистика
   const stats = useMemo(() => {
     const dayStart = new Date(currentDate)
     dayStart.setHours(0, 0, 0, 0)
@@ -256,12 +262,12 @@ export default function CalendarTab({
 
     let relevantSlots = filteredSlots
 
-    if (viewMode === 'dzień') {
+    if (viewMode === 'день') {
       relevantSlots = filteredSlots.filter(slot => {
         const slotDate = new Date(slot.date)
         return isSameDay(slotDate, currentDate)
       })
-    } else if (viewMode === 'tydzień') {
+    } else if (viewMode === 'тиждень') {
       const weekStart = new Date(currentDate)
       weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1)
       const weekEnd = new Date(weekStart)
@@ -271,7 +277,7 @@ export default function CalendarTab({
         const slotDate = new Date(slot.date)
         return slotDate >= weekStart && slotDate <= weekEnd
       })
-    } else if (viewMode === 'miesiąc') {
+    } else if (viewMode === 'місяць') {
       relevantSlots = filteredSlots.filter(slot => {
         const slotDate = new Date(slot.date)
         return slotDate.getMonth() === currentDate.getMonth() &&
@@ -281,46 +287,46 @@ export default function CalendarTab({
 
     return {
       total: relevantSlots.length,
-      dostępne: relevantSlots.filter(s => s.status === 'dostępny').length,
-      zarezerwowane: relevantSlots.filter(s => s.status === 'zarezerwowany').length,
-      zablokowane: relevantSlots.filter(s => s.status === 'zablokowany').length
+      available: relevantSlots.filter(s => s.status === 'dostępny').length,
+      reserved: relevantSlots.filter(s => s.status === 'zarezerwowany').length,
+      blocked: relevantSlots.filter(s => s.status === 'zablokowany').length
     }
   }, [filteredSlots, viewMode, currentDate])
 
   return (
     <div className="space-y-4">
-      {/* Nagłówek z akcjami */}
+      {/* Заголовок з діями */}
       <div className="bg-white rounded-lg border p-4">
-        {/* Statystyki */}
+        {/* Статистика */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-6 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
-              <span>Łącznie: {stats.total}</span>
+              <span>{t('stats.total')}: {stats.total}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-400 rounded-full"></div>
-              <span>Dostępne: {stats.dostępne}</span>
+              <span>{t('stats.available')}: {stats.available}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
-              <span>Zarezerwowane: {stats.zarezerwowane}</span>
+              <span>{t('stats.reserved')}: {stats.reserved}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-gray-300 rounded-full"></div>
-              <span>Zablokowane: {stats.zablokowane}</span>
+              <span>{t('stats.blocked')}: {stats.blocked}</span>
             </div>
           </div>
 
-          {/* Przyciski akcji */}
+          {/* Кнопки дій */}
           <div className="flex items-center gap-2">
-            {/* Przycisk ustawień godzin pracy */}
+            {/* Кнопка налаштувань годин роботи */}
             <button
               onClick={onOpenWorkingHours}
               className="flex items-center gap-2 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
             >
               <Settings className="w-4 h-4" />
-              <span>Godziny pracy</span>
+              <span>{t('actions.workingHours')}</span>
             </button>
 
             <div className="relative">
@@ -334,7 +340,7 @@ export default function CalendarTab({
                 )}
               >
                 <Filter className="w-4 h-4" />
-                <span>Filtry</span>
+                <span>{t('actions.filters')}</span>
                 {(filters.status.length > 0 || filters.lessonType) && (
                   <span className="bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {filters.status.length + (filters.lessonType ? 1 : 0)}
@@ -356,30 +362,29 @@ export default function CalendarTab({
               className="flex items-center gap-2 px-3 py-1.5 border rounded-lg hover:bg-gray-50 text-sm"
             >
               <Download className="w-4 h-4" />
-              <span>Eksportuj</span>
+              <span>{t('actions.export')}</span>
             </button>
           </div>
         </div>
 
-        {/* Alert o braku slotów - ZAKTUALIZOWANY */}
+        {/* Алерт про відсутність слотів */}
         {stats.total === 0 && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-start gap-2">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm">
-              <p className="font-medium text-blue-800">Brak terminów w tym okresie</p>
+              <p className="font-medium text-blue-800">{t('alerts.noSlots.title')}</p>
               <p className="text-blue-600 mt-1">
-                Sloty są generowane automatycznie na podstawie godzin pracy.
-                Kliknij przycisk "Godziny pracy" aby skonfigurować dostępność.
+                {t('alerts.noSlots.description')}
               </p>
             </div>
           </div>
         )}
       </div>
 
-      {/* Widok kalendarza */}
+      {/* Вигляд календаря */}
       <div className="bg-white rounded-lg border overflow-hidden">
         <Suspense fallback={<ViewLoader />}>
-          {viewMode === 'dzień' && (
+          {viewMode === 'день' && (
             <DayView
               currentDate={currentDate}
               searchTerm={searchTerm}
@@ -388,7 +393,7 @@ export default function CalendarTab({
             />
           )}
 
-          {viewMode === 'tydzień' && (
+          {viewMode === 'тиждень' && (
             <WeekView
               currentDate={currentDate}
               searchTerm={searchTerm}
@@ -397,7 +402,7 @@ export default function CalendarTab({
             />
           )}
 
-          {viewMode === 'miesiąc' && (
+          {viewMode === 'місяць' && (
             <MonthView
               currentDate={currentDate}
               searchTerm={searchTerm}
@@ -406,11 +411,11 @@ export default function CalendarTab({
             />
           )}
 
-          {viewMode === 'lista' && (
+          {viewMode === 'список' && (
             <div className="p-4">
               <div className="text-center text-gray-500 py-8">
                 <List className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <p>Widok listy w przygotowaniu</p>
+                <p>{t('views.listComingSoon')}</p>
               </div>
             </div>
           )}

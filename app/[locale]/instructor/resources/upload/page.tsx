@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/resources/upload/page.tsx
+// app/[locale]/instructor/resources/upload/page.tsx
 
 'use client'
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   Upload, File, X, ChevronLeft, Save, Eye,
   FileText, Video, Image as ImageIcon, Music,
@@ -31,6 +32,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 
 export default function UploadResourcePage() {
   const router = useRouter()
+  const t = useTranslations('instructor.resources.upload')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -53,29 +55,39 @@ export default function UploadResourcePage() {
 
   // Categories
   const categories = [
-    { value: 'teoria', label: 'Teoria', icon: '📚' },
-    { value: 'praktyka', label: 'Praktyka', icon: '🚗' },
-    { value: 'testy', label: 'Testy', icon: '✏️' },
-    { value: 'prezentacje', label: 'Prezentacje', icon: '📊' },
-    { value: 'filmy', label: 'Filmy instruktażowe', icon: '📹' },
-    { value: 'dokumenty', label: 'Dokumenty', icon: '📄' },
-    { value: 'dodatkowe', label: 'Materiały dodatkowe', icon: '📎' }
+    { value: 'theory', label: t('categories.theory'), icon: '📚' },
+    { value: 'practice', label: t('categories.practice'), icon: '🚗' },
+    { value: 'tests', label: t('categories.tests'), icon: '✏️' },
+    { value: 'presentations', label: t('categories.presentations'), icon: '📊' },
+    { value: 'videos', label: t('categories.videos'), icon: '📹' },
+    { value: 'documents', label: t('categories.documents'), icon: '📄' },
+    { value: 'additional', label: t('categories.additional'), icon: '📎' }
   ]
 
   // Popular tags
   const popularTags = [
-    'egzamin', 'teoria', 'praktyka', 'parkowanie', 'manewry',
-    'znaki drogowe', 'przepisy', 'pierwsza pomoc', 'bezpieczeństwo',
-    'kategoria B', 'plac manewrowy', 'miasto', 'trasa'
+    { key: 'exam', label: t('tags.exam') },
+    { key: 'theory', label: t('tags.theory') },
+    { key: 'practice', label: t('tags.practice') },
+    { key: 'parking', label: t('tags.parking') },
+    { key: 'maneuvers', label: t('tags.maneuvers') },
+    { key: 'roadSigns', label: t('tags.roadSigns') },
+    { key: 'regulations', label: t('tags.regulations') },
+    { key: 'firstAid', label: t('tags.firstAid') },
+    { key: 'safety', label: t('tags.safety') },
+    { key: 'categoryB', label: t('tags.categoryB') },
+    { key: 'practiceArea', label: t('tags.practiceArea') },
+    { key: 'city', label: t('tags.city') },
+    { key: 'route', label: t('tags.route') }
   ]
 
   // Target audiences
   const targetAudiences = [
-    { value: 'beginners', label: 'Początkujący' },
-    { value: 'intermediate', label: 'Średnio zaawansowani' },
-    { value: 'advanced', label: 'Zaawansowani' },
-    { value: 'exam', label: 'Przygotowanie do egzaminu' },
-    { value: 'all', label: 'Wszyscy' }
+    { value: 'beginners', label: t('audiences.beginners') },
+    { value: 'intermediate', label: t('audiences.intermediate') },
+    { value: 'advanced', label: t('audiences.advanced') },
+    { value: 'exam', label: t('audiences.exam') },
+    { value: 'all', label: t('audiences.all') }
   ]
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,15 +184,15 @@ export default function UploadResourcePage() {
           <ChevronLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dodaj materiał</h1>
-          <p className="text-gray-600">Udostępnij materiały edukacyjne studentom</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
       </div>
 
       {/* Upload Method */}
       <Card>
         <CardHeader>
-          <CardTitle>Metoda przesyłania</CardTitle>
+          <CardTitle>{t('uploadMethod.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <RadioGroup value={uploadMethod} onValueChange={(value: 'file' | 'link') => setUploadMethod(value)}>
@@ -188,16 +200,16 @@ export default function UploadResourcePage() {
               <RadioGroupItem value="file" />
               <Upload className="w-5 h-5" />
               <div>
-                <p className="font-medium">Prześlij plik</p>
-                <p className="text-sm text-gray-500">Wgraj plik z dysku</p>
+                <p className="font-medium">{t('uploadMethod.file.label')}</p>
+                <p className="text-sm text-gray-500">{t('uploadMethod.file.description')}</p>
               </div>
             </label>
             <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
               <RadioGroupItem value="link" />
               <Link2 className="w-5 h-5" />
               <div>
-                <p className="font-medium">Podaj link</p>
-                <p className="text-sm text-gray-500">YouTube, Google Drive, etc.</p>
+                <p className="font-medium">{t('uploadMethod.link.label')}</p>
+                <p className="text-sm text-gray-500">{t('uploadMethod.link.description')}</p>
               </div>
             </label>
           </RadioGroup>
@@ -208,9 +220,9 @@ export default function UploadResourcePage() {
       {uploadMethod === 'file' ? (
         <Card>
           <CardHeader>
-            <CardTitle>Wybierz plik</CardTitle>
+            <CardTitle>{t('fileUpload.title')}</CardTitle>
             <CardDescription>
-              Maksymalny rozmiar: 500 MB. Formaty: PDF, DOC, PPT, XLS, MP4, JPG, PNG
+              {t('fileUpload.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -223,9 +235,9 @@ export default function UploadResourcePage() {
               >
                 <Cloud className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-600 mb-2">
-                  Przeciągnij plik tutaj lub kliknij, aby wybrać
+                  {t('fileUpload.dragAndDrop')}
                 </p>
-                <Button variant="outline">Wybierz plik</Button>
+                <Button variant="outline">{t('fileUpload.selectFile')}</Button>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -257,7 +269,7 @@ export default function UploadResourcePage() {
                 {isUploading && (
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Przesyłanie...</span>
+                      <span>{t('fileUpload.uploading')}</span>
                       <span>{uploadProgress}%</span>
                     </div>
                     <Progress value={uploadProgress} className="h-2" />
@@ -270,14 +282,14 @@ export default function UploadResourcePage() {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Adres URL</CardTitle>
+            <CardTitle>{t('linkInput.title')}</CardTitle>
             <CardDescription>
-              Podaj link do materiału (YouTube, Google Drive, itp.)
+              {t('linkInput.description')}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <Input
-              placeholder="https://..."
+              placeholder={t('linkInput.placeholder')}
               value={resourceData.url}
               onChange={(e) => setResourceData(prev => ({ ...prev, url: e.target.value }))}
               className="w-full"
@@ -289,37 +301,37 @@ export default function UploadResourcePage() {
       {/* Resource Details */}
       <Card>
         <CardHeader>
-          <CardTitle>Szczegóły materiału</CardTitle>
+          <CardTitle>{t('details.title')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label>Tytuł *</Label>
+            <Label>{t('details.resourceTitle')}</Label>
             <Input
               value={resourceData.title}
               onChange={(e) => setResourceData(prev => ({ ...prev, title: e.target.value }))}
-              placeholder="np. Kodeks drogowy 2024"
+              placeholder={t('details.titlePlaceholder')}
               className="mt-2"
             />
           </div>
 
           <div>
-            <Label>Opis *</Label>
+            <Label>{t('details.description')}</Label>
             <Textarea
               value={resourceData.description}
               onChange={(e) => setResourceData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Opisz zawartość materiału..."
+              placeholder={t('details.descriptionPlaceholder')}
               className="mt-2 h-24"
             />
           </div>
 
           <div>
-            <Label>Kategoria *</Label>
+            <Label>{t('details.category')}</Label>
             <Select 
               value={resourceData.category}
               onValueChange={(value) => setResourceData(prev => ({ ...prev, category: value }))}
             >
               <SelectTrigger className="mt-2">
-                <SelectValue placeholder="Wybierz kategorię" />
+                <SelectValue placeholder={t('details.selectCategory')} />
               </SelectTrigger>
               <SelectContent>
                 {categories.map(cat => (
@@ -335,24 +347,24 @@ export default function UploadResourcePage() {
           </div>
 
           <div>
-            <Label>Tagi</Label>
+            <Label>{t('details.tags')}</Label>
             <div className="flex flex-wrap gap-2 mt-2">
               {popularTags.map(tag => (
                 <Badge
-                  key={tag}
-                  variant={resourceData.tags.includes(tag) ? 'default' : 'outline'}
+                  key={tag.key}
+                  variant={resourceData.tags.includes(tag.key) ? 'default' : 'outline'}
                   className="cursor-pointer"
-                  onClick={() => toggleTag(tag)}
+                  onClick={() => toggleTag(tag.key)}
                 >
-                  {resourceData.tags.includes(tag) && '✓ '}
-                  {tag}
+                  {resourceData.tags.includes(tag.key) && '✓ '}
+                  {tag.label}
                 </Badge>
               ))}
             </div>
           </div>
 
           <div>
-            <Label>Grupa docelowa</Label>
+            <Label>{t('details.targetAudience')}</Label>
             <div className="space-y-2 mt-2">
               {targetAudiences.map(audience => (
                 <label key={audience.value} className="flex items-center gap-2 cursor-pointer">
@@ -383,13 +395,13 @@ export default function UploadResourcePage() {
       {/* Settings */}
       <Card>
         <CardHeader>
-          <CardTitle>Ustawienia dostępności</CardTitle>
+          <CardTitle>{t('settings.title')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <Label>Publiczny materiał</Label>
-              <p className="text-sm text-gray-500">Wszyscy studenci będą mogli zobaczyć ten materiał</p>
+              <Label>{t('settings.public.label')}</Label>
+              <p className="text-sm text-gray-500">{t('settings.public.description')}</p>
             </div>
             <Switch
               checked={resourceData.isPublic}
@@ -399,8 +411,8 @@ export default function UploadResourcePage() {
 
           <div className="flex items-center justify-between">
             <div>
-              <Label>Pozwól na pobieranie</Label>
-              <p className="text-sm text-gray-500">Studenci będą mogli pobrać materiał</p>
+              <Label>{t('settings.allowDownload.label')}</Label>
+              <p className="text-sm text-gray-500">{t('settings.allowDownload.description')}</p>
             </div>
             <Switch
               checked={resourceData.allowDownload}
@@ -410,8 +422,8 @@ export default function UploadResourcePage() {
 
           <div className="flex items-center justify-between">
             <div>
-              <Label>Wymagaj ukończenia</Label>
-              <p className="text-sm text-gray-500">Oznacz jako obowiązkowy do przejrzenia</p>
+              <Label>{t('settings.requireCompletion.label')}</Label>
+              <p className="text-sm text-gray-500">{t('settings.requireCompletion.description')}</p>
             </div>
             <Switch
               checked={resourceData.requireCompletion}
@@ -420,7 +432,7 @@ export default function UploadResourcePage() {
           </div>
 
           <div>
-            <Label>Data wygaśnięcia (opcjonalne)</Label>
+            <Label>{t('settings.expiryDate')}</Label>
             <Input
               type="date"
               value={resourceData.expiryDate}
@@ -434,13 +446,13 @@ export default function UploadResourcePage() {
       {/* Additional Notes */}
       <Card>
         <CardHeader>
-          <CardTitle>Dodatkowe uwagi</CardTitle>
+          <CardTitle>{t('additionalNotes.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
             value={resourceData.notes}
             onChange={(e) => setResourceData(prev => ({ ...prev, notes: e.target.value }))}
-            placeholder="Instrukcje dla studentów, wskazówki, itp..."
+            placeholder={t('additionalNotes.placeholder')}
             className="h-24"
           />
         </CardContent>
@@ -450,7 +462,7 @@ export default function UploadResourcePage() {
       <Alert>
         <Info className="h-4 w-4" />
         <AlertDescription>
-          Po dodaniu materiał będzie natychmiast dostępny dla studentów zgodnie z wybranymi ustawieniami.
+          {t('info')}
         </AlertDescription>
       </Alert>
 
@@ -461,12 +473,12 @@ export default function UploadResourcePage() {
           onClick={() => router.back()}
           disabled={isUploading}
         >
-          Anuluj
+          {t('buttons.cancel')}
         </Button>
         <div className="flex gap-2">
           <Button variant="outline" disabled={!isFormValid() || isUploading}>
             <Eye className="w-4 h-4 mr-2" />
-            Podgląd
+            {t('buttons.preview')}
           </Button>
           <Button 
             onClick={handleUpload}
@@ -475,12 +487,12 @@ export default function UploadResourcePage() {
             {isUploading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Przesyłanie...
+                {t('buttons.uploading')}
               </>
             ) : (
               <>
                 <Save className="w-4 h-4 mr-2" />
-                Zapisz materiał
+                {t('buttons.save')}
               </>
             )}
           </Button>

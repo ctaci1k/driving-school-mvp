@@ -3,6 +3,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   FileText,
   PlayCircle,
@@ -26,27 +27,28 @@ import { Badge } from '@/components/ui/badge';
 import ProgressBar from '@/components/ui/ProgressBar';
 
 export default function TheoryTestsPage() {
+  const t = useTranslations('student.theoryTests');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
   const testCategories = [
-    { id: 'all', name: 'Wszystkie', count: 25 },
-    { id: 'official', name: 'Oficjalne', count: 5 },
-    { id: 'practice', name: 'Ćwiczeniowe', count: 15 },
-    { id: 'exam', name: 'Egzaminacyjne', count: 5 }
+    { id: 'all', name: t('categories.all'), count: 25 },
+    { id: 'official', name: t('categories.official'), count: 5 },
+    { id: 'practice', name: t('categories.practice'), count: 15 },
+    { id: 'exam', name: t('categories.exam'), count: 5 }
   ];
 
   const difficultyLevels = [
-    { id: 'all', name: 'Wszystkie poziomy' },
-    { id: 'easy', name: 'Łatwy', color: 'green' },
-    { id: 'medium', name: 'Średni', color: 'yellow' },
-    { id: 'hard', name: 'Trudny', color: 'red' }
+    { id: 'all', name: t('difficulty.all') },
+    { id: 'easy', name: t('difficulty.easy'), color: 'green' },
+    { id: 'medium', name: t('difficulty.medium'), color: 'yellow' },
+    { id: 'hard', name: t('difficulty.hard'), color: 'red' }
   ];
 
   const availableTests = [
     {
       id: 1,
-      title: 'Test egzaminacyjny WORD #1',
+      title: t('tests.examWORD1.title'),
       category: 'official',
       difficulty: 'hard',
       questions: 74,
@@ -59,7 +61,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 2,
-      title: 'Znaki drogowe - kompletny test',
+      title: t('tests.roadSignsComplete.title'),
       category: 'practice',
       difficulty: 'medium',
       questions: 50,
@@ -72,7 +74,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 3,
-      title: 'Pierwszeństwo przejazdu',
+      title: t('tests.rightOfWay.title'),
       category: 'practice',
       difficulty: 'easy',
       questions: 30,
@@ -85,7 +87,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 4,
-      title: 'Test egzaminacyjny WORD #2',
+      title: t('tests.examWORD2.title'),
       category: 'official',
       difficulty: 'hard',
       questions: 74,
@@ -98,7 +100,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 5,
-      title: 'Sytuacje niebezpieczne',
+      title: t('tests.dangerousSituations.title'),
       category: 'practice',
       difficulty: 'hard',
       questions: 40,
@@ -111,7 +113,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 6,
-      title: 'Przepisy ruchu drogowego',
+      title: t('tests.trafficRules.title'),
       category: 'practice',
       difficulty: 'medium',
       questions: 45,
@@ -124,7 +126,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 7,
-      title: 'Budowa pojazdu - podstawy',
+      title: t('tests.vehicleBasics.title'),
       category: 'practice',
       difficulty: 'easy',
       questions: 25,
@@ -137,7 +139,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 8,
-      title: 'Egzamin próbny - pełny',
+      title: t('tests.fullExamPractice.title'),
       category: 'exam',
       difficulty: 'hard',
       questions: 74,
@@ -147,14 +149,14 @@ export default function TheoryTestsPage() {
       bestScore: null,
       lastAttempt: null,
       status: 'locked',
-      unlockRequirement: 'Ukończ wszystkie testy ćwiczeniowe'
+      unlockRequirement: t('unlockRequirement')
     }
   ];
 
   const testHistory = [
     {
       id: 1,
-      testTitle: 'Test egzaminacyjny WORD #1',
+      testTitle: t('tests.examWORD1.title'),
       date: '2024-01-20 14:30',
       score: 71,
       maxScore: 74,
@@ -163,7 +165,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 2,
-      testTitle: 'Test egzaminacyjny WORD #2',
+      testTitle: t('tests.examWORD2.title'),
       date: '2024-01-22 16:00',
       score: 65,
       maxScore: 74,
@@ -172,7 +174,7 @@ export default function TheoryTestsPage() {
     },
     {
       id: 3,
-      testTitle: 'Znaki drogowe - kompletny test',
+      testTitle: t('tests.roadSignsComplete.title'),
       date: '2024-01-18 10:15',
       score: 45,
       maxScore: 50,
@@ -185,8 +187,8 @@ export default function TheoryTestsPage() {
     totalAttempts: 15,
     passedTests: 12,
     averageScore: 82,
-    bestCategory: 'Znaki drogowe',
-    weakestCategory: 'Pierwszeństwo',
+    bestCategory: t('categoryNames.roadSigns'),
+    weakestCategory: t('categoryNames.priority'),
     streak: 5
   };
 
@@ -199,13 +201,13 @@ export default function TheoryTestsPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'passed':
-        return <Badge className="bg-green-100 text-green-700">Zaliczony</Badge>;
+        return <Badge className="bg-green-100 text-green-700">{t('status.passed')}</Badge>;
       case 'failed':
-        return <Badge className="bg-red-100 text-red-700">Niezaliczony</Badge>;
+        return <Badge className="bg-red-100 text-red-700">{t('status.failed')}</Badge>;
       case 'new':
-        return <Badge className="bg-blue-100 text-blue-700">Nowy</Badge>;
+        return <Badge className="bg-blue-100 text-blue-700">{t('status.new')}</Badge>;
       case 'locked':
-        return <Badge className="bg-gray-100 text-gray-500">Zablokowany</Badge>;
+        return <Badge className="bg-gray-100 text-gray-500">{t('status.locked')}</Badge>;
       default:
         return null;
     }
@@ -218,9 +220,9 @@ export default function TheoryTestsPage() {
       hard: 'bg-red-100 text-red-700'
     };
     const labels = {
-      easy: 'Łatwy',
-      medium: 'Średni',
-      hard: 'Trudny'
+      easy: t('difficulty.easy'),
+      medium: t('difficulty.medium'),
+      hard: t('difficulty.hard')
     };
     return (
       <Badge className={colors[difficulty as keyof typeof colors]}>
@@ -234,12 +236,12 @@ export default function TheoryTestsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Testy teoretyczne</h1>
-          <p className="text-gray-600 mt-1">Sprawdź swoją wiedzę przed egzaminem</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <Button className="gap-2">
           <PlayCircle className="h-4 w-4" />
-          Test szybki
+          {t('buttons.quickTest')}
         </Button>
       </div>
 
@@ -251,7 +253,7 @@ export default function TheoryTestsPage() {
               <FileText className="h-8 w-8 text-blue-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{statistics.totalAttempts}</p>
-            <p className="text-xs text-gray-600">Podejść</p>
+            <p className="text-xs text-gray-600">{t('statistics.attempts')}</p>
           </div>
           
           <div className="text-center">
@@ -259,7 +261,7 @@ export default function TheoryTestsPage() {
               <CheckCircle2 className="h-8 w-8 text-green-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{statistics.passedTests}</p>
-            <p className="text-xs text-gray-600">Zaliczone</p>
+            <p className="text-xs text-gray-600">{t('statistics.passed')}</p>
           </div>
           
           <div className="text-center">
@@ -267,7 +269,7 @@ export default function TheoryTestsPage() {
               <TrendingUp className="h-8 w-8 text-purple-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{statistics.averageScore}%</p>
-            <p className="text-xs text-gray-600">Średni wynik</p>
+            <p className="text-xs text-gray-600">{t('statistics.averageScore')}</p>
           </div>
           
           <div className="text-center">
@@ -275,7 +277,7 @@ export default function TheoryTestsPage() {
               <Award className="h-8 w-8 text-yellow-500" />
             </div>
             <p className="text-sm font-bold text-gray-900">{statistics.bestCategory}</p>
-            <p className="text-xs text-gray-600">Najlepsza kategoria</p>
+            <p className="text-xs text-gray-600">{t('statistics.bestCategory')}</p>
           </div>
           
           <div className="text-center">
@@ -283,7 +285,7 @@ export default function TheoryTestsPage() {
               <AlertCircle className="h-8 w-8 text-orange-500" />
             </div>
             <p className="text-sm font-bold text-gray-900">{statistics.weakestCategory}</p>
-            <p className="text-xs text-gray-600">Do poprawy</p>
+            <p className="text-xs text-gray-600">{t('statistics.weakestCategory')}</p>
           </div>
           
           <div className="text-center">
@@ -291,7 +293,7 @@ export default function TheoryTestsPage() {
               <Star className="h-8 w-8 text-red-500" />
             </div>
             <p className="text-2xl font-bold text-gray-900">{statistics.streak}</p>
-            <p className="text-xs text-gray-600">Seria zaliczeń</p>
+            <p className="text-xs text-gray-600">{t('statistics.streak')}</p>
           </div>
         </div>
       </div>
@@ -300,7 +302,7 @@ export default function TheoryTestsPage() {
       <div className="bg-white rounded-xl shadow-sm p-4">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Kategoria:</span>
+            <span className="text-sm text-gray-600">{t('filters.category')}:</span>
             <div className="flex items-center gap-2">
               {testCategories.map(category => (
                 <button
@@ -319,7 +321,7 @@ export default function TheoryTestsPage() {
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Poziom:</span>
+            <span className="text-sm text-gray-600">{t('filters.level')}:</span>
             <select
               value={selectedDifficulty}
               onChange={(e) => setSelectedDifficulty(e.target.value)}
@@ -354,34 +356,34 @@ export default function TheoryTestsPage() {
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
                   <BookOpen className="h-4 w-4" />
-                  Pytania
+                  {t('testInfo.questions')}
                 </span>
                 <span className="font-medium">{test.questions}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
                   <Clock className="h-4 w-4" />
-                  Limit czasu
+                  {t('testInfo.timeLimit')}
                 </span>
-                <span className="font-medium">{test.timeLimit} min</span>
+                <span className="font-medium">{test.timeLimit} {t('testInfo.min')}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
                   <Target className="h-4 w-4" />
-                  Próg zaliczenia
+                  {t('testInfo.passingScore')}
                 </span>
-                <span className="font-medium">{test.passingScore}/{test.questions} pkt</span>
+                <span className="font-medium">{test.passingScore}/{test.questions} {t('testInfo.points')}</span>
               </div>
             </div>
 
             {test.attempts > 0 && (
               <div className="border-t pt-4 mb-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-600">Najlepszy wynik</span>
+                  <span className="text-sm text-gray-600">{t('testInfo.bestScore')}</span>
                   <span className={`font-semibold ${
                     test.bestScore! >= test.passingScore ? 'text-green-600' : 'text-red-600'
                   }`}>
-                    {test.bestScore}/{test.questions} pkt
+                    {test.bestScore}/{test.questions} {t('testInfo.points')}
                   </span>
                 </div>
                 <ProgressBar 
@@ -389,8 +391,8 @@ export default function TheoryTestsPage() {
                   color={test.bestScore! >= test.passingScore ? 'green' : 'red'}
                 />
                 <div className="flex items-center justify-between mt-2 text-xs text-gray-500">
-                  <span>Podejść: {test.attempts}</span>
-                  <span>Ostatnie: {test.lastAttempt}</span>
+                  <span>{t('testInfo.attempts')}: {test.attempts}</span>
+                  <span>{t('testInfo.lastAttempt')}: {test.lastAttempt}</span>
                 </div>
               </div>
             )}
@@ -406,7 +408,7 @@ export default function TheoryTestsPage() {
                   className="flex-1"
                   variant={test.attempts === 0 ? 'default' : 'outline'}
                 >
-                  {test.attempts === 0 ? 'Rozpocznij test' : 'Powtórz test'}
+                  {test.attempts === 0 ? t('buttons.startTest') : t('buttons.repeatTest')}
                   <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
                 {test.attempts > 0 && (
@@ -423,9 +425,9 @@ export default function TheoryTestsPage() {
       {/* Recent Test History */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Historia testów</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('history.title')}</h2>
           <Button variant="outline" size="sm">
-            Zobacz wszystkie
+            {t('buttons.viewAll')}
           </Button>
         </div>
         
@@ -433,11 +435,11 @@ export default function TheoryTestsPage() {
           <table className="w-full">
             <thead className="border-b border-gray-200">
               <tr>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Test</th>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Data</th>
-                <th className="text-center text-sm font-medium text-gray-600 pb-3">Wynik</th>
-                <th className="text-center text-sm font-medium text-gray-600 pb-3">Czas</th>
-                <th className="text-center text-sm font-medium text-gray-600 pb-3">Status</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('history.columns.test')}</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('history.columns.date')}</th>
+                <th className="text-center text-sm font-medium text-gray-600 pb-3">{t('history.columns.score')}</th>
+                <th className="text-center text-sm font-medium text-gray-600 pb-3">{t('history.columns.time')}</th>
+                <th className="text-center text-sm font-medium text-gray-600 pb-3">{t('history.columns.status')}</th>
               </tr>
             </thead>
             <tbody>

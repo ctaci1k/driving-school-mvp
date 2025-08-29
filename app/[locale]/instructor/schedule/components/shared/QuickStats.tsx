@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/shared/QuickStats.tsx
-// Komponent szybkich statystyk wyświetlanych w nagłówku
-
 'use client'
 
 import React from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Calendar, 
   Clock, 
@@ -113,6 +112,8 @@ const StatCard: React.FC<StatCardProps> = ({
 }
 
 export default function QuickStats({ stats, className }: QuickStatsProps) {
+  const t = useTranslations('instructor.schedule.shared.quickStats')
+  
   // Obliczanie dodatkowych metryk
   const occupancyTrend = stats.occupancyRate > 75 ? { value: 5, isPositive: true } : { value: -3, isPositive: false }
   const earningsTrend = stats.monthlyEarnings > 4000 ? { value: 12, isPositive: true } : { value: -5, isPositive: false }
@@ -125,36 +126,39 @@ export default function QuickStats({ stats, className }: QuickStatsProps) {
       {/* Desktop view - wszystkie karty */}
       <div className="hidden lg:grid lg:grid-cols-4 gap-4">
         <StatCard
-          title="Dzisiejsze zajęcia"
+          title={t('cards.todayLessons.title')}
           value={stats.upcomingLessons}
-          subtitle={`${stats.bookedSlots} zarezerwowanych`}
+          subtitle={t('cards.todayLessons.subtitle', { count: stats.bookedSlots })}
           icon={<Calendar className="w-5 h-5" />}
           color="blue"
           trend={{ value: 8, isPositive: true }}
         />
         
         <StatCard
-          title="Obłożenie"
+          title={t('cards.occupancy.title')}
           value={`${stats.occupancyRate}%`}
-          subtitle={`${stats.availableSlots} wolnych slotów`}
+          subtitle={t('cards.occupancy.subtitle', { count: stats.availableSlots })}
           icon={<Clock className="w-5 h-5" />}
           color="green"
           trend={occupancyTrend}
         />
         
         <StatCard
-          title="Miesięczny przychód"
-          value={`${stats.monthlyEarnings} zł`}
-          subtitle={`${stats.completedLessons} ukończonych`}
+          title={t('cards.monthlyIncome.title')}
+          value={t('cards.monthlyIncome.currency', { amount: stats.monthlyEarnings })}
+          subtitle={t('cards.monthlyIncome.subtitle', { count: stats.completedLessons })}
           icon={<DollarSign className="w-5 h-5" />}
           color="purple"
           trend={earningsTrend}
         />
         
         <StatCard
-          title="Oczekujące wnioski"
+          title={t('cards.pendingRequests.title')}
           value={stats.pendingRequests}
-          subtitle={stats.pendingRequests > 0 ? "Wymaga uwagi" : "Wszystko rozpatrzone"}
+          subtitle={stats.pendingRequests > 0 
+            ? t('cards.pendingRequests.subtitle.hasRequests') 
+            : t('cards.pendingRequests.subtitle.noRequests')
+          }
           icon={<AlertCircle className="w-5 h-5" />}
           color={stats.pendingRequests > 0 ? "red" : "green"}
         />
@@ -163,17 +167,17 @@ export default function QuickStats({ stats, className }: QuickStatsProps) {
       {/* Tablet view - 2 kolumny */}
       <div className="hidden md:grid md:grid-cols-2 lg:hidden gap-4">
         <StatCard
-          title="Dzisiejsze zajęcia"
+          title={t('cards.todayLessons.title')}
           value={stats.upcomingLessons}
-          subtitle={`${stats.bookedSlots} zarezerwowanych`}
+          subtitle={t('cards.todayLessons.subtitle', { count: stats.bookedSlots })}
           icon={<Calendar className="w-5 h-5" />}
           color="blue"
         />
         
         <StatCard
-          title="Obłożenie"
+          title={t('cards.occupancy.title')}
           value={`${stats.occupancyRate}%`}
-          subtitle={`${stats.availableSlots} wolnych`}
+          subtitle={t('cards.occupancy.subtitle', { count: stats.availableSlots })}
           icon={<Clock className="w-5 h-5" />}
           color="green"
         />
@@ -184,60 +188,60 @@ export default function QuickStats({ stats, className }: QuickStatsProps) {
         <div className="bg-white p-3 rounded-lg border">
           <div className="flex items-center justify-between mb-2">
             <Calendar className="w-4 h-4 text-blue-500" />
-            <span className="text-xs text-gray-500">Dziś</span>
+            <span className="text-xs text-gray-500">{t('mobile.today')}</span>
           </div>
           <p className="text-xl font-bold">{stats.upcomingLessons}</p>
-          <p className="text-xs text-gray-500">zajęć</p>
+          <p className="text-xs text-gray-500">{t('mobile.lessons')}</p>
         </div>
 
         <div className="bg-white p-3 rounded-lg border">
           <div className="flex items-center justify-between mb-2">
             <Users className="w-4 h-4 text-green-500" />
-            <span className="text-xs text-gray-500">Obłożenie</span>
+            <span className="text-xs text-gray-500">{t('mobile.occupancy')}</span>
           </div>
           <p className="text-xl font-bold">{stats.occupancyRate}%</p>
-          <p className="text-xs text-gray-500">rezerwacji</p>
+          <p className="text-xs text-gray-500">{t('mobile.reservations')}</p>
         </div>
 
         <div className="bg-white p-3 rounded-lg border">
           <div className="flex items-center justify-between mb-2">
             <DollarSign className="w-4 h-4 text-purple-500" />
-            <span className="text-xs text-gray-500">Miesiąc</span>
+            <span className="text-xs text-gray-500">{t('mobile.month')}</span>
           </div>
           <p className="text-xl font-bold">{stats.monthlyEarnings}</p>
-          <p className="text-xs text-gray-500">zł</p>
+          <p className="text-xs text-gray-500">{t('mobile.currency')}</p>
         </div>
 
         <div className="bg-white p-3 rounded-lg border">
           <div className="flex items-center justify-between mb-2">
             <AlertCircle className="w-4 h-4 text-red-500" />
-            <span className="text-xs text-gray-500">Wnioski</span>
+            <span className="text-xs text-gray-500">{t('mobile.requests')}</span>
           </div>
           <p className="text-xl font-bold">{stats.pendingRequests}</p>
-          <p className="text-xs text-gray-500">oczekuje</p>
+          <p className="text-xs text-gray-500">{t('mobile.pending')}</p>
         </div>
       </div>
 
       {/* Dodatkowe statystyki - rozwijane na mobile */}
       <details className="mt-4 md:hidden">
         <summary className="text-sm text-gray-600 cursor-pointer">
-          Więcej statystyk
+          {t('moreStats.title')}
         </summary>
         <div className="mt-3 grid grid-cols-2 gap-3">
           <div className="text-center p-2 bg-gray-50 rounded">
-            <p className="text-xs text-gray-500">Ukończone</p>
+            <p className="text-xs text-gray-500">{t('moreStats.completed')}</p>
             <p className="text-lg font-semibold">{stats.completedLessons}</p>
           </div>
           <div className="text-center p-2 bg-gray-50 rounded">
-            <p className="text-xs text-gray-500">Anulowane</p>
+            <p className="text-xs text-gray-500">{t('moreStats.cancelled')}</p>
             <p className="text-lg font-semibold">{stats.cancelledLessons}</p>
           </div>
           <div className="text-center p-2 bg-gray-50 rounded">
-            <p className="text-xs text-gray-500">Nieobecności</p>
+            <p className="text-xs text-gray-500">{t('moreStats.noShow')}</p>
             <p className="text-lg font-semibold">{stats.noShowCount}</p>
           </div>
           <div className="text-center p-2 bg-gray-50 rounded">
-            <p className="text-xs text-gray-500">Skuteczność</p>
+            <p className="text-xs text-gray-500">{t('moreStats.efficiency')}</p>
             <p className="text-lg font-semibold">{completionRate}%</p>
           </div>
         </div>
@@ -249,23 +253,23 @@ export default function QuickStats({ stats, className }: QuickStatsProps) {
           <div className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-green-500" />
             <span className="text-sm text-gray-600">
-              Podsumowanie tygodnia:
+              {t('weekly.summary')}
             </span>
           </div>
           <div className="flex items-center gap-4 text-sm">
             <span>
-              <strong>{stats.weeklyHours}</strong> godzin pracy
+              <strong>{stats.weeklyHours}</strong> {t('weekly.workHours', { hours: stats.weeklyHours }).split(stats.weeklyHours.toString())[1]}
             </span>
             <span className="text-gray-400">•</span>
             <span>
-              <strong>{stats.completedLessons}</strong> ukończonych zajęć
+              <strong>{stats.completedLessons}</strong> {t('weekly.completedLessons', { count: stats.completedLessons }).split(stats.completedLessons.toString())[1]}
             </span>
             <span className="text-gray-400">•</span>
             <span className={cn(
               "font-semibold",
               stats.occupancyRate > 75 ? "text-green-600" : "text-orange-600"
             )}>
-              {stats.occupancyRate}% obłożenia
+              {t('weekly.occupancyRate', { rate: stats.occupancyRate })}
             </span>
           </div>
         </div>

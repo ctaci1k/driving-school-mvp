@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/profile/settings/page.tsx
+// app/[locale]/instructor/profile/settings/page.tsx
 
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   Shield, Bell, Eye, Lock, Smartphone, Globe,
   Moon, Sun, Volume2, Mail, MessageSquare,
@@ -40,6 +41,7 @@ import { Separator } from '@/components/ui/separator'
 
 export default function SettingsPage() {
   const router = useRouter()
+  const t = useTranslations('instructor.profile.settings')
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showPasswordDialog, setShowPasswordDialog] = useState(false)
   const [show2FADialog, setShow2FADialog] = useState(false)
@@ -68,10 +70,10 @@ export default function SettingsPage() {
     
     // Display
     theme: 'light',
-    language: 'pl',
+    language: 'uk',
     dateFormat: 'DD.MM.YYYY',
     timeFormat: '24h',
-    currency: 'PLN',
+    currency: 'UAH',
     
     // Working preferences
     autoAcceptBookings: false,
@@ -113,27 +115,27 @@ export default function SettingsPage() {
           <ChevronLeft className="w-5 h-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Ustawienia</h1>
-          <p className="text-gray-600">Zarządzaj preferencjami i bezpieczeństwem</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
       </div>
 
       {/* Tabs */}
       <Tabs defaultValue="notifications" className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="notifications">Powiadomienia</TabsTrigger>
-          <TabsTrigger value="privacy">Prywatność</TabsTrigger>
-          <TabsTrigger value="display">Wyświetlanie</TabsTrigger>
-          <TabsTrigger value="security">Bezpieczeństwo</TabsTrigger>
+          <TabsTrigger value="notifications">{t('tabs.notifications')}</TabsTrigger>
+          <TabsTrigger value="privacy">{t('tabs.privacy')}</TabsTrigger>
+          <TabsTrigger value="display">{t('tabs.display')}</TabsTrigger>
+          <TabsTrigger value="security">{t('tabs.security')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="notifications" className="space-y-6">
           {/* Notification Channels */}
           <Card>
             <CardHeader>
-              <CardTitle>Kanały powiadomień</CardTitle>
+              <CardTitle>{t('notifications.channels.title')}</CardTitle>
               <CardDescription>
-                Wybierz, jak chcesz otrzymywać powiadomienia
+                {t('notifications.channels.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -141,8 +143,8 @@ export default function SettingsPage() {
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-gray-500" />
                   <div>
-                    <Label>Email</Label>
-                    <p className="text-sm text-gray-500">Otrzymuj powiadomienia na email</p>
+                    <Label>{t('notifications.channels.email.label')}</Label>
+                    <p className="text-sm text-gray-500">{t('notifications.channels.email.description')}</p>
                   </div>
                 </div>
                 <Switch
@@ -155,8 +157,8 @@ export default function SettingsPage() {
                 <div className="flex items-center gap-3">
                   <MessageSquare className="w-5 h-5 text-gray-500" />
                   <div>
-                    <Label>SMS</Label>
-                    <p className="text-sm text-gray-500">Otrzymuj powiadomienia SMS</p>
+                    <Label>{t('notifications.channels.sms.label')}</Label>
+                    <p className="text-sm text-gray-500">{t('notifications.channels.sms.description')}</p>
                   </div>
                 </div>
                 <Switch
@@ -169,8 +171,8 @@ export default function SettingsPage() {
                 <div className="flex items-center gap-3">
                   <Smartphone className="w-5 h-5 text-gray-500" />
                   <div>
-                    <Label>Push</Label>
-                    <p className="text-sm text-gray-500">Powiadomienia w aplikacji</p>
+                    <Label>{t('notifications.channels.push.label')}</Label>
+                    <p className="text-sm text-gray-500">{t('notifications.channels.push.description')}</p>
                   </div>
                 </div>
                 <Switch
@@ -184,14 +186,14 @@ export default function SettingsPage() {
           {/* Notification Types */}
           <Card>
             <CardHeader>
-              <CardTitle>Rodzaje powiadomień</CardTitle>
+              <CardTitle>{t('notifications.types.title')}</CardTitle>
               <CardDescription>
-                Zdecyduj, o czym chcesz być informowany
+                {t('notifications.types.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label>Nowe rezerwacje</Label>
+                <Label>{t('notifications.types.newBooking')}</Label>
                 <Switch
                   checked={settings.notifyNewBooking}
                   onCheckedChange={() => handleToggle('notifyNewBooking')}
@@ -199,7 +201,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label>Anulacje</Label>
+                <Label>{t('notifications.types.cancellation')}</Label>
                 <Switch
                   checked={settings.notifyCancellation}
                   onCheckedChange={() => handleToggle('notifyCancellation')}
@@ -207,7 +209,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label>Przypomnienia o lekcjach</Label>
+                <Label>{t('notifications.types.reminder')}</Label>
                 <Switch
                   checked={settings.notifyReminder}
                   onCheckedChange={() => handleToggle('notifyReminder')}
@@ -215,7 +217,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label>Płatności</Label>
+                <Label>{t('notifications.types.payment')}</Label>
                 <Switch
                   checked={settings.notifyPayment}
                   onCheckedChange={() => handleToggle('notifyPayment')}
@@ -223,7 +225,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label>Wiadomości od kursantów</Label>
+                <Label>{t('notifications.types.messages')}</Label>
                 <Switch
                   checked={settings.notifyMessages}
                   onCheckedChange={() => handleToggle('notifyMessages')}
@@ -231,7 +233,7 @@ export default function SettingsPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Label>Nowe recenzje</Label>
+                <Label>{t('notifications.types.reviews')}</Label>
                 <Switch
                   checked={settings.notifyReviews}
                   onCheckedChange={() => handleToggle('notifyReviews')}
@@ -245,14 +247,14 @@ export default function SettingsPage() {
           {/* Profile Visibility */}
           <Card>
             <CardHeader>
-              <CardTitle>Widoczność profilu</CardTitle>
+              <CardTitle>{t('privacy.profile.title')}</CardTitle>
               <CardDescription>
-                Kontroluj, kto może zobaczyć Twój profil
+                {t('privacy.profile.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Dostępność profilu</Label>
+                <Label>{t('privacy.profile.title')}</Label>
                 <RadioGroup 
                   value={settings.profileVisibility}
                   onValueChange={(value) => handleSelectChange('profileVisibility', value)}
@@ -260,15 +262,15 @@ export default function SettingsPage() {
                 >
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="public" />
-                    <span>Publiczny - wszyscy mogą zobaczyć</span>
+                    <span>{t('privacy.profile.public')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="students" />
-                    <span>Tylko kursanci</span>
+                    <span>{t('privacy.profile.students')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="private" />
-                    <span>Prywatny - nikt nie może zobaczyć</span>
+                    <span>{t('privacy.profile.private')}</span>
                   </label>
                 </RadioGroup>
               </div>
@@ -277,7 +279,7 @@ export default function SettingsPage() {
 
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <Label>Pokaż numer telefonu</Label>
+                  <Label>{t('privacy.profile.showPhone')}</Label>
                   <Switch
                     checked={settings.showPhone}
                     onCheckedChange={() => handleToggle('showPhone')}
@@ -285,7 +287,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Label>Pokaż adres email</Label>
+                  <Label>{t('privacy.profile.showEmail')}</Label>
                   <Switch
                     checked={settings.showEmail}
                     onCheckedChange={() => handleToggle('showEmail')}
@@ -293,7 +295,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Label>Pokaż oceny</Label>
+                  <Label>{t('privacy.profile.showRating')}</Label>
                   <Switch
                     checked={settings.showRating}
                     onCheckedChange={() => handleToggle('showRating')}
@@ -301,7 +303,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Label>Pokaż statystyki</Label>
+                  <Label>{t('privacy.profile.showStatistics')}</Label>
                   <Switch
                     checked={settings.showStatistics}
                     onCheckedChange={() => handleToggle('showStatistics')}
@@ -314,13 +316,13 @@ export default function SettingsPage() {
           {/* Booking Settings */}
           <Card>
             <CardHeader>
-              <CardTitle>Ustawienia rezerwacji</CardTitle>
+              <CardTitle>{t('privacy.booking.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Rezerwacje online</Label>
-                  <p className="text-sm text-gray-500">Kursanci mogą rezerwować online</p>
+                  <Label>{t('privacy.booking.onlineBooking.label')}</Label>
+                  <p className="text-sm text-gray-500">{t('privacy.booking.onlineBooking.description')}</p>
                 </div>
                 <Switch
                   checked={settings.allowOnlineBooking}
@@ -330,8 +332,8 @@ export default function SettingsPage() {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>Wymagaj zatwierdzenia</Label>
-                  <p className="text-sm text-gray-500">Ręcznie zatwierdzaj każdą rezerwację</p>
+                  <Label>{t('privacy.booking.requireApproval.label')}</Label>
+                  <p className="text-sm text-gray-500">{t('privacy.booking.requireApproval.description')}</p>
                 </div>
                 <Switch
                   checked={settings.requireApproval}
@@ -341,7 +343,7 @@ export default function SettingsPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Min. wyprzedzenie</Label>
+                  <Label>{t('privacy.booking.minAdvance')}</Label>
                   <Select 
                     value={settings.minAdvanceBooking}
                     onValueChange={(value) => handleSelectChange('minAdvanceBooking', value)}
@@ -350,15 +352,15 @@ export default function SettingsPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="12">12 godzin</SelectItem>
-                      <SelectItem value="24">24 godziny</SelectItem>
-                      <SelectItem value="48">48 godzin</SelectItem>
+                      <SelectItem value="12">{t('privacy.booking.hours', { count: 12 })}</SelectItem>
+                      <SelectItem value="24">{t('privacy.booking.hours', { count: 24 })}</SelectItem>
+                      <SelectItem value="48">{t('privacy.booking.hours', { count: 48 })}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Maks. wyprzedzenie</Label>
+                  <Label>{t('privacy.booking.maxAdvance')}</Label>
                   <Select 
                     value={settings.maxAdvanceBooking}
                     onValueChange={(value) => handleSelectChange('maxAdvanceBooking', value)}
@@ -367,10 +369,10 @@ export default function SettingsPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="7">7 dni</SelectItem>
-                      <SelectItem value="14">14 dni</SelectItem>
-                      <SelectItem value="30">30 dni</SelectItem>
-                      <SelectItem value="60">60 dni</SelectItem>
+                      <SelectItem value="7">{t('privacy.booking.days', { count: 7 })}</SelectItem>
+                      <SelectItem value="14">{t('privacy.booking.days', { count: 14 })}</SelectItem>
+                      <SelectItem value="30">{t('privacy.booking.days', { count: 30 })}</SelectItem>
+                      <SelectItem value="60">{t('privacy.booking.days', { count: 60 })}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -383,11 +385,11 @@ export default function SettingsPage() {
           {/* Appearance */}
           <Card>
             <CardHeader>
-              <CardTitle>Wygląd</CardTitle>
+              <CardTitle>{t('display.appearance.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Motyw</Label>
+                <Label>{t('display.appearance.theme')}</Label>
                 <RadioGroup 
                   value={settings.theme}
                   onValueChange={(value) => handleSelectChange('theme', value)}
@@ -396,23 +398,23 @@ export default function SettingsPage() {
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="light" />
                     <Sun className="w-4 h-4" />
-                    <span>Jasny</span>
+                    <span>{t('display.appearance.light')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="dark" />
                     <Moon className="w-4 h-4" />
-                    <span>Ciemny</span>
+                    <span>{t('display.appearance.dark')}</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <RadioGroupItem value="system" />
                     <Monitor className="w-4 h-4" />
-                    <span>Systemowy</span>
+                    <span>{t('display.appearance.system')}</span>
                   </label>
                 </RadioGroup>
               </div>
 
               <div>
-                <Label>Język</Label>
+                <Label>{t('display.appearance.language')}</Label>
                 <Select 
                   value={settings.language}
                   onValueChange={(value) => handleSelectChange('language', value)}
@@ -421,16 +423,16 @@ export default function SettingsPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="uk">Українська</SelectItem>
                     <SelectItem value="pl">Polski</SelectItem>
                     <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="de">Deutsch</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Format daty</Label>
+                  <Label>{t('display.appearance.dateFormat')}</Label>
                   <Select 
                     value={settings.dateFormat}
                     onValueChange={(value) => handleSelectChange('dateFormat', value)}
@@ -447,7 +449,7 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <Label>Format czasu</Label>
+                  <Label>{t('display.appearance.timeFormat')}</Label>
                   <Select 
                     value={settings.timeFormat}
                     onValueChange={(value) => handleSelectChange('timeFormat', value)}
@@ -456,8 +458,8 @@ export default function SettingsPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="24h">24-godzinny</SelectItem>
-                      <SelectItem value="12h">12-godzinny</SelectItem>
+                      <SelectItem value="24h">{t('display.appearance.24h')}</SelectItem>
+                      <SelectItem value="12h">{t('display.appearance.12h')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -471,9 +473,9 @@ export default function SettingsPage() {
           <Alert className="border-green-200 bg-green-50">
             <CheckCircle className="h-4 w-4 text-green-600" />
             <AlertDescription>
-              <strong>Twoje konto jest bezpieczne</strong>
+              <strong>{t('security.status.secure')}</strong>
               <p className="text-sm mt-1">
-                Ostatnia zmiana hasła: {settings.lastPasswordChange}
+                {t('security.status.lastPasswordChange', { date: settings.lastPasswordChange })}
               </p>
             </AlertDescription>
           </Alert>
@@ -481,7 +483,7 @@ export default function SettingsPage() {
           {/* Password */}
           <Card>
             <CardHeader>
-              <CardTitle>Hasło</CardTitle>
+              <CardTitle>{t('security.password.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Button 
@@ -489,7 +491,7 @@ export default function SettingsPage() {
                 onClick={() => setShowPasswordDialog(true)}
               >
                 <Key className="w-4 h-4 mr-2" />
-                Zmień hasło
+                {t('security.password.changePassword')}
               </Button>
             </CardContent>
           </Card>
@@ -497,26 +499,32 @@ export default function SettingsPage() {
           {/* Two-Factor Authentication */}
           <Card>
             <CardHeader>
-              <CardTitle>Uwierzytelnianie dwuskładnikowe</CardTitle>
+              <CardTitle>{t('security.twoFactor.title')}</CardTitle>
               <CardDescription>
-                Dodatkowa warstwa zabezpieczeń dla Twojego konta
+                {t('security.twoFactor.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>2FA {settings.twoFactorEnabled ? 'włączone' : 'wyłączone'}</Label>
+                  <Label>
+                    {settings.twoFactorEnabled 
+                      ? t('security.twoFactor.enabled')
+                      : t('security.twoFactor.disabled')}
+                  </Label>
                   <p className="text-sm text-gray-500">
                     {settings.twoFactorEnabled 
-                      ? 'Twoje konto jest chronione przez 2FA'
-                      : 'Włącz dla lepszego bezpieczeństwa'}
+                      ? t('security.twoFactor.enabledDescription')
+                      : t('security.twoFactor.disabledDescription')}
                   </p>
                 </div>
                 <Button 
                   variant={settings.twoFactorEnabled ? 'destructive' : 'default'}
                   onClick={() => setShow2FADialog(true)}
                 >
-                  {settings.twoFactorEnabled ? 'Wyłącz' : 'Włącz'}
+                  {settings.twoFactorEnabled 
+                    ? t('security.twoFactor.disable')
+                    : t('security.twoFactor.enable')}
                 </Button>
               </div>
             </CardContent>
@@ -525,9 +533,9 @@ export default function SettingsPage() {
           {/* Active Sessions */}
           <Card>
             <CardHeader>
-              <CardTitle>Aktywne sesje</CardTitle>
+              <CardTitle>{t('security.sessions.title')}</CardTitle>
               <CardDescription>
-                Obecnie zalogowane urządzenia
+                {t('security.sessions.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -537,26 +545,30 @@ export default function SettingsPage() {
                     <Monitor className="w-5 h-5 text-gray-500" />
                     <div>
                       <p className="font-medium">Chrome - Windows</p>
-                      <p className="text-sm text-gray-500">Warszawa • Teraz</p>
+                      <p className="text-sm text-gray-500">
+                        {t('security.sessions.location', { city: 'Київ', time: 'Зараз' })}
+                      </p>
                     </div>
                   </div>
-                  <Badge variant="default">Obecna</Badge>
+                  <Badge variant="default">{t('security.sessions.current')}</Badge>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <Smartphone className="w-5 h-5 text-gray-500" />
                     <div>
                       <p className="font-medium">Safari - iPhone</p>
-                      <p className="text-sm text-gray-500">Kraków • 2 godz. temu</p>
+                      <p className="text-sm text-gray-500">
+                        {t('security.sessions.location', { city: 'Львів', time: '2 год. тому' })}
+                      </p>
                     </div>
                   </div>
                   <Button variant="outline" size="sm">
-                    Zakończ
+                    {t('security.sessions.endSession')}
                   </Button>
                 </div>
               </div>
               <Button variant="outline" className="w-full mt-4">
-                Zakończ wszystkie inne sesje
+                {t('security.sessions.endAllOther')}
               </Button>
             </CardContent>
           </Card>
@@ -564,12 +576,12 @@ export default function SettingsPage() {
           {/* Account Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Akcje konta</CardTitle>
+              <CardTitle>{t('security.account.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Button variant="outline" className="w-full justify-start">
                 <Download className="w-4 h-4 mr-2" />
-                Pobierz dane konta
+                {t('security.account.downloadData')}
               </Button>
               <Button 
                 variant="destructive" 
@@ -577,7 +589,7 @@ export default function SettingsPage() {
                 onClick={() => setShowDeleteDialog(true)}
               >
                 <Trash2 className="w-4 h-4 mr-2" />
-                Usuń konto
+                {t('security.account.deleteAccount')}
               </Button>
             </CardContent>
           </Card>
@@ -588,31 +600,31 @@ export default function SettingsPage() {
       <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Zmień hasło</DialogTitle>
+            <DialogTitle>{t('security.password.changePassword')}</DialogTitle>
             <DialogDescription>
-              Wprowadź obecne hasło i nowe hasło
+              {t('security.password.currentPassword')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label>Obecne hasło</Label>
+              <Label>{t('security.password.currentPassword')}</Label>
               <Input type="password" className="mt-2" />
             </div>
             <div>
-              <Label>Nowe hasło</Label>
+              <Label>{t('security.password.newPassword')}</Label>
               <Input type="password" className="mt-2" />
             </div>
             <div>
-              <Label>Potwierdź nowe hasło</Label>
+              <Label>{t('security.password.confirmPassword')}</Label>
               <Input type="password" className="mt-2" />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowPasswordDialog(false)}>
-              Anuluj
+              {t('security.buttons.cancel')}
             </Button>
             <Button onClick={() => setShowPasswordDialog(false)}>
-              Zmień hasło
+              {t('security.password.changePassword')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -623,12 +635,14 @@ export default function SettingsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {settings.twoFactorEnabled ? 'Wyłącz 2FA' : 'Włącz 2FA'}
+              {settings.twoFactorEnabled 
+                ? t('security.twoFactor.disable')
+                : t('security.twoFactor.enable')} 2FA
             </DialogTitle>
             <DialogDescription>
               {settings.twoFactorEnabled 
-                ? 'Czy na pewno chcesz wyłączyć uwierzytelnianie dwuskładnikowe?'
-                : 'Skonfiguruj uwierzytelnianie dwuskładnikowe dla lepszego bezpieczeństwa'}
+                ? t('security.twoFactor.disabledDescription')
+                : t('security.twoFactor.enabledDescription')}
             </DialogDescription>
           </DialogHeader>
           {!settings.twoFactorEnabled && (
@@ -636,18 +650,18 @@ export default function SettingsPage() {
               <div className="p-4 bg-gray-100 rounded-lg">
                 <p className="text-center text-2xl font-mono">QR CODE</p>
                 <p className="text-center text-xs text-gray-500 mt-2">
-                  Zeskanuj kod aplikacją authenticator
+                  {t('security.twoFactor.scanQR')}
                 </p>
               </div>
               <div>
-                <Label>Kod weryfikacyjny</Label>
+                <Label>{t('security.twoFactor.verificationCode')}</Label>
                 <Input placeholder="000000" className="mt-2" />
               </div>
             </div>
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setShow2FADialog(false)}>
-              Anuluj
+              {t('security.buttons.cancel')}
             </Button>
             <Button 
               variant={settings.twoFactorEnabled ? 'destructive' : 'default'}
@@ -656,7 +670,9 @@ export default function SettingsPage() {
                 setShow2FADialog(false)
               }}
             >
-              {settings.twoFactorEnabled ? 'Wyłącz 2FA' : 'Włącz 2FA'}
+              {settings.twoFactorEnabled 
+                ? t('security.twoFactor.disable')
+                : t('security.twoFactor.enable')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -666,33 +682,34 @@ export default function SettingsPage() {
       <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Usuń konto</DialogTitle>
+            <DialogTitle>{t('security.account.deleteWarning.title')}</DialogTitle>
             <DialogDescription>
-              Ta akcja jest nieodwracalna. Wszystkie dane zostaną trwale usunięte.
+              {t('security.account.deleteWarning.description')}
             </DialogDescription>
           </DialogHeader>
           <Alert className="border-red-200 bg-red-50">
             <AlertTriangle className="h-4 w-4 text-red-600" />
             <AlertDescription>
-              <strong>Uwaga!</strong> Usunięcie konta spowoduje:
+              <strong>{t('security.account.deleteWarning.warning')}</strong> 
+              {t('security.account.deleteWarning.consequences')}
               <ul className="list-disc ml-5 mt-2 text-sm">
-                <li>Utratę wszystkich danych</li>
-                <li>Anulowanie wszystkich rezerwacji</li>
-                <li>Usunięcie historii kursantów</li>
-                <li>Brak możliwości odzyskania konta</li>
+                <li>{t('security.account.deleteWarning.dataLoss')}</li>
+                <li>{t('security.account.deleteWarning.bookingsCancelled')}</li>
+                <li>{t('security.account.deleteWarning.historyDeleted')}</li>
+                <li>{t('security.account.deleteWarning.noRecovery')}</li>
               </ul>
             </AlertDescription>
           </Alert>
           <div>
-            <Label>Wpisz "USUŃ" aby potwierdzić</Label>
-            <Input placeholder="USUŃ" className="mt-2" />
+            <Label>{t('security.account.deleteWarning.confirmText')}</Label>
+            <Input placeholder={t('security.account.deleteWarning.confirmPlaceholder')} className="mt-2" />
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
-              Anuluj
+              {t('security.buttons.cancel')}
             </Button>
             <Button variant="destructive" disabled>
-              Usuń konto
+              {t('security.account.deleteAccount')}
             </Button>
           </DialogFooter>
         </DialogContent>

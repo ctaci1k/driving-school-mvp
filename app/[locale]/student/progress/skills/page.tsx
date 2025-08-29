@@ -1,8 +1,9 @@
-// app/[locale]/student/progress/skills/page.tsx
+// Шлях: /app/[locale]/student/progress/skills/page.tsx
 
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   Target, 
   TrendingUp, 
@@ -31,127 +32,128 @@ import { Badge } from '@/components/ui/badge';
 import ProgressBar from '@/components/ui/ProgressBar';
 
 export default function SkillsPage() {
+  const t = useTranslations('student.skills');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('score');
   const [showDetails, setShowDetails] = useState<string | null>(null);
 
   const categories = [
-    { id: 'all', name: 'Wszystkie', count: 24 },
-    { id: 'maneuvers', name: 'Manewry', count: 8, icon: GitBranch },
-    { id: 'city', name: 'Jazda w mieście', count: 6, icon: Navigation },
-    { id: 'highway', name: 'Autostrady', count: 4, icon: Zap },
-    { id: 'theory', name: 'Teoria', count: 6, icon: BookOpen }
+    { id: 'all', name: t('categories.all'), count: 24 },
+    { id: 'maneuvers', name: t('categories.maneuvers'), count: 8, icon: GitBranch },
+    { id: 'city', name: t('categories.cityDriving'), count: 6, icon: Navigation },
+    { id: 'highway', name: t('categories.highways'), count: 4, icon: Zap },
+    { id: 'theory', name: t('categories.theory'), count: 6, icon: BookOpen }
   ];
 
   const skillsData = [
     {
       id: '1',
-      name: 'Parkowanie równoległe',
+      name: t('items.parallelParking.name'),
       category: 'maneuvers',
       currentScore: 75,
       previousScore: 60,
       attempts: 45,
       successRate: 75,
       lastPracticed: '2024-01-20',
-      instructorNotes: 'Dobra kontrola pojazdu, pracuj nad oceną odległości',
+      instructorNotes: t('items.parallelParking.notes'),
       difficulty: 'hard',
       requiredForExam: true,
       trend: 'up'
     },
     {
       id: '2',
-      name: 'Parkowanie prostopadłe',
+      name: t('items.perpendicularParking.name'),
       category: 'maneuvers',
       currentScore: 82,
       previousScore: 78,
       attempts: 38,
       successRate: 82,
       lastPracticed: '2024-01-19',
-      instructorNotes: 'Bardzo dobrze, utrzymuj tempo',
+      instructorNotes: t('items.perpendicularParking.notes'),
       difficulty: 'medium',
       requiredForExam: true,
       trend: 'up'
     },
     {
       id: '3',
-      name: 'Jazda w korku',
+      name: t('items.trafficJams.name'),
       category: 'city',
       currentScore: 70,
       previousScore: 70,
       attempts: 25,
       successRate: 70,
       lastPracticed: '2024-01-18',
-      instructorNotes: 'Zachowaj większy odstęp między pojazdami',
+      instructorNotes: t('items.trafficJams.notes'),
       difficulty: 'medium',
       requiredForExam: false,
       trend: 'stable'
     },
     {
       id: '4',
-      name: 'Zmiana pasów na autostradzie',
+      name: t('items.highwayLaneChange.name'),
       category: 'highway',
       currentScore: 65,
       previousScore: 72,
       attempts: 15,
       successRate: 65,
       lastPracticed: '2024-01-17',
-      instructorNotes: 'Pamiętaj o martwym polu w lusterkach',
+      instructorNotes: t('items.highwayLaneChange.notes'),
       difficulty: 'hard',
       requiredForExam: true,
       trend: 'down'
     },
     {
       id: '5',
-      name: 'Znaki drogowe',
+      name: t('items.roadSigns.name'),
       category: 'theory',
       currentScore: 90,
       previousScore: 85,
       attempts: 120,
       successRate: 90,
       lastPracticed: '2024-01-21',
-      instructorNotes: 'Świetna znajomość, prawie perfekcyjnie',
+      instructorNotes: t('items.roadSigns.notes'),
       difficulty: 'easy',
       requiredForExam: true,
       trend: 'up'
     },
     {
       id: '6',
-      name: 'Pierwszeństwo przejazdu',
+      name: t('items.rightOfWay.name'),
       category: 'theory',
       currentScore: 85,
       previousScore: 80,
       attempts: 95,
       successRate: 85,
       lastPracticed: '2024-01-21',
-      instructorNotes: 'Dobra znajomość zasad',
+      instructorNotes: t('items.rightOfWay.notes'),
       difficulty: 'medium',
       requiredForExam: true,
       trend: 'up'
     },
     {
       id: '7',
-      name: 'Zawracanie',
+      name: t('items.turning.name'),
       category: 'maneuvers',
       currentScore: 60,
       previousScore: 55,
       attempts: 20,
       successRate: 60,
       lastPracticed: '2024-01-16',
-      instructorNotes: 'Wymaga więcej praktyki, zbyt szeroki łuk',
+      instructorNotes: t('items.turning.notes'),
       difficulty: 'hard',
       requiredForExam: true,
       trend: 'up'
     },
     {
       id: '8',
-      name: 'Jazda nocna',
+      name: t('items.nightDriving.name'),
       category: 'city',
       currentScore: 68,
       previousScore: 60,
       attempts: 8,
       successRate: 68,
       lastPracticed: '2024-01-15',
-      instructorNotes: 'Popraw używanie świateł drogowych',
+      instructorNotes: t('items.nightDriving.notes'),
       difficulty: 'hard',
       requiredForExam: false,
       trend: 'up'
@@ -185,14 +187,9 @@ export default function SkillsPage() {
       medium: 'bg-yellow-100 text-yellow-700',
       hard: 'bg-red-100 text-red-700'
     };
-    const labels = {
-      easy: 'Łatwy',
-      medium: 'Średni',
-      hard: 'Trudny'
-    };
     return (
       <Badge className={colors[difficulty as keyof typeof colors]}>
-        {labels[difficulty as keyof typeof labels]}
+        {t(`difficulty.${difficulty}`)}
       </Badge>
     );
   };
@@ -202,12 +199,12 @@ export default function SkillsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Szczegółowe umiejętności</h1>
-          <p className="text-gray-600 mt-1">Analiza i postępy w każdej kategorii</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <Button variant="outline" className="gap-2">
           <Download className="h-4 w-4" />
-          Eksportuj raport
+          {t('buttons.exportReport')}
         </Button>
       </div>
 
@@ -215,38 +212,38 @@ export default function SkillsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Średni wynik</span>
+            <span className="text-sm text-gray-600">{t('stats.averageScore')}</span>
             <Target className="h-4 w-4 text-gray-400" />
           </div>
           <p className="text-2xl font-bold text-gray-900">{averageScore}%</p>
-          <p className="text-xs text-green-600 mt-1">+5% w tym miesiącu</p>
+          <p className="text-xs text-green-600 mt-1">{t('stats.monthlyProgress')}</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Najlepsza umiejętność</span>
+            <span className="text-sm text-gray-600">{t('stats.bestSkill')}</span>
             <Award className="h-4 w-4 text-yellow-500" />
           </div>
-          <p className="text-lg font-semibold text-gray-900">Znaki drogowe</p>
-          <p className="text-sm text-gray-500">90% skuteczności</p>
+          <p className="text-lg font-semibold text-gray-900">{t('items.roadSigns.name')}</p>
+          <p className="text-sm text-gray-500">{t('stats.successRate', { rate: 90 })}</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Do poprawy</span>
+            <span className="text-sm text-gray-600">{t('stats.needsWork')}</span>
             <AlertTriangle className="h-4 w-4 text-orange-500" />
           </div>
-          <p className="text-lg font-semibold text-gray-900">Zawracanie</p>
-          <p className="text-sm text-gray-500">60% skuteczności</p>
+          <p className="text-lg font-semibold text-gray-900">{t('items.turning.name')}</p>
+          <p className="text-sm text-gray-500">{t('stats.successRate', { rate: 60 })}</p>
         </div>
         
         <div className="bg-white rounded-xl shadow-sm p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Gotowość egzaminowa</span>
+            <span className="text-sm text-gray-600">{t('stats.examReadiness')}</span>
             <CheckCircle2 className="h-4 w-4 text-green-500" />
           </div>
           <p className="text-2xl font-bold text-gray-900">72%</p>
-          <p className="text-xs text-gray-500">6/8 umiejętności gotowych</p>
+          <p className="text-xs text-gray-500">{t('stats.skillsReady', { ready: 6, total: 8 })}</p>
         </div>
       </div>
 
@@ -275,15 +272,15 @@ export default function SkillsPage() {
           </div>
           
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Sortuj:</span>
+            <span className="text-sm text-gray-600">{t('filters.sortBy')}:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="score">Według wyniku</option>
-              <option value="progress">Według postępu</option>
-              <option value="attempts">Według prób</option>
+              <option value="score">{t('filters.byScore')}</option>
+              <option value="progress">{t('filters.byProgress')}</option>
+              <option value="attempts">{t('filters.byAttempts')}</option>
             </select>
           </div>
         </div>
@@ -298,7 +295,7 @@ export default function SkillsPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-semibold text-gray-900">{skill.name}</h3>
                   {skill.requiredForExam && (
-                    <Badge variant="outline" className="text-xs">Egzamin</Badge>
+                    <Badge variant="outline" className="text-xs">{t('badges.exam')}</Badge>
                   )}
                 </div>
                 <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -311,7 +308,7 @@ export default function SkillsPage() {
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-gray-900">{skill.currentScore}%</p>
-                <p className="text-xs text-gray-500">{skill.attempts} prób</p>
+                <p className="text-xs text-gray-500">{t('attempts', { count: skill.attempts })}</p>
               </div>
             </div>
             
@@ -327,7 +324,7 @@ export default function SkillsPage() {
                 <div className="flex-1">
                   <p className="text-sm text-gray-600">{skill.instructorNotes}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Ostatnio ćwiczone: {skill.lastPracticed}
+                    {t('lastPracticed')}: {skill.lastPracticed}
                   </p>
                 </div>
               </div>
@@ -337,7 +334,7 @@ export default function SkillsPage() {
               onClick={() => setShowDetails(showDetails === skill.id ? null : skill.id)}
               className="w-full mt-3 flex items-center justify-center gap-2 text-sm text-blue-600 hover:text-blue-700"
             >
-              {showDetails === skill.id ? 'Zwiń szczegóły' : 'Zobacz historię'}
+              {showDetails === skill.id ? t('buttons.hideDetails') : t('buttons.showHistory')}
               <ChevronDown className={`h-4 w-4 transition-transform ${showDetails === skill.id ? 'rotate-180' : ''}`} />
             </button>
             
@@ -345,7 +342,7 @@ export default function SkillsPage() {
               <div className="mt-3 pt-3 border-t border-gray-200">
                 {/* SkillHistoryChart component would go here */}
                 <div className="h-32 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
-                  <span className="text-sm">Wykres historii umiejętności</span>
+                  <span className="text-sm">{t('charts.skillHistory')}</span>
                 </div>
               </div>
             )}
@@ -355,10 +352,10 @@ export default function SkillsPage() {
 
       {/* Comparison with Average */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Porównanie z innymi studentami</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('comparison.title')}</h2>
         {/* ComparisonChart component would go here */}
         <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400">
-          <span>Wykres porównawczy</span>
+          <span>{t('charts.comparison')}</span>
         </div>
       </div>
     </div>

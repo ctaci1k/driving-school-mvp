@@ -1,41 +1,42 @@
 // app/[locale]/instructor/schedule/layout.tsx
-// Layout dla sekcji harmonogramu z Provider, SEO i Error Boundary
+// Layout для секції розкладу з Provider, SEO та Error Boundary
 
 import { Metadata } from 'next'
 import { ScheduleProvider } from './providers/ScheduleProvider'
-import { ErrorBoundary } from './components/ErrorBoundary'
+import { ErrorBoundaryWrapper } from './components/ErrorBoundary'
 import { Toaster } from '@/components/ui/toaster'
 
-// Metadata dla SEO
+// Metadata для SEO
 export const metadata: Metadata = {
-  title: 'Harmonogram Instruktora - Panel Zarządzania',
-  description: 'Zarządzaj swoim harmonogramem zajęć, rezerwacjami kursantów i godzinami pracy. System dla instruktorów nauki jazdy.',
+  title: 'Розклад інструктора - Панель керування',
+  description: 'Керуйте своїм розкладом занять, бронюваннями курсантів та робочими годинами. Система для інструкторів з водіння.',
   keywords: [
-    'harmonogram instruktora',
-    'zarządzanie czasem',
-    'rezerwacje jazdy',
-    'szkoła jazdy',
-    'instruktor',
-    'grafik zajęć'
+    'розклад інструктора',
+    'керування часом',
+    'бронювання водіння',
+    'автошкола',
+    'інструктор',
+    'графік занять'
   ],
   openGraph: {
-    title: 'Harmonogram Instruktora - System Zarządzania',
-    description: 'Profesjonalny system zarządzania harmonogramem dla instruktorów nauki jazdy',
+    title: 'Розклад інструктора - Система керування',
+    description: 'Професійна система керування розкладом для інструкторів з водіння',
     type: 'website',
-    locale: 'pl_PL',
-    siteName: 'System Szkoły Jazdy',
+    locale: 'uk_UA',
+    siteName: 'Система Автошколи',
   },
   twitter: {
     card: 'summary',
-    title: 'Harmonogram Instruktora',
-    description: 'System zarządzania czasem dla instruktorów nauki jazdy',
+    title: 'Розклад інструктора',
+    description: 'Система керування часом для інструкторів з водіння',
   },
   robots: {
-    index: false, // Nie indeksuj panelu instruktora
+    index: false, // Не індексувати панель інструктора
     follow: false,
   },
   alternates: {
     languages: {
+      'uk': '/uk/instructor/schedule',
       'pl': '/pl/instructor/schedule',
       'en': '/en/instructor/schedule',
     },
@@ -65,32 +66,41 @@ interface ScheduleLayoutProps {
   }
 }
 
+// Об'єкт з перекладами для skip link
+const skipLinkTranslations = {
+  uk: 'Перейти до вмісту',
+  pl: 'Przejdź do treści',
+  en: 'Skip to content'
+}
+
 export default function ScheduleLayout({ 
   children, 
   params 
 }: ScheduleLayoutProps) {
+  const skipLinkText = skipLinkTranslations[params.locale as keyof typeof skipLinkTranslations] || skipLinkTranslations.uk
+  
   return (
-    <ErrorBoundary>
+    <ErrorBoundaryWrapper locale={params.locale}>
       <ScheduleProvider locale={params.locale}>
-        {/* Kontener główny z responsywnym paddingiem */}
+        {/* Контейнер головний з адаптивним відступом */}
         <div className="min-h-screen bg-background">
-          {/* Skip to content link dla dostępności */}
+          {/* Skip to content посилання для доступності */}
           <a 
             href="#main-content" 
             className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-50"
           >
-            Przejdź do treści
+            {skipLinkText}
           </a>
           
-          {/* Główna treść */}
+          {/* Головний вміст */}
           <main id="main-content" className="relative">
             {children}
           </main>
           
-          {/* Toast notifications */}
+          {/* Toast повідомлення */}
           <Toaster />
         </div>
       </ScheduleProvider>
-    </ErrorBoundary>
+    </ErrorBoundaryWrapper>
   )
 }

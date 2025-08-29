@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/shared/SearchBar.tsx
-// Komponent paska wyszukiwania z autouzupełnianiem i filtrami
-
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { Search, X, Filter, User, MapPin, Calendar } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -28,19 +27,20 @@ interface SearchSuggestion {
 export default function SearchBar({
   value,
   onChange,
-  placeholder = "Szukaj kursanta, lokalizacji, daty...",
+  placeholder,
   className,
   showFilters = false,
   onFilterClick,
   suggestions = []
 }: SearchBarProps) {
+  const t = useTranslations('instructor.schedule.shared.searchBar')
   const [isFocused, setIsFocused] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestionsRef = useRef<HTMLDivElement>(null)
 
-  // Przykładowe sugestie (w prawdziwej aplikacji byłyby pobierane z API)
+  // Mock suggestions - залишаємо польською
   const defaultSuggestions: SearchSuggestion[] = [
     {
       id: '1',
@@ -73,15 +73,15 @@ export default function SearchBar({
     {
       id: '5',
       type: 'data',
-      label: 'Dzisiaj',
-      subtitle: new Date().toLocaleDateString('pl-PL'),
+      label: t('dateLabels.today'),
+      subtitle: new Date().toLocaleDateString('uk-UA'),
       icon: <Calendar className="w-4 h-4" />
     },
     {
       id: '6',
       type: 'data',
-      label: 'Jutro',
-      subtitle: new Date(Date.now() + 86400000).toLocaleDateString('pl-PL'),
+      label: t('dateLabels.tomorrow'),
+      subtitle: new Date(Date.now() + 86400000).toLocaleDateString('uk-UA'),
       icon: <Calendar className="w-4 h-4" />
     }
   ]
@@ -174,6 +174,20 @@ export default function SearchBar({
     }
   }
 
+  // Tłumaczenie typu sugestii
+  const getTypeLabel = (type: SearchSuggestion['type']) => {
+    switch (type) {
+      case 'kursant':
+        return t('suggestionTypes.student')
+      case 'lokalizacja':
+        return t('suggestionTypes.location')
+      case 'data':
+        return t('suggestionTypes.date')
+      default:
+        return type
+    }
+  }
+
   return (
     <div className={cn("relative", className)}>
       <div className={cn(
@@ -190,7 +204,7 @@ export default function SearchBar({
           onFocus={handleFocus}
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={placeholder || t('placeholder')}
           className="flex-1 px-10 py-2 text-sm bg-transparent outline-none placeholder:text-gray-400"
         />
 
@@ -200,7 +214,7 @@ export default function SearchBar({
             <button
               onClick={handleClear}
               className="p-1 hover:bg-gray-100 rounded transition-colors"
-              title="Wyczyść"
+              title={t('clear')}
             >
               <X className="w-4 h-4 text-gray-400" />
             </button>
@@ -212,7 +226,7 @@ export default function SearchBar({
               <button
                 onClick={onFilterClick}
                 className="p-1 hover:bg-gray-100 rounded transition-colors"
-                title="Filtry zaawansowane"
+                title={t('advancedFilters')}
               >
                 <Filter className="w-4 h-4 text-gray-500" />
               </button>
@@ -252,7 +266,7 @@ export default function SearchBar({
                 </div>
                 <div className="flex-shrink-0">
                   <span className="text-xs text-gray-400 capitalize">
-                    {suggestion.type}
+                    {getTypeLabel(suggestion.type)}
                   </span>
                 </div>
               </button>
@@ -262,10 +276,10 @@ export default function SearchBar({
           {filteredSuggestions.length === 0 && value && (
             <div className="px-3 py-4 text-center">
               <p className="text-sm text-gray-500">
-                Brak wyników dla "{value}"
+                {t('noResults', { query: value })}
               </p>
               <p className="text-xs text-gray-400 mt-1">
-                Spróbuj innych słów kluczowych
+                {t('tryOtherKeywords')}
               </p>
             </div>
           )}
@@ -277,15 +291,15 @@ export default function SearchBar({
         <div className="absolute top-full left-0 right-0 mt-[21rem] text-xs text-gray-400 flex items-center gap-4 px-2">
           <span className="flex items-center gap-1">
             <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">↑↓</kbd>
-            nawigacja
+            {t('shortcuts.navigation')}
           </span>
           <span className="flex items-center gap-1">
             <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">Enter</kbd>
-            wybierz
+            {t('shortcuts.select')}
           </span>
           <span className="flex items-center gap-1">
             <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-gray-600">Esc</kbd>
-            zamknij
+            {t('shortcuts.close')}
           </span>
         </div>
       )}

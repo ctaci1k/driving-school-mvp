@@ -1,7 +1,9 @@
 // app/[locale]/admin/vehicles/maintenance/page.tsx
-"use client";
+'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import {
     Calendar, Clock, Car, Wrench, AlertCircle, CheckCircle,
     Filter, Search, Plus, Download, Eye, Edit, Trash2,
@@ -9,9 +11,13 @@ import {
     ChevronLeft, ChevronRight, Gauge, Battery, Fuel
 } from 'lucide-react';
 import { format, addDays, subDays, isAfter, isBefore } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { pl, uk } from 'date-fns/locale';
 
 export default function VehicleMaintenancePage() {
+    const t = useTranslations('admin.vehicles.maintenance');
+    const locale = useLocale();
+    const dateLocale = locale === 'uk' ? uk : pl;
+    
     const [activeTab, setActiveTab] = useState('scheduled');
     const [searchQuery, setSearchQuery] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
@@ -156,35 +162,25 @@ export default function VehicleMaintenancePage() {
         }
     };
 
-    const getStatusLabel = (status: string) => {
-        switch (status) {
-            case 'scheduled': return 'Zaplanowane';
-            case 'in_progress': return 'W trakcie';
-            case 'completed': return 'Zakończone';
-            case 'cancelled': return 'Anulowane';
-            default: return status;
-        }
-    };
-
     return (
         <div className="max-w-7xl mx-auto">
             {/* Header */}
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">Serwis pojazdów</h1>
-                    <p className="text-gray-600 mt-1">Zarządzanie przeglądami i naprawami</p>
+                    <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+                    <p className="text-gray-600 mt-1">{t('subtitle')}</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
                         <Download className="w-4 h-4" />
-                        Eksport
+                        {t('buttons.export')}
                     </button>
                     <button
                         onClick={() => setShowAddModal(true)}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
                     >
                         <Plus className="w-4 h-4" />
-                        Zaplanuj serwis
+                        {t('buttons.scheduleMaintenance')}
                     </button>
                 </div>
             </div>
@@ -194,53 +190,53 @@ export default function VehicleMaintenancePage() {
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <Calendar className="w-5 h-5 text-blue-600" />
-                        <span className="text-xs text-gray-500">Zaplanowane</span>
+                        <span className="text-xs text-gray-500">{t('stats.scheduled')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-800">{stats.scheduled}</p>
                 </div>
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <Wrench className="w-5 h-5 text-yellow-600" />
-                        <span className="text-xs text-gray-500">W trakcie</span>
+                        <span className="text-xs text-gray-500">{t('stats.inProgress')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-800">{stats.inProgress}</p>
                 </div>
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <CheckCircle className="w-5 h-5 text-green-600" />
-                        <span className="text-xs text-gray-500">Zakończone</span>
+                        <span className="text-xs text-gray-500">{t('stats.completed')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-800">{stats.completed}</p>
                 </div>
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <Car className="w-5 h-5 text-orange-600" />
-                        <span className="text-xs text-gray-500">W serwisie</span>
+                        <span className="text-xs text-gray-500">{t('stats.inService')}</span>
                     </div>
                     <p className="text-2xl font-bold text-gray-800">{stats.vehiclesInService}</p>
                 </div>
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <DollarSign className="w-5 h-5 text-purple-600" />
-                        <span className="text-xs text-gray-500">Koszt całk.</span>
+                        <span className="text-xs text-gray-500">{t('stats.totalCost')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-800">{stats.totalCost} PLN</p>
+                    <p className="text-2xl font-bold text-gray-800">{stats.totalCost} {t('currency')}</p>
                 </div>
                 <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center justify-between mb-2">
                         <TrendingUp className="w-5 h-5 text-indigo-600" />
-                        <span className="text-xs text-gray-500">Śr. koszt</span>
+                        <span className="text-xs text-gray-500">{t('stats.avgCost')}</span>
                     </div>
-                    <p className="text-2xl font-bold text-gray-800">{stats.avgCost} PLN</p>
+                    <p className="text-2xl font-bold text-gray-800">{stats.avgCost} {t('currency')}</p>
                 </div>
             </div>
 
             {/* Alerts Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-semibold text-gray-800">Nadchodzące przeglądy</h2>
+                    <h2 className="text-lg font-semibold text-gray-800">{t('alerts.title')}</h2>
                     <span className="px-2 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
-                        {upcomingAlerts.length} alertów
+                        {t('alerts.count', { count: upcomingAlerts.length })}
                     </span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -265,7 +261,7 @@ export default function VehicleMaintenancePage() {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Szukaj pojazdu lub typu serwisu..."
+                                placeholder={t('filters.searchPlaceholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -277,17 +273,17 @@ export default function VehicleMaintenancePage() {
                         onChange={(e) => setFilterStatus(e.target.value)}
                         className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="all">Wszystkie statusy</option>
-                        <option value="scheduled">Zaplanowane</option>
-                        <option value="in_progress">W trakcie</option>
-                        <option value="completed">Zakończone</option>
+                        <option value="all">{t('filters.allStatuses')}</option>
+                        <option value="scheduled">{t('filters.scheduled')}</option>
+                        <option value="in_progress">{t('filters.inProgress')}</option>
+                        <option value="completed">{t('filters.completed')}</option>
                     </select>
                     <select
                         value={filterVehicle}
                         onChange={(e) => setFilterVehicle(e.target.value)}
                         className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="all">Wszystkie pojazdy</option>
+                        <option value="all">{t('filters.allVehicles')}</option>
                         {vehicles.map(vehicle => (
                             <option key={vehicle.id} value={vehicle.id}>
                                 {vehicle.make} {vehicle.model} - {vehicle.registration}
@@ -296,7 +292,7 @@ export default function VehicleMaintenancePage() {
                     </select>
                     <button className="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
                         <Filter className="w-4 h-4" />
-                        Więcej filtrów
+                        {t('buttons.moreFilters')}
                     </button>
                 </div>
             </div>
@@ -308,28 +304,28 @@ export default function VehicleMaintenancePage() {
                         <thead className="bg-gray-50 border-b border-gray-200">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Pojazd
+                                    {t('table.vehicle')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Typ serwisu
+                                    {t('table.serviceType')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Data
+                                    {t('table.date')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Przebieg
+                                    {t('table.mileage')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Technik
+                                    {t('table.technician')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Koszt
+                                    {t('table.cost')}
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Status
+                                    {t('table.status')}
                                 </th>
                                 <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                    Akcje
+                                    {t('table.actions')}
                                 </th>
                             </tr>
                         </thead>
@@ -353,21 +349,21 @@ export default function VehicleMaintenancePage() {
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <p className="text-sm text-gray-800">
-                                            {format(new Date(record.date), 'dd MMM yyyy', { locale: pl })}
+                                            {format(new Date(record.date), 'dd MMM yyyy', { locale: dateLocale })}
                                         </p>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <p className="text-sm text-gray-800">{record.mileage} km</p>
+                                        <p className="text-sm text-gray-800">{record.mileage} {t('km')}</p>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <p className="text-sm text-gray-800">{record.technician}</p>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <p className="text-sm font-semibold text-gray-800">{record.cost} PLN</p>
+                                        <p className="text-sm font-semibold text-gray-800">{record.cost} {t('currency')}</p>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(record.status)}`}>
-                                            {getStatusLabel(record.status)}
+                                            {t(`status.${record.status.replace('_', 'P')}`)}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -398,7 +394,7 @@ export default function VehicleMaintenancePage() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold text-gray-800">Zaplanuj serwis</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('modal.scheduleTitle')}</h2>
                             <button
                                 onClick={() => setShowAddModal(false)}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -411,10 +407,10 @@ export default function VehicleMaintenancePage() {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Pojazd
+                                        {t('modal.vehicle')}
                                     </label>
                                     <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option value="">Wybierz pojazd</option>
+                                        <option value="">{t('modal.selectVehicle')}</option>
                                         {vehicles.map(vehicle => (
                                             <option key={vehicle.id} value={vehicle.id}>
                                                 {vehicle.make} {vehicle.model} - {vehicle.registration}
@@ -424,20 +420,20 @@ export default function VehicleMaintenancePage() {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Typ serwisu
+                                        {t('modal.type')}
                                     </label>
                                     <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <option value="">Wybierz typ</option>
-                                        <option value="oil_change">Wymiana oleju</option>
-                                        <option value="inspection">Przegląd okresowy</option>
-                                        <option value="tire_change">Wymiana opon</option>
-                                        <option value="brake_service">Serwis hamulców</option>
-                                        <option value="other">Inne</option>
+                                        <option value="">{t('modal.selectType')}</option>
+                                        <option value="oil_change">{t('serviceTypes.oilChange')}</option>
+                                        <option value="inspection">{t('serviceTypes.periodicInspection')}</option>
+                                        <option value="tire_change">{t('serviceTypes.tireChange')}</option>
+                                        <option value="brake_service">{t('serviceTypes.brakeService')}</option>
+                                        <option value="other">{t('serviceTypes.other')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Data
+                                        {t('modal.date')}
                                     </label>
                                     <input
                                         type="date"
@@ -446,31 +442,31 @@ export default function VehicleMaintenancePage() {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Przebieg
+                                        {t('modal.mileage')}
                                     </label>
                                     <input
                                         type="number"
-                                        placeholder="np. 45000"
+                                        placeholder={t('modal.mileagePlaceholder')}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Technik
+                                        {t('modal.technician')}
                                     </label>
                                     <input
                                         type="text"
-                                        placeholder="Imię i nazwisko"
+                                        placeholder={t('modal.technicianPlaceholder')}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Szacowany koszt (PLN)
+                                        {t('modal.estimatedCost')}
                                     </label>
                                     <input
                                         type="number"
-                                        placeholder="np. 450"
+                                        placeholder={t('modal.costPlaceholder')}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -478,31 +474,31 @@ export default function VehicleMaintenancePage() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Opis
+                                    {t('modal.description')}
                                 </label>
                                 <textarea
                                     rows={3}
-                                    placeholder="Dodaj opis serwisu..."
+                                    placeholder={t('modal.descriptionPlaceholder')}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Priorytet
+                                    {t('priority.label')}
                                 </label>
                                 <div className="flex gap-4">
                                     <label className="flex items-center">
                                         <input type="radio" name="priority" value="low" className="mr-2" />
-                                        <span className="text-sm">Niski</span>
+                                        <span className="text-sm">{t('priority.low')}</span>
                                     </label>
                                     <label className="flex items-center">
                                         <input type="radio" name="priority" value="medium" className="mr-2" defaultChecked />
-                                        <span className="text-sm">Średni</span>
+                                        <span className="text-sm">{t('priority.medium')}</span>
                                     </label>
                                     <label className="flex items-center">
                                         <input type="radio" name="priority" value="high" className="mr-2" />
-                                        <span className="text-sm">Wysoki</span>
+                                        <span className="text-sm">{t('priority.high')}</span>
                                     </label>
                                 </div>
                             </div>
@@ -513,13 +509,13 @@ export default function VehicleMaintenancePage() {
                                     onClick={() => setShowAddModal(false)}
                                     className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
                                 >
-                                    Anuluj
+                                    {t('buttons.cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                 >
-                                    Zaplanuj serwis
+                                    {t('buttons.submit')}
                                 </button>
                             </div>
                         </form>
@@ -532,7 +528,7 @@ export default function VehicleMaintenancePage() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl p-6 max-w-lg w-full">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold text-gray-800">Szczegóły serwisu</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('modal.detailsTitle')}</h2>
                             <button
                                 onClick={() => setSelectedMaintenance(null)}
                                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -543,43 +539,43 @@ export default function VehicleMaintenancePage() {
 
                         <div className="space-y-4">
                             <div>
-                                <p className="text-sm text-gray-600">Pojazd</p>
+                                <p className="text-sm text-gray-600">{t('modal.vehicle')}</p>
                                 <p className="font-semibold text-gray-800">{selectedMaintenance.vehicle}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-600">Typ serwisu</p>
+                                <p className="text-sm text-gray-600">{t('modal.type')}</p>
                                 <p className="font-semibold text-gray-800">{selectedMaintenance.type}</p>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-sm text-gray-600">Data</p>
+                                    <p className="text-sm text-gray-600">{t('modal.date')}</p>
                                     <p className="font-semibold text-gray-800">
-                                        {format(new Date(selectedMaintenance.date), 'dd MMMM yyyy', { locale: pl })}
+                                        {format(new Date(selectedMaintenance.date), 'dd MMMM yyyy', { locale: dateLocale })}
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600">Przebieg</p>
-                                    <p className="font-semibold text-gray-800">{selectedMaintenance.mileage.toLocaleString()} km</p>
+                                    <p className="text-sm text-gray-600">{t('modal.mileage')}</p>
+                                    <p className="font-semibold text-gray-800">{selectedMaintenance.mileage.toLocaleString()} {t('km')}</p>
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <p className="text-sm text-gray-600">Technik</p>
+                                    <p className="text-sm text-gray-600">{t('modal.technician')}</p>
                                     <p className="font-semibold text-gray-800">{selectedMaintenance.technician}</p>
                                 </div>
                                 <div>
-                                    <p className="text-sm text-gray-600">Koszt</p>
-                                    <p className="font-semibold text-gray-800">{selectedMaintenance.cost} PLN</p>
+                                    <p className="text-sm text-gray-600">{t('table.cost')}</p>
+                                    <p className="font-semibold text-gray-800">{selectedMaintenance.cost} {t('currency')}</p>
                                 </div>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-600">Opis</p>
+                                <p className="text-sm text-gray-600">{t('modal.description')}</p>
                                 <p className="text-gray-800">{selectedMaintenance.description}</p>
                             </div>
                             <div>
-                                <p className="text-sm text-gray-600">Status</p>
+                                <p className="text-sm text-gray-600">{t('table.status')}</p>
                                 <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(selectedMaintenance.status)}`}>
-                                    {getStatusLabel(selectedMaintenance.status)}
+                                    {t(`status.${selectedMaintenance.status.replace('_', 'P')}`)}
                                 </span>
                             </div>
                             <div className="flex justify-end gap-3 pt-4 border-t">
@@ -587,10 +583,10 @@ export default function VehicleMaintenancePage() {
                                     onClick={() => setSelectedMaintenance(null)}
                                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                                 >
-                                    Zamknij
+                                    {t('buttons.close')}
                                 </button>
                                 <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                                    Edytuj
+                                    {t('buttons.edit')}
                                 </button>
                             </div>
                         </div>

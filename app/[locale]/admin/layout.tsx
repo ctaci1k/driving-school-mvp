@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   LayoutDashboard, Users, GraduationCap, UserCheck, Car,
   MapPin, Package, Calendar, CreditCard, FileText, Settings,
@@ -36,7 +37,15 @@ const AVAILABLE_LANGUAGES: Language[] = [
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
 ];
 
+// Mock data - Polish names and locations
+const CURRENT_USER = {
+  name: 'Administrator Systemu',
+  email: 'admin@drive-school.com',
+  avatar: 'https://ui-avatars.com/api/?name=Admin&background=6366F1&color=fff'
+};
+
 export default function AdminLayout({ children, params }: AdminLayoutProps) {
+  const t = useTranslations('admin.layout');
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -48,25 +57,18 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
   const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === params.locale) || AVAILABLE_LANGUAGES[0];
 
   const navigation = [
-    { name: 'Dashboard', href: `/${params.locale}/admin/dashboard`, icon: LayoutDashboard },
-    { name: 'Użytkownicy', href: `/${params.locale}/admin/users`, icon: Users },
-    { name: 'Instruktorzy', href: `/${params.locale}/admin/instructors`, icon: GraduationCap },
-    { name: 'Uczniowie', href: `/${params.locale}/admin/students`, icon: UserCheck },
-    { name: 'Pojazdy', href: `/${params.locale}/admin/vehicles`, icon: Car },
-    { name: 'Lokalizacje', href: `/${params.locale}/admin/locations`, icon: MapPin },
-    { name: 'Pakiety', href: `/${params.locale}/admin/packages`, icon: Package },
-    { name: 'Rezerwacje', href: `/${params.locale}/admin/bookings`, icon: Calendar },
-    { name: 'Płatności', href: `/${params.locale}/admin/payments`, icon: CreditCard },
-    { name: 'Raporty', href: `/${params.locale}/admin/reports`, icon: FileText },
-    { name: 'Ustawienia', href: `/${params.locale}/admin/settings`, icon: Settings }
+    { name: t('navigation.dashboard'), href: `/${params.locale}/admin/dashboard`, icon: LayoutDashboard },
+    { name: t('navigation.users'), href: `/${params.locale}/admin/users`, icon: Users },
+    { name: t('navigation.instructors'), href: `/${params.locale}/admin/instructors`, icon: GraduationCap },
+    { name: t('navigation.students'), href: `/${params.locale}/admin/students`, icon: UserCheck },
+    { name: t('navigation.vehicles'), href: `/${params.locale}/admin/vehicles`, icon: Car },
+    { name: t('navigation.locations'), href: `/${params.locale}/admin/locations`, icon: MapPin },
+    { name: t('navigation.packages'), href: `/${params.locale}/admin/packages`, icon: Package },
+    { name: t('navigation.bookings'), href: `/${params.locale}/admin/bookings`, icon: Calendar },
+    { name: t('navigation.payments'), href: `/${params.locale}/admin/payments`, icon: CreditCard },
+    { name: t('navigation.reports'), href: `/${params.locale}/admin/reports`, icon: FileText },
+    { name: t('navigation.settings'), href: `/${params.locale}/admin/settings`, icon: Settings }
   ];
-
-  const currentUser = {
-    name: 'Administrator Systemu',
-    email: 'admin@drive-school.com',
-    avatar: 'https://ui-avatars.com/api/?name=Admin&background=6366F1&color=fff',
-    role: 'Super Admin'
-  };
 
   useEffect(() => {
     if (darkMode) {
@@ -83,11 +85,22 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
     const breadcrumbs: Array<{ name: string; href: string; current: boolean }> = [];
     let path = '';
 
+    const breadcrumbKeys = [
+      'admin', 'dashboard', 'users', 'instructors', 'students',
+      'vehicles', 'locations', 'packages', 'bookings', 'payments',
+      'reports', 'settings', 'maintenance', 'new', 'edit'
+    ];
+
     parts.forEach((part, index) => {
       path += `/${part}`;
       if (part !== params.locale) {
+        const isKnownKey = breadcrumbKeys.includes(part);
+        const translatedName = isKnownKey 
+          ? t(`breadcrumbs.${part}`) 
+          : part.charAt(0).toUpperCase() + part.slice(1);
+        
         breadcrumbs.push({
-          name: part.charAt(0).toUpperCase() + part.slice(1),
+          name: translatedName,
           href: path,
           current: index === parts.length - 1
         });
@@ -128,13 +141,14 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
               <Car className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-gray-800">DriveSchool</h1>
-              <p className="text-xs text-gray-500">Portal Administratora</p>
+              <h1 className="font-bold text-gray-800">{t('title')}</h1>
+              <p className="text-xs text-gray-500">{t('subtitle')}</p>
             </div>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-1 rounded-lg hover:bg-gray-100"
+            aria-label={t('mobile.closeMenu')}
           >
             <X className="w-5 h-5 text-gray-500" />
           </button>
@@ -145,6 +159,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
           {navigation.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
+            const isPayments = item.href.includes('/payments');
             
             return (
               <Link
@@ -158,7 +173,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
-                {item.name === 'Płatności' && notifications > 0 && (
+                {isPayments && notifications > 0 && (
                   <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                     {notifications}
                   </span>
@@ -172,16 +187,16 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center gap-3">
             <img 
-              src={currentUser.avatar} 
-              alt={currentUser.name}
+              src={CURRENT_USER.avatar} 
+              alt={CURRENT_USER.name}
               className="w-10 h-10 rounded-full"
             />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-800 truncate">
-                {currentUser.name}
+                {CURRENT_USER.name}
               </p>
               <p className="text-xs text-gray-500 truncate">
-                {currentUser.role}
+                {t('user.role')}
               </p>
             </div>
           </div>
@@ -198,6 +213,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
+                aria-label={t('mobile.openMenu')}
               >
                 <Menu className="w-5 h-5 text-gray-600" />
               </button>
@@ -207,6 +223,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                 <Link 
                   href={`/${params.locale}/admin/dashboard`}
                   className="text-gray-500 hover:text-gray-700"
+                  aria-label={t('breadcrumbs.home')}
                 >
                   <Home className="w-4 h-4" />
                 </Link>
@@ -232,7 +249,10 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
               {/* Right side actions */}
               <div className="flex items-center gap-3">
                 {/* Search */}
-                <button className="p-2 rounded-lg hover:bg-gray-100">
+                <button 
+                  className="p-2 rounded-lg hover:bg-gray-100"
+                  aria-label={t('search.button')}
+                >
                   <Search className="w-5 h-5 text-gray-600" />
                 </button>
 
@@ -277,6 +297,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                 <button
                   onClick={() => setDarkMode(!darkMode)}
                   className="p-2 rounded-lg hover:bg-gray-100"
+                  aria-label={t('theme.toggle')}
                 >
                   {darkMode ? (
                     <Sun className="w-5 h-5 text-gray-600" />
@@ -286,7 +307,10 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                 </button>
 
                 {/* Notifications */}
-                <button className="relative p-2 rounded-lg hover:bg-gray-100">
+                <button 
+                  className="relative p-2 rounded-lg hover:bg-gray-100"
+                  aria-label={t('notifications.label')}
+                >
                   <Bell className="w-5 h-5 text-gray-600" />
                   {notifications > 0 && (
                     <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
@@ -300,8 +324,8 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                     className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100"
                   >
                     <img 
-                      src={currentUser.avatar} 
-                      alt={currentUser.name}
+                      src={CURRENT_USER.avatar} 
+                      alt={CURRENT_USER.name}
                       className="w-8 h-8 rounded-full"
                     />
                     <ChevronDown className="w-4 h-4 text-gray-600" />
@@ -316,24 +340,24 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                       <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-20">
                         <div className="p-3 border-b border-gray-200">
                           <p className="font-medium text-gray-800">
-                            {currentUser.name}
+                            {CURRENT_USER.name}
                           </p>
                           <p className="text-sm text-gray-500">
-                            {currentUser.email}
+                            {CURRENT_USER.email}
                           </p>
                         </div>
                         <div className="p-1">
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <User className="w-4 h-4" />
-                            <span className="text-sm">Profil</span>
+                            <span className="text-sm">{t('user.profile')}</span>
                           </button>
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <Shield className="w-4 h-4" />
-                            <span className="text-sm">Bezpieczeństwo</span>
+                            <span className="text-sm">{t('user.security')}</span>
                           </button>
                           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-50 text-gray-700">
                             <Settings className="w-4 h-4" />
-                            <span className="text-sm">Ustawienia</span>
+                            <span className="text-sm">{t('user.settings')}</span>
                           </button>
                         </div>
                         <div className="p-1 border-t border-gray-200">
@@ -342,7 +366,7 @@ export default function AdminLayout({ children, params }: AdminLayoutProps) {
                             className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-50 text-red-600"
                           >
                             <LogOut className="w-4 h-4" />
-                            <span className="text-sm">Wyloguj</span>
+                            <span className="text-sm">{t('user.logout')}</span>
                           </button>
                         </div>
                       </div>

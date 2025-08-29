@@ -1,5 +1,5 @@
 // app/[locale]/instructor/schedule/components/tabs/TemplatesTab.tsx
-// Zakładka zarządzania szablonami harmonogramu z operacjami CRUD i szybkim zastosowaniem
+// Вкладка керування шаблонами розкладу з операціями CRUD та швидким застосуванням
 
 'use client'
 
@@ -11,6 +11,7 @@ import {
   ChevronRight, Save, X, FileText
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { ScheduleTemplate, WorkingHours } from '../../types/schedule.types'
 import { formatDate } from '../../utils/dateHelpers'
@@ -20,7 +21,7 @@ interface TemplatesTabProps {
   className?: string
 }
 
-// Komponent karty szablonu
+// Компонент картки шаблону
 const TemplateCard: React.FC<{
   template: ScheduleTemplate
   onEdit: () => void
@@ -28,10 +29,11 @@ const TemplateCard: React.FC<{
   onDuplicate: () => void
   onApply: () => void
   onSetDefault: () => void
-}> = ({ template, onEdit, onDelete, onDuplicate, onApply, onSetDefault }) => {
+  t: any
+}> = ({ template, onEdit, onDelete, onDuplicate, onApply, onSetDefault, t }) => {
   const [showMenu, setShowMenu] = useState(false)
 
-  // Oblicz statystyki szablonu
+  // Обчислити статистику шаблону
   const stats = useMemo(() => {
     let totalHours = 0
     let workingDays = 0
@@ -59,7 +61,7 @@ const TemplateCard: React.FC<{
       "border rounded-lg p-4 hover:shadow-md transition-all",
       template.isDefault && "border-blue-500 bg-blue-50"
     )}>
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-start gap-3">
           {template.isDefault && (
@@ -73,7 +75,7 @@ const TemplateCard: React.FC<{
           </div>
         </div>
         
-        {/* Menu akcji */}
+        {/* Меню дій */}
         <div className="relative">
           <button
             onClick={() => setShowMenu(!showMenu)}
@@ -97,7 +99,7 @@ const TemplateCard: React.FC<{
                   className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
                 >
                   <Edit2 className="w-3 h-3" />
-                  Edytuj
+                  {t('buttons.edit')}
                 </button>
                 <button
                   onClick={() => {
@@ -107,7 +109,7 @@ const TemplateCard: React.FC<{
                   className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
                 >
                   <Copy className="w-3 h-3" />
-                  Duplikuj
+                  {t('buttons.duplicate')}
                 </button>
                 {!template.isDefault && (
                   <button
@@ -118,7 +120,7 @@ const TemplateCard: React.FC<{
                     className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2"
                   >
                     <Star className="w-3 h-3" />
-                    Ustaw jako domyślny
+                    {t('buttons.setAsDefault')}
                   </button>
                 )}
                 <hr className="my-1" />
@@ -130,7 +132,7 @@ const TemplateCard: React.FC<{
                   className="w-full px-3 py-2 text-left text-sm hover:bg-red-50 text-red-600 flex items-center gap-2"
                 >
                   <Trash2 className="w-3 h-3" />
-                  Usuń
+                  {t('buttons.delete')}
                 </button>
               </div>
             </>
@@ -138,29 +140,29 @@ const TemplateCard: React.FC<{
         </div>
       </div>
 
-      {/* Statystyki */}
+      {/* Статистика */}
       <div className="grid grid-cols-3 gap-2 mb-3">
         <div className="text-center p-2 bg-gray-50 rounded">
           <div className="text-lg font-semibold">{stats.workingDays}</div>
-          <div className="text-xs text-gray-600">dni pracy</div>
+          <div className="text-xs text-gray-600">{t('card.workDays')}</div>
         </div>
         <div className="text-center p-2 bg-gray-50 rounded">
-          <div className="text-lg font-semibold">{stats.totalHours}h</div>
-          <div className="text-xs text-gray-600">tygodniowo</div>
+          <div className="text-lg font-semibold">{stats.totalHours}год</div>
+          <div className="text-xs text-gray-600">{t('card.weekly')}</div>
         </div>
         <div className="text-center p-2 bg-gray-50 rounded">
           <div className="text-lg font-semibold">{stats.slotsPerDay}</div>
-          <div className="text-xs text-gray-600">slotów/dzień</div>
+          <div className="text-xs text-gray-600">{t('card.slotsPerDay')}</div>
         </div>
       </div>
 
-      {/* Dni pracy */}
+      {/* Дні роботи */}
       <div className="mb-3">
-        <div className="text-xs text-gray-600 mb-2">Dni pracy:</div>
+        <div className="text-xs text-gray-600 mb-2">{t('card.workingDays')}</div>
         <div className="flex gap-1">
-          {['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Niedz'].map((day, index) => {
+          {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
             const dayNames = ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela']
-            const isEnabled = template.workingHours[dayNames[index]]?.enabled
+            const isEnabled = template.workingHours[dayNames[['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].indexOf(day)]]?.enabled
             
             return (
               <div
@@ -170,21 +172,21 @@ const TemplateCard: React.FC<{
                   isEnabled ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-400"
                 )}
               >
-                {day}
+                {t(`card.${day}`)}
               </div>
             )
           })}
         </div>
       </div>
 
-      {/* Przyciski akcji */}
+      {/* Кнопки дій */}
       <div className="flex gap-2">
         <button
           onClick={onApply}
           className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
         >
           <CheckCircle className="w-4 h-4" />
-          Zastosuj
+          {t('buttons.apply')}
         </button>
         <button
           onClick={onEdit}
@@ -194,22 +196,23 @@ const TemplateCard: React.FC<{
         </button>
       </div>
 
-      {/* Data utworzenia */}
+      {/* Дата створення */}
       {template.createdAt && (
         <div className="mt-3 pt-3 border-t text-xs text-gray-500">
-          Utworzono: {formatDate(new Date(template.createdAt))}
+          {t('card.createdAt')} {formatDate(new Date(template.createdAt))}
         </div>
       )}
     </div>
   )
 }
 
-// Komponent formularza szablonu
+// Компонент форми шаблону
 const TemplateForm: React.FC<{
   template?: ScheduleTemplate
   onSave: (data: Omit<ScheduleTemplate, 'id' | 'createdAt'>) => void
   onCancel: () => void
-}> = ({ template, onSave, onCancel }) => {
+  t: any
+}> = ({ template, onSave, onCancel, t }) => {
   const [formData, setFormData] = useState<{
     name: string
     description: string
@@ -237,39 +240,49 @@ const TemplateForm: React.FC<{
     }))
   }
 
+  const dayTranslations = {
+    'poniedziałek': 'monday',
+    'wtorek': 'tuesday',
+    'środa': 'wednesday',
+    'czwartek': 'thursday',
+    'piątek': 'friday',
+    'sobota': 'saturday',
+    'niedziela': 'sunday'
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Nazwa i opis */}
+      {/* Назва та опис */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Nazwa szablonu
+          {t('form.templateName')}
         </label>
         <input
           type="text"
           value={formData.name}
           onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
           className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          placeholder="np. Standardowy tydzień pracy"
+          placeholder={t('form.templateNamePlaceholder')}
           required
         />
       </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Opis (opcjonalny)
+          {t('form.description')}
         </label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
           className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           rows={2}
-          placeholder="Krótki opis szablonu..."
+          placeholder={t('form.descriptionPlaceholder')}
         />
       </div>
 
-      {/* Godziny pracy */}
+      {/* Години роботи */}
       <div>
-        <h3 className="text-sm font-medium text-gray-700 mb-3">Godziny pracy</h3>
+        <h3 className="text-sm font-medium text-gray-700 mb-3">{t('form.workingHours')}</h3>
         <div className="space-y-3">
           {Object.entries(formData.workingHours).map(([day, hours]) => (
             <div key={day} className="flex items-center gap-3">
@@ -280,7 +293,9 @@ const TemplateForm: React.FC<{
                   onChange={(e) => updateWorkingDay(day, { enabled: e.target.checked })}
                   className="rounded"
                 />
-                <span className="text-sm capitalize">{day}</span>
+                <span className="text-sm capitalize">
+                  {t(`form.days.${dayTranslations[day as keyof typeof dayTranslations]}`)}
+                </span>
               </label>
               
               {hours.enabled && (
@@ -316,10 +331,10 @@ const TemplateForm: React.FC<{
                     onChange={(e) => updateWorkingDay(day, { slotDuration: Number(e.target.value) })}
                     className="px-2 py-1 border rounded text-sm"
                   >
-                    <option value="60">60 min</option>
-                    <option value="90">90 min</option>
-                    <option value="120">120 min</option>
-                    <option value="150">150 min</option>
+                    <option value="60">{t('form.minutes', { minutes: 60 })}</option>
+                    <option value="90">{t('form.minutes', { minutes: 90 })}</option>
+                    <option value="120">{t('form.minutes', { minutes: 120 })}</option>
+                    <option value="150">{t('form.minutes', { minutes: 150 })}</option>
                   </select>
                 </>
               )}
@@ -328,7 +343,7 @@ const TemplateForm: React.FC<{
         </div>
       </div>
 
-      {/* Domyślny szablon */}
+      {/* Основний шаблон */}
       <label className="flex items-center gap-2">
         <input
           type="checkbox"
@@ -336,17 +351,17 @@ const TemplateForm: React.FC<{
           onChange={(e) => setFormData(prev => ({ ...prev, isDefault: e.target.checked }))}
           className="rounded"
         />
-        <span className="text-sm">Ustaw jako domyślny szablon</span>
+        <span className="text-sm">{t('form.setAsDefault')}</span>
       </label>
 
-      {/* Przyciski */}
+      {/* Кнопки */}
       <div className="flex gap-2 pt-4">
         <button
           type="submit"
           className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           <Save className="w-4 h-4 inline mr-2" />
-          {template ? 'Zapisz zmiany' : 'Utwórz szablon'}
+          {template ? t('buttons.saveChanges') : t('buttons.createTemplate')}
         </button>
         <button
           type="button"
@@ -354,14 +369,14 @@ const TemplateForm: React.FC<{
           className="px-4 py-2 border rounded-lg hover:bg-gray-50"
         >
           <X className="w-4 h-4 inline mr-2" />
-          Anuluj
+          {t('buttons.cancel')}
         </button>
       </div>
     </form>
   )
 }
 
-// Funkcja pomocnicza - domyślne godziny pracy
+// Функція-хелпер - основні години роботи
 function getDefaultWorkingHours(): Record<string, WorkingHours> {
   return {
     'poniedziałek': {
@@ -413,6 +428,7 @@ export default function TemplatesTab({
   searchTerm = '',
   className
 }: TemplatesTabProps) {
+  const t = useTranslations('instructor.schedule.templates')
   const { 
     templates, 
     createTemplate, 
@@ -425,11 +441,11 @@ export default function TemplatesTab({
   const [editingTemplate, setEditingTemplate] = useState<ScheduleTemplate | null>(null)
   const [filter, setFilter] = useState<'all' | 'default' | 'custom'>('all')
 
-  // Filtrowanie szablonów
+  // Фільтрування шаблонів
   const filteredTemplates = useMemo(() => {
     let filtered = [...templates]
     
-    // Filtr wyszukiwania
+    // Фільтр пошуку
     if (searchTerm) {
       const term = searchTerm.toLowerCase()
       filtered = filtered.filter(template =>
@@ -438,14 +454,14 @@ export default function TemplatesTab({
       )
     }
     
-    // Filtr typu
+    // Фільтр типу
     if (filter === 'default') {
       filtered = filtered.filter(t => t.isDefault)
     } else if (filter === 'custom') {
       filtered = filtered.filter(t => !t.isDefault)
     }
     
-    // Sortowanie - domyślne najpierw
+    // Сортування - основні спочатку
     return filtered.sort((a, b) => {
       if (a.isDefault && !b.isDefault) return -1
       if (!a.isDefault && b.isDefault) return 1
@@ -453,7 +469,7 @@ export default function TemplatesTab({
     })
   }, [templates, searchTerm, filter])
 
-  // Handlery
+  // Обробники
   const handleCreateTemplate = async (data: Omit<ScheduleTemplate, 'id' | 'createdAt'>) => {
     await createTemplate(data)
     setShowForm(false)
@@ -468,7 +484,7 @@ export default function TemplatesTab({
   }
 
   const handleDeleteTemplate = async (id: string) => {
-    if (confirm('Czy na pewno chcesz usunąć ten szablon?')) {
+    if (confirm(t('confirmDelete'))) {
       await deleteTemplate(id)
     }
   }
@@ -476,7 +492,7 @@ export default function TemplatesTab({
   const handleDuplicateTemplate = async (template: ScheduleTemplate) => {
     const duplicated = {
       ...template,
-      name: `${template.name} (kopia)`,
+      name: `${template.name} (копія)`,
       isDefault: false
     }
     delete (duplicated as any).id
@@ -485,13 +501,13 @@ export default function TemplatesTab({
   }
 
   const handleSetDefault = async (template: ScheduleTemplate) => {
-    // Usuń domyślny status z innych szablonów
-    for (const t of templates) {
-      if (t.isDefault && t.id !== template.id) {
-        await updateTemplate(t.id, { ...t, isDefault: false })
+    // Видалити основний статус з інших шаблонів
+    for (const temp of templates) {
+      if (temp.isDefault && temp.id !== template.id) {
+        await updateTemplate(temp.id, { ...temp, isDefault: false })
       }
     }
-    // Ustaw jako domyślny
+    // Встановити як основний
     await updateTemplate(template.id, { ...template, isDefault: true })
   }
 
@@ -501,7 +517,7 @@ export default function TemplatesTab({
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `szablony_harmonogramu_${formatDate(new Date())}.json`
+    link.download = t('export.filename', { date: formatDate(new Date()) })
     link.click()
   }
 
@@ -518,7 +534,7 @@ export default function TemplatesTab({
             await createTemplate(template)
           }
         } catch (error) {
-          console.error('Błąd importu:', error)
+          console.error(t('import.error'), error)
         }
       }
       reader.readAsText(file)
@@ -527,14 +543,12 @@ export default function TemplatesTab({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Nagłówek z przyciskami */}
+      {/* Заголовок з кнопками */}
       <div className="bg-white rounded-lg p-4 border">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-semibold">Szablony harmonogramu</h2>
-            <p className="text-sm text-gray-600">
-              Zarządzaj szablonami godzin pracy i szybko je stosuj
-            </p>
+            <h2 className="text-lg font-semibold">{t('title')}</h2>
+            <p className="text-sm text-gray-600">{t('subtitle')}</p>
           </div>
           
           <div className="flex items-center gap-2">
@@ -546,18 +560,18 @@ export default function TemplatesTab({
               className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
               <Plus className="w-4 h-4" />
-              Nowy szablon
+              {t('buttons.newTemplate')}
             </button>
             
             <button
               onClick={handleExport}
               className="p-2 border rounded-lg hover:bg-gray-50"
-              title="Eksportuj szablony"
+              title={t('buttons.export')}
             >
               <Download className="w-4 h-4" />
             </button>
             
-            <label className="p-2 border rounded-lg hover:bg-gray-50 cursor-pointer" title="Importuj szablony">
+            <label className="p-2 border rounded-lg hover:bg-gray-50 cursor-pointer" title={t('buttons.import')}>
               <Upload className="w-4 h-4" />
               <input
                 type="file"
@@ -569,7 +583,7 @@ export default function TemplatesTab({
           </div>
         </div>
 
-        {/* Filtry */}
+        {/* Фільтри */}
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilter('all')}
@@ -578,7 +592,7 @@ export default function TemplatesTab({
               filter === 'all' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
             )}
           >
-            Wszystkie ({templates.length})
+            {t('filters.all')} {t('filters.count', { count: templates.length })}
           </button>
           <button
             onClick={() => setFilter('default')}
@@ -587,7 +601,7 @@ export default function TemplatesTab({
               filter === 'default' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
             )}
           >
-            Domyślne ({templates.filter(t => t.isDefault).length})
+            {t('filters.default')} {t('filters.count', { count: templates.filter(temp => temp.isDefault).length })}
           </button>
           <button
             onClick={() => setFilter('custom')}
@@ -596,17 +610,17 @@ export default function TemplatesTab({
               filter === 'custom' ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
             )}
           >
-            Własne ({templates.filter(t => !t.isDefault).length})
+            {t('filters.custom')} {t('filters.count', { count: templates.filter(temp => !temp.isDefault).length })}
           </button>
         </div>
       </div>
 
-      {/* Formularz (modal) */}
+      {/* Форма (модал) */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <h2 className="text-xl font-semibold mb-4">
-              {editingTemplate ? 'Edytuj szablon' : 'Nowy szablon'}
+              {editingTemplate ? t('form.editTitle') : t('form.newTitle')}
             </h2>
             <TemplateForm
               template={editingTemplate || undefined}
@@ -615,12 +629,13 @@ export default function TemplatesTab({
                 setShowForm(false)
                 setEditingTemplate(null)
               }}
+              t={t}
             />
           </div>
         </div>
       )}
 
-      {/* Lista szablonów */}
+      {/* Список шаблонів */}
       {filteredTemplates.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTemplates.map(template => (
@@ -635,6 +650,7 @@ export default function TemplatesTab({
               onDuplicate={() => handleDuplicateTemplate(template)}
               onApply={() => applyTemplate(template.id)}
               onSetDefault={() => handleSetDefault(template)}
+              t={t}
             />
           ))}
         </div>
@@ -642,10 +658,10 @@ export default function TemplatesTab({
         <div className="bg-white rounded-lg border p-8 text-center">
           <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
           <h3 className="text-lg font-medium text-gray-900 mb-1">
-            Brak szablonów
+            {t('empty.title')}
           </h3>
           <p className="text-sm text-gray-600 mb-4">
-            Utwórz pierwszy szablon harmonogramu, aby szybko stosować godziny pracy
+            {t('empty.description')}
           </p>
           <button
             onClick={() => {
@@ -655,7 +671,7 @@ export default function TemplatesTab({
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             <Plus className="w-4 h-4 inline mr-2" />
-            Utwórz szablon
+            {t('empty.createButton')}
           </button>
         </div>
       )}

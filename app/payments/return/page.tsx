@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Loader2, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 type PaymentStatus = 'checking' | 'success' | 'failed' | 'pending' | 'error'
 
@@ -29,6 +30,7 @@ interface PaymentDetails {
 }
 
 export default function PaymentReturnPage() {
+  const t = useTranslations('common.paymentReturn')
   const searchParams = useSearchParams()
   const router = useRouter()
   const [status, setStatus] = useState<PaymentStatus>('checking')
@@ -45,7 +47,7 @@ export default function PaymentReturnPage() {
     }
 
     if (mock) {
-      // Dla trybu testowego - od razu sukces
+      // Для trybu testowego - od razu sukces
       setStatus('success')
       setPaymentDetails({
         paymentId: 'mock-payment',
@@ -53,7 +55,7 @@ export default function PaymentReturnPage() {
         status: 'COMPLETED',
         amount: 200,
         currency: 'PLN',
-        description: 'Test płatności (tryb deweloperski)',
+        description: t('details.testPayment'),
         createdAt: new Date().toISOString()
       })
       
@@ -131,34 +133,34 @@ export default function PaymentReturnPage() {
   const getStatusTitle = () => {
     switch (status) {
       case 'checking':
-        return 'Sprawdzanie płatności...'
+        return t('status.checking')
       case 'pending':
-        return 'Płatność w trakcie przetwarzania'
+        return t('status.pending')
       case 'success':
-        return 'Płatność zakończona sukcesem!'
+        return t('status.success')
       case 'failed':
-        return 'Płatność nie powiodła się'
+        return t('status.failed')
       case 'error':
-        return 'Wystąpił błąd'
+        return t('status.error')
     }
   }
 
   const getStatusMessage = () => {
     switch (status) {
       case 'checking':
-        return 'Proszę czekać, weryfikujemy Twoją płatność...'
+        return t('messages.checking')
       case 'pending':
-        return 'Twoja płatność jest przetwarzana przez Przelewy24. Może to potrwać kilka minut. Możesz odświeżyć tę stronę lub sprawdzić status później.'
+        return t('messages.pending')
       case 'success':
         return paymentDetails?.booking 
-          ? 'Dziękujemy za opłacenie lekcji. Za chwilę zostaniesz przekierowany do swoich rezerwacji.'
+          ? t('messages.successBooking')
           : paymentDetails?.package
-          ? 'Dziękujemy za zakup pakietu. Kredyty zostały dodane do Twojego konta.'
-          : 'Dziękujemy za płatność. Za chwilę zostaniesz przekierowany.'
+          ? t('messages.successPackage')
+          : t('messages.successDefault')
       case 'failed':
-        return 'Płatność została anulowana lub odrzucona. Spróbuj ponownie.'
+        return t('messages.failed')
       case 'error':
-        return sessionId ? 'Nie możemy sprawdzić statusu płatności. Spróbuj ponownie później.' : 'Brak informacji o płatności.'
+        return sessionId ? t('messages.errorWithSession') : t('messages.errorNoSession')
     }
   }
 
@@ -182,16 +184,16 @@ export default function PaymentReturnPage() {
             <div className="bg-gray-50 rounded p-4 mb-6 text-left">
               <div className="text-sm space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">ID płatności:</span>
+                  <span className="text-gray-500">{t('details.paymentId')}</span>
                   <span className="font-mono text-xs">{paymentDetails.paymentId.slice(0, 8)}...</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Kwota:</span>
+                  <span className="text-gray-500">{t('details.amount')}</span>
                   <span className="font-semibold">{paymentDetails.amount} {paymentDetails.currency}</span>
                 </div>
                 {paymentDetails.description && (
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Opis:</span>
+                    <span className="text-gray-500">{t('details.description')}</span>
                     <span className="text-sm">{paymentDetails.description}</span>
                   </div>
                 )}
@@ -205,7 +207,7 @@ export default function PaymentReturnPage() {
                 href="/dashboard"
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
               >
-                Przejdź do panelu
+                {t('buttons.goToDashboard')}
               </Link>
             )}
             
@@ -215,13 +217,13 @@ export default function PaymentReturnPage() {
                   onClick={() => window.history.back()}
                   className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
                 >
-                  Wróć
+                  {t('buttons.back')}
                 </button>
                 <Link
                   href="/dashboard"
                   className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                 >
-                  Panel główny
+                  {t('buttons.mainDashboard')}
                 </Link>
               </>
             )}
@@ -235,13 +237,13 @@ export default function PaymentReturnPage() {
                   }}
                   className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
                 >
-                  Sprawdź ponownie
+                  {t('buttons.checkAgain')}
                 </button>
                 <Link
                   href="/dashboard"
                   className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
                 >
-                  Wróć później
+                  {t('buttons.returnLater')}
                 </Link>
               </>
             )}
@@ -251,14 +253,14 @@ export default function PaymentReturnPage() {
                 href="/dashboard"
                 className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
               >
-                Wróć do panelu
+                {t('buttons.backToDashboard')}
               </Link>
             )}
           </div>
 
           {status === 'pending' && checkCount < 30 && (
             <p className="text-xs text-gray-400 mt-4">
-              Sprawdzanie statusu... ({checkCount}/30)
+              {t('checkingStatus', {count: checkCount})}
             </p>
           )}
         </div>

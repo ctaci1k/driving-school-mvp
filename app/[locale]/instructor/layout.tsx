@@ -1,5 +1,5 @@
 // app/[locale]/instructor/layout.tsx
-// Instructor layout з перемикачем мов
+// Instructor layout з перемикачем мов та локалізацією
 
 'use client'
 
@@ -20,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useTranslations } from 'next-intl'
 
 interface InstructorLayoutProps {
   children: React.ReactNode
@@ -40,6 +41,7 @@ const AVAILABLE_LANGUAGES: Language[] = [
 ]
 
 export default function InstructorLayout({ children, params }: InstructorLayoutProps) {
+  const t = useTranslations('instructor.layout')
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -53,31 +55,31 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
   const currentLanguage = AVAILABLE_LANGUAGES.find(lang => lang.code === params.locale) || AVAILABLE_LANGUAGES[0]
 
   const navigation = [
-    { name: 'Panel główny', href: `/${params.locale}/instructor/dashboard`, icon: LayoutDashboard },
-    { name: 'Harmonogram', href: `/${params.locale}/instructor/schedule`, icon: Calendar },
-    { name: 'Lekcje', href: `/${params.locale}/instructor/lessons`, icon: CalendarCheck },
-    { name: 'Dzisiejsze', href: `/${params.locale}/instructor/lessons/today`, icon: Clock },
-    { name: 'Kursanci', href: `/${params.locale}/instructor/students`, icon: Users },
-    { name: 'Zarobki', href: `/${params.locale}/instructor/earnings`, icon: DollarSign },
-    { name: 'Pojazd', href: `/${params.locale}/instructor/vehicle`, icon: Car },
-    { name: 'Wiadomości', href: `/${params.locale}/instructor/messages`, icon: MessageSquare },
-    { name: 'Materiały', href: `/${params.locale}/instructor/resources`, icon: BookOpen },
-    { name: 'Profil', href: `/${params.locale}/instructor/profile`, icon: User }
+    { name: t('navigation.dashboard'), href: `/${params.locale}/instructor/dashboard`, icon: LayoutDashboard },
+    { name: t('navigation.schedule'), href: `/${params.locale}/instructor/schedule`, icon: Calendar },
+    { name: t('navigation.lessons'), href: `/${params.locale}/instructor/lessons`, icon: CalendarCheck },
+    { name: t('navigation.todayLessons'), href: `/${params.locale}/instructor/lessons/today`, icon: Clock },
+    { name: t('navigation.students'), href: `/${params.locale}/instructor/students`, icon: Users },
+    { name: t('navigation.earnings'), href: `/${params.locale}/instructor/earnings`, icon: DollarSign },
+    { name: t('navigation.vehicle'), href: `/${params.locale}/instructor/vehicle`, icon: Car },
+    { name: t('navigation.messages'), href: `/${params.locale}/instructor/messages`, icon: MessageSquare },
+    { name: t('navigation.resources'), href: `/${params.locale}/instructor/resources`, icon: BookOpen },
+    { name: t('navigation.profile'), href: `/${params.locale}/instructor/profile`, icon: User }
   ]
 
   const bottomNavigation = [
-    { name: 'Dashboard', href: `/${params.locale}/instructor/dashboard`, icon: Home },
-    { name: 'Dzisiaj', href: `/${params.locale}/instructor/lessons/today`, icon: Clock },
-    { name: 'Lekcje', href: `/${params.locale}/instructor/lessons`, icon: CalendarCheck },
-    { name: 'Kursanci', href: `/${params.locale}/instructor/students`, icon: Users },
-    { name: 'Menu', action: 'menu', icon: Menu }
+    { name: t('bottomNav.dashboard'), href: `/${params.locale}/instructor/dashboard`, icon: Home },
+    { name: t('bottomNav.today'), href: `/${params.locale}/instructor/lessons/today`, icon: Clock },
+    { name: t('bottomNav.lessons'), href: `/${params.locale}/instructor/lessons`, icon: CalendarCheck },
+    { name: t('bottomNav.students'), href: `/${params.locale}/instructor/students`, icon: Users },
+    { name: t('bottomNav.menu'), action: 'menu', icon: Menu }
   ]
 
   const currentUser = {
     name: 'Piotr Nowak',
     email: 'piotr@szkola-jazdy.pl',
     avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    role: 'Instruktor',
+    role: t('userStats.role'),
     rating: 4.9,
     todayLessons: 5,
     completedLessons: 3
@@ -86,25 +88,28 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
   const [notifications, setNotifications] = useState([
     {
       id: '1',
-      title: 'Nowa lekcja',
-      message: 'Maria Kowalska zarezerwowała lekcję na jutro',
-      time: '5 min temu',
+      title: t('notifications.types.newLesson'),
+      message: t('notifications.messages.lessonBooked', { name: 'Maria Kowalska' }),
+      time: '5',
+      timeUnit: 'minutes',
       read: false,
       type: 'info'
     },
     {
       id: '2',
-      title: 'Przypomnienie',
-      message: 'Następna lekcja za 30 minut',
-      time: '30 min temu',
+      title: t('notifications.types.reminder'),
+      message: t('notifications.messages.lessonReminder'),
+      time: '30',
+      timeUnit: 'minutes',
       read: false,
       type: 'warning'
     },
     {
       id: '3',
-      title: 'Gratulacje!',
-      message: 'Twój student zdał egzamin',
-      time: '2 godz temu',
+      title: t('notifications.types.congratulations'),
+      message: t('notifications.messages.studentPassed'),
+      time: '2',
+      timeUnit: 'hours',
       read: true,
       type: 'success'
     }
@@ -135,28 +140,28 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
     let path = ''
 
     const nameMap: { [key: string]: string } = {
-      'dashboard': 'Panel główny',
-      'schedule': 'Harmonogram',
-      'availability': 'Dostępność',
-      'exceptions': 'Wyjątki',
-      'lessons': 'Lekcje',
-      'today': 'Dzisiejsze',
-      'check-in': 'Check-in',
-      'students': 'Kursanci',
-      'progress': 'Postępy',
-      'feedback': 'Oceny',
-      'earnings': 'Zarobki',
-      'history': 'Historia',
-      'details': 'Szczegóły',
-      'vehicle': 'Pojazd',
-      'inspection': 'Inspekcja',
-      'report-issue': 'Zgłoś problem',
-      'messages': 'Wiadomości',
-      'resources': 'Materiały',
-      'upload': 'Dodaj materiał',
-      'profile': 'Profil',
-      'documents': 'Dokumenty',
-      'settings': 'Ustawienia'
+      'dashboard': t('breadcrumbs.dashboard'),
+      'schedule': t('breadcrumbs.schedule'),
+      'availability': t('breadcrumbs.availability'),
+      'exceptions': t('breadcrumbs.exceptions'),
+      'lessons': t('breadcrumbs.lessons'),
+      'today': t('breadcrumbs.today'),
+      'check-in': t('breadcrumbs.checkIn'),
+      'students': t('breadcrumbs.students'),
+      'progress': t('breadcrumbs.progress'),
+      'feedback': t('breadcrumbs.feedback'),
+      'earnings': t('breadcrumbs.earnings'),
+      'history': t('breadcrumbs.history'),
+      'details': t('breadcrumbs.details'),
+      'vehicle': t('breadcrumbs.vehicle'),
+      'inspection': t('breadcrumbs.inspection'),
+      'report-issue': t('breadcrumbs.reportIssue'),
+      'messages': t('breadcrumbs.messages'),
+      'resources': t('breadcrumbs.resources'),
+      'upload': t('breadcrumbs.upload'),
+      'profile': t('breadcrumbs.profile'),
+      'documents': t('breadcrumbs.documents'),
+      'settings': t('breadcrumbs.settings')
     }
 
     parts.forEach((part, index) => {
@@ -200,6 +205,13 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
     setSearchOpen(false)
   }
 
+  const getNotificationTime = (time: string, unit: string) => {
+    if (unit === 'minutes') return t('notifications.timeAgo.minutes', { count: time })
+    if (unit === 'hours') return t('notifications.timeAgo.hours', { count: time })
+    if (unit === 'days') return t('notifications.timeAgo.days', { count: time })
+    return ''
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile sidebar backdrop */}
@@ -210,7 +222,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
         />
       )}
 
-      {/* Sidebar - без змін */}
+      {/* Sidebar */}
       <aside className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transform transition-transform lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
@@ -221,8 +233,8 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
               <Car className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="font-bold text-gray-800 dark:text-white">SzkołaJazdy</h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Portal Instruktora</p>
+              <h1 className="font-bold text-gray-800 dark:text-white">{t('logo.title')}</h1>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('logo.subtitle')}</p>
             </div>
           </Link>
           <button
@@ -252,11 +264,16 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Dzisiaj</p>
-              <p className="font-semibold dark:text-white">{currentUser.completedLessons}/{currentUser.todayLessons} lekcji</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('userStats.today')}</p>
+              <p className="font-semibold dark:text-white">
+                {t('userStats.lessons', {
+                  completed: currentUser.completedLessons,
+                  total: currentUser.todayLessons
+                })}
+              </p>
             </div>
             <div className="bg-white dark:bg-gray-800 rounded-lg p-2">
-              <p className="text-xs text-gray-500 dark:text-gray-400">Następna</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t('userStats.nextLesson')}</p>
               <p className="font-semibold text-green-600 dark:text-green-400">14:30</p>
             </div>
           </div>
@@ -280,7 +297,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
               >
                 <Icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
-                {item.name === 'Wiadomości' && unreadNotifications > 0 && (
+                {item.name === t('navigation.messages') && unreadNotifications > 0 && (
                   <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                     {unreadNotifications}
                   </span>
@@ -297,7 +314,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
             className="flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg"
           >
             <Settings className="w-5 h-5" />
-            <span className="font-medium">Ustawienia</span>
+            <span className="font-medium">{t('quickActions.settings')}</span>
           </Link>
         </div>
 
@@ -308,7 +325,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
             className="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
           >
             <LogOut className="w-4 h-4" />
-            <span className="text-sm font-medium">Wyloguj się</span>
+            <span className="text-sm font-medium">{t('logout.button')}</span>
           </button>
         </div>
       </aside>
@@ -364,7 +381,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Szukaj..."
+                        placeholder={t('search.placeholder')}
                         className="w-48 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
                         autoFocus
                       />
@@ -386,7 +403,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
                   )}
                 </div>
 
-                {/* Language Switcher - НОВЕ */}
+                {/* Language Switcher */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button 
@@ -435,7 +452,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
                   )}
                 </button>
 
-                {/* Notifications - скорочено для місця */}
+                {/* Notifications */}
                 <div className="relative">
                   <button 
                     onClick={() => setNotificationsOpen(!notificationsOpen)}
@@ -447,7 +464,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
                     )}
                   </button>
 
-                  {/* Notifications dropdown - без змін */}
+                  {/* Notifications dropdown */}
                   {notificationsOpen && (
                     <>
                       <div 
@@ -455,13 +472,69 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
                         onClick={() => setNotificationsOpen(false)}
                       />
                       <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
-                        {/* Вміст повідомлень */}
+                        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-semibold text-gray-900 dark:text-white">
+                              {t('notifications.title')}
+                            </h3>
+                            {unreadNotifications > 0 && (
+                              <button
+                                onClick={markAllNotificationsAsRead}
+                                className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                              >
+                                {t('notifications.markAllRead')}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <div className="max-h-80 overflow-y-auto">
+                          {notifications.length > 0 ? (
+                            notifications.map((notification) => (
+                              <div
+                                key={notification.id}
+                                className={`p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${
+                                  !notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                                }`}
+                                onClick={() => markNotificationAsRead(notification.id)}
+                              >
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1">
+                                    <p className="font-medium text-gray-900 dark:text-white">
+                                      {notification.title}
+                                    </p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                      {notification.message}
+                                    </p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                                      {getNotificationTime(notification.time, notification.timeUnit)}
+                                    </p>
+                                  </div>
+                                  {!notification.read && (
+                                    <div className="w-2 h-2 bg-blue-600 rounded-full mt-2" />
+                                  )}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+                              {t('notifications.noNotifications')}
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+                          <Link
+                            href={`/${params.locale}/instructor/notifications`}
+                            className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium"
+                          >
+                            {t('notifications.viewAll')}
+                          </Link>
+                        </div>
                       </div>
                     </>
                   )}
                 </div>
 
-                {/* User menu - без змін */}
+                {/* User menu */}
                 <div className="relative">
                   <button
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
@@ -486,7 +559,7 @@ export default function InstructorLayout({ children, params }: InstructorLayoutP
         </main>
       </div>
 
-      {/* Mobile bottom navigation - без змін */}
+      {/* Mobile bottom navigation */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 z-40">
         <div className="grid grid-cols-5 h-16">
           {bottomNavigation.map((item) => {

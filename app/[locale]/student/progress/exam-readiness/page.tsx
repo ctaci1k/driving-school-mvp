@@ -1,8 +1,9 @@
-// app/[locale]/student/progress/exam-readiness/page.tsx
+// Шлях: /app/[locale]/student/progress/exam-readiness/page.tsx
 
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   GraduationCap, 
   CheckCircle2, 
@@ -34,6 +35,7 @@ import ReadinessGauge from '@/components/charts/ReadinessGauge';
 import PredictionChart from '@/components/charts/PredictionChart';
 
 export default function ExamReadinessPage() {
+  const t = useTranslations('student.examReadiness');
   const [selectedExamType, setSelectedExamType] = useState('practical');
   const [showSimulation, setShowSimulation] = useState(false);
 
@@ -46,72 +48,72 @@ export default function ExamReadinessPage() {
 
   const requirements = {
     theory: [
-      { id: '1', name: 'Kurs teoretyczny ukończony', completed: true, mandatory: true },
-      { id: '2', name: 'Minimum 90% obecności', completed: true, mandatory: true },
-      { id: '3', name: 'Test próbny zdany (min. 68/74 pkt)', completed: true, mandatory: false },
-      { id: '4', name: 'Wszystkie moduły zaliczone', completed: true, mandatory: true },
-      { id: '5', name: 'Opłata egzaminacyjna', completed: false, mandatory: true }
+      { id: '1', name: t('requirements.theory.courseCompleted'), completed: true, mandatory: true },
+      { id: '2', name: t('requirements.theory.attendance'), completed: true, mandatory: true },
+      { id: '3', name: t('requirements.theory.mockTest'), completed: true, mandatory: false },
+      { id: '4', name: t('requirements.theory.allModules'), completed: true, mandatory: true },
+      { id: '5', name: t('requirements.theory.examFee'), completed: false, mandatory: true }
     ],
     practical: [
-      { id: '1', name: 'Minimum 30 godzin jazdy', completed: true, mandatory: true, current: 32, required: 30 },
-      { id: '2', name: 'Egzamin teoretyczny zdany', completed: true, mandatory: true },
-      { id: '3', name: 'Wszystkie manewry opanowane', completed: false, mandatory: true, current: 6, required: 8 },
-      { id: '4', name: 'Jazda w ruchu miejskim', completed: true, mandatory: true },
-      { id: '5', name: 'Jazda poza miastem', completed: true, mandatory: true },
-      { id: '6', name: 'Egzamin wewnętrzny zdany', completed: false, mandatory: false },
-      { id: '7', name: 'Opłata egzaminacyjna', completed: false, mandatory: true }
+      { id: '1', name: t('requirements.practical.minHours'), completed: true, mandatory: true, current: 32, required: 30 },
+      { id: '2', name: t('requirements.practical.theoryPassed'), completed: true, mandatory: true },
+      { id: '3', name: t('requirements.practical.allManeuvers'), completed: false, mandatory: true, current: 6, required: 8 },
+      { id: '4', name: t('requirements.practical.cityDriving'), completed: true, mandatory: true },
+      { id: '5', name: t('requirements.practical.outsideCity'), completed: true, mandatory: true },
+      { id: '6', name: t('requirements.practical.internalExam'), completed: false, mandatory: false },
+      { id: '7', name: t('requirements.practical.examFee'), completed: false, mandatory: true }
     ]
   };
 
   const skillCategories = [
     {
-      name: 'Manewry',
+      name: t('skills.categories.maneuvers'),
       skills: [
-        { name: 'Parkowanie równoległe', score: 75, required: 70 },
-        { name: 'Parkowanie prostopadłe', score: 82, required: 70 },
-        { name: 'Zawracanie', score: 60, required: 70 },
-        { name: 'Ruszanie pod górę', score: 78, required: 70 }
+        { name: t('skills.parallelParking'), score: 75, required: 70 },
+        { name: t('skills.perpendicularParking'), score: 82, required: 70 },
+        { name: t('skills.turning'), score: 60, required: 70 },
+        { name: t('skills.hillStart'), score: 78, required: 70 }
       ]
     },
     {
-      name: 'Jazda w mieście',
+      name: t('skills.categories.cityDriving'),
       skills: [
-        { name: 'Skrzyżowania', score: 72, required: 75 },
-        { name: 'Pierwszeństwo', score: 85, required: 75 },
-        { name: 'Znaki drogowe', score: 90, required: 80 },
-        { name: 'Przejścia dla pieszych', score: 88, required: 75 }
+        { name: t('skills.intersections'), score: 72, required: 75 },
+        { name: t('skills.rightOfWay'), score: 85, required: 75 },
+        { name: t('skills.roadSigns'), score: 90, required: 80 },
+        { name: t('skills.pedestrianCrossings'), score: 88, required: 75 }
       ]
     },
     {
-      name: 'Technika jazdy',
+      name: t('skills.categories.drivingTechnique'),
       skills: [
-        { name: 'Płynność jazdy', score: 70, required: 70 },
-        { name: 'Używanie lusterek', score: 75, required: 75 },
-        { name: 'Zmiana biegów', score: 85, required: 70 },
-        { name: 'Hamowanie', score: 80, required: 75 }
+        { name: t('skills.smoothDriving'), score: 70, required: 70 },
+        { name: t('skills.mirrorUse'), score: 75, required: 75 },
+        { name: t('skills.gearChanging'), score: 85, required: 70 },
+        { name: t('skills.braking'), score: 80, required: 75 }
       ]
     }
   ];
 
   const weakPoints = [
     {
-      skill: 'Zawracanie',
-      issue: 'Zbyt szeroki promień skrętu',
-      recommendation: 'Ćwicz na mniejszej przestrzeni',
+      skill: t('weakPoints.turning.skill'),
+      issue: t('weakPoints.turning.issue'),
+      recommendation: t('weakPoints.turning.recommendation'),
       priority: 'high',
       estimatedLessons: 2
     },
     {
-      skill: 'Skrzyżowania',
-      issue: 'Wahanie przy podejmowaniu decyzji',
-      recommendation: 'Więcej praktyki w godzinach szczytu',
+      skill: t('weakPoints.intersections.skill'),
+      issue: t('weakPoints.intersections.issue'),
+      recommendation: t('weakPoints.intersections.recommendation'),
       priority: 'medium',
       estimatedLessons: 1
     },
     {
-      skill: 'Jazda autostradą',
-      issue: 'Niepewność przy zmianie pasów',
-      recommendation: 'Dodatkowa lekcja na autostradzie',
+      skill: t('weakPoints.highway.skill'),
+      issue: t('weakPoints.highway.issue'),
+      recommendation: t('weakPoints.highway.recommendation'),
       priority: 'medium',
       estimatedLessons: 1
     }
@@ -119,23 +121,23 @@ export default function ExamReadinessPage() {
 
   const examHistory = [
     {
-      type: 'Teoria - próbny',
+      type: t('examHistory.theoryMock'),
       date: '2024-01-10',
-      result: 'Zdany',
+      result: t('examHistory.passed'),
       score: '70/74',
       success: true
     },
     {
-      type: 'Teoria - państwowy',
+      type: t('examHistory.theoryState'),
       date: '2024-01-15',
-      result: 'Zdany',
+      result: t('examHistory.passed'),
       score: '71/74',
       success: true
     },
     {
-      type: 'Praktyka - wewnętrzny',
+      type: t('examHistory.practicalInternal'),
       date: '2024-01-18',
-      result: 'Niezaliczony',
+      result: t('examHistory.failed'),
       score: '65%',
       success: false
     }
@@ -144,23 +146,23 @@ export default function ExamReadinessPage() {
   const recommendations = [
     {
       priority: 'high',
-      title: 'Dokończ wymagane manewry',
-      description: 'Brakuje Ci 2 manewrów do pełnego zestawu egzaminowego',
-      action: 'Zarezerwuj lekcję manewrów',
+      title: t('recommendations.completeManeuvers.title'),
+      description: t('recommendations.completeManeuvers.description'),
+      action: t('recommendations.completeManeuvers.action'),
       icon: Car
     },
     {
       priority: 'medium',
-      title: 'Popraw słabe punkty',
-      description: 'Zawracanie i skrzyżowania wymagają więcej praktyki',
-      action: 'Zobacz plan ćwiczeń',
+      title: t('recommendations.improveWeakPoints.title'),
+      description: t('recommendations.improveWeakPoints.description'),
+      action: t('recommendations.improveWeakPoints.action'),
       icon: Target
     },
     {
       priority: 'low',
-      title: 'Zapisz się na egzamin wewnętrzny',
-      description: 'Zaliczenie egzaminu wewnętrznego zwiększy pewność siebie',
-      action: 'Sprawdź terminy',
+      title: t('recommendations.internalExam.title'),
+      description: t('recommendations.internalExam.description'),
+      action: t('recommendations.internalExam.action'),
       icon: FileCheck
     }
   ];
@@ -170,17 +172,17 @@ export default function ExamReadinessPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Gotowość do egzaminu</h1>
-          <p className="text-gray-600 mt-1">Sprawdź czy jesteś gotowy na egzamin państwowy</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" className="gap-2">
             <Download className="h-4 w-4" />
-            Raport PDF
+            {t('buttons.downloadReport')}
           </Button>
           <Button className="gap-2">
             <PlayCircle className="h-4 w-4" />
-            Symulacja egzaminu
+            {t('buttons.examSimulation')}
           </Button>
         </div>
       </div>
@@ -190,35 +192,33 @@ export default function ExamReadinessPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Readiness Gauge */}
           <div className="text-center">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Ogólna gotowość</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('overallReadiness.title')}</h2>
             <ReadinessGauge value={overallReadiness} />
-            <p className="text-sm text-gray-600 mt-4">
-              Na podstawie Twoich wyników i postępów
-            </p>
+            <p className="text-sm text-gray-600 mt-4">{t('overallReadiness.description')}</p>
           </div>
 
           {/* Prediction */}
           <div className="lg:col-span-2">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Prognoza gotowości</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('prediction.title')}</h2>
             <PredictionChart currentReadiness={overallReadiness} />
             <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="bg-white rounded-lg p-3">
                 <div className="flex items-center gap-2 text-blue-600">
                   <Calendar className="h-5 w-5" />
-                  <span className="font-medium">Przewidywana data</span>
+                  <span className="font-medium">{t('prediction.expectedDate')}</span>
                 </div>
                 <p className="text-lg font-bold text-gray-900 mt-1">
-                  {predictedExamDate.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {predictedExamDate.toLocaleDateString('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' })}
                 </p>
-                <p className="text-xs text-gray-500">Za {daysUntilReady} dni</p>
+                <p className="text-xs text-gray-500">{t('prediction.inDays', { days: daysUntilReady })}</p>
               </div>
               <div className="bg-white rounded-lg p-3">
                 <div className="flex items-center gap-2 text-green-600">
                   <TrendingUp className="h-5 w-5" />
-                  <span className="font-medium">Zalecane lekcje</span>
+                  <span className="font-medium">{t('prediction.recommendedLessons')}</span>
                 </div>
                 <p className="text-lg font-bold text-gray-900 mt-1">5-7</p>
-                <p className="text-xs text-gray-500">Do pełnej gotowości</p>
+                <p className="text-xs text-gray-500">{t('prediction.toFullReadiness')}</p>
               </div>
             </div>
           </div>
@@ -238,9 +238,9 @@ export default function ExamReadinessPage() {
           >
             <div className="flex items-center justify-center gap-2">
               <BookOpen className="h-5 w-5" />
-              <span>Egzamin teoretyczny</span>
+              <span>{t('examTypes.theory')}</span>
               <Badge variant="outline" className="ml-2 bg-green-50 text-green-600 border-green-200">
-                Zdany
+                {t('status.passed')}
               </Badge>
             </div>
           </button>
@@ -254,9 +254,9 @@ export default function ExamReadinessPage() {
           >
             <div className="flex items-center justify-center gap-2">
               <Car className="h-5 w-5" />
-              <span>Egzamin praktyczny</span>
+              <span>{t('examTypes.practical')}</span>
               <Badge variant="outline" className="ml-2 bg-yellow-50 text-yellow-600 border-yellow-200">
-                W przygotowaniu
+                {t('status.inPreparation')}
               </Badge>
             </div>
           </button>
@@ -267,10 +267,12 @@ export default function ExamReadinessPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Wymagania {selectedExamType === 'theory' ? 'teoretyczne' : 'praktyczne'}</h2>
+            <h2 className="text-lg font-semibold text-gray-900">
+              {selectedExamType === 'theory' ? t('requirements.theoryTitle') : t('requirements.practicalTitle')}
+            </h2>
             <span className="text-sm text-gray-500">
               {requirements[selectedExamType as keyof typeof requirements].filter(r => r.completed).length}/
-              {requirements[selectedExamType as keyof typeof requirements].length} ukończone
+              {requirements[selectedExamType as keyof typeof requirements].length} {t('requirements.completed')}
             </span>
           </div>
           <div className="space-y-3">
@@ -285,7 +287,7 @@ export default function ExamReadinessPage() {
                       {req.name}
                     </p>
                     {req.mandatory && (
-                      <Badge variant="outline" className="text-xs">Obowiązkowe</Badge>
+                      <Badge variant="outline" className="text-xs">{t('requirements.mandatory')}</Badge>
                     )}
                   </div>
                   {'current' in req && (
@@ -306,7 +308,7 @@ export default function ExamReadinessPage() {
 
         {/* Weak Points */}
         <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Obszary do poprawy</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('weakPoints.title')}</h2>
           <div className="space-y-3">
             {weakPoints.map((point, index) => (
               <div key={index} className="border border-gray-200 rounded-lg p-3">
@@ -321,13 +323,13 @@ export default function ExamReadinessPage() {
                     variant="outline"
                     className={point.priority === 'high' ? 'text-red-600 border-red-200' : 'text-yellow-600 border-yellow-200'}
                   >
-                    {point.priority === 'high' ? 'Wysoki priorytet' : 'Średni priorytet'}
+                    {point.priority === 'high' ? t('priority.high') : t('priority.medium')}
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-600 mb-2">{point.issue}</p>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-blue-600">{point.recommendation}</span>
-                  <span className="text-gray-500">{point.estimatedLessons} lekcje</span>
+                  <span className="text-gray-500">{t('weakPoints.lessons', { count: point.estimatedLessons })}</span>
                 </div>
               </div>
             ))}
@@ -337,7 +339,7 @@ export default function ExamReadinessPage() {
 
       {/* Skills Matrix */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Macierz umiejętności</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('skills.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {skillCategories.map((category, index) => (
             <div key={index}>
@@ -365,7 +367,7 @@ export default function ExamReadinessPage() {
                       />
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Wymagane: {skill.required}%
+                      {t('skills.required')}: {skill.required}%
                     </p>
                   </div>
                 ))}
@@ -377,7 +379,7 @@ export default function ExamReadinessPage() {
 
       {/* Recommendations */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Rekomendacje</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('recommendations.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {recommendations.map((rec, index) => {
             const Icon = rec.icon;
@@ -407,15 +409,15 @@ export default function ExamReadinessPage() {
 
       {/* Exam History */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Historia egzaminów</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('examHistory.title')}</h2>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="border-b border-gray-200">
               <tr>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Typ egzaminu</th>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Data</th>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Wynik</th>
-                <th className="text-left text-sm font-medium text-gray-600 pb-3">Punktacja</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('examHistory.type')}</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('examHistory.date')}</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('examHistory.result')}</th>
+                <th className="text-left text-sm font-medium text-gray-600 pb-3">{t('examHistory.score')}</th>
               </tr>
             </thead>
             <tbody>
@@ -447,31 +449,31 @@ export default function ExamReadinessPage() {
         <div className="flex items-start gap-3">
           <Info className="h-5 w-5 text-green-600 mt-0.5" />
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">Wskazówki przed egzaminem</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">{t('tips.title')}</h3>
             <ul className="space-y-1 text-sm text-gray-600">
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Wyśpij się dobrze przed egzaminem (minimum 8 godzin snu)</span>
+                <span>{t('tips.sleep')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Zjedz lekkie śniadanie, unikaj ciężkostrawnych potraw</span>
+                <span>{t('tips.breakfast')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Przyjdź 15 minut wcześniej, żeby się uspokoić</span>
+                <span>{t('tips.arriveEarly')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Weź ze sobą wszystkie wymagane dokumenty</span>
+                <span>{t('tips.documents')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Pamiętaj o okularach/soczewkach jeśli ich potrzebujesz</span>
+                <span>{t('tips.glasses')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-green-500 mt-0.5" />
-                <span>Zachowaj spokój i skupienie podczas egzaminu</span>
+                <span>{t('tips.stayCalm')}</span>
               </li>
             </ul>
           </div>
@@ -482,11 +484,11 @@ export default function ExamReadinessPage() {
       <div className="flex items-center justify-center gap-4 pt-4">
         <Button variant="outline" size="lg" className="gap-2">
           <Calendar className="h-5 w-5" />
-          Zarezerwuj lekcję przygotowawczą
+          {t('actions.bookPreparationLesson')}
         </Button>
         <Button size="lg" className="gap-2 bg-blue-600 hover:bg-blue-700">
           <GraduationCap className="h-5 w-5" />
-          Zapisz się na egzamin
+          {t('actions.registerForExam')}
         </Button>
       </div>
     </div>

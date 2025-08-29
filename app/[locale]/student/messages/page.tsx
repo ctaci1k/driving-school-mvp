@@ -3,6 +3,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   MessageSquare,
   Search,
@@ -40,115 +41,116 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 
-// Mock data
-const mockConversations = [
-  {
-    id: '1',
-    type: 'direct',
-    name: 'Piotr Nowak',
-    avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
-    role: 'Instruktor',
-    lastMessage: 'Świetnie Ci poszło dzisiaj! Do zobaczenia na następnej lekcji.',
-    lastMessageTime: '10 min temu',
-    unread: 2,
-    online: true,
-    pinned: true,
-    muted: false
-  },
-  {
-    id: '2',
-    type: 'direct',
-    name: 'Anna Kowalczyk',
-    avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff',
-    role: 'Instruktor',
-    lastMessage: 'Pamiętaj o materiałach na jutro',
-    lastMessageTime: '2 godz. temu',
-    unread: 0,
-    online: false,
-    pinned: false,
-    muted: false
-  },
-  {
-    id: '3',
-    type: 'group',
-    name: 'Grupa teoria - sierpień 2024',
-    avatar: null,
-    members: 12,
-    lastMessage: 'Michał: Kto idzie na egzamin w piątek?',
-    lastMessageTime: '5 godz. temu',
-    unread: 5,
-    online: false,
-    pinned: false,
-    muted: true
-  },
-  {
-    id: '4',
-    type: 'direct',
-    name: 'Biuro obsługi',
-    avatar: 'https://ui-avatars.com/api/?name=Support&background=3B82F6&color=fff',
-    role: 'Administracja',
-    lastMessage: 'Twoja faktura została wysłana na email',
-    lastMessageTime: 'Wczoraj',
-    unread: 0,
-    online: true,
-    pinned: false,
-    muted: false
-  },
-  {
-    id: '5',
-    type: 'announcement',
-    name: 'Ogłoszenia szkoły',
-    avatar: null,
-    lastMessage: '📢 Nowe godziny otwarcia biura od września',
-    lastMessageTime: '2 dni temu',
-    unread: 1,
-    online: false,
-    pinned: true,
-    muted: false
-  },
-  {
-    id: '6',
-    type: 'direct',
-    name: 'Tomasz Wiśniewski',
-    avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff',
-    role: 'Instruktor',
-    lastMessage: 'Możemy przełożyć lekcję na 16:00?',
-    lastMessageTime: '3 dni temu',
-    unread: 0,
-    online: false,
-    pinned: false,
-    muted: false
-  }
-];
-
-const mockAnnouncements = [
-  {
-    id: '1',
-    title: 'Zmiana godzin otwarcia',
-    content: 'Od 1 września biuro czynne będzie w godzinach 8:00-18:00',
-    date: '2024-08-25',
-    important: true
-  },
-  {
-    id: '2',
-    title: 'Promocja na pakiety',
-    content: 'Tylko do końca sierpnia - 15% rabatu na wszystkie pakiety!',
-    date: '2024-08-20',
-    important: false
-  }
-];
-
 export default function MessagesPage() {
+  const t = useTranslations('student.messagesList');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTab, setSelectedTab] = useState('all');
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+
+  // Mock data with translations
+  const mockConversations = [
+    {
+      id: '1',
+      type: 'direct',
+      name: 'Piotr Nowak',
+      avatar: 'https://ui-avatars.com/api/?name=Piotr+Nowak&background=10B981&color=fff',
+      role: t('roles.instructor'),
+      lastMessage: t('lastMessage.greatJob'),
+      lastMessageTime: t('timeAgo.minutes', { count: 10 }),
+      unread: 2,
+      online: true,
+      pinned: true,
+      muted: false
+    },
+    {
+      id: '2',
+      type: 'direct',
+      name: 'Anna Kowalczyk',
+      avatar: 'https://ui-avatars.com/api/?name=Anna+Kowalczyk&background=8B5CF6&color=fff',
+      role: t('roles.instructor'),
+      lastMessage: t('lastMessage.rememberMaterials'),
+      lastMessageTime: t('timeAgo.hours', { count: 2 }),
+      unread: 0,
+      online: false,
+      pinned: false,
+      muted: false
+    },
+    {
+      id: '3',
+      type: 'group',
+      name: t('groupNames.theoryGroup'),
+      avatar: null,
+      members: 12,
+      lastMessage: t('lastMessage.whoGoingExam'),
+      lastMessageTime: t('timeAgo.hours', { count: 5 }),
+      unread: 5,
+      online: false,
+      pinned: false,
+      muted: true
+    },
+    {
+      id: '4',
+      type: 'direct',
+      name: t('groupNames.supportOffice'),
+      avatar: 'https://ui-avatars.com/api/?name=Support&background=3B82F6&color=fff',
+      role: t('roles.administration'),
+      lastMessage: t('lastMessage.invoiceSent'),
+      lastMessageTime: t('timeAgo.yesterday'),
+      unread: 0,
+      online: true,
+      pinned: false,
+      muted: false
+    },
+    {
+      id: '5',
+      type: 'announcement',
+      name: t('groupNames.schoolAnnouncements'),
+      avatar: null,
+      lastMessage: t('lastMessage.newOfficeHours'),
+      lastMessageTime: t('timeAgo.days', { count: 2 }),
+      unread: 1,
+      online: false,
+      pinned: true,
+      muted: false
+    },
+    {
+      id: '6',
+      type: 'direct',
+      name: 'Tomasz Wiśniewski',
+      avatar: 'https://ui-avatars.com/api/?name=Tomasz+Wisniewski&background=F59E0B&color=fff',
+      role: t('roles.instructor'),
+      lastMessage: t('lastMessage.canReschedule'),
+      lastMessageTime: t('timeAgo.days', { count: 3 }),
+      unread: 0,
+      online: false,
+      pinned: false,
+      muted: false
+    }
+  ];
+
+  const mockAnnouncements = [
+    {
+      id: '1',
+      title: t('announcements.openingHoursChange'),
+      content: t('announcements.openingHoursContent'),
+      date: '2024-08-25',
+      important: true
+    },
+    {
+      id: '2',
+      title: t('announcements.packagePromotion'),
+      content: t('announcements.packagePromotionContent'),
+      date: '2024-08-20',
+      important: false
+    }
+  ];
 
   const filteredConversations = mockConversations.filter(conv => {
     if (searchTerm && !conv.name.toLowerCase().includes(searchTerm.toLowerCase())) {
       return false;
     }
     if (selectedTab === 'unread' && conv.unread === 0) return false;
-    if (selectedTab === 'instructors' && conv.role !== 'Instruktor') return false;
+    if (selectedTab === 'instructors' && conv.role !== t('roles.instructor')) return false;
     if (selectedTab === 'groups' && conv.type !== 'group') return false;
     if (selectedTab === 'archived') return false; // No archived messages in mock
     return true;
@@ -166,8 +168,8 @@ export default function MessagesPage() {
   };
 
   const getTimeColor = (time: string) => {
-    if (time.includes('min')) return 'text-green-600';
-    if (time.includes('godz')) return 'text-blue-600';
+    if (time.includes('хв')) return 'text-green-600';
+    if (time.includes('год')) return 'text-blue-600';
     return 'text-gray-500';
   };
 
@@ -176,14 +178,14 @@ export default function MessagesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Wiadomości</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600">
-            {totalUnread > 0 ? `${totalUnread} nieprzeczytanych` : 'Wszystkie przeczytane'}
+            {totalUnread > 0 ? t('unreadCount', { count: totalUnread }) : t('allRead')}
           </p>
         </div>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Nowa wiadomość
+          {t('newMessage')}
         </Button>
       </div>
 
@@ -193,7 +195,7 @@ export default function MessagesPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Aktywne rozmowy</p>
+                <p className="text-sm text-gray-600">{t('stats.activeConversations')}</p>
                 <p className="text-2xl font-bold">{mockConversations.length}</p>
               </div>
               <MessageSquare className="h-8 w-8 text-blue-500" />
@@ -205,7 +207,7 @@ export default function MessagesPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Nieprzeczytane</p>
+                <p className="text-sm text-gray-600">{t('stats.unread')}</p>
                 <p className="text-2xl font-bold text-orange-600">{totalUnread}</p>
               </div>
               <Circle className="h-8 w-8 text-orange-500" />
@@ -217,7 +219,7 @@ export default function MessagesPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Online teraz</p>
+                <p className="text-sm text-gray-600">{t('stats.onlineNow')}</p>
                 <p className="text-2xl font-bold text-green-600">
                   {mockConversations.filter(c => c.online).length}
                 </p>
@@ -234,8 +236,8 @@ export default function MessagesPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Czas odpowiedzi</p>
-                <p className="text-2xl font-bold">~15 min</p>
+                <p className="text-sm text-gray-600">{t('stats.responseTime')}</p>
+                <p className="text-2xl font-bold">{t('stats.minutes')}</p>
               </div>
               <Clock className="h-8 w-8 text-purple-500" />
             </div>
@@ -256,7 +258,7 @@ export default function MessagesPage() {
                     <p className="text-sm text-blue-700 mt-1">{announcement.content}</p>
                   </div>
                   {announcement.important && (
-                    <Badge className="bg-red-100 text-red-700">Ważne</Badge>
+                    <Badge className="bg-red-100 text-red-700">{t('announcements.important')}</Badge>
                   )}
                 </div>
               ))}
@@ -270,7 +272,7 @@ export default function MessagesPage() {
         <Card className="lg:col-span-1">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Rozmowy</CardTitle>
+              <CardTitle className="text-lg">{t('conversations.title')}</CardTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -280,20 +282,20 @@ export default function MessagesPage() {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem>
                     <Circle className="h-4 w-4 mr-2" />
-                    Wszystkie
+                    {t('filters.all')}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Bell className="h-4 w-4 mr-2" />
-                    Nieprzeczytane
+                    {t('filters.unread')}
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Star className="h-4 w-4 mr-2" />
-                    Oznaczone gwiazdką
+                    {t('filters.starred')}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Archive className="h-4 w-4 mr-2" />
-                    Zarchiwizowane
+                    {t('filters.archived')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -303,7 +305,7 @@ export default function MessagesPage() {
             <div className="relative mt-3">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Szukaj wiadomości..."
+                placeholder={t('conversations.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -315,16 +317,16 @@ export default function MessagesPage() {
             {/* Tabs */}
             <Tabs value={selectedTab} onValueChange={setSelectedTab}>
               <TabsList className="w-full rounded-none">
-                <TabsTrigger value="all" className="flex-1">Wszystkie</TabsTrigger>
+                <TabsTrigger value="all" className="flex-1">{t('conversations.all')}</TabsTrigger>
                 <TabsTrigger value="unread" className="flex-1">
-                  Nieprzeczytane
+                  {t('conversations.unread')}
                   {totalUnread > 0 && (
                     <Badge variant="secondary" className="ml-1 px-1 min-w-[20px] h-5">
                       {totalUnread}
                     </Badge>
                   )}
                 </TabsTrigger>
-                <TabsTrigger value="groups" className="flex-1">Grupy</TabsTrigger>
+                <TabsTrigger value="groups" className="flex-1">{t('conversations.groups')}</TabsTrigger>
               </TabsList>
 
               <ScrollArea className="h-[500px]">
@@ -411,13 +413,13 @@ export default function MessagesPage() {
               <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MessageSquare className="h-10 w-10 text-gray-400" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Wybierz rozmowę</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('emptyState.selectConversation')}</h3>
               <p className="text-gray-500 mb-4">
-                Kliknij na rozmowę z listy, aby zobaczyć wiadomości
+                {t('emptyState.clickToView')}
               </p>
               <Link href="/student/messages/1">
                 <Button variant="outline">
-                  Otwórz ostatnią rozmowę
+                  {t('emptyState.openLastConversation')}
                 </Button>
               </Link>
             </div>
@@ -428,25 +430,25 @@ export default function MessagesPage() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Szybkie akcje</CardTitle>
+          <CardTitle className="text-lg">{t('quickActions.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm">
               <Star className="h-4 w-4 mr-2" />
-              Oznaczone gwiazdką
+              {t('quickActions.starred')}
             </Button>
             <Button variant="outline" size="sm">
               <Archive className="h-4 w-4 mr-2" />
-              Archiwum
+              {t('quickActions.archive')}
             </Button>
             <Button variant="outline" size="sm">
               <BellOff className="h-4 w-4 mr-2" />
-              Wyciszone
+              {t('quickActions.muted')}
             </Button>
             <Button variant="outline" size="sm">
               <Trash2 className="h-4 w-4 mr-2" />
-              Kosz
+              {t('quickActions.trash')}
             </Button>
           </div>
         </CardContent>

@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Car, Grid, List, Filter, Search, Plus, MoreVertical,
   Edit2, Trash2, Eye, MapPin, Users, Calendar, Settings,
@@ -13,7 +14,7 @@ import { format, addDays } from 'date-fns';
 import { pl } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
 
-// Generate mock vehicles data
+// Generate mock vehicles data - Polish data remains unchanged
 const generateVehicles = () => {
   const vehicles = [
     { make: 'Toyota', model: 'Yaris', year: 2023, image: 'https://placehold.co/400x250?text=Toyota+Yaris' },
@@ -75,6 +76,7 @@ const generateVehicles = () => {
 };
 
 export default function AdminVehiclesPage() {
+  const t = useTranslations('admin.vehicles');
   const [vehicles] = useState(generateVehicles());
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,10 +100,10 @@ export default function AdminVehiclesPage() {
   });
 
   const vehicleStatuses = {
-    active: { bg: 'bg-green-100', text: 'text-green-700', label: 'Aktywny', icon: CheckCircle },
-    maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: 'W serwisie', icon: Wrench },
-    reserved: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Zarezerwowany', icon: Calendar },
-    inactive: { bg: 'bg-gray-100', text: 'text-gray-700', label: 'Nieaktywny', icon: XCircle }
+    active: { bg: 'bg-green-100', text: 'text-green-700', label: t('status.active'), icon: CheckCircle },
+    maintenance: { bg: 'bg-yellow-100', text: 'text-yellow-700', label: t('status.maintenance'), icon: Wrench },
+    reserved: { bg: 'bg-blue-100', text: 'text-blue-700', label: t('status.reserved'), icon: Calendar },
+    inactive: { bg: 'bg-gray-100', text: 'text-gray-700', label: t('status.inactive'), icon: XCircle }
   };
 
   const stats = {
@@ -135,7 +137,7 @@ export default function AdminVehiclesPage() {
           {vehicle.issues > 0 && (
             <div className="absolute top-3 left-3 px-2 py-1 bg-red-500 text-white rounded-full text-xs font-medium flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
-              {vehicle.issues} problemów
+              {t('card.issues', { count: vehicle.issues })}
             </div>
           )}
         </div>
@@ -155,27 +157,29 @@ export default function AdminVehiclesPage() {
           
           <div className="space-y-2 mb-4">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Kategoria:</span>
+              <span className="text-gray-500">{t('card.category')}</span>
               <span className="font-medium">{vehicle.category}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Skrzynia:</span>
-              <span className="font-medium">{vehicle.transmission === 'Manual' ? 'Manualna' : 'Automatyczna'}</span>
+              <span className="text-gray-500">{t('card.transmission')}</span>
+              <span className="font-medium">
+                {vehicle.transmission === 'Manual' ? t('transmissionTypes.manual') : t('transmissionTypes.automatic')}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Instruktor:</span>
-              <span className="font-medium">{vehicle.instructor || 'Nieprzydzielony'}</span>
+              <span className="text-gray-500">{t('card.instructor')}</span>
+              <span className="font-medium">{vehicle.instructor || t('card.unassigned')}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Przebieg:</span>
-              <span className="font-medium">{vehicle.mileage.toLocaleString()} km</span>
+              <span className="text-gray-500">{t('card.mileage')}</span>
+              <span className="font-medium">{vehicle.mileage.toLocaleString()} {t('units.km')}</span>
             </div>
           </div>
 
           {/* Utilization bar */}
           <div className="mb-4">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-500">Wykorzystanie</span>
+              <span className="text-gray-500">{t('card.utilization')}</span>
               <span className="font-medium">{vehicle.utilizationRate}%</span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
@@ -195,8 +199,8 @@ export default function AdminVehiclesPage() {
             <div className="mb-4 p-2 bg-amber-50 rounded-lg">
               <p className="text-xs text-amber-700 flex items-center gap-1">
                 <AlertTriangle className="w-3 h-3" />
-                {vehicle.insuranceExpiry < addDays(new Date(), 30) && 'Ubezpieczenie wygasa'} 
-                {vehicle.inspectionExpiry < addDays(new Date(), 30) && 'Potrzebny przegląd'}
+                {vehicle.insuranceExpiry < addDays(new Date(), 30) && t('card.insuranceExpiring')} 
+                {vehicle.inspectionExpiry < addDays(new Date(), 30) && t('card.inspectionNeeded')}
               </p>
             </div>
           )}
@@ -206,13 +210,13 @@ export default function AdminVehiclesPage() {
               onClick={() => setSelectedVehicle(vehicle)}
               className="flex-1 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
             >
-              Szczegóły
+              {t('buttons.details')}
             </button>
             <button
               onClick={() => console.log('History', vehicle.id)}
               className="flex-1 px-3 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
             >
-              Historia
+              {t('buttons.history')}
             </button>
           </div>
         </div>
@@ -248,13 +252,15 @@ export default function AdminVehiclesPage() {
           </span>
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">{vehicle.category}</td>
-        <td className="px-4 py-4 text-sm text-gray-600">{vehicle.transmission === 'Manual' ? 'Manualna' : 'Automatyczna'}</td>
+        <td className="px-4 py-4 text-sm text-gray-600">
+          {vehicle.transmission === 'Manual' ? t('transmissionTypes.manual') : t('transmissionTypes.automatic')}
+        </td>
         <td className="px-4 py-4 text-sm text-gray-600">
           {vehicle.instructor || <span className="text-gray-400">—</span>}
         </td>
         <td className="px-4 py-4 text-sm text-gray-600">{vehicle.location}</td>
         <td className="px-4 py-4 text-sm text-gray-600">
-          {vehicle.mileage.toLocaleString()} km
+          {vehicle.mileage.toLocaleString()} {t('units.km')}
         </td>
         <td className="px-4 py-4">
           <div className="flex items-center gap-2">
@@ -300,8 +306,8 @@ export default function AdminVehiclesPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Pojazdy</h1>
-        <p className="text-gray-600 mt-1">Zarządzanie flotą pojazdów szkoły</p>
+        <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+        <p className="text-gray-600 mt-1">{t('subtitle')}</p>
       </div>
 
       {/* Stats */}
@@ -313,7 +319,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Razem</p>
+              <p className="text-xs text-gray-500">{t('stats.total')}</p>
             </div>
           </div>
         </div>
@@ -324,7 +330,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Aktywne</p>
+              <p className="text-xs text-gray-500">{t('stats.active')}</p>
             </div>
           </div>
         </div>
@@ -335,7 +341,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.maintenance}</p>
-              <p className="text-xs text-gray-500">W serwisie</p>
+              <p className="text-xs text-gray-500">{t('stats.maintenance')}</p>
             </div>
           </div>
         </div>
@@ -346,7 +352,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.avgUtilization}%</p>
-              <p className="text-xs text-gray-500">Wykorzystanie</p>
+              <p className="text-xs text-gray-500">{t('stats.utilization')}</p>
             </div>
           </div>
         </div>
@@ -357,7 +363,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.needsService}</p>
-              <p className="text-xs text-gray-500">Wymaga serwisu</p>
+              <p className="text-xs text-gray-500">{t('stats.needsService')}</p>
             </div>
           </div>
         </div>
@@ -368,7 +374,7 @@ export default function AdminVehiclesPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.documentsExpiring}</p>
-              <p className="text-xs text-gray-500">Dokumenty</p>
+              <p className="text-xs text-gray-500">{t('stats.documentsExpiring')}</p>
             </div>
           </div>
         </div>
@@ -382,7 +388,7 @@ export default function AdminVehiclesPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Wyszukaj według marki, modelu lub numeru..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
@@ -394,11 +400,11 @@ export default function AdminVehiclesPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="active">Aktywne</option>
-              <option value="maintenance">W serwisie</option>
-              <option value="reserved">Zarezerwowane</option>
-              <option value="inactive">Nieaktywne</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="active">{t('filters.active')}</option>
+              <option value="maintenance">{t('filters.inService')}</option>
+              <option value="reserved">{t('filters.reserved')}</option>
+              <option value="inactive">{t('filters.inactive')}</option>
             </select>
             
             <select
@@ -406,9 +412,9 @@ export default function AdminVehiclesPage() {
               onChange={(e) => setFilterTransmission(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie skrzynie</option>
-              <option value="Manual">Manualna</option>
-              <option value="Automatic">Automatyczna</option>
+              <option value="all">{t('filters.allTransmissions')}</option>
+              <option value="Manual">{t('filters.manual')}</option>
+              <option value="Automatic">{t('filters.automatic')}</option>
             </select>
             
             <select
@@ -416,7 +422,7 @@ export default function AdminVehiclesPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie kategorie</option>
+              <option value="all">{t('filters.allCategories')}</option>
               <option value="B">B</option>
               <option value="B+E">B+E</option>
               <option value="C">C</option>
@@ -441,14 +447,14 @@ export default function AdminVehiclesPage() {
             
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
               <Plus className="w-4 h-4" />
-              Dodaj pojazd
+              {t('buttons.addVehicle')}
             </button>
             <button 
               onClick={() => router.push('/admin/vehicles/maintenance')}
               className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center gap-2"
             >
               <Wrench className="w-4 h-4" />
-              Serwis
+              {t('buttons.service')}
             </button>
           </div>
         </div>
@@ -472,31 +478,31 @@ export default function AdminVehiclesPage() {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Pojazd
+                    {t('table.vehicle')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    {t('table.status')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Kategoria
+                    {t('table.category')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Skrzynia
+                    {t('table.transmission')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Instruktor
+                    {t('table.instructor')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Lokalizacja
+                    {t('table.location')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Przebieg
+                    {t('table.mileage')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Wykorzystanie
+                    {t('table.utilization')}
                   </th>
                   <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Akcje
+                    {t('table.actions')}
                   </th>
                 </tr>
               </thead>
@@ -535,27 +541,27 @@ export default function AdminVehiclesPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-500">Numer rejestracyjny</p>
+                  <p className="text-sm text-gray-500">{t('modal.registrationNumber')}</p>
                   <p className="font-medium">{selectedVehicle.registrationNumber}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">VIN</p>
+                  <p className="text-sm text-gray-500">{t('modal.vin')}</p>
                   <p className="font-medium font-mono text-sm">{selectedVehicle.vin}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Rok produkcji</p>
+                  <p className="text-sm text-gray-500">{t('modal.year')}</p>
                   <p className="font-medium">{selectedVehicle.year}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Przebieg</p>
-                  <p className="font-medium">{selectedVehicle.mileage.toLocaleString()} km</p>
+                  <p className="text-sm text-gray-500">{t('modal.mileage')}</p>
+                  <p className="font-medium">{selectedVehicle.mileage.toLocaleString()} {t('units.km')}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Paliwo</p>
+                  <p className="text-sm text-gray-500">{t('modal.fuel')}</p>
                   <p className="font-medium">{selectedVehicle.fuelType}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Poziom paliwa</p>
+                  <p className="text-sm text-gray-500">{t('modal.fuelLevel')}</p>
                   <div className="flex items-center gap-2">
                     <div className="w-20 bg-gray-200 rounded-full h-2">
                       <div 
@@ -572,30 +578,30 @@ export default function AdminVehiclesPage() {
               </div>
 
               <div className="border-t pt-4">
-                <h3 className="font-medium text-gray-800 mb-3">Dokumenty i terminy</h3>
+                <h3 className="font-medium text-gray-800 mb-3">{t('modal.documentsAndDeadlines')}</h3>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Shield className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Ubezpieczenie</span>
+                      <span className="text-sm">{t('modal.insurance')}</span>
                     </div>
                     <span className="text-sm font-medium">
-                      do {format(selectedVehicle.insuranceExpiry, 'dd.MM.yyyy')}
+                      {t('modal.until')} {format(selectedVehicle.insuranceExpiry, 'dd.MM.yyyy')}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Przegląd</span>
+                      <span className="text-sm">{t('modal.inspection')}</span>
                     </div>
                     <span className="text-sm font-medium">
-                      do {format(selectedVehicle.inspectionExpiry, 'dd.MM.yyyy')}
+                      {t('modal.until')} {format(selectedVehicle.inspectionExpiry, 'dd.MM.yyyy')}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Wrench className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm">Następny serwis</span>
+                      <span className="text-sm">{t('modal.nextService')}</span>
                     </div>
                     <span className="text-sm font-medium">
                       {format(selectedVehicle.nextService, 'dd.MM.yyyy')}
@@ -606,13 +612,13 @@ export default function AdminVehiclesPage() {
 
               <div className="flex gap-3">
                 <button className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                  Edytuj
+                  {t('buttons.edit')}
                 </button>
                 <button className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
-                  Historia serwisu
+                  {t('buttons.serviceHistory')}
                 </button>
                 <button className="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50">
-                  Usuń
+                  {t('buttons.delete')}
                 </button>
               </div>
             </div>

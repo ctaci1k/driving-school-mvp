@@ -1,8 +1,10 @@
 // app/[locale]/admin/vehicles/[id]/page.tsx
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import {
   ArrowLeft, Edit, Save, X, Car, Calendar, Users, MapPin,
   Fuel, Settings, Shield, AlertCircle, CheckCircle, DollarSign,
@@ -10,11 +12,15 @@ import {
   Eye, MoreVertical, Activity, BarChart3, Gauge, Battery
 } from 'lucide-react';
 import { format, addDays, subDays } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { pl, uk } from 'date-fns/locale';
 
 export default function VehicleDetailsPage() {
   const params = useParams();
   const router = useRouter();
+  const t = useTranslations('admin.vehicles.detail');
+  const locale = useLocale();
+  const dateLocale = locale === 'uk' ? uk : pl;
+  
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
@@ -103,11 +109,11 @@ export default function VehicleDetailsPage() {
   ];
 
   const tabs = [
-    { id: 'overview', label: 'Przegląd', icon: Eye },
-    { id: 'schedule', label: 'Harmonogram', icon: Calendar },
-    { id: 'maintenance', label: 'Serwis', icon: Wrench },
-    { id: 'financial', label: 'Finanse', icon: DollarSign },
-    { id: 'documents', label: 'Dokumenty', icon: FileText }
+    { id: 'overview', label: t('tabs.overview'), icon: Eye },
+    { id: 'schedule', label: t('tabs.schedule'), icon: Calendar },
+    { id: 'maintenance', label: t('tabs.maintenance'), icon: Wrench },
+    { id: 'financial', label: t('tabs.financial'), icon: DollarSign },
+    { id: 'documents', label: t('tabs.documents'), icon: FileText }
   ];
 
   const getStatusColor = (status: string) => {
@@ -125,14 +131,14 @@ export default function VehicleDetailsPage() {
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
-            onClick={() => router.push('/admin/vehicles')}
+            onClick={() => router.push(`/${locale}/admin/vehicles`)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Szczegóły pojazdu</h1>
-            <p className="text-sm text-gray-600">Informacje i zarządzanie pojazdem</p>
+            <h1 className="text-2xl font-bold text-gray-800">{t('title')}</h1>
+            <p className="text-sm text-gray-600">{t('subtitle')}</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -140,18 +146,18 @@ export default function VehicleDetailsPage() {
             <>
               <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                Eksport
+                {t('buttons.export')}
               </button>
               <button
                 onClick={() => setIsEditing(true)}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
               >
                 <Edit className="w-4 h-4" />
-                Edytuj
+                {t('buttons.edit')}
               </button>
               <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
                 <Trash2 className="w-4 h-4" />
-                Usuń
+                {t('buttons.delete')}
               </button>
             </>
           ) : (
@@ -161,11 +167,11 @@ export default function VehicleDetailsPage() {
                 className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
               >
                 <X className="w-4 h-4" />
-                Anuluj
+                {t('buttons.cancel')}
               </button>
               <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
                 <Save className="w-4 h-4" />
-                Zapisz
+                {t('buttons.save')}
               </button>
             </>
           )}
@@ -201,34 +207,33 @@ export default function VehicleDetailsPage() {
                 <p className="text-lg text-gray-600 mt-1">{vehicle.registrationNumber}</p>
               </div>
               <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(vehicle.status)}`}>
-                {vehicle.status === 'active' ? 'Aktywny' : 
-                 vehicle.status === 'maintenance' ? 'W serwisie' : 'Nieaktywny'}
+                {t(`status.${vehicle.status}`)}
               </span>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
               <div>
-                <p className="text-sm text-gray-600">Kategoria</p>
+                <p className="text-sm text-gray-600">{t('info.category')}</p>
                 <p className="font-semibold text-gray-800">{vehicle.category}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Skrzynia biegów</p>
+                <p className="text-sm text-gray-600">{t('info.transmission')}</p>
                 <p className="font-semibold text-gray-800">{vehicle.transmission}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Paliwo</p>
+                <p className="text-sm text-gray-600">{t('info.fuel')}</p>
                 <p className="font-semibold text-gray-800">{vehicle.fuelType}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Przebieg</p>
-                <p className="font-semibold text-gray-800">{vehicle.currentMileage.toLocaleString()} km</p>
+                <p className="text-sm text-gray-600">{t('info.mileage')}</p>
+                <p className="font-semibold text-gray-800">{vehicle.currentMileage.toLocaleString()} {t('maintenance.km')}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">VIN</p>
+                <p className="text-sm text-gray-600">{t('info.vin')}</p>
                 <p className="font-semibold text-gray-800 text-xs">{vehicle.vin}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Kolor</p>
+                <p className="text-sm text-gray-600">{t('info.color')}</p>
                 <p className="font-semibold text-gray-800">{vehicle.color}</p>
               </div>
             </div>
@@ -237,7 +242,7 @@ export default function VehicleDetailsPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div>
-                    <p className="text-sm text-gray-600">Przypisany instruktor</p>
+                    <p className="text-sm text-gray-600">{t('info.assignedInstructor')}</p>
                     <div className="flex items-center gap-2 mt-1">
                       <img
                         src={vehicle.assignedInstructor.avatar}
@@ -249,12 +254,12 @@ export default function VehicleDetailsPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Lokalizacja</p>
+                  <p className="text-sm text-gray-600">{t('info.location')}</p>
                   <p className="font-medium text-gray-800">{vehicle.location}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Dzienna stawka</p>
-                  <p className="font-semibold text-gray-800">{vehicle.dailyRate} PLN</p>
+                  <p className="text-sm text-gray-600">{t('info.dailyRate')}</p>
+                  <p className="font-semibold text-gray-800">{vehicle.dailyRate} {t('currency')}</p>
                 </div>
               </div>
             </div>
@@ -267,42 +272,42 @@ export default function VehicleDetailsPage() {
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <Activity className="w-5 h-5 text-blue-600" />
-            <span className="text-xs text-gray-500">Wykorzystanie</span>
+            <span className="text-xs text-gray-500">{t('stats.utilization')}</span>
           </div>
           <p className="text-xl font-bold text-gray-800">{performanceStats.utilizationRate}%</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <Users className="w-5 h-5 text-green-600" />
-            <span className="text-xs text-gray-500">Lekcji/msc</span>
+            <span className="text-xs text-gray-500">{t('stats.lessonsPerMonth')}</span>
           </div>
           <p className="text-xl font-bold text-gray-800">{performanceStats.totalLessons}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <DollarSign className="w-5 h-5 text-purple-600" />
-            <span className="text-xs text-gray-500">Przychód/msc</span>
+            <span className="text-xs text-gray-500">{t('stats.monthlyRevenue')}</span>
           </div>
-          <p className="text-xl font-bold text-gray-800">{performanceStats.monthlyRevenue} PLN</p>
+          <p className="text-xl font-bold text-gray-800">{performanceStats.monthlyRevenue} {t('currency')}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <Fuel className="w-5 h-5 text-orange-600" />
-            <span className="text-xs text-gray-500">Spalanie</span>
+            <span className="text-xs text-gray-500">{t('stats.fuelConsumption')}</span>
           </div>
           <p className="text-xl font-bold text-gray-800">{performanceStats.fuelConsumption} L/100km</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <Wrench className="w-5 h-5 text-red-600" />
-            <span className="text-xs text-gray-500">Koszty serwisu</span>
+            <span className="text-xs text-gray-500">{t('stats.maintenanceCost')}</span>
           </div>
-          <p className="text-xl font-bold text-gray-800">{performanceStats.maintenanceCost} PLN</p>
+          <p className="text-xl font-bold text-gray-800">{performanceStats.maintenanceCost} {t('currency')}</p>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
           <div className="flex items-center justify-between mb-2">
             <BarChart3 className="w-5 h-5 text-indigo-600" />
-            <span className="text-xs text-gray-500">Ocena</span>
+            <span className="text-xs text-gray-500">{t('stats.rating')}</span>
           </div>
           <p className="text-xl font-bold text-gray-800">⭐ {performanceStats.averageRating}</p>
         </div>
@@ -338,34 +343,34 @@ export default function VehicleDetailsPage() {
             <div className="space-y-6">
               {/* Vehicle Info */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Informacje o pojeździe</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('overview.vehicleInfo')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-600">Data zakupu</label>
-                    <p className="font-medium text-gray-800">{format(new Date(vehicle.purchaseDate), 'dd MMMM yyyy', { locale: pl })}</p>
+                    <label className="text-sm text-gray-600">{t('info.purchaseDate')}</label>
+                    <p className="font-medium text-gray-800">{format(new Date(vehicle.purchaseDate), 'dd MMMM yyyy', { locale: dateLocale })}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Cena zakupu</label>
-                    <p className="font-medium text-gray-800">{vehicle.purchasePrice.toLocaleString()} PLN</p>
+                    <label className="text-sm text-gray-600">{t('info.purchasePrice')}</label>
+                    <p className="font-medium text-gray-800">{vehicle.purchasePrice.toLocaleString()} {t('currency')}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Ważność ubezpieczenia</label>
-                    <p className="font-medium text-gray-800">{format(new Date(vehicle.insuranceExpiry), 'dd MMMM yyyy', { locale: pl })}</p>
+                    <label className="text-sm text-gray-600">{t('info.insuranceExpiry')}</label>
+                    <p className="font-medium text-gray-800">{format(new Date(vehicle.insuranceExpiry), 'dd MMMM yyyy', { locale: dateLocale })}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Ważność przeglądu</label>
-                    <p className="font-medium text-gray-800">{format(new Date(vehicle.inspectionExpiry), 'dd MMMM yyyy', { locale: pl })}</p>
+                    <label className="text-sm text-gray-600">{t('info.inspectionExpiry')}</label>
+                    <p className="font-medium text-gray-800">{format(new Date(vehicle.inspectionExpiry), 'dd MMMM yyyy', { locale: dateLocale })}</p>
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Ważność rejestracji</label>
-                    <p className="font-medium text-gray-800">{format(new Date(vehicle.registrationExpiry), 'dd MMMM yyyy', { locale: pl })}</p>
+                    <label className="text-sm text-gray-600">{t('info.registrationExpiry')}</label>
+                    <p className="font-medium text-gray-800">{format(new Date(vehicle.registrationExpiry), 'dd MMMM yyyy', { locale: dateLocale })}</p>
                   </div>
                 </div>
               </div>
 
               {/* Features */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Wyposażenie</h3>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('overview.features')}</h3>
                 <div className="flex flex-wrap gap-2">
                   {vehicle.features.map((feature) => (
                     <span key={feature} className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">
@@ -381,9 +386,11 @@ export default function VehicleDetailsPage() {
                   <div className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5" />
                     <div>
-                      <p className="font-medium text-gray-800">Zbliża się termin przeglądu</p>
+                      <p className="font-medium text-gray-800">{t('overview.alertTitle')}</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        Przegląd techniczny wygasa {format(new Date(vehicle.inspectionExpiry), 'dd MMMM yyyy', { locale: pl })}
+                        {t('overview.alertDescription', { 
+                          date: format(new Date(vehicle.inspectionExpiry), 'dd MMMM yyyy', { locale: dateLocale })
+                        })}
                       </p>
                     </div>
                   </div>
@@ -400,20 +407,20 @@ export default function VehicleDetailsPage() {
                     day.hours === 0 ? 'bg-gray-50 border-gray-200' : 'bg-white border-gray-200'
                   }`}>
                     <p className="font-semibold text-gray-800">{day.day}</p>
-                    <p className="text-2xl font-bold text-blue-600 my-2">{day.hours}h</p>
-                    <p className="text-xs text-gray-500">{day.bookings} rezerwacji</p>
+                    <p className="text-2xl font-bold text-blue-600 my-2">{day.hours}{t('schedule.hours')}</p>
+                    <p className="text-xs text-gray-500">{day.bookings} {t('schedule.bookings')}</p>
                   </div>
                 ))}
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Ostatnie rezerwacje</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('schedule.recentBookings')}</h4>
                 <div className="space-y-3">
                   {recentBookings.map((booking) => (
                     <div key={booking.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div>
                         <p className="font-medium text-gray-800">{booking.student}</p>
-                        <p className="text-sm text-gray-600">Instruktor: {booking.instructor}</p>
+                        <p className="text-sm text-gray-600">{t('schedule.instructor')} {booking.instructor}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-gray-800">{booking.date}</p>
@@ -424,7 +431,7 @@ export default function VehicleDetailsPage() {
                           ? 'bg-green-100 text-green-700'
                           : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {booking.status === 'completed' ? 'Zakończone' : 'Zaplanowane'}
+                        {t(`schedule.${booking.status}`)}
                       </span>
                     </div>
                   ))}
@@ -437,41 +444,41 @@ export default function VehicleDetailsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700 mb-1">Następny serwis</p>
-                  <p className="text-xl font-bold text-gray-800">46,000 km</p>
-                  <p className="text-xs text-gray-600">za 330 km</p>
+                  <p className="text-sm text-red-700 mb-1">{t('maintenance.nextService')}</p>
+                  <p className="text-xl font-bold text-gray-800">46,000 {t('maintenance.km')}</p>
+                  <p className="text-xs text-gray-600">{t('maintenance.in')} 330 {t('maintenance.km')}</p>
                 </div>
                 <div className="p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-                  <p className="text-sm text-yellow-700 mb-1">Wymiana oleju</p>
-                  <p className="text-xl font-bold text-gray-800">50,000 km</p>
-                  <p className="text-xs text-gray-600">za 4,330 km</p>
+                  <p className="text-sm text-yellow-700 mb-1">{t('maintenance.oilChange')}</p>
+                  <p className="text-xl font-bold text-gray-800">50,000 {t('maintenance.km')}</p>
+                  <p className="text-xs text-gray-600">{t('maintenance.in')} 4,330 {t('maintenance.km')}</p>
                 </div>
                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <p className="text-sm text-green-700 mb-1">Stan techniczny</p>
-                  <p className="text-xl font-bold text-gray-800">Dobry</p>
-                  <p className="text-xs text-gray-600">Ostatni przegląd: 15.01.2024</p>
+                  <p className="text-sm text-green-700 mb-1">{t('maintenance.technicalCondition')}</p>
+                  <p className="text-xl font-bold text-gray-800">{t('maintenance.good')}</p>
+                  <p className="text-xs text-gray-600">{t('maintenance.lastInspection')} 15.01.2024</p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Historia serwisowa</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('maintenance.serviceHistory')}</h4>
                 <div className="space-y-3">
                   {maintenanceHistory.map((service) => (
                     <div key={service.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                       <div>
                         <p className="font-medium text-gray-800">{service.type}</p>
-                        <p className="text-sm text-gray-600">{service.mileage.toLocaleString()} km</p>
+                        <p className="text-sm text-gray-600">{service.mileage.toLocaleString()} {t('maintenance.km')}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-sm text-gray-800">{format(new Date(service.date), 'dd.MM.yyyy')}</p>
-                        <p className="font-semibold text-gray-800">{service.cost} PLN</p>
+                        <p className="font-semibold text-gray-800">{service.cost} {t('currency')}</p>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
                         service.status === 'completed' 
                           ? 'bg-green-100 text-green-700'
                           : 'bg-blue-100 text-blue-700'
                       }`}>
-                        {service.status === 'completed' ? 'Wykonano' : 'Zaplanowane'}
+                        {t(`maintenance.${service.status}`)}
                       </span>
                     </div>
                   ))}
@@ -484,41 +491,41 @@ export default function VehicleDetailsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <p className="text-sm text-green-700">Przychód całkowity</p>
-                  <p className="text-2xl font-bold text-gray-800">50,400 PLN</p>
-                  <p className="text-sm text-green-600 mt-1">+12% vs poprzedni kwartał</p>
+                  <p className="text-sm text-green-700">{t('financial.totalRevenue')}</p>
+                  <p className="text-2xl font-bold text-gray-800">50,400 {t('currency')}</p>
+                  <p className="text-sm text-green-600 mt-1">{t('financial.vsLastQuarter', { percent: 12 })}</p>
                 </div>
                 <div className="p-4 bg-red-50 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700">Koszty całkowite</p>
-                  <p className="text-2xl font-bold text-gray-800">4,690 PLN</p>
-                  <p className="text-sm text-gray-600 mt-1">Serwis + Paliwo</p>
+                  <p className="text-sm text-red-700">{t('financial.totalCosts')}</p>
+                  <p className="text-2xl font-bold text-gray-800">4,690 {t('currency')}</p>
+                  <p className="text-sm text-gray-600 mt-1">{t('financial.maintenanceFuel')}</p>
                 </div>
                 <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-700">Zysk netto</p>
-                  <p className="text-2xl font-bold text-gray-800">45,710 PLN</p>
-                  <p className="text-sm text-gray-600 mt-1">ROI: 48%</p>
+                  <p className="text-sm text-blue-700">{t('financial.netProfit')}</p>
+                  <p className="text-2xl font-bold text-gray-800">45,710 {t('currency')}</p>
+                  <p className="text-sm text-gray-600 mt-1">{t('financial.roi', { percent: 48 })}</p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Historia finansowa</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('financial.financialHistory')}</h4>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-gray-200">
-                        <th className="text-left py-2 text-sm font-semibold text-gray-700">Miesiąc</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Przychód</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Wydatki</th>
-                        <th className="text-right py-2 text-sm font-semibold text-gray-700">Zysk</th>
+                        <th className="text-left py-2 text-sm font-semibold text-gray-700">{t('financial.month')}</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">{t('financial.revenue')}</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">{t('financial.expenses')}</th>
+                        <th className="text-right py-2 text-sm font-semibold text-gray-700">{t('financial.profit')}</th>
                       </tr>
                     </thead>
                     <tbody>
                       {financialData.map((month, index) => (
                         <tr key={index} className="border-b border-gray-100">
                           <td className="py-3 text-gray-800">{month.month}</td>
-                          <td className="py-3 text-right font-semibold text-green-600">{month.revenue.toLocaleString()} PLN</td>
-                          <td className="py-3 text-right text-red-600">{month.expenses.toLocaleString()} PLN</td>
-                          <td className="py-3 text-right font-semibold text-gray-800">{month.profit.toLocaleString()} PLN</td>
+                          <td className="py-3 text-right font-semibold text-green-600">{month.revenue.toLocaleString()} {t('currency')}</td>
+                          <td className="py-3 text-right text-red-600">{month.expenses.toLocaleString()} {t('currency')}</td>
+                          <td className="py-3 text-right font-semibold text-gray-800">{month.profit.toLocaleString()} {t('currency')}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -536,7 +543,7 @@ export default function VehicleDetailsPage() {
                     <Shield className="w-5 h-5 text-gray-600" />
                     <div>
                       <p className="font-medium text-gray-800">{doc.name}</p>
-                      <p className="text-sm text-gray-600">Przesłano: {format(new Date(doc.uploadDate), 'dd.MM.yyyy')}</p>
+                      <p className="text-sm text-gray-600">{t('documents.uploaded')} {format(new Date(doc.uploadDate), 'dd.MM.yyyy')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -545,7 +552,7 @@ export default function VehicleDetailsPage() {
                         ? 'bg-green-100 text-green-700'
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {doc.status === 'verified' ? 'Zweryfikowane' : 'Wygasa'}
+                      {t(`documents.${doc.status}`)}
                     </span>
                     <button className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                       <Eye className="w-4 h-4 text-gray-600" />

@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/resources/page.tsx
+// app/[locale]/instructor/resources/page.tsx
 
 'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   FileText, Video, Download, Upload, Search, Filter,
   FolderOpen, File, Image, PlayCircle, BookOpen,
@@ -34,10 +35,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function ResourcesPage() {
   const router = useRouter()
+  const t = useTranslations('instructor.resources.main')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
@@ -47,98 +49,98 @@ export default function ResourcesPage() {
   const resources = [
     {
       id: '1',
-      title: 'Kodeks drogowy 2024',
-      description: 'Kompletny zbiór przepisów ruchu drogowego',
+      title: 'Правила дорожнього руху 2024',
+      description: 'Повний збірник правил дорожнього руху',
       type: 'pdf',
-      category: 'teoria',
+      category: 'theory',
       size: '4.2 MB',
       downloads: 234,
       rating: 4.8,
       uploadedAt: new Date('2024-01-15'),
       updatedAt: new Date('2024-02-01'),
-      tags: ['przepisy', 'teoria', 'egzamin'],
+      tags: ['правила', 'теорія', 'іспит'],
       thumbnail: null,
       isPublic: true,
       views: 1234
     },
     {
       id: '2',
-      title: 'Parkowanie równoległe - tutorial',
-      description: 'Film instruktażowy pokazujący technikę parkowania równoległego',
+      title: 'Паралельне паркування - відеоурок',
+      description: 'Навчальне відео з техніки паралельного паркування',
       type: 'video',
-      category: 'praktyka',
+      category: 'practice',
       size: '156 MB',
       duration: '12:34',
       downloads: 189,
       rating: 4.9,
       uploadedAt: new Date('2024-01-20'),
       updatedAt: new Date('2024-01-20'),
-      tags: ['parkowanie', 'praktyka', 'film'],
+      tags: ['паркування', 'практика', 'відео'],
       thumbnail: '📹',
       isPublic: true,
       views: 2341
     },
     {
       id: '3',
-      title: 'Testy egzaminacyjne - kategoria B',
-      description: 'Zbiór 500 pytań testowych z odpowiedziami',
+      title: 'Тести для іспиту - категорія B',
+      description: 'Збірник з 500 тестових питань з відповідями',
       type: 'pdf',
-      category: 'testy',
+      category: 'tests',
       size: '8.7 MB',
       downloads: 567,
       rating: 4.7,
       uploadedAt: new Date('2024-01-10'),
       updatedAt: new Date('2024-02-02'),
-      tags: ['test', 'egzamin', 'pytania'],
+      tags: ['тест', 'іспит', 'питання'],
       thumbnail: null,
       isPublic: true,
       views: 4567
     },
     {
       id: '4',
-      title: 'Znaki drogowe - prezentacja',
-      description: 'Interaktywna prezentacja wszystkich znaków drogowych',
+      title: 'Дорожні знаки - презентація',
+      description: 'Інтерактивна презентація всіх дорожніх знаків',
       type: 'presentation',
-      category: 'teoria',
+      category: 'theory',
       size: '12.3 MB',
       downloads: 145,
       rating: 4.6,
       uploadedAt: new Date('2024-01-25'),
       updatedAt: new Date('2024-01-25'),
-      tags: ['znaki', 'teoria', 'prezentacja'],
+      tags: ['знаки', 'теорія', 'презентація'],
       thumbnail: '📊',
       isPublic: true,
       views: 1890
     },
     {
       id: '5',
-      title: 'Pierwsza pomoc - poradnik',
-      description: 'Podstawy pierwszej pomocy dla kierowców',
+      title: 'Перша допомога - посібник',
+      description: 'Основи першої допомоги для водіїв',
       type: 'pdf',
-      category: 'dodatkowe',
+      category: 'additional',
       size: '3.1 MB',
       downloads: 89,
       rating: 4.5,
       uploadedAt: new Date('2024-02-01'),
       updatedAt: new Date('2024-02-01'),
-      tags: ['pierwsza pomoc', 'bezpieczeństwo'],
+      tags: ['перша допомога', 'безпека'],
       thumbnail: null,
       isPublic: true,
       views: 567
     },
     {
       id: '6',
-      title: 'Manewry na placu - film',
-      description: 'Kompletny przewodnik po manewrach egzaminacyjnych',
+      title: 'Маневри на майданчику - відео',
+      description: 'Повний посібник з екзаменаційних маневрів',
       type: 'video',
-      category: 'praktyka',
+      category: 'practice',
       size: '234 MB',
       duration: '18:45',
       downloads: 234,
       rating: 4.9,
       uploadedAt: new Date('2024-01-18'),
       updatedAt: new Date('2024-01-18'),
-      tags: ['manewry', 'plac', 'egzamin'],
+      tags: ['маневри', 'майданчик', 'іспит'],
       thumbnail: '📹',
       isPublic: false,
       views: 3456
@@ -147,19 +149,19 @@ export default function ResourcesPage() {
 
   // Categories
   const categories = [
-    { value: 'all', label: 'Wszystkie', count: resources.length },
-    { value: 'teoria', label: 'Teoria', count: 2 },
-    { value: 'praktyka', label: 'Praktyka', count: 2 },
-    { value: 'testy', label: 'Testy', count: 1 },
-    { value: 'dodatkowe', label: 'Dodatkowe', count: 1 }
+    { value: 'all', label: t('categories.all'), count: resources.length },
+    { value: 'theory', label: t('categories.theory'), count: 2 },
+    { value: 'practice', label: t('categories.practice'), count: 2 },
+    { value: 'tests', label: t('categories.tests'), count: 1 },
+    { value: 'additional', label: t('categories.additional'), count: 1 }
   ]
 
   // Recent activity
   const recentActivity = [
-    { action: 'pobranie', resource: 'Kodeks drogowy 2024', user: 'Anna Nowak', time: '5 min temu' },
-    { action: 'wyświetlenie', resource: 'Parkowanie równoległe', user: 'Jan Kowalski', time: '15 min temu' },
-    { action: 'pobranie', resource: 'Testy egzaminacyjne', user: 'Maria Wiśniewska', time: '1 godz. temu' },
-    { action: 'ocena', resource: 'Znaki drogowe', user: 'Piotr Zieliński', time: '2 godz. temu' }
+    { action: 'download', resource: 'Правила дорожнього руху 2024', user: 'Анна Новак', time: t('recentActivity.minutesAgo', { count: 5 }) },
+    { action: 'view', resource: 'Паралельне паркування', user: 'Іван Коваленко', time: t('recentActivity.minutesAgo', { count: 15 }) },
+    { action: 'download', resource: 'Тести для іспиту', user: 'Марія Вишневська', time: t('recentActivity.hoursAgo', { count: 1 }) },
+    { action: 'rate', resource: 'Дорожні знаки', user: 'Петро Зеленський', time: t('recentActivity.hoursAgo', { count: 2 }) }
   ]
 
   // Statistics
@@ -169,7 +171,7 @@ export default function ResourcesPage() {
     totalViews: resources.reduce((sum, r) => sum + r.views, 0),
     averageRating: (resources.reduce((sum, r) => sum + r.rating, 0) / resources.length).toFixed(1),
     totalSize: '419 MB',
-    mostPopular: 'Testy egzaminacyjne - kategoria B'
+    mostPopular: 'Тести для іспиту - категорія B'
   }
 
   // Filter resources
@@ -204,14 +206,14 @@ export default function ResourcesPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Materiały edukacyjne</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            Zarządzaj materiałami dla studentów
+            {t('subtitle')}
           </p>
         </div>
         <Button onClick={() => router.push('/instructor/resources/upload')}>
           <Upload className="w-4 h-4 mr-2" />
-          Dodaj materiał
+          {t('addMaterial')}
         </Button>
       </div>
 
@@ -219,37 +221,37 @@ export default function ResourcesPage() {
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Materiały</p>
+            <p className="text-sm text-gray-500">{t('stats.materials')}</p>
             <p className="text-2xl font-bold">{stats.totalResources}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Pobrania</p>
+            <p className="text-sm text-gray-500">{t('stats.downloads')}</p>
             <p className="text-2xl font-bold">{stats.totalDownloads}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Wyświetlenia</p>
+            <p className="text-sm text-gray-500">{t('stats.views')}</p>
             <p className="text-2xl font-bold">{stats.totalViews.toLocaleString()}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Ocena</p>
+            <p className="text-sm text-gray-500">{t('stats.rating')}</p>
             <p className="text-2xl font-bold">⭐ {stats.averageRating}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Rozmiar</p>
+            <p className="text-sm text-gray-500">{t('stats.size')}</p>
             <p className="text-2xl font-bold">{stats.totalSize}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-gray-500">Popularny</p>
+            <p className="text-sm text-gray-500">{t('stats.popular')}</p>
             <p className="text-sm font-semibold truncate" title={stats.mostPopular}>
               {stats.mostPopular}
             </p>
@@ -262,7 +264,7 @@ export default function ResourcesPage() {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Szukaj materiałów..."
+            placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -287,10 +289,10 @@ export default function ResourcesPage() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="date">Najnowsze</SelectItem>
-            <SelectItem value="downloads">Najpopularniejsze</SelectItem>
-            <SelectItem value="rating">Najlepiej oceniane</SelectItem>
-            <SelectItem value="name">Alfabetycznie</SelectItem>
+            <SelectItem value="date">{t('sort.date')}</SelectItem>
+            <SelectItem value="downloads">{t('sort.downloads')}</SelectItem>
+            <SelectItem value="rating">{t('sort.rating')}</SelectItem>
+            <SelectItem value="name">{t('sort.name')}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -332,24 +334,24 @@ export default function ResourcesPage() {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>
                             <Eye className="w-4 h-4 mr-2" />
-                            Podgląd
+                            {t('actions.preview')}
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Download className="w-4 h-4 mr-2" />
-                            Pobierz
+                            {t('actions.download')}
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Share2 className="w-4 h-4 mr-2" />
-                            Udostępnij
+                            {t('actions.share')}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem>
                             <Edit className="w-4 h-4 mr-2" />
-                            Edytuj
+                            {t('actions.edit')}
                           </DropdownMenuItem>
                           <DropdownMenuItem className="text-red-600">
                             <Trash2 className="w-4 h-4 mr-2" />
-                            Usuń
+                            {t('actions.delete')}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
@@ -436,7 +438,7 @@ export default function ResourcesPage() {
           {/* Recent Activity */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Ostatnia aktywność</CardTitle>
+              <CardTitle className="text-base">{t('recentActivity.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -446,9 +448,7 @@ export default function ResourcesPage() {
                     <div>
                       <p>
                         <span className="font-medium">{activity.user}</span>{' '}
-                        {activity.action === 'pobranie' && 'pobrał'}{' '}
-                        {activity.action === 'wyświetlenie' && 'wyświetlił'}{' '}
-                        {activity.action === 'ocena' && 'ocenił'}{' '}
+                        {t(`recentActivity.${activity.action}`)}{' '}
                         <span className="font-medium">{activity.resource}</span>
                       </p>
                       <p className="text-xs text-gray-500">{activity.time}</p>
@@ -462,13 +462,13 @@ export default function ResourcesPage() {
           {/* Storage Info */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Wykorzystanie przestrzeni</CardTitle>
+              <CardTitle className="text-base">{t('storage.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span>Wykorzystano</span>
+                    <span>{t('storage.used')}</span>
                     <span className="font-medium">419 MB / 5 GB</span>
                   </div>
                   <Progress value={8.4} className="h-2" />
@@ -476,19 +476,19 @@ export default function ResourcesPage() {
                 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">📄 Dokumenty</span>
+                    <span className="text-gray-600">📄 {t('storage.documents')}</span>
                     <span>16.0 MB</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">📹 Filmy</span>
+                    <span className="text-gray-600">📹 {t('storage.videos')}</span>
                     <span>390 MB</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">📊 Prezentacje</span>
+                    <span className="text-gray-600">📊 {t('storage.presentations')}</span>
                     <span>12.3 MB</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">🖼 Obrazy</span>
+                    <span className="text-gray-600">🖼 {t('storage.images')}</span>
                     <span>700 KB</span>
                   </div>
                 </div>
@@ -500,7 +500,7 @@ export default function ResourcesPage() {
           <Alert>
             <Info className="h-4 w-4" />
             <AlertDescription>
-              <strong>Wskazówka:</strong> Regularnie aktualizuj materiały, aby studenci mieli dostęp do najnowszych informacji.
+              <strong>{t('tip.title')}</strong> {t('tip.description')}
             </AlertDescription>
           </Alert>
         </div>

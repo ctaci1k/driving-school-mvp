@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   FileText, Download, Calendar, Filter, TrendingUp, Users,
   DollarSign, Car, GraduationCap, PieChart, BarChart3,
@@ -10,9 +11,10 @@ import {
   FileSpreadsheet, FilePlus, Eye, Settings, Database
 } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { uk } from 'date-fns/locale';
 
 export default function AdminReportsPage() {
+  const t = useTranslations('admin.reports');
   const [selectedReportType, setSelectedReportType] = useState('financial');
   const [dateFrom, setDateFrom] = useState(format(startOfMonth(new Date()), 'yyyy-MM-dd'));
   const [dateTo, setDateTo] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'));
@@ -23,74 +25,74 @@ export default function AdminReportsPage() {
   const [generatedReport, setGeneratedReport] = useState<any>(null);
   const [savedReports, setSavedReports] = useState<any[]>([]);
 
-  // Mock data - polskie miasta
-  const locations = ['Warszawa - Centrum', 'Warszawa - Mokotów', 'Warszawa - Wola', 'Kraków', 'Wrocław'];
+  // Mock data
+  const locations = ['Київ - Центр', 'Київ - Подол', 'Київ - Оболонь', 'Львів', 'Одеса'];
   const instructors = [
-    'Piotr Kowalski', 'Anna Nowak', 'Jan Wiśniewski', 'Katarzyna Wójcik',
-    'Marek Kowalczyk', 'Maria Kamińska', 'Aleksander Lewandowski'
+    'Петро Коваленко', 'Анна Новак', 'Іван Вишневський', 'Катерина Войцік',
+    'Марко Ковальчук', 'Марія Камінська', 'Олександр Левандовський'
   ];
   const categories = ['B', 'B+E', 'C', 'C+E', 'D'];
 
   const reportTypes = [
     {
       id: 'financial',
-      name: 'Raport finansowy',
-      description: 'Przychody, wydatki, zysk za okres',
+      name: t('reportTypes.financial.name'),
+      description: t('reportTypes.financial.description'),
       icon: DollarSign,
       color: 'green'
     },
     {
       id: 'students',
-      name: 'Raport kursantów',
-      description: 'Statystyki kursantów i ich postępów',
+      name: t('reportTypes.students.name'),
+      description: t('reportTypes.students.description'),
       icon: Users,
       color: 'blue'
     },
     {
       id: 'instructors',
-      name: 'Raport instruktorów',
-      description: 'Efektywność i obciążenie instruktorów',
+      name: t('reportTypes.instructors.name'),
+      description: t('reportTypes.instructors.description'),
       icon: GraduationCap,
       color: 'purple'
     },
     {
       id: 'bookings',
-      name: 'Raport rezerwacji',
-      description: 'Analiza rezerwacji i obłożenia',
+      name: t('reportTypes.bookings.name'),
+      description: t('reportTypes.bookings.description'),
       icon: Calendar,
       color: 'orange'
     },
     {
       id: 'vehicles',
-      name: 'Raport pojazdów',
-      description: 'Wykorzystanie i obsługa floty',
+      name: t('reportTypes.vehicles.name'),
+      description: t('reportTypes.vehicles.description'),
       icon: Car,
       color: 'indigo'
     },
     {
       id: 'performance',
-      name: 'Raport wydajności',
-      description: 'KPI i ogólna efektywność szkoły',
+      name: t('reportTypes.performance.name'),
+      description: t('reportTypes.performance.description'),
       icon: Target,
       color: 'red'
     }
   ];
 
   const predefinedPeriods = [
-    { label: 'Dzisiaj', value: 'today' },
-    { label: 'Wczoraj', value: 'yesterday' },
-    { label: 'Ten tydzień', value: 'week' },
-    { label: 'Ten miesiąc', value: 'month' },
-    { label: 'Poprzedni miesiąc', value: 'lastMonth' },
-    { label: 'Ten kwartał', value: 'quarter' },
-    { label: 'Ten rok', value: 'year' }
+    { label: t('period.today'), value: 'today' },
+    { label: t('period.yesterday'), value: 'yesterday' },
+    { label: t('period.thisWeek'), value: 'week' },
+    { label: t('period.thisMonth'), value: 'month' },
+    { label: t('period.lastMonth'), value: 'lastMonth' },
+    { label: t('period.thisQuarter'), value: 'quarter' },
+    { label: t('period.thisYear'), value: 'year' }
   ];
 
   const scheduleOptions = [
-    { label: 'Codziennie', value: 'daily' },
-    { label: 'Co tydzień', value: 'weekly' },
-    { label: 'Co miesiąc', value: 'monthly' },
-    { label: 'Co kwartał', value: 'quarterly' }
+    { label: t('automaticReports.daily'), value: 'daily' },
+    { label: t('automaticReports.weekly'), value: 'weekly' },
+    { label: t('automaticReports.monthly'), value: 'monthly' },
+    { label: t('automaticReports.quarterly'), value: 'quarterly' }
   ];
 
   const handlePeriodSelect = (period: string) => {
@@ -163,11 +165,11 @@ export default function AdminReportsPage() {
   };
 
   const handleExport = (format: string) => {
-    console.log(`Eksportowanie raportu jako ${format}...`);
+    console.log(`Exporting report as ${format}...`);
   };
 
   const handleScheduleReport = () => {
-    console.log('Planowanie raportu...');
+    console.log('Scheduling report...');
   };
 
   const handleSaveReport = () => {
@@ -198,17 +200,17 @@ export default function AdminReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">Raporty</h1>
-          <p className="text-gray-600 mt-1">Tworzenie i analiza raportów</p>
+          <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+          <p className="text-gray-600 mt-1">{t('subtitle')}</p>
         </div>
         <div className="flex items-center gap-3">
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2">
             <Database className="w-4 h-4" />
-            Zapisane raporty
+            {t('buttons.savedReports')}
           </button>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
             <FilePlus className="w-4 h-4" />
-            Nowy raport
+            {t('buttons.newReport')}
           </button>
         </div>
       </div>
@@ -218,7 +220,7 @@ export default function AdminReportsPage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Report Type Selection */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Typ raportu</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('reportTypes.title')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {reportTypes.map((type) => {
                 const Icon = type.icon;
@@ -254,11 +256,11 @@ export default function AdminReportsPage() {
 
           {/* Date Range */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Okres</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('period.title')}</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Od</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('period.from')}</label>
                   <input
                     type="date"
                     value={dateFrom}
@@ -267,7 +269,7 @@ export default function AdminReportsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Do</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('period.to')}</label>
                   <input
                     type="date"
                     value={dateTo}
@@ -293,11 +295,11 @@ export default function AdminReportsPage() {
 
           {/* Filters */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtry</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('filters.title')}</h3>
             <div className="space-y-4">
               {/* Locations */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Lokalizacje</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('filters.locations')}</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {locations.map((location) => (
                     <label key={location} className="flex items-center gap-2 cursor-pointer">
@@ -321,7 +323,7 @@ export default function AdminReportsPage() {
 
               {/* Instructors */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Instruktorzy</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('filters.instructors')}</label>
                 <div className="space-y-2 max-h-32 overflow-y-auto">
                   {instructors.map((instructor) => (
                     <label key={instructor} className="flex items-center gap-2 cursor-pointer">
@@ -345,7 +347,7 @@ export default function AdminReportsPage() {
 
               {/* Categories */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Kategorie</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('filters.categories')}</label>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((category) => (
                     <label key={category} className="flex items-center gap-2 cursor-pointer">
@@ -374,36 +376,36 @@ export default function AdminReportsPage() {
         <div className="space-y-6">
           {/* Preview */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 sticky top-4">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Podgląd</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('preview.title')}</h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Typ:</p>
+                <p className="text-sm text-gray-500">{t('preview.type')}</p>
                 <p className="font-medium text-gray-800">
                   {reportTypes.find(r => r.id === selectedReportType)?.name}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Okres:</p>
+                <p className="text-sm text-gray-500">{t('preview.period')}</p>
                 <p className="font-medium text-gray-800">
                   {format(new Date(dateFrom), 'dd.MM.yyyy')} - {format(new Date(dateTo), 'dd.MM.yyyy')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Lokalizacje:</p>
+                <p className="text-sm text-gray-500">{t('preview.locations')}</p>
                 <p className="font-medium text-gray-800">
-                  {selectedLocations.length > 0 ? selectedLocations.join(', ') : 'Wszystkie lokalizacje'}
+                  {selectedLocations.length > 0 ? selectedLocations.join(', ') : t('filters.allLocations')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Instruktorzy:</p>
+                <p className="text-sm text-gray-500">{t('preview.instructors')}</p>
                 <p className="font-medium text-gray-800">
-                  {selectedInstructors.length > 0 ? `Wybrano: ${selectedInstructors.length}` : 'Wszyscy instruktorzy'}
+                  {selectedInstructors.length > 0 ? `${t('filters.selected')}: ${selectedInstructors.length}` : t('filters.allInstructors')}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Kategorie:</p>
+                <p className="text-sm text-gray-500">{t('preview.categories')}</p>
                 <p className="font-medium text-gray-800">
-                  {selectedCategories.length > 0 ? selectedCategories.join(', ') : 'Wszystkie kategorie'}
+                  {selectedCategories.length > 0 ? selectedCategories.join(', ') : t('filters.allCategories')}
                 </p>
               </div>
             </div>
@@ -417,12 +419,12 @@ export default function AdminReportsPage() {
                 {isGenerating ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Generowanie raportu...
+                    {t('buttons.generating')}
                   </>
                 ) : (
                   <>
                     <FileText className="w-4 h-4" />
-                    Generuj raport
+                    {t('buttons.generateReport')}
                   </>
                 )}
               </button>
@@ -430,27 +432,27 @@ export default function AdminReportsPage() {
               <div className="grid grid-cols-2 gap-2">
                 <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm">
                   <Download className="w-4 h-4" />
-                  PDF
+                  {t('buttons.pdf')}
                 </button>
                 <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm">
                   <FileSpreadsheet className="w-4 h-4" />
-                  Excel
+                  {t('buttons.excel')}
                 </button>
               </div>
 
               <button className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 text-sm">
                 <Clock className="w-4 h-4" />
-                Zaplanuj raport
+                {t('buttons.scheduleReport')}
               </button>
             </div>
           </div>
 
           {/* Schedule Settings */}
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Raporty automatyczne</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('automaticReports.title')}</h3>
             <div className="space-y-3">
               <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-                <option>Wyłączone</option>
+                <option>{t('automaticReports.disabled')}</option>
                 {scheduleOptions.map(option => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
@@ -463,13 +465,13 @@ export default function AdminReportsPage() {
                   className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
                 <label htmlFor="sendEmail" className="text-sm text-gray-700">
-                  Wyślij na email
+                  {t('automaticReports.sendEmail')}
                 </label>
               </div>
               
               <input
                 type="email"
-                placeholder="admin@szkola-jazdy.pl"
+                placeholder={t('automaticReports.emailPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -486,42 +488,42 @@ export default function AdminReportsPage() {
                 {reportTypes.find(r => r.id === generatedReport.type)?.name}
               </h3>
               <p className="text-sm text-gray-500">
-                Wygenerowano {format(generatedReport.generatedAt, 'dd.MM.yyyy HH:mm')}
+                {t('generatedReport.generated')} {format(generatedReport.generatedAt, 'dd.MM.yyyy HH:mm')}
               </p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleExport('pdf')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Pobierz PDF"
+                title={t('tooltips.downloadPdf')}
               >
                 <Download className="w-4 h-4" />
               </button>
               <button
                 onClick={() => handleExport('excel')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Pobierz Excel"
+                title={t('tooltips.downloadExcel')}
               >
                 <FileSpreadsheet className="w-4 h-4" />
               </button>
               <button
                 onClick={() => console.log('Print')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Drukuj"
+                title={t('tooltips.print')}
               >
                 <Printer className="w-4 h-4" />
               </button>
               <button
                 onClick={() => console.log('Share')}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Udostępnij"
+                title={t('tooltips.share')}
               >
                 <Share2 className="w-4 h-4" />
               </button>
               <button
                 onClick={handleSaveReport}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50"
-                title="Zapisz"
+                title={t('tooltips.save')}
               >
                 <Save className="w-4 h-4" />
               </button>
@@ -531,25 +533,25 @@ export default function AdminReportsPage() {
           {/* Report Summary */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Całkowity przychód</p>
+              <p className="text-sm text-gray-500">{t('generatedReport.totalRevenue')}</p>
               <p className="text-2xl font-bold text-gray-800">
-                {generatedReport.data.summary.totalRevenue.toLocaleString()} zł
+                {generatedReport.data.summary.totalRevenue.toLocaleString()} {t('currency')}
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Wydatki</p>
+              <p className="text-sm text-gray-500">{t('generatedReport.expenses')}</p>
               <p className="text-2xl font-bold text-gray-800">
-                {generatedReport.data.summary.totalExpenses.toLocaleString()} zł
+                {generatedReport.data.summary.totalExpenses.toLocaleString()} {t('currency')}
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Zysk netto</p>
+              <p className="text-sm text-gray-500">{t('generatedReport.netProfit')}</p>
               <p className="text-2xl font-bold text-green-600">
-                {generatedReport.data.summary.netProfit.toLocaleString()} zł
+                {generatedReport.data.summary.netProfit.toLocaleString()} {t('currency')}
               </p>
             </div>
             <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-500">Wszystkie rezerwacje</p>
+              <p className="text-sm text-gray-500">{t('generatedReport.allBookings')}</p>
               <p className="text-2xl font-bold text-gray-800">
                 {generatedReport.data.summary.totalBookings}
               </p>
@@ -558,8 +560,7 @@ export default function AdminReportsPage() {
 
           <div className="border-t pt-4">
             <p className="text-sm text-gray-600">
-              Szczegółowy raport zawiera pełną analitykę za wybrany okres. 
-              Pobierz pełny raport w formacie PDF lub Excel do szczegółowego przeglądu.
+              {t('generatedReport.detailsDescription')}
             </p>
           </div>
         </div>
@@ -568,7 +569,7 @@ export default function AdminReportsPage() {
       {/* Recent Reports */}
       {savedReports.length > 0 && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ostatnie zapisane raporty</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('recentReports.title')}</h3>
           <div className="space-y-3">
             {savedReports.slice(-5).reverse().map((report) => (
               <div key={report.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">

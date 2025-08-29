@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/modals/ExceptionModal.tsx
-// Modal do dodawania wyjątków w harmonogramie - urlopy, święta, choroby
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   X, Calendar, AlertTriangle, Plane, Heart, GraduationCap, 
   Gift, Save, Loader2, CalendarOff, Repeat, Info
@@ -12,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { Exception, ExceptionType, Slot } from '../../types/schedule.types'
 import { useScheduleContext } from '../../providers/ScheduleProvider'
 import { format, addDays, differenceInDays, eachDayOfInterval } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 interface ExceptionModalProps {
   isOpen: boolean
@@ -23,62 +22,6 @@ interface ExceptionModalProps {
   mode?: 'create' | 'edit'
 }
 
-const EXCEPTION_TYPES: { 
-  value: ExceptionType; 
-  label: string; 
-  color: string; 
-  icon: React.ReactNode;
-  description: string;
-}[] = [
-  { 
-    value: 'urlop', 
-    label: 'Urlop', 
-    color: 'text-blue-600 bg-blue-50', 
-    icon: <Plane className="w-5 h-5" />,
-    description: 'Zaplanowany urlop wypoczynkowy'
-  },
-  { 
-    value: 'choroba', 
-    label: 'Zwolnienie lekarskie', 
-    color: 'text-red-600 bg-red-50', 
-    icon: <Heart className="w-5 h-5" />,
-    description: 'Nieobecność z powodu choroby'
-  },
-  { 
-    value: 'święto', 
-    label: 'Święto', 
-    color: 'text-green-600 bg-green-50', 
-    icon: <Gift className="w-5 h-5" />,
-    description: 'Dni świąteczne i wolne'
-  },
-  { 
-    value: 'szkolenie', 
-    label: 'Szkolenie', 
-    color: 'text-purple-600 bg-purple-50', 
-    icon: <GraduationCap className="w-5 h-5" />,
-    description: 'Kursy i szkolenia zawodowe'
-  },
-  { 
-    value: 'inne', 
-    label: 'Inne', 
-    color: 'text-gray-600 bg-gray-50', 
-    icon: <CalendarOff className="w-5 h-5" />,
-    description: 'Pozostałe powody nieobecności'
-  }
-]
-
-const POLISH_HOLIDAYS = [
-  { date: '01-01', name: 'Nowy Rok' },
-  { date: '01-06', name: 'Święto Trzech Króli' },
-  { date: '05-01', name: 'Święto Pracy' },
-  { date: '05-03', name: 'Święto Konstytucji 3 Maja' },
-  { date: '08-15', name: 'Wniebowzięcie NMP' },
-  { date: '11-01', name: 'Wszystkich Świętych' },
-  { date: '11-11', name: 'Święto Niepodległości' },
-  { date: '12-25', name: 'Boże Narodzenie' },
-  { date: '12-26', name: 'Drugi dzień Bożego Narodzenia' }
-]
-
 export default function ExceptionModal({
   isOpen,
   onClose,
@@ -87,6 +30,7 @@ export default function ExceptionModal({
   exception,
   mode = 'create'
 }: ExceptionModalProps) {
+  const t = useTranslations('instructor.schedule.modals.exception')
   const { slots, createException, exceptions } = useScheduleContext()
   const [isLoading, setIsLoading] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
@@ -112,6 +56,63 @@ export default function ExceptionModal({
   
   const [affectedSlots, setAffectedSlots] = useState<Slot[]>([])
   const [selectedHoliday, setSelectedHoliday] = useState<string>('')
+
+  // Exception types configuration
+  const EXCEPTION_TYPES: { 
+    value: ExceptionType; 
+    label: string; 
+    color: string; 
+    icon: React.ReactNode;
+    description: string;
+  }[] = [
+    { 
+      value: 'urlop', 
+      label: t('types.vacation.label'), 
+      color: 'text-blue-600 bg-blue-50', 
+      icon: <Plane className="w-5 h-5" />,
+      description: t('types.vacation.description')
+    },
+    { 
+      value: 'choroba', 
+      label: t('types.sickness.label'), 
+      color: 'text-red-600 bg-red-50', 
+      icon: <Heart className="w-5 h-5" />,
+      description: t('types.sickness.description')
+    },
+    { 
+      value: 'święto', 
+      label: t('types.holiday.label'), 
+      color: 'text-green-600 bg-green-50', 
+      icon: <Gift className="w-5 h-5" />,
+      description: t('types.holiday.description')
+    },
+    { 
+      value: 'szkolenie', 
+      label: t('types.training.label'), 
+      color: 'text-purple-600 bg-purple-50', 
+      icon: <GraduationCap className="w-5 h-5" />,
+      description: t('types.training.description')
+    },
+    { 
+      value: 'inne', 
+      label: t('types.other.label'), 
+      color: 'text-gray-600 bg-gray-50', 
+      icon: <CalendarOff className="w-5 h-5" />,
+      description: t('types.other.description')
+    }
+  ]
+
+  const HOLIDAYS = [
+    { date: '01-01', name: t('holidays.newYear') },
+    { date: '01-06', name: t('holidays.epiphany') },
+    { date: '05-01', name: t('holidays.labourDay') },
+    { date: '05-03', name: t('holidays.constitutionDay') },
+    { date: '08-15', name: t('holidays.assumptionDay') },
+    { date: '11-01', name: t('holidays.allSaintsDay') },
+    { date: '11-11', name: t('holidays.independenceDay') },
+    { date: '12-25', name: t('holidays.christmas') },
+    { date: '12-26', name: t('holidays.christmasSecond') }
+  ]
 
   // Initialize form
   useEffect(() => {
@@ -157,7 +158,7 @@ export default function ExceptionModal({
     const currentYear = new Date().getFullYear()
     const [month, day] = holidayDate.split('-')
     const date = `${currentYear}-${month}-${day}`
-    const holiday = POLISH_HOLIDAYS.find(h => h.date === holidayDate)
+    const holiday = HOLIDAYS.find(h => h.date === holidayDate)
     
     setFormData(prev => ({
       ...prev,
@@ -250,10 +251,10 @@ export default function ExceptionModal({
           <div className="flex items-center justify-between p-6 border-b">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
-                {mode === 'create' ? 'Dodaj wyjątek' : 'Edytuj wyjątek'}
+                {t(`title.${mode}`)}
               </h2>
               <p className="text-sm text-gray-500 mt-1">
-                Zablokuj wybrane dni w harmonogramie
+                {t('subtitle')}
               </p>
             </div>
             <button
@@ -269,7 +270,7 @@ export default function ExceptionModal({
             {/* Exception Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Typ wyjątku
+                {t('types.label')}
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {EXCEPTION_TYPES.map(type => (
@@ -308,7 +309,7 @@ export default function ExceptionModal({
             {formData.type === 'święto' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Szybki wybór świąt
+                  {t('holidays.label')}
                 </label>
                 <select
                   value={selectedHoliday}
@@ -318,8 +319,8 @@ export default function ExceptionModal({
                   }}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="">Wybierz święto...</option>
-                  {POLISH_HOLIDAYS.map(holiday => (
+                  <option value="">{t('holidays.placeholder')}</option>
+                  {HOLIDAYS.map(holiday => (
                     <option key={holiday.date} value={holiday.date}>
                       {holiday.name} ({holiday.date.replace('-', '.')})
                     </option>
@@ -332,7 +333,7 @@ export default function ExceptionModal({
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Data początkowa
+                  {t('dates.startDate')}
                 </label>
                 <input
                   type="date"
@@ -345,7 +346,7 @@ export default function ExceptionModal({
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Data końcowa
+                  {t('dates.endDate')}
                 </label>
                 <input
                   type="date"
@@ -360,12 +361,12 @@ export default function ExceptionModal({
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Opis (opcjonalnie)
+                {t('description.label')}
               </label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                placeholder="Dodaj szczegóły wyjątku..."
+                placeholder={t('description.placeholder')}
                 rows={3}
                 className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
               />
@@ -381,8 +382,8 @@ export default function ExceptionModal({
                   className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                 />
                 <div>
-                  <span className="font-medium text-sm">Wyjątek cykliczny</span>
-                  <p className="text-xs text-gray-500">Powtarzaj ten wyjątek automatycznie</p>
+                  <span className="font-medium text-sm">{t('recurring.label')}</span>
+                  <p className="text-xs text-gray-500">{t('recurring.description')}</p>
                 </div>
               </label>
               
@@ -397,7 +398,7 @@ export default function ExceptionModal({
                         : "border-gray-200 hover:bg-gray-50"
                     )}
                   >
-                    Co roku
+                    {t('recurring.yearly')}
                   </button>
                   <button
                     onClick={() => setFormData(prev => ({ ...prev, recurringPattern: 'miesięcznie' }))}
@@ -408,7 +409,7 @@ export default function ExceptionModal({
                         : "border-gray-200 hover:bg-gray-50"
                     )}
                   >
-                    Co miesiąc
+                    {t('recurring.monthly')}
                   </button>
                 </div>
               )}
@@ -424,8 +425,8 @@ export default function ExceptionModal({
                   className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                 />
                 <div>
-                  <span className="font-medium text-sm">Zablokuj sloty</span>
-                  <p className="text-xs text-gray-500">Automatycznie zablokuj wszystkie sloty w tym okresie</p>
+                  <span className="font-medium text-sm">{t('blockSlots.label')}</span>
+                  <p className="text-xs text-gray-500">{t('blockSlots.description')}</p>
                 </div>
               </label>
             </div>
@@ -436,16 +437,16 @@ export default function ExceptionModal({
                 <div className="flex items-start gap-2">
                   <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5" />
                   <div className="flex-1">
-                    <h4 className="font-medium text-amber-900">Wpływ na harmonogram</h4>
+                    <h4 className="font-medium text-amber-900">{t('impact.title')}</h4>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-2 text-sm text-amber-700">
-                      <div>Liczba dni: {stats.totalDays}</div>
-                      <div>Dni robocze: {stats.workDays}</div>
-                      <div>Zarezerwowane sloty: {stats.bookedSlots}</div>
-                      <div>Dostępne sloty: {stats.availableSlots}</div>
+                      <div>{t('impact.totalDays')}: {stats.totalDays}</div>
+                      <div>{t('impact.workDays')}: {stats.workDays}</div>
+                      <div>{t('impact.reservedSlots')}: {stats.bookedSlots}</div>
+                      <div>{t('impact.availableSlots')}: {stats.availableSlots}</div>
                     </div>
                     {stats.bookedSlots > 0 && (
                       <p className="text-xs text-red-600 mt-2 font-medium">
-                        Uwaga: {stats.bookedSlots} zarezerwowanych slotów wymaga kontaktu z kursantami!
+                        {t('impact.warning', { count: stats.bookedSlots })}
                       </p>
                     )}
                   </div>
@@ -461,7 +462,10 @@ export default function ExceptionModal({
                   className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
                 >
                   <Info className="w-4 h-4" />
-                  {showPreview ? 'Ukryj' : 'Pokaż'} sloty do zablokowania ({affectedSlots.length})
+                  {showPreview 
+                    ? t('preview.hide', { count: affectedSlots.length }) 
+                    : t('preview.show', { count: affectedSlots.length })
+                  }
                 </button>
                 
                 {showPreview && (
@@ -480,7 +484,7 @@ export default function ExceptionModal({
                               ? "bg-blue-100 text-blue-700"
                               : "bg-green-100 text-green-700"
                           )}>
-                            {slot.status}
+                            {t(`status.${slot.status === 'zarezerwowany' ? 'reserved' : 'available'}`)}
                           </span>
                         </div>
                       ))}
@@ -497,7 +501,7 @@ export default function ExceptionModal({
               onClick={onClose}
               className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
             >
-              Anuluj
+              {t('buttons.cancel')}
             </button>
             
             <button
@@ -508,12 +512,12 @@ export default function ExceptionModal({
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Zapisywanie...
+                  {t('buttons.saving')}
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  {mode === 'create' ? 'Dodaj wyjątek' : 'Zapisz zmiany'}
+                  {mode === 'create' ? t('buttons.save') : t('buttons.saveChanges')}
                 </>
               )}
             </button>

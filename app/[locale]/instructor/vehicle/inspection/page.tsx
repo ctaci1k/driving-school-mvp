@@ -1,4 +1,6 @@
-// /app/[locale]/instructor/vehicle/inspection/page.tsx
+// app/[locale]/instructor/vehicle/inspection/page.tsx
+// Сторінка огляду транспорту з покроковою перевіркою всіх систем
+
 'use client'
 
 import { useState } from 'react'
@@ -18,9 +20,11 @@ import { Progress } from '@/components/ui/progress'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
+import { useTranslations } from 'next-intl'
 
 export default function VehicleInspectionPage() {
+  const t = useTranslations('instructor.vehicle.inspection')
   const [currentStep, setCurrentStep] = useState(0)
   const [inspectionNotes, setInspectionNotes] = useState('')
   
@@ -96,7 +100,7 @@ export default function VehicleInspectionPage() {
     {
       id: 1,
       date: '2024-02-01',
-      type: 'Codzienny',
+      type: 'daily',
       status: 'passed',
       issues: 0,
       inspector: 'Piotr Kierowca'
@@ -104,7 +108,7 @@ export default function VehicleInspectionPage() {
     {
       id: 2,
       date: '2024-01-31',
-      type: 'Codzienny',
+      type: 'daily',
       status: 'passed',
       issues: 1,
       inspector: 'Piotr Kierowca'
@@ -112,7 +116,7 @@ export default function VehicleInspectionPage() {
     {
       id: 3,
       date: '2024-01-30',
-      type: 'Codzienny',
+      type: 'daily',
       status: 'warning',
       issues: 2,
       inspector: 'Piotr Kierowca'
@@ -120,11 +124,11 @@ export default function VehicleInspectionPage() {
   ]
 
   const inspectionSteps = [
-    { title: 'Przegląd zewnętrzny', icon: Car },
-    { title: 'Wnętrze', icon: Eye },
-    { title: 'Silnik', icon: Gauge },
-    { title: 'Bezpieczeństwo', icon: Shield },
-    { title: 'Dokumenty', icon: FileText }
+    { title: t('steps.exterior'), icon: Car },
+    { title: t('steps.interior'), icon: Eye },
+    { title: t('steps.engine'), icon: Gauge },
+    { title: t('steps.safety'), icon: Shield },
+    { title: t('steps.documents'), icon: FileText }
   ]
 
   const calculateInspectionScore = () => {
@@ -175,19 +179,23 @@ export default function VehicleInspectionPage() {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Przegląd pojazdu</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-1">
-            {vehicle.model} • {vehicle.number} • {vehicle.mileage} km
+            {t('vehicleInfo', { 
+              model: vehicle.model, 
+              number: vehicle.number, 
+              mileage: vehicle.mileage 
+            })}
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Clock className="w-4 h-4 mr-2" />
-            Historia
+            {t('buttons.history')}
           </Button>
           <Button onClick={handleSaveInspection}>
             <Save className="w-4 h-4 mr-2" />
-            Zapisz
+            {t('buttons.save')}
           </Button>
         </div>
       </div>
@@ -196,8 +204,13 @@ export default function VehicleInspectionPage() {
       <Card>
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Postęp przeglądu</span>
-            <span className="text-sm font-medium">{currentStep + 1} z {inspectionSteps.length}</span>
+            <span className="text-sm text-gray-600">{t('progress.title')}</span>
+            <span className="text-sm font-medium">
+              {t('progress.steps', { 
+                current: currentStep + 1, 
+                total: inspectionSteps.length 
+              })}
+            </span>
           </div>
           <Progress value={(currentStep + 1) / inspectionSteps.length * 100} className="h-2" />
           <div className="flex justify-between mt-4">
@@ -246,13 +259,13 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-0" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Przegląd zewnętrzny</CardTitle>
-              <CardDescription>Sprawdź zewnętrzny stan pojazdu</CardDescription>
+              <CardTitle>{t('exterior.title')}</CardTitle>
+              <CardDescription>{t('exterior.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>Stan karoserii</Label>
+                  <Label>{t('exterior.bodyCondition.label')}</Label>
                   <RadioGroup
                     value={inspection.exterior.bodyCondition}
                     onValueChange={(value) =>
@@ -265,21 +278,21 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="good" id="body-good" />
-                      <Label htmlFor="body-good">Dobry - bez uszkodzeń</Label>
+                      <Label htmlFor="body-good">{t('exterior.bodyCondition.good')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="minor" id="body-minor" />
-                      <Label htmlFor="body-minor">Drobne rysy</Label>
+                      <Label htmlFor="body-minor">{t('exterior.bodyCondition.minor')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="major" id="body-major" />
-                      <Label htmlFor="body-major">Znaczne uszkodzenia</Label>
+                      <Label htmlFor="body-major">{t('exterior.bodyCondition.major')}</Label>
                     </div>
                   </RadioGroup>
                 </div>
 
                 <div className="space-y-3">
-                  <Label>Sprawdzenie komponentów</Label>
+                  <Label>{t('exterior.components.label')}</Label>
                   
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                     <Checkbox
@@ -291,7 +304,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Szyby czyste i bez pęknięć</span>
+                    <span>{t('exterior.components.windowsClean')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -304,7 +317,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Wszystkie światła działają (mijania/drogowe/kierunkowskazy/hamowania)</span>
+                    <span>{t('exterior.components.lightsWorking')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -317,7 +330,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Lusterka czyste i prawidłowo ustawione</span>
+                    <span>{t('exterior.components.mirrorsClean')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -330,12 +343,12 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Ciśnienie w oponach zgodne z normą</span>
+                    <span>{t('exterior.components.tirePressure')}</span>
                   </label>
                 </div>
 
                 <div>
-                  <Label>Stan opon</Label>
+                  <Label>{t('exterior.tiresCondition.label')}</Label>
                   <RadioGroup
                     value={inspection.exterior.tiresCondition}
                     onValueChange={(value) =>
@@ -348,15 +361,15 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="good" id="tires-good" />
-                      <Label htmlFor="tires-good">Dobry bieżnik (powyżej 4mm)</Label>
+                      <Label htmlFor="tires-good">{t('exterior.tiresCondition.good')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="worn" id="tires-worn" />
-                      <Label htmlFor="tires-worn">Zużyte (2-4mm)</Label>
+                      <Label htmlFor="tires-worn">{t('exterior.tiresCondition.worn')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="replace" id="tires-replace" />
-                      <Label htmlFor="tires-replace">Wymagana wymiana (poniżej 2mm)</Label>
+                      <Label htmlFor="tires-replace">{t('exterior.tiresCondition.replace')}</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -369,13 +382,13 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-1" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Przegląd wnętrza</CardTitle>
-              <CardDescription>Sprawdź stan i czystość wnętrza</CardDescription>
+              <CardTitle>{t('interior.title')}</CardTitle>
+              <CardDescription>{t('interior.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-3">
-                  <Label>Sprawdzenie komponentów</Label>
+                  <Label>{t('interior.components.label')}</Label>
                   
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
                     <Checkbox
@@ -387,7 +400,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Pasy bezpieczeństwa sprawne</span>
+                    <span>{t('interior.components.seatbeltsWorking')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -400,7 +413,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Deska rozdzielcza czysta</span>
+                    <span>{t('interior.components.dashboardClean')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -413,7 +426,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Wszystkie przyciski i przełączniki działają</span>
+                    <span>{t('interior.components.controlsWorking')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -426,12 +439,12 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Klimatyzacja/ogrzewanie działa</span>
+                    <span>{t('interior.components.acHeatingWorking')}</span>
                   </label>
                 </div>
 
                 <div>
-                  <Label>Poziom czystości</Label>
+                  <Label>{t('interior.cleanlinessLevel.label')}</Label>
                   <RadioGroup
                     value={inspection.interior.cleanlinessLevel}
                     onValueChange={(value) =>
@@ -444,15 +457,15 @@ export default function VehicleInspectionPage() {
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="clean" id="clean" />
-                      <Label htmlFor="clean">Czysty</Label>
+                      <Label htmlFor="clean">{t('interior.cleanlinessLevel.clean')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="acceptable" id="acceptable" />
-                      <Label htmlFor="acceptable">Akceptowalny</Label>
+                      <Label htmlFor="acceptable">{t('interior.cleanlinessLevel.acceptable')}</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="dirty" id="dirty" />
-                      <Label htmlFor="dirty">Wymaga sprzątania</Label>
+                      <Label htmlFor="dirty">{t('interior.cleanlinessLevel.dirty')}</Label>
                     </div>
                   </RadioGroup>
                 </div>
@@ -465,22 +478,22 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-2" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Sprawdzenie silnika</CardTitle>
-              <CardDescription>Sprawdź poziomy płynów i stan silnika</CardDescription>
+              <CardTitle>{t('engine.title')}</CardTitle>
+              <CardDescription>{t('engine.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Alert className="mb-4">
                 <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>Uwaga!</AlertTitle>
+                <AlertTitle>{t('engine.warning.title')}</AlertTitle>
                 <AlertDescription>
-                  Sprawdzenie silnika przeprowadzać tylko przy wyłączonym i ostygniętym silniku
+                  {t('engine.warning.description')}
                 </AlertDescription>
               </Alert>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Poziom oleju</Label>
+                    <Label>{t('engine.oilLevel.label')}</Label>
                     <RadioGroup
                       value={inspection.engine.oilLevel}
                       onValueChange={(value) =>
@@ -493,21 +506,21 @@ export default function VehicleInspectionPage() {
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="normal" id="oil-normal" />
-                        <Label htmlFor="oil-normal">Prawidłowy</Label>
+                        <Label htmlFor="oil-normal">{t('engine.oilLevel.normal')}</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="low" id="oil-low" />
-                        <Label htmlFor="oil-low">Niski</Label>
+                        <Label htmlFor="oil-low">{t('engine.oilLevel.low')}</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="critical" id="oil-critical" />
-                        <Label htmlFor="oil-critical">Krytycznie niski</Label>
+                        <Label htmlFor="oil-critical">{t('engine.oilLevel.critical')}</Label>
                       </div>
                     </RadioGroup>
                   </div>
 
                   <div>
-                    <Label>Poziom płynu chłodzącego</Label>
+                    <Label>{t('engine.coolantLevel.label')}</Label>
                     <RadioGroup
                       value={inspection.engine.coolantLevel}
                       onValueChange={(value) =>
@@ -520,15 +533,15 @@ export default function VehicleInspectionPage() {
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="normal" id="coolant-normal" />
-                        <Label htmlFor="coolant-normal">Prawidłowy</Label>
+                        <Label htmlFor="coolant-normal">{t('engine.coolantLevel.normal')}</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="low" id="coolant-low" />
-                        <Label htmlFor="coolant-low">Niski</Label>
+                        <Label htmlFor="coolant-low">{t('engine.coolantLevel.low')}</Label>
                       </div>
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem value="critical" id="coolant-critical" />
-                        <Label htmlFor="coolant-critical">Krytycznie niski</Label>
+                        <Label htmlFor="coolant-critical">{t('engine.coolantLevel.critical')}</Label>
                       </div>
                     </RadioGroup>
                   </div>
@@ -545,7 +558,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Wystarczający poziom płynu do spryskiwaczy</span>
+                    <span>{t('engine.components.windshieldFluid')}</span>
                   </label>
 
                   <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -558,7 +571,7 @@ export default function VehicleInspectionPage() {
                         }))
                       }
                     />
-                    <span>Brak wycieków płynów</span>
+                    <span>{t('engine.components.noLeaks')}</span>
                   </label>
                 </div>
               </div>
@@ -570,8 +583,8 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-3" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Sprawdzenie bezpieczeństwa</CardTitle>
-              <CardDescription>Sprawdź wszystkie systemy bezpieczeństwa</CardDescription>
+              <CardTitle>{t('safety.title')}</CardTitle>
+              <CardDescription>{t('safety.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -585,7 +598,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Hamulce robocze działają skutecznie</span>
+                  <span>{t('safety.components.brakeTest')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -598,7 +611,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Hamulec postojowy utrzymuje pojazd</span>
+                  <span>{t('safety.components.emergencyBrake')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -611,7 +624,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Klakson działa</span>
+                  <span>{t('safety.components.hornWorking')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -624,7 +637,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Apteczka obecna i skompletowana</span>
+                  <span>{t('safety.components.firstAidKit')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -637,7 +650,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Gaśnica obecna i nieprzeterminowana</span>
+                  <span>{t('safety.components.fireExtinguisher')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -650,7 +663,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Trójkąt ostrzegawczy obecny</span>
+                  <span>{t('safety.components.warningTriangle')}</span>
                 </label>
               </div>
             </CardContent>
@@ -661,8 +674,8 @@ export default function VehicleInspectionPage() {
         <TabsContent value="step-4" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Sprawdzenie dokumentów</CardTitle>
-              <CardDescription>Upewnij się o obecności wszystkich wymaganych dokumentów</CardDescription>
+              <CardTitle>{t('documents.title')}</CardTitle>
+              <CardDescription>{t('documents.subtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -676,7 +689,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Dowód rejestracyjny</span>
+                  <span>{t('documents.items.registration')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -689,7 +702,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Polisa ubezpieczeniowa (ważna)</span>
+                  <span>{t('documents.items.insurance')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -702,7 +715,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Badania techniczne (ważne)</span>
+                  <span>{t('documents.items.inspection')}</span>
                 </label>
 
                 <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100">
@@ -715,7 +728,7 @@ export default function VehicleInspectionPage() {
                       }))
                     }
                   />
-                  <span>Prawo jazdy</span>
+                  <span>{t('documents.items.driverLicense')}</span>
                 </label>
               </div>
             </CardContent>
@@ -726,11 +739,11 @@ export default function VehicleInspectionPage() {
       {/* Notes and Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Dodatkowe uwagi</CardTitle>
+          <CardTitle>{t('notes.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea
-            placeholder="Podaj wszelkie dodatkowe obserwacje lub problemy..."
+            placeholder={t('notes.placeholder')}
             value={inspectionNotes}
             onChange={(e) => setInspectionNotes(e.target.value)}
             className="h-24"
@@ -745,15 +758,15 @@ export default function VehicleInspectionPage() {
           onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
           disabled={currentStep === 0}
         >
-          Wstecz
+          {t('buttons.back')}
         </Button>
         {currentStep < inspectionSteps.length - 1 ? (
           <Button onClick={() => setCurrentStep(currentStep + 1)}>
-            Dalej
+            {t('buttons.next')}
           </Button>
         ) : (
           <Button onClick={handleSaveInspection}>
-            Zakończ przegląd
+            {t('buttons.finishInspection')}
           </Button>
         )}
       </div>
@@ -761,7 +774,7 @@ export default function VehicleInspectionPage() {
       {/* Previous Inspections */}
       <Card>
         <CardHeader>
-          <CardTitle>Poprzednie przeglądy</CardTitle>
+          <CardTitle>{t('previousInspections.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -771,23 +784,23 @@ export default function VehicleInspectionPage() {
                 className="flex items-center justify-between p-3 border rounded-lg"
               >
                 <div>
-                  <p className="font-medium">{inspection.type}</p>
+                  <p className="font-medium">{t(`previousInspections.type.${inspection.type}`)}</p>
                   <p className="text-sm text-gray-500">
-                    {format(new Date(inspection.date), 'd MMMM yyyy', { locale: pl })}
+                    {format(new Date(inspection.date), 'd MMMM yyyy', { locale: uk })}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
                   {inspection.issues > 0 && (
-                    <Badge variant="outline">{inspection.issues} problemów</Badge>
+                    <Badge variant="outline">
+                      {t('previousInspections.issues', { count: inspection.issues })}
+                    </Badge>
                   )}
                   <Badge variant={
                     inspection.status === 'passed' ? 'default' :
                     inspection.status === 'warning' ? 'secondary' :
                     'destructive'
                   }>
-                    {inspection.status === 'passed' ? 'Zaliczony' :
-                     inspection.status === 'warning' ? 'Z uwagami' :
-                     'Niezaliczony'}
+                    {t(`previousInspections.status.${inspection.status}`)}
                   </Badge>
                 </div>
               </div>

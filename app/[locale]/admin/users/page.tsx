@@ -1,7 +1,9 @@
 // app/[locale]/admin/users/page.tsx
-"use client";
+'use client';
 
 import React, { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 import {
   Search, Filter, UserPlus, MoreHorizontal, Edit2, Trash2, Eye,
   Download, Mail, Shield, CheckCircle, XCircle, Clock,
@@ -11,17 +13,17 @@ import {
   Plus
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { pl } from 'date-fns/locale';
+import { pl, uk } from 'date-fns/locale';
 import { useParams, useRouter} from 'next/navigation';
 
-// Funkcja dla pseudolosowych wartości na podstawie indeksu
+// Функція для псевдовипадкових значень на основі індексу
 const getSeededValue = (index: number, max: number, seed: number = 1) => {
   return ((index * seed + 7) % max);
 };
 
-// Generowanie przykładowych danych ze stabilnymi wartościami
+// Генерування прикладових даних зі стабільними значеннями
 const generateMockUsers = () => {
-const polishNames = [
+  const polishNames = [
     'Aleksander Nowak', 'Maria Kowalska', 'Jan Wiśniewski', 'Anna Wójcik',
     'Piotr Kowalczyk', 'Julia Kamińska', 'Andrzej Lewandowski', 'Natalia Dąbrowska',
     'Michał Zieliński', 'Teresa Szymańska', 'Wojciech Woźniak', 'Światłana Kozłowska',
@@ -41,14 +43,14 @@ const polishNames = [
     const nameParts = name.split(' ');
     const email = `${nameParts[1].toLowerCase()}.${nameParts[0].toLowerCase()}${i}@example.com`;
     
-    // Używamy deterministycznych wartości na podstawie indeksu
+    // Використовуємо детерміністичні значення на основі індексу
     const roleIndex = getSeededValue(i, roles.length);
     const role = roles[roleIndex];
     const statusIndex = getSeededValue(i, statuses.length, 3);
     const status = statuses[statusIndex];
     const cityIndex = getSeededValue(i, cities.length, 5);
     
-    // Stabilne numery telefonów
+    // Стабільні номери телефонів
     const phoneBase = 500000000 + (i * 12345);
     
     return {
@@ -66,8 +68,8 @@ const polishNames = [
       location: cities[cityIndex],
       createdAt: new Date(2024, i % 12, (i % 28) + 1),
       lastLogin: new Date(2024, 11, (i % 28) + 1),
-      emailVerified: i % 5 !== 0, // 80% zweryfikowane
-      phoneVerified: i % 3 !== 0, // ~66% zweryfikowane
+      emailVerified: i % 5 !== 0, // 80% верифіковані
+      phoneVerified: i % 3 !== 0, // ~66% верифіковані
       completedLessons: role === 'STUDENT' ? ((i * 7) % 50) : null,
       totalStudents: role === 'INSTRUCTOR' ? 20 + ((i * 11) % 80) : null,
       rating: role === 'INSTRUCTOR' ? (4.0 + ((i % 10) / 10)).toFixed(1) : null
@@ -75,8 +77,11 @@ const polishNames = [
   });
 };
 
-// Reszta kodu pozostaje bez zmian
 export default function AdminUsersPage() {
+  const t = useTranslations('admin.users.list');
+  const locale = useLocale();
+  const dateLocale = locale === 'uk' ? uk : pl;
+  
   const [users] = useState(generateMockUsers());
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
@@ -87,14 +92,14 @@ export default function AdminUsersPage() {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
   const [loading, setLoading] = useState(false);
-    const router = useRouter();
+  const router = useRouter();
   const params = useParams();
-  const locale = params.locale || 'pl';
-    const handleAddUser = () => {
+  
+  const handleAddUser = () => {
     router.push(`/${locale}/admin/users/new`);
   };
 
-  // Filtrowanie użytkowników
+  // Фільтрування користувачів
   const filteredUsers = useMemo(() => {
     return users.filter(user => {
       const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -107,13 +112,13 @@ export default function AdminUsersPage() {
     });
   }, [users, searchQuery, selectedRole, selectedStatus, selectedLocation]);
 
-  // Paginacja
+  // Пагінація
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentUsers = filteredUsers.slice(startIndex, endIndex);
 
-  // Statystyki
+  // Статистика
   const stats = {
     total: users.length,
     students: users.filter(u => u.role === 'STUDENT').length,
@@ -142,40 +147,40 @@ export default function AdminUsersPage() {
   const handleBulkAction = async (action: string) => {
     setLoading(true);
     await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(`Akcja grupowa: ${action} dla użytkowników:`, selectedUsers);
+    console.log(`Bulk action: ${action} for users:`, selectedUsers);
     setSelectedUsers([]);
     setLoading(false);
   };
 
   const getRoleBadge = (role: string) => {
     const badges = {
-      ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700', label: 'Administrator' },
-      INSTRUCTOR: { bg: 'bg-green-100', text: 'text-green-700', label: 'Instruktor' },
-      STUDENT: { bg: 'bg-blue-100', text: 'text-blue-700', label: 'Student' },
-      MANAGER: { bg: 'bg-orange-100', text: 'text-orange-700', label: 'Menedżer' }
+      ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700', label: t('roles.admin') },
+      INSTRUCTOR: { bg: 'bg-green-100', text: 'text-green-700', label: t('roles.instructor') },
+      STUDENT: { bg: 'bg-blue-100', text: 'text-blue-700', label: t('roles.student') },
+      MANAGER: { bg: 'bg-orange-100', text: 'text-orange-700', label: t('roles.manager') }
     };
     return badges[role as keyof typeof badges] || badges.STUDENT;
   };
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      ACTIVE: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: 'Aktywny' },
-      INACTIVE: { bg: 'bg-gray-100', text: 'text-gray-700', icon: XCircle, label: 'Nieaktywny' },
-      PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: 'Oczekuje' },
-      SUSPENDED: { bg: 'bg-red-100', text: 'text-red-700', icon: AlertCircle, label: 'Zablokowany' }
+      ACTIVE: { bg: 'bg-green-100', text: 'text-green-700', icon: CheckCircle, label: t('status.active') },
+      INACTIVE: { bg: 'bg-gray-100', text: 'text-gray-700', icon: XCircle, label: t('status.inactive') },
+      PENDING: { bg: 'bg-yellow-100', text: 'text-yellow-700', icon: Clock, label: t('status.pending') },
+      SUSPENDED: { bg: 'bg-red-100', text: 'text-red-700', icon: AlertCircle, label: t('status.suspended') }
     };
     return badges[status as keyof typeof badges] || badges.INACTIVE;
   };
 
   return (
     <div className="space-y-6">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-800">Użytkownicy</h1>
-        <p className="text-gray-600 mt-1">Zarządzanie użytkownikami systemu</p>
+        <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+        <p className="text-gray-600 mt-1">{t('subtitle')}</p>
       </div>
 
-      {/* Karty ze statystykami */}
+      {/* Картки зі статистикою */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <div className="flex items-center gap-3">
@@ -184,7 +189,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.total}</p>
-              <p className="text-xs text-gray-500">Łącznie</p>
+              <p className="text-xs text-gray-500">{t('stats.total')}</p>
             </div>
           </div>
         </div>
@@ -195,7 +200,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.students}</p>
-              <p className="text-xs text-gray-500">Studentów</p>
+              <p className="text-xs text-gray-500">{t('stats.students')}</p>
             </div>
           </div>
         </div>
@@ -206,7 +211,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.instructors}</p>
-              <p className="text-xs text-gray-500">Instruktorów</p>
+              <p className="text-xs text-gray-500">{t('stats.instructors')}</p>
             </div>
           </div>
         </div>
@@ -217,7 +222,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.admins}</p>
-              <p className="text-xs text-gray-500">Administratorów</p>
+              <p className="text-xs text-gray-500">{t('stats.admins')}</p>
             </div>
           </div>
         </div>
@@ -228,7 +233,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.active}</p>
-              <p className="text-xs text-gray-500">Aktywnych</p>
+              <p className="text-xs text-gray-500">{t('stats.active')}</p>
             </div>
           </div>
         </div>
@@ -239,13 +244,13 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats.pending}</p>
-              <p className="text-xs text-gray-500">Oczekują</p>
+              <p className="text-xs text-gray-500">{t('stats.pending')}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Pasek filtrów */}
+      {/* Панель фільтрів */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
         <div className="flex flex-col lg:flex-row lg:items-center gap-4">
           <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -253,7 +258,7 @@ export default function AdminUsersPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Wyszukaj po imieniu lub email..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -265,11 +270,11 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedRole(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie role</option>
-              <option value="STUDENT">Studenci</option>
-              <option value="INSTRUCTOR">Instruktorzy</option>
-              <option value="ADMIN">Administratorzy</option>
-              <option value="MANAGER">Menedżerowie</option>
+              <option value="all">{t('filters.allRoles')}</option>
+              <option value="STUDENT">{t('filters.students')}</option>
+              <option value="INSTRUCTOR">{t('filters.instructors')}</option>
+              <option value="ADMIN">{t('filters.admins')}</option>
+              <option value="MANAGER">{t('filters.managers')}</option>
             </select>
             
             <select
@@ -277,11 +282,11 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedStatus(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie statusy</option>
-              <option value="ACTIVE">Aktywni</option>
-              <option value="INACTIVE">Nieaktywni</option>
-              <option value="PENDING">Oczekują</option>
-              <option value="SUSPENDED">Zablokowani</option>
+              <option value="all">{t('filters.allStatuses')}</option>
+              <option value="ACTIVE">{t('filters.active')}</option>
+              <option value="INACTIVE">{t('filters.inactive')}</option>
+              <option value="PENDING">{t('filters.pending')}</option>
+              <option value="SUSPENDED">{t('filters.suspended')}</option>
             </select>
 
             <button
@@ -289,20 +294,19 @@ export default function AdminUsersPage() {
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2"
             >
               <Filter className="w-4 h-4" />
-              Więcej filtrów
+              {t('buttons.moreFilters')}
             </button>
           </div>
           
-
-                      <button onClick={handleAddUser}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Dodaj użytkownika
-            </button>
+          <button onClick={handleAddUser}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            {t('buttons.addUser')}
+          </button>
         </div>
 
-        {/* Rozszerzone filtry */}
+        {/* Розширені фільтри */}
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-2 md:grid-cols-4 gap-3">
             <select
@@ -310,7 +314,7 @@ export default function AdminUsersPage() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="all">Wszystkie lokalizacje</option>
+              <option value="all">{t('filters.allLocations')}</option>
               <option value="Warszawa">Warszawa</option>
               <option value="Kraków">Kraków</option>
               <option value="Wrocław">Wrocław</option>
@@ -319,65 +323,65 @@ export default function AdminUsersPage() {
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Weryfikacja email</option>
-              <option>Potwierdzone</option>
-              <option>Niepotwierdzone</option>
+              <option>{t('filters.emailVerification')}</option>
+              <option>{t('filters.confirmed')}</option>
+              <option>{t('filters.notConfirmed')}</option>
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Weryfikacja telefonu</option>
-              <option>Potwierdzone</option>
-              <option>Niepotwierdzone</option>
+              <option>{t('filters.phoneVerification')}</option>
+              <option>{t('filters.confirmed')}</option>
+              <option>{t('filters.notConfirmed')}</option>
             </select>
             
             <select className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
-              <option>Data rejestracji</option>
-              <option>Ostatnie 7 dni</option>
-              <option>Ostatnie 30 dni</option>
-              <option>Ostatnie 90 dni</option>
+              <option>{t('filters.registrationDate')}</option>
+              <option>{t('filters.last7days')}</option>
+              <option>{t('filters.last30days')}</option>
+              <option>{t('filters.last90days')}</option>
             </select>
           </div>
         )}
       </div>
 
-      {/* Akcje grupowe */}
+      {/* Групові дії */}
       {selectedUsers.length > 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-blue-700">
-              Zaznaczono {selectedUsers.length} użytkownik(ów)
+              {t('bulkActions.selected', { count: selectedUsers.length })}
             </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleBulkAction('activate')}
                 className="px-3 py-1 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm"
               >
-                Aktywuj
+                {t('buttons.activate')}
               </button>
               <button
                 onClick={() => handleBulkAction('deactivate')}
                 className="px-3 py-1 bg-gray-600 text-white rounded-lg hover:bg-gray-700 text-sm"
               >
-                Dezaktywuj
+                {t('buttons.deactivate')}
               </button>
               <button
                 onClick={() => handleBulkAction('delete')}
                 className="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"
               >
-                Usuń
+                {t('buttons.delete')}
               </button>
               <button
                 onClick={() => setSelectedUsers([])}
                 className="px-3 py-1 border border-blue-300 text-blue-700 rounded-lg hover:bg-blue-100 text-sm"
               >
-                Anuluj
+                {t('buttons.cancel')}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Tabela użytkowników */}
+      {/* Таблиця користувачів */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -392,25 +396,25 @@ export default function AdminUsersPage() {
                   />
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Użytkownik
+                  {t('table.headers.user')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Rola
+                  {t('table.headers.role')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {t('table.headers.status')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Lokalizacja
+                  {t('table.headers.location')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Dołączył
+                  {t('table.headers.joined')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Ostatnie logowanie
+                  {t('table.headers.lastLogin')}
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Akcje
+                  {t('table.headers.actions')}
                 </th>
               </tr>
             </thead>
@@ -419,15 +423,15 @@ export default function AdminUsersPage() {
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center">
                     <Loader2 className="w-8 h-8 animate-spin text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Ładowanie...</p>
+                    <p className="text-gray-500">{t('loading.text')}</p>
                   </td>
                 </tr>
               ) : currentUsers.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="px-4 py-12 text-center">
                     <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500">Nie znaleziono użytkowników</p>
-                    <p className="text-sm text-gray-400 mt-1">Spróbuj zmienić filtry wyszukiwania</p>
+                    <p className="text-gray-500">{t('empty.title')}</p>
+                    <p className="text-sm text-gray-400 mt-1">{t('empty.subtitle')}</p>
                   </td>
                 </tr>
               ) : (
@@ -460,13 +464,13 @@ export default function AdminUsersPage() {
                               {user.emailVerified && (
                                 <span className="text-xs text-green-600 flex items-center gap-1">
                                   <Mail className="w-3 h-3" />
-                                  Email
+                                  {t('table.email')}
                                 </span>
                               )}
                               {user.phoneVerified && (
                                 <span className="text-xs text-green-600 flex items-center gap-1">
                                   <Phone className="w-3 h-3" />
-                                  Telefon
+                                  {t('table.phone')}
                                 </span>
                               )}
                             </div>
@@ -479,7 +483,7 @@ export default function AdminUsersPage() {
                         </span>
                         {user.role === 'INSTRUCTOR' && user.rating && (
                           <p className="text-xs text-gray-500 mt-1">
-                            Ocena: {user.rating}★
+                            {t('table.rating', { rating: user.rating })}
                           </p>
                         )}
                       </td>
@@ -497,34 +501,34 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm text-gray-600">
-                          {format(user.createdAt, 'dd MMM yyyy', { locale: pl })}
+                          {format(user.createdAt, 'dd MMM yyyy', { locale: dateLocale })}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <p className="text-sm text-gray-600">
-                          {format(user.lastLogin, 'dd MMM, HH:mm', { locale: pl })}
+                          {format(user.lastLogin, 'dd MMM, HH:mm', { locale: dateLocale })}
                         </p>
                       </td>
                       <td className="px-4 py-4">
                         <div className="flex items-center gap-1">
                           <button
-                            onClick={() => console.log('Wyświetl użytkownika', user.id)}
+                            onClick={() => console.log('View user', user.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                            title="Wyświetl"
+                            title={t('buttons.view')}
                           >
                             <Eye className="w-4 h-4 text-gray-600" />
                           </button>
                           <button
-                            onClick={() => console.log('Edytuj użytkownika', user.id)}
+                            onClick={() => console.log('Edit user', user.id)}
                             className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
-                            title="Edytuj"
+                            title={t('buttons.edit')}
                           >
                             <Edit2 className="w-4 h-4 text-gray-600" />
                           </button>
                           <button
-                            onClick={() => console.log('Usuń użytkownika', user.id)}
+                            onClick={() => console.log('Delete user', user.id)}
                             className="p-1 hover:bg-red-50 rounded-lg transition-colors"
-                            title="Usuń"
+                            title={t('buttons.delete')}
                           >
                             <Trash2 className="w-4 h-4 text-red-600" />
                           </button>
@@ -539,5 +543,5 @@ export default function AdminUsersPage() {
         </div>
        </div>
     </div>
-      );
+  );
 }

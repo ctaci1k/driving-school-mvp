@@ -1,9 +1,10 @@
 // app/[locale]/admin/reports/analytics/page.tsx
-// Strona analityki - wykresy, statystyki i analizy biznesowe
+// Сторінка аналітики - графіки, статистика та бізнес-аналізи
 
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   TrendingUp,
   TrendingDown,
@@ -57,11 +58,12 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   Radar,
-  ComposedChart
+  ComposedChart,
+  PieChart as RechartsPieChart
 } from 'recharts';
 import { cn } from '@/lib/utils';
 
-// Typy
+// Типи
 interface Metric {
   label: string;
   value: string | number;
@@ -75,105 +77,108 @@ interface ChartData {
   [key: string]: any;
 }
 
-// Mock data
-const kpiMetrics: Metric[] = [
-  {
-    label: 'Przychody',
-    value: '485,750 zł',
-    change: 12.5,
-    changeType: 'increase',
-    icon: DollarSign,
-    color: 'green'
-  },
-  {
-    label: 'Aktywni kursanci',
-    value: 342,
-    change: 8.2,
-    changeType: 'increase',
-    icon: Users,
-    color: 'blue'
-  },
-  {
-    label: 'Wskaźnik zdawalności',
-    value: '87%',
-    change: -2.1,
-    changeType: 'decrease',
-    icon: Award,
-    color: 'purple'
-  },
-  {
-    label: 'Średnia ocena',
-    value: 4.6,
-    change: 0.3,
-    changeType: 'increase',
-    icon: Target,
-    color: 'yellow'
-  }
-];
-
-const revenueData = [
-  { month: 'Sty', revenue: 65000, costs: 42000, profit: 23000, students: 45 },
-  { month: 'Lut', revenue: 72000, costs: 45000, profit: 27000, students: 52 },
-  { month: 'Mar', revenue: 68000, costs: 41000, profit: 27000, students: 48 },
-  { month: 'Kwi', revenue: 85000, costs: 48000, profit: 37000, students: 65 },
-  { month: 'Maj', revenue: 92000, costs: 52000, profit: 40000, students: 72 },
-  { month: 'Cze', revenue: 88000, costs: 49000, profit: 39000, students: 68 },
-  { month: 'Lip', revenue: 95000, costs: 53000, profit: 42000, students: 78 },
-  { month: 'Sie', revenue: 82000, costs: 47000, profit: 35000, students: 62 },
-  { month: 'Wrz', revenue: 98000, costs: 55000, profit: 43000, students: 85 },
-  { month: 'Paź', revenue: 102000, costs: 58000, profit: 44000, students: 88 },
-  { month: 'Lis', revenue: 96000, costs: 54000, profit: 42000, students: 82 },
-  { month: 'Gru', revenue: 105000, costs: 59000, profit: 46000, students: 92 }
-];
-
-const categoryDistribution = [
-  { name: 'Kategoria B', value: 65, students: 222 },
-  { name: 'Kategoria A', value: 20, students: 68 },
-  { name: 'Kategoria C', value: 10, students: 34 },
-  { name: 'Kategoria A2', value: 3, students: 10 },
-  { name: 'Inne', value: 2, students: 8 }
-];
-
-const instructorPerformance = [
-  { name: 'Adam Nowak', lessons: 245, rating: 4.8, passRate: 92, revenue: 48500 },
-  { name: 'Ewa Mazur', lessons: 198, rating: 4.9, passRate: 89, revenue: 39200 },
-  { name: 'Tomasz Wójcik', lessons: 165, rating: 4.6, passRate: 85, revenue: 32600 },
-  { name: 'Maria Lewandowska', lessons: 280, rating: 4.9, passRate: 94, revenue: 55400 },
-  { name: 'Piotr Zieliński', lessons: 152, rating: 4.5, passRate: 82, revenue: 30100 }
-];
-
-const locationStats = [
-  { location: 'Warszawa Centrum', bookings: 145, revenue: 28900, utilization: 87 },
-  { location: 'Warszawa Mokotów', bookings: 98, revenue: 19500, utilization: 72 },
-  { location: 'Warszawa Praga', bookings: 76, revenue: 15100, utilization: 58 },
-  { location: 'Warszawa Ursynów', bookings: 112, revenue: 22300, utilization: 78 }
-];
-
-const studentProgress = [
-  { stage: 'Rejestracja', count: 420, percentage: 100 },
-  { stage: 'Teoria rozpoczęta', count: 385, percentage: 91.7 },
-  { stage: 'Teoria ukończona', count: 342, percentage: 81.4 },
-  { stage: 'Praktyka rozpoczęta', count: 320, percentage: 76.2 },
-  { stage: 'Praktyka ukończona', count: 285, percentage: 67.9 },
-  { stage: 'Egzamin zdany', count: 248, percentage: 59.0 }
-];
-
-const radarData = [
-  { subject: 'Teoria', A: 85, B: 92, fullMark: 100 },
-  { subject: 'Praktyka', A: 78, B: 85, fullMark: 100 },
-  { subject: 'Manewry', A: 82, B: 88, fullMark: 100 },
-  { subject: 'Miasto', A: 75, B: 82, fullMark: 100 },
-  { subject: 'Trasa', A: 88, B: 90, fullMark: 100 },
-  { subject: 'Bezpieczeństwo', A: 92, B: 95, fullMark: 100 }
-];
-
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 export default function AnalyticsPage() {
+  const t = useTranslations('admin.reports.analytics');
+  
   const [dateRange, setDateRange] = useState('month');
   const [compareMode, setCompareMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+
+  // KPI метрики
+  const kpiMetrics: Metric[] = [
+    {
+      label: t('kpi.revenue'),
+      value: '485,750 грн',
+      change: 12.5,
+      changeType: 'increase',
+      icon: DollarSign,
+      color: 'green'
+    },
+    {
+      label: t('kpi.activeStudents'),
+      value: 342,
+      change: 8.2,
+      changeType: 'increase',
+      icon: Users,
+      color: 'blue'
+    },
+    {
+      label: t('kpi.passRate'),
+      value: '87%',
+      change: -2.1,
+      changeType: 'decrease',
+      icon: Award,
+      color: 'purple'
+    },
+    {
+      label: t('kpi.avgRating'),
+      value: 4.6,
+      change: 0.3,
+      changeType: 'increase',
+      icon: Target,
+      color: 'yellow'
+    }
+  ];
+
+  // Дані для графіків
+  const revenueData = [
+    { month: t('months.jan'), revenue: 65000, costs: 42000, profit: 23000, students: 45 },
+    { month: t('months.feb'), revenue: 72000, costs: 45000, profit: 27000, students: 52 },
+    { month: t('months.mar'), revenue: 68000, costs: 41000, profit: 27000, students: 48 },
+    { month: t('months.apr'), revenue: 85000, costs: 48000, profit: 37000, students: 65 },
+    { month: t('months.may'), revenue: 92000, costs: 52000, profit: 40000, students: 72 },
+    { month: t('months.jun'), revenue: 88000, costs: 49000, profit: 39000, students: 68 },
+    { month: t('months.jul'), revenue: 95000, costs: 53000, profit: 42000, students: 78 },
+    { month: t('months.aug'), revenue: 82000, costs: 47000, profit: 35000, students: 62 },
+    { month: t('months.sep'), revenue: 98000, costs: 55000, profit: 43000, students: 85 },
+    { month: t('months.oct'), revenue: 102000, costs: 58000, profit: 44000, students: 88 },
+    { month: t('months.nov'), revenue: 96000, costs: 54000, profit: 42000, students: 82 },
+    { month: t('months.dec'), revenue: 105000, costs: 59000, profit: 46000, students: 92 }
+  ];
+
+  const categoryDistribution = [
+    { name: t('overview.categoryDistribution.categoryB'), value: 65, students: 222 },
+    { name: t('overview.categoryDistribution.categoryA'), value: 20, students: 68 },
+    { name: t('overview.categoryDistribution.categoryC'), value: 10, students: 34 },
+    { name: t('overview.categoryDistribution.categoryA2'), value: 3, students: 10 },
+    { name: t('overview.categoryDistribution.other'), value: 2, students: 8 }
+  ];
+
+  const instructorPerformance = [
+    { name: 'Адам Новак', lessons: 245, rating: 4.8, passRate: 92, revenue: 48500 },
+    { name: 'Єва Мазур', lessons: 198, rating: 4.9, passRate: 89, revenue: 39200 },
+    { name: 'Томаш Вуйчик', lessons: 165, rating: 4.6, passRate: 85, revenue: 32600 },
+    { name: 'Марія Левандовська', lessons: 280, rating: 4.9, passRate: 94, revenue: 55400 },
+    { name: 'Петро Зеленський', lessons: 152, rating: 4.5, passRate: 82, revenue: 30100 }
+  ];
+
+  const locationStats = [
+    { location: t('locations.locations.centerCity'), bookings: 145, revenue: 28900, utilization: 87 },
+    { location: t('locations.locations.mokotow'), bookings: 98, revenue: 19500, utilization: 72 },
+    { location: t('locations.locations.praga'), bookings: 76, revenue: 15100, utilization: 58 },
+    { location: t('locations.locations.ursynow'), bookings: 112, revenue: 22300, utilization: 78 }
+  ];
+
+  const studentProgress = [
+    { stage: t('overview.conversionFunnel.stages.registration'), count: 420, percentage: 100 },
+    { stage: t('overview.conversionFunnel.stages.theoryStarted'), count: 385, percentage: 91.7 },
+    { stage: t('overview.conversionFunnel.stages.theoryCompleted'), count: 342, percentage: 81.4 },
+    { stage: t('overview.conversionFunnel.stages.practiceStarted'), count: 320, percentage: 76.2 },
+    { stage: t('overview.conversionFunnel.stages.practiceCompleted'), count: 285, percentage: 67.9 },
+    { stage: t('overview.conversionFunnel.stages.examPassed'), count: 248, percentage: 59.0 }
+  ];
+
+  const radarData = [
+    { subject: t('instructors.skills.theory'), A: 85, B: 92, fullMark: 100 },
+    { subject: t('instructors.skills.practice'), A: 78, B: 85, fullMark: 100 },
+    { subject: t('instructors.skills.maneuvers'), A: 82, B: 88, fullMark: 100 },
+    { subject: t('instructors.skills.city'), A: 75, B: 82, fullMark: 100 },
+    { subject: t('instructors.skills.route'), A: 88, B: 90, fullMark: 100 },
+    { subject: t('instructors.skills.safety'), A: 92, B: 95, fullMark: 100 }
+  ];
 
   const handleExport = () => {
     console.log('Export analytics data');
@@ -185,7 +190,7 @@ export default function AnalyticsPage() {
   };
 
   const formatCurrency = (value: number) => {
-    return `${value.toLocaleString('pl-PL')} zł`;
+    return `${value.toLocaleString('uk-UA')} ${t('currency')}`;
   };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -195,7 +200,7 @@ export default function AnalyticsPage() {
           <p className="font-semibold text-gray-800">{label}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
-              {entry.name}: {entry.name.includes('zł') || entry.dataKey.includes('revenue') || entry.dataKey.includes('profit') || entry.dataKey.includes('costs')
+              {entry.name}: {entry.name.includes('грн') || entry.dataKey.includes('revenue') || entry.dataKey.includes('profit') || entry.dataKey.includes('costs')
                 ? formatCurrency(entry.value)
                 : entry.value}
             </p>
@@ -222,7 +227,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Nagłówek */}
+      {/* Заголовок */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -230,8 +235,8 @@ export default function AnalyticsPage() {
               <BarChart3 className="w-6 h-6 text-purple-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Analityka</h1>
-              <p className="text-gray-600">Szczegółowe analizy i statystyki biznesowe</p>
+              <h1 className="text-3xl font-bold text-gray-800">{t('title')}</h1>
+              <p className="text-gray-600">{t('subtitle')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -240,11 +245,11 @@ export default function AnalyticsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="week">Ten tydzień</SelectItem>
-                <SelectItem value="month">Ten miesiąc</SelectItem>
-                <SelectItem value="quarter">Ten kwartał</SelectItem>
-                <SelectItem value="year">Ten rok</SelectItem>
-                <SelectItem value="custom">Niestandardowy</SelectItem>
+                <SelectItem value="week">{t('dateRange.week')}</SelectItem>
+                <SelectItem value="month">{t('dateRange.month')}</SelectItem>
+                <SelectItem value="quarter">{t('dateRange.quarter')}</SelectItem>
+                <SelectItem value="year">{t('dateRange.year')}</SelectItem>
+                <SelectItem value="custom">{t('dateRange.custom')}</SelectItem>
               </SelectContent>
             </Select>
             <Button
@@ -254,20 +259,20 @@ export default function AnalyticsPage() {
               className={compareMode ? 'bg-blue-50' : ''}
             >
               <Activity className="w-4 h-4 mr-2" />
-              {compareMode ? 'Wyłącz porównanie' : 'Porównaj okresy'}
+              {compareMode ? t('buttons.disableCompare') : t('buttons.compare')}
             </Button>
             <Button variant="outline" size="sm" onClick={handleRefresh}>
               <RefreshCw className="w-4 h-4" />
             </Button>
             <Button variant="outline" size="sm" onClick={handleExport}>
               <Download className="w-4 h-4 mr-2" />
-              Eksportuj
+              {t('buttons.export')}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* KPI Metrics */}
+      {/* KPI Метрики */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         {kpiMetrics.map((metric, index) => {
           const Icon = metric.icon;
@@ -308,7 +313,7 @@ export default function AnalyticsPage() {
                 <p className="text-sm text-gray-600">{metric.label}</p>
                 {compareMode && (
                   <p className="text-xs text-gray-500 mt-2">
-                    Poprzedni okres: {typeof metric.value === 'string' ? '425,000 zł' : Math.round(Number(metric.value) * 0.9)}
+                    {t('kpi.previousPeriod')}: {typeof metric.value === 'string' ? '425,000 грн' : Math.round(Number(metric.value) * 0.9)}
                   </p>
                 )}
               </CardContent>
@@ -317,38 +322,38 @@ export default function AnalyticsPage() {
         })}
       </div>
 
-      {/* Tabs z wykresami */}
+      {/* Таби з графіками */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-white border border-gray-100">
-          <TabsTrigger value="overview">Przegląd</TabsTrigger>
-          <TabsTrigger value="financial">Finanse</TabsTrigger>
-          <TabsTrigger value="students">Kursanci</TabsTrigger>
-          <TabsTrigger value="instructors">Instruktorzy</TabsTrigger>
-          <TabsTrigger value="locations">Lokalizacje</TabsTrigger>
-          <TabsTrigger value="performance">Wydajność</TabsTrigger>
+          <TabsTrigger value="overview">{t('tabs.overview')}</TabsTrigger>
+          <TabsTrigger value="financial">{t('tabs.financial')}</TabsTrigger>
+          <TabsTrigger value="students">{t('tabs.students')}</TabsTrigger>
+          <TabsTrigger value="instructors">{t('tabs.instructors')}</TabsTrigger>
+          <TabsTrigger value="locations">{t('tabs.locations')}</TabsTrigger>
+          <TabsTrigger value="performance">{t('tabs.performance')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          {/* Główny wykres przychodów */}
+          {/* Головний графік доходів */}
           <Card className="bg-white border-gray-100">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Przychody i koszty</CardTitle>
-                  <CardDescription>Analiza finansowa w czasie</CardDescription>
+                  <CardTitle>{t('overview.revenueAndCosts.title')}</CardTitle>
+                  <CardDescription>{t('overview.revenueAndCosts.subtitle')}</CardDescription>
                 </div>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                    <span>Przychody</span>
+                    <span>{t('overview.revenueAndCosts.revenue')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <span>Koszty</span>
+                    <span>{t('overview.revenueAndCosts.costs')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span>Zysk</span>
+                    <span>{t('overview.revenueAndCosts.profit')}</span>
                   </div>
                 </div>
               </div>
@@ -360,24 +365,24 @@ export default function AnalyticsPage() {
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="revenue" fill="#3b82f6" name="Przychody" />
-                  <Bar dataKey="costs" fill="#ef4444" name="Koszty" />
-                  <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={3} name="Zysk" />
+                  <Bar dataKey="revenue" fill="#3b82f6" name={t('overview.revenueAndCosts.revenue')} />
+                  <Bar dataKey="costs" fill="#ef4444" name={t('overview.revenueAndCosts.costs')} />
+                  <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={3} name={t('overview.revenueAndCosts.profit')} />
                 </ComposedChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Podział kategorii */}
+            {/* Розподіл категорій */}
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle>Podział według kategorii</CardTitle>
-                <CardDescription>Rozkład kursantów w kategoriach</CardDescription>
+                <CardTitle>{t('overview.categoryDistribution.title')}</CardTitle>
+                <CardDescription>{t('overview.categoryDistribution.subtitle')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
+                  <RechartsPieChart>
                     <Pie
                       data={categoryDistribution}
                       cx="50%"
@@ -393,7 +398,7 @@ export default function AnalyticsPage() {
                       ))}
                     </Pie>
                     <Tooltip />
-                  </PieChart>
+                  </RechartsPieChart>
                 </ResponsiveContainer>
                 <div className="mt-4 space-y-2">
                   {categoryDistribution.map((cat, index) => (
@@ -405,18 +410,18 @@ export default function AnalyticsPage() {
                         />
                         <span>{cat.name}</span>
                       </div>
-                      <span className="font-medium">{cat.students} kursantów</span>
+                      <span className="font-medium">{cat.students} {t('overview.categoryDistribution.students')}</span>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
 
-            {/* Funnel konwersji */}
+            {/* Воронка конверсії */}
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle>Lejek konwersji</CardTitle>
-                <CardDescription>Postęp kursantów w procesie nauki</CardDescription>
+                <CardTitle>{t('overview.conversionFunnel.title')}</CardTitle>
+                <CardDescription>{t('overview.conversionFunnel.subtitle')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -439,7 +444,7 @@ export default function AnalyticsPage() {
                 <Alert className="mt-4 bg-blue-50 border-blue-200">
                   <Info className="h-4 w-4 text-blue-600" />
                   <AlertDescription className="text-blue-800">
-                    Wskaźnik konwersji: <strong>59%</strong> (248 z 420 kursantów zdało egzamin)
+                    {t('overview.conversionFunnel.conversionRate')}: <strong>59%</strong> ({t('overview.conversionFunnel.conversionInfo', { passed: 248, total: 420 })})
                   </AlertDescription>
                 </Alert>
               </CardContent>
@@ -451,31 +456,31 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Card className="bg-white border-gray-100">
               <CardContent className="p-6">
-                <p className="text-sm text-gray-600 mb-2">Przychody YTD</p>
-                <p className="text-3xl font-bold text-gray-800">1,148,750 zł</p>
+                <p className="text-sm text-gray-600 mb-2">{t('financial.ytdRevenue')}</p>
+                <p className="text-3xl font-bold text-gray-800">1,148,750 {t('currency')}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <TrendingUp className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-green-600">+18.5% vs poprzedni rok</span>
+                  <span className="text-sm text-green-600">{t('financial.vsLastYear', { percent: 18.5 })}</span>
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-white border-gray-100">
               <CardContent className="p-6">
-                <p className="text-sm text-gray-600 mb-2">Średni przychód/kursant</p>
-                <p className="text-3xl font-bold text-gray-800">3,358 zł</p>
+                <p className="text-sm text-gray-600 mb-2">{t('financial.avgRevenuePerStudent')}</p>
+                <p className="text-3xl font-bold text-gray-800">3,358 {t('currency')}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <TrendingUp className="w-4 h-4 text-green-600" />
-                  <span className="text-sm text-green-600">+5.2% vs poprzedni okres</span>
+                  <span className="text-sm text-green-600">{t('financial.vsLastPeriod', { change: '+5.2' })}</span>
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-white border-gray-100">
               <CardContent className="p-6">
-                <p className="text-sm text-gray-600 mb-2">Marża zysku</p>
+                <p className="text-sm text-gray-600 mb-2">{t('financial.profitMargin')}</p>
                 <p className="text-3xl font-bold text-gray-800">42.3%</p>
                 <div className="flex items-center gap-2 mt-2">
                   <TrendingDown className="w-4 h-4 text-red-600" />
-                  <span className="text-sm text-red-600">-1.8% vs poprzedni okres</span>
+                  <span className="text-sm text-red-600">{t('financial.vsLastPeriod', { change: '-1.8' })}</span>
                 </div>
               </CardContent>
             </Card>
@@ -483,7 +488,7 @@ export default function AnalyticsPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Trend przychodów</CardTitle>
+              <CardTitle>{t('financial.revenueTrend')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
@@ -498,7 +503,7 @@ export default function AnalyticsPage() {
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip content={<CustomTooltip />} />
-                  <Area type="monotone" dataKey="revenue" stroke="#3b82f6" fillOpacity={1} fill="url(#colorRevenue)" name="Przychody" />
+                  <Area type="monotone" dataKey="revenue" stroke="#3b82f6" fillOpacity={1} fill="url(#colorRevenue)" name={t('overview.revenueAndCosts.revenue')} />
                 </AreaChart>
               </ResponsiveContainer>
             </CardContent>
@@ -508,7 +513,7 @@ export default function AnalyticsPage() {
         <TabsContent value="students" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Dynamika liczby kursantów</CardTitle>
+              <CardTitle>{t('students.dynamicsTitle')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -517,7 +522,7 @@ export default function AnalyticsPage() {
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="students" stroke="#8b5cf6" strokeWidth={2} name="Liczba kursantów" />
+                  <Line type="monotone" dataKey="students" stroke="#8b5cf6" strokeWidth={2} name={t('students.studentsCount')} />
                 </LineChart>
               </ResponsiveContainer>
             </CardContent>
@@ -526,34 +531,34 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle>Demografia kursantów</CardTitle>
+                <CardTitle>{t('students.demographics.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>18-25 lat</span>
+                      <span>{t('students.demographics.age18_25')}</span>
                       <span className="font-medium">45%</span>
                     </div>
                     <Progress value={45} />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>26-35 lat</span>
+                      <span>{t('students.demographics.age26_35')}</span>
                       <span className="font-medium">30%</span>
                     </div>
                     <Progress value={30} />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>36-45 lat</span>
+                      <span>{t('students.demographics.age36_45')}</span>
                       <span className="font-medium">15%</span>
                     </div>
                     <Progress value={15} />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>46+ lat</span>
+                      <span>{t('students.demographics.age46plus')}</span>
                       <span className="font-medium">10%</span>
                     </div>
                     <Progress value={10} />
@@ -564,34 +569,34 @@ export default function AnalyticsPage() {
 
             <Card className="bg-white border-gray-100">
               <CardHeader>
-                <CardTitle>Źródła pozyskania</CardTitle>
+                <CardTitle>{t('students.sources.title')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Google Ads</span>
+                      <span>{t('students.sources.googleAds')}</span>
                       <span className="font-medium">35%</span>
                     </div>
                     <Progress value={35} className="bg-blue-100" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Polecenia</span>
+                      <span>{t('students.sources.referrals')}</span>
                       <span className="font-medium">28%</span>
                     </div>
                     <Progress value={28} className="bg-green-100" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Facebook</span>
+                      <span>{t('students.sources.facebook')}</span>
                       <span className="font-medium">22%</span>
                     </div>
                     <Progress value={22} className="bg-purple-100" />
                   </div>
                   <div>
                     <div className="flex justify-between text-sm mb-2">
-                      <span>Strona WWW</span>
+                      <span>{t('students.sources.website')}</span>
                       <span className="font-medium">15%</span>
                     </div>
                     <Progress value={15} className="bg-yellow-100" />
@@ -605,7 +610,7 @@ export default function AnalyticsPage() {
         <TabsContent value="instructors" className="space-y-6">
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Wydajność instruktorów</CardTitle>
+              <CardTitle>{t('instructors.performanceTitle')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -614,14 +619,14 @@ export default function AnalyticsPage() {
                     <div className="flex-1">
                       <p className="font-medium text-gray-800">{instructor.name}</p>
                       <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
-                        <span>{instructor.lessons} lekcji</span>
+                        <span>{instructor.lessons} {t('instructors.lessons')}</span>
                         <span>★ {instructor.rating}</span>
-                        <span>{instructor.passRate}% zdawalność</span>
+                        <span>{instructor.passRate}% {t('instructors.passRate')}</span>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold text-gray-800">{formatCurrency(instructor.revenue)}</p>
-                      <p className="text-sm text-gray-500">przychód</p>
+                      <p className="text-sm text-gray-500">{t('instructors.revenue')}</p>
                     </div>
                   </div>
                 ))}
@@ -631,8 +636,8 @@ export default function AnalyticsPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Porównanie kompetencji</CardTitle>
-              <CardDescription>Średnie wyniki instruktorów w różnych obszarach</CardDescription>
+              <CardTitle>{t('instructors.competenciesTitle')}</CardTitle>
+              <CardDescription>{t('instructors.competenciesSubtitle')}</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
@@ -640,8 +645,8 @@ export default function AnalyticsPage() {
                   <PolarGrid stroke="#e5e5e5" />
                   <PolarAngleAxis dataKey="subject" />
                   <PolarRadiusAxis angle={90} domain={[0, 100]} />
-                  <Radar name="Ten miesiąc" dataKey="A" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
-                  <Radar name="Poprzedni miesiąc" dataKey="B" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
+                  <Radar name={t('instructors.thisMonth')} dataKey="A" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.6} />
+                  <Radar name={t('instructors.lastMonth')} dataKey="B" stroke="#10b981" fill="#10b981" fillOpacity={0.6} />
                   <Legend />
                 </RadarChart>
               </ResponsiveContainer>
@@ -661,11 +666,11 @@ export default function AnalyticsPage() {
                   <p className="font-semibold text-gray-800 mb-1">{location.location}</p>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Rezerwacje:</span>
+                      <span className="text-gray-600">{t('locations.bookings')}:</span>
                       <span className="font-medium">{location.bookings}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Przychód:</span>
+                      <span className="text-gray-600">{t('locations.revenue')}:</span>
                       <span className="font-medium">{formatCurrency(location.revenue)}</span>
                     </div>
                   </div>
@@ -677,7 +682,7 @@ export default function AnalyticsPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Wykorzystanie lokalizacji</CardTitle>
+              <CardTitle>{t('locations.utilizationTitle')}</CardTitle>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -686,7 +691,7 @@ export default function AnalyticsPage() {
                   <XAxis dataKey="location" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="utilization" fill="#3b82f6" name="Wykorzystanie %" />
+                  <Bar dataKey="utilization" fill="#3b82f6" name={t('locations.utilization')} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
@@ -699,10 +704,10 @@ export default function AnalyticsPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <Clock className="w-5 h-5 text-purple-600" />
-                  <Badge className="bg-green-100 text-green-700">+5%</Badge>
+                  <Badge className="bg-green-100 text-green-700">{t('performance.status.change', { percent: 5 })}</Badge>
                 </div>
-                <p className="text-2xl font-bold text-gray-800">42 min</p>
-                <p className="text-sm text-gray-600">Średni czas lekcji</p>
+                <p className="text-2xl font-bold text-gray-800">42 {t('performance.time.min')}</p>
+                <p className="text-sm text-gray-600">{t('performance.avgLessonTime')}</p>
                 <Progress value={85} className="mt-3" />
               </CardContent>
             </Card>
@@ -711,10 +716,10 @@ export default function AnalyticsPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <Target className="w-5 h-5 text-green-600" />
-                  <Badge className="bg-green-100 text-green-700">Dobry</Badge>
+                  <Badge className="bg-green-100 text-green-700">{t('performance.status.good')}</Badge>
                 </div>
                 <p className="text-2xl font-bold text-gray-800">87%</p>
-                <p className="text-sm text-gray-600">Wskaźnik zdawalności</p>
+                <p className="text-sm text-gray-600">{t('performance.passRate')}</p>
                 <Progress value={87} className="mt-3" />
               </CardContent>
             </Card>
@@ -726,7 +731,7 @@ export default function AnalyticsPage() {
                   <Badge variant="outline">342</Badge>
                 </div>
                 <p className="text-2xl font-bold text-gray-800">94%</p>
-                <p className="text-sm text-gray-600">Satysfakcja klientów</p>
+                <p className="text-sm text-gray-600">{t('performance.customerSatisfaction')}</p>
                 <Progress value={94} className="mt-3" />
               </CardContent>
             </Card>
@@ -734,35 +739,35 @@ export default function AnalyticsPage() {
 
           <Card className="bg-white border-gray-100">
             <CardHeader>
-              <CardTitle>Kluczowe wskaźniki wydajności (KPI)</CardTitle>
+              <CardTitle>{t('performance.kpiTitle')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="font-medium">Średni czas oczekiwania na lekcję</span>
+                    <span className="font-medium">{t('performance.metrics.avgWaitTime')}</span>
                   </div>
-                  <span className="font-semibold">3.2 dni</span>
+                  <span className="font-semibold">3.2 {t('performance.time.days')}</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="font-medium">Współczynnik rezygnacji</span>
+                    <span className="font-medium">{t('performance.metrics.dropoutRate')}</span>
                   </div>
                   <span className="font-semibold">8.5%</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="font-medium">Średnia liczba lekcji na kursanta</span>
+                    <span className="font-medium">{t('performance.metrics.avgLessonsPerStudent')}</span>
                   </div>
                   <span className="font-semibold">32.4</span>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span className="font-medium">Wykorzystanie floty pojazdów</span>
+                    <span className="font-medium">{t('performance.metrics.fleetUtilization')}</span>
                   </div>
                   <span className="font-semibold">78%</span>
                 </div>

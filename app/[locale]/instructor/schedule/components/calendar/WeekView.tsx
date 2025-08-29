@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/calendar/WeekView.tsx
-// Komponent widoku tygodniowego kalendarza z siatką dni i godzin
-
 'use client'
 
 import React, { useState, useRef, useEffect, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   ChevronLeft, ChevronRight, Clock, Calendar,
   AlertCircle, MapPin, User, Car, Info
@@ -31,27 +30,38 @@ const DayHeader: React.FC<{
   date: Date
   isToday: boolean
   slotsCount: number
-}> = ({ date, isToday: today, slotsCount }) => (
-  <div className={cn(
-    "text-center p-2 border-r",
-    today && "bg-blue-50"
-  )}>
-    <div className="font-medium text-sm">
-      {getPolishWeekDay(date)}
-    </div>
+}> = ({ date, isToday: today, slotsCount }) => {
+  const t = useTranslations('instructor.schedule.calendar.weekView.dayHeader')
+  
+  const getSlotsLabel = (count: number) => {
+    if (count === 0) return ''
+    if (count === 1) return `${count} ${t('slots.one')}`
+    if (count >= 2 && count <= 4) return `${count} ${t('slots.few')}`
+    return `${count} ${t('slots.many')}`
+  }
+  
+  return (
     <div className={cn(
-      "text-lg font-semibold mt-1",
-      today && "text-blue-600"
+      "text-center p-2 border-r",
+      today && "bg-blue-50"
     )}>
-      {date.getDate()}
-    </div>
-    {slotsCount > 0 && (
-      <div className="text-xs text-gray-500 mt-1">
-        {slotsCount} {slotsCount === 1 ? 'termin' : slotsCount < 5 ? 'terminy' : 'terminów'}
+      <div className="font-medium text-sm">
+        {getPolishWeekDay(date)}
       </div>
-    )}
-  </div>
-)
+      <div className={cn(
+        "text-lg font-semibold mt-1",
+        today && "text-blue-600"
+      )}>
+        {date.getDate()}
+      </div>
+      {slotsCount > 0 && (
+        <div className="text-xs text-gray-500 mt-1">
+          {getSlotsLabel(slotsCount)}
+        </div>
+      )}
+    </div>
+  )
+}
 
 // Komponent siatki godzinowej
 const TimeGrid: React.FC = () => {
@@ -82,6 +92,7 @@ export default function WeekView({
   onDateChange,
   className
 }: WeekViewProps) {
+  const t = useTranslations('instructor.schedule.calendar.weekView')
   const { slots, workingHours, updateSlot } = useScheduleContext()
   const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null)
   const [showSlotModal, setShowSlotModal] = useState(false)
@@ -210,7 +221,7 @@ export default function WeekView({
           <button
             onClick={handlePreviousWeek}
             className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-            aria-label="Poprzedni tydzień"
+            aria-label={t('navigation.previousWeek')}
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -219,13 +230,13 @@ export default function WeekView({
             onClick={handleToday}
             className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors text-sm font-medium"
           >
-            Obecny tydzień
+            {t('navigation.currentWeek')}
           </button>
           
           <button
             onClick={handleNextWeek}
             className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
-            aria-label="Następny tydzień"
+            aria-label={t('navigation.nextWeek')}
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -237,7 +248,7 @@ export default function WeekView({
 
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Clock className="w-4 h-4" />
-          <span>{currentTime.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' })}</span>
+          <span>{currentTime.toLocaleTimeString('uk-UA', { hour: '2-digit', minute: '2-digit' })}</span>
         </div>
       </div>
 
@@ -251,7 +262,7 @@ export default function WeekView({
             const dayKey = formatDate(day)
             const daySlots = slotsByDay[dayKey] || []
             const isCurrentDay = isToday(day)
-            const dayName = day.toLocaleDateString('pl-PL', { weekday: 'long' }).toLowerCase()
+            const dayName = day.toLocaleDateString('uk-UA', { weekday: 'long' }).toLowerCase()
             const dayWorkingHours = workingHours[dayName]
             
             return (
@@ -351,9 +362,9 @@ export default function WeekView({
                               </div>
                               {position.height > 70 && slot.lessonType && (
                                 <div className="text-xs opacity-75">
-                                  {slot.lessonType === 'jazda' ? 'Jazda' : 
-                                   slot.lessonType === 'plac' ? 'Plac' :
-                                   slot.lessonType === 'teoria' ? 'Teoria' : 'Egzamin'}
+                                  {slot.lessonType === 'jazda' ? t('lessonTypes.driving') : 
+                                   slot.lessonType === 'plac' ? t('lessonTypes.practiceArea') :
+                                   slot.lessonType === 'teoria' ? t('lessonTypes.theory') : t('lessonTypes.exam')}
                                 </div>
                               )}
                             </div>
@@ -361,7 +372,7 @@ export default function WeekView({
                           
                           {/* Status dla wolnych terminów */}
                           {!slot.student && slot.status === 'dostępny' && position.height > 40 && (
-                            <div className="text-xs italic">Wolny</div>
+                            <div className="text-xs italic">{t('slot.free')}</div>
                           )}
                         </div>
                       </div>
@@ -391,23 +402,23 @@ export default function WeekView({
         <div className="flex items-center justify-center gap-6 text-xs">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-green-200 rounded" />
-            <span>Dostępny</span>
+            <span>{t('legend.available')}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-blue-200 rounded" />
-            <span>Zarezerwowany</span>
+            <span>{t('legend.reserved')}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-gray-200 rounded" />
-            <span>Zablokowany</span>
+            <span>{t('legend.blocked')}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-red-200 rounded" />
-            <span>Anulowany</span>
+            <span>{t('legend.cancelled')}</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 bg-orange-200 rounded" />
-            <span>Nieobecność</span>
+            <span>{t('legend.noShow')}</span>
           </div>
         </div>
       </div>

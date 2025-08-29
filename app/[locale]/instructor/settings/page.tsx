@@ -1,12 +1,13 @@
-// /app/[locale]/instructor/settings/page.tsx
+// app/[locale]/instructor/settings/page.tsx
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { 
   Settings, Bell, Shield, Globe, Palette, User, Key,
   Smartphone, Mail, Calendar, Clock, Volume2, Eye,
   Moon, Sun, Monitor, Lock, LogOut, HelpCircle,
-  ChevronRight,Save, AlertCircle, Check, Download,Trash2 
+  ChevronRight, Save, AlertCircle, Check, Download, Trash2 
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -36,6 +37,8 @@ import {
 } from '@/components/ui/dialog'
 
 export default function InstructorSettings() {
+  const t = useTranslations('instructor.settings')
+  
   const [showPasswordDialog, setShowPasswordDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [passwordData, setPasswordData] = useState({
@@ -85,7 +88,7 @@ export default function InstructorSettings() {
     // Appearance
     appearance: {
       theme: 'system',
-      language: 'pl',
+      language: 'uk',
       dateFormat: 'DD/MM/YYYY',
       timeFormat: '24h',
       firstDayOfWeek: 'monday',
@@ -123,53 +126,45 @@ export default function InstructorSettings() {
     setPasswordData({ current: '', new: '', confirm: '' })
   }
 
+  const notificationTypes = ['newBooking', 'cancellation', 'reminder', 'payment', 'systemUpdates'] as const
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Ustawienia</h1>
-        <p className="text-gray-600 mt-1">
-          Zarządzaj swoimi ustawieniami i preferencjami
-        </p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="text-gray-600 mt-1">{t('subtitle')}</p>
       </div>
 
       <Tabs defaultValue="notifications" className="w-full">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="notifications">Powiadomienia</TabsTrigger>
-          <TabsTrigger value="privacy">Prywatność</TabsTrigger>
-          <TabsTrigger value="appearance">Wygląd</TabsTrigger>
-          <TabsTrigger value="schedule">Harmonogram</TabsTrigger>
-          <TabsTrigger value="security">Bezpieczeństwo</TabsTrigger>
+          <TabsTrigger value="notifications">{t('tabs.notifications')}</TabsTrigger>
+          <TabsTrigger value="privacy">{t('tabs.privacy')}</TabsTrigger>
+          <TabsTrigger value="appearance">{t('tabs.appearance')}</TabsTrigger>
+          <TabsTrigger value="schedule">{t('tabs.schedule')}</TabsTrigger>
+          <TabsTrigger value="security">{t('tabs.security')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="notifications" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Powiadomienia email</CardTitle>
-              <CardDescription>Wybierz, które powiadomienia chcesz otrzymywać na email</CardDescription>
+              <CardTitle>{t('notifications.email.title')}</CardTitle>
+              <CardDescription>{t('notifications.email.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {Object.entries(settings.notifications.email).map(([key, value]) => (
+              {notificationTypes.map((key) => (
                 <div key={key} className="flex items-center justify-between">
                   <Label htmlFor={`email-${key}`} className="flex flex-col">
                     <span className="font-normal">
-                      {key === 'newBooking' && 'Nowe rezerwacje'}
-                      {key === 'cancellation' && 'Anulowanie lekcji'}
-                      {key === 'reminder' && 'Przypomnienie o lekcji'}
-                      {key === 'payment' && 'Płatności i wypłaty'}
-                      {key === 'systemUpdates' && 'Aktualizacje systemu'}
+                      {t(`notifications.email.${key}`)}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {key === 'newBooking' && 'Gdy uczeń rezerwuje lekcję'}
-                      {key === 'cancellation' && 'Gdy lekcja zostanie anulowana'}
-                      {key === 'reminder' && 'Godzinę przed lekcją'}
-                      {key === 'payment' && 'Informacje o płatnościach'}
-                      {key === 'systemUpdates' && 'Nowości i aktualizacje systemu'}
+                      {t(`notifications.email.${key}Desc`)}
                     </span>
                   </Label>
                   <Switch
                     id={`email-${key}`}
-                    checked={value}
+                    checked={settings.notifications.email[key]}
                     onCheckedChange={(checked) =>
                       setSettings(prev => ({
                         ...prev,
@@ -187,22 +182,18 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Powiadomienia push</CardTitle>
-              <CardDescription>Ustawienia powiadomień w przeglądarce i aplikacji mobilnej</CardDescription>
+              <CardTitle>{t('notifications.push.title')}</CardTitle>
+              <CardDescription>{t('notifications.push.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {Object.entries(settings.notifications.push).map(([key, value]) => (
+              {notificationTypes.map((key) => (
                 <div key={key} className="flex items-center justify-between">
                   <Label htmlFor={`push-${key}`}>
-                    {key === 'newBooking' && 'Nowe rezerwacje'}
-                    {key === 'cancellation' && 'Anulowanie lekcji'}
-                    {key === 'reminder' && 'Przypomnienie o lekcji'}
-                    {key === 'payment' && 'Płatności i wypłaty'}
-                    {key === 'systemUpdates' && 'Aktualizacje systemu'}
+                    {t(`notifications.email.${key}`)}
                   </Label>
                   <Switch
                     id={`push-${key}`}
-                    checked={value}
+                    checked={settings.notifications.push[key]}
                     onCheckedChange={(checked) =>
                       setSettings(prev => ({
                         ...prev,
@@ -220,28 +211,22 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Powiadomienia SMS</CardTitle>
-              <CardDescription>Ważne powiadomienia przez SMS (usługa płatna)</CardDescription>
+              <CardTitle>{t('notifications.sms.title')}</CardTitle>
+              <CardDescription>{t('notifications.sms.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <Alert>
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Powiadomienia SMS są dodatkowo płatne: 0,50 zł za wiadomość
-                </AlertDescription>
+                <AlertDescription>{t('notifications.sms.warning')}</AlertDescription>
               </Alert>
-              {Object.entries(settings.notifications.sms).map(([key, value]) => (
+              {notificationTypes.map((key) => (
                 <div key={key} className="flex items-center justify-between">
                   <Label htmlFor={`sms-${key}`}>
-                    {key === 'newBooking' && 'Nowe rezerwacje'}
-                    {key === 'cancellation' && 'Anulowanie lekcji'}
-                    {key === 'reminder' && 'Przypomnienie o lekcji'}
-                    {key === 'payment' && 'Płatności i wypłaty'}
-                    {key === 'systemUpdates' && 'Aktualizacje systemu'}
+                    {t(`notifications.email.${key}`)}
                   </Label>
                   <Switch
                     id={`sms-${key}`}
-                    checked={value}
+                    checked={settings.notifications.sms[key]}
                     onCheckedChange={(checked) =>
                       setSettings(prev => ({
                         ...prev,
@@ -261,11 +246,11 @@ export default function InstructorSettings() {
         <TabsContent value="privacy" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Widoczność profilu</CardTitle>
+              <CardTitle>{t('privacy.profile.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Kto może widzieć mój profil</Label>
+                <Label>{t('privacy.profile.whoCanSee')}</Label>
                 <RadioGroup 
                   value={settings.privacy.profileVisibility}
                   onValueChange={(value) =>
@@ -278,15 +263,15 @@ export default function InstructorSettings() {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="public" id="public" />
-                    <Label htmlFor="public">Wszyscy (publiczny)</Label>
+                    <Label htmlFor="public">{t('privacy.profile.public')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="students" id="students" />
-                    <Label htmlFor="students">Tylko moi uczniowie</Label>
+                    <Label htmlFor="students">{t('privacy.profile.students')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="private" id="private" />
-                    <Label htmlFor="private">Nikt (prywatny)</Label>
+                    <Label htmlFor="private">{t('privacy.profile.private')}</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -296,8 +281,8 @@ export default function InstructorSettings() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="show-rating">
-                    <span className="block">Pokazuj moją ocenę</span>
-                    <span className="text-sm text-gray-500">Uczniowie mogą widzieć twoją ocenę</span>
+                    <span className="block">{t('privacy.profile.showRating')}</span>
+                    <span className="text-sm text-gray-500">{t('privacy.profile.showRatingDesc')}</span>
                   </Label>
                   <Switch
                     id="show-rating"
@@ -313,8 +298,8 @@ export default function InstructorSettings() {
 
                 <div className="flex items-center justify-between">
                   <Label htmlFor="show-stats">
-                    <span className="block">Pokazuj statystyki</span>
-                    <span className="text-sm text-gray-500">Liczba uczniów, skuteczność itp.</span>
+                    <span className="block">{t('privacy.profile.showStatistics')}</span>
+                    <span className="text-sm text-gray-500">{t('privacy.profile.showStatisticsDesc')}</span>
                   </Label>
                   <Switch
                     id="show-stats"
@@ -330,8 +315,8 @@ export default function InstructorSettings() {
 
                 <div className="flex items-center justify-between">
                   <Label htmlFor="show-schedule">
-                    <span className="block">Pokazuj harmonogram</span>
-                    <span className="text-sm text-gray-500">Wolne terminy do rezerwacji</span>
+                    <span className="block">{t('privacy.profile.showSchedule')}</span>
+                    <span className="text-sm text-gray-500">{t('privacy.profile.showScheduleDesc')}</span>
                   </Label>
                   <Switch
                     id="show-schedule"
@@ -350,11 +335,11 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Wiadomości</CardTitle>
+              <CardTitle>{t('privacy.messages.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Kto może wysyłać mi wiadomości</Label>
+                <Label>{t('privacy.messages.whoCanMessage')}</Label>
                 <Select 
                   value={settings.privacy.allowMessages}
                   onValueChange={(value) =>
@@ -368,10 +353,10 @@ export default function InstructorSettings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="everyone">Wszyscy</SelectItem>
-                    <SelectItem value="students">Tylko uczniowie</SelectItem>
-                    <SelectItem value="contacts">Tylko kontakty</SelectItem>
-                    <SelectItem value="nobody">Nikt</SelectItem>
+                    <SelectItem value="everyone">{t('privacy.messages.everyone')}</SelectItem>
+                    <SelectItem value="students">{t('privacy.messages.studentsOnly')}</SelectItem>
+                    <SelectItem value="contacts">{t('privacy.messages.contacts')}</SelectItem>
+                    <SelectItem value="nobody">{t('privacy.messages.nobody')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -380,13 +365,13 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Dane i poufność</CardTitle>
+              <CardTitle>{t('privacy.data.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="location">
-                  <span className="block">Udostępnij lokalizację</span>
-                  <span className="text-sm text-gray-500">Podczas lekcji dla bezpieczeństwa</span>
+                  <span className="block">{t('privacy.data.shareLocation')}</span>
+                  <span className="text-sm text-gray-500">{t('privacy.data.shareLocationDesc')}</span>
                 </Label>
                 <Switch
                   id="location"
@@ -402,8 +387,8 @@ export default function InstructorSettings() {
 
               <div className="flex items-center justify-between">
                 <Label htmlFor="data-collection">
-                  <span className="block">Zbieranie danych do ulepszania</span>
-                  <span className="text-sm text-gray-500">Anonimowe statystyki użytkowania</span>
+                  <span className="block">{t('privacy.data.dataCollection')}</span>
+                  <span className="text-sm text-gray-500">{t('privacy.data.dataCollectionDesc')}</span>
                 </Label>
                 <Switch
                   id="data-collection"
@@ -421,7 +406,7 @@ export default function InstructorSettings() {
 
               <Button variant="outline" className="w-full">
                 <Download className="w-4 h-4 mr-2" />
-                Pobierz moje dane
+                {t('privacy.data.downloadData')}
               </Button>
             </CardContent>
           </Card>
@@ -430,7 +415,7 @@ export default function InstructorSettings() {
         <TabsContent value="appearance" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Motyw interfejsu</CardTitle>
+              <CardTitle>{t('appearance.theme.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <RadioGroup 
@@ -449,7 +434,7 @@ export default function InstructorSettings() {
                       settings.appearance.theme === 'light' ? 'border-blue-500' : 'border-gray-200'
                     }`}>
                       <Sun className="w-6 h-6 mx-auto mb-2" />
-                      <p className="text-sm text-center">Jasny</p>
+                      <p className="text-sm text-center">{t('appearance.theme.light')}</p>
                     </div>
                   </label>
                   <label className="cursor-pointer">
@@ -458,7 +443,7 @@ export default function InstructorSettings() {
                       settings.appearance.theme === 'dark' ? 'border-blue-500' : 'border-gray-200'
                     }`}>
                       <Moon className="w-6 h-6 mx-auto mb-2" />
-                      <p className="text-sm text-center">Ciemny</p>
+                      <p className="text-sm text-center">{t('appearance.theme.dark')}</p>
                     </div>
                   </label>
                   <label className="cursor-pointer">
@@ -467,7 +452,7 @@ export default function InstructorSettings() {
                       settings.appearance.theme === 'system' ? 'border-blue-500' : 'border-gray-200'
                     }`}>
                       <Monitor className="w-6 h-6 mx-auto mb-2" />
-                      <p className="text-sm text-center">Systemowy</p>
+                      <p className="text-sm text-center">{t('appearance.theme.system')}</p>
                     </div>
                   </label>
                 </div>
@@ -477,11 +462,11 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Język i region</CardTitle>
+              <CardTitle>{t('appearance.language.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label>Język interfejsu</Label>
+                <Label>{t('appearance.language.interface')}</Label>
                 <Select 
                   value={settings.appearance.language}
                   onValueChange={(value) =>
@@ -495,15 +480,15 @@ export default function InstructorSettings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pl">Polski</SelectItem>
-                    <SelectItem value="en">English</SelectItem>
-                    <SelectItem value="uk">Українська</SelectItem>
+                    <SelectItem value="pl">{t('appearance.language.polish')}</SelectItem>
+                    <SelectItem value="en">{t('appearance.language.english')}</SelectItem>
+                    <SelectItem value="uk">{t('appearance.language.ukrainian')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label>Format daty</Label>
+                <Label>{t('appearance.formats.dateFormat')}</Label>
                 <Select 
                   value={settings.appearance.dateFormat}
                   onValueChange={(value) =>
@@ -517,15 +502,15 @@ export default function InstructorSettings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="DD/MM/YYYY">DD/MM/RRRR</SelectItem>
-                    <SelectItem value="MM/DD/YYYY">MM/DD/RRRR</SelectItem>
-                    <SelectItem value="YYYY-MM-DD">RRRR-MM-DD</SelectItem>
+                    <SelectItem value="DD/MM/YYYY">DD/MM/РРРР</SelectItem>
+                    <SelectItem value="MM/DD/YYYY">MM/DD/РРРР</SelectItem>
+                    <SelectItem value="YYYY-MM-DD">РРРР-MM-DD</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <Label>Format czasu</Label>
+                <Label>{t('appearance.formats.timeFormat')}</Label>
                 <RadioGroup 
                   value={settings.appearance.timeFormat}
                   onValueChange={(value) =>
@@ -538,11 +523,11 @@ export default function InstructorSettings() {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="24h" id="24h" />
-                    <Label htmlFor="24h">24-godzinny (14:00)</Label>
+                    <Label htmlFor="24h">{t('appearance.formats.24hour')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="12h" id="12h" />
-                    <Label htmlFor="12h">12-godzinny (2:00 PM)</Label>
+                    <Label htmlFor="12h">{t('appearance.formats.12hour')}</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -553,12 +538,12 @@ export default function InstructorSettings() {
         <TabsContent value="schedule" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Ustawienia harmonogramu</CardTitle>
+              <CardTitle>{t('schedule.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Domyślny czas lekcji</Label>
+                  <Label>{t('schedule.defaultDuration')}</Label>
                   <Select 
                     value={String(settings.schedule.defaultDuration)}
                     onValueChange={(value) =>
@@ -572,15 +557,15 @@ export default function InstructorSettings() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="60">60 minut</SelectItem>
-                      <SelectItem value="90">90 minut</SelectItem>
-                      <SelectItem value="120">120 minut</SelectItem>
+                      <SelectItem value="60">{t('schedule.minutes', { count: 60 })}</SelectItem>
+                      <SelectItem value="90">{t('schedule.minutes', { count: 90 })}</SelectItem>
+                      <SelectItem value="120">{t('schedule.minutes', { count: 120 })}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Czas między lekcjami</Label>
+                  <Label>{t('schedule.bufferTime')}</Label>
                   <Select 
                     value={String(settings.schedule.bufferTime)}
                     onValueChange={(value) =>
@@ -594,15 +579,15 @@ export default function InstructorSettings() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">Bez przerwy</SelectItem>
-                      <SelectItem value="15">15 minut</SelectItem>
-                      <SelectItem value="30">30 minut</SelectItem>
+                      <SelectItem value="0">{t('schedule.noBreak')}</SelectItem>
+                      <SelectItem value="15">{t('schedule.minutes', { count: 15 })}</SelectItem>
+                      <SelectItem value="30">{t('schedule.minutes', { count: 30 })}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Początek dnia pracy</Label>
+                  <Label>{t('schedule.startTime')}</Label>
                   <Input 
                     type="time" 
                     value={settings.schedule.startTime}
@@ -617,7 +602,7 @@ export default function InstructorSettings() {
                 </div>
 
                 <div>
-                  <Label>Koniec dnia pracy</Label>
+                  <Label>{t('schedule.endTime')}</Label>
                   <Input 
                     type="time" 
                     value={settings.schedule.endTime}
@@ -633,7 +618,7 @@ export default function InstructorSettings() {
               </div>
 
               <div>
-                <Label>Maksimum lekcji dziennie</Label>
+                <Label>{t('schedule.maxPerDay')}</Label>
                 <Select 
                   value={String(settings.schedule.maxPerDay)}
                   onValueChange={(value) =>
@@ -648,7 +633,9 @@ export default function InstructorSettings() {
                   </SelectTrigger>
                   <SelectContent>
                     {[4, 6, 8, 10, 12].map(num => (
-                      <SelectItem key={num} value={String(num)}>{num} lekcji</SelectItem>
+                      <SelectItem key={num} value={String(num)}>
+                        {t('schedule.lessons', { count: num })}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -656,8 +643,8 @@ export default function InstructorSettings() {
 
               <div className="flex items-center justify-between">
                 <Label htmlFor="auto-confirm">
-                  <span className="block">Automatyczne potwierdzanie</span>
-                  <span className="text-sm text-gray-500">Rezerwacje potwierdzane automatycznie</span>
+                  <span className="block">{t('schedule.autoConfirm')}</span>
+                  <span className="text-sm text-gray-500">{t('schedule.autoConfirmDesc')}</span>
                 </Label>
                 <Switch
                   id="auto-confirm"
@@ -677,26 +664,24 @@ export default function InstructorSettings() {
         <TabsContent value="security" className="mt-6 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Hasło</CardTitle>
+              <CardTitle>{t('security.password.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
                 <DialogTrigger asChild>
                   <Button variant="outline">
                     <Key className="w-4 h-4 mr-2" />
-                    Zmień hasło
+                    {t('security.password.change')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Zmiana hasła</DialogTitle>
-                    <DialogDescription>
-                      Wprowadź obecne hasło i nowe hasło
-                    </DialogDescription>
+                    <DialogTitle>{t('security.password.modalTitle')}</DialogTitle>
+                    <DialogDescription>{t('security.password.modalDescription')}</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
                     <div>
-                      <Label>Obecne hasło</Label>
+                      <Label>{t('security.password.current')}</Label>
                       <Input
                         type="password"
                         value={passwordData.current}
@@ -706,7 +691,7 @@ export default function InstructorSettings() {
                       />
                     </div>
                     <div>
-                      <Label>Nowe hasło</Label>
+                      <Label>{t('security.password.new')}</Label>
                       <Input
                         type="password"
                         value={passwordData.new}
@@ -716,7 +701,7 @@ export default function InstructorSettings() {
                       />
                     </div>
                     <div>
-                      <Label>Potwierdź nowe hasło</Label>
+                      <Label>{t('security.password.confirm')}</Label>
                       <Input
                         type="password"
                         value={passwordData.confirm}
@@ -728,10 +713,10 @@ export default function InstructorSettings() {
                   </div>
                   <DialogFooter>
                     <Button variant="outline" onClick={() => setShowPasswordDialog(false)}>
-                      Anuluj
+                      {t('buttons.cancel')}
                     </Button>
                     <Button onClick={handleChangePassword}>
-                      Zmień hasło
+                      {t('security.password.change')}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
@@ -741,18 +726,18 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Uwierzytelnianie dwuskładnikowe</CardTitle>
+              <CardTitle>{t('security.twoFactor.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium">Status</p>
+                  <p className="font-medium">{t('security.twoFactor.status')}</p>
                   <p className="text-sm text-gray-500">
-                    {settings.security.twoFactor ? 'Włączone' : 'Wyłączone'}
+                    {settings.security.twoFactor ? t('security.twoFactor.enabled') : t('security.twoFactor.disabled')}
                   </p>
                 </div>
                 <Button variant={settings.security.twoFactor ? 'outline' : 'default'}>
-                  {settings.security.twoFactor ? 'Wyłącz' : 'Włącz'}
+                  {settings.security.twoFactor ? t('security.twoFactor.disable') : t('security.twoFactor.enable')}
                 </Button>
               </div>
             </CardContent>
@@ -760,13 +745,13 @@ export default function InstructorSettings() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Sesje i urządzenia</CardTitle>
+              <CardTitle>{t('security.sessions.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="session-timeout">
-                  <span className="block">Czas automatycznego wylogowania</span>
-                  <span className="text-sm text-gray-500">Przy braku aktywności (minuty)</span>
+                  <span className="block">{t('security.sessions.sessionTimeout')}</span>
+                  <span className="text-sm text-gray-500">{t('security.sessions.sessionTimeoutDesc')}</span>
                 </Label>
                 <Select 
                   value={String(settings.security.sessionTimeout)}
@@ -792,13 +777,13 @@ export default function InstructorSettings() {
               <Separator />
 
               <div>
-                <p className="font-medium mb-2">Zaufane urządzenia</p>
+                <p className="font-medium mb-2">{t('security.sessions.trustedDevices')}</p>
                 <p className="text-sm text-gray-500 mb-4">
-                  {settings.security.trustedDevices} urządzeń połączonych
+                  {t('security.sessions.devicesConnected', { count: settings.security.trustedDevices })}
                 </p>
                 <Button variant="outline" className="w-full">
                   <Smartphone className="w-4 h-4 mr-2" />
-                  Zarządzaj urządzeniami
+                  {t('security.sessions.manageDevices')}
                 </Button>
               </div>
             </CardContent>
@@ -806,14 +791,12 @@ export default function InstructorSettings() {
 
           <Card className="border-red-200">
             <CardHeader>
-              <CardTitle className="text-red-600">Strefa zagrożenia</CardTitle>
+              <CardTitle className="text-red-600">{t('security.dangerZone.title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Alert>
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                  Te działania są nieodwracalne. Proszę zachować ostrożność.
-                </AlertDescription>
+                <AlertDescription>{t('security.dangerZone.warning')}</AlertDescription>
               </Alert>
               
               <div className="space-y-2">
@@ -821,19 +804,17 @@ export default function InstructorSettings() {
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full text-red-600 hover:bg-red-50">
                       <LogOut className="w-4 h-4 mr-2" />
-                      Wyloguj ze wszystkich urządzeń
+                      {t('security.dangerZone.logoutAll')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Wylogować ze wszystkich urządzeń?</DialogTitle>
-                      <DialogDescription>
-                        Zostaniesz wylogowany ze wszystkich urządzeń, oprócz obecnego.
-                      </DialogDescription>
+                      <DialogTitle>{t('security.dangerZone.logoutAllConfirm')}</DialogTitle>
+                      <DialogDescription>{t('security.dangerZone.logoutAllDesc')}</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                      <Button variant="outline">Anuluj</Button>
-                      <Button variant="destructive">Wyloguj</Button>
+                      <Button variant="outline">{t('buttons.cancel')}</Button>
+                      <Button variant="destructive">{t('buttons.logout')}</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
@@ -842,26 +823,24 @@ export default function InstructorSettings() {
                   <DialogTrigger asChild>
                     <Button variant="destructive" className="w-full">
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Usuń konto
+                      {t('security.dangerZone.deleteAccount')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Usunąć konto na zawsze?</DialogTitle>
-                      <DialogDescription>
-                        Ta akcja jest nieodwracalna. Wszystkie twoje dane zostaną usunięte.
-                      </DialogDescription>
+                      <DialogTitle>{t('security.dangerZone.deleteAccountConfirm')}</DialogTitle>
+                      <DialogDescription>{t('security.dangerZone.deleteAccountDesc')}</DialogDescription>
                     </DialogHeader>
                     <div className="py-4">
-                      <Label>Wpisz "USUŃ" aby potwierdzić</Label>
-                      <Input className="mt-2" placeholder="USUŃ" />
+                      <Label>{t('security.dangerZone.deleteAccountPlaceholder')}</Label>
+                      <Input className="mt-2" placeholder="ВИДАЛИТИ" />
                     </div>
                     <DialogFooter>
                       <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
-                        Anuluj
+                        {t('buttons.cancel')}
                       </Button>
                       <Button variant="destructive">
-                        Usuń na zawsze
+                        {t('security.dangerZone.deleteForever')}
                       </Button>
                     </DialogFooter>
                   </DialogContent>
@@ -874,10 +853,10 @@ export default function InstructorSettings() {
 
       {/* Save button */}
       <div className="sticky bottom-0 bg-white border-t p-4 -mx-4 flex justify-end gap-2">
-        <Button variant="outline">Anuluj</Button>
+        <Button variant="outline">{t('buttons.cancel')}</Button>
         <Button onClick={handleSaveSettings}>
           <Save className="w-4 h-4 mr-2" />
-          Zapisz zmiany
+          {t('buttons.save')}
         </Button>
       </div>
     </div>

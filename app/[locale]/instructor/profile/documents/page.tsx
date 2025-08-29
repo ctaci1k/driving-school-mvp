@@ -1,9 +1,10 @@
-// /app/[locale]/instructor/profile/documents/page.tsx
+// app/[locale]/instructor/profile/documents/page.tsx
 
 'use client'
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { 
   FileText, Upload, Download, Eye, Trash2, Edit,
   Shield, Award, GraduationCap, Car, Heart,
@@ -45,10 +46,11 @@ import {
 } from '@/components/ui/table'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format, differenceInDays } from 'date-fns'
-import { pl } from 'date-fns/locale'
+import { uk } from 'date-fns/locale'
 
 export default function DocumentsPage() {
   const router = useRouter()
+  const t = useTranslations('instructor.profile.documents')
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -59,10 +61,10 @@ export default function DocumentsPage() {
   const documents = [
     {
       id: '1',
-      name: 'Licencja instruktora',
+      name: t('documentTypes.instructorLicense'),
       type: 'license',
       category: 'required',
-      issuer: 'Ministerstwo Infrastruktury',
+      issuer: t('issuers.ministry'),
       number: 'INS/2016/12345',
       issueDate: '2016-02-15',
       expiryDate: '2026-02-15',
@@ -73,10 +75,10 @@ export default function DocumentsPage() {
     },
     {
       id: '2',
-      name: 'Prawo jazdy kat. B',
+      name: t('documentTypes.drivingLicense'),
       type: 'driving_license',
       category: 'required',
-      issuer: 'Urząd Miasta',
+      issuer: t('issuers.cityOffice'),
       number: 'DL123456789',
       issueDate: '2005-06-20',
       expiryDate: '2030-06-20',
@@ -87,10 +89,10 @@ export default function DocumentsPage() {
     },
     {
       id: '3',
-      name: 'Zaświadczenie lekarskie',
+      name: t('documentTypes.medicalCertificate'),
       type: 'medical',
       category: 'required',
-      issuer: 'Centrum Medyczne',
+      issuer: t('issuers.medicalCenter'),
       number: 'MED/2024/0123',
       issueDate: '2024-01-15',
       expiryDate: '2025-01-15',
@@ -101,11 +103,11 @@ export default function DocumentsPage() {
     },
     {
       id: '4',
-      name: 'Certyfikat pierwszej pomocy',
+      name: t('documentTypes.firstAidCertificate'),
       type: 'certificate',
       category: 'additional',
-      issuer: 'Polski Czerwony Krzyż',
-      number: 'PCK/2022/5678',
+      issuer: t('issuers.redCross'),
+      number: 'RC/2022/5678',
       issueDate: '2022-11-20',
       expiryDate: '2024-11-20',
       status: 'expiring',
@@ -115,11 +117,11 @@ export default function DocumentsPage() {
     },
     {
       id: '5',
-      name: 'Kurs doskonalenia',
+      name: t('documentTypes.trainingCourse'),
       type: 'certificate',
       category: 'additional',
-      issuer: 'Stowarzyszenie Instruktorów',
-      number: 'KD/2023/789',
+      issuer: t('issuers.instructorsAssociation'),
+      number: 'TC/2023/789',
       issueDate: '2023-06-10',
       expiryDate: '2025-06-10',
       status: 'active',
@@ -129,11 +131,11 @@ export default function DocumentsPage() {
     },
     {
       id: '6',
-      name: 'Umowa o pracę',
+      name: t('documentTypes.employmentContract'),
       type: 'contract',
       category: 'employment',
-      issuer: 'Auto Szkoła Warszawa',
-      number: 'UM/2016/001',
+      issuer: t('issuers.drivingSchool'),
+      number: 'EC/2016/001',
       issueDate: '2016-03-01',
       expiryDate: null,
       status: 'active',
@@ -143,11 +145,11 @@ export default function DocumentsPage() {
     },
     {
       id: '7',
-      name: 'Polisa OC',
+      name: t('documentTypes.liabilityInsurance'),
       type: 'insurance',
       category: 'insurance',
-      issuer: 'PZU',
-      number: 'OC/2024/123456',
+      issuer: t('issuers.insuranceCompany'),
+      number: 'LI/2024/123456',
       issueDate: '2024-01-01',
       expiryDate: '2024-12-31',
       status: 'active',
@@ -159,11 +161,11 @@ export default function DocumentsPage() {
 
   // Document categories
   const categories = [
-    { value: 'all', label: 'Wszystkie', count: documents.length },
-    { value: 'required', label: 'Wymagane', count: 3 },
-    { value: 'additional', label: 'Dodatkowe', count: 2 },
-    { value: 'employment', label: 'Zatrudnienie', count: 1 },
-    { value: 'insurance', label: 'Ubezpieczenia', count: 1 }
+    { value: 'all', label: t('categories.all'), count: documents.length },
+    { value: 'required', label: t('categories.required'), count: 3 },
+    { value: 'additional', label: t('categories.additional'), count: 2 },
+    { value: 'employment', label: t('categories.employment'), count: 1 },
+    { value: 'insurance', label: t('categories.insurance'), count: 1 }
   ]
 
   // Filter documents
@@ -181,11 +183,11 @@ export default function DocumentsPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <Badge variant="default" className="bg-green-500">Aktywny</Badge>
+        return <Badge variant="default" className="bg-green-500">{t('status.active')}</Badge>
       case 'expiring':
-        return <Badge variant="outline" className="text-yellow-600 border-yellow-600">Wkrótce wygasa</Badge>
+        return <Badge variant="outline" className="text-yellow-600 border-yellow-600">{t('status.expiring')}</Badge>
       case 'expired':
-        return <Badge variant="destructive">Wygasły</Badge>
+        return <Badge variant="destructive">{t('status.expired')}</Badge>
       default:
         return null
     }
@@ -229,12 +231,12 @@ export default function DocumentsPage() {
           <ChevronLeft className="w-5 h-5" />
         </Button>
         <div className="flex-1">
-          <h1 className="text-2xl font-bold text-gray-900">Moje dokumenty</h1>
-          <p className="text-gray-600">Zarządzaj certyfikatami i licencjami</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+          <p className="text-gray-600">{t('subtitle')}</p>
         </div>
         <Button onClick={() => fileInputRef.current?.click()}>
           <Upload className="w-4 h-4 mr-2" />
-          Dodaj dokument
+          {t('addDocument')}
         </Button>
         <input
           ref={fileInputRef}
@@ -249,10 +251,9 @@ export default function DocumentsPage() {
       {expiringDocuments.length > 0 && (
         <Alert className="border-yellow-200 bg-yellow-50">
           <AlertCircle className="h-4 w-4 text-yellow-600" />
-          <AlertTitle>Dokumenty wymagające uwagi</AlertTitle>
+          <AlertTitle>{t('alert.title')}</AlertTitle>
           <AlertDescription>
-            Masz {expiringDocuments.length} dokument(y) które wkrótce wygasną. 
-            Zadbaj o ich odnowienie.
+            {t('alert.description', { count: expiringDocuments.length })}
           </AlertDescription>
         </Alert>
       )}
@@ -263,7 +264,7 @@ export default function DocumentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Wszystkie</p>
+                <p className="text-sm text-gray-500">{t('stats.all')}</p>
                 <p className="text-2xl font-bold">{documents.length}</p>
               </div>
               <FileText className="w-8 h-8 text-gray-400" />
@@ -275,7 +276,7 @@ export default function DocumentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Aktywne</p>
+                <p className="text-sm text-gray-500">{t('stats.active')}</p>
                 <p className="text-2xl font-bold">{activeDocuments.length}</p>
               </div>
               <CheckCircle className="w-8 h-8 text-green-500" />
@@ -287,7 +288,7 @@ export default function DocumentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Wygasające</p>
+                <p className="text-sm text-gray-500">{t('stats.expiring')}</p>
                 <p className="text-2xl font-bold">{expiringDocuments.length}</p>
               </div>
               <Clock className="w-8 h-8 text-yellow-500" />
@@ -299,7 +300,7 @@ export default function DocumentsPage() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Zweryfikowane</p>
+                <p className="text-sm text-gray-500">{t('stats.verified')}</p>
                 <p className="text-2xl font-bold">
                   {documents.filter(d => d.verified).length}
                 </p>
@@ -315,7 +316,7 @@ export default function DocumentsPage() {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Szukaj dokumentów..."
+            placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -338,13 +339,13 @@ export default function DocumentsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Dokument</TableHead>
-                <TableHead>Wystawca</TableHead>
-                <TableHead>Numer</TableHead>
-                <TableHead>Data wydania</TableHead>
-                <TableHead>Data ważności</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Akcje</TableHead>
+                <TableHead>{t('table.headers.document')}</TableHead>
+                <TableHead>{t('table.headers.issuer')}</TableHead>
+                <TableHead>{t('table.headers.number')}</TableHead>
+                <TableHead>{t('table.headers.issueDate')}</TableHead>
+                <TableHead>{t('table.headers.expiryDate')}</TableHead>
+                <TableHead>{t('table.headers.status')}</TableHead>
+                <TableHead className="text-right">{t('table.headers.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -360,7 +361,7 @@ export default function DocumentsPage() {
                       {doc.verified && (
                         <Badge variant="outline" className="text-xs">
                           <CheckCircle className="w-3 h-3 mr-1" />
-                          Zweryfikowany
+                          {t('table.verified')}
                         </Badge>
                       )}
                     </div>
@@ -374,7 +375,7 @@ export default function DocumentsPage() {
                         <p>{format(new Date(doc.expiryDate), 'dd.MM.yyyy')}</p>
                         {doc.status === 'expiring' && (
                           <p className="text-xs text-yellow-600">
-                            za {getDaysUntilExpiry(doc.expiryDate)} dni
+                            {t('table.daysLeft', { days: getDaysUntilExpiry(doc.expiryDate) })}
                           </p>
                         )}
                       </div>
@@ -393,24 +394,24 @@ export default function DocumentsPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <Eye className="w-4 h-4 mr-2" />
-                          Podgląd
+                          {t('actions.preview')}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Download className="w-4 h-4 mr-2" />
-                          Pobierz
+                          {t('actions.download')}
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <ExternalLink className="w-4 h-4 mr-2" />
-                          Udostępnij
+                          {t('actions.share')}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>
                           <Edit className="w-4 h-4 mr-2" />
-                          Edytuj
+                          {t('actions.edit')}
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">
                           <Trash2 className="w-4 h-4 mr-2" />
-                          Usuń
+                          {t('actions.delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -426,9 +427,9 @@ export default function DocumentsPage() {
       <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Dodaj nowy dokument</DialogTitle>
+            <DialogTitle>{t('upload.title')}</DialogTitle>
             <DialogDescription>
-              Prześlij dokument i uzupełnij informacje
+              {t('upload.description')}
             </DialogDescription>
           </DialogHeader>
           
@@ -442,28 +443,28 @@ export default function DocumentsPage() {
               </div>
 
               <div>
-                <Label>Nazwa dokumentu</Label>
-                <Input placeholder="np. Licencja instruktora" className="mt-2" />
+                <Label>{t('upload.documentName')}</Label>
+                <Input placeholder={t('upload.documentNamePlaceholder')} className="mt-2" />
               </div>
 
               <div>
-                <Label>Typ dokumentu</Label>
+                <Label>{t('upload.documentType')}</Label>
                 <select className="w-full p-2 border rounded-lg mt-2">
-                  <option>Licencja</option>
-                  <option>Certyfikat</option>
-                  <option>Zaświadczenie</option>
-                  <option>Umowa</option>
-                  <option>Inne</option>
+                  <option>{t('upload.types.license')}</option>
+                  <option>{t('upload.types.certificate')}</option>
+                  <option>{t('upload.types.medical')}</option>
+                  <option>{t('upload.types.contract')}</option>
+                  <option>{t('upload.types.other')}</option>
                 </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Data wydania</Label>
+                  <Label>{t('upload.issueDate')}</Label>
                   <Input type="date" className="mt-2" />
                 </div>
                 <div>
-                  <Label>Data ważności</Label>
+                  <Label>{t('upload.expiryDate')}</Label>
                   <Input type="date" className="mt-2" />
                 </div>
               </div>
@@ -472,10 +473,10 @@ export default function DocumentsPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
-              Anuluj
+              {t('upload.cancel')}
             </Button>
             <Button onClick={() => setShowUploadDialog(false)}>
-              Zapisz dokument
+              {t('upload.save')}
             </Button>
           </DialogFooter>
         </DialogContent>

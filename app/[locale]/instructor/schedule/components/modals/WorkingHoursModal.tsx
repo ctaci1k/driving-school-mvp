@@ -1,9 +1,8 @@
 // app/[locale]/instructor/schedule/components/modals/WorkingHoursModal.tsx
-// Modal do konfiguracji godzin pracy instruktora
-
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { X, Plus, Trash2, Copy, Clock, Calendar, Save, AlertCircle, Check, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { WorkingHours, TimeInterval } from '../../types/schedule.types'
@@ -16,6 +15,7 @@ interface WorkingHoursModalProps {
   onSave?: (workingHours: Record<string, WorkingHours>) => void
 }
 
+// Mock data - залишаємо польською
 const DAYS_OF_WEEK = [
   { key: 'poniedziałek', label: 'Poniedziałek' },
   { key: 'wtorek', label: 'Wtorek' },
@@ -42,7 +42,7 @@ const BREAK_DURATIONS = [
   { value: 60, label: '1 godzina' }
 ]
 
-// 🆕 Mapa polskich dni tygodnia na daty
+// Mapa polskich dni tygodnia na daty
 const getDayDate = (dayKey: string, weeksAhead: number = 0): Date => {
   const dayMap: Record<string, number> = {
     'poniedziałek': 1,
@@ -72,6 +72,7 @@ export default function WorkingHoursModal({
   onClose,
   onSave
 }: WorkingHoursModalProps) {
+  const t = useTranslations('instructor.schedule.modals.workingHours')
   const { 
     workingHours: globalWorkingHours, 
     updateWorkingHours,
@@ -95,7 +96,7 @@ export default function WorkingHoursModal({
     }
   }, [isOpen, globalWorkingHours])
 
-  // 🆕 Sprawdzanie które dni mają rezerwacje
+  // Sprawdzanie które dni mają rezerwacje
   const checkBlockedDays = () => {
     const blocked: string[] = []
     
@@ -114,7 +115,7 @@ export default function WorkingHoursModal({
     setBlockedDays(blocked)
   }
 
-  // 🆕 Sprawdzanie czy są zmiany w zablokowanych dniach
+  // Sprawdzanie czy są zmiany w zablokowanych dniach
   const hasChangesInBlockedDays = (): boolean => {
     return blockedDays.some(dayKey => {
       const original = globalWorkingHours[dayKey]
@@ -141,11 +142,11 @@ export default function WorkingHoursModal({
     const endMinutes = endH * 60 + endM
     
     if (startMinutes >= endMinutes) {
-      return 'Czas zakończenia musi być późniejszy niż czas rozpoczęcia'
+      return t('validation.endAfterStart')
     }
     
     if (startMinutes < 6 * 60 || endMinutes > 22 * 60) {
-      return 'Godziny pracy muszą być między 6:00 a 22:00'
+      return t('validation.workingHours')
     }
     
     return null
@@ -213,7 +214,7 @@ export default function WorkingHoursModal({
     }
     
     if (checkIntervalOverlap(currentHours.intervals, newInterval)) {
-      setValidationErrors(prev => ({ ...prev, [day]: 'Interwały nie mogą się nakładać' }))
+      setValidationErrors(prev => ({ ...prev, [day]: t('validation.overlapping') }))
       return
     }
     
@@ -244,7 +245,7 @@ export default function WorkingHoursModal({
     }
     
     if (checkIntervalOverlap(newIntervals, newIntervals[index], index)) {
-      setValidationErrors(prev => ({ ...prev, [`${day}-${index}`]: 'Interwały nie mogą się nakładać' }))
+      setValidationErrors(prev => ({ ...prev, [`${day}-${index}`]: t('validation.overlapping') }))
       return
     }
     
@@ -272,24 +273,24 @@ export default function WorkingHoursModal({
     
     if (blockedDays.length > 0) {
       toast({
-        title: "Skopiowano z ograniczeniami",
-        description: `Pominięto ${blockedDays.length} dni z rezerwacjami`,
+        title: t('success.copiedLimited'),
+        description: t('success.skippedDays', { count: blockedDays.length }),
       })
     } else {
       toast({
-        title: "Sukces",
-        description: "Godziny zostały skopiowane do pozostałych dni",
+        title: t('success.copiedAll'),
+        description: t('success.copiedAll'),
       })
     }
   }
 
-  // 🔄 ZAKTUALIZOWANA FUNKCJA ZAPISYWANIA
+  // Funkcja zapisywania
   const handleSave = async () => {
     // Walidacja
     if (Object.keys(validationErrors).length > 0) {
       toast({
-        title: "Błąd",
-        description: "Popraw błędy walidacji przed zapisaniem",
+        title: t('errors.validationErrors'),
+        description: t('errors.validationErrors'),
         variant: "destructive",
       })
       return
@@ -304,7 +305,7 @@ export default function WorkingHoursModal({
     await performSave()
   }
 
-  // 🆕 Funkcja wykonująca zapis
+  // Funkcja wykonująca zapis
   const performSave = async () => {
     setIsSaving(true)
     
@@ -334,24 +335,24 @@ export default function WorkingHoursModal({
       // Pokaż podsumowanie
       if (skippedDays.length > 0) {
         toast({
-          title: "Zapisano z ograniczeniami",
+          title: t('success.savedWithLimitations'),
           description: (
             <div>
-              <p>Zaktualizowano godziny pracy.</p>
-              <p className="mt-2 font-semibold">Pominięto dni z rezerwacjami:</p>
+              <p>{t('success.saved')}</p>
+              <p className="mt-2 font-semibold">{t('success.skippedDaysDetail')}</p>
               <ul className="mt-1 text-sm">
                 {skippedDays.map((day, idx) => (
                   <li key={idx}>• {day}</li>
                 ))}
               </ul>
-              <p className="mt-2 text-sm">Sloty zostaną wygenerowane automatycznie dla dni bez rezerwacji.</p>
+              <p className="mt-2 text-sm">{t('success.slotsNote')}</p>
             </div>
           ),
         })
       } else {
         toast({
-          title: "Sukces",
-          description: "Godziny pracy zostały zaktualizowane. Sloty zostaną wygenerowane automatycznie.",
+          title: t('success.saved'),
+          description: t('success.saved'),
         })
       }
       
@@ -364,8 +365,8 @@ export default function WorkingHoursModal({
       onClose()
     } catch (error) {
       toast({
-        title: "Błąd",
-        description: "Nie udało się zapisać godzin pracy",
+        title: t('errors.saveFailed'),
+        description: t('errors.saveFailed'),
         variant: "destructive",
       })
     } finally {
@@ -374,16 +375,16 @@ export default function WorkingHoursModal({
     }
   }
 
-  // 🆕 Modal ostrzeżenia o rezerwacjach
+  // Modal ostrzeżenia o rezerwacjach
   const WarningModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60]">
       <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
         <div className="flex items-start gap-3">
           <AlertTriangle className="w-6 h-6 text-amber-500 flex-shrink-0 mt-0.5" />
           <div>
-            <h3 className="font-semibold text-lg mb-2">Uwaga: Dni z rezerwacjami</h3>
+            <h3 className="font-semibold text-lg mb-2">{t('warnings.blockedDays.title')}</h3>
             <p className="text-gray-600 mb-4">
-              Następujące dni mają zarezerwowane lekcje i ich godziny pracy nie zostaną zmienione:
+              {t('warnings.blockedDays.description')}
             </p>
             <ul className="space-y-1 mb-4">
               {blockedDays.map(dayKey => {
@@ -398,27 +399,26 @@ export default function WorkingHoursModal({
                   <li key={dayKey} className="flex items-center gap-2 text-sm">
                     <span className="w-2 h-2 bg-amber-400 rounded-full" />
                     <span className="font-medium">{day?.label}</span>
-                    <span className="text-gray-500">({daySlots} rezerwacji)</span>
+                    <span className="text-gray-500">({t('warnings.blockedDays.reservations', { count: daySlots })})</span>
                   </li>
                 )
               })}
             </ul>
             <p className="text-sm text-gray-500 mb-6">
-              Zmiany zostaną zastosowane tylko dla dni bez rezerwacji. 
-              Czy chcesz kontynuować?
+              {t('warnings.blockedDays.continueMessage')}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowWarning(false)}
                 className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50"
               >
-                Anuluj
+                {t('buttons.cancel')}
               </button>
               <button
                 onClick={performSave}
                 className="flex-1 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600"
               >
-                Kontynuuj
+                {t('warnings.blockedDays.continue')}
               </button>
             </div>
           </div>
@@ -437,6 +437,7 @@ export default function WorkingHoursModal({
   }
 
   const isDayBlocked = blockedDays.includes(activeDay)
+  const dayLabel = DAYS_OF_WEEK.find(d => d.key === activeDay)?.label || activeDay
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -446,9 +447,9 @@ export default function WorkingHoursModal({
         {/* Nagłówek */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
           <div>
-            <h2 className="text-xl font-semibold">Godziny pracy</h2>
+            <h2 className="text-xl font-semibold">{t('title')}</h2>
             <p className="text-sm text-gray-500 mt-1">
-              Skonfiguruj swoje godziny dostępności
+              {t('subtitle')}
             </p>
           </div>
           <button
@@ -477,12 +478,12 @@ export default function WorkingHoursModal({
                   <div className="font-medium">{day.label}</div>
                   {workingHours[day.key]?.enabled && (
                     <div className="text-xs text-gray-500 mt-1">
-                      {workingHours[day.key]?.intervals.length || 0} interwałów
+                      {t('intervals.count', { count: workingHours[day.key]?.intervals.length || 0 })}
                     </div>
                   )}
                 </div>
                 {blockedDays.includes(day.key) && (
-                  <span title="Dzień ma rezerwacje">
+                  <span title={t('warnings.blockedDay.title')}>
                     <AlertCircle className="w-4 h-4 text-amber-500" />
                   </span>
                 )}
@@ -497,10 +498,10 @@ export default function WorkingHoursModal({
                 <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm">
                   <p className="font-medium text-amber-800">
-                    Ten dzień ma zarezerwowane lekcje
+                    {t('warnings.blockedDay.title')}
                   </p>
                   <p className="text-amber-600 mt-1">
-                    Godziny pracy dla tego dnia nie mogą być zmienione, dopóki istnieją rezerwacje.
+                    {t('warnings.blockedDay.description')}
                   </p>
                 </div>
               </div>
@@ -517,7 +518,7 @@ export default function WorkingHoursModal({
                     className="w-5 h-5 rounded text-blue-600"
                     disabled={isDayBlocked}
                   />
-                  <span className="font-medium">Pracuję w {DAYS_OF_WEEK.find(d => d.key === activeDay)?.label.toLowerCase()}</span>
+                  <span className="font-medium">{t('settings.workOnDay', { day: dayLabel.toLowerCase() })}</span>
                 </label>
                 
                 {currentDayHours.enabled && !isDayBlocked && (
@@ -526,7 +527,7 @@ export default function WorkingHoursModal({
                     className="flex items-center gap-2 px-3 py-1.5 text-sm border rounded-lg hover:bg-gray-50"
                   >
                     <Copy className="w-4 h-4" />
-                    Kopiuj do innych dni
+                    {t('settings.copyToOthers')}
                   </button>
                 )}
               </div>
@@ -536,22 +537,22 @@ export default function WorkingHoursModal({
                 <>
                   <div className="space-y-4 mb-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium">Interwały czasowe</h3>
+                      <h3 className="font-medium">{t('intervals.title')}</h3>
                       <button
                         onClick={() => addInterval(activeDay)}
                         className="flex items-center gap-2 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         disabled={isDayBlocked}
                       >
                         <Plus className="w-4 h-4" />
-                        Dodaj interwał
+                        {t('intervals.add')}
                       </button>
                     </div>
 
                     {currentDayHours.intervals.length === 0 ? (
                       <div className="text-center py-8 text-gray-500">
                         <Clock className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                        <p>Brak interwałów</p>
-                        <p className="text-sm mt-1">Dodaj interwał aby określić godziny pracy</p>
+                        <p>{t('intervals.empty')}</p>
+                        <p className="text-sm mt-1">{t('intervals.emptyDescription')}</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -596,7 +597,7 @@ export default function WorkingHoursModal({
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Domyślna długość zajęć
+                        {t('settings.defaultLessonDuration')}
                       </label>
                       <select
                         value={currentDayHours.slotDuration}
@@ -608,7 +609,7 @@ export default function WorkingHoursModal({
                       >
                         {SLOT_DURATIONS.map(duration => (
                           <option key={duration.value} value={duration.value}>
-                            {duration.label}
+                            {t(`durations.slot.${duration.value}`)}
                           </option>
                         ))}
                       </select>
@@ -616,7 +617,7 @@ export default function WorkingHoursModal({
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Przerwa między zajęciami
+                        {t('settings.breakBetweenLessons')}
                       </label>
                       <select
                         value={currentDayHours.breakDuration}
@@ -628,7 +629,7 @@ export default function WorkingHoursModal({
                       >
                         {BREAK_DURATIONS.map(duration => (
                           <option key={duration.value} value={duration.value}>
-                            {duration.label}
+                            {t(`durations.break.${duration.value}`)}
                           </option>
                         ))}
                       </select>
@@ -638,7 +639,7 @@ export default function WorkingHoursModal({
                   {/* Podgląd slotów */}
                   <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                     <h4 className="text-sm font-medium text-blue-900 mb-2">
-                      Podgląd wygenerowanych slotów
+                      {t('preview.title')}
                     </h4>
                     <div className="text-sm text-blue-700">
                       {currentDayHours.intervals.map((interval, idx) => {
@@ -649,8 +650,13 @@ export default function WorkingHoursModal({
                         
                         return (
                           <div key={idx}>
-                            {interval.start} - {interval.end}: {slotsCount} slotów po {currentDayHours.slotDuration} min
-                            {currentDayHours.breakDuration > 0 && ` (z ${currentDayHours.breakDuration} min przerwą)`}
+                            {t('preview.format', {
+                              start: interval.start,
+                              end: interval.end,
+                              count: slotsCount,
+                              duration: currentDayHours.slotDuration
+                            })}
+                            {currentDayHours.breakDuration > 0 && ` ${t('preview.withBreak', { break: currentDayHours.breakDuration })}`}
                           </div>
                         )
                       })}
@@ -668,7 +674,7 @@ export default function WorkingHoursModal({
             {blockedDays.length > 0 && (
               <span className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-500" />
-                {blockedDays.length} dni z rezerwacjami
+                {t('warnings.daysWithReservations', { count: blockedDays.length })}
               </span>
             )}
           </div>
@@ -678,7 +684,7 @@ export default function WorkingHoursModal({
               onClick={onClose}
               className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
             >
-              Anuluj
+              {t('buttons.cancel')}
             </button>
             
             <button
@@ -689,12 +695,12 @@ export default function WorkingHoursModal({
               {isSaving ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                  Zapisywanie...
+                  {t('buttons.saving')}
                 </>
               ) : (
                 <>
                   <Save className="w-4 h-4" />
-                  Zapisz zmiany
+                  {t('buttons.save')}
                 </>
               )}
             </button>

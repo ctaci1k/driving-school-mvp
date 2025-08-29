@@ -4,6 +4,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   HelpCircle,
   MessageSquare,
@@ -45,22 +46,23 @@ import { toast } from '@/components/ui/use-toast';
 
 interface QuickAction {
   icon: React.ElementType;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   action: string;
   color: string;
 }
 
 interface ContactMethod {
   icon: React.ElementType;
-  title: string;
-  value: string;
-  description: string;
+  titleKey: string;
+  valueKey: string;
+  descriptionKey: string;
   available: boolean;
 }
 
 export default function StudentSupportPage() {
   const router = useRouter();
+  const t = useTranslations('student.support');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [message, setMessage] = useState('');
@@ -69,29 +71,29 @@ export default function StudentSupportPage() {
   const quickActions: QuickAction[] = [
     {
       icon: FileText,
-      title: 'Moje zgłoszenia',
-      description: 'Zobacz status swoich zgłoszeń',
+      titleKey: 'quickActions.myTickets.title',
+      descriptionKey: 'quickActions.myTickets.description',
       action: '/student/support/tickets',
       color: 'blue'
     },
     {
       icon: HelpCircle,
-      title: 'FAQ',
-      description: 'Najczęściej zadawane pytania',
+      titleKey: 'quickActions.faq.title',
+      descriptionKey: 'quickActions.faq.description',
       action: '/student/support/faq',
       color: 'purple'
     },
     {
       icon: BookOpen,
-      title: 'Baza wiedzy',
-      description: 'Poradniki i instrukcje',
+      titleKey: 'quickActions.knowledgeBase.title',
+      descriptionKey: 'quickActions.knowledgeBase.description',
       action: '/student/support/knowledge',
       color: 'green'
     },
     {
       icon: MessageSquare,
-      title: 'Czat na żywo',
-      description: 'Porozmawiaj z konsultantem',
+      titleKey: 'quickActions.liveChat.title',
+      descriptionKey: 'quickActions.liveChat.description',
       action: 'chat',
       color: 'orange'
     }
@@ -100,57 +102,57 @@ export default function StudentSupportPage() {
   const contactMethods: ContactMethod[] = [
     {
       icon: Phone,
-      title: 'Telefon',
-      value: '+48 123 456 789',
-      description: 'Pon-Pt 8:00-20:00, Sob 9:00-15:00',
+      titleKey: 'contact.phone.title',
+      valueKey: 'contact.phone.value',
+      descriptionKey: 'contact.phone.description',
       available: true
     },
     {
       icon: Mail,
-      title: 'Email',
-      value: 'pomoc@szkola-jazdy.pl',
-      description: 'Odpowiadamy w ciągu 24h',
+      titleKey: 'contact.email.title',
+      valueKey: 'contact.email.value',
+      descriptionKey: 'contact.email.description',
       available: true
     },
     {
       icon: MessageSquare,
-      title: 'Czat',
-      value: 'Dostępny',
-      description: 'Pon-Pt 8:00-20:00',
+      titleKey: 'contact.chat.title',
+      valueKey: 'contact.chat.value',
+      descriptionKey: 'contact.chat.description',
       available: true
     },
     {
       icon: Headphones,
-      title: 'WhatsApp',
-      value: '+48 123 456 789',
-      description: 'Szybkie odpowiedzi',
+      titleKey: 'contact.whatsapp.title',
+      valueKey: 'contact.whatsapp.value',
+      descriptionKey: 'contact.whatsapp.description',
       available: true
     }
   ];
 
   const popularTopics = [
-    { icon: Calendar, label: 'Rezerwacje', count: 156 },
-    { icon: CreditCard, label: 'Płatności', count: 89 },
-    { icon: Car, label: 'Pojazdy', count: 67 },
-    { icon: Users, label: 'Instruktorzy', count: 45 },
-    { icon: Shield, label: 'Bezpieczeństwo', count: 34 },
-    { icon: Settings, label: 'Konto', count: 28 }
+    { icon: Calendar, labelKey: 'popularTopics.bookings', count: 156 },
+    { icon: CreditCard, labelKey: 'popularTopics.payments', count: 89 },
+    { icon: Car, labelKey: 'popularTopics.vehicles', count: 67 },
+    { icon: Users, labelKey: 'popularTopics.instructors', count: 45 },
+    { icon: Shield, labelKey: 'popularTopics.safety', count: 34 },
+    { icon: Settings, labelKey: 'popularTopics.account', count: 28 }
   ];
 
   const categories = [
-    { value: 'booking', label: 'Problem z rezerwacją' },
-    { value: 'payment', label: 'Problem z płatnością' },
-    { value: 'instructor', label: 'Problem z instruktorem' },
-    { value: 'technical', label: 'Problem techniczny' },
-    { value: 'account', label: 'Problem z kontem' },
-    { value: 'other', label: 'Inne' }
+    { value: 'booking', labelKey: 'quickForm.categories.booking' },
+    { value: 'payment', labelKey: 'quickForm.categories.payment' },
+    { value: 'instructor', labelKey: 'quickForm.categories.instructor' },
+    { value: 'technical', labelKey: 'quickForm.categories.technical' },
+    { value: 'account', labelKey: 'quickForm.categories.account' },
+    { value: 'other', labelKey: 'quickForm.categories.other' }
   ];
 
   const handleQuickSubmit = async () => {
     if (!message.trim()) {
       toast({
-        title: "Błąd",
-        description: "Wpisz swoją wiadomość",
+        title: t('toast.error'),
+        description: t('toast.enterMessage'),
         variant: "destructive"
       });
       return;
@@ -158,8 +160,8 @@ export default function StudentSupportPage() {
 
     if (!selectedCategory) {
       toast({
-        title: "Błąd",
-        description: "Wybierz kategorię problemu",
+        title: t('toast.error'),
+        description: t('toast.selectCategory'),
         variant: "destructive"
       });
       return;
@@ -175,8 +177,8 @@ export default function StudentSupportPage() {
     setSelectedCategory('');
     
     toast({
-      title: "Zgłoszenie wysłane",
-      description: "Otrzymasz odpowiedź w ciągu 24 godzin"
+      title: t('toast.ticketSent'),
+      description: t('toast.responseTime')
     });
     
     router.push('/student/support/tickets');
@@ -186,8 +188,8 @@ export default function StudentSupportPage() {
     if (action === 'chat') {
       // Open chat widget
       toast({
-        title: "Czat uruchomiony",
-        description: "Konsultant odpowie za chwilę"
+        title: t('toast.chatStarted'),
+        description: t('toast.consultantWillRespond')
       });
     } else {
       router.push(action);
@@ -198,9 +200,9 @@ export default function StudentSupportPage() {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-2">Centrum pomocy</h1>
+        <h1 className="text-3xl font-bold mb-2">{t('title')}</h1>
         <p className="text-muted-foreground">
-          Jak możemy Ci pomóc? Znajdź odpowiedzi lub skontaktuj się z nami
+          {t('subtitle')}
         </p>
       </div>
 
@@ -210,7 +212,7 @@ export default function StudentSupportPage() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
             <Input
-              placeholder="Szukaj pomocy... np. 'jak anulować lekcję'"
+              placeholder={t('search.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-12 text-lg"
@@ -240,9 +242,9 @@ export default function StudentSupportPage() {
                     <Icon className={`w-7 h-7 text-${action.color}-600`} />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{action.title}</h3>
+                    <h3 className="font-semibold">{t(action.titleKey)}</h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      {action.description}
+                      {t(action.descriptionKey)}
                     </p>
                   </div>
                 </div>
@@ -257,22 +259,22 @@ export default function StudentSupportPage() {
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Szybkie zgłoszenie</CardTitle>
+              <CardTitle>{t('quickForm.title')}</CardTitle>
               <CardDescription>
-                Opisz swój problem, a my skontaktujemy się z Tobą
+                {t('quickForm.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="category">Kategoria problemu</Label>
+                <Label htmlFor="category">{t('quickForm.categoryLabel')}</Label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                   <SelectTrigger id="category">
-                    <SelectValue placeholder="Wybierz kategorię" />
+                    <SelectValue placeholder={t('quickForm.categoryPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map(cat => (
                       <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
+                        {t(cat.labelKey)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -280,12 +282,12 @@ export default function StudentSupportPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="message">Opis problemu</Label>
+                <Label htmlFor="message">{t('quickForm.messageLabel')}</Label>
                 <Textarea
                   id="message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Opisz szczegółowo swój problem..."
+                  placeholder={t('quickForm.messagePlaceholder')}
                   rows={5}
                 />
               </div>
@@ -296,11 +298,11 @@ export default function StudentSupportPage() {
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  'Wysyłanie...'
+                  t('quickForm.submitting')
                 ) : (
                   <>
                     <Send className="w-4 h-4 mr-2" />
-                    Wyślij zgłoszenie
+                    {t('quickForm.submit')}
                   </>
                 )}
               </Button>
@@ -310,9 +312,9 @@ export default function StudentSupportPage() {
           {/* Popular Topics */}
           <Card>
             <CardHeader>
-              <CardTitle>Popularne tematy</CardTitle>
+              <CardTitle>{t('popularTopics.title')}</CardTitle>
               <CardDescription>
-                Najczęściej przeglądane kategorie pomocy
+                {t('popularTopics.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -324,10 +326,10 @@ export default function StudentSupportPage() {
                       key={index}
                       variant="outline"
                       className="justify-start"
-                      onClick={() => router.push(`/student/support/faq?category=${topic.label.toLowerCase()}`)}
+                      onClick={() => router.push(`/student/support/faq?category=${t(topic.labelKey).toLowerCase()}`)}
                     >
                       <Icon className="w-4 h-4 mr-2" />
-                      <span className="flex-1 text-left">{topic.label}</span>
+                      <span className="flex-1 text-left">{t(topic.labelKey)}</span>
                       <Badge variant="secondary" className="ml-2">
                         {topic.count}
                       </Badge>
@@ -343,9 +345,9 @@ export default function StudentSupportPage() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Kontakt</CardTitle>
+              <CardTitle>{t('contact.title')}</CardTitle>
               <CardDescription>
-                Wybierz preferowaną metodę kontaktu
+                {t('contact.description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -358,16 +360,16 @@ export default function StudentSupportPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium">{method.title}</p>
+                        <p className="font-medium">{t(method.titleKey)}</p>
                         {method.available && (
                           <Badge variant="outline" className="text-xs">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-1" />
-                            Dostępny
+                            {t('contact.available')}
                           </Badge>
                         )}
                       </div>
-                      <p className="text-sm font-medium text-primary">{method.value}</p>
-                      <p className="text-xs text-muted-foreground">{method.description}</p>
+                      <p className="text-sm font-medium text-primary">{t(method.valueKey)}</p>
+                      <p className="text-xs text-muted-foreground">{t(method.descriptionKey)}</p>
                     </div>
                   </div>
                 );
@@ -384,14 +386,14 @@ export default function StudentSupportPage() {
                   <AvatarFallback>SP</AvatarFallback>
                 </Avatar>
                 <div>
-                  <h3 className="font-semibold">Potrzebujesz pomocy?</h3>
+                  <h3 className="font-semibold">{t('supportAgent.title')}</h3>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Nasz zespół jest dostępny 7 dni w tygodniu
+                    {t('supportAgent.description')}
                   </p>
                 </div>
                 <Button className="w-full">
                   <MessageSquare className="w-4 h-4 mr-2" />
-                  Rozpocznij czat
+                  {t('supportAgent.startChat')}
                 </Button>
               </div>
             </CardContent>
@@ -401,8 +403,8 @@ export default function StudentSupportPage() {
           <Alert className="border-orange-200 bg-orange-50">
             <AlertCircle className="h-4 w-4 text-orange-600" />
             <AlertDescription>
-              <strong>Pilny problem?</strong><br />
-              Zadzwoń: <a href="tel:+48123456789" className="font-semibold text-orange-600">+48 123 456 789</a>
+              <strong>{t('emergency.title')}</strong><br />
+              {t('emergency.call')}: <a href="tel:+48123456789" className="font-semibold text-orange-600">+48 123 456 789</a>
             </AlertDescription>
           </Alert>
         </div>
