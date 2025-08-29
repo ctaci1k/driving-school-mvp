@@ -1,0 +1,2828 @@
+{
+    "dashboard": {
+        "greeting": "Dzień dobry, {name}! 👋",
+        "dateFormat": "{date}",
+        "stats": {
+            "today": "Dzisiaj",
+            "lessons": "Lekcji",
+            "rating": "Ocena",
+            "thisWeek": "Ten tydzień",
+            "currency": "{amount} UAH",
+            "fromYesterday": "+{amount} UAH od wczoraj",
+            "hours": "{count} godz.",
+            "lessonsCount": "{count} lekcji"
+        },
+        "timeline": {
+            "title": "Harmonogram na dzisiaj",
+            "viewAll": "Zobacz wszystko",
+            "inProgress": "W trakcie",
+            "for": "Za {time}",
+            "currentTime": "{time}"
+        },
+        "lesson": {
+            "practiceCity": "Praktyka - miasto",
+            "practiceBeginner": "Praktyka - początkujący",
+            "examPrep": "Przygotowanie do egzaminu",
+            "practiceRoute": "Praktyka - trasa",
+            "nightDriving": "Praktyka - jazda nocą",
+            "workedOnParking": "Pracowaliśmy nad parkowaniem",
+            "firstLesson": "Pierwsza lekcja, podstawowe umiejętności",
+            "readyForExam": "Gotowy do egzaminu"
+        },
+        "buttons": {
+            "call": "Zadzwoń",
+            "route": "Trasa",
+            "track": "Śledź",
+            "finish": "Zakończ",
+            "viewDetails": "Wyświetl szczegóły"
+        },
+        "earnings": {
+            "title": "Zarobki za tydzień",
+            "total": "Razem",
+            "averagePerDay": "Średnio/dzień",
+            "bonuses": "Bonusy",
+            "bonus": "+{amount} UAH"
+        },
+        "students": {
+            "title": "Postęp kursantów",
+            "allStudents": "Wszyscy kursanci",
+            "lessonsCount": "{count} lekcji",
+            "exam": "Egzamin: {date}"
+        },
+        "achievements": {
+            "100Lessons": "100 lekcji",
+            "5StarsWeek": "5 gwiazdek tydzień",
+            "bestInstructor": "Najlepszy instruktor",
+            "daysAgo": "{days} dni temu",
+            "yesterday": "Wczoraj",
+            "weekAgo": "Tydzień temu"
+        },
+        "days": {
+            "mon": "Pon",
+            "tue": "Wt",
+            "wed": "Śr",
+            "thu": "Cz",
+            "fri": "Pt",
+            "sat": "Sob",
+            "sun": "Nd"
+        },
+        "time": {
+            "2h30min": "2g 30min",
+            "4h30min": "4g 30min",
+            "now": "Teraz"
+        }
+    },
+    "earnings": {
+        "details": {
+            "title": "Szczegóły zarobków",
+            "subtitle": "Szczegółowe informacje o dochodach i wydatkach",
+            "period": {
+                "week": "Tydzień",
+                "month": "Miesiąc",
+                "quarter": "Kwartał",
+                "year": "Rok",
+                "february": "Luty 2024"
+            },
+            "summary": {
+                "grossIncome": "Dochód brutto",
+                "netIncome": "Dochód netto",
+                "deductions": "Potrącenia",
+                "bonuses": "Bonusy"
+            },
+            "tabs": {
+                "breakdown": "Podział",
+                "bonuses": "Bonusy",
+                "deductions": "Potrącenia",
+                "byStudents": "Wg kursantów",
+                "analytics": "Analityka"
+            },
+            "structure": {
+                "title": "Struktura dochodu",
+                "baseIncome": "Dochód podstawowy ({lessons} lekcji)",
+                "overtime": "Godziny nadliczbowe",
+                "bonuses": "Bonusy",
+                "additionalIncome": "Dodatkowy dochód",
+                "totalGross": "Razem (brutto):"
+            },
+            "lessonTypes": {
+                "title": "Wg typu lekcji",
+                "list": "Lista wg typów",
+                "practiceCity": "Praktyka - miasto",
+                "practiceRoute": "Praktyka - trasa",
+                "examPrep": "Przygotowanie do egzaminu",
+                "practiceArea": "Praktyka - plac manewrowy",
+                "nightDriving": "Jazda nocą",
+                "lessons": "{count} lekcji"
+            },
+            "bonusDetails": {
+                "title": "Szczegóły bonusów",
+                "quality": "Bonus za jakość",
+                "qualityDesc": "Ocena 4.9+ w ciągu miesiąca",
+                "punctuality": "Bonus za punktualność",
+                "punctualityDesc": "100% punktualnych zajęć",
+                "newStudents": "Bonus za nowych kursantów",
+                "newStudentsDesc": "{count} nowych kursantów",
+                "examSuccess": "Bonus za zdane egzaminy",
+                "examSuccessDesc": "{count} kursantów zdało egzamin",
+                "received": "Otrzymano",
+                "pending": "W toku",
+                "info": "Bonusy naliczane są automatycznie na koniec miesiąca po spełnieniu warunków"
+            },
+            "deductionDetails": {
+                "title": "Potrącenia i podatki",
+                "platformFee": "Prowizja platformy",
+                "platformFeeDesc": "6% od dochodu brutto",
+                "taxes": "Podatki",
+                "taxesDesc": "PIT 5% + składka społeczna 1.5%",
+                "insurance": "Ubezpieczenie",
+                "insuranceDesc": "Dodatkowe ubezpieczenie",
+                "totalDeductions": "Łączne potrącenia:"
+            },
+            "taxInfo": {
+                "title": "Informacje podatkowe",
+                "yearlyIncome": "Dochód roczny (prognoza)",
+                "yearlyTax": "Podatki za rok",
+                "quarter": "Kwartał",
+                "due": "do {date}",
+                "paid": "Zapłacono {amount} UAH",
+                "pending": "W toku"
+            },
+            "studentEarnings": {
+                "title": "Zarobki wg kursantów",
+                "headers": {
+                    "student": "Kursant",
+                    "lessons": "Lekcji",
+                    "amount": "Kwota",
+                    "averagePrice": "Średnia cena",
+                    "status": "Status"
+                },
+                "active": "Aktywny"
+            },
+            "analytics": {
+                "title": "Dynamika zarobków",
+                "daily": "Dzień",
+                "amount": "Kwota"
+            },
+            "buttons": {
+                "export": "Eksportuj"
+            },
+            "currency": "{amount} UAH"
+        },
+        "history": {
+            "title": "Historia wypłat",
+            "subtitle": "Przegląd wszystkich wypłat i transakcji",
+            "buttons": {
+                "filter": "Filtr",
+                "export": "Eksportuj",
+                "receipt": "Potwierdzenie"
+            },
+            "stats": {
+                "totalEarned": "Łącznie zarobiono",
+                "thisYear": "Ten rok",
+                "lastMonth": "Ostatni miesiąc",
+                "averageMonth": "Średnio/miesiąc"
+            },
+            "tabs": {
+                "payments": "Wypłaty",
+                "transactions": "Transakcje"
+            },
+            "search": {
+                "placeholder": "Szukaj wg okresu lub numeru..."
+            },
+            "periods": {
+                "all": "Cały czas",
+                "year": "Ten rok",
+                "quarter": "Kwartał",
+                "month": "Miesiąc",
+                "january": "Styczeń {year}",
+                "december": "Grudzień {year}",
+                "november": "Listopad {year}",
+                "october": "Październik {year}"
+            },
+            "payments": {
+                "headers": {
+                    "date": "Data",
+                    "period": "Okres",
+                    "amount": "Kwota",
+                    "lessons": "Lekcje",
+                    "bonuses": "Premie",
+                    "deductions": "Potrącenia",
+                    "toPay": "Do wypłaty",
+                    "status": "Status",
+                    "actions": "Działania"
+                },
+                "method": "Przelew bankowy",
+                "status": {
+                    "completed": "Wypłacono",
+                    "pending": "W toku",
+                    "cancelled": "Anulowano"
+                },
+                "pagination": "Wyświetlono {from}-{to} z {total} pozycji"
+            },
+            "transactions": {
+                "headers": {
+                    "date": "Data",
+                    "type": "Typ",
+                    "description": "Opis",
+                    "amount": "Kwota",
+                    "status": "Status"
+                },
+                "types": {
+                    "lesson": "Lekcja",
+                    "bonus": "Premia",
+                    "deduction": "Potrącenie",
+                    "other": "Inne"
+                },
+                "descriptions": {
+                    "lesson": "Lekcja - {student}",
+                    "qualityBonus": "Premia za jakość",
+                    "platformFee": "Prowizja platformy"
+                }
+            },
+            "currency": "{amount} UAH"
+        },
+        "main": {
+            "title": "Moje zarobki",
+            "subtitle": "Statystyki finansowe i wypłaty",
+            "periods": {
+                "week": "Tydzień",
+                "month": "Miesiąc",
+                "quarter": "Kwartał",
+                "year": "Rok"
+            },
+            "buttons": {
+                "report": "Raport",
+                "filter": "Filtr",
+                "receipt": "Potwierdzenie"
+            },
+            "cards": {
+                "thisMonth": "Ten miesiąc",
+                "netIncome": "Dochód netto",
+                "lessons": "Lekcje",
+                "bonuses": "Bonusy",
+                "hours": "{hours} godzin",
+                "fromPrevious": "{value}% w porównaniu do poprzedniego",
+                "afterCommission": "Po prowizji {percent}%",
+                "achievements": "+{count} osiągnięć"
+            },
+            "goals": {
+                "title": "Cele i osiągnięcia",
+                "monthly": "Cel miesięczny",
+                "quarterly": "Cel kwartalny",
+                "yearly": "Cel roczny",
+                "achieved": "Cel osiągnięty!",
+                "amount": "{current} UAH / {target} UAH"
+            },
+            "tabs": {
+                "overview": "Przegląd",
+                "details": "Szczegóły",
+                "bonuses": "Bonusy",
+                "payouts": "Wypłaty",
+                "analytics": "Analityka"
+            },
+            "charts": {
+                "dailyEarnings": "Dzienne zarobki",
+                "monthlyComparison": "Porównanie miesięczne",
+                "byLessonType": "Zarobki wg typu lekcji",
+                "february": "Luty {year}",
+                "months": {
+                    "november": "Listopad",
+                    "december": "Grudzień",
+                    "january": "Styczeń",
+                    "february": "Luty"
+                }
+            },
+            "lessonTypes": {
+                "practiceCity": "Praktyka - miasto",
+                "practiceRoute": "Praktyka - trasa",
+                "examPrep": "Przygotowanie do egzaminu",
+                "practiceArea": "Praktyka - plac manewrowy"
+            },
+            "transactions": {
+                "title": "Szczegóły transakcji",
+                "headers": {
+                    "date": "Data",
+                    "student": "Uczeń",
+                    "type": "Typ",
+                    "duration": "Czas trwania",
+                    "rate": "Stawka",
+                    "amount": "Kwota",
+                    "commission": "Prowizja",
+                    "net": "Netto",
+                    "status": "Status"
+                },
+                "status": {
+                    "paid": "Zapłacono",
+                    "pending": "W toku"
+                },
+                "minutes": "{min} min"
+            },
+            "bonusSection": {
+                "active": "Aktywne bonusy",
+                "opportunities": "Możliwe bonusy",
+                "description": "Spełnij warunki, aby otrzymać dodatkowe bonusy",
+                "newStudents": "Bonus za nowych uczniów",
+                "newStudentsDesc": "{count} nowych uczniów w lutym",
+                "quality": "Bonus za jakość",
+                "qualityDesc": "Ocena 4.9+ w ciągu miesiąca",
+                "productivity": "Bonus za produktywność",
+                "productivityDesc": "Ponad 60 lekcji w miesiącu",
+                "lessons80": "Bonus za 80 lekcji",
+                "lessons80Progress": "{current} z {target} lekcji",
+                "exams5": "Bonus za 5 zdanych egzaminów",
+                "exams5Progress": "{current} z {target} uczniów zdało",
+                "received": "Otrzymano",
+                "pending": "W toku",
+                "until": "Do {date}"
+            },
+            "payouts": {
+                "next": "Następna wypłata",
+                "plannedDate": "Planowana data",
+                "amountToPay": "Kwota do wypłaty",
+                "method": "Metoda wypłaty",
+                "bankTransfer": "Przelew bankowy",
+                "bank": "Bank",
+                "account": "Konto",
+                "history": "Historia wypłat",
+                "period": "Okres",
+                "january2024": "Styczeń 2024",
+                "december2023": "Grudzień 2023",
+                "status": {
+                    "paid": "Wypłacono"
+                }
+            },
+            "analytics": {
+                "averageEarnings": "Średnie zarobki",
+                "perLesson": "Za lekcję:",
+                "perHour": "Za godzinę:",
+                "perDay": "Za dzień:",
+                "productivity": "Produktywność",
+                "lessonsPerDay": "Lekcji/dzień:",
+                "hoursPerDay": "Godzin/dzień:",
+                "utilization": "Wykorzystanie:",
+                "forecast": "Prognoza",
+                "endOfMonth": "Do końca miesiąca:",
+                "quarter": "Kwartał:",
+                "yearForecast": "Rok (prognoza):",
+                "insights": "Wnioski i rekomendacje",
+                "growthMessage": "Twoje zarobki wzrosły o {percent}% w porównaniu do poprzedniego miesiąca. Utrzymuj tempo!",
+                "goalMessage": "Prawie osiągnąłeś cel miesięczny! Zostało tylko {amount} UAH ({lessons} lekcji).",
+                "bestDaysMessage": "Najbardziej dochodowe dni: sobota i piątek. Rozważ zwiększenie liczby lekcji w te dni."
+            },
+            "currency": "{amount} UAH"
+        }
+    },
+    "lessons": {
+        "checkIn": {
+            "title": "Rozpoczęcie lekcji",
+            "subtitle": "Wykonaj wszystkie sprawdzenia przed rozpoczęciem",
+            "buttons": {
+                "cancel": "Anuluj",
+                "back": "Wstecz",
+                "next": "Dalej",
+                "startLesson": "Rozpocznij lekcję",
+                "starting": "Rozpoczynamy...",
+                "callStudent": "Zadzwoń do ucznia",
+                "message": "Wiadomość",
+                "takePhoto": "Zrób zdjęcie",
+                "addDamagePhotos": "Dodaj zdjęcia uszkodzeń"
+            },
+            "student": {
+                "progress": "Postęp",
+                "lessons": "Lekcji: {count}",
+                "category": "Kategoria"
+            },
+            "steps": {
+                "title": "Etapy weryfikacji",
+                "current": "Krok {current} z {total}",
+                "documents": {
+                    "title": "Weryfikacja dokumentów",
+                    "description": "Sprawdź dokumenty ucznia",
+                    "important": "Ważne",
+                    "importantText": "Przed rozpoczęciem lekcji sprawdź obecność i ważność wszystkich dokumentów",
+                    "required": "Wymagane",
+                    "studentPresent": "Uczeń obecny",
+                    "studentPresentDesc": "{name} dotarł na lekcję na czas",
+                    "studentLicense": "Prawo jazdy ucznia",
+                    "licenseNumber": "Numer prawa jazdy",
+                    "studentCard": "Karta ucznia szkoły jazdy",
+                    "studentCardDesc": "Do identyfikacji w systemie",
+                    "medicalCert": "Zaświadczenie lekarskie",
+                    "medicalCertDesc": "W razie potrzeby (pierwsza lekcja lub po chorobie)",
+                    "identityConfirmed": "Tożsamość ucznia potwierdzona",
+                    "identityConfirmedDesc": "Potwierdzam, że to {name}"
+                },
+                "vehicle": {
+                    "title": "Przegląd pojazdu",
+                    "description": "Przegląd zewnętrzny i wewnętrzny",
+                    "mileageStart": "Przebieg początkowy (km)",
+                    "lastMileage": "Ostatni: {mileage} km",
+                    "fuelLevel": "Poziom paliwa",
+                    "selectLevel": "Wybierz poziom",
+                    "fuelFull": "Pełny bak (100%)",
+                    "fuel3_4": "3/4 baku (75%)",
+                    "fuel1_2": "1/2 baku (50%)",
+                    "fuel1_4": "1/4 baku (25%)",
+                    "fuelReserve": "Rezerwa (<10%)",
+                    "exteriorCheck": "Przegląd zewnętrzny",
+                    "exteriorClean": "Nadwozie czyste, bez widocznych uszkodzeń",
+                    "describeDamages": "Opisz wykryte problemy lub uszkodzenia...",
+                    "lightsWorking": "Wszystkie światła i kierunkowskazy działają",
+                    "tiresOk": "Opony w normalnym stanie, ciśnienie wystarczające",
+                    "interiorCheck": "Przegląd wewnętrzny",
+                    "interiorClean": "Wnętrze czyste i schludne",
+                    "fluidsOk": "Poziom płynów (olej, chłodzący, spryskiwacz) w normie",
+                    "documentsPresent": "Dokumenty pojazdu obecne",
+                    "emergencyKitPresent": "Apteczka, gaśnica, trójkąt obecne",
+                    "issuesWarning": "Wykryte problemy zostaną przekazane mechanikowi po lekcji"
+                },
+                "safety": {
+                    "title": "Bezpieczeństwo",
+                    "description": "Weryfikacja systemów bezpieczeństwa",
+                    "safetyFirst": "Bezpieczeństwo przede wszystkim",
+                    "safetyFirstDesc": "Upewnij się, że wszystkie systemy bezpieczeństwa działają prawidłowo",
+                    "safetySystems": "Systemy bezpieczeństwa",
+                    "seatbelts": "Pasy bezpieczeństwa sprawne i zapinają się",
+                    "mirrors": "Lusterka ustawione dla ucznia",
+                    "brakes": "Hamulce sprawdzone (robocze i postojowe)",
+                    "handbrake": "Hamulec ręczny działa prawidłowo",
+                    "horn": "Sygnał dźwiękowy działa",
+                    "studentBriefing": "Instruktaż ucznia",
+                    "briefed": "Przeprowadzono instruktaż z zasad bezpieczeństwa",
+                    "emergencyProcedures": "Wyjaśniono działania w sytuacjach awaryjnych",
+                    "phoneOnSilent": "Telefony przełączone na tryb cichy"
+                },
+                "photos": {
+                    "title": "Dokumentacja fotograficzna",
+                    "description": "Zrób zdjęcia stanu pojazdu",
+                    "instruction": "Zrób zdjęcia do dokumentacji stanu pojazdu (opcjonalnie)",
+                    "front": "Przód",
+                    "back": "Tył",
+                    "left": "Lewa strona",
+                    "right": "Prawa strona",
+                    "interior": "Wnętrze",
+                    "dashboard": "Deska rozdzielcza",
+                    "damagesTitle": "Dodatkowe zdjęcia uszkodzeń (jeśli są)"
+                },
+                "confirmation": {
+                    "title": "Potwierdzenie",
+                    "description": "Rozpocznij lekcję",
+                    "summary": "Podsumowanie weryfikacji",
+                    "student": "Uczeń:",
+                    "lessonType": "Typ lekcji:",
+                    "practiceCity": "Praktyka - miasto",
+                    "time": "Czas:",
+                    "vehicle": "Pojazd:",
+                    "initialMileage": "Początkowy przebieg:",
+                    "fuel": "Paliwo:",
+                    "notSpecified": "Nie określono",
+                    "checkResults": "Wyniki weryfikacji",
+                    "documents": "Dokumenty",
+                    "safety": "Bezpieczeństwo",
+                    "additionalNotes": "Dodatkowe uwagi (opcjonalnie)",
+                    "notesPlaceholder": "Wszelkie komentarze dotyczące rozpoczęcia lekcji...",
+                    "agreement": "Potwierdzam poprawność wszystkich weryfikacji",
+                    "agreementDesc": "Pojazd jest gotowy do lekcji jazdy, uczeń został poinformowany o zasadach bezpieczeństwa",
+                    "gpsActive": "GPS aktywny",
+                    "gpsUnavailable": "GPS niedostępny",
+                    "online": "Online",
+                    "offline": "Offline",
+                    "coordinates": "Współrzędne:"
+                }
+            },
+            "offlineMode": {
+                "title": "Tryb offline",
+                "description": "Pracujesz w trybie offline. Dane zostaną zapisane lokalnie i zsynchronizowane po przywróceniu połączenia."
+            },
+            "minutes": "{duration} min"
+        },
+        "today": {
+            "title": "Dzisiejsze lekcje",
+            "dateFormat": "{date}",
+            "stats": {
+                "completed": "Zakończono",
+                "distance": "Km",
+                "earnings": "Zarobki",
+                "rating": "Ocena",
+                "time": "Czas",
+                "fuel": "Paliwo",
+                "currency": "{amount} UAH"
+            },
+            "currentLesson": {
+                "title": "Obecna lekcja",
+                "inProgress": "W TRAKCIE",
+                "photos": "Zdjęcia",
+                "notes": "Notatki",
+                "route": "Trasa",
+                "details": "Szczegóły"
+            },
+            "schedule": {
+                "title": "Harmonogram na dzisiaj",
+                "timeUntil": {
+                    "now": "Teraz",
+                    "hours": "{hours}g {minutes}min",
+                    "minutes": "{minutes}min"
+                },
+                "objectives": "{count} celów",
+                "km": "{distance} km",
+                "start": "Rozpocznij",
+                "details": "Szczegóły"
+            },
+            "lessonTypes": {
+                "practiceCity": "Praktyka - miasto",
+                "practiceArea": "Praktyka - plac manewrowy",
+                "examPrep": "Przygotowanie do egzaminu",
+                "highway": "Praktyka - drogi szybkiego ruchu",
+                "difficult": "Praktyka - trudne warunki"
+            },
+            "objectives": {
+                "parallelParking": "Parkowanie równoległe",
+                "intersections": "Przejazd przez skrzyżowania",
+                "starting": "Ruszanie",
+                "braking": "Hamowanie",
+                "turns": "Skręty",
+                "examRoute": "Trasa egzaminacyjna",
+                "emergencyBraking": "Hamowanie awaryjne",
+                "highwayDriving": "Jazda po autostradzie",
+                "overtaking": "Wyprzedzanie",
+                "keepingDistance": "Zachowanie dystansu",
+                "trafficJams": "Jazda w korkach",
+                "roundabout": "Ruch okrężny"
+            },
+            "locations": {
+                "cityCenter": "Centrum miasta",
+                "practiceArea": "Plac manewrowy",
+                "drivingSchool": "DenisDrive",
+                "examRoute": "Trasa egzaminacyjna"
+            },
+            "status": {
+                "completed": "Zakończono",
+                "inProgress": "W trakcie",
+                "upcoming": "Zaplanowano"
+            }
+        },
+        "list": {
+            "title": "Moje lekcje",
+            "subtitle": "Zarządzaj swoimi lekcjami jazdy",
+            "buttons": {
+                "addLesson": "Dodaj lekcję",
+                "export": "Eksportuj"
+            },
+            "stats": {
+                "all": "Wszystkie",
+                "completed": "Zakończone",
+                "earnings": "Zarobki",
+                "rating": "Ocena",
+                "distance": "Dystans",
+                "unpaid": "Niezapłacone",
+                "km": "{distance} km",
+                "currency": "{amount} UAH"
+            },
+            "filters": {
+                "searchPlaceholder": "Szukaj wg nazwiska lub lokalizacji...",
+                "allStatuses": "Wszystkie statusy",
+                "allTypes": "Wszystkie typy",
+                "period": {
+                    "today": "Dzisiaj",
+                    "week": "Ten tydzień",
+                    "month": "Ten miesiąc",
+                    "all": "Wszystkie"
+                }
+            },
+            "status": {
+                "completed": "Zakończono",
+                "scheduled": "Zaplanowano",
+                "cancelled": "Anulowano",
+                "noShow": "Nieobecność"
+            },
+            "lessonTypes": {
+                "city": "Jazda w mieście",
+                "practiceArea": "Plac manewrowy",
+                "examRoute": "Trasa egzaminacyjna",
+                "internalExam": "Egzamin wewnętrzny"
+            },
+            "table": {
+                "title": "Lista lekcji",
+                "headers": {
+                    "status": "Status",
+                    "dateTime": "Data i godzina",
+                    "student": "Kursant",
+                    "lessonType": "Typ lekcji",
+                    "location": "Lokalizacja",
+                    "vehicle": "Pojazd",
+                    "duration": "Czas",
+                    "price": "Cena",
+                    "payment": "Płatność",
+                    "rating": "Ocena",
+                    "actions": "Działania"
+                },
+                "minutes": "{duration} min",
+                "paid": "Zapłacono",
+                "toPay": "Do zapłaty"
+            }
+        }
+    },
+    "messages": {
+        "chat": {
+            "header": {
+                "online": "Online",
+                "lastSeen": "Ostatnio widziano {time}",
+                "contactInfo": "Informacje o kontakcie",
+                "phone": "Telefon",
+                "email": "Email",
+                "completedLessons": "Ukończone lekcje",
+                "nextLesson": "Następna lekcja",
+                "searchPlaceholder": "Szukaj w rozmowie..."
+            },
+            "input": {
+                "placeholder": "Napisz wiadomość...",
+                "replyingTo": "Odpowiadasz na:",
+                "voiceRecording": "Nagrywanie wiadomości głosowej"
+            },
+            "messageStatus": {
+                "sending": "Wysyłanie",
+                "sent": "Wysłano",
+                "delivered": "Dostarczono",
+                "read": "Przeczytano",
+                "edited": "(edytowano)"
+            },
+            "messageActions": {
+                "reply": "Odpowiedz",
+                "edit": "Edytuj",
+                "copy": "Kopiuj",
+                "star": "Dodaj do ulubionych",
+                "forward": "Przekaż dalej",
+                "delete": "Usuń",
+                "download": "Pobierz"
+            },
+            "typing": {
+                "indicator": "pisze..."
+            },
+            "timeFormat": {
+                "today": "{time}",
+                "yesterday": "Wczoraj {time}",
+                "date": "{date} {time}"
+            },
+            "attachments": {
+                "file": "Plik",
+                "image": "Obraz",
+                "voice": "Wiadomość głosowa",
+                "location": "Lokalizacja"
+            }
+        },
+        "main": {
+            "title": "Wiadomości",
+            "subtitle": {
+                "unread": "{count} nieprzeczytanych",
+                "allRead": "Wszystkie przeczytane"
+            },
+            "newMessage": "Nowa wiadomość",
+            "search": {
+                "placeholder": "Szukaj wiadomości lub osoby..."
+            },
+            "filters": {
+                "all": "Wszystkie",
+                "unread": "Nieprzeczytane",
+                "groups": "Grupy",
+                "pinned": "Przypięte"
+            },
+            "conversationList": {
+                "title": "Rozmowy",
+                "you": "Ty:",
+                "members": "{count} uczestników",
+                "timeAgo": "{time} temu"
+            },
+            "status": {
+                "online": "Online",
+                "away": "Poza domem",
+                "offline": "Offline"
+            },
+            "actions": {
+                "pin": "Przypnij",
+                "unpin": "Odepnij",
+                "mute": "Wycisz powiadomienia",
+                "unmute": "Włącz powiadomienia",
+                "markAsRead": "Oznacz jako przeczytane",
+                "archive": "Archiwizuj",
+                "delete": "Usuń"
+            },
+            "placeholder": {
+                "title": "Wybierz rozmowę",
+                "description": "Kliknij na rozmowę z lewej strony, aby zobaczyć wiadomości",
+                "startNew": "Rozpocznij nową rozmowę"
+            },
+            "quickReplies": {
+                "title": "Szybkie odpowiedzi",
+                "templates": {
+                    "confirm": "Tak, potwierdzam",
+                    "unavailable": "Nie mogę, przepraszam",
+                    "meetingTime": "Spotkajmy się o ustalonej godzinie",
+                    "callRequest": "Proszę o kontakt telefoniczny",
+                    "thanks": "Dziękuję za wiadomość"
+                }
+            },
+            "roles": {
+                "student": "Kursant",
+                "group": "Grupa",
+                "administration": "Administracja"
+            }
+        }
+    },
+    "profile": {
+        "documents": {
+            "title": "Moje dokumenty",
+            "subtitle": "Zarządzaj certyfikatami i licencjami",
+            "addDocument": "Dodaj dokument",
+            "alert": {
+                "title": "Dokumenty wymagające uwagi",
+                "description": "Masz {count} dokument(y/ów), których ważność wkrótce wygasa. Zadbaj o ich odnowienie."
+            },
+            "stats": {
+                "all": "Wszystkie",
+                "active": "Aktywne",
+                "expiring": "Wygasające",
+                "verified": "Zweryfikowane"
+            },
+            "search": {
+                "placeholder": "Szukaj dokumentów..."
+            },
+            "categories": {
+                "all": "Wszystkie",
+                "required": "Wymagane",
+                "additional": "Dodatkowe",
+                "employment": "Zatrudnienie",
+                "insurance": "Ubezpieczenie"
+            },
+            "table": {
+                "headers": {
+                    "document": "Dokument",
+                    "issuer": "Wydawca",
+                    "number": "Numer",
+                    "issueDate": "Data wydania",
+                    "expiryDate": "Ważny do",
+                    "status": "Status",
+                    "actions": "Działania"
+                },
+                "verified": "Zweryfikowano",
+                "daysLeft": "za {days} dni"
+            },
+            "status": {
+                "active": "Aktywny",
+                "expiring": "Wygasa wkrótce",
+                "expired": "Przeterminowany"
+            },
+            "actions": {
+                "preview": "Podgląd",
+                "download": "Pobierz",
+                "share": "Udostępnij",
+                "edit": "Edytuj",
+                "delete": "Usuń"
+            },
+            "upload": {
+                "title": "Dodaj nowy dokument",
+                "description": "Prześlij dokument i wypełnij informacje",
+                "documentName": "Nazwa dokumentu",
+                "documentNamePlaceholder": "np. Licencja instruktora",
+                "documentType": "Typ dokumentu",
+                "types": {
+                    "license": "Licencja",
+                    "certificate": "Certyfikat",
+                    "medical": "Zaświadczenie lekarskie",
+                    "contract": "Umowa",
+                    "other": "Inne"
+                },
+                "issueDate": "Data wydania",
+                "expiryDate": "Ważny do",
+                "cancel": "Anuluj",
+                "save": "Zapisz dokument"
+            },
+            "documentTypes": {
+                "instructorLicense": "Licencja instruktora",
+                "drivingLicense": "Prawo jazdy kat. B",
+                "medicalCertificate": "Zaświadczenie lekarskie",
+                "firstAidCertificate": "Certyfikat pierwszej pomocy",
+                "trainingCourse": "Kurs doszkalający",
+                "employmentContract": "Umowa o pracę",
+                "liabilityInsurance": "Ubezpieczenie OC"
+            },
+            "issuers": {
+                "ministry": "Ministerstwo Infrastruktury",
+                "cityOffice": "Urząd Miasta",
+                "medicalCenter": "Centrum medyczne",
+                "redCross": "Czerwony Krzyż",
+                "instructorsAssociation": "Stowarzyszenie instruktorów",
+                "drivingSchool": "Szkoła Jazdy Kijów",
+                "insuranceCompany": "Firma ubezpieczeniowa"
+            }
+        },
+        "settings": {
+            "title": "Ustawienia",
+            "subtitle": "Zarządzaj ustawieniami i bezpieczeństwem",
+            "tabs": {
+                "notifications": "Powiadomienia",
+                "privacy": "Prywatność",
+                "display": "Wyświetlanie",
+                "security": "Bezpieczeństwo"
+            },
+            "notifications": {
+                "channels": {
+                    "title": "Kanały powiadomień",
+                    "description": "Wybierz, jak chcesz otrzymywać powiadomienia",
+                    "email": {
+                        "label": "Email",
+                        "description": "Otrzymuj powiadomienia e-mail"
+                    },
+                    "sms": {
+                        "label": "SMS",
+                        "description": "Otrzymuj powiadomienia SMS"
+                    },
+                    "push": {
+                        "label": "Push",
+                        "description": "Powiadomienia w aplikacji"
+                    }
+                },
+                "types": {
+                    "title": "Rodzaje powiadomień",
+                    "description": "Wybierz, o czym chcesz otrzymywać powiadomienia",
+                    "newBooking": "Nowe rezerwacje",
+                    "cancellation": "Anulowania",
+                    "reminder": "Przypomnienia o lekcjach",
+                    "payment": "Płatności",
+                    "messages": "Wiadomości od kursantów",
+                    "reviews": "Nowe opinie"
+                }
+            },
+            "privacy": {
+                "profile": {
+                    "title": "Widoczność profilu",
+                    "description": "Kontroluj, kto może widzieć Twój profil",
+                    "public": "Publiczny - wszyscy widzą",
+                    "students": "Tylko kursanci",
+                    "private": "Prywatny - nikt nie widzi",
+                    "showPhone": "Pokaż numer telefonu",
+                    "showEmail": "Pokaż adres e-mail",
+                    "showRating": "Pokaż ocenę",
+                    "showStatistics": "Pokaż statystyki"
+                },
+                "booking": {
+                    "title": "Ustawienia rezerwacji",
+                    "onlineBooking": {
+                        "label": "Rezerwacja online",
+                        "description": "Kursanci mogą rezerwować online"
+                    },
+                    "requireApproval": {
+                        "label": "Wymagaj potwierdzenia",
+                        "description": "Ręcznie potwierdzaj każdą rezerwację"
+                    },
+                    "minAdvance": "Min. wyprzedzenie",
+                    "maxAdvance": "Maks. wyprzedzenie",
+                    "hours": "{count} godzin",
+                    "days": "{count} dni"
+                }
+            },
+            "display": {
+                "appearance": {
+                    "title": "Wygląd",
+                    "theme": "Motyw",
+                    "light": "Jasny",
+                    "dark": "Ciemny",
+                    "system": "Systemowy",
+                    "language": "Język",
+                    "dateFormat": "Format daty",
+                    "timeFormat": "Format czasu",
+                    "24h": "24-godzinny",
+                    "12h": "12-godzinny"
+                }
+            },
+            "security": {
+                "status": {
+                    "secure": "Twoje konto jest bezpieczne",
+                    "lastPasswordChange": "Ostatnia zmiana hasła: {date}"
+                },
+                "password": {
+                    "title": "Hasło",
+                    "changePassword": "Zmień hasło",
+                    "currentPassword": "Aktualne hasło",
+                    "newPassword": "Nowe hasło",
+                    "confirmPassword": "Potwierdź nowe hasło"
+                },
+                "twoFactor": {
+                    "title": "Uwierzytelnianie dwuskładnikowe",
+                    "description": "Dodatkowa warstwa ochrony dla Twojego konta",
+                    "enabled": "2FA włączone",
+                    "disabled": "2FA wyłączone",
+                    "enabledDescription": "Twoje konto jest chronione przez 2FA",
+                    "disabledDescription": "Włącz dla lepszej ochrony",
+                    "enable": "Włącz",
+                    "disable": "Wyłącz",
+                    "scanQR": "Zeskanuj kod aplikacją do uwierzytelniania",
+                    "verificationCode": "Kod weryfikacyjny"
+                },
+                "sessions": {
+                    "title": "Aktywne sesje",
+                    "description": "Obecnie autoryzowane urządzenia",
+                    "current": "Obecna",
+                    "endSession": "Zakończ",
+                    "endAllOther": "Zakończ wszystkie inne sesje",
+                    "location": "{city} • {time}"
+                },
+                "account": {
+                    "title": "Działania na koncie",
+                    "downloadData": "Pobierz dane",
+                    "deleteAccount": "Usuń konto",
+                    "deleteWarning": {
+                        "title": "Usuń konto",
+                        "description": "Ta operacja jest nieodwracalna. Wszystkie dane zostaną trwale usunięte.",
+                        "warning": "Uwaga!",
+                        "consequences": "Usunięcie konta spowoduje:",
+                        "dataLoss": "Utratę wszystkich danych",
+                        "bookingsCancelled": "Anulowanie wszystkich rezerwacji",
+                        "historyDeleted": "Usunięcie historii kursantów",
+                        "noRecovery": "Brak możliwości odzyskania",
+                        "confirmText": "Wpisz \"USUŃ\" aby potwierdzić",
+                        "confirmPlaceholder": "USUŃ"
+                    }
+                },
+                "buttons": {
+                    "cancel": "Anuluj",
+                    "save": "Zapisz",
+                    "confirm": "Potwierdź"
+                }
+            }
+        },
+        "main": {
+            "instructor": "Instruktor",
+            "edit": "Edytuj",
+            "cancel": "Anuluj",
+            "save": "Zapisz",
+            "stats": {
+                "students": "Kursanci",
+                "successRate": "Zdawalność",
+                "experience": "Doświadczenie",
+                "hours": "Godzin",
+                "years": "{count} lat"
+            },
+            "navigation": {
+                "documents": {
+                    "title": "Dokumenty",
+                    "subtitle": "Certyfikaty i licencje"
+                },
+                "settings": {
+                    "title": "Ustawienia",
+                    "subtitle": "Ustawienia i bezpieczeństwo"
+                }
+            },
+            "tabs": {
+                "overview": "Przegląd",
+                "personal": "Dane osobowe",
+                "professional": "Dane zawodowe"
+            },
+            "performance": {
+                "title": "Wydajność w ostatnich miesiącach",
+                "months": {
+                    "jan": "Sty",
+                    "feb": "Lut",
+                    "mar": "Mar",
+                    "apr": "Kwi",
+                    "may": "Maj",
+                    "jun": "Cze",
+                    "jul": "Lip",
+                    "aug": "Sie",
+                    "sep": "Wrz",
+                    "oct": "Paź",
+                    "nov": "Lis",
+                    "dec": "Gru"
+                }
+            },
+            "achievements": {
+                "title": "Ostatnie osiągnięcia",
+                "instructorOfYear": {
+                    "title": "Instruktor roku",
+                    "description": "Najlepszy instruktor 2023"
+                },
+                "graduates200": {
+                    "title": "200+ absolwentów",
+                    "description": "Przygotowano ponad 200 kursantów"
+                },
+                "hours5000": {
+                    "title": "5000 godzin",
+                    "description": "Ponad 5000 godzin praktyki"
+                },
+                "rating49": {
+                    "title": "Ocena 4.9+",
+                    "description": "Średnia ocena powyżej 4.9"
+                }
+            },
+            "personalInfo": {
+                "title": "Informacje osobiste",
+                "firstName": "Imię",
+                "lastName": "Nazwisko",
+                "email": "Email",
+                "phone": "Telefon",
+                "dateOfBirth": "Data urodzenia",
+                "city": "Miasto",
+                "address": "Adres",
+                "postalCode": "Kod pocztowy",
+                "bio": "O mnie"
+            },
+            "emergencyContact": {
+                "title": "Kontakt awaryjny",
+                "name": "Imię i nazwisko",
+                "phone": "Telefon",
+                "relation": "Pokrewieństwo"
+            },
+            "professionalInfo": {
+                "title": "Informacje zawodowe",
+                "licenseNumber": "Numer licencji",
+                "validUntil": "Ważna do",
+                "workExperience": "Stań pracy",
+                "employmentType": "Rodzaj zatrudnienia",
+                "employmentTypes": {
+                    "fullTime": "Pełny etat",
+                    "partTime": "Część etatu",
+                    "contract": "Kontrakt"
+                },
+                "categories": "Kategorie",
+                "specializations": "Specjalizacje",
+                "languages": "Języki"
+            },
+            "specializations": {
+                "beginners": "Początkujący",
+                "exam": "Egzamin",
+                "nightDriving": "Jazda nocą"
+            },
+            "languages": {
+                "ukrainian": "Ukraiński",
+                "polish": "Polski",
+                "english": "Angielski"
+            }
+        }
+    },
+    "resources": {
+        "upload": {
+            "title": "Dodaj materiał",
+            "subtitle": "Udostępnij materiały szkoleniowe kursantom",
+            "uploadMethod": {
+                "title": "Metoda przesyłania",
+                "file": {
+                    "label": "Prześlij plik",
+                    "description": "Prześlij plik z dysku"
+                },
+                "link": {
+                    "label": "Podaj link",
+                    "description": "YouTube, Google Drive, itp."
+                }
+            },
+            "fileUpload": {
+                "title": "Wybierz plik",
+                "description": "Maksymalny rozmiar: 500 MB. Formaty: PDF, DOC, PPT, XLS, MP4, JPG, PNG",
+                "dragAndDrop": "Przeciągnij plik tutaj lub kliknij, aby wybrać",
+                "selectFile": "Wybierz plik",
+                "uploading": "Przesyłanie..."
+            },
+            "linkInput": {
+                "title": "Adres URL",
+                "description": "Podaj link do materiału (YouTube, Google Drive, itp.)",
+                "placeholder": "https://..."
+            },
+            "details": {
+                "title": "Szczegóły materiału",
+                "resourceTitle": "Tytuł *",
+                "titlePlaceholder": "np. Przepisy ruchu drogowego 2024",
+                "description": "Opis *",
+                "descriptionPlaceholder": "Opisz zawartość materiału...",
+                "category": "Kategoria *",
+                "selectCategory": "Wybierz kategorię",
+                "tags": "Tagi",
+                "targetAudience": "Docelowa grupa odbiorców"
+            },
+            "categories": {
+                "theory": "Teoria",
+                "practice": "Praktyka",
+                "tests": "Testy",
+                "presentations": "Prezentacje",
+                "videos": "Wideo szkoleniowe",
+                "documents": "Dokumenty",
+                "additional": "Materiały dodatkowe"
+            },
+            "tags": {
+                "exam": "egzamin",
+                "theory": "teoria",
+                "practice": "praktyka",
+                "parking": "parkowanie",
+                "maneuvers": "manewry",
+                "roadSigns": "znaki drogowe",
+                "regulations": "przepisy",
+                "firstAid": "pierwsza pomoc",
+                "safety": "bezpieczeństwo",
+                "categoryB": "kategoria B",
+                "practiceArea": "plac manewrowy",
+                "city": "miasto",
+                "route": "trasa"
+            },
+            "audiences": {
+                "beginners": "Początkujący",
+                "intermediate": "Średniozaawansowany",
+                "advanced": "Zaawansowany",
+                "exam": "Przygotowanie do egzaminu",
+                "all": "Wszyscy"
+            },
+            "settings": {
+                "title": "Ustawienia dostępności",
+                "public": {
+                    "label": "Materiał publiczny",
+                    "description": "Wszyscy kursanci będą mogli zobaczyć ten materiał"
+                },
+                "allowDownload": {
+                    "label": "Zezwól na pobieranie",
+                    "description": "Kursanci będą mogli pobrać materiał"
+                },
+                "requireCompletion": {
+                    "label": "Obowiązkowy do obejrzenia",
+                    "description": "Oznacz jako obowiązkowy do zapoznania się"
+                },
+                "expiryDate": "Data wygaśnięcia (opcjonalnie)"
+            },
+            "additionalNotes": {
+                "title": "Dodatkowe uwagi",
+                "placeholder": "Instrukcje dla kursantów, wskazówki, itp..."
+            },
+            "info": "Po dodaniu, materiał będzie od razu dostępny dla kursantów zgodnie z wybranymi ustawieniami.",
+            "buttons": {
+                "cancel": "Anuluj",
+                "preview": "Podgląd",
+                "save": "Zapisz materiał",
+                "uploading": "Przesyłanie..."
+            }
+        },
+        "main": {
+            "title": "Materiały szkoleniowe",
+            "subtitle": "Zarządzaj materiałami dla kursantów",
+            "addMaterial": "Dodaj materiał",
+            "stats": {
+                "materials": "Materiały",
+                "downloads": "Pobrania",
+                "views": "Wyświetlenia",
+                "rating": "Ocena",
+                "size": "Rozmiar",
+                "popular": "Popularny"
+            },
+            "search": {
+                "placeholder": "Szukaj materiałów..."
+            },
+            "categories": {
+                "all": "Wszystkie",
+                "theory": "Teoria",
+                "practice": "Praktyka",
+                "tests": "Testy",
+                "additional": "Dodatkowe"
+            },
+            "sort": {
+                "date": "Najnowsze",
+                "downloads": "Najpopularniejsze",
+                "rating": "Najlepiej ocenione",
+                "name": "Alfabetycznie"
+            },
+            "actions": {
+                "preview": "Podgląd",
+                "download": "Pobierz",
+                "share": "Udostępnij",
+                "edit": "Edytuj",
+                "delete": "Usuń"
+            },
+            "recentActivity": {
+                "title": "Ostatnia aktywność",
+                "download": "pobrał",
+                "view": "obejrzał",
+                "rate": "ocenił",
+                "minutesAgo": "{count} min temu",
+                "hoursAgo": "{count} godz. temu"
+            },
+            "storage": {
+                "title": "Wykorzystanie przestrzeni",
+                "used": "Wykorzystano",
+                "documents": "Dokumenty",
+                "videos": "Wideo",
+                "presentations": "Prezentacje",
+                "images": "Obrazy"
+            },
+            "tip": {
+                "title": "Wskazówka:",
+                "description": "Regularnie aktualizuj materiały, aby kursanci mieli dostęp do najnowszych informacji."
+            },
+            "resourceTypes": {
+                "pdf": "Dokument PDF",
+                "video": "Wideo",
+                "presentation": "Prezentacja",
+                "image": "Obraz",
+                "file": "Plik"
+            }
+        }
+    },
+    "schedule": {
+        "calendar": {
+            "tab": {
+                "loading": "Ładowanie kalendarza...",
+                "filters": {
+                    "title": "Filtry",
+                    "status": {
+                        "label": "Status",
+                        "available": "Dostępne",
+                        "reserved": "Zarezerwowane",
+                        "blocked": "Zablokowane",
+                        "completed": "Zakończone",
+                        "cancelled": "Anulowane"
+                    },
+                    "lessonType": {
+                        "label": "Typ zajęć",
+                        "all": "Wszystkie",
+                        "driving": "Jazda po mieście",
+                        "practiceArea": "Plac manewrowy",
+                        "theory": "Teoria",
+                        "exam": "Egzamin"
+                    },
+                    "buttons": {
+                        "clear": "Wyczyść",
+                        "apply": "Zastosuj"
+                    }
+                },
+                "stats": {
+                    "total": "Razem",
+                    "available": "Dostępne",
+                    "reserved": "Zarezerwowane",
+                    "blocked": "Zablokowane"
+                },
+                "actions": {
+                    "workingHours": "Godziny pracy",
+                    "filters": "Filtry",
+                    "export": "Eksportuj"
+                },
+                "alerts": {
+                    "noSlots": {
+                        "title": "Brak terminów w tym okresie",
+                        "description": "Terminy są generowane automatycznie na podstawie godzin pracy. Kliknij przycisk \"Godziny pracy\" by skonfigurować dostępność."
+                    }
+                },
+                "confirmDelete": "Czy na pewno chcesz usunąć ten termin?",
+                "export": {
+                    "filename": "harmonogram_{date}.csv",
+                    "headers": {
+                        "date": "Data",
+                        "start": "Początek",
+                        "end": "Koniec",
+                        "status": "Status",
+                        "student": "Kursant",
+                        "location": "Lokalizacja"
+                    },
+                    "error": "Błąd eksportu"
+                },
+                "errors": {
+                    "updateSlot": "Błąd aktualizacji terminu",
+                    "deleteSlot": "Błąd usuwania terminu"
+                }
+            },
+            "dayView": {
+                "previousDay": "Poprzedni dzień",
+                "nextDay": "Następny dzień",
+                "today": "Dzisiaj",
+                "generateSlots": "Generuj terminy",
+                "dayOff": "Dzień wolny",
+                "stats": {
+                    "available": "Dostępne",
+                    "reserved": "Zarezerwowane",
+                    "blocked": "Zablokowane",
+                    "total": "Razem",
+                    "slots": "terminów"
+                },
+                "timeline": {
+                    "currentTime": "Aktualny czas"
+                }
+            },
+            "loading": "Ładowanie kalendarza...",
+            "filters": {
+                "title": "Filtry",
+                "status": {
+                    "label": "Status",
+                    "available": "Dostępne",
+                    "reserved": "Zarezerwowane",
+                    "blocked": "Zablokowane",
+                    "completed": "Zakończone",
+                    "cancelled": "Anulowane"
+                },
+                "lessonType": {
+                    "label": "Typ zajęć",
+                    "all": "Wszystkie",
+                    "city": "Jazda po mieście",
+                    "practiceArea": "Plac manewrowy",
+                    "theory": "Teoria",
+                    "exam": "Egzamin"
+                },
+                "clear": "Wyczyść",
+                "apply": "Zastosuj"
+            },
+            "stats": {
+                "total": "Razem",
+                "available": "Dostępne",
+                "reserved": "Zarezerwowane",
+                "blocked": "Zablokowane"
+            },
+            "actions": {
+                "workingHours": "Godziny pracy",
+                "filters": "Filtry",
+                "export": "Eksportuj"
+            },
+            "alerts": {
+                "noSlots": {
+                    "title": "Brak terminów w tym okresie",
+                    "description": "Terminy są generowane automatycznie na podstawie godzin pracy. Kliknij przycisk \"Godziny pracy\" by skonfigurować dostępność."
+                }
+            },
+            "views": {
+                "day": "Dzień",
+                "week": "Tydzień",
+                "month": "Miesiąc",
+                "list": "Lista",
+                "listComingSoon": "Widok listy w przygotowaniu"
+            },
+            "confirmDelete": "Czy na pewno chcesz usunąć ten termin?",
+            "export": {
+                "filename": "harmonogram_{date}.csv",
+                "headers": {
+                    "date": "Data",
+                    "start": "Początek",
+                    "end": "Koniec",
+                    "status": "Status",
+                    "student": "Kursant",
+                    "location": "Lokalizacja"
+                }
+            },
+            "monthView": {
+                "navigation": {
+                    "previousMonth": "Poprzedni miesiąc",
+                    "nextMonth": "Następny miesiąc",
+                    "currentMonth": "Aktualny miesiąc"
+                },
+                "weekDays": {
+                    "mon": "Pon",
+                    "tue": "Wt",
+                    "wed": "Śr",
+                    "thu": "Czw",
+                    "fri": "Pt",
+                    "sat": "Sob",
+                    "sun": "Nd"
+                },
+                "dayCell": {
+                    "noSlots": "Brak terminów",
+                    "moreSlots": "+{count} więcej",
+                    "available": "{count} dostępnych",
+                    "reserved": "{count} zarezerwowanych",
+                    "blocked": "{count} zablokowanych"
+                },
+                "stats": {
+                    "title": "Terminy",
+                    "total": "Terminy: {count}",
+                    "available": "Dostępne: {count}",
+                    "reserved": "Zarezerwowane: {count}"
+                },
+                "footer": {
+                    "week": "Tydzień {number}",
+                    "weekPlaceholder": "Tydzień —",
+                    "legend": {
+                        "today": "Dzisiaj",
+                        "weekend": "Weekend",
+                        "workingHours": "Godziny pracy",
+                        "noSlotsWarning": "Terminy są generowane automatycznie po zapisaniu godzin pracy"
+                    }
+                }
+            },
+            "slotCard": {
+                "status": {
+                    "available": "Dostępny",
+                    "reserved": "Zarezerwowany",
+                    "blocked": "Zablokowany",
+                    "completed": "Zakończone",
+                    "cancelled": "Anulowane",
+                    "noShow": "Nieobecność",
+                    "inProgress": "W toku"
+                },
+                "lessonTypes": {
+                    "driving": "Jazda",
+                    "practiceArea": "Plac manewrowy",
+                    "theory": "Teoria",
+                    "exam": "Egzamin"
+                },
+                "payment": {
+                    "unpaid": "Nieopłacone",
+                    "partial": "Częściowo"
+                },
+                "actions": {
+                    "edit": "Edytuj",
+                    "delete": "Usuń"
+                },
+                "aria": {
+                    "editSlot": "Edytuj termin",
+                    "deleteSlot": "Usuń termin"
+                }
+            },
+            "weekView": {
+                "navigation": {
+                    "previousWeek": "Poprzedni tydzień",
+                    "nextWeek": "Następny tydzień",
+                    "currentWeek": "Aktualny tydzień"
+                },
+                "dayHeader": {
+                    "slots": {
+                        "one": "termin",
+                        "few": "terminy",
+                        "many": "terminów"
+                    }
+                },
+                "slot": {
+                    "free": "Wolny"
+                },
+                "lessonTypes": {
+                    "driving": "Jazda",
+                    "practiceArea": "Plac manewrowy",
+                    "theory": "Teoria",
+                    "exam": "Egzamin"
+                },
+                "legend": {
+                    "available": "Dostępny",
+                    "reserved": "Zarezerwowany",
+                    "blocked": "Zablokowany",
+                    "cancelled": "Anulowany",
+                    "noShow": "Nieobecność"
+                }
+            }
+        },
+        "modals": {
+            "exception": {
+                "title": {
+                    "create": "Dodaj wyjątek",
+                    "edit": "Edytuj wyjątek"
+                },
+                "subtitle": "Zablokuj wybrane dni w harmonogramie",
+                "types": {
+                    "label": "Typ wyjątku",
+                    "vacation": {
+                        "label": "Urlop",
+                        "description": "Planowany urlop"
+                    },
+                    "sickness": {
+                        "label": "Zwolnienie lekarskie",
+                        "description": "Nieobecność z powodu choroby"
+                    },
+                    "holiday": {
+                        "label": "Święto",
+                        "description": "Święta i dni wolne od pracy"
+                    },
+                    "training": {
+                        "label": "Szkolenie",
+                        "description": "Kursy i szkolenia zawodowe"
+                    },
+                    "other": {
+                        "label": "Inne",
+                        "description": "Inne powody nieobecności"
+                    }
+                },
+                "holidays": {
+                    "label": "Szybki wybór świąt",
+                    "placeholder": "Wybierz święto...",
+                    "newYear": "Nowy Rok",
+                    "epiphany": "Święto Trzech Króli",
+                    "labourDay": "Święto Pracy",
+                    "constitutionDay": "Święto Konstytucji 3 Maja",
+                    "assumptionDay": "Wniebowzięcie NMP",
+                    "allSaintsDay": "Wszystkich Świętych",
+                    "independenceDay": "Święto Niepodległości",
+                    "christmas": "Boże Narodzenie",
+                    "christmasSecond": "Drugi Dzień Świąt"
+                },
+                "dates": {
+                    "startDate": "Data rozpoczęcia",
+                    "endDate": "Data zakończenia"
+                },
+                "description": {
+                    "label": "Opis (opcjonalnie)",
+                    "placeholder": "Dodaj szczegóły wyjątku..."
+                },
+                "recurring": {
+                    "label": "Cykliczny wyjątek",
+                    "description": "Powtarzaj ten wyjątek automatycznie",
+                    "yearly": "Co roku",
+                    "monthly": "Co miesiąc"
+                },
+                "blockSlots": {
+                    "label": "Zablokuj terminy",
+                    "description": "Automatycznie zablokuj wszystkie terminy w tym okresie"
+                },
+                "impact": {
+                    "title": "Wpływ na harmonogram",
+                    "totalDays": "Liczba dni",
+                    "workDays": "Dni robocze",
+                    "reservedSlots": "Zarezerwowane terminy",
+                    "availableSlots": "Dostępne terminy",
+                    "warning": "Uwaga: {count} zarezerwowanych terminów wymaga kontaktu z kursantami!"
+                },
+                "preview": {
+                    "show": "Pokaż terminy do zablokowania ({count})",
+                    "hide": "Ukryj terminy do zablokowania ({count})"
+                },
+                "status": {
+                    "reserved": "zarezerwowany",
+                    "available": "dostępny"
+                },
+                "buttons": {
+                    "cancel": "Anuluj",
+                    "save": "Dodaj wyjątek",
+                    "saveChanges": "Zapisz zmiany",
+                    "saving": "Zapisywanie..."
+                }
+            },
+            "slotEdit": {
+                "title": {
+                    "create": "Nowy termin",
+                    "edit": "Edytuj termin"
+                },
+                "tabs": {
+                    "details": "Szczegóły",
+                    "student": "Kursant",
+                    "payment": "Płatność",
+                    "notes": "Notatki"
+                },
+                "status": {
+                    "label": "Status",
+                    "available": "Dostępny",
+                    "reserved": "Zarezerwowany",
+                    "blocked": "Zablokowany",
+                    "completed": "Zakończone",
+                    "cancelled": "Anulowane",
+                    "noShow": "Nieobecność",
+                    "inProgress": "W toku"
+                },
+                "lessonType": {
+                    "label": "Typ zajęć",
+                    "driving": "Jazda po mieście",
+                    "practiceArea": "Plac manewrowy",
+                    "theory": "Zajęcia teoretyczne",
+                    "exam": "Egzamin"
+                },
+                "dateTime": {
+                    "date": "Data",
+                    "startTime": "Godzina rozpoczęcia",
+                    "endTime": "Godzina zakończenia"
+                },
+                "location": {
+                    "label": "Lokalizacja",
+                    "placeholder": "Wybierz lokalizację..."
+                },
+                "student": {
+                    "search": "Szukaj kursanta",
+                    "searchPlaceholder": "Wpisz imię lub nazwisko...",
+                    "selected": "Wybrany kursant",
+                    "package": "Pakiet",
+                    "completedLessons": "Ukończone zajęcia",
+                    "lessons": "zajęć"
+                },
+                "payment": {
+                    "status": {
+                        "label": "Status płatności",
+                        "paid": "Opłacone",
+                        "unpaid": "Nieopłacone",
+                        "partial": "Częściowo opłacone"
+                    },
+                    "method": {
+                        "label": "Metoda płatności",
+                        "cash": "Gotówka",
+                        "transfer": "Przelew",
+                        "card": "Karta"
+                    },
+                    "amount": "Kwota (PLN)",
+                    "lessonPrice": "Cena za zajęcia",
+                    "toPay": "Do zapłaty",
+                    "currency": "{amount} PLN"
+                },
+                "notes": {
+                    "label": "Notatki do zajęć",
+                    "placeholder": "Dodaj notatki, uwagi, plan zajęć...",
+                    "cancelReason": "Powód anulowania",
+                    "tips": {
+                        "title": "Porady:",
+                        "tip1": "Zapisz ważne informacje o postępach kursanta",
+                        "tip2": "Zanotuj elementy do powtórzenia na kolejnych zajęciach",
+                        "tip3": "Dodaj uwagi o lokalizacji lub warunkach drogowych"
+                    }
+                },
+                "delete": {
+                    "title": "Usuń termin",
+                    "confirm": "Czy na pewno chcesz usunąć ten termin? Tej operacji nie można cofnąć.",
+                    "deleting": "Usuwanie..."
+                },
+                "buttons": {
+                    "cancel": "Anuluj",
+                    "save": "Zapisz zmiany",
+                    "create": "Stwórz termin",
+                    "delete": "Usuń",
+                    "saving": "Zapisywanie..."
+                }
+            },
+            "template": {
+                "title": {
+                    "list": "Szablony harmonogramu",
+                    "create": "Nowy szablon",
+                    "edit": "Edytuj szablon"
+                },
+                "subtitle": {
+                    "list": "Zarządzaj zapisanymi szablonami godzin pracy",
+                    "create": "Stwórz nowy szablon harmonogramu",
+                    "edit": "Zmień istniejący szablon"
+                },
+                "buttons": {
+                    "newTemplate": "Nowy szablon",
+                    "import": "Importuj",
+                    "use": "Użyj",
+                    "apply": "Zastosuj szablon",
+                    "edit": "Edytuj",
+                    "export": "Eksportuj",
+                    "delete": "Usuń",
+                    "close": "Zamknij",
+                    "back": "Wróć",
+                    "save": "Stwórz szablon",
+                    "saveChanges": "Zapisz zmiany",
+                    "saving": "Zapisywanie...",
+                    "deleting": "Usuwanie...",
+                    "cancel": "Anuluj"
+                },
+                "sections": {
+                    "presetTemplates": "Szablony domyślne",
+                    "userTemplates": "Twoje szablony"
+                },
+                "form": {
+                    "name": "Nazwa szablonu",
+                    "namePlaceholder": "np. Letni harmonogram",
+                    "description": "Opis (opcjonalnie)",
+                    "descriptionPlaceholder": "Krótki opis szablonu...",
+                    "setDefault": "Ustaw jako domyślny",
+                    "setDefaultDescription": "Ten szablon będzie automatycznie używany dla nowych tygodni"
+                },
+                "workingHours": {
+                    "title": "Godziny pracy w szablonie",
+                    "editHours": "Edytuj godziny",
+                    "free": "Wolny",
+                    "summary": "Podsumowanie",
+                    "days": "{count} dni",
+                    "hoursPerWeek": "{hours}h/tydzień"
+                },
+                "stats": {
+                    "workDays": "{count} dni",
+                    "weeklyHours": "{hours}h/tydzień",
+                    "totalSlots": "{count} terminów",
+                    "avgHoursPerDay": "{hours}h/dzień",
+                    "created": "Stworzono: {date}"
+                },
+                "labels": {
+                    "default": "Domyślny"
+                },
+                "deleteConfirm": {
+                    "message": "Czy na pewno chcesz usunąć ten szablon?",
+                    "confirm": "Usuń"
+                },
+                "empty": {
+                    "title": "Brak zapisanych szablonów",
+                    "description": "Stwórz swój pierwszy szablon harmonogramu"
+                },
+                "imported": "(zaimportowany)"
+            },
+            "workingHours": {
+                "title": "Godziny pracy",
+                "subtitle": "Skonfiguruj swoje godziny dostępności",
+                "days": {
+                    "monday": "Poniedziałek",
+                    "tuesday": "Wtorek",
+                    "wednesday": "Środa",
+                    "thursday": "Czwartek",
+                    "friday": "Piątek",
+                    "saturday": "Sobota",
+                    "sunday": "Niedziela"
+                },
+                "intervals": {
+                    "title": "Przedziały czasowe",
+                    "add": "Dodaj przedział",
+                    "empty": "Brak przedziałów",
+                    "emptyDescription": "Dodaj przedział aby zdefiniować godziny pracy",
+                    "count": "{count} przedziałów"
+                },
+                "settings": {
+                    "workOnDay": "Pracuję w {day}",
+                    "copyToOthers": "Kopiuj do innych dni",
+                    "defaultLessonDuration": "Domyślny czas trwania zajęć",
+                    "breakBetweenLessons": "Przerwa między zajęciami"
+                },
+                "durations": {
+                    "slot": {
+                        "60": "1 godzina",
+                        "90": "1.5 godziny",
+                        "120": "2 godziny",
+                        "150": "2.5 godziny",
+                        "180": "3 godziny"
+                    },
+                    "break": {
+                        "0": "Bez przerwy",
+                        "15": "15 minut",
+                        "30": "30 minut",
+                        "45": "45 minut",
+                        "60": "1 godzina"
+                    }
+                },
+                "preview": {
+                    "title": "Podgląd wygenerowanych terminów",
+                    "format": "{start} - {end}: {count} terminów po {duration} min",
+                    "withBreak": "(z przerwą {break} min)"
+                },
+                "validation": {
+                    "endAfterStart": "Godzina zakończenia musi być późniejsza niż godzina rozpoczęcia",
+                    "workingHours": "Godziny pracy muszą być między 6:00 a 22:00",
+                    "overlapping": "Przedziały nie mogą się nakładać"
+                },
+                "warnings": {
+                    "blockedDay": {
+                        "title": "Ten dzień ma zarezerwowane lekcje",
+                        "description": "Godziny pracy dla tego dnia nie mogą być zmienione, dopóki istnieją rezerwacje."
+                    },
+                    "blockedDays": {
+                        "title": "Uwaga: Dni z rezerwacjami",
+                        "description": "Następujące dni mają zarezerwowane lekcje i ich godziny pracy nie zostaną zmienione:",
+                        "reservations": "{count} rezerwacji",
+                        "continueMessage": "Zmiany zostaną zastosowane tylko dla dni bez rezerwacji. Kontynuować?",
+                        "continue": "Kontynuuj"
+                    },
+                    "daysWithReservations": "{count} dni z rezerwacjami"
+                },
+                "success": {
+                    "saved": "Godziny pracy zaktualizowane. Terminy zostaną wygenerowane automatycznie.",
+                    "copiedAll": "Godziny skopiowano do innych dni",
+                    "copiedLimited": "Skopiowano z ograniczeniami",
+                    "skippedDays": "Pominięto {count} dni z rezerwacjami",
+                    "savedWithLimitations": "Zapisano z ograniczeniami",
+                    "skippedDaysDetail": "Pominięto dni z rezerwacjami:",
+                    "slotsNote": "Terminy zostaną wygenerowane automatycznie dla dni bez rezerwacji."
+                },
+                "errors": {
+                    "validationErrors": "Popraw błędy walidacji przed zapisaniem",
+                    "saveFailed": "Nie udało się zapisać godzin pracy"
+                },
+                "buttons": {
+                    "cancel": "Anuluj",
+                    "save": "Zapisz zmiany",
+                    "saving": "Zapisywanie..."
+                }
+            }
+        },
+        "shared": {
+            "actionButtons": {
+                "actions": "Akcje",
+                "export": "Eksportuj",
+                "import": "Importuj",
+                "refresh": "Odśwież",
+                "exportSchedule": "Eksportuj harmonogram",
+                "importSchedule": "Importuj harmonogram",
+                "refreshData": "Odśwież dane",
+                "success": {
+                    "exported": "Harmonogram wyeksportowany",
+                    "imported": "Harmonogram zaimportowany",
+                    "refreshed": "Dane odświeżono"
+                },
+                "errors": {
+                    "exportFailed": "Nie udało się wyeksportować harmonogramu",
+                    "invalidFile": "Nieprawidłowy format pliku",
+                    "refreshFailed": "Nie udało się odświeżyć danych"
+                },
+                "tooltips": {
+                    "export": "Eksportuj",
+                    "import": "Importuj",
+                    "refresh": "Odśwież"
+                }
+            },
+            "quickStats": {
+                "cards": {
+                    "todayLessons": {
+                        "title": "Dzisiejsze zajęcia",
+                        "subtitle": "{count} zarezerwowanych"
+                    },
+                    "occupancy": {
+                        "title": "Zajętość",
+                        "subtitle": "{count} wolnych terminów"
+                    },
+                    "monthlyIncome": {
+                        "title": "Miesięczny dochód",
+                        "subtitle": "{count} zakończonych",
+                        "currency": "{amount} PLN"
+                    },
+                    "pendingRequests": {
+                        "title": "Oczekujące wnioski",
+                        "subtitle": {
+                            "hasRequests": "Wymaga uwagi",
+                            "noRequests": "Wszystkie rozpatrzone"
+                        }
+                    }
+                },
+                "mobile": {
+                    "today": "Dzisiaj",
+                    "lessons": "zajęć",
+                    "occupancy": "Zajętość",
+                    "reservations": "rezerwacji",
+                    "month": "Miesiąc",
+                    "currency": "PLN",
+                    "requests": "Wnioski",
+                    "pending": "oczekuje"
+                },
+                "moreStats": {
+                    "title": "Więcej statystyk",
+                    "completed": "Zakończone",
+                    "cancelled": "Anulowane",
+                    "noShow": "Nieobecności",
+                    "efficiency": "Efektywność"
+                },
+                "weekly": {
+                    "summary": "Podsumowanie tygodnia:",
+                    "workHours": "{hours} godzin pracy",
+                    "completedLessons": "{count} ukończonych zajęć",
+                    "occupancyRate": "{rate}% zajętości"
+                }
+            },
+            "searchBar": {
+                "placeholder": "Szukaj kursanta, lokalizacji, daty...",
+                "clear": "Wyczyść",
+                "advancedFilters": "Zaawansowane filtry",
+                "suggestionTypes": {
+                    "student": "kursant",
+                    "location": "lokalizacja",
+                    "date": "data"
+                },
+                "noResults": "Brak wyników dla \"{query}\"",
+                "tryOtherKeywords": "Spróbuj innych słów kluczowych",
+                "shortcuts": {
+                    "navigation": "nawigacja",
+                    "select": "wybierz",
+                    "close": "zamknij"
+                },
+                "dateLabels": {
+                    "today": "Dzisiaj",
+                    "tomorrow": "Jutro"
+                }
+            },
+            "requests": {
+                "title": "Wnioski o anulowanie",
+                "subtitle": "Zarządzaj wnioskami kursantów o anulowanie zajęć",
+                "status": {
+                    "pending": "Oczekuje",
+                    "approved": "Zatwierdzone",
+                    "rejected": "Odrzucone",
+                    "label": {
+                        "pending": "Oczekuje",
+                        "approved": "Zatwierdzone",
+                        "rejected": "Odrzucone"
+                    }
+                },
+                "requestCard": {
+                    "requestFrom": "Wniosek od:",
+                    "urgentWarning": "Zajęcia za {hours} godzin!",
+                    "lessonDate": "Data zajęć",
+                    "time": "Godzina",
+                    "location": "Lokalizacja",
+                    "payment": "Płatność",
+                    "refund": "(zwrot: {amount} PLN)",
+                    "cancellationReason": "Powód anulowania:",
+                    "comment": "Komentarz:",
+                    "processedBy": "Rozpatrzono: {name} • {date}",
+                    "viewDetails": "Zobacz szczegóły"
+                },
+                "actions": {
+                    "approve": "Zatwierdź",
+                    "reject": "Odrzuć",
+                    "viewDetails": "Zobacz szczegóły"
+                },
+                "stats": {
+                    "all": "Wszystkie",
+                    "pending": "Oczekujące",
+                    "approved": "Zatwierdzone",
+                    "rejected": "Odrzucone",
+                    "urgentRequests": {
+                        "singular": "pilny wniosek",
+                        "plural": "pilne wnioski"
+                    }
+                },
+                "filters": {
+                    "all": "Wszystkie",
+                    "pending": "Oczekujące",
+                    "approved": "Zatwierdzone",
+                    "rejected": "Odrzucone",
+                    "sortBy": "Sortuj:",
+                    "byUrgency": "Wg pilności",
+                    "byDate": "Wg daty"
+                },
+                "processModal": {
+                    "approveTitle": "Zatwierdzenie wniosku",
+                    "rejectTitle": "Odrzucenie wniosku",
+                    "student": "Kursant:",
+                    "lessonTime": "Termin:",
+                    "refundAmount": "Kwota zwrotu",
+                    "from": "z {amount} PLN",
+                    "comment": "Komentarz",
+                    "commentRequired": "(wymagany)",
+                    "commentPlaceholder": {
+                        "approve": "Dodatkowy komentarz...",
+                        "reject": "Podaj powód odrzucenia wniosku..."
+                    },
+                    "confirmApprove": "Zatwierdź anulowanie",
+                    "confirmReject": "Odrzuć wniosek",
+                    "cancel": "Anuluj"
+                },
+                "detailsModal": {
+                    "title": "Szczegóły wniosku",
+                    "studentData": "Dane kursanta",
+                    "fullName": "Imię i nazwisko:",
+                    "phone": "Telefon:",
+                    "email": "Email:",
+                    "history": "Historia",
+                    "submittedAt": "Złożono:",
+                    "processedAt": "Rozpatrzono:",
+                    "close": "Zamknij"
+                },
+                "empty": {
+                    "title": "Brak wniosków",
+                    "filtered": "Brak wniosków spełniających wybrane kryteria",
+                    "none": "Brak jakichkolwiek wniosków o anulowanie zajęć"
+                },
+                "currency": "{amount} PLN"
+            }
+        },
+        "stats": {
+            "title": "Statystyki i raporty",
+            "subtitle": "Analiza wyników i wydajności",
+            "periods": {
+                "week": "Tydzień",
+                "month": "Miesiąc",
+                "year": "Rok",
+                "weeklyStats": "Statystyki tygodniowe",
+                "monthFormat": "{month} {year}",
+                "yearFormat": "Rok {year}"
+            },
+            "downloadReport": "Pobierz raport",
+            "metrics": {
+                "completedLessons": "Ukończone zajęcia",
+                "completedSubtitle": "z {total} zaplanowanych",
+                "revenue": "Przychody",
+                "revenueSubtitle": "śr. {average} UAH/zajęcie",
+                "occupancy": "Obłożenie",
+                "occupancySubtitle": "{completed}/{total}",
+                "cancellations": "Anulowania",
+                "cancellationsSubtitle": "{rate}% wszystkich",
+                "currency": "{amount} UAH"
+            },
+            "charts": {
+                "slotDistribution": "Rozkład terminów",
+                "weeklyActivity": "Zajęcia w ciągu tygodnia",
+                "hourlyDistribution": "Rozkład godzinowy"
+            },
+            "slotStatus": {
+                "completed": "Ukończone",
+                "reserved": "Zarezerwowane",
+                "available": "Dostępne",
+                "cancelled": "Anulowane",
+                "noShow": "Nieobecności"
+            },
+            "weekDays": {
+                "mon": "Pon",
+                "tue": "Wt",
+                "wed": "Śr",
+                "thu": "Czw",
+                "fri": "Pt",
+                "sat": "Sob",
+                "sun": "Nd"
+            },
+            "rankings": {
+                "topStudents": "Najlepsi kursanci",
+                "popularHours": "Najpopularniejsze godziny",
+                "lessonsLabel": "zajęć",
+                "revenueInfo": "{amount} UAH przychodu",
+                "hourFormat": "Godzina {hour}:00",
+                "percentOfAll": "{percent}% wszystkich"
+            },
+            "detailedStats": {
+                "title": "Szczegółowe statystyki",
+                "dailyAverage": "Średnia dzienna liczba:",
+                "totalTime": "Całkowity czas:",
+                "hours": "{hours} godzin",
+                "dailyRevenue": "Średni dzienny przychód:",
+                "cancellationRate": "Współczynnik anulowania:",
+                "absences": "Nieobecności:",
+                "freeSlots": "Wolne terminy:"
+            },
+            "optimizationTips": {
+                "title": "Wskazówki dotyczące optymalizacji",
+                "lowOccupancy": "• Twoje obłożenie wynosi {rate}%. Rozważ promocje lub elastyczny grafik.",
+                "highCancellations": "• Wysoki współczynnik anulowania ({rate}%). Sprawdź przyczyny rezygnacji.",
+                "lowDailyAverage": "• Niska średnia dzienna ({count} zajęć). Możesz zwiększyć dostępność."
+            },
+            "report": {
+                "period": "Okres",
+                "date": "Data",
+                "statistics": "Statystyki",
+                "allSlots": "Wszystkie terminy",
+                "completedLessons": "Ukończone zajęcia",
+                "cancelled": "Anulowane",
+                "absences": "Nieobecności",
+                "revenue": "Przychód",
+                "occupancy": "Obłożenie",
+                "dailyAverage": "Średnio na dzień",
+                "topStudents": "Najlepsi kursanci",
+                "fullName": "Imię i nazwisko",
+                "lessonCount": "Liczba zajęć"
+            }
+        },
+        "templates": {
+            "title": "Szablony harmonogramu",
+            "subtitle": "Zarządzaj szablonami godzin pracy i szybko je stosuj",
+            "buttons": {
+                "newTemplate": "Nowy szablon",
+                "export": "Eksportuj szablony",
+                "import": "Importuj szablony",
+                "apply": "Zastosuj",
+                "edit": "Edytuj",
+                "duplicate": "Duplikuj",
+                "setAsDefault": "Ustaw jako domyślny",
+                "delete": "Usuń",
+                "cancel": "Anuluj",
+                "saveChanges": "Zapisz zmiany",
+                "createTemplate": "Utwórz szablon"
+            },
+            "filters": {
+                "all": "Wszystkie",
+                "default": "Domyślne",
+                "custom": "Własne",
+                "count": "({count})"
+            },
+            "card": {
+                "workDays": "dni pracy",
+                "weekly": "na tydzień",
+                "slotsPerDay": "terminów/dzień",
+                "workingDays": "Dni pracy:",
+                "createdAt": "Utworzono:",
+                "monday": "Pon",
+                "tuesday": "Wt",
+                "wednesday": "Śr",
+                "thursday": "Czw",
+                "friday": "Pt",
+                "saturday": "Sob",
+                "sunday": "Nd"
+            },
+            "form": {
+                "editTitle": "Edytuj szablon",
+                "newTitle": "Nowy szablon",
+                "templateName": "Nazwa szablonu",
+                "templateNamePlaceholder": "np. Standardowy tydzień roboczy",
+                "description": "Opis (opcjonalnie)",
+                "descriptionPlaceholder": "Krótki opis szablonu...",
+                "workingHours": "Godziny pracy",
+                "setAsDefault": "Ustaw jako domyślny szablon",
+                "minutes": "{minutes} min",
+                "days": {
+                    "monday": "poniedziałek",
+                    "tuesday": "wtorek",
+                    "wednesday": "środa",
+                    "thursday": "czwartek",
+                    "friday": "piątek",
+                    "saturday": "sobota",
+                    "sunday": "niedziela"
+                }
+            },
+            "empty": {
+                "title": "Brak szablonów",
+                "description": "Stwórz pierwszy szablon harmonogramu, aby szybko stosować godziny pracy",
+                "createButton": "Utwórz szablon"
+            },
+            "confirmDelete": "Czy na pewno chcesz usunąć ten szablon?",
+            "export": {
+                "filename": "szablony_harmonogramu_{date}.json"
+            },
+            "import": {
+                "error": "Błąd importu"
+            }
+        },
+        "errorBoundary": {
+            "title": "Ups! Coś poszło nie tak",
+            "description": "Wystąpił nieoczekiwany błąd. Przepraszamy za niedogodności.",
+            "actions": {
+                "reload": "Odśwież stronę",
+                "goHome": "Wróć do panelu"
+            },
+            "technicalDetails": "Szczegóły techniczne",
+            "support": {
+                "contact": "Skontaktuj się z pomocą techniczną",
+                "email": "support@avtoschool.ua"
+            }
+        },
+        "provider": {
+            "toast": {
+                "success": "Sukces",
+                "error": "Błąd",
+                "slot": {
+                    "updated": "Termin zaktualizowany",
+                    "deleted": "Termin usunięty",
+                    "created": "Nowy termin utworzony",
+                    "updateError": "Nie udało się zaktualizować terminu",
+                    "deleteError": "Nie udało się usunąć terminu",
+                    "createError": "Nie udało się utworzyć terminu"
+                },
+                "workingHours": {
+                    "updated": "Godziny pracy zaktualizowane",
+                    "updateError": "Nie udało się zaktualizować godzin pracy"
+                },
+                "template": {
+                    "created": "Szablon utworzony",
+                    "updated": "Szablon zaktualizowany",
+                    "deleted": "Szablon usunięty",
+                    "applied": "Szablon zastosowany",
+                    "createError": "Nie udało się utworzyć szablonu",
+                    "updateError": "Nie udało się zaktualizować szablonu",
+                    "deleteError": "Nie udało się usunąć szablonu",
+                    "applyError": "Nie udało się zastosować szablonu"
+                },
+                "schedule": {
+                    "imported": "Harmonogram zaimportowany",
+                    "importError": "Nieprawidłowy format danych"
+                },
+                "slots": {
+                    "generateTitle": "Generowanie terminów zakończone",
+                    "generateDescription": "Wygenerowano terminy dla {generated} dni.",
+                    "protectedDays": "Pominięto {protected} dni z rezerwacjami:",
+                    "moreSkipped": "i jeszcze {count}...",
+                    "generateSuccess": "Wygenerowano {slots} nowych terminów dla {days} dni",
+                    "generateError": "Nie udało się wygenerować terminów"
+                },
+                "dataLoadError": "Błąd ładowania danych"
+            },
+            "weekDays": {
+                "monday": "poniedziałek",
+                "tuesday": "wtorek",
+                "wednesday": "środa",
+                "thursday": "czwartek",
+                "friday": "piątek",
+                "saturday": "sobota",
+                "sunday": "niedziela"
+            }
+        }
+    },
+    "students": {
+        "profile": {
+            "title": "Profil kursanta",
+            "back": "Wróć",
+            "edit": "Edytuj",
+            "cancel": "Anuluj",
+            "save": "Zapisz",
+            "status": {
+                "active": "Aktywny",
+                "inactive": "Nieaktywny",
+                "category": "Kategoria",
+                "theoryPassed": "Teoria zaliczona"
+            },
+            "metrics": {
+                "progress": "Postęp",
+                "lessons": "Zajęcia",
+                "practiceHours": "Godziny praktyki",
+                "rating": "Ocena"
+            },
+            "tabs": {
+                "info": "Informacje",
+                "lessons": "Zajęcia",
+                "payments": "Płatności",
+                "exams": "Egzaminy",
+                "notes": "Notatki"
+            },
+            "info": {
+                "contactTitle": "Informacje kontaktowe",
+                "phone": "Telefon",
+                "email": "Email",
+                "dateOfBirth": "Data urodzenia",
+                "address": "Adres",
+                "emergencyContact": "Kontakt awaryjny",
+                "emergencyPhone": "Telefon do kontaktu awaryjnego",
+                "learningTitle": "Informacje o nauce",
+                "enrollmentDate": "Data zapisu",
+                "packageType": "Pakiet szkoleniowy",
+                "strongPoints": "Mocne strony",
+                "weakPoints": "Wymaga uwagi"
+            },
+            "lessons": {
+                "title": "Historia zajęć",
+                "type": "Typ zajęć",
+                "completed": "Zakończone",
+                "scheduled": "Zaplanowane",
+                "missed": "Nieobecne",
+                "practiceTypes": {
+                    "city": "Praktyka - miasto",
+                    "examPrep": "Przygotowanie do egzaminu"
+                }
+            },
+            "payments": {
+                "title": "Informacje finansowe",
+                "totalCost": "Koszt całkowity",
+                "paid": "Opłacono",
+                "balance": "Do zapłaty",
+                "nextPayment": "Następna płatność",
+                "paymentHistory": "Historia płatności",
+                "description": "Opis",
+                "method": "Sposób płatności",
+                "status": {
+                    "completed": "Opłacono",
+                    "pending": "Oczekujące"
+                },
+                "methods": {
+                    "card": "Karta",
+                    "cash": "Gotówka",
+                    "transfer": "Przelew"
+                },
+                "nextPaymentAlert": "Następna płatność {amount} PLN do {date}"
+            },
+            "exams": {
+                "title": "Egzaminy",
+                "theoryExam": "Egzamin teoretyczny",
+                "practiceExam": "Egzamin praktyczny",
+                "date": "Data",
+                "plannedDate": "Planowana data",
+                "attempts": "Próby",
+                "status": {
+                    "passed": "Zaliczone",
+                    "failed": "Niezaliczone",
+                    "scheduled": "Zaplanowane"
+                }
+            },
+            "notes": {
+                "title": "Notatki instruktora",
+                "placeholder": "Dodaj notatki o kursancie..."
+            },
+            "currency": "zł"
+        },
+        "main": {
+            "title": "Moi kursanci",
+            "subtitle": "Zarządzanie i śledzenie postępów kursantów",
+            "addStudent": "Dodaj kursanta",
+            "stats": {
+                "total": "Ogółem",
+                "active": "Aktywni",
+                "progress": "Postęp",
+                "exams": "Egzaminy",
+                "hours": "Godziny",
+                "rating": "Ocena"
+            },
+            "search": {
+                "placeholder": "Szukaj po imieniu, emailu lub telefonie..."
+            },
+            "filters": {
+                "all": "Wszyscy kursanci",
+                "active": "Aktywni",
+                "paused": "Wstrzymani",
+                "completed": "Zakończyli",
+                "sortBy": {
+                    "name": "Wg imienia",
+                    "progress": "Wg postępu",
+                    "lessons": "Wg zajęć",
+                    "rating": "Wg oceny"
+                }
+            },
+            "tabs": {
+                "cards": "Karty",
+                "list": "Lista"
+            },
+            "card": {
+                "category": "kategoria {category}",
+                "overallProgress": "Całkowity postęp",
+                "lessons": "Lekcje",
+                "lessonsCount": "{completed}/{total}",
+                "rating": "Ocena",
+                "status": {
+                    "active": "Aktywny",
+                    "paused": "Wstrzymany"
+                },
+                "payment": {
+                    "overdue": "Zaległość w płatności"
+                },
+                "exam": "Egzamin: {date}",
+                "nextLesson": {
+                    "title": "Następna lekcja",
+                    "dateTime": "{dateTime}"
+                }
+            },
+            "actions": {
+                "details": "Szczegóły",
+                "progress": "Postęp",
+                "more": "Więcej"
+            },
+            "dropdown": {
+                "label": "Działania",
+                "profile": "Profil",
+                "progress": "Postęp",
+                "report": "Raport",
+                "call": "Zadzwoń",
+                "message": "Wyślij wiadomość"
+            },
+            "table": {
+                "headers": {
+                    "student": "Kursant",
+                    "progress": "Postęp",
+                    "lessons": "Zajęcia",
+                    "nextLesson": "Następne",
+                    "status": "Status",
+                    "actions": "Działania"
+                },
+                "lessonsFrom": "{completed} z {total}",
+                "noNextLesson": "-"
+            },
+            "quickActions": {
+                "title": "Szybkie działania",
+                "generateReport": "Wygeneruj raport",
+                "exportData": "Eksportuj dane",
+                "bulkMessage": "Wiadomość masowa",
+                "scheduleLessons": "Zaplanuj zajęcia"
+            }
+        }
+    },
+    "vehicle": {
+        "inspection": {
+            "title": "Kontrola pojazdu",
+            "vehicleInfo": "{model} • {number} • {mileage} km",
+            "buttons": {
+                "history": "Historia",
+                "save": "Zapisz",
+                "back": "Wstecz",
+                "next": "Dalej",
+                "finishInspection": "Zakończ kontrolę"
+            },
+            "progress": {
+                "title": "Postęp kontroli",
+                "steps": "{current} z {total}"
+            },
+            "steps": {
+                "exterior": "Kontrola zewnętrzna",
+                "interior": "Wnętrze",
+                "engine": "Silnik",
+                "safety": "Bezpieczeństwo",
+                "documents": "Dokumenty"
+            },
+            "exterior": {
+                "title": "Kontrola zewnętrzna",
+                "subtitle": "Sprawdź stan zewnętrzny pojazdu",
+                "bodyCondition": {
+                    "label": "Stan karoserii",
+                    "good": "Dobry - bez uszkodzeń",
+                    "minor": "Drobne rysy",
+                    "major": "Znaczne uszkodzenia"
+                },
+                "components": {
+                    "label": "Sprawdzenie komponentów",
+                    "windowsClean": "Szyby czyste i bez pęknięć",
+                    "lightsWorking": "Wszystkie światła działają (mijania/drogowe/kierunkowskazy/stop)",
+                    "mirrorsClean": "Lusterka czyste i prawidłowo ustawione",
+                    "tirePressure": "Ciśnienie w oponach jest prawidłowe"
+                },
+                "tiresCondition": {
+                    "label": "Stan opon",
+                    "good": "Dobry bieżnik (powyżej 4mm)",
+                    "worn": "Zużyte (2-4mm)",
+                    "replace": "Wymagają wymiany (poniżej 2mm)"
+                }
+            },
+            "interior": {
+                "title": "Kontrola wnętrza",
+                "subtitle": "Sprawdź stan i czystość wnętrza",
+                "components": {
+                    "label": "Sprawdzenie komponentów",
+                    "seatbeltsWorking": "Pasy bezpieczeństwa sprawne",
+                    "dashboardClean": "Deska rozdzielcza czysta",
+                    "controlsWorking": "Wszystkie przyciski i przełączniki działają",
+                    "acHeatingWorking": "Klimatyzacja/ogrzewanie działa"
+                },
+                "cleanlinessLevel": {
+                    "label": "Poziom czystości",
+                    "clean": "Czysto",
+                    "acceptable": "Przyzwoicie",
+                    "dirty": "Wymaga sprzątania"
+                }
+            },
+            "engine": {
+                "title": "Kontrola silnika",
+                "subtitle": "Sprawdź poziom płynów i stan silnika",
+                "warning": {
+                    "title": "Uwaga!",
+                    "description": "Kontrolę silnika przeprowadzać tylko przy wyłączonym i schłodzonym silniku"
+                },
+                "oilLevel": {
+                    "label": "Poziom oleju",
+                    "normal": "Normalny",
+                    "low": "Niski",
+                    "critical": "Krytycznie niski"
+                },
+                "coolantLevel": {
+                    "label": "Poziom płynu chłodniczego",
+                    "normal": "Normalny",
+                    "low": "Niski",
+                    "critical": "Krytycznie niski"
+                },
+                "components": {
+                    "windshieldFluid": "Wystarczający poziom płynu do spryskiwaczy",
+                    "noLeaks": "Brak wycieków płynów"
+                }
+            },
+            "safety": {
+                "title": "Kontrola bezpieczeństwa",
+                "subtitle": "Sprawdź wszystkie systemy bezpieczeństwa",
+                "components": {
+                    "brakeTest": "Hamulce robocze działają skutecznie",
+                    "emergencyBrake": "Hamulec postojowy trzyma pojazd",
+                    "hornWorking": "Sygnał dźwiękowy działa",
+                    "firstAidKit": "Apteczka jest na miejscu i kompletna",
+                    "fireExtinguisher": "Gaśnica jest na miejscu i ważna",
+                    "warningTriangle": "Trójkąt ostrzegawczy jest na miejscu"
+                }
+            },
+            "documents": {
+                "title": "Kontrola dokumentów",
+                "subtitle": "Upewnij się, że wszystkie niezbędne dokumenty są na miejscu",
+                "items": {
+                    "registration": "Dowód rejestracyjny",
+                    "insurance": "Polisa ubezpieczeniowa (ważna)",
+                    "inspection": "Przegląd techniczny (ważny)",
+                    "driverLicense": "Prawo jazdy"
+                }
+            },
+            "notes": {
+                "title": "Dodatkowe uwagi",
+                "placeholder": "Wpisz dodatkowe spostrzeżenia lub problemy..."
+            },
+            "previousInspections": {
+                "title": "Poprzednie kontrole",
+                "type": {
+                    "daily": "Codzienna"
+                },
+                "issues": "{count} problemów",
+                "status": {
+                    "passed": "Zaliczone",
+                    "warning": "Z uwagami",
+                    "failed": "Niezaliczone"
+                }
+            }
+        },
+        "reportIssue": {
+            "title": "Zgłoś problem",
+            "vehicleInfo": "{make} {model} • {registrationNumber}",
+            "buttons": {
+                "back": "Wróć",
+                "cancel": "Anuluj",
+                "submit": "Zgłoś problem",
+                "submitting": "Wysyłanie...",
+                "addPhoto": "Dodaj"
+            },
+            "alerts": {
+                "critical": {
+                    "title": "Krytyczny problem!",
+                    "description": "Po zgłoszeniu pojazd zostanie automatycznie wyłączony z użytku do czasu naprawy."
+                }
+            },
+            "form": {
+                "title": "Szczegóły problemu",
+                "subtitle": "Opisz problem szczegółowo, aby mechanik mógł szybko go rozwiązać",
+                "category": {
+                    "label": "Kategoria problemu *",
+                    "placeholder": "Wybierz kategorię",
+                    "options": {
+                        "engine": "Silnik",
+                        "transmission": "Skrzynia biegów",
+                        "brakes": "Hamulce",
+                        "suspension": "Zawieszenie",
+                        "electrical": "Elektryka",
+                        "lights": "Oświetlenie",
+                        "tires": "Opony",
+                        "interior": "Wnętrze",
+                        "exterior": "Karoseria",
+                        "fluids": "Płyny",
+                        "other": "Inne"
+                    }
+                },
+                "severity": {
+                    "label": "Poziom krytyczności *",
+                    "levels": {
+                        "low": {
+                            "label": "Niski",
+                            "description": "Można kontynuować pracę"
+                        },
+                        "medium": {
+                            "label": "Średni",
+                            "description": "Wymaga uwagi w najbliższym czasie"
+                        },
+                        "high": {
+                            "label": "Wysoki",
+                            "description": "Wymaga natychmiastowej uwagi"
+                        },
+                        "critical": {
+                            "label": "Krytyczny",
+                            "description": "Nie można używać pojazdu"
+                        }
+                    }
+                },
+                "description": {
+                    "label": "Opis problemu *",
+                    "placeholder": "Opisz problem szczegółowo...",
+                    "quickOptions": "Szybkie opcje:",
+                    "commonIssues": {
+                        "strangeSound": "Dziwny dźwięk podczas jazdy",
+                        "steeringVibration": "Wibracje kierownicy",
+                        "startingDifficulty": "Trudności z odpalaniem",
+                        "fluidLeak": "Wyciek płynu",
+                        "brakingProblems": "Problemy z hamowaniem",
+                        "lightsNotWorking": "Oświetlenie nie działa prawidłowo"
+                    }
+                },
+                "when": {
+                    "label": "Kiedy wystąpił problem"
+                },
+                "location": {
+                    "label": "Lokalizacja",
+                    "placeholder": "np. ul. Główna 15, Warszawa"
+                },
+                "mileage": {
+                    "label": "Aktualny przebieg (km) *",
+                    "lastKnown": "Ostatni znany: {mileage} km"
+                },
+                "checkboxes": {
+                    "affectsOperation": {
+                        "label": "Problem wpływa na bezpieczną eksploatację",
+                        "description": "Pojazd może stanowić zagrożenie"
+                    },
+                    "needsImmediate": {
+                        "label": "Wymaga natychmiastowej uwagi",
+                        "description": "Mechanik powinien sprawdzić jak najszybciej"
+                    }
+                },
+                "images": {
+                    "label": "Zdjęcia problemu",
+                    "maxFiles": "Maksymalnie 6 zdjęć. Zdjęcia pomogą mechanikowi szybciej zidentyfikować problem."
+                },
+                "additionalNotes": {
+                    "label": "Dodatkowe uwagi (opcjonalnie)",
+                    "placeholder": "Inne ważne informacje..."
+                }
+            },
+            "info": {
+                "title": "Co się dzieje po zgłoszeniu?",
+                "steps": {
+                    "notification": "Mechanik otrzymuje powiadomienie",
+                    "analysis": "Problem jest analizowany i ustalany jest priorytet",
+                    "feedback": "Otrzymasz informację o planowanej naprawie",
+                    "critical": "W przypadku krytycznego problemu pojazd jest blokowany"
+                }
+            }
+        },
+        "main": {
+            "title": "Mój pojazd",
+            "vehicleInfo": "{make} {model} • {registrationNumber}",
+            "buttons": {
+                "report": "Raport",
+                "reportIssue": "Zgłoś problem",
+                "update": "Aktualizuj",
+                "confirmCheck": "Potwierdź kontrolę"
+            },
+            "overview": {
+                "title": "Informacje o pojeździe",
+                "make": "Marka/Model",
+                "year": "Rok produkcji",
+                "transmission": "Skrzynia biegów",
+                "transmissionTypes": {
+                    "manual": "Manualna",
+                    "automatic": "Automatyczna"
+                },
+                "fuel": "Paliwo",
+                "fuelTypes": {
+                    "gasoline": "Benzyna",
+                    "diesel": "Diesel",
+                    "electric": "Elektryczny",
+                    "hybrid": "Hybrydowy"
+                },
+                "color": "Kolor",
+                "engineSize": "Pojemność silnika",
+                "vin": "VIN",
+                "status": "Status",
+                "statusActive": "Aktywny"
+            },
+            "mileage": {
+                "title": "Przebieg",
+                "km": "km",
+                "today": "+{km} km dzisiaj",
+                "updateLabel": "Aktualizuj przebieg",
+                "placeholder": "Nowy przebieg"
+            },
+            "fuel": {
+                "title": "Paliwo",
+                "lowLevel": "Niski poziom paliwa!",
+                "consumption": "Zużycie",
+                "average": "{value} l/100km (średnie)"
+            },
+            "health": {
+                "title": "Stan pojazdu",
+                "engine": "Silnik",
+                "brakes": "Hamulce",
+                "tires": "Opony"
+            },
+            "maintenance": {
+                "title": "Przyszłe przeglądy",
+                "periodicInspection": "Przegląd okresowy",
+                "inKmOrDate": "Za {km} km lub {date}",
+                "oilChange": "Wymiana oleju",
+                "tireRotation": "Rotacja opon",
+                "inKm": "Za {km} km"
+            },
+            "documents": {
+                "title": "Dokumenty",
+                "insurance": "Ubezpieczenie",
+                "technicalInspection": "Przegląd techniczny",
+                "registration": "Rejestracja",
+                "validUntil": "Do {date}",
+                "valid": "Ważny",
+                "validFemale": "Ważna"
+            },
+            "tabs": {
+                "checklist": "Codzienna kontrola",
+                "history": "Historia",
+                "statistics": "Statystyki",
+                "maintenance": "Obsługa"
+            },
+            "dailyChecklist": {
+                "title": "Codzienna kontrola",
+                "subtitle": "Sprawdź wszystkie punkty przed rozpoczęciem pracy",
+                "items": {
+                    "exteriorInspection": "Zewnętrzna kontrola karoserii",
+                    "interiorCleanliness": "Czystość wnętrza",
+                    "lightsCheck": "Sprawdzenie wszystkich świateł",
+                    "tiresCheck": "Stan i ciśnienie opon",
+                    "fluidsCheck": "Poziom płynów",
+                    "brakesTest": "Test hamulców",
+                    "documentsPresent": "Obecność dokumentów",
+                    "firstAidKit": "Apteczka",
+                    "fireExtinguisher": "Gaśnica",
+                    "warningTriangle": "Trójkąt ostrzegawczy"
+                }
+            },
+            "history": {
+                "mileageHistory": "Historia przebiegu",
+                "dailyMileage": "Dzienny przebieg (km)",
+                "recentIssues": "Ostatnie problemy",
+                "severityLow": "Niski",
+                "severityMedium": "Średni",
+                "severityHigh": "Wysoki",
+                "resolved": "Rozwiązany",
+                "active": "Aktywny",
+                "resolvedOn": "Rozwiązano {date}"
+            },
+            "statistics": {
+                "fuelConsumption": "Zużycie paliwa",
+                "averageConsumption": "Średnie zużycie",
+                "fuelCosts": "Koszty paliwa",
+                "perMonth": "/mies.",
+                "vehicleUsage": "Wykorzystanie pojazdu",
+                "averageMileagePerDay": "Średni przebieg/dzień",
+                "workHoursPerDay": "Godziny pracy/dzień",
+                "utilization": "Wykorzystanie",
+                "hours": "godz.",
+                "thisMonth": "Ten miesiąc:",
+                "thisYear": "Ten rok:",
+                "projectedMileage": "Przewidywany przebieg",
+                "inMonth": "Miesięcznie",
+                "inQuarter": "Kwartalnie",
+                "inYear": "Rocznie"
+            },
+            "maintenanceHistory": {
+                "title": "Historia obsługi",
+                "periodicInspection": "Przegląd okresowy",
+                "tireChange": "Wymiana opon",
+                "items": {
+                    "oilChange": "Wymiana oleju",
+                    "filterChange": "Wymiana filtrów",
+                    "brakeCheck": "Sprawdzenie hamulców",
+                    "winterTires": "Opony zimowe (4 szt.)"
+                },
+                "currency": "{amount} zł"
+            },
+            "recommendations": {
+                "title": "Rekomendacje dotyczące obsługi",
+                "based": "Na podstawie przebiegu i historii obsługi zalecamy:",
+                "checkBrakePads": "Sprawdź klocki hamulcowe",
+                "brakeWear": "Zużycie hamulców spadło do 75%",
+                "planTireChange": "Zaplanuj wymianę opon",
+                "tireWear": "Zużycie osiągnęło 70%",
+                "airFilterChange": "Wymiana filtra powietrza",
+                "recommendedIn": "Zalecane za {km} km"
+            }
+        }
+    },
+    "layout": {
+        "logo": {
+            "title": "DenisDrive",
+            "subtitle": "Portal instruktora"
+        },
+        "navigation": {
+            "dashboard": "Panel główny",
+            "schedule": "Harmonogram",
+            "lessons": "Zajęcia",
+            "todayLessons": "Dzisiejsze",
+            "students": "Kursanci",
+            "earnings": "Zarobki",
+            "vehicle": "Pojazd",
+            "messages": "Wiadomości",
+            "resources": "Materiały",
+            "profile": "Profil",
+            "settings": "Ustawienia"
+        },
+        "bottomNav": {
+            "dashboard": "Główna",
+            "today": "Dziś",
+            "lessons": "Zajęcia",
+            "students": "Kursanci",
+            "menu": "Menu"
+        },
+        "userStats": {
+            "rating": "Ocena",
+            "role": "Instruktor",
+            "today": "Dziś",
+            "lessons": "{completed}/{total} zajęć",
+            "nextLesson": "Następne"
+        },
+        "breadcrumbs": {
+            "dashboard": "Panel główny",
+            "schedule": "Harmonogram",
+            "availability": "Dostępność",
+            "exceptions": "Wyjątki",
+            "lessons": "Zajęcia",
+            "today": "Dzisiejsze",
+            "checkIn": "Rejestracja",
+            "students": "Kursanci",
+            "progress": "Postęp",
+            "feedback": "Opinie",
+            "earnings": "Zarobki",
+            "history": "Historia",
+            "details": "Szczegóły",
+            "vehicle": "Pojazd",
+            "inspection": "Kontrola",
+            "reportIssue": "Zgłoś problem",
+            "messages": "Wiadomości",
+            "resources": "Materiały",
+            "upload": "Dodaj materiał",
+            "profile": "Profil",
+            "documents": "Dokumenty",
+            "settings": "Ustawienia"
+        },
+        "languages": {
+            "pl": "Polski",
+            "uk": "Ukraiński",
+            "en": "Angielski",
+            "ru": "Rosyjski"
+        },
+        "search": {
+            "placeholder": "Szukaj..."
+        },
+        "notifications": {
+            "title": "Powiadomienia",
+            "markAllRead": "Oznacz wszystkie jako przeczytane",
+            "noNotifications": "Brak powiadomień",
+            "viewAll": "Zobacz wszystkie",
+            "timeAgo": {
+                "minutes": "{count} min temu",
+                "hours": "{count} godz. temu",
+                "days": "{count} dni temu"
+            },
+            "types": {
+                "newLesson": "Nowe zajęcia",
+                "reminder": "Przypomnienie",
+                "congratulations": "Gratulacje!"
+            },
+            "messages": {
+                "lessonBooked": "{name} zarezerwował zajęcia na jutro",
+                "lessonReminder": "Następne zajęcia za 30 minut",
+                "studentPassed": "Twój uczeń zdał egzamin"
+            }
+        },
+        "userMenu": {
+            "profile": "Przejdź do profilu",
+            "settings": "Ustawienia",
+            "help": "Pomoc i wsparcie",
+            "darkMode": "Tryb ciemny",
+            "lightMode": "Tryb jasny",
+            "logout": "Wyloguj"
+        },
+        "quickActions": {
+            "settings": "Ustawienia"
+        },
+        "logout": {
+            "button": "Wyloguj"
+        }
+    }
+}

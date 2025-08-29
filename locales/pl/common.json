@@ -1,0 +1,72 @@
+{
+  "validation": {
+    "emailInvalid": "Nieprawidłowy adres e-mail",
+    "passwordMin": "Hasło musi mieć co najmniej 8 znaków",
+    "passwordUppercase": "Hasło musi zawierać co najmniej jedną wielką literę",
+    "passwordLowercase": "Hasło musi zawierać co najmniej jedną małą literę",
+    "passwordNumber": "Hasło musi zawierać co najmniej jedną cyfrę",
+    "passwordsDontMatch": "Hasła nie pasują do siebie",
+    "firstNameMin": "Imię musi mieć co najmniej 2 znaki",
+    "lastNameMin": "Nazwisko musi mieć co najmniej 2 znaki",
+    "phoneMin": "Numer telefonu musi mieć co najmniej 9 cyfr",
+    "mustAgreeToTerms": "Musisz zgodzić się z warunkami użytkowania"
+  },
+  "aria": {
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło"
+  },
+  "toast": {
+    "googleComingSoon": "Logowanie przez Google wkrótce",
+    "facebookComingSoon": "Logowanie przez Facebook wkrótce"
+  },
+  "errors": {
+    "failedToSendEmail": "Nie udało się wysłać wiadomości e-mail w celu odzyskania hasła",
+    "failedToResetPassword": "Nie udało się zmienić hasła"
+  },
+  "messages": {
+    "registrationSuccessButLoginFailed": "Rejestracja udana, ale logowanie nie powiodło się. Zaloguj się ręcznie"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Nie znaleziono strony",
+    "backToHome": "Powrót na stronę główną"
+  },
+  "error": {
+    "title": "Coś poszło nie tak!",
+    "tryAgain": "Spróbuj ponownie"
+  },
+  "paymentReturn": {
+    "status": {
+      "checking": "Sprawdzanie płatności...",
+      "pending": "Płatność jest przetwarzana",
+      "success": "Płatność zakończona pomyślnie!",
+      "failed": "Płatność nie powiodła się",
+      "error": "Wystąpił błąd"
+    },
+    "messages": {
+      "checking": "Proszę czekać, sprawdzamy Twoją płatność...",
+      "pending": "Twoja płatność jest przetwarzana przez Przelewy24. Może to potrwać kilka minut. Możesz odświeżyć tę stronę lub sprawdzić status później.",
+      "successBooking": "Dziękujemy za opłacenie lekcji. Za chwilę zostaniesz przekierowany do swoich rezerwacji.",
+      "successPackage": "Dziękujemy za zakup pakietu. Kredyty zostały dodane do Twojego konta.",
+      "successDefault": "Dziękujemy za płatność. Za chwilę zostaniesz przekierowany.",
+      "failed": "Płatność została anulowana lub odrzucona. Spróbuj ponownie.",
+      "errorWithSession": "Nie możemy sprawdzić statusu płatności. Spróbuj ponownie później.",
+      "errorNoSession": "Brak informacji o płatności."
+    },
+    "details": {
+      "paymentId": "ID płatności:",
+      "amount": "Kwota:",
+      "description": "Opis:",
+      "testPayment": "Płatność testowa (tryb deweloperski)"
+    },
+    "buttons": {
+      "goToDashboard": "Przejdź do pulpitu",
+      "back": "Wstecz",
+      "mainDashboard": "Główny pulpit",
+      "checkAgain": "Sprawdź ponownie",
+      "returnLater": "Wróć później",
+      "backToDashboard": "Powrót do pulpitu"
+    },
+    "checkingStatus": "Sprawdzanie statusu... ({count}/30)"
+  }
+}

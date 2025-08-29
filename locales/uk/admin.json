@@ -7,7 +7,6 @@
         "previousMonth": "Попередній місяць",
         "nextMonth": "Наступний місяць",
         "today": "Сьогодні",
-
         "weekNavigation": "{startDate} - {endDate}"
       },
       "viewTypes": {
@@ -105,7 +104,7 @@
         "intensiveB": "Пакет Інтенсив B"
       }
     },
-     "title": "Бронювання",
+    "title": "Бронювання",
     "subtitle": "Керування всіма бронюваннями та уроками",
     "buttons": {
       "export": "Експорт",
@@ -162,7 +161,6 @@
       "statusDistribution": "Розподіл статусів",
       "bookings": "Бронювання"
     },
-
     "details": {
       "title": "Деталі бронювання {id}",
       "studentInfo": "Учень",
@@ -195,7 +193,7 @@
       "emptySlot": "—"
     }
   },
-   "dashboard": {
+  "dashboard": {
     "title": "Панель керування",
     "subtitle": "Вітаємо! Ось огляд вашої автошколи",
     "loading": "Завантаження даних...",
@@ -289,7 +287,6 @@
       "unconfirmedSchedule": "{count} інструкторів не підтвердили розклад на наступний тиждень"
     }
   },
-
   "instructors": {
     "list": {
       "title": "Інструктори",
@@ -432,12 +429,10 @@
       }
     }
   },
-  
   "lessons": {
     "detail": {
       "title": "Деталі уроку",
       "dateTime": "{date} • {startTime} - {endTime}",
-      
       "buttons": {
         "share": "Поділитися",
         "report": "Звіт",
@@ -446,7 +441,6 @@
         "message": "Написати",
         "saveNotes": "Зберегти нотатки"
       },
-      
       "student": {
         "title": "Курсант",
         "id": "ID: {id}",
@@ -454,7 +448,6 @@
         "courseProgress": "Прогрес курсу",
         "lessonsCompleted": "{completed} з {total} уроків"
       },
-      
       "lessonInfo": {
         "title": "Інформація про урок",
         "type": "Тип уроку",
@@ -467,7 +460,6 @@
         "status": "Статус",
         "completed": "Завершено"
       },
-      
       "payment": {
         "title": "Оплата",
         "amount": "{amount} грн",
@@ -478,14 +470,12 @@
         "date": "Дата:",
         "confirmed": "Платіж підтверджено системою"
       },
-      
       "tabs": {
         "objectives": "Цілі",
         "performance": "Результати",
         "metrics": "Метрики",
         "feedback": "Відгуки"
       },
-      
       "objectives": {
         "title": "Цілі уроку",
         "completed": "Виконано",
@@ -497,7 +487,6 @@
         "parallelParking": "Паралельне паркування",
         "turningLimited": "Розворот в обмеженому просторі"
       },
-      
       "performance": {
         "title": "Оцінка виконання",
         "overallRating": "Загальна оцінка",
@@ -511,7 +500,6 @@
         "parkingConfidence": "Впевненість при паркуванні",
         "decisionSpeed": "Швидкість прийняття рішень"
       },
-      
       "metrics": {
         "title": "Метрики водіння",
         "distance": "Дистанція",
@@ -524,25 +512,21 @@
         "kmh": "{value} км/год",
         "liters": "{value} л"
       },
-      
       "feedback": {
         "instructorTitle": "Відгук інструктора",
         "studentTitle": "Відгук курсанта",
         "instructorComment": "Відмінний урок! Марія показала великий прогрес. Готова до іспиту на 90%.",
         "studentComment": "Дякую за терпіння! Нарешті зрозуміла паралельне паркування."
       },
-      
       "nextLesson": {
         "title": "Наступний урок:",
         "info": "{date} о {time} - {type}",
         "finalPrep": "Фінальна підготовка"
       },
-      
       "lessonTypes": {
         "examPreparation": "Підготовка до іспиту",
         "finalPreparation": "Фінальна підготовка"
       },
-      
       "locations": {
         "examRoute": "Екзаменаційний маршрут",
         "practiceArea": "Навчальний майданчик"
@@ -1101,7 +1085,7 @@
       "discount": "-{percent}%"
     }
   },
-   "payments": {
+  "payments": {
     "invoices": {
       "title": "Рахунки",
       "subtitle": "Управління бухгалтерськими документами",
@@ -1803,9 +1787,7 @@
   },
   "settings": {
     "title": "Налаштування",
-
     "general": {
-      
       "title": "Загальні налаштування",
       "schoolName": "Назва школи",
       "email": "Email",
@@ -1835,7 +1817,6 @@
         "uk": "Українська"
       }
     },
-
     "notificationSettings": {
       "title": "Налаштування повідомлень",
       "channels": {
@@ -1930,7 +1911,6 @@
       "subject": "Тема:",
       "lastModified": "Останні зміни:"
     },
-
     "subtitle": "Системні налаштування та конфігурація",
     "buttons": {
       "export": "Експорт",
@@ -2180,7 +2160,7 @@
       },
       "onHold": {
         "label": "Призупинено",
-        "bg": "bg-yellow-100", 
+        "bg": "bg-yellow-100",
         "text": "text-yellow-700"
       },
       "completed": {
@@ -2208,588 +2188,588 @@
   },
   "users": {
     "detail": {
-      "title": "Курсанти",
-      "subtitle": "Управління курсантами автошколи",
+      "title": "Kursanci",
+      "subtitle": "Zarządzanie kursantami szkoły jazdy",
       "buttons": {
-        "export": "Експорт",
-        "addStudent": "Додати курсанта",
-        "moreFilters": "Більше фільтрів",
-        "view": "Переглянути",
-        "edit": "Редагувати",
-        "moreActions": "Більше дій",
-        "sendMessage": "Надіслати повідомлення",
-        "cancel": "Скасувати"
+        "export": "Eksportuj",
+        "addStudent": "Dodaj kursanta",
+        "moreFilters": "Więcej filtrów",
+        "view": "Zobacz",
+        "edit": "Edytuj",
+        "moreActions": "Więcej działań",
+        "sendMessage": "Wyślij wiadomość",
+        "cancel": "Anuluj"
       },
       "stats": {
-        "total": "Загалом",
-        "active": "Активні",
-        "completed": "Завершили",
-        "avgProgress": "Сер. прогрес",
-        "attendance": "Відвідуваність",
-        "revenue": "Дохід"
+        "total": "Ogółem",
+        "active": "Aktywni",
+        "completed": "Ukończone",
+        "avgProgress": "Śr. postęp",
+        "attendance": "Frekwencja",
+        "revenue": "Przychód"
       },
       "filters": {
-        "searchPlaceholder": "Пошук курсантів...",
-        "allStatuses": "Всі статуси",
-        "allPackages": "Всі пакети",
-        "allInstructors": "Всі інструктори",
+        "searchPlaceholder": "Szukaj kursantów...",
+        "allStatuses": "Wszystkie statusy",
+        "allPackages": "Wszystkie pakiety",
+        "allInstructors": "Wszyscy instruktorzy",
         "statuses": {
-          "active": "Активні",
-          "onHold": "Призупинені",
-          "completed": "Завершені",
-          "dropped": "Відмовились"
+          "active": "Aktywni",
+          "onHold": "Wstrzymane",
+          "completed": "Ukończone",
+          "dropped": "Zrezygnowali"
         }
       },
       "table": {
         "headers": {
-          "student": "Курсант",
-          "package": "Пакет",
-          "instructor": "Інструктор",
-          "progress": "Прогрес",
-          "nextLesson": "Наступне заняття",
-          "status": "Статус",
-          "actions": "Дії"
+          "student": "Kursant",
+          "package": "Pakiet",
+          "instructor": "Instruktor",
+          "progress": "Postęp",
+          "nextLesson": "Następna lekcja",
+          "status": "Status",
+          "actions": "Działania"
         },
-        "category": "Категорія",
-        "theory": "Теорія",
-        "practice": "Практика",
+        "category": "Kategoria",
+        "theory": "Teoria",
+        "practice": "Praktyka",
         "lessonsFormat": "{completed}/{total}"
       },
       "status": {
         "active": {
-          "label": "Активний",
+          "label": "Aktywny",
           "bg": "bg-green-100",
           "text": "text-green-700"
         },
         "onHold": {
-          "label": "Призупинено",
+          "label": "Wstrzymany",
           "bg": "bg-yellow-100",
           "text": "text-yellow-700"
         },
         "completed": {
-          "label": "Завершено",
+          "label": "Ukończony",
           "bg": "bg-blue-100",
           "text": "text-blue-700"
         },
         "dropped": {
-          "label": "Відмова",
+          "label": "Rezygnacja",
           "bg": "bg-red-100",
           "text": "text-red-700"
         }
       },
       "bulkActions": {
-        "selected": "Обрано: {count} курсантів",
-        "sendMessage": "Надіслати повідомлення",
-        "export": "Експортувати"
+        "selected": "Wybrano: {count} kursantów",
+        "sendMessage": "Wyślij wiadomość",
+        "export": "Eksportuj"
       },
       "pagination": {
-        "showing": "Показано {from} - {to} з {total} курсантів"
+        "showing": "Pokazano {from} - {to} z {total} kursantów"
       },
       "loading": {
-        "processing": "Обробка..."
+        "processing": "Przetwarzanie..."
       }
     },
     "new": {
-      "title": "Створення нового користувача",
-      "subtitle": "Заповніть всі необхідні дані",
+      "title": "Tworzenie nowego użytkownika",
+      "subtitle": "Wypełnij wszystkie wymagane dane",
       "buttons": {
-        "back": "Назад",
-        "previous": "Попередній",
-        "next": "Далі",
-        "save": "Зберегти",
-        "saving": "Збереження...",
-        "generatePassword": "Згенерувати пароль"
+        "back": "Wstecz",
+        "previous": "Poprzedni",
+        "next": "Dalej",
+        "save": "Zapisz",
+        "saving": "Zapisywanie...",
+        "generatePassword": "Wygeneruj hasło"
       },
       "steps": {
-        "personal": "Особисті дані",
-        "address": "Адреса",
-        "account": "Налаштування облікового запису",
-        "roleInfo": "Інформація про роль",
-        "review": "Підсумок даних"
+        "personal": "Dane osobowe",
+        "address": "Adres",
+        "account": "Ustawienia konta",
+        "roleInfo": "Informacje o roli",
+        "review": "Podsumowanie danych"
       },
       "personal": {
-        "title": "Особисті дані",
-        "firstName": "Ім'я *",
-        "firstNamePlaceholder": "Олександр",
-        "lastName": "Прізвище *",
-        "lastNamePlaceholder": "Коваленко",
+        "title": "Dane osobowe",
+        "firstName": "Imię *",
+        "firstNamePlaceholder": "Aleksander",
+        "lastName": "Nazwisko *",
+        "lastNamePlaceholder": "Kowalski",
         "email": "Email *",
-        "emailPlaceholder": "example@email.com",
-        "phone": "Телефон *",
-        "phonePlaceholder": "+380123456789",
-        "birthDate": "Дата народження *",
-        "gender": "Стать",
+        "emailPlaceholder": "przyklad@email.com",
+        "phone": "Telefon *",
+        "phonePlaceholder": "+48123456789",
+        "birthDate": "Data urodzenia *",
+        "gender": "Płeć",
         "genderOptions": {
-          "male": "Чоловік",
-          "female": "Жінка",
-          "other": "Інша"
+          "male": "Mężczyzna",
+          "female": "Kobieta",
+          "other": "Inna"
         }
       },
       "address": {
-        "title": "Адреса",
-        "street": "Вулиця та номер будинку *",
-        "streetPlaceholder": "вул. Хрещатик 1",
-        "city": "Місто *",
-        "postalCode": "Поштовий індекс *",
-        "postalCodePlaceholder": "01001",
-        "emergencyContact": "Екстрений контакт",
-        "emergencyName": "Ім'я",
-        "emergencyNamePlaceholder": "Марія Коваленко",
-        "emergencyPhone": "Телефон",
-        "emergencyPhonePlaceholder": "+380987654321",
-        "emergencyRelation": "Зв'язок",
-        "emergencyRelationPlaceholder": "Мати"
+        "title": "Adres",
+        "street": "Ulica i numer domu *",
+        "streetPlaceholder": "ul. Marszałkowska 1",
+        "city": "Miasto *",
+        "postalCode": "Kod pocztowy *",
+        "postalCodePlaceholder": "00-001",
+        "emergencyContact": "Kontakt awaryjny",
+        "emergencyName": "Imię",
+        "emergencyNamePlaceholder": "Maria Kowalska",
+        "emergencyPhone": "Telefon",
+        "emergencyPhonePlaceholder": "+48987654321",
+        "emergencyRelation": "Relacja",
+        "emergencyRelationPlaceholder": "Matka"
       },
       "account": {
-        "title": "Налаштування облікового запису",
-        "role": "Роль користувача *",
+        "title": "Ustawienia konta",
+        "role": "Rola użytkownika *",
         "roles": {
-          "student": "Студент",
-          "instructor": "Інструктор",
-          "manager": "Менеджер",
-          "admin": "Адміністратор"
+          "student": "Student",
+          "instructor": "Instruktor",
+          "manager": "Menedżer",
+          "admin": "Administrator"
         },
-        "password": "Пароль *",
-        "passwordPlaceholder": "Мінімум 8 символів",
-        "confirmPassword": "Підтвердити пароль *",
-        "confirmPasswordPlaceholder": "Повторіть пароль",
-        "sendWelcomeEmail": "Надіслати вітальний email з даними для входу"
+        "password": "Hasło *",
+        "passwordPlaceholder": "Minimum 8 znaków",
+        "confirmPassword": "Potwierdź hasło *",
+        "confirmPasswordPlaceholder": "Powtórz hasło",
+        "sendWelcomeEmail": "Wyślij powitalny email z danymi logowania"
       },
       "studentInfo": {
-        "title": "Інформація про студента",
-        "package": "Навчальний пакет",
-        "selectPackage": "Оберіть пакет",
-        "category": "Категорія",
-        "selectCategory": "Оберіть категорію",
-        "instructor": "Інструктор",
-        "assignLater": "Призначити пізніше",
-        "startDate": "Дата початку навчання"
+        "title": "Informacje o studencie",
+        "package": "Pakiet szkoleniowy",
+        "selectPackage": "Wybierz pakiet",
+        "category": "Kategoria",
+        "selectCategory": "Wybierz kategorię",
+        "instructor": "Instruktor",
+        "assignLater": "Przypisz później",
+        "startDate": "Data rozpoczęcia kursu"
       },
       "instructorInfo": {
-        "title": "Інформація про інструктора",
-        "licenseNumber": "Номер посвідчення водія",
-        "licenseNumberPlaceholder": "АА123456",
-        "experience": "Досвід (років)",
+        "title": "Informacje o instruktorze",
+        "licenseNumber": "Numer prawa jazdy",
+        "licenseNumberPlaceholder": "AA123456",
+        "experience": "Doświadczenie (lata)",
         "experiencePlaceholder": "5",
-        "hourlyRate": "Погодинна ставка (грн)",
-        "hourlyRatePlaceholder": "500",
-        "specializations": "Спеціалізації",
+        "hourlyRate": "Stawka godzinowa (zł)",
+        "hourlyRatePlaceholder": "50",
+        "specializations": "Specjalizacje",
         "specializationOptions": {
-          "city": "Водіння по місту",
-          "highway": "Автострада",
-          "parking": "Паркування",
-          "night": "Нічне водіння",
-          "extreme": "Екстремальне водіння",
-          "theory": "Теорія"
+          "city": "Jazda po mieście",
+          "highway": "Autostrada",
+          "parking": "Parkowanie",
+          "night": "Jazda nocą",
+          "extreme": "Jazda ekstremalna",
+          "theory": "Teoria"
         },
-        "workingDays": "Робочі дні",
+        "workingDays": "Dni pracy",
         "weekDays": {
-          "monday": "Понеділок",
-          "tuesday": "Вівторок",
-          "wednesday": "Середа",
-          "thursday": "Четвер",
-          "friday": "П'ятниця",
-          "saturday": "Субота",
-          "sunday": "Неділя"
+          "monday": "Poniedziałek",
+          "tuesday": "Wtorek",
+          "wednesday": "Środa",
+          "thursday": "Czwartek",
+          "friday": "Piątek",
+          "saturday": "Sobota",
+          "sunday": "Niedziela"
         }
       },
       "review": {
-        "title": "Підсумок даних",
-        "personalData": "Особисті дані",
-        "fullName": "Ім'я та прізвище:",
+        "title": "Podsumowanie danych",
+        "personalData": "Dane osobowe",
+        "fullName": "Imię i nazwisko:",
         "email": "Email:",
-        "phone": "Телефон:",
-        "role": "Роль:",
-        "trainingInfo": "Навчальна інформація",
-        "package": "Пакет:",
-        "category": "Категорія:",
-        "instructor": "Інструктор:",
-        "notSelected": "Не обрано",
-        "notAssigned": "Не призначено",
-        "professionalInfo": "Професійна інформація",
-        "experience": "Досвід:",
-        "years": "{count} років",
-        "rate": "Ставка:",
-        "perHour": "грн {amount}/год",
-        "specializations": "Спеціалізації:",
-        "notSpecified": "Не вказано",
-        "confirmMessage": "Користувач буде створений з наведеними вище даними.",
-        "checkData": "Переконайтеся, що вся інформація правильна перед збереженням."
+        "phone": "Telefon:",
+        "role": "Rola:",
+        "trainingInfo": "Informacje o szkoleniu",
+        "package": "Pakiet:",
+        "category": "Kategoria:",
+        "instructor": "Instruktor:",
+        "notSelected": "Nie wybrano",
+        "notAssigned": "Nie przypisano",
+        "professionalInfo": "Informacje zawodowe",
+        "experience": "Doświadczenie:",
+        "years": "{count} lat",
+        "rate": "Stawka:",
+        "perHour": "zł {amount}/godz.",
+        "specializations": "Specjalizacje:",
+        "notSpecified": "Nie określono",
+        "confirmMessage": "Użytkownik zostanie utworzony z powyższymi danymi.",
+        "checkData": "Upewnij się, że wszystkie informacje są poprawne przed zapisaniem."
       },
       "errors": {
-        "firstNameRequired": "Ім'я обов'язкове",
-        "lastNameRequired": "Прізвище обов'язкове",
-        "emailRequired": "Email обов'язковий",
-        "emailInvalid": "Неправильний формат email",
-        "phoneRequired": "Телефон обов'язковий",
-        "birthDateRequired": "Дата народження обов'язкова",
-        "streetRequired": "Вулиця обов'язкова",
-        "cityRequired": "Місто обов'язкове",
-        "postalCodeRequired": "Поштовий індекс обов'язковий",
-        "passwordRequired": "Пароль обов'язковий",
-        "passwordMinLength": "Пароль має містити мінімум 8 символів",
-        "passwordsNotMatch": "Паролі не співпадають"
+        "firstNameRequired": "Imię jest wymagane",
+        "lastNameRequired": "Nazwisko jest wymagane",
+        "emailRequired": "Email jest wymagany",
+        "emailInvalid": "Nieprawidłowy format email",
+        "phoneRequired": "Telefon jest wymagany",
+        "birthDateRequired": "Data urodzenia jest wymagana",
+        "streetRequired": "Ulica jest wymagana",
+        "cityRequired": "Miasto jest wymagane",
+        "postalCodeRequired": "Kod pocztowy jest wymagany",
+        "passwordRequired": "Hasło jest wymagane",
+        "passwordMinLength": "Hasło musi mieć minimum 8 znaków",
+        "passwordsNotMatch": "Hasła nie pasują do siebie"
       }
     },
     "list": {
-      "title": "Користувачі",
-      "subtitle": "Управління користувачами системи",
+      "title": "Użytkownicy",
+      "subtitle": "Zarządzanie użytkownikami systemu",
       "buttons": {
-        "addUser": "Додати користувача",
-        "moreFilters": "Більше фільтрів",
-        "activate": "Активувати",
-        "deactivate": "Деактивувати",
-        "delete": "Видалити",
-        "cancel": "Скасувати",
-        "view": "Переглянути",
-        "edit": "Редагувати"
+        "addUser": "Dodaj użytkownika",
+        "moreFilters": "Więcej filtrów",
+        "activate": "Aktywuj",
+        "deactivate": "Dezaktywuj",
+        "delete": "Usuń",
+        "cancel": "Anuluj",
+        "view": "Zobacz",
+        "edit": "Edytuj"
       },
       "stats": {
-        "total": "Загалом",
-        "students": "Студентів",
-        "instructors": "Інструкторів",
-        "admins": "Адміністраторів",
-        "active": "Активних",
-        "pending": "Очікують"
+        "total": "Ogółem",
+        "students": "Studentów",
+        "instructors": "Instruktorów",
+        "admins": "Administratorów",
+        "active": "Aktywnych",
+        "pending": "Oczekujących"
       },
       "filters": {
-        "searchPlaceholder": "Пошук за іменем або email...",
-        "allRoles": "Всі ролі",
-        "students": "Студенти",
-        "instructors": "Інструктори",
-        "admins": "Адміністратори",
-        "managers": "Менеджери",
-        "allStatuses": "Всі статуси",
-        "active": "Активні",
-        "inactive": "Неактивні",
-        "pending": "Очікують",
-        "suspended": "Заблоковані",
-        "allLocations": "Всі локації",
-        "emailVerification": "Верифікація email",
-        "phoneVerification": "Верифікація телефону",
-        "confirmed": "Підтверджено",
-        "notConfirmed": "Не підтверджено",
-        "registrationDate": "Дата реєстрації",
-        "last7days": "Останні 7 днів",
-        "last30days": "Останні 30 днів",
-        "last90days": "Останні 90 днів"
+        "searchPlaceholder": "Szukaj po imieniu lub emailu...",
+        "allRoles": "Wszystkie role",
+        "students": "Studenci",
+        "instructors": "Instruktorzy",
+        "admins": "Administratorzy",
+        "managers": "Menedżerowie",
+        "allStatuses": "Wszystkie statusy",
+        "active": "Aktywni",
+        "inactive": "Nieaktywni",
+        "pending": "Oczekujący",
+        "suspended": "Zablokowani",
+        "allLocations": "Wszystkie lokalizacje",
+        "emailVerification": "Weryfikacja email",
+        "phoneVerification": "Weryfikacja telefonu",
+        "confirmed": "Potwierdzone",
+        "notConfirmed": "Niepotwierdzone",
+        "registrationDate": "Data rejestracji",
+        "last7days": "Ostatnie 7 dni",
+        "last30days": "Ostatnie 30 dni",
+        "last90days": "Ostatnie 90 dni"
       },
       "roles": {
-        "admin": "Адміністратор",
-        "instructor": "Інструктор",
-        "student": "Студент",
-        "manager": "Менеджер"
+        "admin": "Administrator",
+        "instructor": "Instruktor",
+        "student": "Student",
+        "manager": "Menedżer"
       },
       "status": {
-        "active": "Активний",
-        "inactive": "Неактивний",
-        "pending": "Очікує",
-        "suspended": "Заблокований"
+        "active": "Aktywny",
+        "inactive": "Nieaktywny",
+        "pending": "Oczekujący",
+        "suspended": "Zablokowany"
       },
       "table": {
         "headers": {
-          "user": "Користувач",
-          "role": "Роль",
-          "status": "Статус",
-          "location": "Локація",
-          "joined": "Долучився",
-          "lastLogin": "Останній вхід",
-          "actions": "Дії"
+          "user": "Użytkownik",
+          "role": "Rola",
+          "status": "Status",
+          "location": "Lokalizacja",
+          "joined": "Dołączył",
+          "lastLogin": "Ostatnie logowanie",
+          "actions": "Działania"
         },
         "email": "Email",
-        "phone": "Телефон",
-        "rating": "Оцінка: {rating}★"
+        "phone": "Telefon",
+        "rating": "Ocena: {rating}★"
       },
       "bulkActions": {
-        "selected": "Обрано {count} користувач(ів)"
+        "selected": "Wybrano {count} użytkownik(ów)"
       },
       "loading": {
-        "text": "Завантаження..."
+        "text": "Ładowanie..."
       },
       "empty": {
-        "title": "Користувачів не знайдено",
-        "subtitle": "Спробуйте змінити фільтри пошуку"
+        "title": "Nie znaleziono użytkowników",
+        "subtitle": "Spróbuj zmienić filtry wyszukiwania"
       }
     }
   },
   "vehicles": {
     "detail": {
-      "title": "Деталі транспортного засобу",
-      "subtitle": "Інформація та керування транспортним засобом",
+      "title": "Szczegóły pojazdu",
+      "subtitle": "Informacje i zarządzanie pojazdem",
       "buttons": {
-        "back": "Назад",
-        "export": "Експорт",
-        "edit": "Редагувати",
-        "delete": "Видалити",
-        "save": "Зберегти",
-        "cancel": "Скасувати"
+        "back": "Wstecz",
+        "export": "Eksportuj",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "save": "Zapisz",
+        "cancel": "Anuluj"
       },
       "status": {
-        "active": "Активний",
-        "maintenance": "На обслуговуванні",
-        "inactive": "Неактивний"
+        "active": "Aktywny",
+        "maintenance": "W serwisie",
+        "inactive": "Nieaktywny"
       },
       "tabs": {
-        "overview": "Огляд",
-        "schedule": "Розклад",
-        "maintenance": "Обслуговування",
-        "financial": "Фінанси",
-        "documents": "Документи"
+        "overview": "Przegląd",
+        "schedule": "Harmonogram",
+        "maintenance": "Serwis",
+        "financial": "Finanse",
+        "documents": "Dokumenty"
       },
       "info": {
-        "category": "Категорія",
-        "transmission": "Коробка передач",
-        "fuel": "Паливо",
-        "mileage": "Пробіг",
+        "category": "Kategoria",
+        "transmission": "Skrzynia biegów",
+        "fuel": "Paliwo",
+        "mileage": "Przebieg",
         "vin": "VIN",
-        "color": "Колір",
-        "assignedInstructor": "Призначений інструктор",
-        "location": "Локація",
-        "dailyRate": "Денна ставка",
-        "purchaseDate": "Дата придбання",
-        "purchasePrice": "Ціна придбання",
-        "insuranceExpiry": "Термін дії страховки",
-        "inspectionExpiry": "Термін дії техогляду",
-        "registrationExpiry": "Термін дії реєстрації",
-        "features": "Обладнання"
+        "color": "Kolor",
+        "assignedInstructor": "Przypisany instruktor",
+        "location": "Lokalizacja",
+        "dailyRate": "Stawka dzienna",
+        "purchaseDate": "Data zakupu",
+        "purchasePrice": "Cena zakupu",
+        "insuranceExpiry": "Ważność ubezpieczenia",
+        "inspectionExpiry": "Ważność przeglądu technicznego",
+        "registrationExpiry": "Ważność rejestracji",
+        "features": "Wyposażenie"
       },
       "stats": {
-        "utilization": "Використання",
-        "lessonsPerMonth": "Уроків/міс",
-        "monthlyRevenue": "Дохід/міс",
-        "fuelConsumption": "Витрата палива",
-        "maintenanceCost": "Витрати на обслуговування",
-        "rating": "Оцінка"
+        "utilization": "Wykorzystanie",
+        "lessonsPerMonth": "Lekcji/mies.",
+        "monthlyRevenue": "Przychód/mies.",
+        "fuelConsumption": "Zużycie paliwa",
+        "maintenanceCost": "Koszty serwisu",
+        "rating": "Ocena"
       },
       "overview": {
-        "vehicleInfo": "Інформація про транспортний засіб",
-        "features": "Обладнання",
-        "alertTitle": "Наближається термін техогляду",
-        "alertDescription": "Технічний огляд закінчується {date}"
+        "vehicleInfo": "Informacje o pojeździe",
+        "features": "Wyposażenie",
+        "alertTitle": "Zbliża się termin przeglądu technicznego",
+        "alertDescription": "Przegląd techniczny wygasa {date}"
       },
       "schedule": {
-        "hours": "год",
-        "bookings": "бронювань",
-        "recentBookings": "Останні бронювання",
-        "instructor": "Інструктор:",
-        "completed": "Завершено",
-        "scheduled": "Заплановано"
+        "hours": "godz.",
+        "bookings": "rezerwacji",
+        "recentBookings": "Ostatnie rezerwacje",
+        "instructor": "Instruktor:",
+        "completed": "Ukończone",
+        "scheduled": "Zaplanowane"
       },
       "maintenance": {
-        "nextService": "Наступне обслуговування",
-        "oilChange": "Заміна масла",
-        "technicalCondition": "Технічний стан",
-        "good": "Добрий",
-        "lastInspection": "Останній огляд:",
-        "serviceHistory": "Історія обслуговування",
-        "km": "км",
-        "in": "через",
-        "completed": "Виконано",
-        "scheduled": "Заплановано"
+        "nextService": "Następny serwis",
+        "oilChange": "Wymiana oleju",
+        "technicalCondition": "Stan techniczny",
+        "good": "Dobry",
+        "lastInspection": "Ostatni przegląd:",
+        "serviceHistory": "Historia serwisowa",
+        "km": "km",
+        "in": "za",
+        "completed": "Wykonane",
+        "scheduled": "Zaplanowane"
       },
       "financial": {
-        "totalRevenue": "Загальний дохід",
-        "totalCosts": "Загальні витрати",
-        "netProfit": "Чистий прибуток",
-        "vsLastQuarter": "+{percent}% порівн. з попереднім кварталом",
-        "maintenanceFuel": "Обслуговування + Паливо",
+        "totalRevenue": "Całkowity przychód",
+        "totalCosts": "Całkowite koszty",
+        "netProfit": "Zysk netto",
+        "vsLastQuarter": "+{percent}% w porówn. z poprzednim kwartałem",
+        "maintenanceFuel": "Serwis + Paliwo",
         "roi": "ROI: {percent}%",
-        "financialHistory": "Фінансова історія",
-        "month": "Місяць",
-        "revenue": "Дохід",
-        "expenses": "Витрати",
-        "profit": "Прибуток"
+        "financialHistory": "Historia finansowa",
+        "month": "Miesiąc",
+        "revenue": "Przychód",
+        "expenses": "Wydatki",
+        "profit": "Zysk"
       },
       "documents": {
-        "uploaded": "Завантажено:",
-        "verified": "Підтверджено",
-        "expiring": "Закінчується",
-        "view": "Переглянути",
-        "download": "Завантажити"
+        "uploaded": "Przesłane:",
+        "verified": "Zweryfikowano",
+        "expiring": "Wygasa",
+        "view": "Zobacz",
+        "download": "Pobierz"
       },
-      "currency": "грн"
+      "currency": "zł"
     },
     "maintenance": {
-      "title": "Обслуговування транспортних засобів",
-      "subtitle": "Управління технічними оглядами та ремонтами",
+      "title": "Serwis pojazdów",
+      "subtitle": "Zarządzanie przeglądami technicznymi i naprawami",
       "buttons": {
-        "export": "Експорт",
-        "scheduleMaintenance": "Запланувати обслуговування",
-        "moreFilters": "Більше фільтрів",
-        "cancel": "Скасувати",
-        "submit": "Запланувати обслуговування",
-        "close": "Закрити",
-        "edit": "Редагувати",
-        "delete": "Видалити",
-        "view": "Переглянути"
+        "export": "Eksportuj",
+        "scheduleMaintenance": "Zaplanuj serwis",
+        "moreFilters": "Więcej filtrów",
+        "cancel": "Anuluj",
+        "submit": "Zaplanuj serwis",
+        "close": "Zamknij",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "view": "Zobacz"
       },
       "stats": {
-        "scheduled": "Заплановано",
-        "inProgress": "В процесі",
-        "completed": "Завершено",
-        "inService": "В обслуговуванні",
-        "totalCost": "Загальні витрати",
-        "avgCost": "Сер. витрати"
+        "scheduled": "Zaplanowane",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone",
+        "inService": "W serwisie",
+        "totalCost": "Całkowite koszty",
+        "avgCost": "Śr. koszt"
       },
       "alerts": {
-        "title": "Майбутні технічні огляди",
-        "count": "{count} попереджень",
-        "dueIn": "через"
+        "title": "Nadchodzące przeglądy techniczne",
+        "count": "{count} ostrzeżeń",
+        "dueIn": "za"
       },
       "filters": {
-        "searchPlaceholder": "Пошук транспорту або типу обслуговування...",
-        "allStatuses": "Всі статуси",
-        "allVehicles": "Всі транспортні засоби",
-        "scheduled": "Заплановано",
-        "inProgress": "В процесі",
-        "completed": "Завершено"
+        "searchPlaceholder": "Szukaj pojazdu lub typu serwisu...",
+        "allStatuses": "Wszystkie statusy",
+        "allVehicles": "Wszystkie pojazdy",
+        "scheduled": "Zaplanowane",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone"
       },
       "table": {
-        "vehicle": "Транспортний засіб",
-        "serviceType": "Тип обслуговування",
-        "date": "Дата",
-        "mileage": "Пробіг",
-        "technician": "Технік",
-        "cost": "Вартість",
-        "status": "Статус",
-        "actions": "Дії"
+        "vehicle": "Pojazd",
+        "serviceType": "Rodzaj serwisu",
+        "date": "Data",
+        "mileage": "Przebieg",
+        "technician": "Mechanik",
+        "cost": "Koszt",
+        "status": "Status",
+        "actions": "Działania"
       },
       "serviceTypes": {
-        "oilChange": "Заміна масла",
-        "periodicInspection": "Періодичний огляд",
-        "tireChange": "Заміна шин",
-        "brakeService": "Обслуговування гальм",
-        "acRepair": "Ремонт кондиціонера",
-        "sparkPlugs": "Заміна свічок запалювання",
-        "other": "Інше"
+        "oilChange": "Wymiana oleju",
+        "periodicInspection": "Przegląd okresowy",
+        "tireChange": "Wymiana opon",
+        "brakeService": "Serwis hamulców",
+        "acRepair": "Naprawa klimatyzacji",
+        "sparkPlugs": "Wymiana świec zapłonowych",
+        "other": "Inne"
       },
       "priority": {
-        "label": "Пріоритет",
-        "low": "Низький",
-        "medium": "Середній",
-        "high": "Високий"
+        "label": "Priorytet",
+        "low": "Niski",
+        "medium": "Średni",
+        "high": "Wysoki"
       },
       "modal": {
-        "scheduleTitle": "Запланувати обслуговування",
-        "detailsTitle": "Деталі обслуговування",
-        "selectVehicle": "Оберіть транспортний засіб",
-        "selectType": "Оберіть тип",
-        "vehicle": "Транспортний засіб",
-        "type": "Тип обслуговування",
-        "date": "Дата",
-        "mileage": "Пробіг",
-        "technician": "Технік",
-        "estimatedCost": "Орієнтовна вартість (грн)",
-        "description": "Опис",
-        "descriptionPlaceholder": "Додати опис обслуговування...",
-        "technicianPlaceholder": "Ім'я та прізвище",
-        "mileagePlaceholder": "напр. 45000",
-        "costPlaceholder": "напр. 450"
+        "scheduleTitle": "Zaplanuj serwis",
+        "detailsTitle": "Szczegóły serwisu",
+        "selectVehicle": "Wybierz pojazd",
+        "selectType": "Wybierz typ",
+        "vehicle": "Pojazd",
+        "type": "Typ serwisu",
+        "date": "Data",
+        "mileage": "Przebieg",
+        "technician": "Mechanik",
+        "estimatedCost": "Szacowany koszt (zł)",
+        "description": "Opis",
+        "descriptionPlaceholder": "Dodaj opis serwisu...",
+        "technicianPlaceholder": "Imię i nazwisko",
+        "mileagePlaceholder": "np. 45000",
+        "costPlaceholder": "np. 450"
       },
       "status": {
-        "scheduled": "Заплановано",
-        "inProgress": "В процесі",
-        "completed": "Завершено",
-        "cancelled": "Скасовано"
+        "scheduled": "Zaplanowane",
+        "inProgress": "W trakcie",
+        "completed": "Ukończone",
+        "cancelled": "Anulowane"
       },
-      "currency": "грн",
-      "km": "км"
+      "currency": "zł",
+      "km": "km"
     },
-     "title": "Транспортні засоби",
-    "subtitle": "Управління автопарком школи",
+    "title": "Pojazdy",
+    "subtitle": "Zarządzanie flotą pojazdów szkoły",
     "buttons": {
-      "addVehicle": "Додати транспорт",
-      "service": "Сервіс",
-      "details": "Деталі",
-      "history": "Історія",
-      "refresh": "Оновити"
+      "addVehicle": "Dodaj pojazd",
+      "service": "Serwis",
+      "details": "Szczegóły",
+      "history": "Historia",
+      "refresh": "Odśwież"
     },
     "stats": {
-      "total": "Всього",
-      "active": "Активні",
-      "maintenance": "В сервісі",
-      "utilization": "Використання",
-      "needsService": "Потребує сервісу",
-      "documentsExpiring": "Документи"
+      "total": "Razem",
+      "active": "Aktywne",
+      "maintenance": "W serwisie",
+      "utilization": "Wykorzystanie",
+      "needsService": "Wymaga serwisu",
+      "documentsExpiring": "Dokumenty"
     },
     "filters": {
-      "searchPlaceholder": "Пошук за маркою, моделлю або номером...",
-      "allStatuses": "Всі статуси",
-      "allTransmissions": "Всі коробки",
-      "allCategories": "Всі категорії",
-      "manual": "Мануальна",
-      "automatic": "Автоматична"
+      "searchPlaceholder": "Szukaj po marce, modelu lub numerze...",
+      "allStatuses": "Wszystkie statusy",
+      "allTransmissions": "Wszystkie skrzynie",
+      "allCategories": "Wszystkie kategorie",
+      "manual": "Manualna",
+      "automatic": "Automatyczna"
     },
     "status": {
       "active": {
-        "label": "Активний",
+        "label": "Aktywny",
         "icon": "CheckCircle"
       },
       "maintenance": {
-        "label": "В сервісі",
+        "label": "W serwisie",
         "icon": "Wrench"
       },
       "reserved": {
-        "label": "Заброньований",
+        "label": "Zarezerwowany",
         "icon": "Calendar"
       },
       "inactive": {
-        "label": "Неактивний",
+        "label": "Nieaktywny",
         "icon": "XCircle"
       }
     },
     "card": {
-      "category": "Категорія:",
-      "transmission": "Коробка:",
-      "instructor": "Інструктор:",
-      "mileage": "Пробіг:",
-      "utilization": "Використання",
-      "unassigned": "Не призначений",
-      "issues": "{count} проблем",
-      "insuranceExpiring": "Страховка закінчується",
-      "inspectionNeeded": "Потрібен огляд"
+      "category": "Kategoria:",
+      "transmission": "Skrzynia:",
+      "instructor": "Instruktor:",
+      "mileage": "Przebieg:",
+      "utilization": "Wykorzystanie",
+      "unassigned": "Nieprzypisany",
+      "issues": "{count} problemów",
+      "insuranceExpiring": "Ubezpieczenie wygasa",
+      "inspectionNeeded": "Wymagany przegląd"
     },
     "table": {
-      "vehicle": "Транспортний засіб",
-      "status": "Статус",
-      "category": "Категорія",
-      "transmission": "Коробка",
-      "instructor": "Інструктор",
-      "location": "Локація",
-      "mileage": "Пробіг",
-      "utilization": "Використання",
-      "actions": "Дії"
+      "vehicle": "Pojazd",
+      "status": "Status",
+      "category": "Kategoria",
+      "transmission": "Skrzynia",
+      "instructor": "Instruktor",
+      "location": "Lokalizacja",
+      "mileage": "Przebieg",
+      "utilization": "Wykorzystanie",
+      "actions": "Działania"
     },
     "transmissionTypes": {
-      "manual": "Мануальна",
-      "automatic": "Автоматична"
+      "manual": "Manualna",
+      "automatic": "Automatyczna"
     },
     "viewModes": {
-      "grid": "Сітка",
-      "list": "Список"
+      "grid": "Siatka",
+      "list": "Lista"
     },
     "details": {
-      "title": "Деталі транспортного засобу",
-      "registrationNumber": "Реєстраційний номер",
+      "title": "Szczegóły pojazdu",
+      "registrationNumber": "Numer rejestracyjny",
       "vin": "VIN",
-      "year": "Рік випуску",
-      "mileage": "Пробіг",
-      "fuel": "Паливо",
-      "fuelLevel": "Рівень палива",
-      "documentsAndDeadlines": "Документи та терміни",
-      "insurance": "Страховка",
-      "inspection": "Огляд",
-      "nextService": "Наступний сервіс",
-      "until": "до {date}",
-      "edit": "Редагувати",
-      "serviceHistory": "Історія сервісу",
-      "delete": "Видалити"
+      "year": "Rok produkcji",
+      "mileage": "Przebieg",
+      "fuel": "Paliwo",
+      "fuelLevel": "Poziom paliwa",
+      "documentsAndDeadlines": "Dokumenty i terminy",
+      "insurance": "Ubezpieczenie",
+      "inspection": "Przegląd",
+      "nextService": "Następny serwis",
+      "until": "do {date}",
+      "edit": "Edytuj",
+      "serviceHistory": "Historia serwisu",
+      "delete": "Usuń"
     },
     "fuelTypes": {
-      "petrol": "Бензин",
-      "diesel": "Дизель",
-      "hybrid": "Гібрид",
-      "electric": "Електричний"
+      "petrol": "Benzyna",
+      "diesel": "Diesel",
+      "hybrid": "Hybrydowy",
+      "electric": "Elektryczny"
     },
     "categories": {
       "B": "B",
@@ -2800,52 +2780,45 @@
   },
   "schedule": {
     "main": {
-      "title": "Розклад",
-      "subtitle": "Керуйте своїм часом ефективно",
-      
+      "title": "Harmonogram",
+      "subtitle": "Zarządzaj swoim czasem efektywnie",
       "buttons": {
-        "workingHours": "Робочі години",
-        "exception": "Виняток",
-        "today": "Сьогодні",
-        "search": "Пошук",
-        "menu": "Меню"
+        "workingHours": "Godziny pracy",
+        "exception": "Wyjątek",
+        "today": "Dziś",
+        "search": "Szukaj",
+        "menu": "Menu"
       },
-      
       "search": {
-        "placeholder": "Шукати курсанта, локацію, термін..."
+        "placeholder": "Szukaj kursanta, lokalizacji, terminu..."
       },
-      
       "stats": {
-        "allSlots": "Всі терміни",
-        "reserved": "Заброньовані",
-        "weeklyHours": "Годин на тиждень",
-        "monthlyIncome": "Місячний дохід",
-        "hoursUnit": "{hours}год",
-        "currency": "{amount} грн"
+        "allSlots": "Wszystkie terminy",
+        "reserved": "Zarezerwowane",
+        "weeklyHours": "Godzin tygodniowo",
+        "monthlyIncome": "Miesięczny dochód",
+        "hoursUnit": "{hours}godz.",
+        "currency": "{amount} zł"
       },
-      
       "tabs": {
-        "calendar": "Календар",
-        "templates": "Шаблони",
-        "requests": "Заявки",
-        "statistics": "Статистика"
+        "calendar": "Kalendarz",
+        "templates": "Szablony",
+        "requests": "Wnioski",
+        "statistics": "Statystyki"
       },
-      
       "viewModes": {
-        "day": "День",
-        "week": "Тиждень",
-        "month": "Місяць",
-        "dayView": "Денний вигляд",
-        "weekView": "Тижневий вигляд",
-        "monthView": "Місячний вигляд"
+        "day": "Dzień",
+        "week": "Tydzień",
+        "month": "Miesiąc",
+        "dayView": "Widok dzienny",
+        "weekView": "Widok tygodniowy",
+        "monthView": "Widok miesięczny"
       },
-      
       "mobileMenu": {
-        "title": "Меню",
-        "workingHours": "Робочі години",
-        "addException": "Додати виняток"
+        "title": "Menu",
+        "workingHours": "Godziny pracy",
+        "addException": "Dodaj wyjątek"
       },
-      
       "dateFormat": {
         "day": "{weekday}, {day} {month} {year}",
         "week": "{startDate} - {endDate}",
@@ -2855,65 +2828,64 @@
   },
   "layout": {
     "title": "DenisDrive",
-    "subtitle": "Портал адміністратора",
+    "subtitle": "Portal Administratora",
     "navigation": {
-      "dashboard": "Панель керування",
-      "users": "Користувачі",
-      "instructors": "Інструктори",
-      "students": "Учні",
-      "vehicles": "Транспортні засоби",
-      "locations": "Локації",
-      "packages": "Пакети",
-      "bookings": "Бронювання",
-      "payments": "Платежі",
-      "reports": "Звіти",
-      "settings": "Налаштування"
+      "dashboard": "Panel sterowania",
+      "users": "Użytkownicy",
+      "instructors": "Instruktorzy",
+      "students": "Uczniowie",
+      "vehicles": "Pojazdy",
+      "locations": "Lokalizacje",
+      "packages": "Pakiety",
+      "bookings": "Rezerwacje",
+      "payments": "Płatności",
+      "reports": "Raporty",
+      "settings": "Ustawienia"
     },
     "user": {
-      "name": "Адміністратор системи",
+      "name": "Administrator systemu",
       "email": "admin@drive-school.com",
-      "role": "Головний адміністратор",
-      "profile": "Профіль",
-      "security": "Безпека",
-      "settings": "Налаштування",
-      "logout": "Вийти"
+      "role": "Główny Administrator",
+      "profile": "Profil",
+      "security": "Bezpieczeństwo",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj"
     },
     "languages": {
       "polish": "Polski",
-      "ukrainian": "Українська",
+      "ukrainian": "Ukraiński",
       "english": "English",
-      "russian": "Русский"
+      "russian": "Rosyjski"
     },
     "breadcrumbs": {
-      "home": "Головна",
-      "admin": "Адмін",
-      "dashboard": "Панель керування",
-      "users": "Користувачі",
-      "instructors": "Інструктори",
-      "students": "Учні",
-      "vehicles": "Транспортні засоби",
-      "locations": "Локації",
-      "packages": "Пакети",
-      "bookings": "Бронювання",
-      "payments": "Платежі",
-      "reports": "Звіти",
-      "settings": "Налаштування"
+      "home": "Strona główna",
+      "admin": "Admin",
+      "dashboard": "Panel sterowania",
+      "users": "Użytkownicy",
+      "instructors": "Instruktorzy",
+      "students": "Uczniowie",
+      "vehicles": "Pojazdy",
+      "locations": "Lokalizacje",
+      "packages": "Pakiety",
+      "bookings": "Rezerwacje",
+      "payments": "Płatności",
+      "reports": "Raporty",
+      "settings": "Ustawienia"
     },
     "search": {
-      "placeholder": "Пошук..."
+      "placeholder": "Szukaj..."
     },
     "theme": {
-      "light": "Світла тема",
-      "dark": "Темна тема"
+      "light": "Jasny motyw",
+      "dark": "Ciemny motyw"
     },
     "notifications": {
-      "label": "Сповіщення",
-      "count": "{count} нових"
+      "label": "Powiadomienia",
+      "count": "{count} nowych"
     },
     "mobile": {
-      "openMenu": "Відкрити меню",
-      "closeMenu": "Закрити меню"
+      "openMenu": "Otwórz menu",
+      "closeMenu": "Zamknij menu"
     }
   }
-  
 }

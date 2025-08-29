@@ -1,0 +1,2891 @@
+{
+  "bookings": {
+    "calendar": {
+      "title": "Календарь бронирований",
+      "subtitle": "Управляйте расписанием занятий",
+      "navigation": {
+        "previousMonth": "Предыдущий месяц",
+        "nextMonth": "Следующий месяц",
+        "today": "Сегодня",
+        "weekNavigation": "{startDate} - {endDate}"
+      },
+      "viewTypes": {
+        "month": "Месяц",
+        "week": "Неделя",
+        "day": "День",
+        "list": "Список"
+      },
+      "weekDays": {
+        "monday": "Пн",
+        "tuesday": "Вт",
+        "wednesday": "Ср",
+        "thursday": "Чт",
+        "friday": "Пт",
+        "saturday": "Сб",
+        "sunday": "Вс"
+      },
+      "filters": {
+        "title": "Фильтры",
+        "instructor": "Инструктор",
+        "type": "Тип занятий",
+        "status": "Статус",
+        "location": "Локация",
+        "all": "Все",
+        "clear": "Очистить фильтры",
+        "placeholders": {
+          "allInstructors": "Все",
+          "allTypes": "Все",
+          "allStatuses": "Все",
+          "allLocations": "Все"
+        }
+      },
+      "bookingTypes": {
+        "practice": "Практика",
+        "theory": "Теория",
+        "exam": "Экзамен"
+      },
+      "bookingStatus": {
+        "confirmed": "Подтверждено",
+        "pending": "Ожидает",
+        "cancelled": "Отменено",
+        "completed": "Завершено"
+      },
+      "buttons": {
+        "filters": "Фильтры",
+        "export": "Экспортировать",
+        "newBooking": "Новое бронирование",
+        "edit": "Редактировать",
+        "cancel": "Отменить",
+        "delete": "Удалить",
+        "view": "Просмотреть",
+        "close": "Закрыть",
+        "save": "Сохранить"
+      },
+      "messages": {
+        "noBookings": "Нет бронирований на этот день",
+        "moreBookings": "+{count} больше",
+        "weekViewInProgress": "Недельный вид в разработке. Пожалуйста, используйте месячный вид или список.",
+        "loading": "Загрузка..."
+      },
+      "details": {
+        "title": "Детали бронирования",
+        "student": "Студент",
+        "instructor": "Инструктор",
+        "date": "Дата",
+        "time": "Время",
+        "location": "Локация",
+        "vehicle": "Автомобиль",
+        "package": "Пакет",
+        "notes": "Примечания",
+        "cancelReason": "Отменено по причине болезни студента"
+      },
+      "stats": {
+        "todayBookings": "Сегодняшние бронирования",
+        "pending": "Ожидают",
+        "thisWeek": "Эта неделя",
+        "utilization": "Использование"
+      },
+      "actions": {
+        "edit": "Редактировать",
+        "cancel": "Отменить",
+        "delete": "Удалить"
+      },
+      "locations": {
+        "warsawCenter": "Варшава Центр",
+        "warsawMokotow": "Варшава Мокотув",
+        "warsawPraga": "Варшава Прага",
+        "lectureHallA": "Лекционный зал A",
+        "lectureHallB": "Лекционный зал B",
+        "examCenter": "WORD Варшава"
+      },
+      "packages": {
+        "standardB": "Пакет Стандарт B",
+        "premiumB": "Пакет Премиум B",
+        "intensiveB": "Пакет Интенсив B"
+      }
+    },
+    "title": "Бронирования",
+    "subtitle": "Управление всеми бронированиями и уроками",
+    "buttons": {
+      "export": "Экспорт",
+      "newBooking": "Новое бронирование",
+      "edit": "Редактировать",
+      "cancel": "Отменить",
+      "close": "Закрыть",
+      "view": "Просмотреть"
+    },
+    "stats": {
+      "today": "Сегодня",
+      "completedToday": "Завершено сегодня",
+      "thisWeek": "Эта неделя",
+      "weekRevenue": "Доход за неделю",
+      "cancellations": "Отмены",
+      "avgRating": "Ср. оценка"
+    },
+    "filters": {
+      "searchPlaceholder": "Поиск по ID, ученику или инструктору...",
+      "allDates": "Все даты",
+      "today": "Сегодня",
+      "tomorrow": "Завтра",
+      "thisWeek": "Эта неделя",
+      "allStatuses": "Все статусы",
+      "allInstructors": "Все инструкторы",
+      "scheduled": "Запланировано",
+      "inProgress": "В процессе",
+      "completed": "Завершено",
+      "cancelled": "Отменено",
+      "noShow": "Неявка"
+    },
+    "table": {
+      "id": "ID",
+      "student": "Ученик",
+      "instructor": "Инструктор",
+      "dateTime": "Дата и время",
+      "type": "Тип",
+      "status": "Статус",
+      "payment": "Оплата",
+      "actions": "Действия",
+      "price": "zł{price}",
+      "awaiting": "Ожидает"
+    },
+    "lessonTypes": {
+      "standard": "Стандартная",
+      "highway": "Автострада",
+      "parking": "Парковка",
+      "night": "Ночная",
+      "exam": "Экзамен",
+      "maneuvers": "Маневры"
+    },
+    "charts": {
+      "weeklyBookings": "Бронирования за неделю",
+      "statusDistribution": "Распределение статусов",
+      "bookings": "Бронирования"
+    },
+    "details": {
+      "title": "Детали бронирования {id}",
+      "studentInfo": "Ученик",
+      "instructorInfo": "Инструктор",
+      "lessonDetails": "Детали урока",
+      "paymentStatus": "Оплата и статус",
+      "location": "Локация",
+      "notes": "Примечания",
+      "fields": {
+        "type": "Тип:",
+        "time": "Время:",
+        "duration": "Длительность:",
+        "durationValue": "{duration} мин",
+        "status": "Статус:",
+        "price": "Цена:",
+        "payment": "Оплата:",
+        "paid": "Оплачено",
+        "unpaid": "Ожидает",
+        "rating": "Оценка:",
+        "cancelReason": "Причина отмены:",
+        "additionalNotes": "Дополнительные примечания к уроку",
+        "studentIllness": "Болезнь ученика"
+      }
+    },
+    "viewModes": {
+      "list": "Список",
+      "calendar": "Календарь"
+    },
+    "noData": {
+      "emptySlot": "—"
+    }
+  },
+  "dashboard": {
+    "title": "Панель управления",
+    "subtitle": "Добро пожаловать! Вот обзор вашей автошколы",
+    "loading": "Загрузка данных...",
+    "periods": {
+      "day": "Сегодня",
+      "week": "Эта неделя",
+      "month": "Этот месяц",
+      "year": "Этот год"
+    },
+    "buttons": {
+      "export": "Экспорт",
+      "refresh": "Обновить",
+      "details": "Детали →",
+      "viewAll": "Вся активность →",
+      "allInstructors": "Все инструкторы →"
+    },
+    "stats": {
+      "totalRevenue": {
+        "title": "Общий доход",
+        "subtitle": "в этом месяце"
+      },
+      "activeStudents": {
+        "title": "Активные ученики",
+        "subtitle": "всего зарегистрировано: {total}",
+        "change": "+{count} на этой неделе"
+      },
+      "todayLessons": {
+        "title": "Уроки сегодня",
+        "subtitle": "{remaining} ещё запланировано",
+        "change": "{completed} завершено"
+      },
+      "conversion": {
+        "title": "Конверсия",
+        "subtitle": "от регистрации до оплаты",
+        "change": "+{percent}% с прошлого месяца"
+      }
+    },
+    "secondaryStats": {
+      "instructorsOnline": "Инструкторов онлайн",
+      "availableCars": "Доступных авто",
+      "newPayments": "Новых платежей",
+      "activeLocations": "Активных локаций"
+    },
+    "charts": {
+      "revenueTitle": "Динамика доходов",
+      "revenueSubtitle": "Сравнение с предыдущим периодом",
+      "currentPeriod": "Текущий период",
+      "previousPeriod": "Предыдущий период",
+      "packageDistribution": "Распределение пакетов",
+      "bookingsByTime": "Бронирования по часам",
+      "bookings": "бронирования"
+    },
+    "packages": {
+      "standard": "Стандарт",
+      "premium": "Премиум",
+      "vip": "VIP",
+      "basic": "Базовый"
+    },
+    "activities": {
+      "title": "Последняя активность",
+      "bookingCreated": "забронировал урок",
+      "paymentReceived": "оплатил пакет \"{package}\"",
+      "instructorOnline": "начал рабочий день",
+      "bookingCancelled": "отменил урок на {time}",
+      "vehicleMaintenance": "{vehicle} нуждается в осмотре",
+      "newRegistration": "зарегистрировался как новый ученик",
+      "examPassed": "успешно сдал экзамен",
+      "reviewReceived": "оставил отзыв {rating}★",
+      "timeAgo": {
+        "minutes": "{count} минут назад",
+        "hours": "{count} часов назад"
+      }
+    },
+    "topInstructors": {
+      "title": "Топ инструкторы",
+      "lessonsUnit": "{count} уроков",
+      "rating": "{rating}★"
+    },
+    "quickActions": {
+      "title": "Быстрые действия",
+      "addUser": "Добавить пользователя",
+      "createBooking": "Создать бронирование",
+      "generateReport": "Создать отчёт",
+      "massEmail": "Массовая рассылка"
+    },
+    "alerts": {
+      "requiresAttention": "Требует внимания",
+      "viewAll": "Просмотреть все →",
+      "pendingPayments": "{count} платежей ожидают подтверждения",
+      "vehicleInspection": "{vehicle} нуждается в техническом осмотре через {days} дней",
+      "unconfirmedSchedule": "{count} инструкторов не подтвердили расписание на следующую неделю"
+    }
+  },
+  "instructors": {
+    "list": {
+      "title": "Инструкторы",
+      "subtitle": "Управление инструкторами автошколы",
+      "buttons": {
+        "addInstructor": "Добавить инструктора",
+        "view": "Просмотр",
+        "schedule": "Расписание",
+        "edit": "Редактировать"
+      },
+      "stats": {
+        "totalInstructors": "Всего инструкторов",
+        "availableNow": "Доступных сейчас",
+        "averageRating": "Средняя оценка",
+        "averagePassRate": "Средняя сдача"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск по фамилии...",
+        "allStatuses": "Все статусы",
+        "available": "Доступные",
+        "busy": "Занятые",
+        "offline": "Оффлайн",
+        "allLocations": "Все локации"
+      },
+      "status": {
+        "available": "Доступен",
+        "busy": "Занят",
+        "offline": "Оффлайн"
+      },
+      "table": {
+        "instructor": "Инструктор",
+        "status": "Статус",
+        "rating": "Оценка",
+        "categories": "Категории",
+        "students": "Ученики",
+        "lessonsPerWeek": "Уроков/неделя",
+        "passRate": "Сдача",
+        "earnings": "Заработок",
+        "actions": "Действия"
+      },
+      "card": {
+        "rating": "Оценка",
+        "students": "Ученики",
+        "lessonsPerWeek": "Уроков/неделя",
+        "passRate": "Сдача",
+        "specializations": "Специализации:"
+      },
+      "specializations": {
+        "exams": "Экзамены",
+        "nightDriving": "Ночное вождение",
+        "highway": "Автострада",
+        "parking": "Парковка",
+        "maneuvers": "Маневры",
+        "city": "Город",
+        "beginners": "Начинающие",
+        "theory": "Теория"
+      },
+      "locations": {
+        "warsaw": "Варшава",
+        "krakow": "Краков",
+        "wroclaw": "Вроцлав"
+      },
+      "experience": "{years} лет"
+    },
+    "schedule": {
+      "title": "Расписание инструкторов",
+      "subtitle": "Управление расписанием всех инструкторов",
+      "buttons": {
+        "print": "Печать",
+        "download": "Скачать",
+        "addLesson": "Добавить занятие",
+        "today": "Сегодня",
+        "showDetails": "Показать детали",
+        "edit": "Редактировать"
+      },
+      "stats": {
+        "totalLessons": "Всего занятий",
+        "confirmed": "Подтверждённые",
+        "pending": "Ожидают",
+        "cancelled": "Отменённые",
+        "plannedHours": "Запланированные часы"
+      },
+      "viewModes": {
+        "week": "Неделя",
+        "day": "День",
+        "list": "Список"
+      },
+      "filters": {
+        "allInstructors": "Все инструкторы",
+        "allLocations": "Все локации"
+      },
+      "weekView": {
+        "weekNumber": "Неделя {number}",
+        "instructor": "Инструктор",
+        "id": "ID",
+        "free": "Свободно"
+      },
+      "dayView": {
+        "time": "Время"
+      },
+      "listView": {
+        "time": "Время",
+        "instructor": "Инструктор",
+        "student": "Ученик",
+        "lessonType": "Тип занятия",
+        "vehicle": "Автомобиль",
+        "location": "Локация",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "lessonTypes": {
+        "practice": "Практика",
+        "track": "Площадка",
+        "city": "Город",
+        "parking": "Парковка",
+        "exam": "Экзамен",
+        "nightDriving": "Ночное вождение",
+        "highway": "Автострада"
+      },
+      "lessonStatus": {
+        "confirmed": "Подтверждено",
+        "pending": "Ожидает",
+        "cancelled": "Отменено"
+      },
+      "locations": {
+        "warsaw": "Варшава",
+        "trackKrakow": "Площадка Краков",
+        "trackGdansk": "Площадка Гданьск",
+        "examCenter": "Экзаменационный центр",
+        "meetingWarsaw": "Сбор: Варшава"
+      },
+      "weekDays": {
+        "monday": "Понедельник",
+        "tuesday": "Вторник",
+        "wednesday": "Среда",
+        "thursday": "Четверг",
+        "friday": "Пятница",
+        "saturday": "Суббота",
+        "sunday": "Воскресенье"
+      }
+    }
+  },
+  "lessons": {
+    "detail": {
+      "title": "Детали урока",
+      "dateTime": "{date} • {startTime} - {endTime}",
+      "buttons": {
+        "share": "Поделиться",
+        "report": "Отчёт",
+        "edit": "Редактировать",
+        "call": "Позвонить",
+        "message": "Написать",
+        "saveNotes": "Сохранить примечания"
+      },
+      "student": {
+        "title": "Курсант",
+        "id": "ID: {id}",
+        "joinedDate": "С нами с {date}",
+        "courseProgress": "Прогресс курса",
+        "lessonsCompleted": "{completed} из {total} уроков"
+      },
+      "lessonInfo": {
+        "title": "Информация об уроке",
+        "type": "Тип урока",
+        "category": "Категория",
+        "categoryB": "Категория B",
+        "duration": "Длительность",
+        "minutes": "{minutes} минут",
+        "location": "Локация",
+        "vehicle": "Транспорт",
+        "status": "Статус",
+        "completed": "Завершено"
+      },
+      "payment": {
+        "title": "Оплата",
+        "amount": "{amount} грн",
+        "paid": "Оплачено",
+        "paymentMethod": "Способ оплаты:",
+        "cash": "Наличные",
+        "card": "Карта",
+        "date": "Дата:",
+        "confirmed": "Платёж подтверждён системой"
+      },
+      "tabs": {
+        "objectives": "Цели",
+        "performance": "Результаты",
+        "metrics": "Метрики",
+        "feedback": "Отзывы"
+      },
+      "objectives": {
+        "title": "Цели урока",
+        "completed": "Выполнено",
+        "partial": "Частично",
+        "additionalNotes": "Дополнительные примечания",
+        "notesPlaceholder": "Добавить примечания об уроке...",
+        "examRoute": "Экзаменационный маршрут",
+        "emergencyBraking": "Экстренное торможение",
+        "parallelParking": "Параллельная парковка",
+        "turningLimited": "Разворот в ограниченном пространстве"
+      },
+      "performance": {
+        "title": "Оценка выполнения",
+        "overallRating": "Общая оценка",
+        "confidence": "Уверенность",
+        "technique": "Техника",
+        "rules": "Знание правил",
+        "safety": "Безопасность",
+        "mistakes": "Количество ошибок",
+        "mistakesCount": "{count} ошибок",
+        "needsImprovement": "Требует улучшения",
+        "parkingConfidence": "Уверенность при парковке",
+        "decisionSpeed": "Скорость принятия решений"
+      },
+      "metrics": {
+        "title": "Метрики вождения",
+        "distance": "Дистанция",
+        "avgSpeed": "Средняя скорость",
+        "maxSpeed": "Макс. скорость",
+        "fuelUsed": "Расход топлива",
+        "suddenBrakes": "Резкие торможения",
+        "sharpTurns": "Резкие повороты",
+        "km": "{value} км",
+        "kmh": "{value} км/ч",
+        "liters": "{value} л"
+      },
+      "feedback": {
+        "instructorTitle": "Отзыв инструктора",
+        "studentTitle": "Отзыв курсанта",
+        "instructorComment": "Отличный урок! Мария показала большой прогресс. Готова к экзамену на 90%.",
+        "studentComment": "Спасибо за терпение! Наконец-то поняла параллельную парковку."
+      },
+      "nextLesson": {
+        "title": "Следующий урок:",
+        "info": "{date} в {time} - {type}",
+        "finalPrep": "Финальная подготовка"
+      },
+      "lessonTypes": {
+        "examPreparation": "Подготовка к экзамену",
+        "finalPreparation": "Финальная подготовка"
+      },
+      "locations": {
+        "examRoute": "Экзаменационный маршрут",
+        "practiceArea": "Учебная площадка"
+      }
+    }
+  },
+  "locations": {
+    "details": {
+      "breadcrumb": {
+        "back": "Вернуться",
+        "locations": "Локации"
+      },
+      "status": {
+        "active": "Активна",
+        "inactive": "Неактивна",
+        "maintenance": "Обслуживание"
+      },
+      "buttons": {
+        "edit": "Редактировать",
+        "duplicate": "Дублировать",
+        "export": "Экспортировать данные",
+        "delete": "Удалить локацию",
+        "assignInstructor": "Назначить инструктора",
+        "assignVehicle": "Назначить автомобиль",
+        "changeManager": "Сменить менеджера",
+        "viewDetails": "Детали",
+        "viewAllReviews": "Просмотреть все отзывы",
+        "changeStatus": "Изменить статус",
+        "editHours": "Редактировать часы",
+        "configure": "Настроить",
+        "cancel": "Отменить"
+      },
+      "stats": {
+        "activeStudents": "Активных учеников",
+        "instructors": "Инструкторов",
+        "monthlyLessons": "Уроков ежемесячно",
+        "monthlyRevenue": "Месячный доход"
+      },
+      "tabs": {
+        "overview": "Обзор",
+        "instructors": "Инструкторы",
+        "vehicles": "Автомобили",
+        "schedule": "Расписание",
+        "analytics": "Аналитика",
+        "settings": "Настройки"
+      },
+      "sections": {
+        "contactInfo": "Контактная информация",
+        "phone": "Телефон",
+        "email": "Email",
+        "website": "Веб-сайт",
+        "coordinates": "Координаты",
+        "locationManager": "Менеджер локации",
+        "workingHours": "Часы работы",
+        "facilities": "Удобства",
+        "revenueAndStudents": "Доходы и количество учеников",
+        "revenue": "Доход (грн)",
+        "students": "Ученики",
+        "categoryDistribution": "Распределение по категориям",
+        "ratingsAndReviews": "Оценки и отзывы",
+        "reviews": "{count} отзывов",
+        "performanceIndicators": "Показатели эффективности",
+        "vehicleUtilization": "Использование автомобилей",
+        "instructorLoad": "Загруженность инструкторов",
+        "passRate": "Показатель сдачи",
+        "locationSettings": "Настройки локации"
+      },
+      "instructorStatus": {
+        "available": "Доступен",
+        "busy": "Занят"
+      },
+      "vehicleStatus": {
+        "active": "Активен",
+        "maintenance": "Сервис"
+      },
+      "vehicleCategory": "Категория",
+      "studentCount": "{count} учеников",
+      "days": {
+        "monday": "Понедельник",
+        "tuesday": "Вторник",
+        "wednesday": "Среда",
+        "thursday": "Четверг",
+        "friday": "Пятница",
+        "saturday": "Суббота",
+        "sunday": "Воскресенье",
+        "closed": "Закрыто"
+      },
+      "facilities": {
+        "parking": "Паркинг",
+        "classroom": "Учебная комната",
+        "simulator": "Симулятор вождения",
+        "wifi": "Wi-Fi",
+        "cafe": "Кофейня",
+        "airConditioning": "Кондиционер"
+      },
+      "alerts": {
+        "scheduleAvailable": "Расписание занятий доступно в модуле календарь.",
+        "settingsWarning": "Изменение настроек локации может повлиять на доступность услуг для учеников.",
+        "statusDescription": "Деактивация приостановит все бронирования",
+        "workingHoursDescription": "Настройте расписание работы",
+        "notificationsDescription": "Управляйте уведомлениями и сообщениями"
+      },
+      "deleteDialog": {
+        "title": "Удалить локацию",
+        "description": "Вы уверены, что хотите удалить локацию \"{name}\"? Эта операция необратима и приведет к удалению всех связанных данных."
+      },
+      "charts": {
+        "months": {
+          "jan": "Янв",
+          "feb": "Фев",
+          "mar": "Мар",
+          "apr": "Апр",
+          "may": "Май",
+          "jun": "Июн"
+        },
+        "categoryB": "Категория B",
+        "categoryA": "Категория A",
+        "categoryC": "Категория C",
+        "other": "Другое"
+      }
+    },
+    "list": {
+      "title": "Локации",
+      "subtitle": "Управление филиалами и офисами",
+      "buttons": {
+        "addLocation": "Добавить локацию",
+        "details": "Детали",
+        "edit": "Редактировать"
+      },
+      "stats": {
+        "locations": "Локаций",
+        "active": "Активных",
+        "students": "Учеников",
+        "instructors": "Инструкторов",
+        "vehicles": "Автомобилей",
+        "utilization": "Использование"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск по названию, адресу или менеджеру...",
+        "allCities": "Все города",
+        "allTypes": "Все типы",
+        "mainOffices": "Главные офисы",
+        "branches": "Филиалы",
+        "allStatuses": "Все статусы",
+        "active": "Активные",
+        "maintenance": "На обслуживании",
+        "inactive": "Неактивные"
+      },
+      "status": {
+        "active": "Активна",
+        "maintenance": "На обслуживании",
+        "inactive": "Неактивна"
+      },
+      "type": {
+        "main": "Главный офис",
+        "branch": "Филиал"
+      },
+      "table": {
+        "location": "Локация",
+        "type": "Тип",
+        "status": "Статус",
+        "manager": "Менеджер",
+        "students": "Ученики",
+        "instructors": "Инструкторы",
+        "utilization": "Использование",
+        "actions": "Действия"
+      },
+      "card": {
+        "students": "Ученики",
+        "instructors": "Инструкторы",
+        "vehicles": "Автомобили",
+        "utilization": "Использование",
+        "manager": "Менеджер",
+        "lessonsPerMonth": "занятий/месяц"
+      },
+      "amenities": {
+        "parking": "Паркинг",
+        "wifi": "Wi-Fi",
+        "cafe": "Кафе",
+        "simulator": "Симулятор",
+        "theory_room": "Теоретическая комната",
+        "practice_area": "Практическая зона",
+        "waiting_area": "Зона ожидания",
+        "disabled_access": "Доступ для инвалидов"
+      },
+      "map": {
+        "placeholder": "Интерактивная карта будет доступна в скором времени"
+      },
+      "schedule": {
+        "weekdays": "Будни",
+        "saturday": "Суббота",
+        "sunday": "Воскресенье",
+        "closed": "Закрыто"
+      }
+    }
+  },
+  "packages": {
+    "edit": {
+      "breadcrumb": {
+        "back": "Вернуться",
+        "packages": "Пакеты",
+        "edit": "Редактирование"
+      },
+      "title": "Редактировать пакет",
+      "status": {
+        "active": "Активный",
+        "inactive": "Неактивный",
+        "draft": "Черновик"
+      },
+      "buttons": {
+        "preview": "Предпросмотр",
+        "hidePreview": "Скрыть просмотр",
+        "duplicate": "Дублировать",
+        "delete": "Удалить",
+        "save": "Сохранить изменения",
+        "saving": "Сохранение...",
+        "cancel": "Отменить",
+        "addModifier": "Добавить модификатор",
+        "addFeature": "Добавить функцию"
+      },
+      "alerts": {
+        "unsavedChanges": "У вас есть несохраненные изменения. Не забудьте сохранить перед выходом со страницы."
+      },
+      "tabs": {
+        "general": "Общая информация",
+        "pricing": "Цены и оплата",
+        "content": "Состав пакета",
+        "availability": "Доступность",
+        "terms": "Условия и правила"
+      },
+      "general": {
+        "title": "Основная информация",
+        "subtitle": "Название и описание пакета, видимые для учеников",
+        "fields": {
+          "name": "Название пакета *",
+          "namePlaceholder": "например, Пакет Стандарт B",
+          "category": "Категория *",
+          "categoryPlaceholder": "Выберите категорию",
+          "description": "Описание",
+          "descriptionPlaceholder": "Подробное описание пакета...",
+          "duration": "Продолжительность *",
+          "status": "Статус",
+          "maxStudents": "Макс. количество учеников",
+          "currentStudentsInfo": "Сейчас: {current}/{max}"
+        },
+        "durationUnits": {
+          "days": "Дней",
+          "weeks": "Недель",
+          "months": "Месяцев"
+        },
+        "categories": {
+          "A": "Категория A - Мотоциклы",
+          "A1": "Категория A1",
+          "A2": "Категория A2",
+          "B": "Категория B - Легковые автомобили",
+          "B1": "Категория B1",
+          "C": "Категория C - Грузовые",
+          "C1": "Категория C1",
+          "D": "Категория D - Автобусы",
+          "T": "Категория T - Тракторы"
+        }
+      },
+      "pricing": {
+        "title": "Ценообразование",
+        "subtitle": "Установите цену и варианты оплаты",
+        "fields": {
+          "basePrice": "Базовая цена (грн) *",
+          "discountedPrice": "Акционная цена (грн)",
+          "pricePlaceholder": "0.00",
+          "savings": "Экономия: {amount} грн ({percent}%)",
+          "paymentOptions": "Варианты оплаты",
+          "installments": "Количество платежей",
+          "installmentsPlaceholder": "Выберите количество платежей",
+          "monthlyPayment": "Ежемесячный платеж: {amount} грн"
+        },
+        "paymentTypes": {
+          "full": "Только полная оплата",
+          "installments": "Только рассрочка",
+          "both": "Полная оплата и рассрочка"
+        },
+        "installmentOptions": {
+          "2": "2 платежа",
+          "3": "3 платежа",
+          "4": "4 платежа",
+          "6": "6 платежей",
+          "12": "12 платежей"
+        },
+        "modifiers": {
+          "title": "Модификаторы цен",
+          "subtitle": "Дополнительные скидки и доплаты",
+          "table": {
+            "name": "Название",
+            "type": "Тип",
+            "value": "Значение",
+            "condition": "Условие",
+            "namePlaceholder": "Название скидки/доплаты",
+            "conditionPlaceholder": "Условие применения"
+          },
+          "types": {
+            "percentage": "Процент",
+            "fixed": "Сумма"
+          }
+        }
+      },
+      "content": {
+        "lessons": {
+          "title": "Занятия",
+          "subtitle": "Количество часов теории и практики",
+          "theoryHours": "Часы теории *",
+          "practicalHours": "Часы практики *",
+          "additionalHours": "Дополнительные часы",
+          "examAttempts": "Количество попыток сдачи экзамена"
+        },
+        "features": {
+          "title": "Функции пакета",
+          "subtitle": "Что включает пакет",
+          "namePlaceholder": "Название функции",
+          "valuePlaceholder": "Значение"
+        }
+      },
+      "availability": {
+        "validity": {
+          "title": "Период действия",
+          "subtitle": "Когда пакет доступен для покупки",
+          "startDate": "Дата начала *",
+          "endDate": "Дата завершения"
+        },
+        "locations": {
+          "title": "Локации",
+          "subtitle": "Где доступен пакет"
+        },
+        "instructors": {
+          "title": "Инструкторы",
+          "subtitle": "Какие инструкторы могут проводить занятия"
+        },
+        "vehicles": {
+          "title": "Транспортные средства",
+          "subtitle": "Доступные автомобили для этого пакета"
+        }
+      },
+      "terms": {
+        "title": "Условия и правила",
+        "subtitle": "Правила использования пакета",
+        "placeholder": "Введите условия пакета..."
+      },
+      "dialogs": {
+        "duplicate": {
+          "title": "Дублировать пакет",
+          "description": "Вы создадите копию пакета \"{name}\". Новый пакет будет иметь статус \"Черновик\".",
+          "confirm": "Дублировать"
+        },
+        "delete": {
+          "title": "Удалить пакет",
+          "description": "Вы уверены, что хотите удалить пакет \"{name}\"? Эта операция необратима. Пакет будет помечен как удаленный, но исторические данные будут сохранены.",
+          "confirm": "Удалить пакет"
+        }
+      },
+      "toast": {
+        "saveSuccess": "Пакет обновлен",
+        "saveSuccessDescription": "Изменения успешно сохранены"
+      }
+    },
+    "list": {
+      "title": "Пакеты",
+      "subtitle": "Управление тарифными планами и пакетами",
+      "buttons": {
+        "export": "Экспорт",
+        "newPackage": "Новый пакет",
+        "details": "Детали",
+        "edit": "Редактировать"
+      },
+      "stats": {
+        "totalPackages": "Всего пакетов",
+        "active": "Активных",
+        "users": "Пользователей",
+        "revenue": "Доход",
+        "avgRating": "Ср. оценка",
+        "renewals": "Обновлений"
+      },
+      "charts": {
+        "monthlySales": "Продажи за месяц",
+        "userDistribution": "Распределение пользователей",
+        "months": {
+          "jan": "Янв",
+          "feb": "Фев",
+          "mar": "Мар",
+          "apr": "Апр",
+          "may": "Май",
+          "jun": "Июн"
+        }
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск пакетов...",
+        "allCategories": "Все категории",
+        "allStatuses": "Все статусы",
+        "active": "Активные",
+        "inactive": "Неактивные"
+      },
+      "categories": {
+        "beginner": "Начинающий",
+        "standard": "Стандартный",
+        "premium": "Премиум",
+        "vip": "VIP",
+        "intensive": "Интенсивный",
+        "special": "Специальный",
+        "corporate": "Корпоративный",
+        "trial": "Пробный"
+      },
+      "badges": {
+        "popular": "Популярный",
+        "recommended": "Рекомендуемый",
+        "new": "Новый",
+        "inactive": "Неактивный"
+      },
+      "packageCard": {
+        "contains": "Содержит:",
+        "more": "+{count} больше",
+        "users": "Пользователей",
+        "rating": "Оценка",
+        "renewals": "Обновлений",
+        "credits": "кредитов",
+        "days": "дней"
+      },
+      "table": {
+        "package": "Пакет",
+        "price": "Цена",
+        "credits": "Кредиты",
+        "users": "Пользователи",
+        "sales": "Продажи",
+        "revenue": "Доход",
+        "rating": "Оценка",
+        "status": "Статус",
+        "actions": "Действия",
+        "statusActive": "Активный",
+        "statusInactive": "Неактивный"
+      },
+      "packages": {
+        "basic": {
+          "name": "Базовый",
+          "description": "Идеален для начинающих. Содержит основы вождения транспортного средства",
+          "features": [
+            "10 практических занятий по 90 мин",
+            "Базовая теоретическая подготовка",
+            "Учебные материалы",
+            "Поддержка инструктора"
+          ],
+          "limitations": [
+            "Без вождения по автостраде",
+            "Без ночного вождения",
+            "Один инструктор"
+          ]
+        },
+        "standard": {
+          "name": "Стандарт",
+          "description": "Самый популярный выбор. Полный курс обучения вождению",
+          "features": [
+            "20 практических занятий по 90 мин",
+            "Полная теоретическая подготовка",
+            "Онлайн тесты и симулятор",
+            "Выбор инструктора",
+            "Вождение по автостраде",
+            "Подготовка к экзамену"
+          ],
+          "limitations": [
+            "Без VIP поддержки",
+            "Стандартное расписание"
+          ]
+        },
+        "premium": {
+          "name": "Премиум",
+          "description": "Расширенный курс с дополнительными возможностями",
+          "features": [
+            "30 практических занятий по 90 мин",
+            "Полная теоретическая подготовка",
+            "Личный менеджер",
+            "Приоритетный выбор инструктора",
+            "Ночное вождение",
+            "Вождение по автостраде",
+            "Вождение в сложных условиях",
+            "2 попытки экзамена включены"
+          ],
+          "limitations": []
+        },
+        "vip": {
+          "name": "VIP",
+          "description": "Максимальный комфорт и индивидуальный подход",
+          "features": [
+            "50 практических занятий по 90 мин",
+            "Индивидуальная программа обучения",
+            "Личный менеджер 24/7",
+            "Топ инструкторы",
+            "Гибкое расписание",
+            "Премиум автомобили",
+            "Неограниченные попытки экзамена",
+            "Сопровождение на экзамене",
+            "Дополнительные мастер-классы"
+          ],
+          "limitations": []
+        },
+        "intensive": {
+          "name": "Интенсивный",
+          "description": "Быстрый курс для тех, кто спешит",
+          "features": [
+            "15 интенсивных занятий",
+            "Ежедневные занятия",
+            "Экспресс-теория",
+            "Подготовка к экзамену за 2 недели"
+          ],
+          "limitations": [
+            "Требует полной доступности",
+            "Без выходных"
+          ]
+        },
+        "student": {
+          "name": "Студенческий",
+          "description": "Специальное предложение для студентов",
+          "features": [
+            "20 практических занятий",
+            "Гибкое расписание",
+            "Скидка для студентов",
+            "Онлайн материалы"
+          ],
+          "limitations": [
+            "Требуется студенческий билет",
+            "Ограниченное количество мест"
+          ]
+        },
+        "corporate": {
+          "name": "Корпоративный",
+          "description": "Для компаний и организаций",
+          "features": [
+            "Пакет для 5 сотрудников",
+            "Корпоративные скидки",
+            "Отчетность для компании",
+            "Гибкое расписание для группы"
+          ],
+          "limitations": [
+            "Минимум 5 человек"
+          ]
+        },
+        "trial": {
+          "name": "Пробный",
+          "description": "Испытайте наши услуги",
+          "features": [
+            "3 пробных занятия",
+            "Оценка уровня",
+            "Консультация"
+          ],
+          "limitations": [
+            "Одноразовое предложение",
+            "Для новых клиентов"
+          ]
+        }
+      },
+      "currency": "грн",
+      "discount": "-{percent}%"
+    }
+  },
+  "payments": {
+    "invoices": {
+      "title": "Счета",
+      "subtitle": "Управление бухгалтерскими документами",
+      "buttons": {
+        "settings": "Настройки",
+        "newInvoice": "Новый счет",
+        "actions": "Действия",
+        "send": "Отправить",
+        "download": "Скачать",
+        "downloadPdf": "Скачать PDF",
+        "print": "Печатать",
+        "delete": "Удалить",
+        "duplicate": "Дублировать",
+        "edit": "Редактировать",
+        "view": "Просмотреть",
+        "createCorrection": "Создать коррекцию",
+        "close": "Закрыть",
+        "cancel": "Отменить",
+        "previous": "Предыдущий",
+        "next": "Следующий"
+      },
+      "stats": {
+        "thisMonth": "Этот месяц",
+        "allInvoices": "Все счета",
+        "value": "Стоимость",
+        "paid": "Оплаченные",
+        "pending": "Ожидают",
+        "overdue": "Просроченные",
+        "averageTime": "Среднее время",
+        "days": "дней",
+        "requiresIntervention": "Требует вмешательства",
+        "vsLastMonth": "+{percent}% по сравнению с пр. месяцем"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск по номеру или клиенту...",
+        "status": "Статус",
+        "type": "Тип",
+        "all": "Все",
+        "selected": "Выбрано"
+      },
+      "status": {
+        "draft": "Черновик",
+        "sent": "Отправлено",
+        "paid": "Оплачено",
+        "overdue": "Просрочено",
+        "cancelled": "Отменено",
+        "refunded": "Возвращено"
+      },
+      "type": {
+        "standard": "Счет-фактура",
+        "proforma": "Проформа",
+        "correction": "Коррекция"
+      },
+      "table": {
+        "number": "Номер",
+        "client": "Клиент",
+        "issueDate": "Дата выставления",
+        "dueDate": "Срок оплаты",
+        "amount": "Сумма",
+        "status": "Статус",
+        "daysOverdue": "{days} дней просрочено"
+      },
+      "details": {
+        "title": "Детали счета",
+        "issueDate": "Дата выставления",
+        "seller": "Продавец",
+        "buyer": "Покупатель",
+        "description": "Описание",
+        "quantity": "Количество",
+        "unitPrice": "Цена за ед.",
+        "vat": "НДС",
+        "value": "Стоимость",
+        "subtotal": "Итого",
+        "vatAmount": "Сумма НДС",
+        "total": "К оплате",
+        "currency": "грн",
+        "taxId": "ИНН"
+      },
+      "sendDialog": {
+        "title": "Отправить счет",
+        "description": "Счет будет отправлен на электронный адрес клиента",
+        "recipient": "Получатель",
+        "subject": "Тема сообщения",
+        "message": "Текст сообщения",
+        "defaultSubject": "Счет {number}",
+        "defaultMessage": "Уважаемые,\n\nВ приложении высылаем счет № {number}.\n\nСрок оплаты: {dueDate}\n\nС уважением,\nАвтошкола Drive",
+        "attachmentNote": "Счет в формате PDF будет добавлен автоматически",
+        "send": "Отправить"
+      },
+      "toast": {
+        "actionCompleted": "Действие выполнено",
+        "bulkActionDescription": "{action} для {count} счетов",
+        "invoiceSent": "Счет отправлен",
+        "invoiceSentDescription": "Счет {number} отправлен на адрес {email}",
+        "invoiceDownloaded": "Загрузка счета",
+        "invoiceDownloadedDescription": "Счет {number} загружен",
+        "invoiceDuplicated": "Счет продублирован",
+        "invoiceDuplicatedDescription": "Создана копия счета {number}"
+      },
+      "pagination": {
+        "showing": "Показано {from}-{to} из {total} результатов"
+      },
+      "company": {
+        "name": "Автошкола Drive",
+        "address": "ул. Маршалковская 10",
+        "city": "00-001 Варшава",
+        "taxId": "ИНН: 1234567890"
+      }
+    },
+    "payouts": {
+      "title": "Выплаты инструкторам",
+      "subtitle": "Расчеты вознаграждений",
+      "buttons": {
+        "calculate": "Рассчитать выплаты",
+        "process": "Обработать",
+        "processSelected": "Обработать выбранные ({count})",
+        "download": "Скачать",
+        "generateInvoice": "Создать счет",
+        "downloadReport": "Скачать отчет",
+        "details": "Детали"
+      },
+      "stats": {
+        "totalAmount": "Общая сумма",
+        "gross": "Брутто",
+        "toPay": "К выплате",
+        "net": "Нетто",
+        "commission": "Комиссия",
+        "taxes": "Налоги",
+        "lessons": "Уроки",
+        "inPeriod": "За период",
+        "hours": "Часы",
+        "worked": "Отработано"
+      },
+      "charts": {
+        "payoutsDynamics": "Динамика выплат",
+        "payoutsDistribution": "Распределение выплат",
+        "salary": "Вознаграждение",
+        "commission": "Комиссия",
+        "taxes": "Налоги"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск инструктора...",
+        "allStatuses": "Все статусы",
+        "pending": "Ожидает",
+        "processing": "Обрабатывается",
+        "completed": "Выплачено",
+        "failed": "Ошибка"
+      },
+      "table": {
+        "instructor": "Инструктор",
+        "period": "Период",
+        "lessonsHours": "Уроки/Часы",
+        "gross": "Брутто",
+        "net": "Нетто",
+        "status": "Статус",
+        "actions": "Действия",
+        "lessons": "уроков",
+        "hours": "ч."
+      },
+      "status": {
+        "pending": "Ожидает",
+        "processing": "Обрабатывается",
+        "completed": "Выплачено",
+        "failed": "Ошибка"
+      },
+      "details": {
+        "title": "Детали выплаты",
+        "instructor": "Инструктор",
+        "period": "Период",
+        "statistics": "Статистика",
+        "settlement": "Расчет",
+        "calculated": "Начислено (Брутто)",
+        "schoolCommission": "Комиссия школы (20%)",
+        "tax": "Налог (19%)",
+        "toPay": "К выплате (Нетто)",
+        "paymentInfo": "Платежная информация",
+        "bankAccount": "Номер счета",
+        "taxNumber": "ИНН",
+        "paymentMethod": "Способ оплаты",
+        "bankTransfer": "Банковский перевод",
+        "cash": "Наличные",
+        "card": "Карта",
+        "processPayment": "Обработать выплату"
+      },
+      "months": {
+        "jan": "Янв",
+        "feb": "Фев",
+        "mar": "Мар",
+        "apr": "Апр",
+        "may": "Май",
+        "jun": "Июн"
+      },
+      "currency": "грн",
+      "pagination": {
+        "showing": "Показано {from} - {to} из {total} выплат",
+        "of": "из"
+      },
+      "loading": {
+        "processing": "Обработка выплат..."
+      }
+    },
+    "main": {
+      "title": "Платежи",
+      "subtitle": "Управление финансовыми транзакциями",
+      "buttons": {
+        "export": "Экспорт",
+        "createInvoice": "Создать счет",
+        "viewDetails": "Просмотреть",
+        "downloadInvoice": "Скачать счет",
+        "refund": "Возврат средств"
+      },
+      "dateRange": {
+        "today": "Сегодня",
+        "week": "Эта неделя",
+        "month": "Этот месяц",
+        "year": "Этот год"
+      },
+      "stats": {
+        "totalRevenue": "Общий доход",
+        "pending": "Ожидают",
+        "refunded": "Возвращено",
+        "successRate": "Успешность",
+        "avgTransaction": "Средняя сумма",
+        "todayTransactions": "Сегодня"
+      },
+      "charts": {
+        "revenueDynamics": "Динамика доходов",
+        "revenue": "Доход",
+        "refunds": "Возвраты",
+        "paymentMethods": "Способы оплаты"
+      },
+      "tabs": {
+        "transactions": "Транзакции",
+        "invoices": "Счета",
+        "payouts": "Выплаты инструкторам"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск по ID, пользователю...",
+        "allStatuses": "Все статусы",
+        "allTypes": "Все типы",
+        "allMethods": "Все способы"
+      },
+      "status": {
+        "completed": "Завершено",
+        "pending": "Ожидает",
+        "failed": "Неудачно",
+        "refunded": "Возвращено"
+      },
+      "types": {
+        "package": "Пакет",
+        "lesson": "Занятие",
+        "subscription": "Подписка",
+        "deposit": "Депозит",
+        "refund": "Возврат"
+      },
+      "typeDescriptions": {
+        "package": "Пакет \"{name}\"",
+        "lesson": "Отдельные занятия",
+        "subscription": "Месячная подписка",
+        "deposit": "Депозит на счет",
+        "refund": "Возврат средств"
+      },
+      "packages": {
+        "standard": "Стандарт",
+        "premium": "Премиум",
+        "vip": "VIP",
+        "basic": "Базовый"
+      },
+      "methods": {
+        "card": "Карта",
+        "transfer": "Перевод",
+        "cash": "Наличные",
+        "przelewy24": "Przelewy24",
+        "paypal": "PayPal"
+      },
+      "table": {
+        "transactionId": "ID транзакции",
+        "user": "Пользователь",
+        "type": "Тип",
+        "amount": "Сумма",
+        "method": "Способ",
+        "status": "Статус",
+        "date": "Дата",
+        "actions": "Действия"
+      },
+      "messages": {
+        "loading": "Загрузка...",
+        "noTransactions": "Транзакции не найдены"
+      },
+      "currency": "грн"
+    }
+  },
+  "reports": {
+    "analytics": {
+      "title": "Аналитика",
+      "subtitle": "Подробные анализы и бизнес-статистика",
+      "buttons": {
+        "export": "Экспортировать",
+        "refresh": "Обновить",
+        "compare": "Сравнить периоды",
+        "disableCompare": "Отключить сравнение"
+      },
+      "dateRange": {
+        "week": "Эта неделя",
+        "month": "Этот месяц",
+        "quarter": "Этот квартал",
+        "year": "Этот год",
+        "custom": "Свой период"
+      },
+      "kpi": {
+        "revenue": "Доходы",
+        "activeStudents": "Активные ученики",
+        "passRate": "Показатель сдачи",
+        "avgRating": "Средняя оценка",
+        "previousPeriod": "Предыдущий период"
+      },
+      "tabs": {
+        "overview": "Обзор",
+        "financial": "Финансы",
+        "students": "Ученики",
+        "instructors": "Инструкторы",
+        "locations": "Локации",
+        "performance": "Эффективность"
+      },
+      "overview": {
+        "revenueAndCosts": {
+          "title": "Доходы и расходы",
+          "subtitle": "Финансовый анализ во времени",
+          "revenue": "Доходы",
+          "costs": "Расходы",
+          "profit": "Прибыль"
+        },
+        "categoryDistribution": {
+          "title": "Распределение по категориям",
+          "subtitle": "Распределение учеников по категориям",
+          "students": "учеников",
+          "categoryB": "Категория B",
+          "categoryA": "Категория A",
+          "categoryC": "Категория C",
+          "categoryA2": "Категория A2",
+          "other": "Другое"
+        },
+        "conversionFunnel": {
+          "title": "Воронка конверсии",
+          "subtitle": "Прогресс учеников в процессе обучения",
+          "stages": {
+            "registration": "Регистрация",
+            "theoryStarted": "Теория начата",
+            "theoryCompleted": "Теория завершена",
+            "practiceStarted": "Практика начата",
+            "practiceCompleted": "Практика завершена",
+            "examPassed": "Экзамен сдан"
+          },
+          "conversionRate": "Показатель конверсии",
+          "conversionInfo": "{passed} из {total} учеников сдали экзамен"
+        }
+      },
+      "financial": {
+        "ytdRevenue": "Доходы с начала года",
+        "avgRevenuePerStudent": "Средний доход/ученика",
+        "profitMargin": "Маржа прибыли",
+        "vsLastYear": "+{percent}% по сравнению с прошлым годом",
+        "vsLastPeriod": "{change}% по сравнению с прошлым периодом",
+        "revenueTrend": "Тренд доходов"
+      },
+      "students": {
+        "dynamicsTitle": "Динамика количества учеников",
+        "studentsCount": "Количество учеников",
+        "demographics": {
+          "title": "Демография учеников",
+          "age18_25": "18-25 лет",
+          "age26_35": "26-35 лет",
+          "age36_45": "36-45 лет",
+          "age46plus": "46+ лет"
+        },
+        "sources": {
+          "title": "Источники привлечения",
+          "googleAds": "Google Ads",
+          "referrals": "Рекомендации",
+          "facebook": "Facebook",
+          "website": "Веб-сайт"
+        }
+      },
+      "instructors": {
+        "performanceTitle": "Эффективность инструкторов",
+        "lessons": "уроков",
+        "passRate": "сдача",
+        "revenue": "доход",
+        "competenciesTitle": "Сравнение компетенций",
+        "competenciesSubtitle": "Средние результаты инструкторов в различных областях",
+        "thisMonth": "Этот месяц",
+        "lastMonth": "Прошлый месяц",
+        "skills": {
+          "theory": "Теория",
+          "practice": "Практика",
+          "maneuvers": "Маневры",
+          "city": "Город",
+          "route": "Трасса",
+          "safety": "Безопасность"
+        }
+      },
+      "locations": {
+        "utilizationTitle": "Использование локаций",
+        "bookings": "Бронирования",
+        "revenue": "Доход",
+        "utilization": "Использование",
+        "locations": {
+          "centerCity": "Варшава Центр",
+          "mokotow": "Варшава Мокотув",
+          "praga": "Варшава Прага",
+          "ursynow": "Варшава Урсынув"
+        }
+      },
+      "performance": {
+        "avgLessonTime": "Среднее время урока",
+        "passRate": "Показатель сдачи",
+        "customerSatisfaction": "Удовлетворенность клиентов",
+        "kpiTitle": "Ключевые показатели эффективности (KPI)",
+        "metrics": {
+          "avgWaitTime": "Среднее время ожидания урока",
+          "dropoutRate": "Коэффициент отсева",
+          "avgLessonsPerStudent": "Среднее количество уроков на ученика",
+          "fleetUtilization": "Использование автопарка"
+        },
+        "status": {
+          "good": "Хорошо",
+          "change": "+{percent}%"
+        },
+        "time": {
+          "min": "мин",
+          "days": "дни"
+        }
+      },
+      "months": {
+        "jan": "Янв",
+        "feb": "Фев",
+        "mar": "Мар",
+        "apr": "Апр",
+        "may": "Май",
+        "jun": "Июн",
+        "jul": "Июл",
+        "aug": "Авг",
+        "sep": "Сен",
+        "oct": "Окт",
+        "nov": "Ноя",
+        "dec": "Дек"
+      },
+      "currency": "грн"
+    },
+    "export": {
+      "title": "Экспорт данных",
+      "subtitle": "Генерируйте и загружайте отчеты в разных форматах",
+      "buttons": {
+        "newExport": "Новый экспорт",
+        "useTemplate": "Использовать шаблон",
+        "download": "Скачать",
+        "retry": "Повторить",
+        "scheduleExport": "Запланировать экспорт",
+        "scheduleLater": "Запланировать на позже",
+        "generateExport": "Сгенерировать экспорт"
+      },
+      "tabs": {
+        "new": "Новый экспорт",
+        "templates": "Шаблоны",
+        "history": "История",
+        "scheduled": "Запланированные"
+      },
+      "dataTypes": {
+        "title": "Тип данных",
+        "financial": "Финансовые данные",
+        "students": "Ученики",
+        "bookings": "Бронирования",
+        "instructors": "Инструкторы",
+        "vehicles": "Транспортные средства",
+        "locations": "Локации"
+      },
+      "dateRange": {
+        "title": "Диапазон дат",
+        "from": "От",
+        "to": "До",
+        "today": "Сегодня",
+        "yesterday": "Вчера",
+        "thisWeek": "Эта неделя",
+        "thisMonth": "Этот месяц",
+        "thisQuarter": "Этот квартал"
+      },
+      "fields": {
+        "title": "Поля для экспорта",
+        "financial": {
+          "revenue": "Доходы",
+          "expenses": "Расходы",
+          "profit": "Прибыль",
+          "transactions": "Транзакции",
+          "refunds": "Возвраты",
+          "packages": "Проданные пакеты"
+        },
+        "students": {
+          "personal": "Личные данные",
+          "contact": "Контактные данные",
+          "package": "Пакет",
+          "progress": "Прогресс",
+          "payments": "Платежи",
+          "attendance": "Посещаемость"
+        },
+        "bookings": {
+          "date": "Дата",
+          "student": "Ученик",
+          "instructor": "Инструктор",
+          "vehicle": "Транспорт",
+          "status": "Статус",
+          "notes": "Заметки"
+        },
+        "instructors": {
+          "personal": "Личные данные",
+          "contact": "Контактные данные",
+          "rating": "Рейтинг",
+          "students": "Количество учеников",
+          "schedule": "Расписание",
+          "earnings": "Заработок"
+        },
+        "vehicles": {
+          "basic": "Основные данные",
+          "registration": "Регистрация",
+          "mileage": "Пробег",
+          "maintenance": "Техобслуживание",
+          "bookings": "Бронирования",
+          "fuel": "Расход топлива"
+        },
+        "locations": {
+          "name": "Название",
+          "address": "Адрес",
+          "capacity": "Вместимость",
+          "schedule": "Расписание",
+          "bookings": "Бронирования",
+          "revenue": "Доходы"
+        }
+      },
+      "formats": {
+        "title": "Формат экспорта",
+        "xlsx": {
+          "name": "Excel",
+          "description": "Лучший для анализа данных"
+        },
+        "csv": {
+          "name": "CSV",
+          "description": "Универсальный формат"
+        },
+        "pdf": {
+          "name": "PDF",
+          "description": "Для печати и презентаций"
+        },
+        "json": {
+          "name": "JSON",
+          "description": "Для интеграции API"
+        }
+      },
+      "options": {
+        "title": "Опции",
+        "compressFile": "Сжать файл (ZIP)",
+        "sendEmail": "Отправить на email",
+        "saveTemplate": "Сохранить как шаблон"
+      },
+      "status": {
+        "completed": "Завершено",
+        "processing": "Обработка",
+        "failed": "Ошибка",
+        "queued": "В очереди"
+      },
+      "templates": {
+        "monthlyFinancialReport": "Месячный финансовый отчет",
+        "monthlyFinancialDescription": "Комплексный отчет доходов и расходов",
+        "activeStudentsList": "Список активных учеников",
+        "activeStudentsDescription": "Экспорт данных учеников с активными пакетами",
+        "vehicleUsageReport": "Отчет использования транспорта",
+        "vehicleUsageDescription": "Статистика использования автопарка",
+        "usedCount": "Использовано: {count} раз",
+        "lastUsed": "Последнее: {time}",
+        "fieldsCount": "{count} полей"
+      },
+      "history": {
+        "searchPlaceholder": "Поиск экспортов...",
+        "filters": "Фильтры",
+        "downloads": "{count} загрузок",
+        "errorMessage": "Превышен лимит времени",
+        "expiresOn": "Действует до {date}"
+      },
+      "scheduled": {
+        "noScheduledExports": "Нет запланированных экспортов",
+        "scheduleDescription": "Запланируйте автоматическое генерирование отчетов"
+      },
+      "messages": {
+        "exportReady": "Экспорт готов к загрузке",
+        "exportFailed": "Ошибка при генерации экспорта",
+        "templateSaved": "Шаблон успешно сохранен"
+      }
+    },
+    "title": "Отчеты",
+    "subtitle": "Создание и анализ отчетов",
+    "buttons": {
+      "savedReports": "Сохраненные отчеты",
+      "newReport": "Новый отчет",
+      "generateReport": "Сгенерировать отчет",
+      "generating": "Генерирование отчета...",
+      "pdf": "PDF",
+      "excel": "Excel",
+      "scheduleReport": "Запланировать отчет",
+      "download": "Скачать",
+      "print": "Печатать",
+      "share": "Поделиться",
+      "save": "Сохранить",
+      "view": "Просмотреть"
+    },
+    "reportTypes": {
+      "title": "Тип отчета",
+      "financial": {
+        "name": "Финансовый отчет",
+        "description": "Доходы, расходы, прибыль за период"
+      },
+      "students": {
+        "name": "Отчет учеников",
+        "description": "Статистика учеников и их прогресс"
+      },
+      "instructors": {
+        "name": "Отчет инструкторов",
+        "description": "Эффективность и загруженность инструкторов"
+      },
+      "bookings": {
+        "name": "Отчет бронирований",
+        "description": "Анализ бронирований и загруженности"
+      },
+      "vehicles": {
+        "name": "Отчет транспорта",
+        "description": "Использование и обслуживание автопарка"
+      },
+      "performance": {
+        "name": "Отчет производительности",
+        "description": "KPI и общая эффективность школы"
+      }
+    },
+    "period": {
+      "title": "Период",
+      "from": "От",
+      "to": "До",
+      "today": "Сегодня",
+      "yesterday": "Вчера",
+      "thisWeek": "Эта неделя",
+      "thisMonth": "Этот месяц",
+      "lastMonth": "Предыдущий месяц",
+      "thisQuarter": "Этот квартал",
+      "thisYear": "Этот год"
+    },
+    "filters": {
+      "title": "Фильтры",
+      "locations": "Локации",
+      "instructors": "Инструкторы",
+      "categories": "Категории",
+      "allLocations": "Все локации",
+      "allInstructors": "Все инструкторы",
+      "allCategories": "Все категории",
+      "selected": "Выбрано"
+    },
+    "preview": {
+      "title": "Предварительный просмотр",
+      "type": "Тип:",
+      "period": "Период:",
+      "locations": "Локации:",
+      "instructors": "Инструкторы:",
+      "categories": "Категории:"
+    },
+    "automaticReports": {
+      "title": "Автоматические отчеты",
+      "disabled": "Отключено",
+      "daily": "Ежедневно",
+      "weekly": "Еженедельно",
+      "monthly": "Ежемесячно",
+      "quarterly": "Ежеквартально",
+      "sendEmail": "Отправить на email",
+      "emailPlaceholder": "admin@autoshkola.ua"
+    },
+    "generatedReport": {
+      "generated": "Сгенерировано",
+      "totalRevenue": "Общий доход",
+      "expenses": "Расходы",
+      "netProfit": "Чистая прибыль",
+      "allBookings": "Все бронирования",
+      "detailsDescription": "Подробный отчет содержит полную аналитику за выбранный период. Загрузите полный отчет в формате PDF или Excel для детального просмотра."
+    },
+    "recentReports": {
+      "title": "Последние сохраненные отчеты"
+    },
+    "tooltips": {
+      "downloadPdf": "Скачать PDF",
+      "downloadExcel": "Скачать Excel",
+      "print": "Печатать",
+      "share": "Поделиться",
+      "save": "Сохранить"
+    },
+    "currency": "zł"
+  },
+  "settings": {
+    "title": "Настройки",
+    "general": {
+      "title": "Общие настройки",
+      "schoolName": "Название школы",
+      "email": "Email",
+      "phone": "Телефон",
+      "website": "Веб-сайт",
+      "address": "Адрес",
+      "timezone": "Часовой пояс",
+      "language": "Язык",
+      "currency": "Валюта",
+      "registrationNumber": "Регистрационный номер",
+      "taxNumber": "Налоговый номер",
+      "workingDays": "Рабочие дни",
+      "workingHours": "Рабочие часы",
+      "maintenanceMode": {
+        "title": "Режим обслуживания",
+        "description": "Временно отключить доступ пользователей во время технических работ",
+        "enabled": "Включен",
+        "disabled": "Выключен"
+      },
+      "timezones": {
+        "warsaw": "Варшава (UTC+1)",
+        "kyiv": "Киев (UTC+2)"
+      },
+      "languages": {
+        "pl": "Polski",
+        "en": "English",
+        "uk": "Українська"
+      }
+    },
+    "notificationSettings": {
+      "title": "Настройки уведомлений",
+      "channels": {
+        "title": "Каналы уведомлений",
+        "email": "Email уведомления",
+        "sms": "SMS уведомления",
+        "push": "Push уведомления"
+      },
+      "types": {
+        "title": "Типы уведомлений",
+        "bookingConfirmation": "Подтверждение бронирования",
+        "bookingReminder": "Напоминание о занятии",
+        "cancellationAlert": "Уведомление об отмене",
+        "paymentReminder": "Напоминание об оплате",
+        "newsletter": "Рассылка новостей",
+        "marketing": "Маркетинговые сообщения",
+        "adminAlerts": "Уведомления администратора",
+        "instructorNotifications": "Уведомления инструкторам",
+        "studentNotifications": "Уведомления ученикам"
+      },
+      "reminderTime": "Время напоминания перед занятием (часы)"
+    },
+    "payment": {
+      "title": "Настройки платежей",
+      "providers": {
+        "title": "Системы оплаты",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Карты Visa, Mastercard"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Украинские банковские переводы"
+        },
+        "cash": {
+          "name": "Наличные",
+          "description": "Оплата наличными в офисе"
+        },
+        "bankTransfer": {
+          "name": "Банковский перевод",
+          "description": "Прямой банковский перевод"
+        }
+      },
+      "taxRate": "Ставка налога (%)",
+      "invoicePrefix": "Префикс счетов",
+      "paymentTerms": "Срок оплаты (дни)",
+      "lateFeePercentage": "Штраф за просрочку (%)",
+      "autoInvoice": "Автоматические счета",
+      "refundPolicy": "Политика возврата"
+    },
+    "securitySettings": {
+      "title": "Настройки безопасности",
+      "warning": {
+        "title": "Важно",
+        "description": "Изменение настроек безопасности может повлиять на доступ пользователей к системе"
+      },
+      "sessionTimeout": "Таймаут сессии (минуты)",
+      "maxLoginAttempts": "Макс. попыток входа",
+      "lockoutDuration": "Время блокировки (минуты)",
+      "passwordRequirements": {
+        "title": "Требования к паролю",
+        "minLength": "Минимальная длина: {length} символов",
+        "requireUppercase": "Требовать заглавные буквы",
+        "requireNumber": "Требовать цифры",
+        "requireSpecial": "Требовать специальные символы"
+      },
+      "backup": {
+        "title": "Резервное копирование",
+        "autoBackup": "Автоматическое резервное копирование",
+        "lastBackup": "Последняя копия: вчера, 02:00",
+        "frequency": {
+          "daily": "Ежедневно",
+          "weekly": "Еженедельно",
+          "monthly": "Ежемесячно"
+        }
+      },
+      "twoFactor": "Двухфакторная аутентификация",
+      "apiAccess": "Доступ через API",
+      "apiRateLimit": "Лимит API запросов",
+      "dataRetention": "Хранение данных (дни)",
+      "gdprCompliant": "Соответствие GDPR"
+    },
+    "branchesSettings": {
+      "title": "Филиалы",
+      "addBranch": "Добавить филиал",
+      "active": "Активный",
+      "inactive": "Неактивный"
+    },
+    "emailTemplates": {
+      "title": "Шаблоны уведомлений",
+      "newTemplate": "Новый шаблон",
+      "subject": "Тема:",
+      "lastModified": "Последние изменения:"
+    },
+    "subtitle": "Системные настройки и конфигурация",
+    "buttons": {
+      "export": "Экспорт",
+      "import": "Импорт",
+      "save": "Сохранить",
+      "saving": "Сохранение..."
+    },
+    "messages": {
+      "saveSuccess": "Настройки успешно сохранены!"
+    },
+    "tabs": {
+      "general": "Общие",
+      "school": "Школа",
+      "notifications": "Уведомления",
+      "payments": "Платежи",
+      "security": "Безопасность",
+      "integrations": "Интеграции",
+      "branches": "Филиалы",
+      "templates": "Шаблоны"
+    },
+    "school": {
+      "lessonDuration": "Длительность занятия (минуты)",
+      "bufferTime": "Время между занятиями (минуты)",
+      "maxAdvanceBooking": "Макс. бронирование вперед (дни)",
+      "minAdvanceBooking": "Мин. время до бронирования (часы)",
+      "cancellationPeriod": "Период отмены (часы)",
+      "minAge": "Минимальный возраст",
+      "maxStudentsPerInstructor": "Макс. учеников на инструктора",
+      "examPassRate": "Показатель сдачи (%)",
+      "averageCompletionTime": "Среднее время завершения (дни)",
+      "title": "Настройки школы",
+      "fields": {
+        "lessonDuration": "Длительность занятия (минуты)",
+        "bufferTime": "Время между занятиями (минуты)",
+        "maxAdvanceBooking": "Макс. бронирование вперед (дни)",
+        "minAdvanceBooking": "Мин. время до бронирования (часы)",
+        "cancellationPeriod": "Период отмены (часы)",
+        "minAge": "Минимальный возраст",
+        "maxStudentsPerInstructor": "Макс. учеников на инструктора",
+        "examPassRate": "Показатель сдачи (%)",
+        "averageCompletionTime": "Среднее время завершения (дни)"
+      },
+      "permissions": {
+        "allowWeekendBookings": "Разрешить бронирование на выходные",
+        "allowNightLessons": "Разрешить ночные занятия",
+        "requireMedicalCertificate": "Требовать медицинскую справку",
+        "requireTheoryPass": "Требовать сдачу теории перед практикой"
+      }
+    },
+    "notifications": {
+      "title": "Настройки уведомлений",
+      "channels": {
+        "title": "Каналы уведомлений",
+        "email": "Email уведомления",
+        "sms": "SMS уведомления",
+        "push": "Push уведомления"
+      },
+      "types": {
+        "title": "Типы уведомлений",
+        "bookingConfirmation": "Подтверждение бронирования",
+        "bookingReminder": "Напоминание о занятии",
+        "cancellationAlert": "Уведомление об отмене",
+        "paymentReminder": "Напоминание об оплате",
+        "newsletter": "Рассылка новостей",
+        "marketing": "Маркетинговые сообщения",
+        "adminAlerts": "Уведомления администратора",
+        "instructorNotifications": "Уведомления инструкторам",
+        "studentNotifications": "Уведомления ученикам"
+      },
+      "reminderTime": "Время напоминания перед занятием (часы)"
+    },
+    "payments": {
+      "title": "Настройки платежей",
+      "providers": {
+        "title": "Системы оплаты",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Карты Visa, Mastercard"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Украинские банковские переводы"
+        },
+        "paypal": {
+          "name": "PayPal",
+          "description": "PayPal платежи"
+        },
+        "cash": {
+          "name": "Наличные",
+          "description": "Оплата наличными в офисе"
+        },
+        "bankTransfer": {
+          "name": "Банковский перевод",
+          "description": "Прямой банковский перевод"
+        }
+      },
+      "fields": {
+        "taxRate": "Ставка налога (%)",
+        "invoicePrefix": "Префикс счетов",
+        "paymentTerms": "Срок оплаты (дни)",
+        "lateFeePercentage": "Штраф за просрочку (%)",
+        "autoInvoice": "Автоматические счета",
+        "refundPolicy": "Политика возврата"
+      }
+    },
+    "security": {
+      "title": "Настройки безопасности",
+      "warning": {
+        "title": "Важно",
+        "description": "Изменение настроек безопасности может повлиять на доступ пользователей к системе"
+      },
+      "fields": {
+        "sessionTimeout": "Таймаут сессии (минуты)",
+        "maxLoginAttempts": "Макс. попыток входа",
+        "lockoutDuration": "Время блокировки (минуты)",
+        "twoFactor": "Двухфакторная аутентификация",
+        "apiAccess": "Доступ через API",
+        "apiRateLimit": "Лимит API запросов",
+        "dataRetention": "Хранение данных (дни)",
+        "gdprCompliant": "Соответствие GDPR"
+      },
+      "passwordRequirements": {
+        "title": "Требования к паролю",
+        "minLength": "Минимальная длина: {length} символов",
+        "requireUppercase": "Требовать заглавные буквы",
+        "requireNumber": "Требовать цифры",
+        "requireSpecial": "Требовать специальные символы"
+      },
+      "backup": {
+        "title": "Резервное копирование",
+        "autoBackup": "Автоматическое резервное копирование",
+        "lastBackup": "Последняя копия: вчера, 02:00",
+        "frequency": {
+          "daily": "Ежедневно",
+          "weekly": "Еженедельно",
+          "monthly": "Ежемесячно"
+        }
+      }
+    },
+    "integrations": {
+      "title": "Интеграции",
+      "configured": "Настроено",
+      "notConfigured": "Не настроено",
+      "lastSync": "Последняя синхронизация:",
+      "configure": "Настроить →",
+      "services": {
+        "googleCalendar": {
+          "name": "Google Calendar",
+          "description": "Синхронизация расписания с Google Calendar"
+        },
+        "zoom": {
+          "name": "Zoom",
+          "description": "Занятия онлайн через Zoom"
+        },
+        "mailchimp": {
+          "name": "Mailchimp",
+          "description": "Email маркетинг и кампании"
+        },
+        "facebookPixel": {
+          "name": "Facebook Pixel",
+          "description": "Отслеживание конверсий"
+        },
+        "googleAnalytics": {
+          "name": "Google Analytics",
+          "description": "Аналитика трафика на сайте"
+        },
+        "telegramBot": {
+          "name": "Telegram Bot",
+          "description": "Уведомления через Telegram"
+        }
+      }
+    },
+    "branches": {
+      "title": "Филиалы",
+      "addBranch": "Добавить филиал",
+      "status": {
+        "active": "Активная",
+        "inactive": "Неактивная"
+      }
+    },
+    "templates": {
+      "title": "Шаблоны уведомлений",
+      "newTemplate": "Новый шаблон",
+      "subject": "Тема:",
+      "lastModified": "Последние изменения:",
+      "types": {
+        "bookingConfirmation": "Подтверждение бронирования",
+        "lessonReminder": "Напоминание о занятии",
+        "lessonCancelled": "Отмена занятия",
+        "welcome": "Приветствие после регистрации"
+      }
+    }
+  },
+  "students": {
+    "title": "Курсанты",
+    "subtitle": "Управление курсантами автошколы",
+    "buttons": {
+      "export": "Экспорт",
+      "addStudent": "Добавить курсанта",
+      "moreFilters": "Больше фильтров",
+      "view": "Просмотреть",
+      "edit": "Редактировать",
+      "moreActions": "Больше действий",
+      "sendMessage": "Отправить сообщение",
+      "cancel": "Отменить"
+    },
+    "stats": {
+      "total": "Всего",
+      "active": "Активные",
+      "completed": "Завершили",
+      "avgProgress": "Ср. прогресс",
+      "attendance": "Посещаемость",
+      "revenue": "Доход"
+    },
+    "filters": {
+      "searchPlaceholder": "Поиск курсантов...",
+      "allStatuses": "Все статусы",
+      "allPackages": "Все пакеты",
+      "allInstructors": "Все инструкторы",
+      "statuses": {
+        "active": "Активные",
+        "onHold": "Приостановлены",
+        "completed": "Завершенные",
+        "dropped": "Отказались"
+      }
+    },
+    "table": {
+      "headers": {
+        "student": "Курсант",
+        "package": "Пакет",
+        "instructor": "Инструктор",
+        "progress": "Прогресс",
+        "nextLesson": "Следующее занятие",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "category": "Категория",
+      "theory": "Теория",
+      "practice": "Практика",
+      "lessonsFormat": "{completed}/{total}"
+    },
+    "status": {
+      "active": {
+        "label": "Активный",
+        "bg": "bg-green-100",
+        "text": "text-green-700"
+      },
+      "onHold": {
+        "label": "Приостановлено",
+        "bg": "bg-yellow-100",
+        "text": "text-yellow-700"
+      },
+      "completed": {
+        "label": "Завершено",
+        "bg": "bg-blue-100",
+        "text": "text-blue-700"
+      },
+      "dropped": {
+        "label": "Отказ",
+        "bg": "bg-red-100",
+        "text": "text-red-700"
+      }
+    },
+    "bulkActions": {
+      "selected": "Выбрано: {count} курсантов",
+      "sendMessage": "Отправить сообщение",
+      "export": "Экспортировать"
+    },
+    "pagination": {
+      "showing": "Показано {from} - {to} из {total} курсантов"
+    },
+    "loading": {
+      "processing": "Обработка..."
+    }
+  },
+  "users": {
+    "detail": {
+      "title": "Курсанты",
+      "subtitle": "Управление курсантами автошколы",
+      "buttons": {
+        "export": "Экспорт",
+        "addStudent": "Добавить курсанта",
+        "moreFilters": "Больше фильтров",
+        "view": "Просмотреть",
+        "edit": "Редактировать",
+        "moreActions": "Больше действий",
+        "sendMessage": "Отправить сообщение",
+        "cancel": "Отмена"
+      },
+      "stats": {
+        "total": "Всего",
+        "active": "Активные",
+        "completed": "Завершили",
+        "avgProgress": "Ср. прогресс",
+        "attendance": "Посещаемость",
+        "revenue": "Доход"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск курсантов...",
+        "allStatuses": "Все статусы",
+        "allPackages": "Все пакеты",
+        "allInstructors": "Все инструкторы",
+        "statuses": {
+          "active": "Активные",
+          "onHold": "Приостановленные",
+          "completed": "Завершенные",
+          "dropped": "Отказались"
+        }
+      },
+      "table": {
+        "headers": {
+          "student": "Курсант",
+          "package": "Пакет",
+          "instructor": "Инструктор",
+          "progress": "Прогресс",
+          "nextLesson": "Следующее занятие",
+          "status": "Статус",
+          "actions": "Действия"
+        },
+        "category": "Категория",
+        "theory": "Теория",
+        "practice": "Практика",
+        "lessonsFormat": "{completed}/{total}"
+      },
+      "status": {
+        "active": {
+          "label": "Активный",
+          "bg": "bg-green-100",
+          "text": "text-green-700"
+        },
+        "onHold": {
+          "label": "Приостановлено",
+          "bg": "bg-yellow-100",
+          "text": "text-yellow-700"
+        },
+        "completed": {
+          "label": "Завершено",
+          "bg": "bg-blue-100",
+          "text": "text-blue-700"
+        },
+        "dropped": {
+          "label": "Отказались",
+          "bg": "bg-red-100",
+          "text": "text-red-700"
+        }
+      },
+      "bulkActions": {
+        "selected": "Выбрано: {count} курсантов",
+        "sendMessage": "Отправить сообщение",
+        "export": "Экспортировать"
+      },
+      "pagination": {
+        "showing": "Показано {from} - {to} из {total} курсантов"
+      },
+      "loading": {
+        "processing": "Обработка..."
+      }
+    },
+    "new": {
+      "title": "Создание нового пользователя",
+      "subtitle": "Заполните все необходимые данные",
+      "buttons": {
+        "back": "Назад",
+        "previous": "Предыдущий",
+        "next": "Далее",
+        "save": "Сохранить",
+        "saving": "Сохранение...",
+        "generatePassword": "Сгенерировать пароль"
+      },
+      "steps": {
+        "personal": "Личные данные",
+        "address": "Адрес",
+        "account": "Настройки аккаунта",
+        "roleInfo": "Информация о роли",
+        "review": "Итог данных"
+      },
+      "personal": {
+        "title": "Личные данные",
+        "firstName": "Имя *",
+        "firstNamePlaceholder": "Александр",
+        "lastName": "Фамилия *",
+        "lastNamePlaceholder": "Коваленко",
+        "email": "Email *",
+        "emailPlaceholder": "example@email.com",
+        "phone": "Телефон *",
+        "phonePlaceholder": "+380123456789",
+        "birthDate": "Дата рождения *",
+        "gender": "Пол",
+        "genderOptions": {
+          "male": "Мужской",
+          "female": "Женский",
+          "other": "Другой"
+        }
+      },
+      "address": {
+        "title": "Адрес",
+        "street": "Улица и номер дома *",
+        "streetPlaceholder": "ул. Крещатик 1",
+        "city": "Город *",
+        "postalCode": "Почтовый индекс *",
+        "postalCodePlaceholder": "01001",
+        "emergencyContact": "Экстренный контакт",
+        "emergencyName": "Имя",
+        "emergencyNamePlaceholder": "Мария Коваленко",
+        "emergencyPhone": "Телефон",
+        "emergencyPhonePlaceholder": "+380987654321",
+        "emergencyRelation": "Связь",
+        "emergencyRelationPlaceholder": "Мать"
+      },
+      "account": {
+        "title": "Настройки аккаунта",
+        "role": "Роль пользователя *",
+        "roles": {
+          "student": "Студент",
+          "instructor": "Инструктор",
+          "manager": "Менеджер",
+          "admin": "Администратор"
+        },
+        "password": "Пароль *",
+        "passwordPlaceholder": "Минимум 8 символов",
+        "confirmPassword": "Подтвердить пароль *",
+        "confirmPasswordPlaceholder": "Повторите пароль",
+        "sendWelcomeEmail": "Отправить приветственный email с данными для входа"
+      },
+      "studentInfo": {
+        "title": "Информация о студенте",
+        "package": "Учебный пакет",
+        "selectPackage": "Выберите пакет",
+        "category": "Категория",
+        "selectCategory": "Выберите категорию",
+        "instructor": "Инструктор",
+        "assignLater": "Назначить позже",
+        "startDate": "Дата начала обучения"
+      },
+      "instructorInfo": {
+        "title": "Информация об инструкторе",
+        "licenseNumber": "Номер водительского удостоверения",
+        "licenseNumberPlaceholder": "АА123456",
+        "experience": "Опыт (лет)",
+        "experiencePlaceholder": "5",
+        "hourlyRate": "Почасовая ставка (грн)",
+        "hourlyRatePlaceholder": "500",
+        "specializations": "Специализации",
+        "specializationOptions": {
+          "city": "Вождение по городу",
+          "highway": "Автострада",
+          "parking": "Парковка",
+          "night": "Ночное вождение",
+          "extreme": "Экстремальное вождение",
+          "theory": "Теория"
+        },
+        "workingDays": "Рабочие дни",
+        "weekDays": {
+          "monday": "Понедельник",
+          "tuesday": "Вторник",
+          "wednesday": "Среда",
+          "thursday": "Четверг",
+          "friday": "Пятница",
+          "saturday": "Суббота",
+          "sunday": "Воскресенье"
+        }
+      },
+      "review": {
+        "title": "Итог данных",
+        "personalData": "Личные данные",
+        "fullName": "Имя и фамилия:",
+        "email": "Email:",
+        "phone": "Телефон:",
+        "role": "Роль:",
+        "trainingInfo": "Учебная информация",
+        "package": "Пакет:",
+        "category": "Категория:",
+        "instructor": "Инструктор:",
+        "notSelected": "Не выбрано",
+        "notAssigned": "Не назначено",
+        "professionalInfo": "Профессиональная информация",
+        "experience": "Опыт:",
+        "years": "{count} лет",
+        "rate": "Ставка:",
+        "perHour": "грн {amount}/час",
+        "specializations": "Специализации:",
+        "notSpecified": "Не указано",
+        "confirmMessage": "Пользователь будет создан с указанными выше данными.",
+        "checkData": "Убедитесь, что вся информация правильна перед сохранением."
+      },
+      "errors": {
+        "firstNameRequired": "Имя обязательно",
+        "lastNameRequired": "Фамилия обязательна",
+        "emailRequired": "Email обязателен",
+        "emailInvalid": "Неправильный формат email",
+        "phoneRequired": "Телефон обязателен",
+        "birthDateRequired": "Дата рождения обязательна",
+        "streetRequired": "Улица обязательна",
+        "cityRequired": "Город обязателен",
+        "postalCodeRequired": "Почтовый индекс обязателен",
+        "passwordRequired": "Пароль обязателен",
+        "passwordMinLength": "Пароль должен содержать минимум 8 символов",
+        "passwordsNotMatch": "Пароли не совпадают"
+      }
+    },
+    "list": {
+      "title": "Пользователи",
+      "subtitle": "Управление пользователями системы",
+      "buttons": {
+        "addUser": "Добавить пользователя",
+        "moreFilters": "Больше фильтров",
+        "activate": "Активировать",
+        "deactivate": "Деактивировать",
+        "delete": "Удалить",
+        "cancel": "Отмена",
+        "view": "Просмотреть",
+        "edit": "Редактировать"
+      },
+      "stats": {
+        "total": "Всего",
+        "students": "Студентов",
+        "instructors": "Инструкторов",
+        "admins": "Администраторов",
+        "active": "Активных",
+        "pending": "Ожидают"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск по имени или email...",
+        "allRoles": "Все роли",
+        "students": "Студенты",
+        "instructors": "Инструкторы",
+        "admins": "Администраторы",
+        "managers": "Менеджеры",
+        "allStatuses": "Все статусы",
+        "active": "Активные",
+        "inactive": "Неактивные",
+        "pending": "Ожидают",
+        "suspended": "Заблокированные",
+        "allLocations": "Все локации",
+        "emailVerification": "Верификация email",
+        "phoneVerification": "Верификация телефона",
+        "confirmed": "Подтверждено",
+        "notConfirmed": "Не подтверждено",
+        "registrationDate": "Дата регистрации",
+        "last7days": "Последние 7 дней",
+        "last30days": "Последние 30 дней",
+        "last90days": "Последние 90 дней"
+      },
+      "roles": {
+        "admin": "Администратор",
+        "instructor": "Инструктор",
+        "student": "Студент",
+        "manager": "Менеджер"
+      },
+      "status": {
+        "active": "Активный",
+        "inactive": "Неактивный",
+        "pending": "Ожидает",
+        "suspended": "Заблокирован"
+      },
+      "table": {
+        "headers": {
+          "user": "Пользователь",
+          "role": "Роль",
+          "status": "Статус",
+          "location": "Локация",
+          "joined": "Присоединился",
+          "lastLogin": "Последний вход",
+          "actions": "Действия"
+        },
+        "email": "Email",
+        "phone": "Телефон",
+        "rating": "Оценка: {rating}★"
+      },
+      "bulkActions": {
+        "selected": "Выбрано {count} пользователь(ей)"
+      },
+      "loading": {
+        "text": "Загрузка..."
+      },
+      "empty": {
+        "title": "Пользователей не найдено",
+        "subtitle": "Попробуйте изменить фильтры поиска"
+      }
+    }
+  },
+  "vehicles": {
+    "detail": {
+      "title": "Детали транспортного средства",
+      "subtitle": "Информация и управление транспортным средством",
+      "buttons": {
+        "back": "Назад",
+        "export": "Экспорт",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "save": "Сохранить",
+        "cancel": "Отмена"
+      },
+      "status": {
+        "active": "Активный",
+        "maintenance": "На обслуживании",
+        "inactive": "Неактивный"
+      },
+      "tabs": {
+        "overview": "Обзор",
+        "schedule": "Расписание",
+        "maintenance": "Обслуживание",
+        "financial": "Финансы",
+        "documents": "Документы"
+      },
+      "info": {
+        "category": "Категория",
+        "transmission": "Коробка передач",
+        "fuel": "Топливо",
+        "mileage": "Пробег",
+        "vin": "VIN",
+        "color": "Цвет",
+        "assignedInstructor": "Назначенный инструктор",
+        "location": "Локация",
+        "dailyRate": "Дневная ставка",
+        "purchaseDate": "Дата приобретения",
+        "purchasePrice": "Цена приобретения",
+        "insuranceExpiry": "Срок действия страховки",
+        "inspectionExpiry": "Срок действия техосмотра",
+        "registrationExpiry": "Срок действия регистрации",
+        "features": "Оборудование"
+      },
+      "stats": {
+        "utilization": "Использование",
+        "lessonsPerMonth": "Уроков/мес",
+        "monthlyRevenue": "Доход/мес",
+        "fuelConsumption": "Расход топлива",
+        "maintenanceCost": "Расходы на обслуживание",
+        "rating": "Оценка"
+      },
+      "overview": {
+        "vehicleInfo": "Информация о транспортном средстве",
+        "features": "Оборудование",
+        "alertTitle": "Приближается срок техосмотра",
+        "alertDescription": "Технический осмотр заканчивается {date}"
+      },
+      "schedule": {
+        "hours": "ч",
+        "bookings": "бронирований",
+        "recentBookings": "Последние бронирования",
+        "instructor": "Инструктор:",
+        "completed": "Завершено",
+        "scheduled": "Запланировано"
+      },
+      "maintenance": {
+        "nextService": "Следующее обслуживание",
+        "oilChange": "Замена масла",
+        "technicalCondition": "Техническое состояние",
+        "good": "Хорошее",
+        "lastInspection": "Последний осмотр:",
+        "serviceHistory": "История обслуживания",
+        "km": "км",
+        "in": "через",
+        "completed": "Выполнено",
+        "scheduled": "Запланировано"
+      },
+      "financial": {
+        "totalRevenue": "Общий доход",
+        "totalCosts": "Общие расходы",
+        "netProfit": "Чистая прибыль",
+        "vsLastQuarter": "+{percent}% по сравнению с предыдущим кварталом",
+        "maintenanceFuel": "Обслуживание + Топливо",
+        "roi": "ROI: {percent}%",
+        "financialHistory": "Финансовая история",
+        "month": "Месяц",
+        "revenue": "Доход",
+        "expenses": "Расходы",
+        "profit": "Прибыль"
+      },
+      "documents": {
+        "uploaded": "Загружено:",
+        "verified": "Подтверждено",
+        "expiring": "Истекает",
+        "view": "Просмотреть",
+        "download": "Скачать"
+      },
+      "currency": "грн"
+    },
+    "maintenance": {
+      "title": "Обслуживание транспортных средств",
+      "subtitle": "Управление техническими осмотрами и ремонтами",
+      "buttons": {
+        "export": "Экспорт",
+        "scheduleMaintenance": "Запланировать обслуживание",
+        "moreFilters": "Больше фильтров",
+        "cancel": "Отмена",
+        "submit": "Запланировать обслуживание",
+        "close": "Закрыть",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "view": "Просмотреть"
+      },
+      "stats": {
+        "scheduled": "Запланировано",
+        "inProgress": "В процессе",
+        "completed": "Завершено",
+        "inService": "В обслуживании",
+        "totalCost": "Общие расходы",
+        "avgCost": "Ср. расходы"
+      },
+      "alerts": {
+        "title": "Предстоящие технические осмотры",
+        "count": "{count} предупреждений",
+        "dueIn": "через"
+      },
+      "filters": {
+        "searchPlaceholder": "Поиск транспорта или типа обслуживания...",
+        "allStatuses": "Все статусы",
+        "allVehicles": "Все транспортные средства",
+        "scheduled": "Запланировано",
+        "inProgress": "В процессе",
+        "completed": "Завершено"
+      },
+      "table": {
+        "vehicle": "Транспортное средство",
+        "serviceType": "Тип обслуживания",
+        "date": "Дата",
+        "mileage": "Пробег",
+        "technician": "Техник",
+        "cost": "Стоимость",
+        "status": "Статус",
+        "actions": "Действия"
+      },
+      "serviceTypes": {
+        "oilChange": "Замена масла",
+        "periodicInspection": "Периодический осмотр",
+        "tireChange": "Замена шин",
+        "brakeService": "Обслуживание тормозов",
+        "acRepair": "Ремонт кондиционера",
+        "sparkPlugs": "Замена свечей зажигания",
+        "other": "Другое"
+      },
+      "priority": {
+        "label": "Приоритет",
+        "low": "Низкий",
+        "medium": "Средний",
+        "high": "Высокий"
+      },
+      "modal": {
+        "scheduleTitle": "Запланировать обслуживание",
+        "detailsTitle": "Детали обслуживания",
+        "selectVehicle": "Выберите транспортное средство",
+        "selectType": "Выберите тип",
+        "vehicle": "Транспортное средство",
+        "type": "Тип обслуживания",
+        "date": "Дата",
+        "mileage": "Пробег",
+        "technician": "Техник",
+        "estimatedCost": "Примерная стоимость (грн)",
+        "description": "Описание",
+        "descriptionPlaceholder": "Добавить описание обслуживания...",
+        "technicianPlaceholder": "Имя и фамилия",
+        "mileagePlaceholder": "напр. 45000",
+        "costPlaceholder": "напр. 450"
+      },
+      "status": {
+        "scheduled": "Запланировано",
+        "inProgress": "В процессе",
+        "completed": "Завершено",
+        "cancelled": "Отменено"
+      },
+      "currency": "грн",
+      "km": "км"
+    },
+    "title": "Транспортные средства",
+    "subtitle": "Управление автопарком школы",
+    "buttons": {
+      "addVehicle": "Добавить транспорт",
+      "service": "Сервис",
+      "details": "Детали",
+      "history": "История",
+      "refresh": "Обновить"
+    },
+    "stats": {
+      "total": "Всего",
+      "active": "Активные",
+      "maintenance": "В сервисе",
+      "utilization": "Использование",
+      "needsService": "Требует сервиса",
+      "documentsExpiring": "Документы"
+    },
+    "filters": {
+      "searchPlaceholder": "Поиск по марке, модели или номеру...",
+      "allStatuses": "Все статусы",
+      "allTransmissions": "Все коробки",
+      "allCategories": "Все категории",
+      "manual": "Механика",
+      "automatic": "Автомат"
+    },
+    "status": {
+      "active": {
+        "label": "Активный",
+        "icon": "CheckCircle"
+      },
+      "maintenance": {
+        "label": "В сервисе",
+        "icon": "Wrench"
+      },
+      "reserved": {
+        "label": "Забронирован",
+        "icon": "Calendar"
+      },
+      "inactive": {
+        "label": "Неактивный",
+        "icon": "XCircle"
+      }
+    },
+    "card": {
+      "category": "Категория:",
+      "transmission": "Коробка:",
+      "instructor": "Инструктор:",
+      "mileage": "Пробег:",
+      "utilization": "Использование",
+      "unassigned": "Не назначен",
+      "issues": "{count} проблем",
+      "insuranceExpiring": "Страховка истекает",
+      "inspectionNeeded": "Требуется осмотр"
+    },
+    "table": {
+      "vehicle": "Транспортное средство",
+      "status": "Статус",
+      "category": "Категория",
+      "transmission": "Коробка",
+      "instructor": "Инструктор",
+      "location": "Локация",
+      "mileage": "Пробег",
+      "utilization": "Использование",
+      "actions": "Действия"
+    },
+    "transmissionTypes": {
+      "manual": "Механика",
+      "automatic": "Автомат"
+    },
+    "viewModes": {
+      "grid": "Сетка",
+      "list": "Список"
+    },
+    "details": {
+      "title": "Детали транспортного средства",
+      "registrationNumber": "Регистрационный номер",
+      "vin": "VIN",
+      "year": "Год выпуска",
+      "mileage": "Пробег",
+      "fuel": "Топливо",
+      "fuelLevel": "Уровень топлива",
+      "documentsAndDeadlines": "Документы и сроки",
+      "insurance": "Страховка",
+      "inspection": "Осмотр",
+      "nextService": "Следующий сервис",
+      "until": "до {date}",
+      "edit": "Редактировать",
+      "serviceHistory": "История сервиса",
+      "delete": "Удалить"
+    },
+    "fuelTypes": {
+      "petrol": "Бензин",
+      "diesel": "Дизель",
+      "hybrid": "Гибрид",
+      "electric": "Электрический"
+    },
+    "categories": {
+      "B": "B",
+      "BE": "B+E",
+      "C": "C"
+    },
+    "currency": "грн"
+  },
+  "schedule": {
+    "main": {
+      "title": "Расписание",
+      "subtitle": "Управляйте своим временем эффективно",
+      "buttons": {
+        "workingHours": "Рабочие часы",
+        "exception": "Исключение",
+        "today": "Сегодня",
+        "search": "Поиск",
+        "menu": "Меню"
+      },
+      "search": {
+        "placeholder": "Искать курсанта, локацию, время..."
+      },
+      "stats": {
+        "allSlots": "Все слоты",
+        "reserved": "Забронированные",
+        "weeklyHours": "Часов в неделю",
+        "monthlyIncome": "Месячный доход",
+        "hoursUnit": "{hours}ч",
+        "currency": "{amount} грн"
+      },
+      "tabs": {
+        "calendar": "Календарь",
+        "templates": "Шаблоны",
+        "requests": "Заявки",
+        "statistics": "Статистика"
+      },
+      "viewModes": {
+        "day": "День",
+        "week": "Неделя",
+        "month": "Месяц",
+        "dayView": "Дневной вид",
+        "weekView": "Недельный вид",
+        "monthView": "Месячный вид"
+      },
+      "mobileMenu": {
+        "title": "Меню",
+        "workingHours": "Рабочие часы",
+        "addException": "Добавить исключение"
+      },
+      "dateFormat": {
+        "day": "{weekday}, {day} {month} {year}",
+        "week": "{startDate} - {endDate}",
+        "month": "{month} {year}"
+      }
+    }
+  },
+  "layout": {
+    "title": "DenisDrive",
+    "subtitle": "Портал администратора",
+    "navigation": {
+      "dashboard": "Панель управления",
+      "users": "Пользователи",
+      "instructors": "Инструкторы",
+      "students": "Ученики",
+      "vehicles": "Транспортные средства",
+      "locations": "Локации",
+      "packages": "Пакеты",
+      "bookings": "Бронирования",
+      "payments": "Платежи",
+      "reports": "Отчеты",
+      "settings": "Настройки"
+    },
+    "user": {
+      "name": "Администратор системы",
+      "email": "admin@drive-school.com",
+      "role": "Главный администратор",
+      "profile": "Профиль",
+      "security": "Безопасность",
+      "settings": "Настройки",
+      "logout": "Выйти"
+    },
+    "languages": {
+      "polish": "Polski",
+      "ukrainian": "Украинский",
+      "english": "English",
+      "russian": "Русский"
+    },
+    "breadcrumbs": {
+      "home": "Главная",
+      "admin": "Админ",
+      "dashboard": "Панель управления",
+      "users": "Пользователи",
+      "instructors": "Инструкторы",
+      "students": "Ученики",
+      "vehicles": "Транспортные средства",
+      "locations": "Локации",
+      "packages": "Пакеты",
+      "bookings": "Бронирования",
+      "payments": "Платежи",
+      "reports": "Отчеты",
+      "settings": "Настройки"
+    },
+    "search": {
+      "placeholder": "Поиск..."
+    },
+    "theme": {
+      "light": "Светлая тема",
+      "dark": "Темная тема"
+    },
+    "notifications": {
+      "label": "Уведомления",
+      "count": "{count} новых"
+    },
+    "mobile": {
+      "openMenu": "Открыть меню",
+      "closeMenu": "Закрыть меню"
+    }
+  }
+}

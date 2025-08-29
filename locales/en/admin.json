@@ -1,0 +1,2891 @@
+{
+  "bookings": {
+    "calendar": {
+      "title": "Booking Calendar",
+      "subtitle": "Manage the schedule of classes",
+      "navigation": {
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "today": "Today",
+        "weekNavigation": "{startDate} - {endDate}"
+      },
+      "viewTypes": {
+        "month": "Month",
+        "week": "Week",
+        "day": "Day",
+        "list": "List"
+      },
+      "weekDays": {
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+        "sunday": "Sun"
+      },
+      "filters": {
+        "title": "Filters",
+        "instructor": "Instructor",
+        "type": "Class type",
+        "status": "Status",
+        "location": "Location",
+        "all": "All",
+        "clear": "Clear filters",
+        "placeholders": {
+          "allInstructors": "All",
+          "allTypes": "All",
+          "allStatuses": "All",
+          "allLocations": "All"
+        }
+      },
+      "bookingTypes": {
+        "practice": "Practice",
+        "theory": "Theory",
+        "exam": "Exam"
+      },
+      "bookingStatus": {
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "completed": "Completed"
+      },
+      "buttons": {
+        "filters": "Filters",
+        "export": "Export",
+        "newBooking": "New booking",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "view": "View",
+        "close": "Close",
+        "save": "Save"
+      },
+      "messages": {
+        "noBookings": "No bookings for this day",
+        "moreBookings": "+{count} more",
+        "weekViewInProgress": "Week view is under development. Please use month or list view.",
+        "loading": "Loading..."
+      },
+      "details": {
+        "title": "Booking details",
+        "student": "Student",
+        "instructor": "Instructor",
+        "date": "Date",
+        "time": "Time",
+        "location": "Location",
+        "vehicle": "Vehicle",
+        "package": "Package",
+        "notes": "Notes",
+        "cancelReason": "Cancelled due to student illness"
+      },
+      "stats": {
+        "todayBookings": "Today's bookings",
+        "pending": "Pending",
+        "thisWeek": "This week",
+        "utilization": "Utilization"
+      },
+      "actions": {
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "locations": {
+        "warsawCenter": "Warsaw Center",
+        "warsawMokotow": "Warsaw Mokotow",
+        "warsawPraga": "Warsaw Praga",
+        "lectureHallA": "Lecture Hall A",
+        "lectureHallB": "Lecture Hall B",
+        "examCenter": "WORD Warsaw"
+      },
+      "packages": {
+        "standardB": "Standard B Package",
+        "premiumB": "Premium B Package",
+        "intensiveB": "Intensive B Package"
+      }
+    },
+    "title": "Bookings",
+    "subtitle": "Manage all bookings and lessons",
+    "buttons": {
+      "export": "Export",
+      "newBooking": "New booking",
+      "edit": "Edit",
+      "cancel": "Cancel",
+      "close": "Close",
+      "view": "View"
+    },
+    "stats": {
+      "today": "Today",
+      "completedToday": "Completed today",
+      "thisWeek": "This week",
+      "weekRevenue": "Week's revenue",
+      "cancellations": "Cancellations",
+      "avgRating": "Avg. rating"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by ID, student or instructor...",
+      "allDates": "All dates",
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This week",
+      "allStatuses": "All statuses",
+      "allInstructors": "All instructors",
+      "scheduled": "Scheduled",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "noShow": "No-show"
+    },
+    "table": {
+      "id": "ID",
+      "student": "Student",
+      "instructor": "Instructor",
+      "dateTime": "Date & Time",
+      "type": "Type",
+      "status": "Status",
+      "payment": "Payment",
+      "actions": "Actions",
+      "price": "zł{price}",
+      "awaiting": "Awaiting"
+    },
+    "lessonTypes": {
+      "standard": "Standard",
+      "highway": "Highway",
+      "parking": "Parking",
+      "night": "Night",
+      "exam": "Exam",
+      "maneuvers": "Maneuvers"
+    },
+    "charts": {
+      "weeklyBookings": "Weekly bookings",
+      "statusDistribution": "Status distribution",
+      "bookings": "Bookings"
+    },
+    "details": {
+      "title": "Booking details {id}",
+      "studentInfo": "Student",
+      "instructorInfo": "Instructor",
+      "lessonDetails": "Lesson details",
+      "paymentStatus": "Payment & status",
+      "location": "Location",
+      "notes": "Notes",
+      "fields": {
+        "type": "Type:",
+        "time": "Time:",
+        "duration": "Duration:",
+        "durationValue": "{duration} min",
+        "status": "Status:",
+        "price": "Price:",
+        "payment": "Payment:",
+        "paid": "Paid",
+        "unpaid": "Awaiting",
+        "rating": "Rating:",
+        "cancelReason": "Cancellation reason:",
+        "additionalNotes": "Additional notes on the lesson",
+        "studentIllness": "Student illness"
+      }
+    },
+    "viewModes": {
+      "list": "List",
+      "calendar": "Calendar"
+    },
+    "noData": {
+      "emptySlot": "—"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome! Here is an overview of your driving school",
+    "loading": "Loading data...",
+    "periods": {
+      "day": "Today",
+      "week": "This week",
+      "month": "This month",
+      "year": "This year"
+    },
+    "buttons": {
+      "export": "Export",
+      "refresh": "Refresh",
+      "details": "Details →",
+      "viewAll": "View all activity →",
+      "allInstructors": "All instructors →"
+    },
+    "stats": {
+      "totalRevenue": {
+        "title": "Total revenue",
+        "subtitle": "this month"
+      },
+      "activeStudents": {
+        "title": "Active students",
+        "subtitle": "total registered: {total}",
+        "change": "+{count} this week"
+      },
+      "todayLessons": {
+        "title": "Lessons today",
+        "subtitle": "{remaining} more scheduled",
+        "change": "{completed} completed"
+      },
+      "conversion": {
+        "title": "Conversion",
+        "subtitle": "from registration to payment",
+        "change": "+{percent}% from last month"
+      }
+    },
+    "secondaryStats": {
+      "instructorsOnline": "Instructors online",
+      "availableCars": "Available cars",
+      "newPayments": "New payments",
+      "activeLocations": "Active locations"
+    },
+    "charts": {
+      "revenueTitle": "Revenue dynamics",
+      "revenueSubtitle": "Comparison with previous period",
+      "currentPeriod": "Current period",
+      "previousPeriod": "Previous period",
+      "packageDistribution": "Package distribution",
+      "bookingsByTime": "Bookings by time",
+      "bookings": "bookings"
+    },
+    "packages": {
+      "standard": "Standard",
+      "premium": "Premium",
+      "vip": "VIP",
+      "basic": "Basic"
+    },
+    "activities": {
+      "title": "Latest activity",
+      "bookingCreated": "booked a lesson",
+      "paymentReceived": "paid for \"{package}\" package",
+      "instructorOnline": "started working day",
+      "bookingCancelled": "cancelled a lesson at {time}",
+      "vehicleMaintenance": "{vehicle} needs inspection",
+      "newRegistration": "registered as a new student",
+      "examPassed": "successfully passed the exam",
+      "reviewReceived": "left a {rating}★ review",
+      "timeAgo": {
+        "minutes": "{count} minutes ago",
+        "hours": "{count} hours ago"
+      }
+    },
+    "topInstructors": {
+      "title": "Top instructors",
+      "lessonsUnit": "{count} lessons",
+      "rating": "{rating}★"
+    },
+    "quickActions": {
+      "title": "Quick actions",
+      "addUser": "Add user",
+      "createBooking": "Create booking",
+      "generateReport": "Generate report",
+      "massEmail": "Mass email"
+    },
+    "alerts": {
+      "requiresAttention": "Requires attention",
+      "viewAll": "View all →",
+      "pendingPayments": "{count} payments are pending confirmation",
+      "vehicleInspection": "{vehicle} needs technical inspection in {days} days",
+      "unconfirmedSchedule": "{count} instructors have not confirmed next week's schedule"
+    }
+  },
+  "instructors": {
+    "list": {
+      "title": "Instructors",
+      "subtitle": "Manage driving school instructors",
+      "buttons": {
+        "addInstructor": "Add instructor",
+        "view": "View",
+        "schedule": "Schedule",
+        "edit": "Edit"
+      },
+      "stats": {
+        "totalInstructors": "Total instructors",
+        "availableNow": "Available now",
+        "averageRating": "Average rating",
+        "averagePassRate": "Average pass rate"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by last name...",
+        "allStatuses": "All statuses",
+        "available": "Available",
+        "busy": "Busy",
+        "offline": "Offline",
+        "allLocations": "All locations"
+      },
+      "status": {
+        "available": "Available",
+        "busy": "Busy",
+        "offline": "Offline"
+      },
+      "table": {
+        "instructor": "Instructor",
+        "status": "Status",
+        "rating": "Rating",
+        "categories": "Categories",
+        "students": "Students",
+        "lessonsPerWeek": "Lessons/week",
+        "passRate": "Pass rate",
+        "earnings": "Earnings",
+        "actions": "Actions"
+      },
+      "card": {
+        "rating": "Rating",
+        "students": "Students",
+        "lessonsPerWeek": "Lessons/week",
+        "passRate": "Pass rate",
+        "specializations": "Specializations:"
+      },
+      "specializations": {
+        "exams": "Exams",
+        "nightDriving": "Night driving",
+        "highway": "Highway",
+        "parking": "Parking",
+        "maneuvers": "Maneuvers",
+        "city": "City",
+        "beginners": "Beginners",
+        "theory": "Theory"
+      },
+      "locations": {
+        "warsaw": "Warsaw",
+        "krakow": "Krakow",
+        "wroclaw": "Wroclaw"
+      },
+      "experience": "{years} years"
+    },
+    "schedule": {
+      "title": "Instructor Schedule",
+      "subtitle": "Manage the schedule of all instructors",
+      "buttons": {
+        "print": "Print",
+        "download": "Download",
+        "addLesson": "Add lesson",
+        "today": "Today",
+        "showDetails": "Show details",
+        "edit": "Edit"
+      },
+      "stats": {
+        "totalLessons": "Total lessons",
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "cancelled": "Cancelled",
+        "plannedHours": "Planned hours"
+      },
+      "viewModes": {
+        "week": "Week",
+        "day": "Day",
+        "list": "List"
+      },
+      "filters": {
+        "allInstructors": "All instructors",
+        "allLocations": "All locations"
+      },
+      "weekView": {
+        "weekNumber": "Week {number}",
+        "instructor": "Instructor",
+        "id": "ID",
+        "free": "Free"
+      },
+      "dayView": {
+        "time": "Time"
+      },
+      "listView": {
+        "time": "Time",
+        "instructor": "Instructor",
+        "student": "Student",
+        "lessonType": "Lesson type",
+        "vehicle": "Vehicle",
+        "location": "Location",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "lessonTypes": {
+        "practice": "Practice",
+        "track": "Track",
+        "city": "City",
+        "parking": "Parking",
+        "exam": "Exam",
+        "nightDriving": "Night driving",
+        "highway": "Highway"
+      },
+      "lessonStatus": {
+        "confirmed": "Confirmed",
+        "pending": "Pending",
+        "cancelled": "Cancelled"
+      },
+      "locations": {
+        "warsaw": "Warsaw",
+        "trackKrakow": "Track Krakow",
+        "trackGdansk": "Track Gdansk",
+        "examCenter": "Exam center",
+        "meetingWarsaw": "Meeting point: Warsaw"
+      },
+      "weekDays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    }
+  },
+  "lessons": {
+    "detail": {
+      "title": "Lesson details",
+      "dateTime": "{date} • {startTime} - {endTime}",
+      "buttons": {
+        "share": "Share",
+        "report": "Report",
+        "edit": "Edit",
+        "call": "Call",
+        "message": "Message",
+        "saveNotes": "Save notes"
+      },
+      "student": {
+        "title": "Student",
+        "id": "ID: {id}",
+        "joinedDate": "Joined {date}",
+        "courseProgress": "Course progress",
+        "lessonsCompleted": "{completed} of {total} lessons"
+      },
+      "lessonInfo": {
+        "title": "Lesson information",
+        "type": "Lesson type",
+        "category": "Category",
+        "categoryB": "Category B",
+        "duration": "Duration",
+        "minutes": "{minutes} minutes",
+        "location": "Location",
+        "vehicle": "Vehicle",
+        "status": "Status",
+        "completed": "Completed"
+      },
+      "payment": {
+        "title": "Payment",
+        "amount": "{amount} UAH",
+        "paid": "Paid",
+        "paymentMethod": "Payment method:",
+        "cash": "Cash",
+        "card": "Card",
+        "date": "Date:",
+        "confirmed": "Payment confirmed by system"
+      },
+      "tabs": {
+        "objectives": "Objectives",
+        "performance": "Performance",
+        "metrics": "Metrics",
+        "feedback": "Feedback"
+      },
+      "objectives": {
+        "title": "Lesson objectives",
+        "completed": "Completed",
+        "partial": "Partial",
+        "additionalNotes": "Additional notes",
+        "notesPlaceholder": "Add notes about the lesson...",
+        "examRoute": "Exam route",
+        "emergencyBraking": "Emergency braking",
+        "parallelParking": "Parallel parking",
+        "turningLimited": "U-turn in limited space"
+      },
+      "performance": {
+        "title": "Performance evaluation",
+        "overallRating": "Overall rating",
+        "confidence": "Confidence",
+        "technique": "Technique",
+        "rules": "Knowledge of rules",
+        "safety": "Safety",
+        "mistakes": "Number of mistakes",
+        "mistakesCount": "{count} mistakes",
+        "needsImprovement": "Needs improvement",
+        "parkingConfidence": "Parking confidence",
+        "decisionSpeed": "Decision-making speed"
+      },
+      "metrics": {
+        "title": "Driving metrics",
+        "distance": "Distance",
+        "avgSpeed": "Avg. speed",
+        "maxSpeed": "Max. speed",
+        "fuelUsed": "Fuel consumed",
+        "suddenBrakes": "Sudden brakes",
+        "sharpTurns": "Sharp turns",
+        "km": "{value} km",
+        "kmh": "{value} km/h",
+        "liters": "{value} l"
+      },
+      "feedback": {
+        "instructorTitle": "Instructor's feedback",
+        "studentTitle": "Student's feedback",
+        "instructorComment": "Great lesson! Maria showed great progress. 90% ready for the exam.",
+        "studentComment": "Thanks for your patience! I finally understood parallel parking."
+      },
+      "nextLesson": {
+        "title": "Next lesson:",
+        "info": "{date} at {time} - {type}",
+        "finalPrep": "Final preparation"
+      },
+      "lessonTypes": {
+        "examPreparation": "Exam preparation",
+        "finalPreparation": "Final preparation"
+      },
+      "locations": {
+        "examRoute": "Exam route",
+        "practiceArea": "Practice area"
+      }
+    }
+  },
+  "locations": {
+    "details": {
+      "breadcrumb": {
+        "back": "Back",
+        "locations": "Locations"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "maintenance": "Maintenance"
+      },
+      "buttons": {
+        "edit": "Edit",
+        "duplicate": "Duplicate",
+        "export": "Export data",
+        "delete": "Delete location",
+        "assignInstructor": "Assign instructor",
+        "assignVehicle": "Assign vehicle",
+        "changeManager": "Change manager",
+        "viewDetails": "Details",
+        "viewAllReviews": "View all reviews",
+        "changeStatus": "Change status",
+        "editHours": "Edit hours",
+        "configure": "Configure",
+        "cancel": "Cancel"
+      },
+      "stats": {
+        "activeStudents": "Active students",
+        "instructors": "Instructors",
+        "monthlyLessons": "Lessons monthly",
+        "monthlyRevenue": "Monthly revenue"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "instructors": "Instructors",
+        "vehicles": "Vehicles",
+        "schedule": "Schedule",
+        "analytics": "Analytics",
+        "settings": "Settings"
+      },
+      "sections": {
+        "contactInfo": "Contact information",
+        "phone": "Phone",
+        "email": "Email",
+        "website": "Website",
+        "coordinates": "Coordinates",
+        "locationManager": "Location manager",
+        "workingHours": "Working hours",
+        "facilities": "Facilities",
+        "revenueAndStudents": "Revenue and students",
+        "revenue": "Revenue (UAH)",
+        "students": "Students",
+        "categoryDistribution": "Category distribution",
+        "ratingsAndReviews": "Ratings and reviews",
+        "reviews": "{count} reviews",
+        "performanceIndicators": "Performance indicators",
+        "vehicleUtilization": "Vehicle utilization",
+        "instructorLoad": "Instructor load",
+        "passRate": "Pass rate",
+        "locationSettings": "Location settings"
+      },
+      "instructorStatus": {
+        "available": "Available",
+        "busy": "Busy"
+      },
+      "vehicleStatus": {
+        "active": "Active",
+        "maintenance": "Service"
+      },
+      "vehicleCategory": "Category",
+      "studentCount": "{count} students",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "closed": "Closed"
+      },
+      "facilities": {
+        "parking": "Parking",
+        "classroom": "Classroom",
+        "simulator": "Driving simulator",
+        "wifi": "Wi-Fi",
+        "cafe": "Cafe",
+        "airConditioning": "Air conditioning"
+      },
+      "alerts": {
+        "scheduleAvailable": "The class schedule is available in the calendar module.",
+        "settingsWarning": "Changing location settings may affect service availability for students.",
+        "statusDescription": "Deactivation will suspend all bookings",
+        "workingHoursDescription": "Set up the working hours",
+        "notificationsDescription": "Manage notifications and messages"
+      },
+      "deleteDialog": {
+        "title": "Delete location",
+        "description": "Are you sure you want to delete the location \"{name}\"? This operation is irreversible and will delete all associated data."
+      },
+      "charts": {
+        "months": {
+          "jan": "Jan",
+          "feb": "Feb",
+          "mar": "Mar",
+          "apr": "Apr",
+          "may": "May",
+          "jun": "Jun"
+        },
+        "categoryB": "Category B",
+        "categoryA": "Category A",
+        "categoryC": "Category C",
+        "other": "Other"
+      }
+    },
+    "list": {
+      "title": "Locations",
+      "subtitle": "Manage branches and offices",
+      "buttons": {
+        "addLocation": "Add location",
+        "details": "Details",
+        "edit": "Edit"
+      },
+      "stats": {
+        "locations": "Locations",
+        "active": "Active",
+        "students": "Students",
+        "instructors": "Instructors",
+        "vehicles": "Vehicles",
+        "utilization": "Utilization"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by name, address or manager...",
+        "allCities": "All cities",
+        "allTypes": "All types",
+        "mainOffices": "Main offices",
+        "branches": "Branches",
+        "allStatuses": "All statuses",
+        "active": "Active",
+        "maintenance": "Under maintenance",
+        "inactive": "Inactive"
+      },
+      "status": {
+        "active": "Active",
+        "maintenance": "Under maintenance",
+        "inactive": "Inactive"
+      },
+      "type": {
+        "main": "Main office",
+        "branch": "Branch"
+      },
+      "table": {
+        "location": "Location",
+        "type": "Type",
+        "status": "Status",
+        "manager": "Manager",
+        "students": "Students",
+        "instructors": "Instructors",
+        "utilization": "Utilization",
+        "actions": "Actions"
+      },
+      "card": {
+        "students": "Students",
+        "instructors": "Instructors",
+        "vehicles": "Vehicles",
+        "utilization": "Utilization",
+        "manager": "Manager",
+        "lessonsPerMonth": "lessons/month"
+      },
+      "amenities": {
+        "parking": "Parking",
+        "wifi": "Wi-Fi",
+        "cafe": "Cafe",
+        "simulator": "Simulator",
+        "theory_room": "Theory room",
+        "practice_area": "Practice area",
+        "waiting_area": "Waiting area",
+        "disabled_access": "Disabled access"
+      },
+      "map": {
+        "placeholder": "Interactive map will be available soon"
+      },
+      "schedule": {
+        "weekdays": "Weekdays",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "closed": "Closed"
+      }
+    }
+  },
+  "packages": {
+    "edit": {
+      "breadcrumb": {
+        "back": "Back",
+        "packages": "Packages",
+        "edit": "Edit"
+      },
+      "title": "Edit Package",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "draft": "Draft"
+      },
+      "buttons": {
+        "preview": "Preview",
+        "hidePreview": "Hide Preview",
+        "duplicate": "Duplicate",
+        "delete": "Delete",
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "cancel": "Cancel",
+        "addModifier": "Add Modifier",
+        "addFeature": "Add Feature"
+      },
+      "alerts": {
+        "unsavedChanges": "You have unsaved changes. Don't forget to save before leaving the page."
+      },
+      "tabs": {
+        "general": "General Information",
+        "pricing": "Pricing & Payments",
+        "content": "Package Content",
+        "availability": "Availability",
+        "terms": "Terms & Conditions"
+      },
+      "general": {
+        "title": "Basic Information",
+        "subtitle": "Package name and description, visible to students",
+        "fields": {
+          "name": "Package Name *",
+          "namePlaceholder": "e.g., Standard B Package",
+          "category": "Category *",
+          "categoryPlaceholder": "Select a category",
+          "description": "Description",
+          "descriptionPlaceholder": "Detailed package description...",
+          "duration": "Duration *",
+          "status": "Status",
+          "maxStudents": "Max number of students",
+          "currentStudentsInfo": "Current: {current}/{max}"
+        },
+        "durationUnits": {
+          "days": "Days",
+          "weeks": "Weeks",
+          "months": "Months"
+        },
+        "categories": {
+          "A": "Category A - Motorcycles",
+          "A1": "Category A1",
+          "A2": "Category A2",
+          "B": "Category B - Passenger Cars",
+          "B1": "Category B1",
+          "C": "Category C - Trucks",
+          "C1": "Category C1",
+          "D": "Category D - Buses",
+          "T": "Category T - Tractors"
+        }
+      },
+      "pricing": {
+        "title": "Pricing",
+        "subtitle": "Set the price and payment options",
+        "fields": {
+          "basePrice": "Base Price (UAH) *",
+          "discountedPrice": "Promotional Price (UAH)",
+          "pricePlaceholder": "0.00",
+          "savings": "Savings: {amount} UAH ({percent}%)",
+          "paymentOptions": "Payment Options",
+          "installments": "Number of installments",
+          "installmentsPlaceholder": "Select number of installments",
+          "monthlyPayment": "Monthly payment: {amount} UAH"
+        },
+        "paymentTypes": {
+          "full": "Full payment only",
+          "installments": "Installments only",
+          "both": "Full payment and installments"
+        },
+        "installmentOptions": {
+          "2": "2 installments",
+          "3": "3 installments",
+          "4": "4 installments",
+          "6": "6 installments",
+          "12": "12 installments"
+        },
+        "modifiers": {
+          "title": "Price Modifiers",
+          "subtitle": "Additional discounts and surcharges",
+          "table": {
+            "name": "Name",
+            "type": "Type",
+            "value": "Value",
+            "condition": "Condition",
+            "namePlaceholder": "Discount/Surcharge Name",
+            "conditionPlaceholder": "Condition for application"
+          },
+          "types": {
+            "percentage": "Percentage",
+            "fixed": "Fixed Amount"
+          }
+        }
+      },
+      "content": {
+        "lessons": {
+          "title": "Lessons",
+          "subtitle": "Number of theory and practical hours",
+          "theoryHours": "Theory hours *",
+          "practicalHours": "Practical hours *",
+          "additionalHours": "Additional hours",
+          "examAttempts": "Number of exam attempts"
+        },
+        "features": {
+          "title": "Package Features",
+          "subtitle": "What the package includes",
+          "namePlaceholder": "Feature name",
+          "valuePlaceholder": "Value"
+        }
+      },
+      "availability": {
+        "validity": {
+          "title": "Validity Period",
+          "subtitle": "When the package is available for purchase",
+          "startDate": "Start Date *",
+          "endDate": "End Date"
+        },
+        "locations": {
+          "title": "Locations",
+          "subtitle": "Where the package is available"
+        },
+        "instructors": {
+          "title": "Instructors",
+          "subtitle": "Which instructors can lead the lessons"
+        },
+        "vehicles": {
+          "title": "Vehicles",
+          "subtitle": "Available cars for this package"
+        }
+      },
+      "terms": {
+        "title": "Terms & Conditions",
+        "subtitle": "Rules for using the package",
+        "placeholder": "Enter package terms..."
+      },
+      "dialogs": {
+        "duplicate": {
+          "title": "Duplicate Package",
+          "description": "You will create a copy of the \"{name}\" package. The new package will have a \"Draft\" status.",
+          "confirm": "Duplicate"
+        },
+        "delete": {
+          "title": "Delete Package",
+          "description": "Are you sure you want to delete the \"{name}\" package? This action is irreversible. The package will be marked as deleted, but historical data will be preserved.",
+          "confirm": "Delete Package"
+        }
+      },
+      "toast": {
+        "saveSuccess": "Package Updated",
+        "saveSuccessDescription": "Changes successfully saved"
+      }
+    },
+    "list": {
+      "title": "Packages",
+      "subtitle": "Manage pricing plans and packages",
+      "buttons": {
+        "export": "Export",
+        "newPackage": "New Package",
+        "details": "Details",
+        "edit": "Edit"
+      },
+      "stats": {
+        "totalPackages": "Total Packages",
+        "active": "Active",
+        "users": "Users",
+        "revenue": "Revenue",
+        "avgRating": "Avg. Rating",
+        "renewals": "Renewals"
+      },
+      "charts": {
+        "monthlySales": "Monthly Sales",
+        "userDistribution": "User Distribution",
+        "months": {
+          "jan": "Jan",
+          "feb": "Feb",
+          "mar": "Mar",
+          "apr": "Apr",
+          "may": "May",
+          "jun": "Jun"
+        }
+      },
+      "filters": {
+        "searchPlaceholder": "Search packages...",
+        "allCategories": "All Categories",
+        "allStatuses": "All Statuses",
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "categories": {
+        "beginner": "Beginner",
+        "standard": "Standard",
+        "premium": "Premium",
+        "vip": "VIP",
+        "intensive": "Intensive",
+        "special": "Special",
+        "corporate": "Corporate",
+        "trial": "Trial"
+      },
+      "badges": {
+        "popular": "Popular",
+        "recommended": "Recommended",
+        "new": "New",
+        "inactive": "Inactive"
+      },
+      "packageCard": {
+        "contains": "Contains:",
+        "more": "+{count} more",
+        "users": "Users",
+        "rating": "Rating",
+        "renewals": "Renewals",
+        "credits": "credits",
+        "days": "days"
+      },
+      "table": {
+        "package": "Package",
+        "price": "Price",
+        "credits": "Credits",
+        "users": "Users",
+        "sales": "Sales",
+        "revenue": "Revenue",
+        "rating": "Rating",
+        "status": "Status",
+        "actions": "Actions",
+        "statusActive": "Active",
+        "statusInactive": "Inactive"
+      },
+      "packages": {
+        "basic": {
+          "name": "Basic",
+          "description": "Ideal for beginners. Includes the basics of driving a vehicle",
+          "features": [
+            "10 practical lessons of 90 min",
+            "Basic theoretical training",
+            "Learning materials",
+            "Instructor support"
+          ],
+          "limitations": [
+            "No highway driving",
+            "No night driving",
+            "One instructor"
+          ]
+        },
+        "standard": {
+          "name": "Standard",
+          "description": "The most popular choice. Full driving course",
+          "features": [
+            "20 practical lessons of 90 min",
+            "Full theoretical training",
+            "Online tests and simulator",
+            "Instructor selection",
+            "Highway driving",
+            "Exam preparation"
+          ],
+          "limitations": [
+            "No VIP support",
+            "Standard schedule"
+          ]
+        },
+        "premium": {
+          "name": "Premium",
+          "description": "Advanced course with additional features",
+          "features": [
+            "30 practical lessons of 90 min",
+            "Full theoretical training",
+            "Personal manager",
+            "Priority instructor selection",
+            "Night driving",
+            "Highway driving",
+            "Driving in complex conditions",
+            "2 exam attempts included"
+          ],
+          "limitations": []
+        },
+        "vip": {
+          "name": "VIP",
+          "description": "Maximum comfort and individual approach",
+          "features": [
+            "50 practical lessons of 90 min",
+            "Individual learning program",
+            "Personal manager 24/7",
+            "Top instructors",
+            "Flexible schedule",
+            "Premium vehicles",
+            "Unlimited exam attempts",
+            "Exam escort",
+            "Additional masterclasses"
+          ],
+          "limitations": []
+        },
+        "intensive": {
+          "name": "Intensive",
+          "description": "A quick course for those in a hurry",
+          "features": [
+            "15 intensive lessons",
+            "Daily lessons",
+            "Express theory",
+            "Exam preparation in 2 weeks"
+          ],
+          "limitations": [
+            "Requires full availability",
+            "No weekends"
+          ]
+        },
+        "student": {
+          "name": "Student",
+          "description": "Special offer for students",
+          "features": [
+            "20 practical lessons",
+            "Flexible schedule",
+            "Student discount",
+            "Online materials"
+          ],
+          "limitations": [
+            "Student ID required",
+            "Limited number of spots"
+          ]
+        },
+        "corporate": {
+          "name": "Corporate",
+          "description": "For companies and organizations",
+          "features": [
+            "Package for 5 employees",
+            "Corporate discounts",
+            "Company reporting",
+            "Flexible group schedule"
+          ],
+          "limitations": [
+            "Minimum 5 people"
+          ]
+        },
+        "trial": {
+          "name": "Trial",
+          "description": "Try out our services",
+          "features": [
+            "3 trial lessons",
+            "Level assessment",
+            "Consultation"
+          ],
+          "limitations": [
+            "One-time offer",
+            "For new clients"
+          ]
+        }
+      },
+      "currency": "UAH",
+      "discount": "-{percent}%"
+    }
+  },
+  "payments": {
+    "invoices": {
+      "title": "Invoices",
+      "subtitle": "Manage accounting documents",
+      "buttons": {
+        "settings": "Settings",
+        "newInvoice": "New Invoice",
+        "actions": "Actions",
+        "send": "Send",
+        "download": "Download",
+        "downloadPdf": "Download PDF",
+        "print": "Print",
+        "delete": "Delete",
+        "duplicate": "Duplicate",
+        "edit": "Edit",
+        "view": "View",
+        "createCorrection": "Create Correction",
+        "close": "Close",
+        "cancel": "Cancel",
+        "previous": "Previous",
+        "next": "Next"
+      },
+      "stats": {
+        "thisMonth": "This Month",
+        "allInvoices": "All Invoices",
+        "value": "Value",
+        "paid": "Paid",
+        "pending": "Pending",
+        "overdue": "Overdue",
+        "averageTime": "Average Time",
+        "days": "days",
+        "requiresIntervention": "Requires intervention",
+        "vsLastMonth": "+{percent}% vs last month"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by number or client...",
+        "status": "Status",
+        "type": "Type",
+        "all": "All",
+        "selected": "Selected"
+      },
+      "status": {
+        "draft": "Draft",
+        "sent": "Sent",
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "cancelled": "Cancelled",
+        "refunded": "Refunded"
+      },
+      "type": {
+        "standard": "Invoice",
+        "proforma": "Proforma",
+        "correction": "Correction"
+      },
+      "table": {
+        "number": "Number",
+        "client": "Client",
+        "issueDate": "Issue Date",
+        "dueDate": "Due Date",
+        "amount": "Amount",
+        "status": "Status",
+        "daysOverdue": "{days} days overdue"
+      },
+      "details": {
+        "title": "Invoice Details",
+        "issueDate": "Issue Date",
+        "seller": "Seller",
+        "buyer": "Buyer",
+        "description": "Description",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price",
+        "vat": "VAT",
+        "value": "Value",
+        "subtotal": "Subtotal",
+        "vatAmount": "VAT Amount",
+        "total": "Amount Due",
+        "currency": "UAH",
+        "taxId": "Tax ID"
+      },
+      "sendDialog": {
+        "title": "Send Invoice",
+        "description": "The invoice will be sent to the client's email address",
+        "recipient": "Recipient",
+        "subject": "Message Subject",
+        "message": "Message Body",
+        "defaultSubject": "Invoice {number}",
+        "defaultMessage": "Dear Sir/Madam,\n\nAttached is invoice no. {number}.\n\nDue date: {dueDate}\n\nSincerely,\nDrive Driving School",
+        "attachmentNote": "The invoice in PDF format will be attached automatically",
+        "send": "Send"
+      },
+      "toast": {
+        "actionCompleted": "Action completed",
+        "bulkActionDescription": "{action} for {count} invoices",
+        "invoiceSent": "Invoice sent",
+        "invoiceSentDescription": "Invoice {number} has been sent to {email}",
+        "invoiceDownloaded": "Downloading invoice",
+        "invoiceDownloadedDescription": "Invoice {number} has been downloaded",
+        "invoiceDuplicated": "Invoice duplicated",
+        "invoiceDuplicatedDescription": "A copy of invoice {number} has been created"
+      },
+      "pagination": {
+        "showing": "Showing {from}-{to} of {total} results"
+      },
+      "company": {
+        "name": "Drive Driving School",
+        "address": "ul. Marszałkowska 10",
+        "city": "00-001 Warsaw",
+        "taxId": "Tax ID: 1234567890"
+      }
+    },
+    "payouts": {
+      "title": "Instructor Payouts",
+      "subtitle": "Calculation of remuneration",
+      "buttons": {
+        "calculate": "Calculate Payouts",
+        "process": "Process",
+        "processSelected": "Process Selected ({count})",
+        "download": "Download",
+        "generateInvoice": "Generate Invoice",
+        "downloadReport": "Download Report",
+        "details": "Details"
+      },
+      "stats": {
+        "totalAmount": "Total Amount",
+        "gross": "Gross",
+        "toPay": "To Be Paid",
+        "net": "Net",
+        "commission": "Commission",
+        "taxes": "Taxes",
+        "lessons": "Lessons",
+        "inPeriod": "For the period",
+        "hours": "Hours",
+        "worked": "Worked"
+      },
+      "charts": {
+        "payoutsDynamics": "Payouts Dynamics",
+        "payoutsDistribution": "Payouts Distribution",
+        "salary": "Remuneration",
+        "commission": "Commission",
+        "taxes": "Taxes"
+      },
+      "filters": {
+        "searchPlaceholder": "Search instructor...",
+        "allStatuses": "All Statuses",
+        "pending": "Pending",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "table": {
+        "instructor": "Instructor",
+        "period": "Period",
+        "lessonsHours": "Lessons/Hours",
+        "gross": "Gross",
+        "net": "Net",
+        "status": "Status",
+        "actions": "Actions",
+        "lessons": "lessons",
+        "hours": "hours"
+      },
+      "status": {
+        "pending": "Pending",
+        "processing": "Processing",
+        "completed": "Completed",
+        "failed": "Failed"
+      },
+      "details": {
+        "title": "Payout Details",
+        "instructor": "Instructor",
+        "period": "Period",
+        "statistics": "Statistics",
+        "settlement": "Settlement",
+        "calculated": "Calculated (Gross)",
+        "schoolCommission": "School Commission (20%)",
+        "tax": "Tax (19%)",
+        "toPay": "To Be Paid (Net)",
+        "paymentInfo": "Payment Information",
+        "bankAccount": "Bank Account Number",
+        "taxNumber": "Tax ID",
+        "paymentMethod": "Payment Method",
+        "bankTransfer": "Bank Transfer",
+        "cash": "Cash",
+        "card": "Card",
+        "processPayment": "Process Payout"
+      },
+      "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun"
+      },
+      "currency": "UAH",
+      "pagination": {
+        "showing": "Showing {from} - {to} of {total} payouts",
+        "of": "of"
+      },
+      "loading": {
+        "processing": "Processing payouts..."
+      }
+    },
+    "main": {
+      "title": "Payments",
+      "subtitle": "Manage financial transactions",
+      "buttons": {
+        "export": "Export",
+        "createInvoice": "Create Invoice",
+        "viewDetails": "View Details",
+        "downloadInvoice": "Download Invoice",
+        "refund": "Refund"
+      },
+      "dateRange": {
+        "today": "Today",
+        "week": "This Week",
+        "month": "This Month",
+        "year": "This Year"
+      },
+      "stats": {
+        "totalRevenue": "Total Revenue",
+        "pending": "Pending",
+        "refunded": "Refunded",
+        "successRate": "Success Rate",
+        "avgTransaction": "Avg. Transaction Amount",
+        "todayTransactions": "Today"
+      },
+      "charts": {
+        "revenueDynamics": "Revenue Dynamics",
+        "revenue": "Revenue",
+        "refunds": "Refunds",
+        "paymentMethods": "Payment Methods"
+      },
+      "tabs": {
+        "transactions": "Transactions",
+        "invoices": "Invoices",
+        "payouts": "Instructor Payouts"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by ID, user...",
+        "allStatuses": "All Statuses",
+        "allTypes": "All Types",
+        "allMethods": "All Methods"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "failed": "Failed",
+        "refunded": "Refunded"
+      },
+      "types": {
+        "package": "Package",
+        "lesson": "Lesson",
+        "subscription": "Subscription",
+        "deposit": "Deposit",
+        "refund": "Refund"
+      },
+      "typeDescriptions": {
+        "package": "Package \"{name}\"",
+        "lesson": "Individual lessons",
+        "subscription": "Monthly subscription",
+        "deposit": "Deposit to account",
+        "refund": "Refund of funds"
+      },
+      "packages": {
+        "standard": "Standard",
+        "premium": "Premium",
+        "vip": "VIP",
+        "basic": "Basic"
+      },
+      "methods": {
+        "card": "Card",
+        "transfer": "Transfer",
+        "cash": "Cash",
+        "przelewy24": "Przelewy24",
+        "paypal": "PayPal"
+      },
+      "table": {
+        "transactionId": "Transaction ID",
+        "user": "User",
+        "type": "Type",
+        "amount": "Amount",
+        "method": "Method",
+        "status": "Status",
+        "date": "Date",
+        "actions": "Actions"
+      },
+      "messages": {
+        "loading": "Loading...",
+        "noTransactions": "No transactions found"
+      },
+      "currency": "UAH"
+    }
+  },
+  "reports": {
+    "analytics": {
+      "title": "Analytics",
+      "subtitle": "Detailed analyses and business statistics",
+      "buttons": {
+        "export": "Export",
+        "refresh": "Refresh",
+        "compare": "Compare Periods",
+        "disableCompare": "Disable Comparison"
+      },
+      "dateRange": {
+        "week": "This Week",
+        "month": "This Month",
+        "quarter": "This Quarter",
+        "year": "This Year",
+        "custom": "Custom Period"
+      },
+      "kpi": {
+        "revenue": "Revenue",
+        "activeStudents": "Active Students",
+        "passRate": "Pass Rate",
+        "avgRating": "Average Rating",
+        "previousPeriod": "Previous Period"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "financial": "Financial",
+        "students": "Students",
+        "instructors": "Instructors",
+        "locations": "Locations",
+        "performance": "Performance"
+      },
+      "overview": {
+        "revenueAndCosts": {
+          "title": "Revenue and Costs",
+          "subtitle": "Financial analysis over time",
+          "revenue": "Revenue",
+          "costs": "Costs",
+          "profit": "Profit"
+        },
+        "categoryDistribution": {
+          "title": "Distribution by Category",
+          "subtitle": "Distribution of students by category",
+          "students": "students",
+          "categoryB": "Category B",
+          "categoryA": "Category A",
+          "categoryC": "Category C",
+          "categoryA2": "Category A2",
+          "other": "Other"
+        },
+        "conversionFunnel": {
+          "title": "Conversion Funnel",
+          "subtitle": "Student progress through the learning process",
+          "stages": {
+            "registration": "Registration",
+            "theoryStarted": "Theory Started",
+            "theoryCompleted": "Theory Completed",
+            "practiceStarted": "Practice Started",
+            "practiceCompleted": "Practice Completed",
+            "examPassed": "Exam Passed"
+          },
+          "conversionRate": "Conversion Rate",
+          "conversionInfo": "{passed} of {total} students passed the exam"
+        }
+      },
+      "financial": {
+        "ytdRevenue": "YTD Revenue",
+        "avgRevenuePerStudent": "Average Revenue/Student",
+        "profitMargin": "Profit Margin",
+        "vsLastYear": "+{percent}% vs last year",
+        "vsLastPeriod": "{change}% vs last period",
+        "revenueTrend": "Revenue Trend"
+      },
+      "students": {
+        "dynamicsTitle": "Student Enrollment Dynamics",
+        "studentsCount": "Number of Students",
+        "demographics": {
+          "title": "Student Demographics",
+          "age18_25": "18-25 years",
+          "age26_35": "26-35 years",
+          "age36_45": "36-45 years",
+          "age46plus": "46+ years"
+        },
+        "sources": {
+          "title": "Acquisition Sources",
+          "googleAds": "Google Ads",
+          "referrals": "Referrals",
+          "facebook": "Facebook",
+          "website": "Website"
+        }
+      },
+      "instructors": {
+        "performanceTitle": "Instructor Performance",
+        "lessons": "lessons",
+        "passRate": "pass rate",
+        "revenue": "revenue",
+        "competenciesTitle": "Competency Comparison",
+        "competenciesSubtitle": "Average instructor results in different areas",
+        "thisMonth": "This Month",
+        "lastMonth": "Last Month",
+        "skills": {
+          "theory": "Theory",
+          "practice": "Practice",
+          "maneuvers": "Maneuvers",
+          "city": "City",
+          "route": "Route",
+          "safety": "Safety"
+        }
+      },
+      "locations": {
+        "utilizationTitle": "Location Utilization",
+        "bookings": "Bookings",
+        "revenue": "Revenue",
+        "utilization": "Utilization",
+        "locations": {
+          "centerCity": "Warsaw City Center",
+          "mokotow": "Warsaw Mokotow",
+          "praga": "Warsaw Praga",
+          "ursynow": "Warsaw Ursynow"
+        }
+      },
+      "performance": {
+        "avgLessonTime": "Average Lesson Time",
+        "passRate": "Pass Rate",
+        "customerSatisfaction": "Customer Satisfaction",
+        "kpiTitle": "Key Performance Indicators (KPIs)",
+        "metrics": {
+          "avgWaitTime": "Average Wait Time for a Lesson",
+          "dropoutRate": "Dropout Rate",
+          "avgLessonsPerStudent": "Average Lessons per Student",
+          "fleetUtilization": "Fleet Utilization"
+        },
+        "status": {
+          "good": "Good",
+          "change": "+{percent}%"
+        },
+        "time": {
+          "min": "min",
+          "days": "days"
+        }
+      },
+      "months": {
+        "jan": "Jan",
+        "feb": "Feb",
+        "mar": "Mar",
+        "apr": "Apr",
+        "may": "May",
+        "jun": "Jun",
+        "jul": "Jul",
+        "aug": "Aug",
+        "sep": "Sep",
+        "oct": "Oct",
+        "nov": "Nov",
+        "dec": "Dec"
+      },
+      "currency": "UAH"
+    },
+    "export": {
+      "title": "Data Export",
+      "subtitle": "Generate and download reports in various formats",
+      "buttons": {
+        "newExport": "New Export",
+        "useTemplate": "Use Template",
+        "download": "Download",
+        "retry": "Retry",
+        "scheduleExport": "Schedule Export",
+        "scheduleLater": "Schedule for Later",
+        "generateExport": "Generate Export"
+      },
+      "tabs": {
+        "new": "New Export",
+        "templates": "Templates",
+        "history": "History",
+        "scheduled": "Scheduled"
+      },
+      "dataTypes": {
+        "title": "Data Type",
+        "financial": "Financial Data",
+        "students": "Students",
+        "bookings": "Bookings",
+        "instructors": "Instructors",
+        "vehicles": "Vehicles",
+        "locations": "Locations"
+      },
+      "dateRange": {
+        "title": "Date Range",
+        "from": "From",
+        "to": "To",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "thisWeek": "This Week",
+        "thisMonth": "This Month",
+        "thisQuarter": "This Quarter"
+      },
+      "fields": {
+        "title": "Fields to Export",
+        "financial": {
+          "revenue": "Revenue",
+          "expenses": "Expenses",
+          "profit": "Profit",
+          "transactions": "Transactions",
+          "refunds": "Refunds",
+          "packages": "Packages Sold"
+        },
+        "students": {
+          "personal": "Personal Data",
+          "contact": "Contact Details",
+          "package": "Package",
+          "progress": "Progress",
+          "payments": "Payments",
+          "attendance": "Attendance"
+        },
+        "bookings": {
+          "date": "Date",
+          "student": "Student",
+          "instructor": "Instructor",
+          "vehicle": "Vehicle",
+          "status": "Status",
+          "notes": "Notes"
+        },
+        "instructors": {
+          "personal": "Personal Data",
+          "contact": "Contact Details",
+          "rating": "Rating",
+          "students": "Number of Students",
+          "schedule": "Schedule",
+          "earnings": "Earnings"
+        },
+        "vehicles": {
+          "basic": "Basic Info",
+          "registration": "Registration",
+          "mileage": "Mileage",
+          "maintenance": "Maintenance",
+          "bookings": "Bookings",
+          "fuel": "Fuel Consumption"
+        },
+        "locations": {
+          "name": "Name",
+          "address": "Address",
+          "capacity": "Capacity",
+          "schedule": "Schedule",
+          "bookings": "Bookings",
+          "revenue": "Revenue"
+        }
+      },
+      "formats": {
+        "title": "Export Format",
+        "xlsx": {
+          "name": "Excel",
+          "description": "Best for data analysis"
+        },
+        "csv": {
+          "name": "CSV",
+          "description": "Universal format"
+        },
+        "pdf": {
+          "name": "PDF",
+          "description": "For printing and presentations"
+        },
+        "json": {
+          "name": "JSON",
+          "description": "For API integration"
+        }
+      },
+      "options": {
+        "title": "Options",
+        "compressFile": "Compress file (ZIP)",
+        "sendEmail": "Send to email",
+        "saveTemplate": "Save as template"
+      },
+      "status": {
+        "completed": "Completed",
+        "processing": "Processing",
+        "failed": "Failed",
+        "queued": "Queued"
+      },
+      "templates": {
+        "monthlyFinancialReport": "Monthly Financial Report",
+        "monthlyFinancialDescription": "Comprehensive report of revenue and expenses",
+        "activeStudentsList": "Active Students List",
+        "activeStudentsDescription": "Export of student data with active packages",
+        "vehicleUsageReport": "Vehicle Usage Report",
+        "vehicleUsageDescription": "Statistics on fleet utilization",
+        "usedCount": "Used: {count} times",
+        "lastUsed": "Last Used: {time}",
+        "fieldsCount": "{count} fields"
+      },
+      "history": {
+        "searchPlaceholder": "Search exports...",
+        "filters": "Filters",
+        "downloads": "{count} downloads",
+        "errorMessage": "Time limit exceeded",
+        "expiresOn": "Valid until {date}"
+      },
+      "scheduled": {
+        "noScheduledExports": "No scheduled exports",
+        "scheduleDescription": "Schedule automatic report generation"
+      },
+      "messages": {
+        "exportReady": "Export is ready for download",
+        "exportFailed": "Failed to generate export",
+        "templateSaved": "Template successfully saved"
+      }
+    },
+    "title": "Reports",
+    "subtitle": "Create and analyze reports",
+    "buttons": {
+      "savedReports": "Saved Reports",
+      "newReport": "New Report",
+      "generateReport": "Generate Report",
+      "generating": "Generating report...",
+      "pdf": "PDF",
+      "excel": "Excel",
+      "scheduleReport": "Schedule Report",
+      "download": "Download",
+      "print": "Print",
+      "share": "Share",
+      "save": "Save",
+      "view": "View"
+    },
+    "reportTypes": {
+      "title": "Report Type",
+      "financial": {
+        "name": "Financial Report",
+        "description": "Revenue, expenses, profit for a period"
+      },
+      "students": {
+        "name": "Student Report",
+        "description": "Student statistics and their progress"
+      },
+      "instructors": {
+        "name": "Instructor Report",
+        "description": "Instructor effectiveness and workload"
+      },
+      "bookings": {
+        "name": "Booking Report",
+        "description": "Analysis of bookings and utilization"
+      },
+      "vehicles": {
+        "name": "Vehicle Report",
+        "description": "Fleet usage and maintenance"
+      },
+      "performance": {
+        "name": "Performance Report",
+        "description": "KPIs and overall school effectiveness"
+      }
+    },
+    "period": {
+      "title": "Period",
+      "from": "From",
+      "to": "To",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisQuarter": "This Quarter",
+      "thisYear": "This Year"
+    },
+    "filters": {
+      "title": "Filters",
+      "locations": "Locations",
+      "instructors": "Instructors",
+      "categories": "Categories",
+      "allLocations": "All Locations",
+      "allInstructors": "All Instructors",
+      "allCategories": "All Categories",
+      "selected": "Selected"
+    },
+    "preview": {
+      "title": "Preview",
+      "type": "Type:",
+      "period": "Period:",
+      "locations": "Locations:",
+      "instructors": "Instructors:",
+      "categories": "Categories:"
+    },
+    "automaticReports": {
+      "title": "Automatic Reports",
+      "disabled": "Disabled",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly",
+      "sendEmail": "Send to email",
+      "emailPlaceholder": "admin@autoshkola.ua"
+    },
+    "generatedReport": {
+      "generated": "Generated",
+      "totalRevenue": "Total Revenue",
+      "expenses": "Expenses",
+      "netProfit": "Net Profit",
+      "allBookings": "All Bookings",
+      "detailsDescription": "The detailed report contains full analytics for the selected period. Download the full report in PDF or Excel format for detailed viewing."
+    },
+    "recentReports": {
+      "title": "Recently Saved Reports"
+    },
+    "tooltips": {
+      "downloadPdf": "Download PDF",
+      "downloadExcel": "Download Excel",
+      "print": "Print",
+      "share": "Share",
+      "save": "Save"
+    },
+    "currency": "zł"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": {
+      "title": "General Settings",
+      "schoolName": "School Name",
+      "email": "Email",
+      "phone": "Phone",
+      "website": "Website",
+      "address": "Address",
+      "timezone": "Timezone",
+      "language": "Language",
+      "currency": "Currency",
+      "registrationNumber": "Registration Number",
+      "taxNumber": "Tax Number",
+      "workingDays": "Working Days",
+      "workingHours": "Working Hours",
+      "maintenanceMode": {
+        "title": "Maintenance Mode",
+        "description": "Temporarily disable user access during technical work",
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "timezones": {
+        "warsaw": "Warsaw (UTC+1)",
+        "kyiv": "Kyiv (UTC+2)"
+      },
+      "languages": {
+        "pl": "Polski",
+        "en": "English",
+        "uk": "Українська"
+      }
+    },
+    "notificationSettings": {
+      "title": "Notification Settings",
+      "channels": {
+        "title": "Notification Channels",
+        "email": "Email Notifications",
+        "sms": "SMS Notifications",
+        "push": "Push Notifications"
+      },
+      "types": {
+        "title": "Notification Types",
+        "bookingConfirmation": "Booking Confirmation",
+        "bookingReminder": "Lesson Reminder",
+        "cancellationAlert": "Cancellation Alert",
+        "paymentReminder": "Payment Reminder",
+        "newsletter": "Newsletter",
+        "marketing": "Marketing Messages",
+        "adminAlerts": "Admin Alerts",
+        "instructorNotifications": "Instructor Notifications",
+        "studentNotifications": "Student Notifications"
+      },
+      "reminderTime": "Reminder Time before lesson (hours)"
+    },
+    "payment": {
+      "title": "Payment Settings",
+      "providers": {
+        "title": "Payment Systems",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Visa, Mastercard cards"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Ukrainian bank transfers"
+        },
+        "cash": {
+          "name": "Cash",
+          "description": "Cash payment at the office"
+        },
+        "bankTransfer": {
+          "name": "Bank Transfer",
+          "description": "Direct bank transfer"
+        }
+      },
+      "taxRate": "Tax Rate (%)",
+      "invoicePrefix": "Invoice Prefix",
+      "paymentTerms": "Payment Terms (days)",
+      "lateFeePercentage": "Late Fee Percentage (%)",
+      "autoInvoice": "Automatic Invoices",
+      "refundPolicy": "Refund Policy"
+    },
+    "securitySettings": {
+      "title": "Security Settings",
+      "warning": {
+        "title": "Important",
+        "description": "Changing security settings may affect user access to the system"
+      },
+      "sessionTimeout": "Session Timeout (minutes)",
+      "maxLoginAttempts": "Max Login Attempts",
+      "lockoutDuration": "Lockout Duration (minutes)",
+      "passwordRequirements": {
+        "title": "Password Requirements",
+        "minLength": "Minimum length: {length} characters",
+        "requireUppercase": "Require uppercase letters",
+        "requireNumber": "Require numbers",
+        "requireSpecial": "Require special characters"
+      },
+      "backup": {
+        "title": "Backup",
+        "autoBackup": "Automatic Backup",
+        "lastBackup": "Last Backup: yesterday, 02:00",
+        "frequency": {
+          "daily": "Daily",
+          "weekly": "Weekly",
+          "monthly": "Monthly"
+        }
+      },
+      "twoFactor": "Two-Factor Authentication",
+      "apiAccess": "API Access",
+      "apiRateLimit": "API Request Limit",
+      "dataRetention": "Data Retention (days)",
+      "gdprCompliant": "GDPR Compliant"
+    },
+    "branchesSettings": {
+      "title": "Branches",
+      "addBranch": "Add Branch",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "emailTemplates": {
+      "title": "Message Templates",
+      "newTemplate": "New Template",
+      "subject": "Subject:",
+      "lastModified": "Last Modified:"
+    },
+    "subtitle": "System settings and configuration",
+    "buttons": {
+      "export": "Export",
+      "import": "Import",
+      "save": "Save",
+      "saving": "Saving..."
+    },
+    "messages": {
+      "saveSuccess": "Settings successfully saved!"
+    },
+    "tabs": {
+      "general": "General",
+      "school": "School",
+      "notifications": "Notifications",
+      "payments": "Payments",
+      "security": "Security",
+      "integrations": "Integrations",
+      "branches": "Branches",
+      "templates": "Templates"
+    },
+    "school": {
+      "lessonDuration": "Lesson Duration (minutes)",
+      "bufferTime": "Buffer Time between lessons (minutes)",
+      "maxAdvanceBooking": "Max Advance Booking (days)",
+      "minAdvanceBooking": "Min Time to Booking (hours)",
+      "cancellationPeriod": "Cancellation Period (hours)",
+      "minAge": "Minimum Age",
+      "maxStudentsPerInstructor": "Max Students per Instructor",
+      "examPassRate": "Exam Pass Rate (%)",
+      "averageCompletionTime": "Average Completion Time (days)",
+      "title": "School Settings",
+      "fields": {
+        "lessonDuration": "Lesson Duration (minutes)",
+        "bufferTime": "Buffer Time between lessons (minutes)",
+        "maxAdvanceBooking": "Max Advance Booking (days)",
+        "minAdvanceBooking": "Min Time to Booking (hours)",
+        "cancellationPeriod": "Cancellation Period (hours)",
+        "minAge": "Minimum Age",
+        "maxStudentsPerInstructor": "Max Students per Instructor",
+        "examPassRate": "Exam Pass Rate (%)",
+        "averageCompletionTime": "Average Completion Time (days)"
+      },
+      "permissions": {
+        "allowWeekendBookings": "Allow Weekend Bookings",
+        "allowNightLessons": "Allow Night Lessons",
+        "requireMedicalCertificate": "Require Medical Certificate",
+        "requireTheoryPass": "Require Theory Pass before Practice"
+      }
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "channels": {
+        "title": "Notification Channels",
+        "email": "Email Notifications",
+        "sms": "SMS Notifications",
+        "push": "Push Notifications"
+      },
+      "types": {
+        "title": "Notification Types",
+        "bookingConfirmation": "Booking Confirmation",
+        "bookingReminder": "Lesson Reminder",
+        "cancellationAlert": "Cancellation Alert",
+        "paymentReminder": "Payment Reminder",
+        "newsletter": "Newsletter",
+        "marketing": "Marketing Messages",
+        "adminAlerts": "Admin Alerts",
+        "instructorNotifications": "Instructor Notifications",
+        "studentNotifications": "Student Notifications"
+      },
+      "reminderTime": "Reminder Time before lesson (hours)"
+    },
+    "payments": {
+      "title": "Payment Settings",
+      "providers": {
+        "title": "Payment Systems",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Visa, Mastercard cards"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Ukrainian bank transfers"
+        },
+        "paypal": {
+          "name": "PayPal",
+          "description": "PayPal payments"
+        },
+        "cash": {
+          "name": "Cash",
+          "description": "Cash payment at the office"
+        },
+        "bankTransfer": {
+          "name": "Bank Transfer",
+          "description": "Direct bank transfer"
+        }
+      },
+      "fields": {
+        "taxRate": "Tax Rate (%)",
+        "invoicePrefix": "Invoice Prefix",
+        "paymentTerms": "Payment Terms (days)",
+        "lateFeePercentage": "Late Fee Percentage (%)",
+        "autoInvoice": "Automatic Invoices",
+        "refundPolicy": "Refund Policy"
+      }
+    },
+    "security": {
+      "title": "Security Settings",
+      "warning": {
+        "title": "Important",
+        "description": "Changing security settings may affect user access to the system"
+      },
+      "fields": {
+        "sessionTimeout": "Session Timeout (minutes)",
+        "maxLoginAttempts": "Max Login Attempts",
+        "lockoutDuration": "Lockout Duration (minutes)",
+        "twoFactor": "Two-Factor Authentication",
+        "apiAccess": "API Access",
+        "apiRateLimit": "API Request Limit",
+        "dataRetention": "Data Retention (days)",
+        "gdprCompliant": "GDPR Compliant"
+      },
+      "passwordRequirements": {
+        "title": "Password Requirements",
+        "minLength": "Minimum length: {length} characters",
+        "requireUppercase": "Require uppercase letters",
+        "requireNumber": "Require numbers",
+        "requireSpecial": "Require special characters"
+      },
+      "backup": {
+        "title": "Backup",
+        "autoBackup": "Automatic Backup",
+        "lastBackup": "Last Backup: yesterday, 02:00",
+        "frequency": {
+          "daily": "Daily",
+          "weekly": "Weekly",
+          "monthly": "Monthly"
+        }
+      }
+    },
+    "integrations": {
+      "title": "Integrations",
+      "configured": "Configured",
+      "notConfigured": "Not Configured",
+      "lastSync": "Last Sync:",
+      "configure": "Configure →",
+      "services": {
+        "googleCalendar": {
+          "name": "Google Calendar",
+          "description": "Sync schedule with Google Calendar"
+        },
+        "zoom": {
+          "name": "Zoom",
+          "description": "Online lessons via Zoom"
+        },
+        "mailchimp": {
+          "name": "Mailchimp",
+          "description": "Email marketing and campaigns"
+        },
+        "facebookPixel": {
+          "name": "Facebook Pixel",
+          "description": "Conversion tracking"
+        },
+        "googleAnalytics": {
+          "name": "Google Analytics",
+          "description": "Website traffic analytics"
+        },
+        "telegramBot": {
+          "name": "Telegram Bot",
+          "description": "Notifications via Telegram"
+        }
+      }
+    },
+    "branches": {
+      "title": "Branches",
+      "addBranch": "Add Branch",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      }
+    },
+    "templates": {
+      "title": "Message Templates",
+      "newTemplate": "New Template",
+      "subject": "Subject:",
+      "lastModified": "Last Modified:",
+      "types": {
+        "bookingConfirmation": "Booking Confirmation",
+        "lessonReminder": "Lesson Reminder",
+        "lessonCancelled": "Lesson Cancellation",
+        "welcome": "Welcome after registration"
+      }
+    }
+  },
+  "students": {
+    "title": "Students",
+    "subtitle": "Management of driving school students",
+    "buttons": {
+      "export": "Export",
+      "addStudent": "Add Student",
+      "moreFilters": "More Filters",
+      "view": "View",
+      "edit": "Edit",
+      "moreActions": "More Actions",
+      "sendMessage": "Send Message",
+      "cancel": "Cancel"
+    },
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "completed": "Completed",
+      "avgProgress": "Avg. Progress",
+      "attendance": "Attendance",
+      "revenue": "Revenue"
+    },
+    "filters": {
+      "searchPlaceholder": "Search students...",
+      "allStatuses": "All Statuses",
+      "allPackages": "All Packages",
+      "allInstructors": "All Instructors",
+      "statuses": {
+        "active": "Active",
+        "onHold": "On Hold",
+        "completed": "Completed",
+        "dropped": "Dropped"
+      }
+    },
+    "table": {
+      "headers": {
+        "student": "Student",
+        "package": "Package",
+        "instructor": "Instructor",
+        "progress": "Progress",
+        "nextLesson": "Next Lesson",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "category": "Category",
+      "theory": "Theory",
+      "practice": "Practice",
+      "lessonsFormat": "{completed}/{total}"
+    },
+    "status": {
+      "active": {
+        "label": "Active",
+        "bg": "bg-green-100",
+        "text": "text-green-700"
+      },
+      "onHold": {
+        "label": "On Hold",
+        "bg": "bg-yellow-100",
+        "text": "text-yellow-700"
+      },
+      "completed": {
+        "label": "Completed",
+        "bg": "bg-blue-100",
+        "text": "text-blue-700"
+      },
+      "dropped": {
+        "label": "Dropped",
+        "bg": "bg-red-100",
+        "text": "text-red-700"
+      }
+    },
+    "bulkActions": {
+      "selected": "Selected: {count} students",
+      "sendMessage": "Send Message",
+      "export": "Export"
+    },
+    "pagination": {
+      "showing": "Showing {from} - {to} of {total} students"
+    },
+    "loading": {
+      "processing": "Processing..."
+    }
+  },
+  "users": {
+    "detail": {
+      "title": "Students",
+      "subtitle": "Management of driving school students",
+      "buttons": {
+        "export": "Export",
+        "addStudent": "Add Student",
+        "moreFilters": "More Filters",
+        "view": "View",
+        "edit": "Edit",
+        "moreActions": "More Actions",
+        "sendMessage": "Send Message",
+        "cancel": "Cancel"
+      },
+      "stats": {
+        "total": "Total",
+        "active": "Active",
+        "completed": "Completed",
+        "avgProgress": "Avg. Progress",
+        "attendance": "Attendance",
+        "revenue": "Revenue"
+      },
+      "filters": {
+        "searchPlaceholder": "Search students...",
+        "allStatuses": "All statuses",
+        "allPackages": "All packages",
+        "allInstructors": "All instructors",
+        "statuses": {
+          "active": "Active",
+          "onHold": "On hold",
+          "completed": "Completed",
+          "dropped": "Dropped"
+        }
+      },
+      "table": {
+        "headers": {
+          "student": "Student",
+          "package": "Package",
+          "instructor": "Instructor",
+          "progress": "Progress",
+          "nextLesson": "Next lesson",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "category": "Category",
+        "theory": "Theory",
+        "practice": "Practice",
+        "lessonsFormat": "{completed}/{total}"
+      },
+      "status": {
+        "active": {
+          "label": "Active",
+          "bg": "bg-green-100",
+          "text": "text-green-700"
+        },
+        "onHold": {
+          "label": "On hold",
+          "bg": "bg-yellow-100",
+          "text": "text-yellow-700"
+        },
+        "completed": {
+          "label": "Completed",
+          "bg": "bg-blue-100",
+          "text": "text-blue-700"
+        },
+        "dropped": {
+          "label": "Dropped",
+          "bg": "bg-red-100",
+          "text": "text-red-700"
+        }
+      },
+      "bulkActions": {
+        "selected": "Selected: {count} students",
+        "sendMessage": "Send message",
+        "export": "Export"
+      },
+      "pagination": {
+        "showing": "Showing {from} - {to} of {total} students"
+      },
+      "loading": {
+        "processing": "Processing..."
+      }
+    },
+    "new": {
+      "title": "Create new user",
+      "subtitle": "Fill in all the necessary data",
+      "buttons": {
+        "back": "Back",
+        "previous": "Previous",
+        "next": "Next",
+        "save": "Save",
+        "saving": "Saving...",
+        "generatePassword": "Generate password"
+      },
+      "steps": {
+        "personal": "Personal data",
+        "address": "Address",
+        "account": "Account settings",
+        "roleInfo": "Role information",
+        "review": "Data summary"
+      },
+      "personal": {
+        "title": "Personal data",
+        "firstName": "First Name *",
+        "firstNamePlaceholder": "Alex",
+        "lastName": "Last Name *",
+        "lastNamePlaceholder": "Kovalenko",
+        "email": "Email *",
+        "emailPlaceholder": "example@email.com",
+        "phone": "Phone *",
+        "phonePlaceholder": "+380123456789",
+        "birthDate": "Date of birth *",
+        "gender": "Gender",
+        "genderOptions": {
+          "male": "Male",
+          "female": "Female",
+          "other": "Other"
+        }
+      },
+      "address": {
+        "title": "Address",
+        "street": "Street and house number *",
+        "streetPlaceholder": "Khreshchatyk St 1",
+        "city": "City *",
+        "postalCode": "Postal Code *",
+        "postalCodePlaceholder": "01001",
+        "emergencyContact": "Emergency contact",
+        "emergencyName": "Name",
+        "emergencyNamePlaceholder": "Maria Kovalenko",
+        "emergencyPhone": "Phone",
+        "emergencyPhonePlaceholder": "+380987654321",
+        "emergencyRelation": "Relation",
+        "emergencyRelationPlaceholder": "Mother"
+      },
+      "account": {
+        "title": "Account settings",
+        "role": "User role *",
+        "roles": {
+          "student": "Student",
+          "instructor": "Instructor",
+          "manager": "Manager",
+          "admin": "Administrator"
+        },
+        "password": "Password *",
+        "passwordPlaceholder": "Minimum 8 characters",
+        "confirmPassword": "Confirm password *",
+        "confirmPasswordPlaceholder": "Repeat password",
+        "sendWelcomeEmail": "Send welcome email with login details"
+      },
+      "studentInfo": {
+        "title": "Student information",
+        "package": "Training package",
+        "selectPackage": "Select a package",
+        "category": "Category",
+        "selectCategory": "Select a category",
+        "instructor": "Instructor",
+        "assignLater": "Assign later",
+        "startDate": "Start date of training"
+      },
+      "instructorInfo": {
+        "title": "Instructor information",
+        "licenseNumber": "Driver's license number",
+        "licenseNumberPlaceholder": "AA123456",
+        "experience": "Experience (years)",
+        "experiencePlaceholder": "5",
+        "hourlyRate": "Hourly rate (UAH)",
+        "hourlyRatePlaceholder": "500",
+        "specializations": "Specializations",
+        "specializationOptions": {
+          "city": "City driving",
+          "highway": "Highway",
+          "parking": "Parking",
+          "night": "Night driving",
+          "extreme": "Extreme driving",
+          "theory": "Theory"
+        },
+        "workingDays": "Working days",
+        "weekDays": {
+          "monday": "Monday",
+          "tuesday": "Tuesday",
+          "wednesday": "Wednesday",
+          "thursday": "Thursday",
+          "friday": "Friday",
+          "saturday": "Saturday",
+          "sunday": "Sunday"
+        }
+      },
+      "review": {
+        "title": "Data summary",
+        "personalData": "Personal data",
+        "fullName": "Full name:",
+        "email": "Email:",
+        "phone": "Phone:",
+        "role": "Role:",
+        "trainingInfo": "Training information",
+        "package": "Package:",
+        "category": "Category:",
+        "instructor": "Instructor:",
+        "notSelected": "Not selected",
+        "notAssigned": "Not assigned",
+        "professionalInfo": "Professional information",
+        "experience": "Experience:",
+        "years": "{count} years",
+        "rate": "Rate:",
+        "perHour": "UAH {amount}/hour",
+        "specializations": "Specializations:",
+        "notSpecified": "Not specified",
+        "confirmMessage": "The user will be created with the data provided above.",
+        "checkData": "Make sure all information is correct before saving."
+      },
+      "errors": {
+        "firstNameRequired": "First Name is required",
+        "lastNameRequired": "Last Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email format",
+        "phoneRequired": "Phone is required",
+        "birthDateRequired": "Date of birth is required",
+        "streetRequired": "Street is required",
+        "cityRequired": "City is required",
+        "postalCodeRequired": "Postal Code is required",
+        "passwordRequired": "Password is required",
+        "passwordMinLength": "Password must be at least 8 characters",
+        "passwordsNotMatch": "Passwords do not match"
+      }
+    },
+    "list": {
+      "title": "Users",
+      "subtitle": "Manage system users",
+      "buttons": {
+        "addUser": "Add user",
+        "moreFilters": "More Filters",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "view": "View",
+        "edit": "Edit"
+      },
+      "stats": {
+        "total": "Total",
+        "students": "Students",
+        "instructors": "Instructors",
+        "admins": "Administrators",
+        "active": "Active",
+        "pending": "Pending"
+      },
+      "filters": {
+        "searchPlaceholder": "Search by name or email...",
+        "allRoles": "All roles",
+        "students": "Students",
+        "instructors": "Instructors",
+        "admins": "Administrators",
+        "managers": "Managers",
+        "allStatuses": "All statuses",
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending",
+        "suspended": "Suspended",
+        "allLocations": "All locations",
+        "emailVerification": "Email verification",
+        "phoneVerification": "Phone verification",
+        "confirmed": "Confirmed",
+        "notConfirmed": "Not confirmed",
+        "registrationDate": "Registration date",
+        "last7days": "Last 7 days",
+        "last30days": "Last 30 days",
+        "last90days": "Last 90 days"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "instructor": "Instructor",
+        "student": "Student",
+        "manager": "Manager"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "pending": "Pending",
+        "suspended": "Suspended"
+      },
+      "table": {
+        "headers": {
+          "user": "User",
+          "role": "Role",
+          "status": "Status",
+          "location": "Location",
+          "joined": "Joined",
+          "lastLogin": "Last login",
+          "actions": "Actions"
+        },
+        "email": "Email",
+        "phone": "Phone",
+        "rating": "Rating: {rating}★"
+      },
+      "bulkActions": {
+        "selected": "Selected {count} user(s)"
+      },
+      "loading": {
+        "text": "Loading..."
+      },
+      "empty": {
+        "title": "No users found",
+        "subtitle": "Try changing the search filters"
+      }
+    }
+  },
+  "vehicles": {
+    "detail": {
+      "title": "Vehicle details",
+      "subtitle": "Vehicle information and management",
+      "buttons": {
+        "back": "Back",
+        "export": "Export",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel"
+      },
+      "status": {
+        "active": "Active",
+        "maintenance": "In maintenance",
+        "inactive": "Inactive"
+      },
+      "tabs": {
+        "overview": "Overview",
+        "schedule": "Schedule",
+        "maintenance": "Maintenance",
+        "financial": "Financial",
+        "documents": "Documents"
+      },
+      "info": {
+        "category": "Category",
+        "transmission": "Transmission",
+        "fuel": "Fuel",
+        "mileage": "Mileage",
+        "vin": "VIN",
+        "color": "Color",
+        "assignedInstructor": "Assigned instructor",
+        "location": "Location",
+        "dailyRate": "Daily rate",
+        "purchaseDate": "Purchase date",
+        "purchasePrice": "Purchase price",
+        "insuranceExpiry": "Insurance expiry",
+        "inspectionExpiry": "Inspection expiry",
+        "registrationExpiry": "Registration expiry",
+        "features": "Features"
+      },
+      "stats": {
+        "utilization": "Utilization",
+        "lessonsPerMonth": "Lessons/month",
+        "monthlyRevenue": "Revenue/month",
+        "fuelConsumption": "Fuel consumption",
+        "maintenanceCost": "Maintenance cost",
+        "rating": "Rating"
+      },
+      "overview": {
+        "vehicleInfo": "Vehicle information",
+        "features": "Features",
+        "alertTitle": "Upcoming inspection deadline",
+        "alertDescription": "Technical inspection expires on {date}"
+      },
+      "schedule": {
+        "hours": "h",
+        "bookings": "bookings",
+        "recentBookings": "Recent bookings",
+        "instructor": "Instructor:",
+        "completed": "Completed",
+        "scheduled": "Scheduled"
+      },
+      "maintenance": {
+        "nextService": "Next service",
+        "oilChange": "Oil change",
+        "technicalCondition": "Technical condition",
+        "good": "Good",
+        "lastInspection": "Last inspection:",
+        "serviceHistory": "Service history",
+        "km": "km",
+        "in": "in",
+        "completed": "Completed",
+        "scheduled": "Scheduled"
+      },
+      "financial": {
+        "totalRevenue": "Total revenue",
+        "totalCosts": "Total costs",
+        "netProfit": "Net profit",
+        "vsLastQuarter": "+{percent}% vs last quarter",
+        "maintenanceFuel": "Maintenance + Fuel",
+        "roi": "ROI: {percent}%",
+        "financialHistory": "Financial history",
+        "month": "Month",
+        "revenue": "Revenue",
+        "expenses": "Expenses",
+        "profit": "Profit"
+      },
+      "documents": {
+        "uploaded": "Uploaded:",
+        "verified": "Verified",
+        "expiring": "Expiring",
+        "view": "View",
+        "download": "Download"
+      },
+      "currency": "UAH"
+    },
+    "maintenance": {
+      "title": "Vehicle maintenance",
+      "subtitle": "Manage technical inspections and repairs",
+      "buttons": {
+        "export": "Export",
+        "scheduleMaintenance": "Schedule maintenance",
+        "moreFilters": "More filters",
+        "cancel": "Cancel",
+        "submit": "Schedule maintenance",
+        "close": "Close",
+        "edit": "Edit",
+        "delete": "Delete",
+        "view": "View"
+      },
+      "stats": {
+        "scheduled": "Scheduled",
+        "inProgress": "In progress",
+        "completed": "Completed",
+        "inService": "In service",
+        "totalCost": "Total cost",
+        "avgCost": "Avg. cost"
+      },
+      "alerts": {
+        "title": "Upcoming technical inspections",
+        "count": "{count} warnings",
+        "dueIn": "due in"
+      },
+      "filters": {
+        "searchPlaceholder": "Search vehicle or maintenance type...",
+        "allStatuses": "All statuses",
+        "allVehicles": "All vehicles",
+        "scheduled": "Scheduled",
+        "inProgress": "In progress",
+        "completed": "Completed"
+      },
+      "table": {
+        "vehicle": "Vehicle",
+        "serviceType": "Service type",
+        "date": "Date",
+        "mileage": "Mileage",
+        "technician": "Technician",
+        "cost": "Cost",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "serviceTypes": {
+        "oilChange": "Oil change",
+        "periodicInspection": "Periodic inspection",
+        "tireChange": "Tire change",
+        "brakeService": "Brake service",
+        "acRepair": "AC repair",
+        "sparkPlugs": "Spark plugs replacement",
+        "other": "Other"
+      },
+      "priority": {
+        "label": "Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      },
+      "modal": {
+        "scheduleTitle": "Schedule maintenance",
+        "detailsTitle": "Maintenance details",
+        "selectVehicle": "Select vehicle",
+        "selectType": "Select type",
+        "vehicle": "Vehicle",
+        "type": "Service type",
+        "date": "Date",
+        "mileage": "Mileage",
+        "technician": "Technician",
+        "estimatedCost": "Estimated cost (UAH)",
+        "description": "Description",
+        "descriptionPlaceholder": "Add maintenance description...",
+        "technicianPlaceholder": "First and last name",
+        "mileagePlaceholder": "e.g. 45000",
+        "costPlaceholder": "e.g. 450"
+      },
+      "status": {
+        "scheduled": "Scheduled",
+        "inProgress": "In progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "currency": "UAH",
+      "km": "km"
+    },
+    "title": "Vehicles",
+    "subtitle": "Manage the school's fleet",
+    "buttons": {
+      "addVehicle": "Add vehicle",
+      "service": "Service",
+      "details": "Details",
+      "history": "History",
+      "refresh": "Refresh"
+    },
+    "stats": {
+      "total": "Total",
+      "active": "Active",
+      "maintenance": "In service",
+      "utilization": "Utilization",
+      "needsService": "Needs service",
+      "documentsExpiring": "Documents"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by make, model or number...",
+      "allStatuses": "All statuses",
+      "allTransmissions": "All transmissions",
+      "allCategories": "All categories",
+      "manual": "Manual",
+      "automatic": "Automatic"
+    },
+    "status": {
+      "active": {
+        "label": "Active",
+        "icon": "CheckCircle"
+      },
+      "maintenance": {
+        "label": "In service",
+        "icon": "Wrench"
+      },
+      "reserved": {
+        "label": "Reserved",
+        "icon": "Calendar"
+      },
+      "inactive": {
+        "label": "Inactive",
+        "icon": "XCircle"
+      }
+    },
+    "card": {
+      "category": "Category:",
+      "transmission": "Transmission:",
+      "instructor": "Instructor:",
+      "mileage": "Mileage:",
+      "utilization": "Utilization",
+      "unassigned": "Unassigned",
+      "issues": "{count} issues",
+      "insuranceExpiring": "Insurance expiring",
+      "inspectionNeeded": "Inspection needed"
+    },
+    "table": {
+      "vehicle": "Vehicle",
+      "status": "Status",
+      "category": "Category",
+      "transmission": "Transmission",
+      "instructor": "Instructor",
+      "location": "Location",
+      "mileage": "Mileage",
+      "utilization": "Utilization",
+      "actions": "Actions"
+    },
+    "transmissionTypes": {
+      "manual": "Manual",
+      "automatic": "Automatic"
+    },
+    "viewModes": {
+      "grid": "Grid",
+      "list": "List"
+    },
+    "details": {
+      "title": "Vehicle details",
+      "registrationNumber": "Registration number",
+      "vin": "VIN",
+      "year": "Year",
+      "mileage": "Mileage",
+      "fuel": "Fuel",
+      "fuelLevel": "Fuel level",
+      "documentsAndDeadlines": "Documents and deadlines",
+      "insurance": "Insurance",
+      "inspection": "Inspection",
+      "nextService": "Next service",
+      "until": "until {date}",
+      "edit": "Edit",
+      "serviceHistory": "Service history",
+      "delete": "Delete"
+    },
+    "fuelTypes": {
+      "petrol": "Petrol",
+      "diesel": "Diesel",
+      "hybrid": "Hybrid",
+      "electric": "Electric"
+    },
+    "categories": {
+      "B": "B",
+      "BE": "B+E",
+      "C": "C"
+    },
+    "currency": "zł"
+  },
+  "schedule": {
+    "main": {
+      "title": "Schedule",
+      "subtitle": "Manage your time effectively",
+      "buttons": {
+        "workingHours": "Working hours",
+        "exception": "Exception",
+        "today": "Today",
+        "search": "Search",
+        "menu": "Menu"
+      },
+      "search": {
+        "placeholder": "Search student, location, time slot..."
+      },
+      "stats": {
+        "allSlots": "All slots",
+        "reserved": "Reserved",
+        "weeklyHours": "Hours per week",
+        "monthlyIncome": "Monthly income",
+        "hoursUnit": "{hours}h",
+        "currency": "{amount} UAH"
+      },
+      "tabs": {
+        "calendar": "Calendar",
+        "templates": "Templates",
+        "requests": "Requests",
+        "statistics": "Statistics"
+      },
+      "viewModes": {
+        "day": "Day",
+        "week": "Week",
+        "month": "Month",
+        "dayView": "Day view",
+        "weekView": "Week view",
+        "monthView": "Month view"
+      },
+      "mobileMenu": {
+        "title": "Menu",
+        "workingHours": "Working hours",
+        "addException": "Add exception"
+      },
+      "dateFormat": {
+        "day": "{weekday}, {day} {month} {year}",
+        "week": "{startDate} - {endDate}",
+        "month": "{month} {year}"
+      }
+    }
+  },
+  "layout": {
+    "title": "DenisDrive",
+    "subtitle": "Admin portal",
+    "navigation": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "instructors": "Instructors",
+      "students": "Students",
+      "vehicles": "Vehicles",
+      "locations": "Locations",
+      "packages": "Packages",
+      "bookings": "Bookings",
+      "payments": "Payments",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
+    "user": {
+      "name": "System Administrator",
+      "email": "admin@drive-school.com",
+      "role": "Head Administrator",
+      "profile": "Profile",
+      "security": "Security",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "languages": {
+      "polish": "Polski",
+      "ukrainian": "Ukrainian",
+      "english": "English",
+      "russian": "Russian"
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "admin": "Admin",
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "instructors": "Instructors",
+      "students": "Students",
+      "vehicles": "Vehicles",
+      "locations": "Locations",
+      "packages": "Packages",
+      "bookings": "Bookings",
+      "payments": "Payments",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
+    "search": {
+      "placeholder": "Search..."
+    },
+    "theme": {
+      "light": "Light theme",
+      "dark": "Dark theme"
+    },
+    "notifications": {
+      "label": "Notifications",
+      "count": "{count} new"
+    },
+    "mobile": {
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    }
+  }
+}

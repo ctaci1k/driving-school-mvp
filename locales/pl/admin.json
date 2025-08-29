@@ -1,0 +1,2891 @@
+{
+  "bookings": {
+    "calendar": {
+      "title": "Kalendarz rezerwacji",
+      "subtitle": "Zarządzaj harmonogramem zajęć",
+      "navigation": {
+        "previousMonth": "Poprzedni miesiąc",
+        "nextMonth": "Następny miesiąc",
+        "today": "Dziś",
+        "weekNavigation": "{startDate} - {endDate}"
+      },
+      "viewTypes": {
+        "month": "Miesiąc",
+        "week": "Tydzień",
+        "day": "Dzień",
+        "list": "Lista"
+      },
+      "weekDays": {
+        "monday": "Pn",
+        "tuesday": "Wt",
+        "wednesday": "Śr",
+        "thursday": "Cz",
+        "friday": "Pt",
+        "saturday": "Sb",
+        "sunday": "Nd"
+      },
+      "filters": {
+        "title": "Filtry",
+        "instructor": "Instruktor",
+        "type": "Rodzaj zajęć",
+        "status": "Status",
+        "location": "Lokalizacja",
+        "all": "Wszystkie",
+        "clear": "Wyczyść filtry",
+        "placeholders": {
+          "allInstructors": "Wszyscy",
+          "allTypes": "Wszystkie",
+          "allStatuses": "Wszystkie",
+          "allLocations": "Wszystkie"
+        }
+      },
+      "bookingTypes": {
+        "practice": "Praktyka",
+        "theory": "Teoria",
+        "exam": "Egzamin"
+      },
+      "bookingStatus": {
+        "confirmed": "Potwierdzono",
+        "pending": "Oczekuje",
+        "cancelled": "Anulowano",
+        "completed": "Zakończono"
+      },
+      "buttons": {
+        "filters": "Filtry",
+        "export": "Eksportuj",
+        "newBooking": "Nowa rezerwacja",
+        "edit": "Edytuj",
+        "cancel": "Anuluj",
+        "delete": "Usuń",
+        "view": "Podgląd",
+        "close": "Zamknij",
+        "save": "Zapisz"
+      },
+      "messages": {
+        "noBookings": "Brak rezerwacji na ten dzień",
+        "moreBookings": "+{count} więcej",
+        "weekViewInProgress": "Widok tygodniowy w przygotowaniu. Użyj widoku miesięcznego lub listy.",
+        "loading": "Ładowanie..."
+      },
+      "details": {
+        "title": "Szczegóły rezerwacji",
+        "student": "Uczeń",
+        "instructor": "Instruktor",
+        "date": "Data",
+        "time": "Godzina",
+        "location": "Lokalizacja",
+        "vehicle": "Samochód",
+        "package": "Pakiet",
+        "notes": "Notatki",
+        "cancelReason": "Anulowano przez ucznia - choroba"
+      },
+      "stats": {
+        "todayBookings": "Dzisiejsze rezerwacje",
+        "pending": "Oczekujące",
+        "thisWeek": "Ten tydzień",
+        "utilization": "Wykorzystanie"
+      },
+      "actions": {
+        "edit": "Edytuj",
+        "cancel": "Anuluj",
+        "delete": "Usuń"
+      },
+      "locations": {
+        "warsawCenter": "Warszawa Centrum",
+        "warsawMokotow": "Warszawa Mokotów",
+        "warsawPraga": "Warszawa Praga",
+        "lectureHallA": "Sala wykładowa A",
+        "lectureHallB": "Sala wykładowa B",
+        "examCenter": "WORD Warszawa"
+      },
+      "packages": {
+        "standardB": "Pakiet Standard B",
+        "premiumB": "Pakiet Premium B",
+        "intensiveB": "Pakiet Intensywny B"
+      }
+    },
+    "title": "Rezerwacje",
+    "subtitle": "Zarządzanie wszystkimi rezerwacjami i lekcjami",
+    "buttons": {
+      "export": "Eksport",
+      "newBooking": "Nowa rezerwacja",
+      "edit": "Edytuj",
+      "cancel": "Anuluj",
+      "close": "Zamknij",
+      "view": "Podgląd"
+    },
+    "stats": {
+      "today": "Dziś",
+      "completedToday": "Zakończone dziś",
+      "thisWeek": "Ten tydzień",
+      "weekRevenue": "Przychód tygodnia",
+      "cancellations": "Anulacje",
+      "avgRating": "Śr. ocena"
+    },
+    "filters": {
+      "searchPlaceholder": "Szukaj po ID, uczniu lub instruktorze...",
+      "allDates": "Wszystkie daty",
+      "today": "Dziś",
+      "tomorrow": "Jutro",
+      "thisWeek": "Ten tydzień",
+      "allStatuses": "Wszystkie statusy",
+      "allInstructors": "Wszyscy instruktorzy",
+      "scheduled": "Zaplanowane",
+      "inProgress": "W trakcie",
+      "completed": "Zakończone",
+      "cancelled": "Anulowane",
+      "noShow": "Nieobecność"
+    },
+    "table": {
+      "id": "ID",
+      "student": "Uczeń",
+      "instructor": "Instruktor",
+      "dateTime": "Data i godzina",
+      "type": "Rodzaj",
+      "status": "Status",
+      "payment": "Płatność",
+      "actions": "Akcje",
+      "price": "zł{price}",
+      "awaiting": "Oczekuje"
+    },
+    "lessonTypes": {
+      "standard": "Standardowa",
+      "highway": "Autostrada",
+      "parking": "Parkowanie",
+      "night": "Nocna",
+      "exam": "Egzamin",
+      "maneuvers": "Manewry"
+    },
+    "charts": {
+      "weeklyBookings": "Rezerwacje tygodniowe",
+      "statusDistribution": "Rozkład statusów",
+      "bookings": "Rezerwacje"
+    },
+    "details": {
+      "title": "Szczegóły rezerwacji {id}",
+      "studentInfo": "Uczeń",
+      "instructorInfo": "Instruktor",
+      "lessonDetails": "Szczegóły lekcji",
+      "paymentStatus": "Płatność i status",
+      "location": "Lokalizacja",
+      "notes": "Notatki",
+      "fields": {
+        "type": "Rodzaj:",
+        "time": "Godzina:",
+        "duration": "Czas trwania:",
+        "durationValue": "{duration} min",
+        "status": "Status:",
+        "price": "Cena:",
+        "payment": "Płatność:",
+        "paid": "Opłacono",
+        "unpaid": "Oczekuje",
+        "rating": "Ocena:",
+        "cancelReason": "Powód anulowania:",
+        "additionalNotes": "Dodatkowe notatki dotyczące lekcji",
+        "studentIllness": "Choroba ucznia"
+      }
+    },
+    "viewModes": {
+      "list": "Lista",
+      "calendar": "Kalendarz"
+    },
+    "noData": {
+      "emptySlot": "—"
+    }
+  },
+  "dashboard": {
+    "title": "Panel sterowania",
+    "subtitle": "Witaj! Oto podsumowanie twojej szkoły jazdy",
+    "loading": "Ładowanie danych...",
+    "periods": {
+      "day": "Dziś",
+      "week": "Ten tydzień",
+      "month": "Ten miesiąc",
+      "year": "Ten rok"
+    },
+    "buttons": {
+      "export": "Eksport",
+      "refresh": "Odśwież",
+      "details": "Szczegóły →",
+      "viewAll": "Cała aktywność →",
+      "allInstructors": "Wszyscy instruktorzy →"
+    },
+    "stats": {
+      "totalRevenue": {
+        "title": "Całkowity przychód",
+        "subtitle": "w tym miesiącu"
+      },
+      "activeStudents": {
+        "title": "Aktywni uczniowie",
+        "subtitle": "łącznie zarejestrowano: {total}",
+        "change": "+{count} w tym tygodniu"
+      },
+      "todayLessons": {
+        "title": "Dzisiejsze lekcje",
+        "subtitle": "{remaining} jeszcze zaplanowane",
+        "change": "{completed} zakończono"
+      },
+      "conversion": {
+        "title": "Konwersja",
+        "subtitle": "od rejestracji do płatności",
+        "change": "+{percent}% względem poprzedniego miesiąca"
+      }
+    },
+    "secondaryStats": {
+      "instructorsOnline": "Instruktorów online",
+      "availableCars": "Dostępnych aut",
+      "newPayments": "Nowe płatności",
+      "activeLocations": "Aktywne lokalizacje"
+    },
+    "charts": {
+      "revenueTitle": "Dynamika przychodów",
+      "revenueSubtitle": "Porównanie z poprzednim okresem",
+      "currentPeriod": "Bieżący okres",
+      "previousPeriod": "Poprzedni okres",
+      "packageDistribution": "Rozkład pakietów",
+      "bookingsByTime": "Rezerwacje według godzin",
+      "bookings": "rezerwacje"
+    },
+    "packages": {
+      "standard": "Standard",
+      "premium": "Premium",
+      "vip": "VIP",
+      "basic": "Podstawowy"
+    },
+    "activities": {
+      "title": "Ostatnia aktywność",
+      "bookingCreated": "zarezerwował lekcję",
+      "paymentReceived": "opłacił pakiet \"{package}\"",
+      "instructorOnline": "rozpoczął dzień pracy",
+      "bookingCancelled": "anulował lekcję o {time}",
+      "vehicleMaintenance": "{vehicle} wymaga przeglądu",
+      "newRegistration": "zarejestrował się jako nowy uczeń",
+      "examPassed": "zdany egzamin",
+      "reviewReceived": "zostawił opinię {rating}★",
+      "timeAgo": {
+        "minutes": "{count} minut temu",
+        "hours": "{count} godzin temu"
+      }
+    },
+    "topInstructors": {
+      "title": "Top instruktorzy",
+      "lessonsUnit": "{count} lekcji",
+      "rating": "{rating}★"
+    },
+    "quickActions": {
+      "title": "Szybkie akcje",
+      "addUser": "Dodaj użytkownika",
+      "createBooking": "Utwórz rezerwację",
+      "generateReport": "Wygeneruj raport",
+      "massEmail": "Masowa wysyłka"
+    },
+    "alerts": {
+      "requiresAttention": "Wymaga uwagi",
+      "viewAll": "Zobacz wszystkie →",
+      "pendingPayments": "{count} płatności oczekuje na potwierdzenie",
+      "vehicleInspection": "{vehicle} wymaga przeglądu technicznego za {days} dni",
+      "unconfirmedSchedule": "{count} instruktorów nie potwierdziło harmonogramu na przyszły tydzień"
+    }
+  },
+  "instructors": {
+    "list": {
+      "title": "Instruktorzy",
+      "subtitle": "Zarządzanie instruktorami szkoły jazdy",
+      "buttons": {
+        "addInstructor": "Dodaj instruktora",
+        "view": "Podgląd",
+        "schedule": "Harmonogram",
+        "edit": "Edytuj"
+      },
+      "stats": {
+        "totalInstructors": "Łącznie instruktorów",
+        "availableNow": "Dostępnych teraz",
+        "averageRating": "Średnia ocena",
+        "averagePassRate": "Średnia zdawalność"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj po nazwisku...",
+        "allStatuses": "Wszystkie statusy",
+        "available": "Dostępni",
+        "busy": "Zajęci",
+        "offline": "Offline",
+        "allLocations": "Wszystkie lokalizacje"
+      },
+      "status": {
+        "available": "Dostępny",
+        "busy": "Zajęty",
+        "offline": "Offline"
+      },
+      "table": {
+        "instructor": "Instruktor",
+        "status": "Status",
+        "rating": "Ocena",
+        "categories": "Kategorie",
+        "students": "Uczniowie",
+        "lessonsPerWeek": "Lekcji/tydzień",
+        "passRate": "Zdawalność",
+        "earnings": "Zarobki",
+        "actions": "Akcje"
+      },
+      "card": {
+        "rating": "Ocena",
+        "students": "Uczniowie",
+        "lessonsPerWeek": "Lekcji/tydzień",
+        "passRate": "Zdawalność",
+        "specializations": "Specjalizacje:"
+      },
+      "specializations": {
+        "exams": "Egzaminy",
+        "nightDriving": "Jazda nocna",
+        "highway": "Autostrada",
+        "parking": "Parkowanie",
+        "maneuvers": "Manewry",
+        "city": "Miasto",
+        "beginners": "Początkujący",
+        "theory": "Teoria"
+      },
+      "locations": {
+        "warsaw": "Warszawa",
+        "krakow": "Kraków",
+        "wroclaw": "Wrocław"
+      },
+      "experience": "{years} lat"
+    },
+    "schedule": {
+      "title": "Harmonogram instruktorów",
+      "subtitle": "Zarządzanie harmonogramem wszystkich instruktorów",
+      "buttons": {
+        "print": "Drukuj",
+        "download": "Pobierz",
+        "addLesson": "Dodaj zajęcia",
+        "today": "Dziś",
+        "showDetails": "Pokaż szczegóły",
+        "edit": "Edytuj"
+      },
+      "stats": {
+        "totalLessons": "Łącznie zajęć",
+        "confirmed": "Potwierdzone",
+        "pending": "Oczekujące",
+        "cancelled": "Anulowane",
+        "plannedHours": "Zaplanowane godziny"
+      },
+      "viewModes": {
+        "week": "Tydzień",
+        "day": "Dzień",
+        "list": "Lista"
+      },
+      "filters": {
+        "allInstructors": "Wszyscy instruktorzy",
+        "allLocations": "Wszystkie lokalizacje"
+      },
+      "weekView": {
+        "weekNumber": "Tydzień {number}",
+        "instructor": "Instruktor",
+        "id": "ID",
+        "free": "Wolne"
+      },
+      "dayView": {
+        "time": "Godzina"
+      },
+      "listView": {
+        "time": "Godzina",
+        "instructor": "Instruktor",
+        "student": "Uczeń",
+        "lessonType": "Rodzaj zajęć",
+        "vehicle": "Samochód",
+        "location": "Lokalizacja",
+        "status": "Status",
+        "actions": "Akcje"
+      },
+      "lessonTypes": {
+        "practice": "Praktyka",
+        "track": "Plac manewrowy",
+        "city": "Miasto",
+        "parking": "Parkowanie",
+        "exam": "Egzamin",
+        "nightDriving": "Jazda nocna",
+        "highway": "Autostrada"
+      },
+      "lessonStatus": {
+        "confirmed": "Potwierdzono",
+        "pending": "Oczekuje",
+        "cancelled": "Anulowano"
+      },
+      "locations": {
+        "warsaw": "Warszawa",
+        "trackKrakow": "Plac manewrowy Kraków",
+        "trackGdansk": "Plac manewrowy Gdańsk",
+        "examCenter": "Ośrodek egzaminacyjny",
+        "meetingWarsaw": "Zbiórka: Warszawa"
+      },
+      "weekDays": {
+        "monday": "Poniedziałek",
+        "tuesday": "Wtorek",
+        "wednesday": "Środa",
+        "thursday": "Czwartek",
+        "friday": "Piątek",
+        "saturday": "Sobota",
+        "sunday": "Niedziela"
+      }
+    }
+  },
+  "lessons": {
+    "detail": {
+      "title": "Szczegóły lekcji",
+      "dateTime": "{date} • {startTime} - {endTime}",
+      "buttons": {
+        "share": "Udostępnij",
+        "report": "Raport",
+        "edit": "Edytuj",
+        "call": "Zadzwoń",
+        "message": "Napisz",
+        "saveNotes": "Zapisz notatki"
+      },
+      "student": {
+        "title": "Kursant",
+        "id": "ID: {id}",
+        "joinedDate": "Z nami od {date}",
+        "courseProgress": "Postęp kursu",
+        "lessonsCompleted": "{completed} z {total} lekcji"
+      },
+      "lessonInfo": {
+        "title": "Informacje o lekcji",
+        "type": "Rodzaj lekcji",
+        "category": "Kategoria",
+        "categoryB": "Kategoria B",
+        "duration": "Czas trwania",
+        "minutes": "{minutes} minut",
+        "location": "Lokalizacja",
+        "vehicle": "Pojazd",
+        "status": "Status",
+        "completed": "Zakończono"
+      },
+      "payment": {
+        "title": "Płatność",
+        "amount": "{amount} zł",
+        "paid": "Opłacono",
+        "paymentMethod": "Metoda płatności:",
+        "cash": "Gotówka",
+        "card": "Karta",
+        "date": "Data:",
+        "confirmed": "Płatność potwierdzona przez system"
+      },
+      "tabs": {
+        "objectives": "Cele",
+        "performance": "Wyniki",
+        "metrics": "Metryki",
+        "feedback": "Opinie"
+      },
+      "objectives": {
+        "title": "Cele lekcji",
+        "completed": "Wykonano",
+        "partial": "Częściowo",
+        "additionalNotes": "Dodatkowe notatki",
+        "notesPlaceholder": "Dodaj notatki o lekcji...",
+        "examRoute": "Trasa egzaminacyjna",
+        "emergencyBraking": "Hamowanie awaryjne",
+        "parallelParking": "Parkowanie równoległe",
+        "turningLimited": "Zawracanie w ograniczonej przestrzeni"
+      },
+      "performance": {
+        "title": "Ocena wykonania",
+        "overallRating": "Ocena ogólna",
+        "confidence": "Pewność siebie",
+        "technique": "Technika",
+        "rules": "Znajomość przepisów",
+        "safety": "Bezpieczeństwo",
+        "mistakes": "Liczba błędów",
+        "mistakesCount": "{count} błędów",
+        "needsImprovement": "Wymaga poprawy",
+        "parkingConfidence": "Pewność przy parkowaniu",
+        "decisionSpeed": "Szybkość podejmowania decyzji"
+      },
+      "metrics": {
+        "title": "Metryki jazdy",
+        "distance": "Dystans",
+        "avgSpeed": "Średnia prędkość",
+        "maxSpeed": "Maks. prędkość",
+        "fuelUsed": "Zużycie paliwa",
+        "suddenBrakes": "Nagłe hamowania",
+        "sharpTurns": "Ostre zakręty",
+        "km": "{value} km",
+        "kmh": "{value} km/h",
+        "liters": "{value} l"
+      },
+      "feedback": {
+        "instructorTitle": "Opinia instruktora",
+        "studentTitle": "Opinia kursanta",
+        "instructorComment": "Świetna lekcja! Maria zrobiła duży postęp. Gotowa na egzamin w 90%.",
+        "studentComment": "Dziękuję za cierpliwość! W końcu zrozumiałam parkowanie równoległe."
+      },
+      "nextLesson": {
+        "title": "Następna lekcja:",
+        "info": "{date} o {time} - {type}",
+        "finalPrep": "Ostateczne przygotowanie"
+      },
+      "lessonTypes": {
+        "examPreparation": "Przygotowanie do egzaminu",
+        "finalPreparation": "Ostateczne przygotowanie"
+      },
+      "locations": {
+        "examRoute": "Trasa egzaminacyjna",
+        "practiceArea": "Plac manewrowy"
+      }
+    }
+  },
+  "locations": {
+    "details": {
+      "breadcrumb": {
+        "back": "Powrót",
+        "locations": "Lokalizacje"
+      },
+      "status": {
+        "active": "Aktywna",
+        "inactive": "Nieaktywna",
+        "maintenance": "Serwis"
+      },
+      "buttons": {
+        "edit": "Edytuj",
+        "duplicate": "Duplikuj",
+        "export": "Eksportuj dane",
+        "delete": "Usuń lokalizację",
+        "assignInstructor": "Przypisz instruktora",
+        "assignVehicle": "Przypisz pojazd",
+        "changeManager": "Zmień menedżera",
+        "viewDetails": "Szczegóły",
+        "viewAllReviews": "Zobacz wszystkie opinie",
+        "changeStatus": "Zmień status",
+        "editHours": "Edytuj godziny",
+        "configure": "Konfiguruj",
+        "cancel": "Anuluj"
+      },
+      "stats": {
+        "activeStudents": "Aktywnych uczniów",
+        "instructors": "Instruktorów",
+        "monthlyLessons": "Lekcji miesięcznie",
+        "monthlyRevenue": "Miesięczny przychód"
+      },
+      "tabs": {
+        "overview": "Przegląd",
+        "instructors": "Instruktorzy",
+        "vehicles": "Pojazdy",
+        "schedule": "Harmonogram",
+        "analytics": "Analityka",
+        "settings": "Ustawienia"
+      },
+      "sections": {
+        "contactInfo": "Dane kontaktowe",
+        "phone": "Telefon",
+        "email": "Email",
+        "website": "Strona internetowa",
+        "coordinates": "Współrzędne",
+        "locationManager": "Menedżer lokalizacji",
+        "workingHours": "Godziny pracy",
+        "facilities": "Udogodnienia",
+        "revenueAndStudents": "Przychody i liczba uczniów",
+        "revenue": "Przychód (zł)",
+        "students": "Uczniowie",
+        "categoryDistribution": "Rozkład według kategorii",
+        "ratingsAndReviews": "Oceny i opinie",
+        "reviews": "{count} opinii",
+        "performanceIndicators": "Wskaźniki efektywności",
+        "vehicleUtilization": "Wykorzystanie pojazdów",
+        "instructorLoad": "Obciążenie instruktorów",
+        "passRate": "Wskaźnik zdawalności",
+        "locationSettings": "Ustawienia lokalizacji"
+      },
+      "instructorStatus": {
+        "available": "Dostępny",
+        "busy": "Zajęty"
+      },
+      "vehicleStatus": {
+        "active": "Aktywny",
+        "maintenance": "Serwis"
+      },
+      "vehicleCategory": "Kategoria",
+      "studentCount": "{count} uczniów",
+      "days": {
+        "monday": "Poniedziałek",
+        "tuesday": "Wtorek",
+        "wednesday": "Środa",
+        "thursday": "Czwartek",
+        "friday": "Piątek",
+        "saturday": "Sobota",
+        "sunday": "Niedziela",
+        "closed": "Zamknięte"
+      },
+      "facilities": {
+        "parking": "Parking",
+        "classroom": "Sala lekcyjna",
+        "simulator": "Symulator jazdy",
+        "wifi": "Wi-Fi",
+        "cafe": "Kawiarnia",
+        "airConditioning": "Klimatyzacja"
+      },
+      "alerts": {
+        "scheduleAvailable": "Harmonogram zajęć dostępny w module kalendarza.",
+        "settingsWarning": "Zmiana ustawień lokalizacji może wpłynąć na dostępność usług dla uczniów.",
+        "statusDescription": "Dezaktywacja wstrzyma wszystkie rezerwacje",
+        "workingHoursDescription": "Skonfiguruj godziny pracy",
+        "notificationsDescription": "Zarządzaj powiadomieniami i komunikatami"
+      },
+      "deleteDialog": {
+        "title": "Usuń lokalizację",
+        "description": "Czy na pewno chcesz usunąć lokalizację \"{name}\"? Ta operacja jest nieodwracalna i spowoduje usunięcie wszystkich powiązanych danych."
+      },
+      "charts": {
+        "months": {
+          "jan": "Sty",
+          "feb": "Lut",
+          "mar": "Mar",
+          "apr": "Kwi",
+          "may": "Maj",
+          "jun": "Cze"
+        },
+        "categoryB": "Kategoria B",
+        "categoryA": "Kategoria A",
+        "categoryC": "Kategoria C",
+        "other": "Inne"
+      }
+    },
+    "list": {
+      "title": "Lokalizacje",
+      "subtitle": "Zarządzanie oddziałami i biurami",
+      "buttons": {
+        "addLocation": "Dodaj lokalizację",
+        "details": "Szczegóły",
+        "edit": "Edytuj"
+      },
+      "stats": {
+        "locations": "Lokalizacji",
+        "active": "Aktywnych",
+        "students": "Uczniów",
+        "instructors": "Instruktorów",
+        "vehicles": "Pojazdów",
+        "utilization": "Wykorzystanie"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj po nazwie, adresie lub menedżerze...",
+        "allCities": "Wszystkie miasta",
+        "allTypes": "Wszystkie rodzaje",
+        "mainOffices": "Główne biura",
+        "branches": "Oddziały",
+        "allStatuses": "Wszystkie statusy",
+        "active": "Aktywne",
+        "maintenance": "W serwisie",
+        "inactive": "Nieaktywne"
+      },
+      "status": {
+        "active": "Aktywna",
+        "maintenance": "W serwisie",
+        "inactive": "Nieaktywna"
+      },
+      "type": {
+        "main": "Główne biuro",
+        "branch": "Oddział"
+      },
+      "table": {
+        "location": "Lokalizacja",
+        "type": "Rodzaj",
+        "status": "Status",
+        "manager": "Menedżer",
+        "students": "Uczniowie",
+        "instructors": "Instruktorzy",
+        "utilization": "Wykorzystanie",
+        "actions": "Akcje"
+      },
+      "card": {
+        "students": "Uczniowie",
+        "instructors": "Instruktorzy",
+        "vehicles": "Pojazdy",
+        "utilization": "Wykorzystanie",
+        "manager": "Menedżer",
+        "lessonsPerMonth": "lekcji/miesiąc"
+      },
+      "amenities": {
+        "parking": "Parking",
+        "wifi": "Wi-Fi",
+        "cafe": "Kawiarnia",
+        "simulator": "Symulator",
+        "theory_room": "Sala teoretyczna",
+        "practice_area": "Plac ćwiczeń",
+        "waiting_area": "Strefa oczekiwania",
+        "disabled_access": "Dostęp dla niepełnosprawnych"
+      },
+      "map": {
+        "placeholder": "Interaktywna mapa będzie dostępna wkrótce"
+      },
+      "schedule": {
+        "weekdays": "Dni robocze",
+        "saturday": "Sobota",
+        "sunday": "Niedziela",
+        "closed": "Zamknięte"
+      }
+    }
+  },
+  "packages": {
+    "edit": {
+      "breadcrumb": {
+        "back": "Wróć",
+        "packages": "Pakiety",
+        "edit": "Edycja"
+      },
+      "title": "Edytuj pakiet",
+      "status": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny",
+        "draft": "Szkic"
+      },
+      "buttons": {
+        "preview": "Podgląd",
+        "hidePreview": "Ukryj podgląd",
+        "duplicate": "Duplikuj",
+        "delete": "Usuń",
+        "save": "Zapisz zmiany",
+        "saving": "Zapisywanie...",
+        "cancel": "Anuluj",
+        "addModifier": "Dodaj modyfikator",
+        "addFeature": "Dodaj funkcję"
+      },
+      "alerts": {
+        "unsavedChanges": "Masz niezapisane zmiany. Pamiętaj, aby zapisać przed opuszczeniem strony."
+      },
+      "tabs": {
+        "general": "Informacje ogólne",
+        "pricing": "Ceny i płatności",
+        "content": "Zawartość pakietu",
+        "availability": "Dostępność",
+        "terms": "Warunki i zasady"
+      },
+      "general": {
+        "title": "Podstawowe informacje",
+        "subtitle": "Nazwa i opis pakietu, widoczne dla kursantów",
+        "fields": {
+          "name": "Nazwa pakietu *",
+          "namePlaceholder": "np. Pakiet Standard B",
+          "category": "Kategoria *",
+          "categoryPlaceholder": "Wybierz kategorię",
+          "description": "Opis",
+          "descriptionPlaceholder": "Szczegółowy opis pakietu...",
+          "duration": "Czas trwania *",
+          "status": "Status",
+          "maxStudents": "Maks. liczba kursantów",
+          "currentStudentsInfo": "Obecnie: {current}/{max}"
+        },
+        "durationUnits": {
+          "days": "Dni",
+          "weeks": "Tygodni",
+          "months": "Miesięcy"
+        },
+        "categories": {
+          "A": "Kategoria A - Motocykle",
+          "A1": "Kategoria A1",
+          "A2": "Kategoria A2",
+          "B": "Kategoria B - Samochody osobowe",
+          "B1": "Kategoria B1",
+          "C": "Kategoria C - Ciężarowe",
+          "C1": "Kategoria C1",
+          "D": "Kategoria D - Autobusy",
+          "T": "Kategoria T - Ciągniki rolnicze"
+        }
+      },
+      "pricing": {
+        "title": "Ceny",
+        "subtitle": "Ustaw cenę i opcje płatności",
+        "fields": {
+          "basePrice": "Cena podstawowa (PLN) *",
+          "discountedPrice": "Cena promocyjna (PLN)",
+          "pricePlaceholder": "0.00",
+          "savings": "Oszczędność: {amount} PLN ({percent}%)",
+          "paymentOptions": "Opcje płatności",
+          "installments": "Liczba rat",
+          "installmentsPlaceholder": "Wybierz liczbę rat",
+          "monthlyPayment": "Płatność miesięczna: {amount} PLN"
+        },
+        "paymentTypes": {
+          "full": "Tylko pełna płatność",
+          "installments": "Tylko raty",
+          "both": "Pełna płatność i raty"
+        },
+        "installmentOptions": {
+          "2": "2 raty",
+          "3": "3 raty",
+          "4": "4 raty",
+          "6": "6 rat",
+          "12": "12 rat"
+        },
+        "modifiers": {
+          "title": "Modyfikatory cen",
+          "subtitle": "Dodatkowe zniżki i dopłaty",
+          "table": {
+            "name": "Nazwa",
+            "type": "Typ",
+            "value": "Wartość",
+            "condition": "Warunek",
+            "namePlaceholder": "Nazwa zniżki/dopłaty",
+            "conditionPlaceholder": "Warunek zastosowania"
+          },
+          "types": {
+            "percentage": "Procent",
+            "fixed": "Kwota"
+          }
+        }
+      },
+      "content": {
+        "lessons": {
+          "title": "Zajęcia",
+          "subtitle": "Liczba godzin teorii i praktyki",
+          "theoryHours": "Godziny teorii *",
+          "practicalHours": "Godziny praktyki *",
+          "additionalHours": "Dodatkowe godziny",
+          "examAttempts": "Liczba prób zdania egzaminu"
+        },
+        "features": {
+          "title": "Funkcje pakietu",
+          "subtitle": "Co zawiera pakiet",
+          "namePlaceholder": "Nazwa funkcji",
+          "valuePlaceholder": "Wartość"
+        }
+      },
+      "availability": {
+        "validity": {
+          "title": "Okres ważności",
+          "subtitle": "Kiedy pakiet jest dostępny do zakupu",
+          "startDate": "Data rozpoczęcia *",
+          "endDate": "Data zakończenia"
+        },
+        "locations": {
+          "title": "Lokalizacje",
+          "subtitle": "Gdzie pakiet jest dostępny"
+        },
+        "instructors": {
+          "title": "Instruktorzy",
+          "subtitle": "Którzy instruktorzy mogą prowadzić zajęcia"
+        },
+        "vehicles": {
+          "title": "Pojazdy",
+          "subtitle": "Dostępne samochody dla tego pakietu"
+        }
+      },
+      "terms": {
+        "title": "Warunki i zasady",
+        "subtitle": "Zasady korzystania z pakietu",
+        "placeholder": "Wprowadź warunki pakietu..."
+      },
+      "dialogs": {
+        "duplicate": {
+          "title": "Duplikuj pakiet",
+          "description": "Utworzysz kopię pakietu \"{name}\". Nowy pakiet będzie miał status \"Szkic\".",
+          "confirm": "Duplikuj"
+        },
+        "delete": {
+          "title": "Usuń pakiet",
+          "description": "Czy na pewno chcesz usunąć pakiet \"{name}\"? Ta operacja jest nieodwracalna. Pakiet zostanie oznaczony jako usunięty, ale dane historyczne zostaną zachowane.",
+          "confirm": "Usuń pakiet"
+        }
+      },
+      "toast": {
+        "saveSuccess": "Pakiet zaktualizowany",
+        "saveSuccessDescription": "Zmiany zostały pomyślnie zapisane"
+      }
+    },
+    "list": {
+      "title": "Pakiety",
+      "subtitle": "Zarządzanie planami taryfowymi i pakietami",
+      "buttons": {
+        "export": "Eksportuj",
+        "newPackage": "Nowy pakiet",
+        "details": "Szczegóły",
+        "edit": "Edytuj"
+      },
+      "stats": {
+        "totalPackages": "Wszystkie pakiety",
+        "active": "Aktywne",
+        "users": "Użytkownicy",
+        "revenue": "Przychód",
+        "avgRating": "Śr. ocena",
+        "renewals": "Odnawialne"
+      },
+      "charts": {
+        "monthlySales": "Sprzedaż miesięczna",
+        "userDistribution": "Rozkład użytkowników",
+        "months": {
+          "jan": "Sty",
+          "feb": "Lut",
+          "mar": "Mar",
+          "apr": "Kwi",
+          "may": "Maj",
+          "jun": "Cze"
+        }
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj pakietów...",
+        "allCategories": "Wszystkie kategorie",
+        "allStatuses": "Wszystkie statusy",
+        "active": "Aktywne",
+        "inactive": "Nieaktywne"
+      },
+      "categories": {
+        "beginner": "Początkujący",
+        "standard": "Standardowy",
+        "premium": "Premium",
+        "vip": "VIP",
+        "intensive": "Intensywny",
+        "special": "Specjalny",
+        "corporate": "Korporacyjny",
+        "trial": "Próbny"
+      },
+      "badges": {
+        "popular": "Popularny",
+        "recommended": "Polecany",
+        "new": "Nowy",
+        "inactive": "Nieaktywny"
+      },
+      "packageCard": {
+        "contains": "Zawiera:",
+        "more": "+{count} więcej",
+        "users": "Użytkowników",
+        "rating": "Ocena",
+        "renewals": "Odnawialne",
+        "credits": "kredytów",
+        "days": "dni"
+      },
+      "table": {
+        "package": "Pakiet",
+        "price": "Cena",
+        "credits": "Kredyty",
+        "users": "Użytkownicy",
+        "sales": "Sprzedaż",
+        "revenue": "Przychód",
+        "rating": "Ocena",
+        "status": "Status",
+        "actions": "Działania",
+        "statusActive": "Aktywny",
+        "statusInactive": "Nieaktywny"
+      },
+      "packages": {
+        "basic": {
+          "name": "Podstawowy",
+          "description": "Idealny dla początkujących. Zawiera podstawy prowadzenia pojazdu",
+          "features": [
+            "10 zajęć praktycznych po 90 min",
+            "Podstawowe szkolenie teoretyczne",
+            "Materiały do nauki",
+            "Wsparcie instruktora"
+          ],
+          "limitations": [
+            "Bez jazdy po autostradzie",
+            "Bez jazdy nocą",
+            "Jeden instruktor"
+          ]
+        },
+        "standard": {
+          "name": "Standardowy",
+          "description": "Najpopularniejszy wybór. Pełny kurs nauki jazdy",
+          "features": [
+            "20 zajęć praktycznych po 90 min",
+            "Pełne szkolenie teoretyczne",
+            "Testy online i symulator",
+            "Wybór instruktora",
+            "Jazda po autostradzie",
+            "Przygotowanie do egzaminu"
+          ],
+          "limitations": [
+            "Bez wsparcia VIP",
+            "Standardowy harmonogram"
+          ]
+        },
+        "premium": {
+          "name": "Premium",
+          "description": "Rozszerzony kurs z dodatkowymi możliwościami",
+          "features": [
+            "30 zajęć praktycznych po 90 min",
+            "Pełne szkolenie teoretyczne",
+            "Osobisty menedżer",
+            "Priorytetowy wybór instruktora",
+            "Jazda nocą",
+            "Jazda po autostradzie",
+            "Jazda w trudnych warunkach",
+            "2 próby egzaminu w cenie"
+          ],
+          "limitations": []
+        },
+        "vip": {
+          "name": "VIP",
+          "description": "Maksymalny komfort i indywidualne podejście",
+          "features": [
+            "50 zajęć praktycznych po 90 min",
+            "Indywidualny program nauki",
+            "Osobisty menedżer 24/7",
+            "Najlepsi instruktorzy",
+            "Elastyczny harmonogram",
+            "Samochody premium",
+            "Nieograniczone próby egzaminu",
+            "Wsparcie podczas egzaminu",
+            "Dodatkowe warsztaty"
+          ],
+          "limitations": []
+        },
+        "intensive": {
+          "name": "Intensywny",
+          "description": "Szybki kurs dla tych, którzy się spieszą",
+          "features": [
+            "15 intensywnych zajęć",
+            "Codzienne zajęcia",
+            "Ekspresowa teoria",
+            "Przygotowanie do egzaminu w 2 tygodnie"
+          ],
+          "limitations": [
+            "Wymaga pełnej dostępności",
+            "Bez weekendów"
+          ]
+        },
+        "student": {
+          "name": "Studencki",
+          "description": "Specjalna oferta dla studentów",
+          "features": [
+            "20 zajęć praktycznych",
+            "Elastyczny harmonogram",
+            "Zniżka dla studentów",
+            "Materiały online"
+          ],
+          "limitations": [
+            "Wymagana legitymacja studencka",
+            "Ograniczona liczba miejsc"
+          ]
+        },
+        "corporate": {
+          "name": "Korporacyjny",
+          "description": "Dla firm i organizacji",
+          "features": [
+            "Pakiet dla 5 pracowników",
+            "Zniżki korporacyjne",
+            "Raportowanie dla firmy",
+            "Elastyczny harmonogram dla grupy"
+          ],
+          "limitations": [
+            "Minimum 5 osób"
+          ]
+        },
+        "trial": {
+          "name": "Próbny",
+          "description": "Wypróbuj nasze usługi",
+          "features": [
+            "3 zajęcia próbne",
+            "Ocena poziomu",
+            "Konsultacja"
+          ],
+          "limitations": [
+            "Jednorazowa oferta",
+            "Dla nowych klientów"
+          ]
+        }
+      },
+      "currency": "PLN",
+      "discount": "-{percent}%"
+    }
+  },
+  "payments": {
+    "invoices": {
+      "title": "Faktury",
+      "subtitle": "Zarządzanie dokumentami księgowymi",
+      "buttons": {
+        "settings": "Ustawienia",
+        "newInvoice": "Nowa faktura",
+        "actions": "Działania",
+        "send": "Wyślij",
+        "download": "Pobierz",
+        "downloadPdf": "Pobierz PDF",
+        "print": "Drukuj",
+        "delete": "Usuń",
+        "duplicate": "Duplikuj",
+        "edit": "Edytuj",
+        "view": "Zobacz",
+        "createCorrection": "Utwórz korektę",
+        "close": "Zamknij",
+        "cancel": "Anuluj",
+        "previous": "Poprzedni",
+        "next": "Następny"
+      },
+      "stats": {
+        "thisMonth": "Ten miesiąc",
+        "allInvoices": "Wszystkie faktury",
+        "value": "Wartość",
+        "paid": "Opłacone",
+        "pending": "Oczekujące",
+        "overdue": "Zaległe",
+        "averageTime": "Średni czas",
+        "days": "dni",
+        "requiresIntervention": "Wymaga interwencji",
+        "vsLastMonth": "+{percent}% w por. z ub. miesiącem"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj po numerze lub kliencie...",
+        "status": "Status",
+        "type": "Typ",
+        "all": "Wszystkie",
+        "selected": "Wybrane"
+      },
+      "status": {
+        "draft": "Szkic",
+        "sent": "Wysłane",
+        "paid": "Opłacone",
+        "overdue": "Zaległe",
+        "cancelled": "Anulowane",
+        "refunded": "Zwrócone"
+      },
+      "type": {
+        "standard": "Faktura",
+        "proforma": "Proforma",
+        "correction": "Korekta"
+      },
+      "table": {
+        "number": "Numer",
+        "client": "Klient",
+        "issueDate": "Data wystawienia",
+        "dueDate": "Termin płatności",
+        "amount": "Kwota",
+        "status": "Status",
+        "daysOverdue": "{days} dni zaległości"
+      },
+      "details": {
+        "title": "Szczegóły faktury",
+        "issueDate": "Data wystawienia",
+        "seller": "Sprzedawca",
+        "buyer": "Nabywca",
+        "description": "Opis",
+        "quantity": "Ilość",
+        "unitPrice": "Cena jedn.",
+        "vat": "VAT",
+        "value": "Wartość",
+        "subtotal": "Suma częściowa",
+        "vatAmount": "Kwota VAT",
+        "total": "Do zapłaty",
+        "currency": "PLN",
+        "taxId": "NIP"
+      },
+      "sendDialog": {
+        "title": "Wyślij fakturę",
+        "description": "Faktura zostanie wysłana na adres e-mail klienta",
+        "recipient": "Odbiorca",
+        "subject": "Temat wiadomości",
+        "message": "Treść wiadomości",
+        "defaultSubject": "Faktura {number}",
+        "defaultMessage": "Szanowni Państwo,\n\nW załączeniu przesyłamy fakturę nr {number}.\n\nTermin płatności: {dueDate}\n\nZ poważaniem,\nAutoSzkoła Drive",
+        "attachmentNote": "Faktura w formacie PDF zostanie dodana automatycznie",
+        "send": "Wyślij"
+      },
+      "toast": {
+        "actionCompleted": "Działanie zakończone",
+        "bulkActionDescription": "{action} dla {count} faktur",
+        "invoiceSent": "Faktura wysłana",
+        "invoiceSentDescription": "Faktura {number} została wysłana na adres {email}",
+        "invoiceDownloaded": "Pobieranie faktury",
+        "invoiceDownloadedDescription": "Faktura {number} została pobrana",
+        "invoiceDuplicated": "Faktura zduplikowana",
+        "invoiceDuplicatedDescription": "Utworzono kopię faktury {number}"
+      },
+      "pagination": {
+        "showing": "Pokazano {from}-{to} z {total} wyników"
+      },
+      "company": {
+        "name": "AutoSzkoła Drive",
+        "address": "ul. Marszałkowska 10",
+        "city": "00-001 Warszawa",
+        "taxId": "NIP: 1234567890"
+      }
+    },
+    "payouts": {
+      "title": "Wypłaty dla instruktorów",
+      "subtitle": "Rozliczenia wynagrodzeń",
+      "buttons": {
+        "calculate": "Oblicz wypłaty",
+        "process": "Przetwórz",
+        "processSelected": "Przetwórz wybrane ({count})",
+        "download": "Pobierz",
+        "generateInvoice": "Wygeneruj fakturę",
+        "downloadReport": "Pobierz raport",
+        "details": "Szczegóły"
+      },
+      "stats": {
+        "totalAmount": "Całkowita kwota",
+        "gross": "Brutto",
+        "toPay": "Do wypłaty",
+        "net": "Netto",
+        "commission": "Prowizja",
+        "taxes": "Podatki",
+        "lessons": "Lekcje",
+        "inPeriod": "Za okres",
+        "hours": "Godziny",
+        "worked": "Przepracowano"
+      },
+      "charts": {
+        "payoutsDynamics": "Dynamika wypłat",
+        "payoutsDistribution": "Rozkład wypłat",
+        "salary": "Wynagrodzenie",
+        "commission": "Prowizja",
+        "taxes": "Podatki"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj instruktora...",
+        "allStatuses": "Wszystkie statusy",
+        "pending": "Oczekujące",
+        "processing": "Przetwarzanie",
+        "completed": "Wypłacone",
+        "failed": "Błąd"
+      },
+      "table": {
+        "instructor": "Instruktor",
+        "period": "Okres",
+        "lessonsHours": "Lekcje/Godziny",
+        "gross": "Brutto",
+        "net": "Netto",
+        "status": "Status",
+        "actions": "Działania",
+        "lessons": "lekcji",
+        "hours": "godz."
+      },
+      "status": {
+        "pending": "Oczekujące",
+        "processing": "Przetwarzanie",
+        "completed": "Wypłacone",
+        "failed": "Błąd"
+      },
+      "details": {
+        "title": "Szczegóły wypłaty",
+        "instructor": "Instruktor",
+        "period": "Okres",
+        "statistics": "Statystyki",
+        "settlement": "Rozliczenie",
+        "calculated": "Naliczone (Brutto)",
+        "schoolCommission": "Prowizja szkoły (20%)",
+        "tax": "Podatek (19%)",
+        "toPay": "Do wypłaty (Netto)",
+        "paymentInfo": "Informacje o płatności",
+        "bankAccount": "Numer konta",
+        "taxNumber": "NIP",
+        "paymentMethod": "Sposób płatności",
+        "bankTransfer": "Przelew bankowy",
+        "cash": "Gotówka",
+        "card": "Karta",
+        "processPayment": "Przetwórz wypłatę"
+      },
+      "months": {
+        "jan": "Sty",
+        "feb": "Lut",
+        "mar": "Mar",
+        "apr": "Kwi",
+        "may": "Maj",
+        "jun": "Cze"
+      },
+      "currency": "PLN",
+      "pagination": {
+        "showing": "Pokazano {from} - {to} z {total} wypłat",
+        "of": "z"
+      },
+      "loading": {
+        "processing": "Przetwarzanie wypłat..."
+      }
+    },
+    "main": {
+      "title": "Płatności",
+      "subtitle": "Zarządzanie transakcjami finansowymi",
+      "buttons": {
+        "export": "Eksportuj",
+        "createInvoice": "Utwórz fakturę",
+        "viewDetails": "Zobacz",
+        "downloadInvoice": "Pobierz fakturę",
+        "refund": "Zwrot środków"
+      },
+      "dateRange": {
+        "today": "Dziś",
+        "week": "Ten tydzień",
+        "month": "Ten miesiąc",
+        "year": "Ten rok"
+      },
+      "stats": {
+        "totalRevenue": "Całkowity przychód",
+        "pending": "Oczekujące",
+        "refunded": "Zwrócone",
+        "successRate": "Współczynnik sukcesu",
+        "avgTransaction": "Średnia kwota transakcji",
+        "todayTransactions": "Dziś"
+      },
+      "charts": {
+        "revenueDynamics": "Dynamika przychodów",
+        "revenue": "Przychód",
+        "refunds": "Zwroty",
+        "paymentMethods": "Metody płatności"
+      },
+      "tabs": {
+        "transactions": "Transakcje",
+        "invoices": "Faktury",
+        "payouts": "Wypłaty dla instruktorów"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj po ID, użytkowniku...",
+        "allStatuses": "Wszystkie statusy",
+        "allTypes": "Wszystkie typy",
+        "allMethods": "Wszystkie metody"
+      },
+      "status": {
+        "completed": "Zakończone",
+        "pending": "Oczekujące",
+        "failed": "Niepowodzenie",
+        "refunded": "Zwrócone"
+      },
+      "types": {
+        "package": "Pakiet",
+        "lesson": "Zajęcia",
+        "subscription": "Subskrypcja",
+        "deposit": "Depozyt",
+        "refund": "Zwrot"
+      },
+      "typeDescriptions": {
+        "package": "Pakiet \"{name}\"",
+        "lesson": "Pojedyncze zajęcia",
+        "subscription": "Miesięczna subskrypcja",
+        "deposit": "Depozyt na konto",
+        "refund": "Zwrot środków"
+      },
+      "packages": {
+        "standard": "Standardowy",
+        "premium": "Premium",
+        "vip": "VIP",
+        "basic": "Podstawowy"
+      },
+      "methods": {
+        "card": "Karta",
+        "transfer": "Przelew",
+        "cash": "Gotówka",
+        "przelewy24": "Przelewy24",
+        "paypal": "PayPal"
+      },
+      "table": {
+        "transactionId": "ID transakcji",
+        "user": "Użytkownik",
+        "type": "Typ",
+        "amount": "Kwota",
+        "method": "Metoda",
+        "status": "Status",
+        "date": "Data",
+        "actions": "Działania"
+      },
+      "messages": {
+        "loading": "Ładowanie...",
+        "noTransactions": "Nie znaleziono transakcji"
+      },
+      "currency": "PLN"
+    }
+  },
+  "reports": {
+    "analytics": {
+      "title": "Analityka",
+      "subtitle": "Szczegółowe analizy i statystyki biznesowe",
+      "buttons": {
+        "export": "Eksportuj",
+        "refresh": "Odśwież",
+        "compare": "Porównaj okresy",
+        "disableCompare": "Wyłącz porównanie"
+      },
+      "dateRange": {
+        "week": "Ten tydzień",
+        "month": "Ten miesiąc",
+        "quarter": "Ten kwartał",
+        "year": "Ten rok",
+        "custom": "Niestandardowy okres"
+      },
+      "kpi": {
+        "revenue": "Przychody",
+        "activeStudents": "Aktywni uczniowie",
+        "passRate": "Wskaźnik zdawalności",
+        "avgRating": "Średnia ocena",
+        "previousPeriod": "Poprzedni okres"
+      },
+      "tabs": {
+        "overview": "Przegląd",
+        "financial": "Finanse",
+        "students": "Uczniowie",
+        "instructors": "Instruktorzy",
+        "locations": "Lokalizacje",
+        "performance": "Wydajność"
+      },
+      "overview": {
+        "revenueAndCosts": {
+          "title": "Przychody i koszty",
+          "subtitle": "Analiza finansowa w czasie",
+          "revenue": "Przychody",
+          "costs": "Koszty",
+          "profit": "Zysk"
+        },
+        "categoryDistribution": {
+          "title": "Rozkład według kategorii",
+          "subtitle": "Rozkład uczniów według kategorii",
+          "students": "uczniów",
+          "categoryB": "Kategoria B",
+          "categoryA": "Kategoria A",
+          "categoryC": "Kategoria C",
+          "categoryA2": "Kategoria A2",
+          "other": "Inne"
+        },
+        "conversionFunnel": {
+          "title": "Lejek konwersji",
+          "subtitle": "Postęp uczniów w procesie nauki",
+          "stages": {
+            "registration": "Rejestracja",
+            "theoryStarted": "Teoria rozpoczęta",
+            "theoryCompleted": "Teoria ukończona",
+            "practiceStarted": "Praktyka rozpoczęta",
+            "practiceCompleted": "Praktyka ukończona",
+            "examPassed": "Egzamin zdany"
+          },
+          "conversionRate": "Wskaźnik konwersji",
+          "conversionInfo": "{passed} z {total} uczniów zdało egzamin"
+        }
+      },
+      "financial": {
+        "ytdRevenue": "Przychody od początku roku",
+        "avgRevenuePerStudent": "Średni przychód/uczeń",
+        "profitMargin": "Marża zysku",
+        "vsLastYear": "+{percent}% w porównaniu z ubiegłym rokiem",
+        "vsLastPeriod": "{change}% w porównaniu z poprzednim okresem",
+        "revenueTrend": "Trend przychodów"
+      },
+      "students": {
+        "dynamicsTitle": "Dynamika liczby uczniów",
+        "studentsCount": "Liczba uczniów",
+        "demographics": {
+          "title": "Demografia uczniów",
+          "age18_25": "18-25 lat",
+          "age26_35": "26-35 lat",
+          "age36_45": "36-45 lat",
+          "age46plus": "46+ lat"
+        },
+        "sources": {
+          "title": "Źródła pozyskiwania",
+          "googleAds": "Google Ads",
+          "referrals": "Polecenia",
+          "facebook": "Facebook",
+          "website": "Strona internetowa"
+        }
+      },
+      "instructors": {
+        "performanceTitle": "Wydajność instruktorów",
+        "lessons": "lekcji",
+        "passRate": "zdawalność",
+        "revenue": "przychód",
+        "competenciesTitle": "Porównanie kompetencji",
+        "competenciesSubtitle": "Średnie wyniki instruktorów w różnych obszarach",
+        "thisMonth": "Ten miesiąc",
+        "lastMonth": "Minuty miesiąc",
+        "skills": {
+          "theory": "Teoria",
+          "practice": "Praktyka",
+          "maneuvers": "Manewry",
+          "city": "Miasto",
+          "route": "Trasa",
+          "safety": "Bezpieczeństwo"
+        }
+      },
+      "locations": {
+        "utilizationTitle": "Wykorzystanie lokalizacji",
+        "bookings": "Rezerwacje",
+        "revenue": "Przychód",
+        "utilization": "Wykorzystanie",
+        "locations": {
+          "centerCity": "Warszawa Centrum",
+          "mokotow": "Warszawa Mokotów",
+          "praga": "Warszawa Praga",
+          "ursynow": "Warszawa Ursynów"
+        }
+      },
+      "performance": {
+        "avgLessonTime": "Średni czas lekcji",
+        "passRate": "Wskaźnik zdawalności",
+        "customerSatisfaction": "Zadowolenie klientów",
+        "kpiTitle": "Kluczowe wskaźniki efektywności (KPI)",
+        "metrics": {
+          "avgWaitTime": "Średni czas oczekiwania na lekcję",
+          "dropoutRate": "Wskaźnik rezygnacji",
+          "avgLessonsPerStudent": "Średnia liczba lekcji na ucznia",
+          "fleetUtilization": "Wykorzystanie floty"
+        },
+        "status": {
+          "good": "Dobrze",
+          "change": "+{percent}%"
+        },
+        "time": {
+          "min": "min",
+          "days": "dni"
+        }
+      },
+      "months": {
+        "jan": "Sty",
+        "feb": "Lut",
+        "mar": "Mar",
+        "apr": "Kwi",
+        "may": "Maj",
+        "jun": "Cze",
+        "jul": "Lip",
+        "aug": "Sie",
+        "sep": "Wrz",
+        "oct": "Paź",
+        "nov": "Lis",
+        "dec": "Gru"
+      },
+      "currency": "zł"
+    },
+    "export": {
+      "title": "Eksport danych",
+      "subtitle": "Generuj i pobieraj raporty w różnych formatach",
+      "buttons": {
+        "newExport": "Nowy eksport",
+        "useTemplate": "Użyj szablonu",
+        "download": "Pobierz",
+        "retry": "Ponów",
+        "scheduleExport": "Zaplanuj eksport",
+        "scheduleLater": "Zaplanuj na później",
+        "generateExport": "Wygeneruj eksport"
+      },
+      "tabs": {
+        "new": "Nowy eksport",
+        "templates": "Szablony",
+        "history": "Historia",
+        "scheduled": "Zaplanowane"
+      },
+      "dataTypes": {
+        "title": "Typ danych",
+        "financial": "Dane finansowe",
+        "students": "Uczniowie",
+        "bookings": "Rezerwacje",
+        "instructors": "Instruktorzy",
+        "vehicles": "Pojazdy",
+        "locations": "Lokalizacje"
+      },
+      "dateRange": {
+        "title": "Zakres dat",
+        "from": "Od",
+        "to": "Do",
+        "today": "Dziś",
+        "yesterday": "Wczoraj",
+        "thisWeek": "Ten tydzień",
+        "thisMonth": "Ten miesiąc",
+        "thisQuarter": "Ten kwartał"
+      },
+      "fields": {
+        "title": "Pola do eksportu",
+        "financial": {
+          "revenue": "Przychody",
+          "expenses": "Wydatki",
+          "profit": "Zysk",
+          "transactions": "Transakcje",
+          "refunds": "Zwroty",
+          "packages": "Sprzedane pakiety"
+        },
+        "students": {
+          "personal": "Dane osobowe",
+          "contact": "Dane kontaktowe",
+          "package": "Pakiet",
+          "progress": "Postęp",
+          "payments": "Płatności",
+          "attendance": "Frekwencja"
+        },
+        "bookings": {
+          "date": "Data",
+          "student": "Uczeń",
+          "instructor": "Instruktor",
+          "vehicle": "Pojazd",
+          "status": "Status",
+          "notes": "Notatki"
+        },
+        "instructors": {
+          "personal": "Dane osobowe",
+          "contact": "Dane kontaktowe",
+          "rating": "Ocena",
+          "students": "Liczba uczniów",
+          "schedule": "Harmonogram",
+          "earnings": "Zarobki"
+        },
+        "vehicles": {
+          "basic": "Podstawowe dane",
+          "registration": "Rejestracja",
+          "mileage": "Przebieg",
+          "maintenance": "Konserwacja",
+          "bookings": "Rezerwacje",
+          "fuel": "Spalanie paliwa"
+        },
+        "locations": {
+          "name": "Nazwa",
+          "address": "Adres",
+          "capacity": "Pojemność",
+          "schedule": "Harmonogram",
+          "bookings": "Rezerwacje",
+          "revenue": "Przychody"
+        }
+      },
+      "formats": {
+        "title": "Format eksportu",
+        "xlsx": {
+          "name": "Excel",
+          "description": "Najlepszy do analizy danych"
+        },
+        "csv": {
+          "name": "CSV",
+          "description": "Uniwersalny format"
+        },
+        "pdf": {
+          "name": "PDF",
+          "description": "Do druku i prezentacji"
+        },
+        "json": {
+          "name": "JSON",
+          "description": "Do integracji API"
+        }
+      },
+      "options": {
+        "title": "Opcje",
+        "compressFile": "Skompresuj plik (ZIP)",
+        "sendEmail": "Wyślij na e-mail",
+        "saveTemplate": "Zapisz jako szablon"
+      },
+      "status": {
+        "completed": "Zakończono",
+        "processing": "Przetwarzanie",
+        "failed": "Błąd",
+        "queued": "W kolejce"
+      },
+      "templates": {
+        "monthlyFinancialReport": "Miesięczny raport finansowy",
+        "monthlyFinancialDescription": "Kompleksowy raport przychodów i wydatków",
+        "activeStudentsList": "Lista aktywnych uczniów",
+        "activeStudentsDescription": "Eksport danych uczniów z aktywnymi pakietami",
+        "vehicleUsageReport": "Raport wykorzystania pojazdów",
+        "vehicleUsageDescription": "Statystyki wykorzystania floty",
+        "usedCount": "Użyto: {count} razy",
+        "lastUsed": "Ostatnio: {time}",
+        "fieldsCount": "{count} pól"
+      },
+      "history": {
+        "searchPlaceholder": "Szukaj eksportów...",
+        "filters": "Filtry",
+        "downloads": "{count} pobrań",
+        "errorMessage": "Przekroczono limit czasu",
+        "expiresOn": "Ważne do {date}"
+      },
+      "scheduled": {
+        "noScheduledExports": "Brak zaplanowanych eksportów",
+        "scheduleDescription": "Zaplanuj automatyczne generowanie raportów"
+      },
+      "messages": {
+        "exportReady": "Eksport gotowy do pobrania",
+        "exportFailed": "Błąd podczas generowania eksportu",
+        "templateSaved": "Szablon został pomyślnie zapisany"
+      }
+    },
+    "title": "Raporty",
+    "subtitle": "Tworzenie i analiza raportów",
+    "buttons": {
+      "savedReports": "Zapisane raporty",
+      "newReport": "Nowy raport",
+      "generateReport": "Wygeneruj raport",
+      "generating": "Generowanie raportu...",
+      "pdf": "PDF",
+      "excel": "Excel",
+      "scheduleReport": "Zaplanuj raport",
+      "download": "Pobierz",
+      "print": "Drukuj",
+      "share": "Udostępnij",
+      "save": "Zapisz",
+      "view": "Wyświetl"
+    },
+    "reportTypes": {
+      "title": "Typ raportu",
+      "financial": {
+        "name": "Raport finansowy",
+        "description": "Przychody, wydatki, zysk za okres"
+      },
+      "students": {
+        "name": "Raport uczniów",
+        "description": "Statystyki uczniów i ich postęp"
+      },
+      "instructors": {
+        "name": "Raport instruktorów",
+        "description": "Efektywność i obciążenie instruktorów"
+      },
+      "bookings": {
+        "name": "Raport rezerwacji",
+        "description": "Analiza rezerwacji i obciążenia"
+      },
+      "vehicles": {
+        "name": "Raport pojazdów",
+        "description": "Wykorzystanie i konserwacja floty"
+      },
+      "performance": {
+        "name": "Raport wydajności",
+        "description": "KPI i ogólna efektywność szkoły"
+      }
+    },
+    "period": {
+      "title": "Okres",
+      "from": "Od",
+      "to": "Do",
+      "today": "Dziś",
+      "yesterday": "Wczoraj",
+      "thisWeek": "Ten tydzień",
+      "thisMonth": "Ten miesiąc",
+      "lastMonth": "Poprzedni miesiąc",
+      "thisQuarter": "Ten kwartał",
+      "thisYear": "Ten rok"
+    },
+    "filters": {
+      "title": "Filtry",
+      "locations": "Lokalizacje",
+      "instructors": "Instruktorzy",
+      "categories": "Kategorie",
+      "allLocations": "Wszystkie lokalizacje",
+      "allInstructors": "Wszyscy instruktorzy",
+      "allCategories": "Wszystkie kategorie",
+      "selected": "Wybrano"
+    },
+    "preview": {
+      "title": "Podgląd",
+      "type": "Typ:",
+      "period": "Okres:",
+      "locations": "Lokalizacje:",
+      "instructors": "Instruktorzy:",
+      "categories": "Kategorie:"
+    },
+    "automaticReports": {
+      "title": "Raporty automatyczne",
+      "disabled": "Wyłączone",
+      "daily": "Codziennie",
+      "weekly": "Co tydzień",
+      "monthly": "Co miesiąc",
+      "quarterly": "Co kwartał",
+      "sendEmail": "Wyślij na e-mail",
+      "emailPlaceholder": "admin@autoshkola.ua"
+    },
+    "generatedReport": {
+      "generated": "Wygenerowano",
+      "totalRevenue": "Całkowity przychód",
+      "expenses": "Wydatki",
+      "netProfit": "Zysk netto",
+      "allBookings": "Wszystkie rezerwacje",
+      "detailsDescription": "Szczegółowy raport zawiera pełną analitykę za wybrany okres. Pobierz pełny raport w formacie PDF lub Excel, aby dokładnie go przejrzeć."
+    },
+    "recentReports": {
+      "title": "Ostatnio zapisane raporty"
+    },
+    "tooltips": {
+      "downloadPdf": "Pobierz PDF",
+      "downloadExcel": "Pobierz Excel",
+      "print": "Drukuj",
+      "share": "Udostępnij",
+      "save": "Zapisz"
+    },
+    "currency": "zł"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "general": {
+      "title": "Ustawienia ogólne",
+      "schoolName": "Nazwa szkoły",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "website": "Strona internetowa",
+      "address": "Adres",
+      "timezone": "Strefa czasowa",
+      "language": "Język",
+      "currency": "Waluta",
+      "registrationNumber": "Numer rejestracyjny",
+      "taxNumber": "Numer podatkowy",
+      "workingDays": "Dni robocze",
+      "workingHours": "Godziny pracy",
+      "maintenanceMode": {
+        "title": "Tryb konserwacji",
+        "description": "Tymczasowo wyłącz dostęp użytkowników podczas prac technicznych",
+        "enabled": "Włączone",
+        "disabled": "Wyłączone"
+      },
+      "timezones": {
+        "warsaw": "Warszawa (UTC+1)",
+        "kyiv": "Kijów (UTC+2)"
+      },
+      "languages": {
+        "pl": "Polski",
+        "en": "English",
+        "uk": "Українська"
+      }
+    },
+    "notificationSettings": {
+      "title": "Ustawienia powiadomień",
+      "channels": {
+        "title": "Kanały powiadomień",
+        "email": "Powiadomienia e-mail",
+        "sms": "Powiadomienia SMS",
+        "push": "Powiadomienia push"
+      },
+      "types": {
+        "title": "Typy powiadomień",
+        "bookingConfirmation": "Potwierdzenie rezerwacji",
+        "bookingReminder": "Przypomnienie o zajęciach",
+        "cancellationAlert": "Powiadomienie o anulowaniu",
+        "paymentReminder": "Przypomnienie o płatności",
+        "newsletter": "Newsletter",
+        "marketing": "Powiadomienia marketingowe",
+        "adminAlerts": "Powiadomienia administratora",
+        "instructorNotifications": "Powiadomienia dla instruktorów",
+        "studentNotifications": "Powiadomienia dla uczniów"
+      },
+      "reminderTime": "Czas przypomnienia przed zajęciami (godziny)"
+    },
+    "payment": {
+      "title": "Ustawienia płatności",
+      "providers": {
+        "title": "Systemy płatności",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Karty Visa, Mastercard"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Ukraińskie przelewy bankowe"
+        },
+        "cash": {
+          "name": "Gotówka",
+          "description": "Płatność gotówką w biurze"
+        },
+        "bankTransfer": {
+          "name": "Przelew bankowy",
+          "description": "Bezpośredni przelew bankowy"
+        }
+      },
+      "taxRate": "Stawka podatku (%)",
+      "invoicePrefix": "Prefiks faktur",
+      "paymentTerms": "Termin płatności (dni)",
+      "lateFeePercentage": "Opłata za zwłokę (%)",
+      "autoInvoice": "Automatyczne faktury",
+      "refundPolicy": "Polityka zwrotów"
+    },
+    "securitySettings": {
+      "title": "Ustawienia bezpieczeństwa",
+      "warning": {
+        "title": "Ważne",
+        "description": "Zmiana ustawień bezpieczeństwa może wpłynąć na dostęp użytkowników do systemu"
+      },
+      "sessionTimeout": "Czas wygaśnięcia sesji (minuty)",
+      "maxLoginAttempts": "Maks. próby logowania",
+      "lockoutDuration": "Czas blokady (minuty)",
+      "passwordRequirements": {
+        "title": "Wymagania dotyczące hasła",
+        "minLength": "Minimalna długość: {length} znaków",
+        "requireUppercase": "Wymagaj dużych liter",
+        "requireNumber": "Wymagaj cyfr",
+        "requireSpecial": "Wymagaj znaków specjalnych"
+      },
+      "backup": {
+        "title": "Kopia zapasowa",
+        "autoBackup": "Automatyczna kopia zapasowa",
+        "lastBackup": "Ostatnia kopia: wczoraj, 02:00",
+        "frequency": {
+          "daily": "Codziennie",
+          "weekly": "Co tydzień",
+          "monthly": "Co miesiąc"
+        }
+      },
+      "twoFactor": "Uwierzytelnianie dwuskładnikowe",
+      "apiAccess": "Dostęp przez API",
+      "apiRateLimit": "Limit żądań API",
+      "dataRetention": "Przechowywanie danych (dni)",
+      "gdprCompliant": "Zgodność z RODO"
+    },
+    "branchesSettings": {
+      "title": "Oddziały",
+      "addBranch": "Dodaj oddział",
+      "active": "Aktywny",
+      "inactive": "Nieaktywny"
+    },
+    "emailTemplates": {
+      "title": "Szablony wiadomości",
+      "newTemplate": "Nowy szablon",
+      "subject": "Temat:",
+      "lastModified": "Ostatnia modyfikacja:"
+    },
+    "subtitle": "Ustawienia systemowe i konfiguracja",
+    "buttons": {
+      "export": "Eksport",
+      "import": "Import",
+      "save": "Zapisz",
+      "saving": "Zapisywanie..."
+    },
+    "messages": {
+      "saveSuccess": "Ustawienia zostały pomyślnie zapisane!"
+    },
+    "tabs": {
+      "general": "Ogólne",
+      "school": "Szkoła",
+      "notifications": "Powiadomienia",
+      "payments": "Płatności",
+      "security": "Bezpieczeństwo",
+      "integrations": "Integracje",
+      "branches": "Oddziały",
+      "templates": "Szablony"
+    },
+    "school": {
+      "lessonDuration": "Czas trwania zajęć (minuty)",
+      "bufferTime": "Czas między zajęciami (minuty)",
+      "maxAdvanceBooking": "Maks. rezerwacja z wyprzedzeniem (dni)",
+      "minAdvanceBooking": "Min. czas do rezerwacji (godziny)",
+      "cancellationPeriod": "Okres anulowania (godziny)",
+      "minAge": "Minimalny wiek",
+      "maxStudentsPerInstructor": "Maks. uczniów na instruktora",
+      "examPassRate": "Wskaźnik zdawalności (%)",
+      "averageCompletionTime": "Średni czas ukończenia (dni)",
+      "title": "Ustawienia szkoły",
+      "fields": {
+        "lessonDuration": "Czas trwania zajęć (minuty)",
+        "bufferTime": "Czas między zajęciami (minuty)",
+        "maxAdvanceBooking": "Maks. rezerwacja z wyprzedzeniem (dni)",
+        "minAdvanceBooking": "Min. czas do rezerwacji (godziny)",
+        "cancellationPeriod": "Okres anulowania (godziny)",
+        "minAge": "Minimalny wiek",
+        "maxStudentsPerInstructor": "Maks. uczniów na instruktora",
+        "examPassRate": "Wskaźnik zdawalności (%)",
+        "averageCompletionTime": "Średni czas ukończenia (dni)"
+      },
+      "permissions": {
+        "allowWeekendBookings": "Zezwalaj na rezerwacje w weekendy",
+        "allowNightLessons": "Zezwalaj na zajęcia nocne",
+        "requireMedicalCertificate": "Wymagaj zaświadczenia lekarskiego",
+        "requireTheoryPass": "Wymagaj zdania teorii przed praktyką"
+      }
+    },
+    "notifications": {
+      "title": "Ustawienia powiadomień",
+      "channels": {
+        "title": "Kanały powiadomień",
+        "email": "Powiadomienia e-mail",
+        "sms": "Powiadomienia SMS",
+        "push": "Powiadomienia push"
+      },
+      "types": {
+        "title": "Typy powiadomień",
+        "bookingConfirmation": "Potwierdzenie rezerwacji",
+        "bookingReminder": "Przypomnienie o zajęciach",
+        "cancellationAlert": "Powiadomienie o anulowaniu",
+        "paymentReminder": "Przypomnienie o płatności",
+        "newsletter": "Newsletter",
+        "marketing": "Powiadomienia marketingowe",
+        "adminAlerts": "Powiadomienia administratora",
+        "instructorNotifications": "Powiadomienia dla instruktorów",
+        "studentNotifications": "Powiadomienia dla uczniów"
+      },
+      "reminderTime": "Czas przypomnienia przed zajęciami (godziny)"
+    },
+    "payments": {
+      "title": "Ustawienia płatności",
+      "providers": {
+        "title": "Systemy płatności",
+        "stripe": {
+          "name": "Stripe",
+          "description": "Karty Visa, Mastercard"
+        },
+        "przelewy24": {
+          "name": "Przelewy24",
+          "description": "Ukraińskie przelewy bankowe"
+        },
+        "paypal": {
+          "name": "PayPal",
+          "description": "Płatności PayPal"
+        },
+        "cash": {
+          "name": "Gotówka",
+          "description": "Płatność gotówką w biurze"
+        },
+        "bankTransfer": {
+          "name": "Przelew bankowy",
+          "description": "Bezpośredni przelew bankowy"
+        }
+      },
+      "fields": {
+        "taxRate": "Stawka podatku (%)",
+        "invoicePrefix": "Prefiks faktur",
+        "paymentTerms": "Termin płatności (dni)",
+        "lateFeePercentage": "Opłata za zwłokę (%)",
+        "autoInvoice": "Automatyczne faktury",
+        "refundPolicy": "Polityka zwrotów"
+      }
+    },
+    "security": {
+      "title": "Ustawienia bezpieczeństwa",
+      "warning": {
+        "title": "Ważne",
+        "description": "Zmiana ustawień bezpieczeństwa może wpłynąć na dostęp użytkowników do systemu"
+      },
+      "fields": {
+        "sessionTimeout": "Czas wygaśnięcia sesji (minuty)",
+        "maxLoginAttempts": "Maks. próby logowania",
+        "lockoutDuration": "Czas blokady (minuty)",
+        "twoFactor": "Uwierzytelnianie dwuskładnikowe",
+        "apiAccess": "Dostęp przez API",
+        "apiRateLimit": "Limit żądań API",
+        "dataRetention": "Przechowywanie danych (dni)",
+        "gdprCompliant": "Zgodność z RODO"
+      },
+      "passwordRequirements": {
+        "title": "Wymagania dotyczące hasła",
+        "minLength": "Minimalna długość: {length} znaków",
+        "requireUppercase": "Wymagaj dużych liter",
+        "requireNumber": "Wymagaj cyfr",
+        "requireSpecial": "Wymagaj znaków specjalnych"
+      },
+      "backup": {
+        "title": "Kopia zapasowa",
+        "autoBackup": "Automatyczna kopia zapasowa",
+        "lastBackup": "Ostatnia kopia: wczoraj, 02:00",
+        "frequency": {
+          "daily": "Codziennie",
+          "weekly": "Co tydzień",
+          "monthly": "Co miesiąc"
+        }
+      }
+    },
+    "integrations": {
+      "title": "Integracje",
+      "configured": "Skonfigurowano",
+      "notConfigured": "Nie skonfigurowano",
+      "lastSync": "Ostatnia synchronizacja:",
+      "configure": "Skonfiguruj →",
+      "services": {
+        "googleCalendar": {
+          "name": "Google Calendar",
+          "description": "Synchronizacja harmonogramu z Google Calendar"
+        },
+        "zoom": {
+          "name": "Zoom",
+          "description": "Zajęcia online przez Zoom"
+        },
+        "mailchimp": {
+          "name": "Mailchimp",
+          "description": "Marketing e-mailowy i kampanie"
+        },
+        "facebookPixel": {
+          "name": "Facebook Pixel",
+          "description": "Śledzenie konwersji"
+        },
+        "googleAnalytics": {
+          "name": "Google Analytics",
+          "description": "Analiza ruchu na stronie"
+        },
+        "telegramBot": {
+          "name": "Telegram Bot",
+          "description": "Powiadomienia przez Telegram"
+        }
+      }
+    },
+    "branches": {
+      "title": "Oddziały",
+      "addBranch": "Dodaj oddział",
+      "status": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny"
+      }
+    },
+    "templates": {
+      "title": "Szablony wiadomości",
+      "newTemplate": "Nowy szablon",
+      "subject": "Temat:",
+      "lastModified": "Ostatnia modyfikacja:",
+      "types": {
+        "bookingConfirmation": "Potwierdzenie rezerwacji",
+        "lessonReminder": "Przypomnienie o zajęciach",
+        "lessonCancelled": "Anulowanie zajęć",
+        "welcome": "Witamy po rejestracji"
+      }
+    }
+  },
+  "students": {
+    "title": "Uczniowie",
+    "subtitle": "Zarządzanie uczniami szkoły jazdy",
+    "buttons": {
+      "export": "Eksport",
+      "addStudent": "Dodaj ucznia",
+      "moreFilters": "Więcej filtrów",
+      "view": "Wyświetl",
+      "edit": "Edytuj",
+      "moreActions": "Więcej działań",
+      "sendMessage": "Wyślij wiadomość",
+      "cancel": "Anuluj"
+    },
+    "stats": {
+      "total": "Razem",
+      "active": "Aktywni",
+      "completed": "Ukończyli",
+      "avgProgress": "Śr. postęp",
+      "attendance": "Frekwencja",
+      "revenue": "Przychód"
+    },
+    "filters": {
+      "searchPlaceholder": "Szukaj uczniów...",
+      "allStatuses": "Wszystkie statusy",
+      "allPackages": "Wszystkie pakiety",
+      "allInstructors": "Wszyscy instruktorzy",
+      "statuses": {
+        "active": "Aktywni",
+        "onHold": "Wstrzymani",
+        "completed": "Ukończeni",
+        "dropped": "Zrezygnowali"
+      }
+    },
+    "table": {
+      "headers": {
+        "student": "Uczeń",
+        "package": "Pakiet",
+        "instructor": "Instruktor",
+        "progress": "Postęp",
+        "nextLesson": "Następne zajęcia",
+        "status": "Status",
+        "actions": "Działania"
+      },
+      "category": "Kategoria",
+      "theory": "Teoria",
+      "practice": "Praktyka",
+      "lessonsFormat": "{completed}/{total}"
+    },
+    "status": {
+      "active": {
+        "label": "Aktywny",
+        "bg": "bg-green-100",
+        "text": "text-green-700"
+      },
+      "onHold": {
+        "label": "Wstrzymany",
+        "bg": "bg-yellow-100",
+        "text": "text-yellow-700"
+      },
+      "completed": {
+        "label": "Ukończony",
+        "bg": "bg-blue-100",
+        "text": "text-blue-700"
+      },
+      "dropped": {
+        "label": "Zrezygnował",
+        "bg": "bg-red-100",
+        "text": "text-red-700"
+      }
+    },
+    "bulkActions": {
+      "selected": "Wybrano: {count} uczniów",
+      "sendMessage": "Wyślij wiadomość",
+      "export": "Eksportuj"
+    },
+    "pagination": {
+      "showing": "Wyświetlono {from} - {to} z {total} uczniów"
+    },
+    "loading": {
+      "processing": "Przetwarzanie..."
+    }
+  },
+  "users": {
+    "detail": {
+      "title": "Kursanci",
+      "subtitle": "Zarządzanie kursantami szkoły nauki jazdy",
+      "buttons": {
+        "export": "Eksportuj",
+        "addStudent": "Dodaj kursanta",
+        "moreFilters": "Więcej filtrów",
+        "view": "Zobacz",
+        "edit": "Edytuj",
+        "moreActions": "Więcej akcji",
+        "sendMessage": "Wyślij wiadomość",
+        "cancel": "Anuluj"
+      },
+      "stats": {
+        "total": "Razem",
+        "active": "Aktywni",
+        "completed": "Zakończyli",
+        "avgProgress": "Śr. postęp",
+        "attendance": "Frekwencja",
+        "revenue": "Dochód"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj kursantów...",
+        "allStatuses": "Wszystkie statusy",
+        "allPackages": "Wszystkie pakiety",
+        "allInstructors": "Wszyscy instruktorzy",
+        "statuses": {
+          "active": "Aktywni",
+          "onHold": "Wstrzymani",
+          "completed": "Zakończeni",
+          "dropped": "Zrezygnowali"
+        }
+      },
+      "table": {
+        "headers": {
+          "student": "Kursant",
+          "package": "Pakiet",
+          "instructor": "Instruktor",
+          "progress": "Postęp",
+          "nextLesson": "Następna lekcja",
+          "status": "Status",
+          "actions": "Akcje"
+        },
+        "category": "Kategoria",
+        "theory": "Teoria",
+        "practice": "Praktyka",
+        "lessonsFormat": "{completed}/{total}"
+      },
+      "status": {
+        "active": {
+          "label": "Aktywny",
+          "bg": "bg-green-100",
+          "text": "text-green-700"
+        },
+        "onHold": {
+          "label": "Wstrzymany",
+          "bg": "bg-yellow-100",
+          "text": "text-yellow-700"
+        },
+        "completed": {
+          "label": "Zakończony",
+          "bg": "bg-blue-100",
+          "text": "text-blue-700"
+        },
+        "dropped": {
+          "label": "Rezygnacja",
+          "bg": "bg-red-100",
+          "text": "text-red-700"
+        }
+      },
+      "bulkActions": {
+        "selected": "Wybrano: {count} kursantów",
+        "sendMessage": "Wyślij wiadomość",
+        "export": "Eksportuj"
+      },
+      "pagination": {
+        "showing": "Pokazano {from} - {to} z {total} kursantów"
+      },
+      "loading": {
+        "processing": "Przetwarzanie..."
+      }
+    },
+    "new": {
+      "title": "Tworzenie nowego użytkownika",
+      "subtitle": "Wypełnij wszystkie wymagane dane",
+      "buttons": {
+        "back": "Wstecz",
+        "previous": "Poprzedni",
+        "next": "Dalej",
+        "save": "Zapisz",
+        "saving": "Zapisywanie...",
+        "generatePassword": "Wygeneruj hasło"
+      },
+      "steps": {
+        "personal": "Dane osobowe",
+        "address": "Adres",
+        "account": "Ustawienia konta",
+        "roleInfo": "Informacje o roli",
+        "review": "Podsumowanie danych"
+      },
+      "personal": {
+        "title": "Dane osobowe",
+        "firstName": "Imię *",
+        "firstNamePlaceholder": "Aleksander",
+        "lastName": "Nazwisko *",
+        "lastNamePlaceholder": "Kowalenko",
+        "email": "Email *",
+        "emailPlaceholder": "example@email.com",
+        "phone": "Telefon *",
+        "phonePlaceholder": "+48123456789",
+        "birthDate": "Data urodzenia *",
+        "gender": "Płeć",
+        "genderOptions": {
+          "male": "Mężczyzna",
+          "female": "Kobieta",
+          "other": "Inna"
+        }
+      },
+      "address": {
+        "title": "Adres",
+        "street": "Ulica i numer domu *",
+        "streetPlaceholder": "ul. Chreszczatyk 1",
+        "city": "Miasto *",
+        "postalCode": "Kod pocztowy *",
+        "postalCodePlaceholder": "00-001",
+        "emergencyContact": "Kontakt awaryjny",
+        "emergencyName": "Imię",
+        "emergencyNamePlaceholder": "Maria Kowalenko",
+        "emergencyPhone": "Telefon",
+        "emergencyPhonePlaceholder": "+48987654321",
+        "emergencyRelation": "Relacja",
+        "emergencyRelationPlaceholder": "Matka"
+      },
+      "account": {
+        "title": "Ustawienia konta",
+        "role": "Rola użytkownika *",
+        "roles": {
+          "student": "Kursant",
+          "instructor": "Instruktor",
+          "manager": "Menadżer",
+          "admin": "Administrator"
+        },
+        "password": "Hasło *",
+        "passwordPlaceholder": "Minimum 8 znaków",
+        "confirmPassword": "Potwierdź hasło *",
+        "confirmPasswordPlaceholder": "Powtórz hasło",
+        "sendWelcomeEmail": "Wyślij email powitalny z danymi do logowania"
+      },
+      "studentInfo": {
+        "title": "Informacje o kursancie",
+        "package": "Pakiet szkoleniowy",
+        "selectPackage": "Wybierz pakiet",
+        "category": "Kategoria",
+        "selectCategory": "Wybierz kategorię",
+        "instructor": "Instruktor",
+        "assignLater": "Przypisz później",
+        "startDate": "Data rozpoczęcia szkolenia"
+      },
+      "instructorInfo": {
+        "title": "Informacje o instruktorze",
+        "licenseNumber": "Numer uprawnień instruktora",
+        "licenseNumberPlaceholder": "AA123456",
+        "experience": "Doświadczenie (lata)",
+        "experiencePlaceholder": "5",
+        "hourlyRate": "Stawka godzinowa (zł)",
+        "hourlyRatePlaceholder": "100",
+        "specializations": "Specjalizacje",
+        "specializationOptions": {
+          "city": "Jazda po mieście",
+          "highway": "Autostrada",
+          "parking": "Parkowanie",
+          "night": "Jazda nocna",
+          "extreme": "Jazda ekstremalna",
+          "theory": "Teoria"
+        },
+        "workingDays": "Dni robocze",
+        "weekDays": {
+          "monday": "Poniedziałek",
+          "tuesday": "Wtorek",
+          "wednesday": "Środa",
+          "thursday": "Czwartek",
+          "friday": "Piątek",
+          "saturday": "Sobota",
+          "sunday": "Niedziela"
+        }
+      },
+      "review": {
+        "title": "Podsumowanie danych",
+        "personalData": "Dane osobowe",
+        "fullName": "Imię i nazwisko:",
+        "email": "Email:",
+        "phone": "Telefon:",
+        "role": "Rola:",
+        "trainingInfo": "Informacje szkoleniowe",
+        "package": "Pakiet:",
+        "category": "Kategoria:",
+        "instructor": "Instruktor:",
+        "notSelected": "Nie wybrano",
+        "notAssigned": "Nie przypisano",
+        "professionalInfo": "Informacje zawodowe",
+        "experience": "Doświadczenie:",
+        "years": "{count} lat",
+        "rate": "Stawka:",
+        "perHour": "{amount} zł/godz",
+        "specializations": "Specjalizacje:",
+        "notSpecified": "Nie określono",
+        "confirmMessage": "Użytkownik zostanie utworzony z powyższymi danymi.",
+        "checkData": "Upewnij się, że wszystkie informacje są poprawne przed zapisem."
+      },
+      "errors": {
+        "firstNameRequired": "Imię jest wymagane",
+        "lastNameRequired": "Nazwisko jest wymagane",
+        "emailRequired": "Email jest wymagany",
+        "emailInvalid": "Nieprawidłowy format email",
+        "phoneRequired": "Telefon jest wymagany",
+        "birthDateRequired": "Data urodzenia jest wymagana",
+        "streetRequired": "Ulica jest wymagana",
+        "cityRequired": "Miasto jest wymagane",
+        "postalCodeRequired": "Kod pocztowy jest wymagany",
+        "passwordRequired": "Hasło jest wymagane",
+        "passwordMinLength": "Hasło musi zawierać minimum 8 znaków",
+        "passwordsNotMatch": "Hasła nie pasują do siebie"
+      }
+    },
+    "list": {
+      "title": "Użytkownicy",
+      "subtitle": "Zarządzanie użytkownikami systemu",
+      "buttons": {
+        "addUser": "Dodaj użytkownika",
+        "moreFilters": "Więcej filtrów",
+        "activate": "Aktywuj",
+        "deactivate": "Dezaktywuj",
+        "delete": "Usuń",
+        "cancel": "Anuluj",
+        "view": "Zobacz",
+        "edit": "Edytuj"
+      },
+      "stats": {
+        "total": "Razem",
+        "students": "Kursantów",
+        "instructors": "Instruktorów",
+        "admins": "Administratorów",
+        "active": "Aktywnych",
+        "pending": "Oczekujących"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj po imieniu lub emailu...",
+        "allRoles": "Wszystkie role",
+        "students": "Kursanci",
+        "instructors": "Instruktorzy",
+        "admins": "Administratorzy",
+        "managers": "Menadżerowie",
+        "allStatuses": "Wszystkie statusy",
+        "active": "Aktywni",
+        "inactive": "Nieaktywni",
+        "pending": "Oczekujący",
+        "suspended": "Zablokowani",
+        "allLocations": "Wszystkie lokalizacje",
+        "emailVerification": "Weryfikacja email",
+        "phoneVerification": "Weryfikacja telefonu",
+        "confirmed": "Potwierdzone",
+        "notConfirmed": "Niepotwierdzone",
+        "registrationDate": "Data rejestracji",
+        "last7days": "Ostatnie 7 dni",
+        "last30days": "Ostatnie 30 dni",
+        "last90days": "Ostatnie 90 dni"
+      },
+      "roles": {
+        "admin": "Administrator",
+        "instructor": "Instruktor",
+        "student": "Kursant",
+        "manager": "Menadżer"
+      },
+      "status": {
+        "active": "Aktywny",
+        "inactive": "Nieaktywny",
+        "pending": "Oczekujący",
+        "suspended": "Zablokowany"
+      },
+      "table": {
+        "headers": {
+          "user": "Użytkownik",
+          "role": "Rola",
+          "status": "Status",
+          "location": "Lokalizacja",
+          "joined": "Dołączył",
+          "lastLogin": "Ostatnie logowanie",
+          "actions": "Akcje"
+        },
+        "email": "Email",
+        "phone": "Telefon",
+        "rating": "Ocena: {rating}★"
+      },
+      "bulkActions": {
+        "selected": "Wybrano {count} użytkownik(ów)"
+      },
+      "loading": {
+        "text": "Ładowanie..."
+      },
+      "empty": {
+        "title": "Nie znaleziono użytkowników",
+        "subtitle": "Spróbuj zmienić filtry wyszukiwania"
+      }
+    }
+  },
+  "vehicles": {
+    "detail": {
+      "title": "Szczegóły pojazdu",
+      "subtitle": "Informacje i zarządzanie pojazdem",
+      "buttons": {
+        "back": "Wstecz",
+        "export": "Eksportuj",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "save": "Zapisz",
+        "cancel": "Anuluj"
+      },
+      "status": {
+        "active": "Aktywny",
+        "maintenance": "W serwisie",
+        "inactive": "Nieaktywny"
+      },
+      "tabs": {
+        "overview": "Przegląd",
+        "schedule": "Harmonogram",
+        "maintenance": "Serwis",
+        "financial": "Finanse",
+        "documents": "Dokumenty"
+      },
+      "info": {
+        "category": "Kategoria",
+        "transmission": "Skrzynia biegów",
+        "fuel": "Paliwo",
+        "mileage": "Przebieg",
+        "vin": "VIN",
+        "color": "Kolor",
+        "assignedInstructor": "Przypisany instruktor",
+        "location": "Lokalizacja",
+        "dailyRate": "Stawka dzienna",
+        "purchaseDate": "Data zakupu",
+        "purchasePrice": "Cena zakupu",
+        "insuranceExpiry": "Termin ubezpieczenia",
+        "inspectionExpiry": "Termin przeglądu",
+        "registrationExpiry": "Termin rejestracji",
+        "features": "Wyposażenie"
+      },
+      "stats": {
+        "utilization": "Wykorzystanie",
+        "lessonsPerMonth": "Lekcji/mies",
+        "monthlyRevenue": "Dochód/mies",
+        "fuelConsumption": "Spalanie paliwa",
+        "maintenanceCost": "Koszty serwisu",
+        "rating": "Ocena"
+      },
+      "overview": {
+        "vehicleInfo": "Informacje o pojeździe",
+        "features": "Wyposażenie",
+        "alertTitle": "Zbliża się termin przeglądu",
+        "alertDescription": "Przegląd techniczny kończy się {date}"
+      },
+      "schedule": {
+        "hours": "godz",
+        "bookings": "rezerwacje",
+        "recentBookings": "Ostatnie rezerwacje",
+        "instructor": "Instruktor:",
+        "completed": "Zakończono",
+        "scheduled": "Zaplanowano"
+      },
+      "maintenance": {
+        "nextService": "Następny serwis",
+        "oilChange": "Wymiana oleju",
+        "technicalCondition": "Stan techniczny",
+        "good": "Dobry",
+        "lastInspection": "Ostatni przegląd:",
+        "serviceHistory": "Historia serwisu",
+        "km": "km",
+        "in": "za",
+        "completed": "Wykonano",
+        "scheduled": "Zaplanowano"
+      },
+      "financial": {
+        "totalRevenue": "Całkowity dochód",
+        "totalCosts": "Całkowite koszty",
+        "netProfit": "Zysk netto",
+        "vsLastQuarter": "+{percent}% w por. z poprz. kwartałem",
+        "maintenanceFuel": "Serwis + Paliwo",
+        "roi": "ROI: {percent}%",
+        "financialHistory": "Historia finansowa",
+        "month": "Miesiąc",
+        "revenue": "Dochód",
+        "expenses": "Wydatki",
+        "profit": "Zysk"
+      },
+      "documents": {
+        "uploaded": "Przesłano:",
+        "verified": "Potwierdzone",
+        "expiring": "Wygasa",
+        "view": "Zobacz",
+        "download": "Pobierz"
+      },
+      "currency": "zł"
+    },
+    "maintenance": {
+      "title": "Serwis pojazdów",
+      "subtitle": "Zarządzanie przeglądami i naprawami",
+      "buttons": {
+        "export": "Eksportuj",
+        "scheduleMaintenance": "Zaplanuj serwis",
+        "moreFilters": "Więcej filtrów",
+        "cancel": "Anuluj",
+        "submit": "Zaplanuj serwis",
+        "close": "Zamknij",
+        "edit": "Edytuj",
+        "delete": "Usuń",
+        "view": "Zobacz"
+      },
+      "stats": {
+        "scheduled": "Zaplanowano",
+        "inProgress": "W trakcie",
+        "completed": "Zakończono",
+        "inService": "W serwisie",
+        "totalCost": "Całkowity koszt",
+        "avgCost": "Śr. koszt"
+      },
+      "alerts": {
+        "title": "Nadchodzące przeglądy",
+        "count": "{count} ostrzeżeń",
+        "dueIn": "za"
+      },
+      "filters": {
+        "searchPlaceholder": "Szukaj pojazdu lub typu serwisu...",
+        "allStatuses": "Wszystkie statusy",
+        "allVehicles": "Wszystkie pojazdy",
+        "scheduled": "Zaplanowano",
+        "inProgress": "W trakcie",
+        "completed": "Zakończono"
+      },
+      "table": {
+        "vehicle": "Pojazd",
+        "serviceType": "Typ serwisu",
+        "date": "Data",
+        "mileage": "Przebieg",
+        "technician": "Technik",
+        "cost": "Koszt",
+        "status": "Status",
+        "actions": "Akcje"
+      },
+      "serviceTypes": {
+        "oilChange": "Wymiana oleju",
+        "periodicInspection": "Przegląd okresowy",
+        "tireChange": "Wymiana opon",
+        "brakeService": "Serwis hamulców",
+        "acRepair": "Naprawa klimatyzacji",
+        "sparkPlugs": "Wymiana świec zapłonowych",
+        "other": "Inne"
+      },
+      "priority": {
+        "label": "Priorytet",
+        "low": "Niski",
+        "medium": "Średni",
+        "high": "Wysoki"
+      },
+      "modal": {
+        "scheduleTitle": "Zaplanuj serwis",
+        "detailsTitle": "Szczegóły serwisu",
+        "selectVehicle": "Wybierz pojazd",
+        "selectType": "Wybierz typ",
+        "vehicle": "Pojazd",
+        "type": "Typ serwisu",
+        "date": "Data",
+        "mileage": "Przebieg",
+        "technician": "Technik",
+        "estimatedCost": "Szacowany koszt (zł)",
+        "description": "Opis",
+        "descriptionPlaceholder": "Dodaj opis serwisu...",
+        "technicianPlaceholder": "Imię i nazwisko",
+        "mileagePlaceholder": "np. 45000",
+        "costPlaceholder": "np. 450"
+      },
+      "status": {
+        "scheduled": "Zaplanowano",
+        "inProgress": "W trakcie",
+        "completed": "Zakończono",
+        "cancelled": "Anulowano"
+      },
+      "currency": "zł",
+      "km": "km"
+    },
+    "title": "Pojazdy",
+    "subtitle": "Zarządzanie flotą szkoły",
+    "buttons": {
+      "addVehicle": "Dodaj pojazd",
+      "service": "Serwis",
+      "details": "Szczegóły",
+      "history": "Historia",
+      "refresh": "Odśwież"
+    },
+    "stats": {
+      "total": "Wszystkich",
+      "active": "Aktywne",
+      "maintenance": "W serwisie",
+      "utilization": "Wykorzystanie",
+      "needsService": "Wymaga serwisu",
+      "documentsExpiring": "Dokumenty"
+    },
+    "filters": {
+      "searchPlaceholder": "Szukaj po marce, modelu lub numerze...",
+      "allStatuses": "Wszystkie statusy",
+      "allTransmissions": "Wszystkie skrzynie",
+      "allCategories": "Wszystkie kategorie",
+      "manual": "Manualna",
+      "automatic": "Automatyczna"
+    },
+    "status": {
+      "active": {
+        "label": "Aktywny",
+        "icon": "CheckCircle"
+      },
+      "maintenance": {
+        "label": "W serwisie",
+        "icon": "Wrench"
+      },
+      "reserved": {
+        "label": "Zarezerwowany",
+        "icon": "Calendar"
+      },
+      "inactive": {
+        "label": "Nieaktywny",
+        "icon": "XCircle"
+      }
+    },
+    "card": {
+      "category": "Kategoria:",
+      "transmission": "Skrzynia:",
+      "instructor": "Instruktor:",
+      "mileage": "Przebieg:",
+      "utilization": "Wykorzystanie",
+      "unassigned": "Nie przypisany",
+      "issues": "{count} problemów",
+      "insuranceExpiring": "Ubezpieczenie wygasa",
+      "inspectionNeeded": "Wymagany przegląd"
+    },
+    "table": {
+      "vehicle": "Pojazd",
+      "status": "Status",
+      "category": "Kategoria",
+      "transmission": "Skrzynia",
+      "instructor": "Instruktor",
+      "location": "Lokalizacja",
+      "mileage": "Przebieg",
+      "utilization": "Wykorzystanie",
+      "actions": "Akcje"
+    },
+    "transmissionTypes": {
+      "manual": "Manualna",
+      "automatic": "Automatyczna"
+    },
+    "viewModes": {
+      "grid": "Siatka",
+      "list": "Lista"
+    },
+    "details": {
+      "title": "Szczegóły pojazdu",
+      "registrationNumber": "Numer rejestracyjny",
+      "vin": "VIN",
+      "year": "Rocznik",
+      "mileage": "Przebieg",
+      "fuel": "Paliwo",
+      "fuelLevel": "Poziom paliwa",
+      "documentsAndDeadlines": "Dokumenty i terminy",
+      "insurance": "Ubezpieczenie",
+      "inspection": "Przegląd",
+      "nextService": "Następny serwis",
+      "until": "do {date}",
+      "edit": "Edytuj",
+      "serviceHistory": "Historia serwisu",
+      "delete": "Usuń"
+    },
+    "fuelTypes": {
+      "petrol": "Benzyna",
+      "diesel": "Diesel",
+      "hybrid": "Hybryda",
+      "electric": "Elektryczny"
+    },
+    "categories": {
+      "B": "B",
+      "BE": "B+E",
+      "C": "C"
+    },
+    "currency": "zł"
+  },
+  "schedule": {
+    "main": {
+      "title": "Harmonogram",
+      "subtitle": "Zarządzaj swoim czasem efektywnie",
+      "buttons": {
+        "workingHours": "Godziny pracy",
+        "exception": "Wyjątek",
+        "today": "Dziś",
+        "search": "Szukaj",
+        "menu": "Menu"
+      },
+      "search": {
+        "placeholder": "Szukaj kursanta, lokalizacji, terminu..."
+      },
+      "stats": {
+        "allSlots": "Wszystkie terminy",
+        "reserved": "Zarezerwowane",
+        "weeklyHours": "Godzin na tydzień",
+        "monthlyIncome": "Miesięczny dochód",
+        "hoursUnit": "{hours}godz",
+        "currency": "{amount} zł"
+      },
+      "tabs": {
+        "calendar": "Kalendarz",
+        "templates": "Szablony",
+        "requests": "Zapytania",
+        "statistics": "Statystyki"
+      },
+      "viewModes": {
+        "day": "Dzień",
+        "week": "Tydzień",
+        "month": "Miesiąc",
+        "dayView": "Widok dzienny",
+        "weekView": "Widok tygodniowy",
+        "monthView": "Widok miesięczny"
+      },
+      "mobileMenu": {
+        "title": "Menu",
+        "workingHours": "Godziny pracy",
+        "addException": "Dodaj wyjątek"
+      },
+      "dateFormat": {
+        "day": "{weekday}, {day} {month} {year}",
+        "week": "{startDate} - {endDate}",
+        "month": "{month} {year}"
+      }
+    }
+  },
+  "layout": {
+    "title": "DenisDrive",
+    "subtitle": "Portal administratora",
+    "navigation": {
+      "dashboard": "Panel sterowania",
+      "users": "Użytkownicy",
+      "instructors": "Instruktorzy",
+      "students": "Uczniowie",
+      "vehicles": "Pojazdy",
+      "locations": "Lokalizacje",
+      "packages": "Pakiety",
+      "bookings": "Rezerwacje",
+      "payments": "Płatności",
+      "reports": "Raporty",
+      "settings": "Ustawienia"
+    },
+    "user": {
+      "name": "Administrator systemu",
+      "email": "admin@drive-school.com",
+      "role": "Główny administrator",
+      "profile": "Profil",
+      "security": "Bezpieczeństwo",
+      "settings": "Ustawienia",
+      "logout": "Wyloguj"
+    },
+    "languages": {
+      "polish": "Polski",
+      "ukrainian": "Українська",
+      "english": "English",
+      "russian": "Русский"
+    },
+    "breadcrumbs": {
+      "home": "Główna",
+      "admin": "Admin",
+      "dashboard": "Panel sterowania",
+      "users": "Użytkownicy",
+      "instructors": "Instruktorzy",
+      "students": "Uczniowie",
+      "vehicles": "Pojazdy",
+      "locations": "Lokalizacje",
+      "packages": "Pakiety",
+      "bookings": "Rezerwacje",
+      "payments": "Płatności",
+      "reports": "Raporty",
+      "settings": "Ustawienia"
+    },
+    "search": {
+      "placeholder": "Szukaj..."
+    },
+    "theme": {
+      "light": "Jasny motyw",
+      "dark": "Ciemny motyw"
+    },
+    "notifications": {
+      "label": "Powiadomienia",
+      "count": "{count} nowych"
+    },
+    "mobile": {
+      "openMenu": "Otwórz menu",
+      "closeMenu": "Zamknij menu"
+    }
+  }
+}

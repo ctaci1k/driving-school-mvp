@@ -1,0 +1,3049 @@
+{
+    "bookingDetails": {
+        "title": "Lesson Details",
+        "id": "ID: #{id}",
+        "invoice": "Invoice",
+        "notFound": {
+            "title": "Booking not found",
+            "description": "The booking with the specified ID does not exist."
+        },
+        "info": {
+            "title": "Lesson information",
+            "date": "Date",
+            "time": "Time",
+            "duration": "{minutes} minutes",
+            "type": "Lesson type",
+            "notes": "Notes"
+        },
+        "status": {
+            "upcoming": "Upcoming",
+            "inProgress": "In Progress",
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "noShow": "No-show"
+        },
+        "instructor": {
+            "title": "Instructor",
+            "experience": "{years} years of experience",
+            "sendMessage": "Send message"
+        },
+        "vehicle": {
+            "title": "Vehicle",
+            "year": "Year {year}",
+            "transmission": {
+                "manual": "Manual",
+                "automatic": "Automatic"
+            },
+            "fuel": {
+                "petrol": "Petrol",
+                "diesel": "Diesel",
+                "electric": "Electric",
+                "hybrid": "Hybrid"
+            }
+        },
+        "location": {
+            "title": "Meeting point",
+            "openInMaps": "Open in maps"
+        },
+        "payment": {
+            "title": "Payment",
+            "status": "Status",
+            "paid": "Paid",
+            "unpaid": "Unpaid",
+            "method": "Method",
+            "credits": "Credits ({count})",
+            "online": "Online",
+            "cash": "Cash",
+            "amount": "Amount",
+            "payNow": "Pay now",
+            "currency": "{amount} UAH"
+        },
+        "actions": {
+            "title": "Actions",
+            "reschedule": "Reschedule lesson",
+            "cancel": "Cancel lesson"
+        },
+        "cancelDialog": {
+            "title": "Cancel lesson",
+            "description": "Are you sure you want to cancel this lesson? If you cancel less than 24 hours before the start, credits will not be refunded.",
+            "reasonLabel": "Reason for cancellation (optional)",
+            "reasonPlaceholder": "Specify the reason for cancellation...",
+            "keep": "No, keep it",
+            "confirm": "Yes, cancel",
+            "cancelling": "Cancelling..."
+        },
+        "toast": {
+            "cancelled": "Lesson cancelled",
+            "cancelledDescription": "Your lesson has been successfully cancelled."
+        },
+        "alert": {
+            "cancellationInfo": "You can cancel or reschedule the lesson up to 24 hours before it starts without losing credits."
+        },
+        "lessonTypes": {
+            "standard": "Standard driving",
+            "highway": "Highway",
+            "city": "City driving",
+            "parking": "Parking",
+            "exam": "Exam preparation"
+        }
+    },
+    "bookingNew": {
+        "highway": {
+            "name": "Highway",
+            "description": "Learning to drive at high speeds"
+        },
+        "parking": {
+            "name": "Parking",
+            "description": "Parallel and perpendicular parking"
+        },
+        "night": {
+            "name": "Night driving",
+            "description": "Driving in conditions of limited visibility"
+        },
+        "examPrep": {
+            "name": "Exam preparation",
+            "description": "Simulation of a state exam"
+        },
+        "duration": "{minutes} min",
+        "credit": "{count, plural, one {credit} other {credits}}",
+        "or": "or",
+        "currency": "{amount} UAH",
+        "title": "Book a driving lesson",
+        "subtitle": "Choose a suitable time and instructor",
+        "steps": {
+            "lessonType": "Lesson type",
+            "instructor": "Instructor",
+            "dateTime": "Date and time",
+            "vehicleLocation": "Vehicle and location",
+            "confirmation": "Confirmation"
+        },
+        "lessonTypes": {
+            "title": "Choose a lesson type",
+            "recommended": "Recommended",
+            "standard": {
+                "name": "Standard driving",
+                "description": "A basic driving lesson in the city"
+            },
+            "highway": {
+                "name": "Highway",
+                "description": "Learning to drive at high speeds"
+            },
+            "parking": {
+                "name": "Parking",
+                "description": "Parallel and perpendicular parking"
+            },
+            "night": {
+                "name": "Night driving",
+                "description": "Driving in conditions of limited visibility"
+            },
+            "examPrep": {
+                "name": "Exam preparation",
+                "description": "Simulation of a state exam"
+            },
+            "duration": "{minutes} min",
+            "credit": "{count, plural, one {credit} other {credits}}",
+            "or": "or",
+            "currency": "{amount} UAH"
+        },
+        "instructor": {
+            "title": "Choose an instructor",
+            "searchPlaceholder": "Search for an instructor...",
+            "experience": "Experience",
+            "successRate": "Success rate",
+            "specializations": "Specializations",
+            "nextAvailable": "Next available time",
+            "reviews": "{count} reviews",
+            "completedLessons": "Completed lessons",
+            "today": "Today",
+            "tomorrow": "Tomorrow",
+            "years": "{count} years",
+            "exams": "Exams",
+            "nightDriving": "Night driving",
+            "highways": "Highways",
+            "parking": "Parking",
+            "maneuvers": "Maneuvers",
+            "city": "City"
+        },
+        "dateTime": {
+            "title": "Choose a date and time",
+            "months": [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            "weekDays": [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat",
+                "Sun"
+            ],
+            "noSlots": "No slots available",
+            "moreSlots": "+{count} more",
+            "selectInstructor": "Select an instructor",
+            "sunday": "Sunday",
+            "unavailable": "Unavailable",
+            "selected": "Selected",
+            "available": "Available",
+            "availableHours": "Available hours",
+            "hours": "{count} hours",
+            "noSlotsForDay": "No available slots on this day",
+            "selectInstructorFirst": "First, select an instructor to see available slots",
+            "legendAvailable": "Available",
+            "legendSelected": "Selected",
+            "legendUnavailable": "Unavailable"
+        },
+        "vehicle": {
+            "title": "Available vehicles",
+            "transmission": {
+                "manual": "Manual",
+                "automatic": "Automatic"
+            },
+            "fuel": {
+                "petrol": "Petrol",
+                "diesel": "Diesel",
+                "electric": "Electric",
+                "hybrid": "Hybrid"
+            },
+            "features": {
+                "abs": "ABS",
+                "esp": "ESP",
+                "airCondition": "Air conditioning",
+                "parkingSensors": "Parking sensors",
+                "rearCamera": "Rear camera"
+            }
+        },
+        "location": {
+            "title": "Starting location",
+            "distance": "{distance} km"
+        },
+        "summary": {
+            "title": "Booking summary",
+            "lessonType": "Lesson type",
+            "instructor": "Instructor",
+            "dateTime": "Date and time",
+            "vehicle": "Vehicle",
+            "location": "Location"
+        },
+        "payment": {
+            "title": "Payment method",
+            "useCredits": "Use credits",
+            "creditsAvailable": "Available: {count} credits",
+            "creditsRequired": "{count} credits",
+            "payOnline": "Pay online",
+            "paymentService": "Privat24"
+        },
+        "buttons": {
+            "back": "Back",
+            "next": "Next",
+            "confirm": "Confirm booking",
+            "confirming": "Confirming..."
+        },
+        "success": {
+            "title": "Booking confirmed!",
+            "description": "Your lesson has been successfully booked. You will receive a confirmation email.",
+            "date": "Date",
+            "time": "Time",
+            "instructor": "Instructor",
+            "redirecting": "Redirecting to lessons list..."
+        },
+        "alerts": {
+            "cancellationPolicy": "You can cancel or reschedule the lesson up to 24 hours before it starts without losing credits."
+        }
+    },
+    "instructors": {
+        "schedule": {
+            "title": "Instructors' schedule",
+            "subtitle": "Manage all instructors' schedules",
+            "buttons": {
+                "print": "Print",
+                "download": "Download",
+                "addLesson": "Add lesson",
+                "today": "Today",
+                "showDetails": "Show details",
+                "edit": "Edit"
+            },
+            "stats": {
+                "totalLessons": "Total lessons",
+                "confirmed": "Confirmed",
+                "pending": "Pending",
+                "cancelled": "Cancelled",
+                "plannedHours": "Planned hours"
+            },
+            "viewModes": {
+                "week": "Week",
+                "day": "Day",
+                "list": "List"
+            },
+            "filters": {
+                "allInstructors": "All instructors",
+                "allLocations": "All locations"
+            },
+            "weekView": {
+                "weekNumber": "Week {number}",
+                "instructor": "Instructor",
+                "id": "ID",
+                "free": "Free"
+            },
+            "dayView": {
+                "time": "Time"
+            },
+            "listView": {
+                "time": "Time",
+                "instructor": "Instructor",
+                "student": "Student",
+                "lessonType": "Lesson type",
+                "vehicle": "Vehicle",
+                "location": "Location",
+                "status": "Status",
+                "actions": "Actions"
+            },
+            "lessonTypes": {
+                "practice": "Practice",
+                "track": "Driving track",
+                "city": "City",
+                "parking": "Parking",
+                "exam": "Exam",
+                "nightDriving": "Night driving",
+                "highway": "Highway"
+            },
+            "lessonStatus": {
+                "confirmed": "Confirmed",
+                "pending": "Pending",
+                "cancelled": "Cancelled"
+            },
+            "locations": {
+                "warsaw": "Warsaw",
+                "trackKrakow": "Driving track Krakow",
+                "trackGdansk": "Driving track Gdansk",
+                "examCenter": "Examination center",
+                "meetingWarsaw": "Meeting point: Warsaw"
+            },
+            "weekDays": {
+                "monday": "Monday",
+                "tuesday": "Tuesday",
+                "wednesday": "Wednesday",
+                "thursday": "Thursday",
+                "friday": "Friday",
+                "saturday": "Saturday",
+                "sunday": "Sunday"
+            }
+        }
+    },
+    "bookingHistory": {
+        "title": "Lesson history",
+        "subtitle": "View your ride history and progress",
+        "exportCSV": "Export CSV",
+        "statistics": {
+            "completedLessons": "Completed lessons",
+            "drivingHours": "Driving hours",
+            "averageRating": "Average rating",
+            "totalSpent": "Total spent",
+            "currency": "{amount} UAH"
+        },
+        "filters": {
+            "title": "Filters",
+            "searchPlaceholder": "Search by type, instructor, or vehicle...",
+            "status": {
+                "all": "All",
+                "completed": "Completed",
+                "cancelled": "Cancelled",
+                "noShow": "No-show"
+            }
+        },
+        "status": {
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "noShow": "No-show"
+        },
+        "lessonTypes": {
+            "standard": "Standard driving",
+            "highway": "Highway",
+            "parking": "Parking",
+            "night": "Night driving",
+            "maneuvers": "Maneuvers",
+            "examPrep": "Exam preparation"
+        },
+        "table": {
+            "date": "Date",
+            "type": "Type",
+            "instructor": "Instructor",
+            "vehicle": "Vehicle",
+            "status": "Status",
+            "rating": "Rating",
+            "price": "Price",
+            "actions": "Actions"
+        },
+        "duration": "{minutes} min",
+        "noResults": "No lessons found in history",
+        "pagination": {
+            "previous": "Previous",
+            "next": "Next"
+        }
+    },
+    "bookings": {
+        "title": "My lessons",
+        "subtitle": "Manage your driving lessons",
+        "bookLesson": "Book a lesson",
+        "stats": {
+            "allLessons": "All lessons",
+            "upcoming": "Upcoming",
+            "completed": "Completed",
+            "drivingHours": "Driving hours"
+        },
+        "filters": {
+            "title": "Filters",
+            "searchPlaceholder": "Search by instructor or type...",
+            "status": {
+                "label": "Status",
+                "all": "All",
+                "upcoming": "Upcoming",
+                "completed": "Completed",
+                "cancelled": "Cancelled",
+                "noShow": "No-show"
+            },
+            "period": {
+                "label": "Period",
+                "all": "All",
+                "today": "Today",
+                "week": "This week",
+                "month": "This month"
+            }
+        },
+        "status": {
+            "upcoming": "Upcoming",
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "noShow": "No-show"
+        },
+        "payment": {
+            "unpaid": "Unpaid",
+            "pay": "Pay",
+            "price": "Price",
+            "currency": "{amount} UAH"
+        },
+        "lessonTypes": {
+            "standard": "Standard driving",
+            "parking": "Parking",
+            "night": "Night driving",
+            "highway": "Highway",
+            "maneuvers": "Maneuvers",
+            "examPrep": "Exam preparation"
+        },
+        "details": {
+            "instructor": "Instructor",
+            "vehicle": "Vehicle",
+            "location": "Location"
+        },
+        "duration": "{minutes} min",
+        "actions": {
+            "viewDetails": "View details",
+            "reschedule": "Reschedule",
+            "cancel": "Cancel",
+            "downloadInvoice": "Download invoice"
+        },
+        "empty": {
+            "noLessons": "No lessons found",
+            "clearFilters": "Clear filters"
+        },
+        "alert": {
+            "upcomingLessons": "You have {count} upcoming lessons. Remember to be on time!"
+        }
+    },
+    "dashboard": {
+        "welcome": "Welcome back, {name}!",
+        "subtitle": "Your driving progress",
+        "nextLesson": {
+            "title": "Next lesson",
+            "timeRemaining": "Time remaining",
+            "hours": "hours",
+            "details": "Details",
+            "reschedule": "Reschedule"
+        },
+        "stats": {
+            "credits": {
+                "title": "Credits",
+                "validUntil": "Valid until {date}",
+                "buyMore": "Buy more credits"
+            },
+            "progress": {
+                "title": "Learning progress",
+                "lessonsCompleted": "lessons completed"
+            },
+            "examReadiness": {
+                "title": "Exam readiness",
+                "almostReady": "Almost ready!",
+                "checkDetails": "Check details"
+            },
+            "nextSlot": {
+                "title": "Next available slot",
+                "tomorrow": "Tomorrow",
+                "with": "with",
+                "book": "Book"
+            }
+        },
+        "recentGrades": {
+            "title": "Recent grades and reviews",
+            "viewAll": "View all grades"
+        },
+        "quickActions": {
+            "title": "Quick actions",
+            "bookLesson": "Book a lesson",
+            "viewSchedule": "View schedule",
+            "studyMaterials": "Study materials",
+            "contactInstructor": "Contact instructor"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "lessonTomorrow": "Lesson tomorrow at {time}",
+            "newMaterials": "New study materials available",
+            "hoursAgo": "{count} hrs. ago",
+            "dayAgo": "{count} day ago"
+        },
+        "weakPoints": {
+            "title": "Areas for improvement",
+            "practice": "Practice",
+            "improvementPlan": "Improvement plan"
+        },
+        "achievements": {
+            "title": "Achievements",
+            "10lessons": "10 lessons",
+            "firstNightDrive": "First night drive",
+            "parkingMaster": "Parking master",
+            "viewAll": "View all"
+        },
+        "lessonTypes": {
+            "cityDriving": "City driving",
+            "parking": "Parking",
+            "nightDriving": "Night driving",
+            "highway": "Highway",
+            "maneuvers": "Maneuvers"
+        },
+        "skills": {
+            "parallelParking": "Parallel parking",
+            "laneChange": "Lane change",
+            "roundabout": "Roundabout",
+            "reverseParking": "Reverse parking",
+            "multiLaneRoundabout": "Multi-lane roundabout"
+        },
+        "weather": {
+            "temperature": "{temp}°C"
+        },
+        "notificationTypes": {
+            "reminder": "Reminder",
+            "info": "Information"
+        }
+    },
+    "documentsUpload": {
+        "title": "Add document",
+        "subtitle": "Upload a new document to your profile",
+        "documentType": {
+            "title": "Document type",
+            "description": "Select the type of document you want to upload",
+            "types": {
+                "drivingLicense": {
+                    "label": "Driving license",
+                    "description": "Scan or photo of the driving license"
+                },
+                "id": {
+                    "label": "ID card",
+                    "description": "Scan or photo of the ID card"
+                },
+                "medical": {
+                    "label": "Medical certificate",
+                    "description": "Certificate of no contraindications"
+                },
+                "certificate": {
+                    "label": "Certificate",
+                    "description": "Certificate of course completion"
+                },
+                "contract": {
+                    "label": "Contract",
+                    "description": "Training contract"
+                },
+                "other": {
+                    "label": "Other",
+                    "description": "Another document"
+                }
+            },
+            "required": "Required"
+        },
+        "details": {
+            "title": "Document details",
+            "description": "Provide information about the document",
+            "documentName": {
+                "label": "Document name *",
+                "placeholder": "e.g., Driving license"
+            },
+            "documentDescription": {
+                "label": "Description (optional)",
+                "placeholder": "Additional information about the document..."
+            },
+            "expiryDate": {
+                "label": "Expiration date"
+            }
+        },
+        "upload": {
+            "title": "File upload",
+            "description": "Drag and drop files or click to select",
+            "dropzone": {
+                "dragActive": "Drop files here...",
+                "dragInactive": "Drag and drop files or click to select",
+                "supportedFormats": "Supported formats: PDF, JPG, PNG (max. 10MB)"
+            },
+            "selectedFiles": "Selected files ({count})",
+            "fileSize": {
+                "bytes": "{size} B",
+                "kb": "{size} KB",
+                "mb": "{size} MB"
+            }
+        },
+        "buttons": {
+            "cancel": "Cancel",
+            "upload": "Upload documents",
+            "uploading": "Uploading..."
+        },
+        "success": {
+            "title": "Documents uploaded!",
+            "description": "Your documents have been uploaded and are awaiting verification",
+            "redirecting": "Redirecting to the documents list..."
+        },
+        "errors": {
+            "fileTooBig": "File {name} is too large (max 10MB)",
+            "invalidFormat": "File {name} has an invalid format",
+            "selectType": "Please select a document type",
+            "enterName": "Please enter a document name",
+            "addFiles": "Please add at least one file"
+        },
+        "toast": {
+            "error": "Error",
+            "success": "Success!",
+            "documentsUploaded": "Documents successfully uploaded"
+        },
+        "info": {
+            "verification": "The uploaded documents will be verified by the administration within 24 hours. You will receive a notification about the verification status."
+        }
+    },
+    "documents": {
+        "title": "My Documents",
+        "subtitle": "Manage your documents and certificates",
+        "addDocument": "Add Document",
+        "stats": {
+            "allDocuments": "All Documents",
+            "verified": "Verified",
+            "expiring": "Expiring",
+            "expired": "Expired",
+            "storageUsed": "Storage Used"
+        },
+        "types": {
+            "drivingLicense": "Driving License",
+            "id": "ID Card",
+            "medical": "Medical Certificate",
+            "invoice": "Invoice",
+            "contract": "Contract",
+            "certificate": "Certificate",
+            "other": "Other"
+        },
+        "categories": {
+            "personal": "Personal Documents",
+            "medical": "Medical Documents",
+            "financial": "Financial",
+            "contracts": "Contracts",
+            "certificates": "Certificates"
+        },
+        "status": {
+            "active": "Active",
+            "expired": "Expired",
+            "pending": "Pending",
+            "rejected": "Rejected"
+        },
+        "filters": {
+            "searchPlaceholder": "Search documents...",
+            "typeFilter": {
+                "label": "Document Type",
+                "all": "All Types"
+            },
+            "statusFilter": {
+                "label": "Status",
+                "all": "All",
+                "active": "Active",
+                "expired": "Expired",
+                "pending": "Pending",
+                "rejected": "Rejected"
+            }
+        },
+        "actions": {
+            "preview": "Preview",
+            "download": "Download",
+            "share": "Share",
+            "delete": "Delete"
+        },
+        "details": {
+            "verified": "Verified",
+            "size": "Size",
+            "added": "Added",
+            "expires": "Expires"
+        },
+        "descriptions": {
+            "drivingLicense": "Driving license category B",
+            "id": "Ukrainian citizen's passport",
+            "medical": "Certificate of no contraindications",
+            "invoice": "Invoice for {count} lessons package",
+            "contract": "Driving course contract for cat. B",
+            "certificate": "Certificate of theoretical part completion"
+        },
+        "deleteDialog": {
+            "title": "Delete Document",
+            "description": "Are you sure you want to delete the document \"{name}\"? This action cannot be undone.",
+            "cancel": "Cancel",
+            "confirm": "Delete Document"
+        },
+        "toast": {
+            "documentDeleted": "Document deleted",
+            "documentDeletedDescription": "The document was successfully deleted"
+        },
+        "alert": {
+            "expiringDocuments": "You have {count} document(s) expiring within 30 days. Don't forget to renew them."
+        },
+        "empty": {
+            "noDocuments": "No documents found"
+        },
+        "fileSize": {
+            "kb": "{size} KB",
+            "mb": "{size} MB",
+            "limit": "/ {limit} MB"
+        }
+    },
+    "instructorProfile": {
+        "notFound": "Instructor not found",
+        "verified": "Verified",
+        "experience": "{years} years of experience",
+        "reviews": "({count} reviews)",
+        "addToFavorites": "Add to Favorites",
+        "removeFromFavorites": "Remove from Favorites",
+        "bookLesson": "Book a Lesson",
+        "about": {
+            "title": "About the Instructor",
+            "specializations": "Specializations",
+            "languages": "Languages",
+            "categories": "Categories",
+            "achievements": "Achievements",
+            "instructorOfYear": "Instructor of the Year {year}",
+            "safeDrivingCertificate": "Safe Driving Certificate"
+        },
+        "stats": {
+            "title": "Statistics",
+            "lessons": "Lessons",
+            "students": "Students",
+            "successRate": "Success Rate",
+            "yearsWithUs": "Years with Us",
+            "detailedRatings": "Detailed Ratings",
+            "punctuality": "Punctuality",
+            "teaching": "Teaching",
+            "communication": "Communication",
+            "patience": "Patience"
+        },
+        "recentReviews": {
+            "title": "Recent Reviews",
+            "viewAllReviews": "View all reviews",
+            "examPreparation": "Exam Preparation",
+            "standardDriving": "Standard Driving",
+            "parking": "Parking"
+        },
+        "info": {
+            "title": "Information",
+            "pricePerHour": "Price per hour",
+            "currency": "{amount} UAH",
+            "sendMessage": "Send a Message"
+        },
+        "yourHistory": {
+            "title": "Your History",
+            "completedLessons": "Completed Lessons",
+            "lastLesson": "Last Lesson",
+            "viewLessonHistory": "View Lesson History"
+        },
+        "availability": {
+            "title": "Availability",
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday",
+            "unavailable": "Unavailable",
+            "responseTime": "Response Time",
+            "usuallyWithinHour": "usually within an hour"
+        },
+        "bio": {
+            "passionForTeaching": "I am a professional driving instructor with a passion for teaching. I specialize in preparing students for the state exam. My approach is based on building confidence behind the wheel and teaching safe driving techniques. I treat each student individually, adapting the pace and teaching method to their needs.",
+            "exams": "Exams",
+            "nightDriving": "Night Driving",
+            "highways": "Highways",
+            "cityTraffic": "City Traffic",
+            "categoryB": "Category B",
+            "categoryBAuto": "Category B Automatic",
+            "polish": "Polish",
+            "english": "English",
+            "ukrainian": "Ukrainian"
+        },
+        "reviewComments": {
+            "excellentInstructor": "Excellent instructor! Patient and professional. Thanks to him, I passed the exam on the first try.",
+            "greatContact": "Very good contact, clear explanations. I recommend him to everyone!",
+            "professionalApproach": "Professional approach, helpful tips. I learned parallel parking!"
+        }
+    },
+    "instructorFeedback": {
+        "title": "Rate the Lesson",
+        "subtitle": "Share your thoughts about the lesson",
+        "lessonNotFound": "Lesson not found",
+        "redirecting": "Redirecting to lesson history...",
+        "lessonInfo": {
+            "title": "Lesson Information"
+        },
+        "overallRating": {
+            "title": "Overall Rating",
+            "description": "How would you rate your driving lesson?",
+            "excellent": "Excellent! 🎉",
+            "veryGood": "Very Good! 👍",
+            "okay": "Okay 👌",
+            "couldBeBetter": "Could be Better 😐",
+            "poor": "Poor 😞"
+        },
+        "detailedRating": {
+            "title": "Detailed Rating",
+            "description": "Rate specific aspects of the lesson",
+            "punctuality": "Punctuality",
+            "teachingSkills": "Teaching Skills",
+            "communication": "Communication",
+            "patience": "Patience"
+        },
+        "recommendation": {
+            "title": "Recommendation",
+            "description": "Would you recommend this instructor to others?",
+            "yes": "Yes, I would definitely recommend",
+            "no": "No, I would not recommend"
+        },
+        "writtenFeedback": {
+            "title": "Your Feedback",
+            "description": "Share your thoughts (optional)",
+            "commentLabel": "Comment",
+            "commentPlaceholder": "What did you like the most? What could be improved?",
+            "areasToImprove": "Areas for Improvement",
+            "areasDescription": "Check the areas that need more attention"
+        },
+        "improvements": {
+            "moreParking": "More parking practice",
+            "moreCityDriving": "More city traffic driving",
+            "highwayDriving": "Highway driving training",
+            "defensiveDriving": "Defensive driving techniques",
+            "emergencyManeuvers": "Emergency maneuvers",
+            "difficultConditions": "Driving in difficult conditions",
+            "moreTheory": "More theory",
+            "examPreparation": "Exam preparation"
+        },
+        "buttons": {
+            "cancel": "Cancel",
+            "submit": "Submit Feedback",
+            "submitting": "Submitting..."
+        },
+        "success": {
+            "title": "Thank you for your feedback!",
+            "description": "Your feedback will help us improve the quality of our services"
+        },
+        "errors": {
+            "selectRating": "Please select an overall rating",
+            "selectRecommendation": "Please indicate if you recommend the instructor"
+        },
+        "toast": {
+            "thankYou": "Thank you for your feedback!",
+            "helpImprove": "Your feedback helps us improve our services",
+            "error": "Error"
+        },
+        "alert": {
+            "anonymous": "Your feedback is anonymous and will help us improve the quality of our services. The instructor will only receive constructive feedback."
+        },
+        "lessonTypes": {
+            "standard": "Standard Driving"
+        }
+    },
+    "instructorsList": {
+        "title": "Instructors",
+        "subtitle": "Meet our instructors and choose the best one for you",
+        "stats": {
+            "allInstructors": "All Instructors",
+            "myInstructors": "My Instructors",
+            "favorites": "Favorites"
+        },
+        "tabs": {
+            "all": "All",
+            "my": "My Instructors",
+            "favorites": "Favorites"
+        },
+        "filters": {
+            "title": "Filters",
+            "searchPlaceholder": "Search for an instructor or specialization...",
+            "specialization": "Specialization",
+            "allSpecializations": "All",
+            "exams": "Exams",
+            "parking": "Parking",
+            "city": "City",
+            "highways": "Highways",
+            "nightDriving": "Night Driving",
+            "beginners": "Beginners"
+        },
+        "card": {
+            "experience": "Experience",
+            "successRate": "Success Rate",
+            "pricePerHour": "Price/hr",
+            "currency": "{amount} UAH",
+            "yourLessons": "Your lessons",
+            "lastLesson": "Last",
+            "nearestSlot": "Nearest Slot",
+            "viewProfile": "View Profile",
+            "moreSpecializations": "+{count}",
+            "years": "{count} years"
+        },
+        "availability": {
+            "today": "Today {time}",
+            "tomorrow": "Tomorrow {time}",
+            "monday": "Monday {time}"
+        },
+        "bio": {
+            "professional": "A professional instructor with a passion for teaching. Specializing in preparing students for the state exam.",
+            "patient": "Patient and attentive. Teaches safe and confident driving in city traffic.",
+            "experienced": "An experienced instructor with an individual approach to each student."
+        },
+        "languages": {
+            "polish": "Polish",
+            "english": "English",
+            "ukrainian": "Ukrainian",
+            "german": "German"
+        },
+        "categories": {
+            "b": "B",
+            "bAutomatic": "B Automatic",
+            "c": "C"
+        },
+        "noResults": {
+            "title": "No instructors found",
+            "clearFilters": "Clear filters"
+        }
+    },
+    "conversation": {
+        "role": "Instructor",
+        "online": "Online",
+        "lastSeen": "Last seen",
+        "typing": "typing...",
+        "header": {
+            "mute": "Mute",
+            "star": "Star",
+            "archive": "Archive",
+            "deleteConversation": "Delete Conversation",
+            "searchInConversation": "Search in conversation"
+        },
+        "messageStatus": {
+            "sending": "Sending",
+            "sent": "Sent",
+            "delivered": "Delivered",
+            "read": "Read"
+        },
+        "dateLabels": {
+            "today": "Today",
+            "yesterday": "Yesterday"
+        },
+        "attachments": {
+            "downloadFile": "Download file",
+            "sharedFiles": "Shared Files",
+            "fileSize": "{size} MB",
+            "parkingInstructions": "Parallel_Parking_Instructions.pdf"
+        },
+        "lessonCard": {
+            "nextLesson": "Next Lesson",
+            "viewDetails": "View Details",
+            "cityDriving": "City traffic driving"
+        },
+        "quickReplies": {
+            "ok": "Okay, thanks!",
+            "seeYou": "See you there!",
+            "understood": "Understood",
+            "canIReschedule": "Can I reschedule?",
+            "needHelp": "Need help",
+            "great": "Great!"
+        },
+        "input": {
+            "placeholder": "Write a message...",
+            "attachFile": "Attach file",
+            "emoji": "Emoji",
+            "voiceMessage": "Voice message",
+            "recording": "Recording...",
+            "stopRecording": "Stop recording"
+        },
+        "info": {
+            "title": "Information",
+            "phone": "Phone",
+            "email": "Email",
+            "upcomingLessons": "Upcoming Lessons"
+        },
+        "messages": {
+            "greeting": "Hi! How was today's lesson?",
+            "progressResponse": "Hi! It was great, I feel like I'm making progress with parallel parking 😊",
+            "encouragement": "That's wonderful! You really did much better today than last time.",
+            "sendingMaterials": "I'm sending you some materials to review before your next lesson",
+            "thanksReview": "Thanks! I'll be sure to check them before Friday",
+            "seeYouFriday": "Sounds good, see you on Friday! 👍",
+            "greatJob": "You did a great job today! See you at the next lesson."
+        },
+        "contextMenu": {
+            "reply": "Reply",
+            "edit": "Edit",
+            "copy": "Copy",
+            "forward": "Forward",
+            "delete": "Delete"
+        }
+    },
+    "messagesList": {
+        "title": "Messages",
+        "allRead": "All Read",
+        "unreadCount": "{count} Unread",
+        "newMessage": "New Message",
+        "stats": {
+            "activeConversations": "Active Conversations",
+            "unread": "Unread",
+            "onlineNow": "Online Now",
+            "responseTime": "Response Time",
+            "minutes": "~15 min"
+        },
+        "announcements": {
+            "openingHoursChange": "Change in Opening Hours",
+            "openingHoursContent": "From September 1st, the office will be open from 8:00 AM to 6:00 PM",
+            "packagePromotion": "Package Promotion",
+            "packagePromotionContent": "Until the end of August - 15% discount on all packages!",
+            "important": "Important"
+        },
+        "conversations": {
+            "title": "Conversations",
+            "searchPlaceholder": "Search messages...",
+            "all": "All",
+            "unread": "Unread",
+            "starred": "Starred",
+            "archived": "Archived",
+            "groups": "Groups"
+        },
+        "filters": {
+            "all": "All",
+            "unread": "Unread",
+            "starred": "Starred",
+            "archived": "Archived"
+        },
+        "roles": {
+            "instructor": "Instructor",
+            "administration": "Administration"
+        },
+        "conversationTypes": {
+            "direct": "Direct",
+            "group": "Group",
+            "announcement": "Announcement"
+        },
+        "lastMessage": {
+            "greatJob": "You did a great job today! See you at the next lesson.",
+            "rememberMaterials": "Remember the materials for tomorrow",
+            "whoGoingExam": "Michael: Who's taking the exam on Friday?",
+            "invoiceSent": "Your invoice has been sent to your email",
+            "newOfficeHours": "📢 New office hours from September",
+            "canReschedule": "Can we reschedule the lesson to 4:00 PM?"
+        },
+        "groupNames": {
+            "theoryGroup": "Theory Group - August 2024",
+            "schoolAnnouncements": "School Announcements",
+            "supportOffice": "Support Office"
+        },
+        "timeAgo": {
+            "minutes": "{count} min ago",
+            "hours": "{count} hrs ago",
+            "yesterday": "Yesterday",
+            "days": "{count} days ago"
+        },
+        "emptyState": {
+            "selectConversation": "Select a conversation",
+            "clickToView": "Click on a conversation from the list to view messages",
+            "openLastConversation": "Open last conversation"
+        },
+        "quickActions": {
+            "title": "Quick Actions",
+            "starred": "Starred",
+            "archive": "Archive",
+            "muted": "Muted",
+            "trash": "Trash"
+        }
+    },
+    "buyPackage": {
+        "title": "Choose a Lesson Package",
+        "subtitle": "Save up to 20% by purchasing a package instead of individual lessons",
+        "limitedOffer": "Limited Offer!",
+        "limitedOfferText": "Buy any package by the end of the month and get an extra lesson for FREE!",
+        "packages": {
+            "starter": {
+                "name": "Starter Package",
+                "lessons": "lessons",
+                "validityDays": "Valid for {days} days",
+                "pricePerLesson": "{price} UAH per lesson"
+            },
+            "standard": {
+                "name": "Standard Package"
+            },
+            "premium": {
+                "name": "Premium Package"
+            },
+            "intensive": {
+                "name": "Intensive Package"
+            },
+            "mostPopular": "Most Popular",
+            "recommended": "Recommended",
+            "saving": "You save {percent}%",
+            "selected": "Selected",
+            "select": "Select",
+            "showMore": "Show more ({count})"
+        },
+        "features": {
+            "lessons": "{count} driving lessons",
+            "validity": "Valid for {days} days",
+            "flexibleSchedule": "Flexible schedule",
+            "freeMaterials": "Free study materials",
+            "priorityBooking": "Priority booking",
+            "weekendLessons": "Weekend lessons",
+            "instructorChoice": "Instructor choice",
+            "freeExamSimulation": "Free practice exam",
+            "dailyLessonsPossible": "Daily lessons possible",
+            "dedicatedInstructor": "Dedicated instructor",
+            "examSimulations": "2 practice exams",
+            "passGuarantee": "Pass guarantee"
+        },
+        "additionalOptions": {
+            "title": "Additional Options",
+            "description": "Personalize your package with extra services",
+            "weekend": {
+                "name": "Weekend lessons",
+                "description": "Ability to drive on weekends"
+            },
+            "night": {
+                "name": "Night driving",
+                "description": "Additional 2 night lessons"
+            },
+            "highway": {
+                "name": "Highway driving",
+                "description": "Additional lesson on the highway"
+            },
+            "exam": {
+                "name": "Practice exam",
+                "description": "Simulation of the state exam"
+            }
+        },
+        "settings": {
+            "autoRenewal": "Automatic renewal",
+            "autoRenewalDesc": "Get a 5% discount on your next package",
+            "giftMode": "Buying as a gift",
+            "giftModeDesc": "Send the package as a gift to someone",
+            "discount": "-5%"
+        },
+        "payment": {
+            "title": "Payment Method",
+            "creditCard": "Credit/debit card",
+            "creditCardDesc": "Visa, Mastercard, American Express",
+            "blik": "BLIK",
+            "blikDesc": "Fast payment with BLIK code",
+            "bankTransfer": "Bank Transfer",
+            "bankTransferDesc": "Przelewy24",
+            "installments": "0% Installments",
+            "installmentsDesc": "Split the payment into 3 months",
+            "popular": "Popular",
+            "noFee": "0% fee",
+            "securityNote": "All payments are secure and encrypted. Your data is protected by the highest security standards."
+        },
+        "summary": {
+            "title": "Summary",
+            "autoRenewalDiscount": "Auto-renewal discount",
+            "total": "Total",
+            "savingVsSingle": "You save {amount} UAH compared to single lessons",
+            "proceedToPayment": "Proceed to Payment",
+            "securePayment": "Secure payment",
+            "instantActivation": "Instant activation",
+            "joinStudents": "Join 5000+ satisfied students"
+        },
+        "benefits": {
+            "title": "Why buy a package?",
+            "saving": {
+                "title": "Save up to 20%",
+                "description": "compared to single lessons"
+            },
+            "flexibility": {
+                "title": "Flexible terms",
+                "description": "Book whenever you want"
+            },
+            "priority": {
+                "title": "Booking priority",
+                "description": "First choice of slots"
+            },
+            "guarantee": {
+                "title": "Satisfaction guarantee",
+                "description": "Or money back"
+            }
+        },
+        "dialog": {
+            "title": "Complete Payment",
+            "description": "We will redirect you to a secure payment gateway",
+            "processing": "Processing payment...",
+            "dontClose": "Do not close this window",
+            "amountToPay": "Amount to pay",
+            "selectedPackage": "Selected package",
+            "recipientData": "Gift recipient details",
+            "recipientEmail": "Recipient's email",
+            "message": "Message (optional)",
+            "cancel": "Cancel",
+            "payNow": "Pay Now",
+            "processing2": "Processing..."
+        },
+        "currency": "{amount} UAH"
+    },
+    "invoice": {
+        "title": "Invoice",
+        "back": "Back",
+        "downloadPDF": "Download PDF",
+        "print": "Print",
+        "share": "Share",
+        "sendByEmail": "Send by email",
+        "scanCode": "Scan code",
+        "status": {
+            "paid": "Paid",
+            "pending": "Pending payment",
+            "overdue": "Overdue"
+        },
+        "labels": {
+            "seller": "SELLER",
+            "buyer": "BUYER",
+            "issueDate": "Issue Date",
+            "dueDate": "Due Date",
+            "paymentDate": "Payment Date",
+            "paymentMethod": "Payment Method"
+        },
+        "company": {
+            "name": "DriveTime Driving School LLC",
+            "address": "ul. Puławska 145",
+            "city": "Warsaw",
+            "postalCode": "02-715",
+            "country": "Poland",
+            "nip": "NIP: PL5252525252",
+            "regon": "REGON: 123456789",
+            "bank": "mBank S.A.",
+            "accountLabel": "Transfer details",
+            "transferTitle": "Transfer title"
+        },
+        "customer": {
+            "studentId": "Student ID"
+        },
+        "paymentMethods": {
+            "creditCard": "Credit Card",
+            "bankTransfer": "Bank Transfer",
+            "blik": "BLIK",
+            "cash": "Cash"
+        },
+        "table": {
+            "number": "No.",
+            "description": "Description",
+            "quantity": "Quantity",
+            "unitPrice": "Unit Price",
+            "vat": "VAT",
+            "total": "Total",
+            "invoiceItems": "Invoice Items"
+        },
+        "items": {
+            "standardPackage": "Standard Package - 10 driving lessons",
+            "weekendLessons": "Weekend lessons - additional",
+            "studyMaterials": "Study materials (PDF)"
+        },
+        "summary": {
+            "netValue": "Net value",
+            "vat": "VAT (23%)",
+            "discount": "Discount",
+            "toPay": "To pay",
+            "paid": "Paid",
+            "remaining": "Remaining"
+        },
+        "notes": {
+            "thankYou": "Thank you for choosing our driving school. For any questions, please contact us.",
+            "electronicInvoice": "Invoice generated electronically and valid without a signature.",
+            "contact": "In case of questions, please contact us"
+        },
+        "invoicePaid": "Invoice Paid",
+        "date": "Date",
+        "or": "or"
+    },
+    "packages": {
+        "title": "My Packages",
+        "subtitle": "Manage your lesson packages",
+        "buyNewPackage": "Buy New Package",
+        "stats": {
+            "activeCredits": "Active Credits",
+            "from": "of",
+            "purchased": "purchased",
+            "used": "Used",
+            "averageUsage": "{percent}% on average",
+            "expired": "Expired",
+            "creditsLost": "credits lost",
+            "totalValue": "Total Value",
+            "saving": "saving {percent}%",
+            "currency": "{amount} UAH"
+        },
+        "warning": {
+            "title": "Package expiring soon!",
+            "description": "You have a package expiring within the next 2 weeks. Use your remaining credits or consider an extension."
+        },
+        "tabs": {
+            "active": "Active",
+            "expired": "Expired",
+            "statistics": "Statistics"
+        },
+        "packageCard": {
+            "purchasedOn": "Purchased on",
+            "validUntil": "Valid until",
+            "active": "Active",
+            "expiringIn": "Expiring in {days} days",
+            "usedCredits": "Used credits",
+            "of": "of",
+            "remainingCredits": "{count} credits remaining",
+            "percentUsed": "{percent}% used",
+            "recentLessons": "Recent lessons from this package",
+            "viewAll": "View all ({count})",
+            "useCredits": "Use Credits",
+            "extend": "Extend",
+            "completed": "Used up",
+            "expired": "Expired",
+            "creditsUsed": "{used} of {total} credits used",
+            "creditsLost": "{count} unused credits lost",
+            "buyAgain": "Buy Again"
+        },
+        "packageNames": {
+            "standard": "Standard Package",
+            "weekend": "Weekend Package",
+            "starter": "Starter Package",
+            "intensive": "Intensive Package"
+        },
+        "lessonTypes": {
+            "cityDriving": "City Driving",
+            "parking": "Parking",
+            "nightDriving": "Night Driving",
+            "highway": "Highway Driving",
+            "maneuvers": "Maneuvers"
+        },
+        "benefits": {
+            "flexibleSchedule": "Flexible schedule",
+            "freeMaterials": "Free materials",
+            "priorityBooking": "Priority booking",
+            "weekends": "Weekends",
+            "flexibleHours": "Flexible hours"
+        },
+        "empty": {
+            "noActivePackages": "You have no active packages",
+            "buyFirstPackage": "Buy your first package"
+        },
+        "statistics": {
+            "packageUsage": "Package Usage",
+            "averageUsage": "Average Usage",
+            "popularTime": "Most popular time",
+            "favoriteInstructor": "Favorite instructor",
+            "avgTimeToUse": "Avg. time to use up",
+            "days": "days",
+            "savings": "Savings",
+            "savedAmount": "saved thanks to packages",
+            "standardPrice": "Standard price",
+            "paid": "Paid",
+            "savingAmount": "Savings",
+            "recommendations": "Recommendations",
+            "recommendationText": "Based on your learning pace, we recommend the Premium 20 package—it will save you 420 UAH and provide credits for the next 2 months.",
+            "viewRecommended": "View recommended packages",
+            "loyaltyProgram": "Loyalty Program",
+            "status": "Status",
+            "silver": "Silver",
+            "gold": "Gold",
+            "points": "points",
+            "pointsToNext": "You're {count} points away from {status} status and a {discount}% discount on all packages",
+            "freeLesson": "You have 1 free lesson to use"
+        },
+        "dialogs": {
+            "extend": {
+                "title": "Extend Package",
+                "description": "Extend the validity of the \"{name}\" package for the next 30 days for only 99 UAH.",
+                "info": "You have {count} unused credits. The extension will allow you to keep all of them.",
+                "cancel": "Cancel",
+                "confirm": "Extend for 99 UAH"
+            },
+            "history": {
+                "title": "Package Usage History",
+                "description": "{name} - all lessons",
+                "close": "Close",
+                "credit": "credit"
+            }
+        }
+    },
+    "preferences": {
+        "title": "Learning Preferences",
+        "subtitle": "Tailor your learning experience to your needs",
+        "saveChanges": "Save Changes",
+        "cancel": "Cancel",
+        "unsavedChanges": "You have unsaved changes. Don't forget to save before you leave.",
+        "tabs": {
+            "learning": "Learning",
+            "schedule": "Schedule",
+            "notifications": "Notifications",
+            "goals": "Goals"
+        },
+        "learning": {
+            "timePreferences": "Time Preferences",
+            "whenPrefer": "When do you learn best?",
+            "preferredTime": "Preferred time of day",
+            "morning": "Morning (6:00-12:00)",
+            "afternoon": "Afternoon (12:00-18:00)",
+            "evening": "Evening (18:00-22:00)",
+            "lessonDuration": "Preferred lesson duration",
+            "minutes": "{count} min",
+            "intensity": "Learning intensity",
+            "relaxed": "Relaxed (1 lesson/week)",
+            "moderate": "Moderate (2-3 lessons/week)",
+            "intensive": "Intensive (4+ lessons/week)",
+            "instructorVehicle": "Instructor & Vehicle Preferences",
+            "preferredInstructor": "Preferred instructor",
+            "any": "Any",
+            "male": "Male",
+            "female": "Female",
+            "specific": "Specific instructor",
+            "preferredTransmission": "Preferred transmission",
+            "manual": "Manual",
+            "automatic": "Automatic",
+            "noPreference": "No preference",
+            "preferredLocation": "Preferred starting location",
+            "cityCenter": "City Center - Puławska 145",
+            "mokotow": "Mokotów - Wilanowska 89",
+            "ursynow": "Ursynów - Al. KEN 36",
+            "homePickup": "Home pickup",
+            "groupLessons": "Group Lessons",
+            "groupLessonsDesc": "I want to participate in theoretical group lessons"
+        },
+        "schedule": {
+            "weekAvailability": "Weekly Availability",
+            "selectDays": "Mark the days you are able to take lessons",
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday",
+            "weekends": "Weekends",
+            "weekendsDesc": "I'm also available on weekends",
+            "unavailablePeriods": "Unavailable periods",
+            "planVacations": "Plan your vacations and learning breaks",
+            "summerVacation": "Summer Vacation",
+            "active": "Active",
+            "addUnavailable": "Add an unavailable period"
+        },
+        "notifications": {
+            "channels": "Communication Channels",
+            "chooseHow": "Choose how you want to receive notifications",
+            "email": "Email",
+            "emailDesc": "Important announcements and summaries",
+            "sms": "SMS",
+            "smsDesc": "Lesson reminders",
+            "push": "Push Notifications",
+            "pushDesc": "Instant in-app notifications",
+            "types": "Notification Types",
+            "lessonReminders": "Lesson Reminders",
+            "hours": "{count} hrs",
+            "cancellations": "Cancellations and Rescheduling",
+            "lessonFeedback": "Lesson Feedback",
+            "progressReports": "Progress Reports",
+            "newsOffers": "News and Special Offers",
+            "soundSettings": "Sound Settings",
+            "notificationSound": "Notification sound",
+            "vibration": "Vibration"
+        },
+        "goals": {
+            "learningGoal": "Learning Goal",
+            "defineGoals": "Define your goals and priorities for driving lessons",
+            "plannedExamDate": "Planned exam date",
+            "dateHelp": "Based on this date, we'll adapt your learning intensity",
+            "weeklyLessons": "Lessons per week",
+            "focusAreas": "Focus Areas",
+            "chooseSkills": "Choose the skills you want to specifically practice",
+            "parking": "Parking",
+            "parkingDesc": "Parallel and perpendicular",
+            "highway": "Highway",
+            "highwayDesc": "High-speed driving",
+            "nightDriving": "Night Driving",
+            "nightDrivingDesc": "In limited visibility conditions",
+            "city": "City",
+            "cityDesc": "City traffic and intersections",
+            "maneuvers": "Maneuvers",
+            "maneuversDesc": "U-turns, reversing",
+            "hills": "Hills",
+            "hillsDesc": "Starting on a hill",
+            "additionalTraining": "Additional Training",
+            "defensiveDriving": "Defensive Driving",
+            "defensiveDesc": "Safe driving techniques",
+            "ecoDriving": "Eco-Driving",
+            "ecoDesc": "Economical driving"
+        }
+    },
+    "profile": {
+        "title": "My Profile",
+        "subtitle": "Manage your data and documents",
+        "preferences": "Preferences",
+        "editProfile": "Edit Profile",
+        "cancel": "Cancel",
+        "saveChanges": "Save Changes",
+        "activeStudent": "Active Student",
+        "stats": {
+            "courseProgress": "Course Progress",
+            "completedLessons": "Completed Lessons",
+            "drivingHours": "Driving Hours"
+        },
+        "tabs": {
+            "overview": "Overview",
+            "details": "Personal Details",
+            "documents": "Documents",
+            "achievements": "Achievements"
+        },
+        "overview": {
+            "courseInfo": "Course Information",
+            "startDate": "Start date",
+            "plannedExam": "Planned exam",
+            "category": "Category",
+            "pkkNumber": "PKK number",
+            "theoryExam": "Theory Exam",
+            "passed": "Passed",
+            "failed": "Failed",
+            "pending": "Pending",
+            "medicalCert": "Medical Certificate",
+            "validUntil": "Valid until",
+            "current": "Current",
+            "statistics": "Statistics",
+            "punctuality": "Punctuality",
+            "attendance": "Attendance",
+            "learningProgress": "Learning progress",
+            "skillsImprovement": "Skill improvement"
+        },
+        "details": {
+            "personalData": "Personal Data",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "email": "Email",
+            "phone": "Phone",
+            "birthDate": "Date of Birth",
+            "pkkNumber": "PKK number",
+            "address": "Residential address",
+            "streetAndNumber": "Street and number",
+            "postalCode": "Postal code",
+            "city": "City",
+            "emergencyContact": "Emergency Contact",
+            "contactName": "Name and surname",
+            "relation": "Relation",
+            "wife": "Wife",
+            "husband": "Husband",
+            "mother": "Mother",
+            "father": "Father",
+            "contactPhone": "Contact phone"
+        },
+        "documents": {
+            "title": "Documents",
+            "addDocument": "Add Document",
+            "uploadDate": "Uploaded",
+            "verified": "Verified",
+            "inVerification": "In verification",
+            "uploaded": "Uploaded",
+            "securityNote": "All documents are securely stored and only accessible to authorized personnel.",
+            "types": {
+                "id": "ID Card",
+                "medical": "Medical certificate",
+                "pkk": "PKK",
+                "other": "Other"
+            },
+            "dialog": {
+                "title": "Add Document",
+                "description": "Upload the necessary documents for verification",
+                "documentType": "Document type",
+                "selectType": "Select document type",
+                "file": "File",
+                "maxSize": "Maximum size: 10MB. Formats: PDF, JPG, PNG",
+                "upload": "Upload"
+            }
+        },
+        "achievements": {
+            "title": "Achievements",
+            "unlockedCount": "Unlocked {unlocked} of {total}",
+            "firstLesson": "First Lesson",
+            "lessons10": "10 Lessons",
+            "theoryPassed": "Theory Passed",
+            "parkingMaster": "Parking Master",
+            "nightRider": "Night Rider"
+        }
+    },
+    "profileSettings": {
+        "title": "Account Settings",
+        "subtitle": "Manage your account and security",
+        "tabs": {
+            "account": "Account",
+            "security": "Security",
+            "privacy": "Privacy",
+            "appearance": "Appearance",
+            "billing": "Billing"
+        },
+        "account": {
+            "title": "Account Information",
+            "description": "Manage your basic account information",
+            "email": "Email",
+            "phone": "Phone",
+            "username": "Username",
+            "verified": "Verified",
+            "verify": "Verify",
+            "usernameHint": "Used for login and profile URL",
+            "accountCreated": "Account created",
+            "lastLogin": "Last login",
+            "exportData": "Export Data",
+            "logout": "Logout"
+        },
+        "dangerZone": {
+            "title": "Danger Zone",
+            "description": "Irreversible account actions",
+            "deleteAccount": "Delete Account",
+            "deleteWarning": "Deleting your account is irreversible. All your data will be permanently deleted."
+        },
+        "security": {
+            "passwordTitle": "Change Password",
+            "lastChange": "Last changed: {date}",
+            "currentPassword": "Current password",
+            "newPassword": "New password",
+            "confirmPassword": "Confirm new password",
+            "passwordStrength": "Password strength",
+            "changePassword": "Change Password",
+            "passwordMismatch": "Passwords do not match",
+            "strength": {
+                "weak": "Weak",
+                "medium": "Medium",
+                "strong": "Strong"
+            },
+            "twoFactorTitle": "Two-Factor Authentication",
+            "twoFactorDescription": "An additional layer of security for your account",
+            "twoFactorEnabled": "2FA is enabled",
+            "twoFactorInfo": "Two-factor authentication significantly improves your account security.",
+            "enable2FA": "Enable Two-Factor Authentication",
+            "disable2FA": "Disable 2FA",
+            "changeMethod": "Change method",
+            "method": "Method",
+            "active": "Active",
+            "methods": {
+                "sms": "SMS",
+                "app": "App"
+            },
+            "sessionsTitle": "Active Sessions",
+            "sessionsDescription": "The devices you are logged into",
+            "lastUsed": "Last used",
+            "current": "Current",
+            "logout": "Logout",
+            "logoutAll": "Logout from all devices"
+        },
+        "privacy": {
+            "visibilityTitle": "Profile Visibility",
+            "visibilityDescription": "Control who can see your information",
+            "showProgress": "Show learning progress",
+            "showProgressDescription": "Instructors will see your statistics",
+            "visibility": {
+                "everyone": "All users",
+                "instructors": "Instructors and admin only",
+                "private": "Private (only me)"
+            },
+            "dataTitle": "Data and Analytics",
+            "analytics": "Usage Analytics",
+            "analyticsDescription": "Help us improve the app",
+            "marketing": "Marketing communications",
+            "marketingDescription": "Receive offers and promotions",
+            "sharePartners": "Share with partners",
+            "sharePartnersDescription": "For educational purposes only",
+            "dataRetention": "Data Retention",
+            "downloadData": "Download my data (GDPR)",
+            "retention": {
+                "minimum": "Minimum (3 months)",
+                "default": "Default (1 year)",
+                "extended": "Extended (3 years)"
+            }
+        },
+        "appearance": {
+            "themeTitle": "Theme",
+            "languageTitle": "Language & Region",
+            "language": "Language",
+            "dateFormat": "Date format",
+            "timeFormat": "Time format",
+            "time24h": "24-hour",
+            "time12h": "12-hour (AM/PM)",
+            "accessibilityTitle": "Accessibility",
+            "fontSize": "Font size",
+            "fontSizeSmall": "Small",
+            "fontSizeMedium": "Medium",
+            "fontSizeLarge": "Large",
+            "reduceAnimations": "Reduce animations",
+            "reduceAnimationsDescription": "For people sensitive to motion"
+        },
+        "billing": {
+            "paymentTitle": "Payment Method",
+            "creditCard": "Credit/Debit card",
+            "bankTransfer": "Bank transfer",
+            "autoRenew": "Auto-renew",
+            "autoRenewDescription": "Automatically renew packages",
+            "invoiceTitle": "Invoice Information",
+            "invoiceEmail": "Email for invoices",
+            "vatNumber": "VAT number (optional)",
+            "billingAddress": "Billing address",
+            "streetPlaceholder": "Street and number",
+            "postalCodePlaceholder": "Postal code",
+            "cityPlaceholder": "City",
+            "countryPlaceholder": "Country",
+            "saveBillingData": "Save billing data"
+        },
+        "languages": {
+            "polish": "Polish",
+            "english": "English",
+            "ukrainian": "Ukrainian",
+            "russian": "Russian"
+        },
+        "themes": {
+            "light": "Light",
+            "dark": "Dark",
+            "auto": "Auto"
+        },
+        "deleteDialog": {
+            "title": "Are you sure you want to delete your account?",
+            "description": "This action is irreversible. All your data, lesson history, and progress will be permanently deleted.",
+            "warning": "Warning!",
+            "consequence1": "You will lose access to all materials",
+            "consequence2": "Your bookings will be canceled",
+            "consequence3": "Unused credits will be forfeited",
+            "consequence4": "It will be impossible to recover the account",
+            "confirmationLabel": "Type \"DELETE ACCOUNT\" to confirm",
+            "confirmationPlaceholder": "DELETE ACCOUNT",
+            "cancel": "Cancel",
+            "confirmDelete": "Permanently Delete Account"
+        },
+        "twoFactorDialog": {
+            "title": "Set up Two-Factor Authentication",
+            "description": "Choose a method for receiving confirmation codes",
+            "sms": "SMS",
+            "smsDescription": "Receive codes on your phone",
+            "app": "App",
+            "appDescription": "Use Google Authenticator or similar",
+            "info": "After enabling 2FA, you will need to enter a code every time you log in.",
+            "cancel": "Cancel",
+            "enable": "Enable 2FA"
+        }
+    },
+    "achievements": {
+        "title": "Achievements",
+        "subtitle": "Earn badges and points for your progress",
+        "buttons": {
+            "share": "Share"
+        },
+        "level": {
+            "title": "Level {level}",
+            "totalPoints": "Total points earned: {points}",
+            "badge": "Lvl {level}",
+            "progress": "Progress to Level {nextLevel}",
+            "points": "points",
+            "pointsNeeded": "Earn {points} more points to level up"
+        },
+        "stats": {
+            "unlocked": "Unlocked",
+            "totalPoints": "Total Points",
+            "streak": "Day streak",
+            "legendary": "Legendary"
+        },
+        "categories": {
+            "all": "All",
+            "skills": "Skills",
+            "milestones": "Milestones",
+            "special": "Special",
+            "social": "Social"
+        },
+        "filters": {
+            "onlyUnlocked": "Only Unlocked"
+        },
+        "rarity": {
+            "common": "Common",
+            "rare": "Rare",
+            "epic": "Epic",
+            "legendary": "Legendary"
+        },
+        "progress": {
+            "label": "Progress"
+        },
+        "points": "points",
+        "upcoming": {
+            "title": "Close to unlocking"
+        },
+        "items": {
+            "firstDrive": {
+                "title": "First Drive",
+                "description": "Complete your first driving lesson"
+            },
+            "parkingMaster": {
+                "title": "Parking Master",
+                "description": "Perform 5 perfect parallel parks in a row"
+            },
+            "nightRider": {
+                "title": "Night Rider",
+                "description": "Complete 3 night driving lessons"
+            },
+            "theorist": {
+                "title": "The Theorist",
+                "description": "Pass the theory exam on your first attempt"
+            },
+            "roadMarathon": {
+                "title": "Road Marathon",
+                "description": "Drive a total of 500 km during your lessons"
+            },
+            "perfectionist": {
+                "title": "The Perfectionist",
+                "description": "Get a 10/10 rating on 5 consecutive lessons"
+            },
+            "speedDemon": {
+                "title": "Speed Demon",
+                "description": "Complete the highway driving course"
+            },
+            "helpingHand": {
+                "title": "Helping Hand",
+                "description": "Refer 3 friends to the driving school"
+            },
+            "earlyBird": {
+                "title": "Early Bird",
+                "description": "Complete 10 lessons that start before 8:00 AM"
+            },
+            "maneuverMaster": {
+                "title": "Maneuver Master",
+                "description": "Master all required maneuvers at 80%+ proficiency"
+            },
+            "goldenWheel": {
+                "title": "Golden Wheel",
+                "description": "Pass the practical exam on your first attempt"
+            },
+            "regularStudent": {
+                "title": "Regular Student",
+                "description": "Don't miss a single scheduled lesson for 2 months"
+            }
+        }
+    },
+    "examReadiness": {
+        "title": "Exam Readiness",
+        "subtitle": "Check if you are ready for the state exam",
+        "buttons": {
+            "downloadReport": "Download PDF Report",
+            "examSimulation": "Exam Simulation"
+        },
+        "overallReadiness": {
+            "title": "Overall Readiness",
+            "description": "Based on your results and progress"
+        },
+        "prediction": {
+            "title": "Readiness Prediction",
+            "expectedDate": "Expected Date",
+            "inDays": "in {days} days",
+            "recommendedLessons": "Recommended lessons",
+            "toFullReadiness": "To full readiness"
+        },
+        "examTypes": {
+            "theory": "Theory Exam",
+            "practical": "Practical Exam"
+        },
+        "status": {
+            "passed": "Passed",
+            "inPreparation": "In Preparation"
+        },
+        "requirements": {
+            "theoryTitle": "Theory Requirements",
+            "practicalTitle": "Practical Requirements",
+            "completed": "completed",
+            "mandatory": "Mandatory",
+            "theory": {
+                "courseCompleted": "Theory course completed",
+                "attendance": "Minimum 90% attendance",
+                "mockTest": "Mock test passed (min. 68/74 pts)",
+                "allModules": "All modules completed",
+                "examFee": "Exam fee paid"
+            },
+            "practical": {
+                "minHours": "Minimum 30 driving hours",
+                "theoryPassed": "Theory exam passed",
+                "allManeuvers": "All maneuvers mastered",
+                "cityDriving": "City traffic driving",
+                "outsideCity": "Outside city driving",
+                "internalExam": "Internal exam passed",
+                "examFee": "Exam fee paid"
+            }
+        },
+        "weakPoints": {
+            "title": "Areas for Improvement",
+            "lessons": "{count} lessons",
+            "turning": {
+                "skill": "Turning",
+                "issue": "Too wide turning radius",
+                "recommendation": "Practice in smaller spaces"
+            },
+            "intersections": {
+                "skill": "Intersections",
+                "issue": "Hesitation in decision-making",
+                "recommendation": "More practice during rush hours"
+            },
+            "highway": {
+                "skill": "Highway Driving",
+                "issue": "Uncertainty when changing lanes",
+                "recommendation": "An additional lesson on the highway"
+            }
+        },
+        "priority": {
+            "high": "High Priority",
+            "medium": "Medium Priority",
+            "low": "Low Priority"
+        },
+        "skills": {
+            "title": "Skill Matrix",
+            "required": "Required",
+            "categories": {
+                "maneuvers": "Maneuvers",
+                "cityDriving": "City Driving",
+                "drivingTechnique": "Driving Technique"
+            },
+            "parallelParking": "Parallel Parking",
+            "perpendicularParking": "Perpendicular Parking",
+            "turning": "Turning",
+            "hillStart": "Hill Start",
+            "intersections": "Intersections",
+            "rightOfWay": "Right of Way",
+            "roadSigns": "Road Signs",
+            "pedestrianCrossings": "Pedestrian Crossings",
+            "smoothDriving": "Smooth Driving",
+            "mirrorUse": "Mirror Use",
+            "gearChanging": "Gear Changing",
+            "braking": "Braking"
+        },
+        "recommendations": {
+            "title": "Recommendations",
+            "completeManeuvers": {
+                "title": "Complete required maneuvers",
+                "description": "You are missing 2 maneuvers for a complete exam set",
+                "action": "Book a maneuvers lesson"
+            },
+            "improveWeakPoints": {
+                "title": "Improve weak points",
+                "description": "Turning and intersections need more practice",
+                "action": "View practice plan"
+            },
+            "internalExam": {
+                "title": "Sign up for the internal exam",
+                "description": "Passing the internal exam will boost your confidence",
+                "action": "Check dates"
+            }
+        },
+        "examHistory": {
+            "title": "Exam History",
+            "type": "Exam Type",
+            "date": "Date",
+            "result": "Result",
+            "score": "Score",
+            "theoryMock": "Theory - Mock",
+            "theoryState": "Theory - State",
+            "practicalInternal": "Practical - Internal",
+            "passed": "Passed",
+            "failed": "Failed"
+        },
+        "tips": {
+            "title": "Tips before the exam",
+            "sleep": "Get a good night's sleep before the exam (min. 8 hours of sleep)",
+            "breakfast": "Eat a light breakfast, avoid heavy food",
+            "arriveEarly": "Arrive 15 minutes early to calm down",
+            "documents": "Bring all necessary documents with you",
+            "glasses": "Remember your glasses/lenses if you need them",
+            "stayCalm": "Stay calm and focused during the exam"
+        },
+        "actions": {
+            "bookPreparationLesson": "Book a preparation lesson",
+            "registerForExam": "Register for the exam"
+        }
+    },
+    "skills": {
+        "title": "Detailed Skills",
+        "subtitle": "Analysis and progress in each category",
+        "buttons": {
+            "exportReport": "Export Report",
+            "showHistory": "View History",
+            "hideDetails": "Collapse Details"
+        },
+        "stats": {
+            "averageScore": "Average Score",
+            "monthlyProgress": "+5% this month",
+            "bestSkill": "Best Skill",
+            "needsWork": "Needs Work",
+            "examReadiness": "Exam Readiness",
+            "successRate": "{rate}% Success Rate",
+            "skillsReady": "{ready}/{total} skills ready"
+        },
+        "categories": {
+            "all": "All",
+            "maneuvers": "Maneuvers",
+            "cityDriving": "City Driving",
+            "highways": "Highways",
+            "theory": "Theory"
+        },
+        "filters": {
+            "sortBy": "Sort By",
+            "byScore": "By Score",
+            "byProgress": "By Progress",
+            "byAttempts": "By Attempts"
+        },
+        "difficulty": {
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard"
+        },
+        "badges": {
+            "exam": "Exam"
+        },
+        "attempts": "{count} attempts",
+        "lastPracticed": "Last Practiced",
+        "items": {
+            "parallelParking": {
+                "name": "Parallel Parking",
+                "notes": "Good car control, work on distance estimation"
+            },
+            "perpendicularParking": {
+                "name": "Perpendicular Parking",
+                "notes": "Very good, keep up the pace"
+            },
+            "trafficJams": {
+                "name": "Driving in traffic jams",
+                "notes": "Keep a greater distance between cars"
+            },
+            "highwayLaneChange": {
+                "name": "Highway lane change",
+                "notes": "Remember about blind spots in the mirrors"
+            },
+            "roadSigns": {
+                "name": "Road signs",
+                "notes": "Excellent knowledge, almost perfect"
+            },
+            "rightOfWay": {
+                "name": "Right of way",
+                "notes": "Good knowledge of the rules"
+            },
+            "turning": {
+                "name": "U-turn",
+                "notes": "Needs more practice, too wide of an arc"
+            },
+            "nightDriving": {
+                "name": "Night driving",
+                "notes": "Improve your high beam usage"
+            }
+        },
+        "charts": {
+            "skillHistory": "Skill History Chart",
+            "comparison": "Comparison Chart"
+        },
+        "comparison": {
+            "title": "Comparison with other students"
+        }
+    },
+    "progress": {
+        "title": "My Progress",
+        "subtitle": "Track your achievements and skill development",
+        "overallProgress": {
+            "title": "Overall Progress",
+            "monthlyIncrease": "+5% this month",
+            "drivingHours": "Driving Hours",
+            "hoursUnit": "h",
+            "theoryCourse": "Theory Course",
+            "practicalSkills": "Practical Skills"
+        },
+        "stats": {
+            "completedLessons": {
+                "title": "Lessons Completed",
+                "subtitle": "This month"
+            },
+            "averageScore": {
+                "title": "Average Score",
+                "subtitle": "Out of 10"
+            },
+            "improvement": {
+                "title": "Improvement",
+                "subtitle": "Since start"
+            },
+            "ranking": {
+                "title": "Ranking Position",
+                "subtitle": "Among students"
+            }
+        },
+        "skillCategories": {
+            "maneuvers": "Maneuvers",
+            "driving": "Driving",
+            "theory": "Theory"
+        },
+        "skills": {
+            "parallelParking": "Parallel Parking",
+            "perpendicularParking": "Perpendicular Parking",
+            "cityDriving": "City Driving",
+            "highwayDriving": "Highway Driving",
+            "roadSigns": "Road Signs",
+            "rightOfWay": "Right of Way",
+            "turning": "U-turn",
+            "roundabout": "Roundabout"
+        },
+        "skillsSection": {
+            "title": "Skills",
+            "viewDetails": "View Details",
+            "topSkills": "Top Skills"
+        },
+        "achievementsSection": {
+            "title": "Recent Achievements",
+            "viewAll": "View All",
+            "points": "points"
+        },
+        "achievements": {
+            "firstNightDrive": {
+                "title": "First Night Drive",
+                "description": "Completed your first night driving lesson"
+            },
+            "parkingMaster": {
+                "title": "Parking Master",
+                "description": "5 perfect parks in a row"
+            },
+            "tenLessons": {
+                "title": "10 Lessons Completed",
+                "description": "Milestone - 10 lessons"
+            }
+        },
+        "milestonesSection": {
+            "title": "Milestones"
+        },
+        "milestones": {
+            "firstLesson": "First Lesson",
+            "tenHours": "10 Hours Driving",
+            "theoryPassed": "Theory Passed",
+            "twentyFiveHours": "25 Hours Driving",
+            "internalExam": "Internal Exam",
+            "stateExam": "State Exam"
+        },
+        "examReadiness": {
+            "title": "Exam Readiness",
+            "description": "Based on your scores and progress",
+            "readiness": "Readiness",
+            "strengths": "Strengths",
+            "strengthsList": "Theory, Perpendicular Parking",
+            "toImprove": "Needs Improvement",
+            "improvementList": "Highway Driving, U-turn",
+            "recommendation": "Recommendation",
+            "recommendationText": "5-7 more practical lessons",
+            "viewAnalysis": "View Detailed Analysis"
+        }
+    },
+    "availability": {
+        "title": "Available Slots",
+        "subtitle": "Find the perfect time for your next lesson",
+        "buttons": {
+            "quickBooking": "Quick Book",
+            "book": "Book",
+            "taken": "Taken",
+            "showMore": "Show More Slots"
+        },
+        "aiRecommendation": {
+            "title": "AI Recommendation",
+            "message": "Based on your progress, we recommend a parking lesson with Anna Kowalczyk on Friday at 9:00 AM. The weather will be favorable, and traffic will be light."
+        },
+        "filters": {
+            "title": "Filters",
+            "dateRange": "Date Range",
+            "instructor": "Instructor",
+            "allInstructors": "All Instructors",
+            "location": "Location",
+            "allLocations": "All Locations",
+            "timeOfDay": "Time of Day",
+            "allDay": "All Day",
+            "morning": "Morning (6:00-12:00)",
+            "afternoon": "Afternoon (12:00-18:00)",
+            "evening": "Evening (18:00-22:00)",
+            "priceRange": "Price Range",
+            "onlyDiscounts": "Only Discounts",
+            "onlyAvailable": "Only Available",
+            "clearFilters": "Clear Filters"
+        },
+        "sort": {
+            "label": "Sort",
+            "byTime": "By Time",
+            "byPrice": "By Price",
+            "byRating": "By Rating",
+            "byDistance": "By Distance"
+        },
+        "viewMode": {
+            "grid": "Grid",
+            "list": "List"
+        },
+        "days": {
+            "thursday": "Thursday",
+            "friday": "Friday"
+        },
+        "timeLabels": {
+            "morning": "Morning",
+            "forenoon": "Forenoon",
+            "afternoon": "Afternoon",
+            "evening": "Evening"
+        },
+        "weather": {
+            "sunny": "Sunny",
+            "cloudy": "Cloudy",
+            "rainy": "Rainy"
+        },
+        "weatherForecast": "Forecast",
+        "availableSlots": "available slots",
+        "of": "of",
+        "slotsAvailable": "slots available",
+        "popularDay": "Popular Day",
+        "popularSlotWarning": "Popular Slot - book fast!",
+        "currency": "UAH"
+    },
+    "reschedule": {
+        "title": "Reschedule Lesson",
+        "subtitle": "Choose a new slot for your lesson",
+        "warning": {
+            "title": "Warning - Rescheduling Fee",
+            "description": "Rescheduling a lesson less than 24 hours before it starts incurs a fee of 50 UAH. {hours} hours left until the lesson."
+        },
+        "freeReschedule": {
+            "title": "Free Reschedule",
+            "description": "You can reschedule this lesson without any extra charges. {hours} hours left until the lesson."
+        },
+        "currentLesson": {
+            "title": "Current Slot",
+            "lessonType": "Lesson Type"
+        },
+        "policy": {
+            "title": "Rescheduling Policy",
+            "free24h": "Free reschedule up to 24h before the lesson",
+            "fee12to24h": "50 UAH fee for rescheduling 12-24h before",
+            "fullFeeUnder12h": "Full fee for rescheduling <12h before"
+        },
+        "newSlot": {
+            "title": "Choose a new slot",
+            "description": "Available slots with the same instructor"
+        },
+        "days": {
+            "monday": "Monday",
+            "tuesday": "Tuesday",
+            "wednesday": "Wednesday",
+            "thursday": "Thursday",
+            "friday": "Friday",
+            "saturday": "Saturday",
+            "sunday": "Sunday"
+        },
+        "weather": {
+            "sunny": "Sunny",
+            "cloudy": "Cloudy",
+            "rainy": "Rainy",
+            "none": "No forecast"
+        },
+        "lessonTypes": {
+            "cityDriving": "City Driving",
+            "highway": "Highway",
+            "parking": "Parking",
+            "night": "Night Driving",
+            "maneuvers": "Maneuvers",
+            "examPrep": "Exam Prep"
+        },
+        "recommended": "Recommended",
+        "taken": "Taken",
+        "reasonLabel": "Reason for rescheduling (optional)",
+        "reasons": {
+            "sick": "Sickness",
+            "work": "Work obligations",
+            "personal": "Personal matters",
+            "weather": "Bad weather conditions",
+            "other": "Other reason"
+        },
+        "buttons": {
+            "cancel": "Cancel",
+            "reschedule": "Reschedule Lesson",
+            "processing": "Processing...",
+            "confirmReschedule": "Confirm Reschedule"
+        },
+        "confirmDialog": {
+            "title": "Reschedule Confirmation",
+            "description": "Are you sure you want to reschedule the lesson to the selected slot?",
+            "oldSlot": "Old Slot",
+            "newSlot": "New Slot",
+            "feeWarning": "A 50 UAH fee will be charged for rescheduling"
+        },
+        "otherInstructorsInfo": "Looking for a slot with another instructor?",
+        "viewAllSlots": "View all available slots"
+    },
+    "schedule": {
+        "title": "Lesson Calendar",
+        "subtitle": "Manage your driving schedule",
+        "buttons": {
+            "bookLesson": "Book a Lesson",
+            "export": "Export",
+            "share": "Share"
+        },
+        "filters": {
+            "allInstructors": "All Instructors",
+            "showCancelled": "Show Cancelled",
+            "availableSlots": "Available Slots"
+        },
+        "views": {
+            "month": "Month",
+            "week": "Week",
+            "list": "List"
+        },
+        "weekDays": {
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat",
+            "sun": "Sun"
+        },
+        "months": {
+            "january": "January",
+            "february": "February",
+            "march": "March",
+            "april": "April",
+            "may": "May",
+            "june": "June",
+            "july": "July",
+            "august": "August",
+            "september": "September",
+            "october": "October",
+            "november": "November",
+            "december": "December"
+        },
+        "lessonTypes": {
+            "standard": "Standard Driving",
+            "highway": "Highway Driving",
+            "parking": "Parking",
+            "night": "Night Driving",
+            "exam_prep": "Mock Exam",
+            "maneuvers": "Maneuvers",
+            "city": "City Driving"
+        },
+        "statuses": {
+            "confirmed": "Confirmed",
+            "pending": "Pending",
+            "cancelled": "Cancelled",
+            "completed": "Completed",
+            "in_progress": "In Progress"
+        },
+        "actions": {
+            "details": "Details",
+            "reschedule": "Reschedule",
+            "cancel": "Cancel"
+        },
+        "legend": {
+            "title": "Legend"
+        },
+        "stats": {
+            "thisWeek": "This Week",
+            "thisMonth": "This Month",
+            "totalHours": "Total Hours",
+            "inThisMonth": "in this month",
+            "nextLesson": "Next Lesson",
+            "lessons": "lessons",
+            "lessonsCount": "lessons"
+        },
+        "dialog": {
+            "title": "Lesson Details",
+            "instructor": "Instructor",
+            "date": "Date",
+            "time": "Time",
+            "location": "Location",
+            "vehicle": "Vehicle",
+            "credits": "Credits",
+            "notes": "Notes",
+            "close": "Close",
+            "reschedule": "Reschedule",
+            "cancel": "Cancel"
+        },
+        "credit": "credit",
+        "more": "more"
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to the most common questions",
+        "searchPlaceholder": "Search for a question...",
+        "wasHelpful": "Was this helpful?",
+        "seeAlso": "See also: {count} related questions",
+        "noResults": "No questions found matching your criteria",
+        "clearFilters": "Clear Filters",
+        "categories": {
+            "all": "All",
+            "allDescription": "All questions",
+            "bookings": "Bookings",
+            "bookingsDescription": "Booking and scheduling",
+            "payments": "Payments",
+            "paymentsDescription": "Payments and invoices",
+            "vehicles": "Vehicles",
+            "vehiclesDescription": "Vehicles and equipment",
+            "instructors": "Instructors",
+            "instructorsDescription": "Instructors and ratings",
+            "safety": "Safety",
+            "safetyDescription": "Safety and regulations",
+            "account": "Account",
+            "accountDescription": "Account settings"
+        },
+        "toast": {
+            "alreadyVoted": "Already Voted",
+            "alreadyVotedDescription": "You can rate each question only once",
+            "thankYou": "Thank you for your feedback",
+            "thankYouDescription": "Your rating helps us improve our FAQ"
+        },
+        "needHelp": {
+            "title": "Didn't find an answer?",
+            "description": "Our support team is ready to help you",
+            "createTicket": "Create a Ticket",
+            "helpCenter": "Help Center"
+        }
+    },
+    "support": {
+        "tickets": {
+            "title": "My Tickets",
+            "subtitle": "Manage your support tickets",
+            "newTicket": "New Ticket",
+            "stats": {
+                "allTickets": "All Tickets",
+                "open": "Open",
+                "inProgress": "In Progress",
+                "resolved": "Resolved"
+            },
+            "filters": {
+                "title": "Filters",
+                "searchPlaceholder": "Search tickets...",
+                "status": {
+                    "all": "All",
+                    "open": "Open",
+                    "inProgress": "In Progress",
+                    "resolved": "Resolved",
+                    "closed": "Closed"
+                },
+                "priority": {
+                    "all": "All",
+                    "low": "Low",
+                    "medium": "Medium",
+                    "high": "High",
+                    "critical": "Critical"
+                }
+            },
+            "status": {
+                "open": "Open",
+                "inProgress": "In Progress",
+                "resolved": "Resolved",
+                "closed": "Closed"
+            },
+            "priority": {
+                "low": "Low",
+                "medium": "Medium",
+                "high": "High",
+                "critical": "Critical"
+            },
+            "ticketCard": {
+                "created": "Created",
+                "lastReply": "Last Reply",
+                "attachments": "{count} attachment(s)",
+                "assignedTo": "Assigned to"
+            },
+            "actions": {
+                "viewDetails": "View Details",
+                "archive": "Archive"
+            },
+            "empty": {
+                "title": "You have no tickets yet",
+                "createFirst": "Create your first ticket"
+            },
+            "newDialog": {
+                "title": "New Ticket",
+                "description": "Describe your issue and our team will help you solve it",
+                "subject": "Subject *",
+                "subjectPlaceholder": "Brief description of the problem",
+                "category": "Category *",
+                "categoryPlaceholder": "Select a category",
+                "categories": {
+                    "booking": "Booking",
+                    "payment": "Payments",
+                    "instructor": "Instructors",
+                    "technical": "Technical Issues",
+                    "account": "Account",
+                    "other": "Other"
+                },
+                "priority": "Priority",
+                "message": "Problem Description *",
+                "messagePlaceholder": "Describe your issue in detail...",
+                "cancel": "Cancel",
+                "create": "Create Ticket",
+                "creating": "Creating..."
+            },
+            "detailsDialog": {
+                "reply": "Reply",
+                "replyPlaceholder": "Write your reply...",
+                "send": "Send",
+                "sending": "Sending...",
+                "you": "You"
+            },
+            "toast": {
+                "error": "Error",
+                "fillAllFields": "Fill in all required fields",
+                "created": "Ticket Created",
+                "createdDescription": "You will receive a response within 24 hours",
+                "replySent": "Reply Sent",
+                "replyDescription": "Your message has been added to the ticket"
+            },
+            "mockData": {
+                "bookingProblem": "Problem with booking a lesson",
+                "bookingError": "I can't book a lesson for next week. The system shows an error.",
+                "bookingReply": "Thank you for reaching out. We are checking the issue and will resolve it shortly.",
+                "paymentRefund": "Payment refund",
+                "instructorChange": "Instructor change"
+            }
+        },
+        "title": "Support Center",
+        "subtitle": "How can we help you? Find answers or contact us",
+        "search": {
+            "placeholder": "Search for help... e.g., 'how to cancel a lesson'"
+        },
+        "quickActions": {
+            "myTickets": {
+                "title": "My Tickets",
+                "description": "View the status of your tickets"
+            },
+            "faq": {
+                "title": "FAQ",
+                "description": "Most frequent questions"
+            },
+            "knowledgeBase": {
+                "title": "Knowledge Base",
+                "description": "Guides and instructions"
+            },
+            "liveChat": {
+                "title": "Live Chat",
+                "description": "Talk to a consultant"
+            }
+        },
+        "quickForm": {
+            "title": "Quick Ticket",
+            "description": "Describe your problem and we will get back to you",
+            "categoryLabel": "Problem Category",
+            "categoryPlaceholder": "Select a category",
+            "categories": {
+                "booking": "Booking Issue",
+                "payment": "Payment Issue",
+                "instructor": "Instructor Issue",
+                "technical": "Technical Issue",
+                "account": "Account Issue",
+                "other": "Other"
+            },
+            "messageLabel": "Problem Description",
+            "messagePlaceholder": "Describe your problem in detail...",
+            "submit": "Submit Ticket",
+            "submitting": "Submitting..."
+        },
+        "popularTopics": {
+            "title": "Popular Topics",
+            "description": "Most viewed help categories",
+            "bookings": "Bookings",
+            "payments": "Payments",
+            "vehicles": "Vehicles",
+            "instructors": "Instructors",
+            "safety": "Safety",
+            "account": "Account"
+        },
+        "contact": {
+            "title": "Contact",
+            "description": "Choose a convenient way to contact us",
+            "available": "Available",
+            "phone": {
+                "title": "Phone",
+                "value": "+48 123 456 789",
+                "description": "Mon-Fri 8:00 AM-8:00 PM, Sat 9:00 AM-3:00 PM"
+            },
+            "email": {
+                "title": "Email",
+                "value": "support@drivingschool.pl",
+                "description": "We respond within 24 hours"
+            },
+            "chat": {
+                "title": "Chat",
+                "value": "Available",
+                "description": "Mon-Fri 8:00 AM-8:00 PM"
+            },
+            "whatsapp": {
+                "title": "WhatsApp",
+                "value": "+48 123 456 789",
+                "description": "Quick responses"
+            }
+        },
+        "supportAgent": {
+            "title": "Need help?",
+            "description": "Our team is available 7 days a week",
+            "startChat": "Start a Chat"
+        },
+        "emergency": {
+            "title": "Urgent problem?",
+            "call": "Call"
+        },
+        "toast": {
+            "error": "Error",
+            "enterMessage": "Enter your message",
+            "selectCategory": "Select a problem category",
+            "ticketSent": "Ticket Sent",
+            "responseTime": "You will receive a response within 24 hours",
+            "chatStarted": "Chat started",
+            "consultantWillRespond": "A consultant will respond shortly"
+        }
+    },
+    "theoryClasses": {
+        "title": "Theoretical Class Schedule",
+        "subtitle": "Manage your attendance at classes",
+        "buttons": {
+            "exportCalendar": "Export to calendar",
+            "reminders": "Reminders",
+            "signUp": "Sign up",
+            "materials": "Materials",
+            "reschedule": "Arrange make-up class"
+        },
+        "stats": {
+            "attendance": "Attendance",
+            "attendanceCount": "{attended} of {total} classes",
+            "upcoming": "Upcoming",
+            "upcomingThisWeek": "This week",
+            "missed": "Missed",
+            "missedToMakeUp": "To make up",
+            "hours": "Hours",
+            "hoursCompleted": "Completed"
+        },
+        "filters": {
+            "label": "Filters",
+            "all": "All",
+            "types": {
+                "all": "All",
+                "lecture": "Lectures",
+                "workshop": "Workshops",
+                "practice": "Practical",
+                "online": "Online"
+            },
+            "statuses": {
+                "all": "All",
+                "upcoming": "Upcoming",
+                "completed": "Completed",
+                "missed": "Missed",
+                "cancelled": "Cancelled"
+            }
+        },
+        "sections": {
+            "upcoming": "Upcoming classes",
+            "completed": "Completed classes",
+            "missed": "Missed classes"
+        },
+        "status": {
+            "upcoming": "Upcoming",
+            "completed": "Completed",
+            "absent": "Absent",
+            "missed": "Missed",
+            "cancelled": "Cancelled"
+        },
+        "type": {
+            "lecture": "Lecture",
+            "workshop": "Workshop",
+            "practice": "Practical",
+            "online": "Online"
+        },
+        "class": {
+            "online": "Online",
+            "participants": "{current}/{max} participants",
+            "noSeats": "No seats available",
+            "result": "Result",
+            "score": "{score}%"
+        },
+        "warning": {
+            "title": "Warning! You have {count} missed classes",
+            "description": "Mandatory attendance is a minimum of 90%. Contact administration to arrange a make-up session."
+        },
+        "topics": {
+            "roadSigns": "Road Signs - Mandatory and Prohibitory",
+            "roadSignsDescription": "Overview of mandatory and prohibitory signs, practical examples",
+            "weatherConditions": "Driving in Various Weather Conditions",
+            "weatherConditionsDescription": "Techniques for driving in rain, snow, and fog",
+            "vehicleConstruction": "Vehicle Construction and Maintenance",
+            "vehicleConstructionDescription": "Practical workshop sessions - fluid checks, changing a wheel",
+            "firstAid": "First Aid",
+            "firstAidDescription": "Basics of providing first aid in a car accident",
+            "trafficRules": "Traffic Rules",
+            "trafficRulesDescription": "Basic rules, right of way",
+            "warningRoadSigns": "Road Signs - Warning",
+            "warningRoadSignsDescription": "Signs that warn of danger",
+            "parkingManeuvers": "Parking Maneuvers",
+            "parkingManeuversDescription": "Practical parking exercises",
+            "economicDriving": "Economic Driving",
+            "economicDrivingDescription": "Techniques for eco-driving"
+        },
+        "instructor": {
+            "prefix": {
+                "mgr": "M.Sc.",
+                "inz": "Eng.",
+                "dr": "Dr."
+            }
+        },
+        "location": {
+            "room": "Classroom",
+            "workshop": "Workshop",
+            "maneuveringArea": "Maneuvering area",
+            "online": "Online"
+        }
+    },
+    "theoryMaterials": {
+        "title": "Learning Materials",
+        "subtitle": "Documents, presentations, and video materials",
+        "buttons": {
+            "myLibrary": "My Library",
+            "loadMore": "Load more materials",
+            "viewAgain": "View again",
+            "open": "Open",
+            "watchAgain": "Watch again",
+            "continue": "Continue",
+            "start": "Start",
+            "repeatQuiz": "Repeat quiz",
+            "startQuiz": "Start quiz",
+            "download": "Download"
+        },
+        "search": {
+            "placeholder": "Search for materials..."
+        },
+        "categories": {
+            "all": "All",
+            "rules": "Traffic Rules",
+            "signs": "Road Signs",
+            "safety": "Safety",
+            "mechanics": "Vehicle Mechanics"
+        },
+        "types": {
+            "all": "All types",
+            "pdf": "PDF",
+            "video": "Video",
+            "presentation": "Presentations",
+            "quiz": "Quizzes"
+        },
+        "badges": {
+            "new": "New",
+            "premium": "Premium",
+            "pdf": "PDF",
+            "video": "Video",
+            "presentation": "Presentation",
+            "quiz": "Quiz"
+        },
+        "sections": {
+            "recentlyViewed": "Recently viewed",
+            "recommended": "Recommended for you"
+        },
+        "metadata": {
+            "pages": "{count} pages",
+            "views": "views",
+            "progress": "Progress",
+            "yourScore": "Your score"
+        },
+        "materials": {
+            "trafficCode": {
+                "title": "Traffic Code - Compendium",
+                "description": "A complete collection of traffic rules"
+            },
+            "warningSignsPresentation": {
+                "title": "Warning Signs - Presentation",
+                "description": "An interactive presentation of all warning signs"
+            },
+            "difficultConditions": {
+                "title": "Driving in Difficult Conditions - Video Course",
+                "description": "Techniques for driving in rain, snow, and fog"
+            },
+            "priorityQuiz": {
+                "title": "Quiz - Right of Way",
+                "description": "30 questions to test your knowledge of right of way rules"
+            },
+            "engineConstruction": {
+                "title": "Engine Construction - 3D Animation",
+                "description": "An animated presentation of the structure and operation of an engine"
+            },
+            "mandatoryProhibitorySignsPDF": {
+                "title": "Mandatory and Prohibitory Signs - PDF",
+                "description": "A detailed description of all mandatory and prohibitory signs"
+            },
+            "firstAidGuide": {
+                "title": "First Aid - Guidebook",
+                "description": "Basics of providing first aid"
+            },
+            "parkingManeuversTutorial": {
+                "title": "Parking Maneuvers - Tutorial",
+                "description": "Step-by-step guide to all types of parking"
+            }
+        }
+    },
+    "theoryTests": {
+        "title": "Theory Tests",
+        "subtitle": "Test your knowledge before the exam",
+        "buttons": {
+            "quickTest": "Quick test",
+            "startTest": "Start test",
+            "repeatTest": "Repeat test",
+            "viewAll": "View all"
+        },
+        "categories": {
+            "all": "All",
+            "official": "Official",
+            "practice": "Practice",
+            "exam": "Exam"
+        },
+        "difficulty": {
+            "all": "All levels",
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard"
+        },
+        "statistics": {
+            "title": "Statistics",
+            "attempts": "Attempts",
+            "passed": "Passed",
+            "averageScore": "Average score",
+            "bestCategory": "Best category",
+            "weakestCategory": "For improvement",
+            "streak": "Pass streak"
+        },
+        "filters": {
+            "category": "Category",
+            "level": "Level"
+        },
+        "testInfo": {
+            "questions": "Questions",
+            "timeLimit": "Time limit",
+            "passingScore": "Passing score",
+            "min": "min",
+            "points": "points",
+            "bestScore": "Best score",
+            "attempts": "Attempts",
+            "lastAttempt": "Last attempt"
+        },
+        "status": {
+            "passed": "Passed",
+            "failed": "Failed",
+            "new": "New",
+            "locked": "Locked"
+        },
+        "history": {
+            "title": "Test history",
+            "columns": {
+                "test": "Test",
+                "date": "Date",
+                "score": "Score",
+                "time": "Time",
+                "status": "Status"
+            }
+        },
+        "tests": {
+            "examWORD1": {
+                "title": "WORD Exam Test #1"
+            },
+            "roadSignsComplete": {
+                "title": "Road Signs - Full Test"
+            },
+            "rightOfWay": {
+                "title": "Right of Way"
+            },
+            "examWORD2": {
+                "title": "WORD Exam Test #2"
+            },
+            "dangerousSituations": {
+                "title": "Dangerous Situations"
+            },
+            "trafficRules": {
+                "title": "Traffic Rules"
+            },
+            "vehicleBasics": {
+                "title": "Vehicle Basics"
+            },
+            "fullExamPractice": {
+                "title": "Full Mock Exam"
+            }
+        },
+        "unlockRequirement": "Complete all practice tests",
+        "categoryNames": {
+            "roadSigns": "Road Signs",
+            "priority": "Priority"
+        }
+    },
+    "theory": {
+        "title": "Theoretical Course",
+        "subtitle": "Preparation for the theoretical exam",
+        "buttons": {
+            "practiceTests": "Practice tests",
+            "materials": "Materials",
+            "viewAll": "View all",
+            "allTests": "All tests",
+            "repeat": "Repeat",
+            "continue": "Continue",
+            "startNewTest": "Start new test"
+        },
+        "progress": {
+            "courseProgress": "Course progress",
+            "completedLessons": "Completed lessons",
+            "remaining": "{count} lessons remaining",
+            "theoryHours": "Theory hours",
+            "requiredMinimum": "Required minimum",
+            "averageScore": "Average score",
+            "fromTests": "From control tests"
+        },
+        "categories": {
+            "all": "All",
+            "rules": "Traffic Rules",
+            "signs": "Road Signs",
+            "safety": "Safety",
+            "mechanics": "Vehicle Mechanics"
+        },
+        "modules": {
+            "basicRules": {
+                "title": "Basic Traffic Rules",
+                "description": "Rules of right of way, speed limits"
+            },
+            "warningSignsModule": {
+                "title": "Road Signs - Warning",
+                "description": "Signs that warn of danger"
+            },
+            "mandatoryProhibitorySigns": {
+                "title": "Road Signs - Mandatory and Prohibitory",
+                "description": "Signs that mandate and prohibit"
+            },
+            "maneuversParking": {
+                "title": "Maneuvers and Parking",
+                "description": "Rules for performing maneuvers"
+            },
+            "drivingConditions": {
+                "title": "Driving in Various Conditions",
+                "description": "Driving at night, in rain, in winter"
+            },
+            "firstAid": {
+                "title": "First Aid",
+                "description": "Basics of providing first aid"
+            },
+            "vehicleMaintenance": {
+                "title": "Vehicle Construction and Maintenance",
+                "description": "Basic technical knowledge"
+            },
+            "documentsInsurance": {
+                "title": "Documents and Insurance",
+                "description": "Required documents, third-party liability, comprehensive"
+            },
+            "duration": "{hours} hrs.",
+            "lessons": "lessons"
+        },
+        "status": {
+            "completed": "Completed",
+            "inProgress": "In progress",
+            "locked": "Locked"
+        },
+        "lessonProgress": "Lesson progress",
+        "testResult": "Test result",
+        "nextClass": "Next class",
+        "upcomingClasses": {
+            "title": "Upcoming classes",
+            "types": {
+                "lecture": "lecture",
+                "workshop": "workshop",
+                "practice": "practical"
+            }
+        },
+        "recentTests": {
+            "title": "Recent tests",
+            "rulesTest": "Traffic Rules Test",
+            "warningSignsTest": "Warning Signs Test",
+            "maneuversTest": "Maneuvers Test"
+        },
+        "studyTips": {
+            "title": "Study Tips",
+            "tip1": "Study systematically - 30 minutes every day is better than 3 hours once a week",
+            "tip2": "Regularly solve practice tests to track your progress",
+            "tip3": "Pay special attention to road signs - they make up 30% of the exam questions",
+            "tip4": "The exam requires a minimum of 68 points out of 74 possible"
+        }
+    },
+    "studentLayout": {
+        "portal": "Student Portal",
+        "courseProgress": "Course progress",
+        "lessons": "lessons",
+        "nextLesson": "Next lesson",
+        "navigation": {
+            "dashboard": "Dashboard",
+            "myLessons": "My Lessons",
+            "booking": "Booking",
+            "progress": "Progress",
+            "materials": "Materials",
+            "payments": "Payments",
+            "documents": "Documents",
+            "messages": "Messages",
+            "help": "Help",
+            "profile": "Profile",
+            "settings": "Settings"
+        },
+        "bottomNav": {
+            "home": "Home",
+            "lessons": "Lessons",
+            "book": "Book",
+            "progress": "Progress",
+            "menu": "Menu"
+        },
+        "userMenu": {
+            "myProgress": "My progress",
+            "logout": "Logout"
+        },
+        "notifications": {
+            "title": "Notifications",
+            "nextLesson": {
+                "title": "Next lesson",
+                "message": "You have a lesson scheduled for tomorrow at 2:00 PM"
+            },
+            "newMaterials": {
+                "title": "New materials",
+                "message": "New learning materials have been added"
+            },
+            "paymentReminder": {
+                "title": "Payment reminder",
+                "message": "The deadline for your package payment is approaching"
+            },
+            "timeAgo": {
+                "minutes": "{count} mins ago",
+                "hours": "{count} hrs ago",
+                "days": "{count} days ago"
+            }
+        },
+        "languages": {
+            "pl": "Polish",
+            "uk": "Ukrainian",
+            "en": "English",
+            "ru": "Russian"
+        },
+        "role": "Student"
+    }
+}

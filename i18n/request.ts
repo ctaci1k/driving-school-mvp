@@ -17,14 +17,11 @@ export default getRequestConfig(async ({ locale }) => {
     try {
       // Завантажуємо всі JSON файли для обраної мови
       const modules = [
-        'common',
+        'admin',
         'auth', 
-        'navigation',
-        'forms',
-        'errors',
+        'common',
         'instructor',
         'student',
-        'admin'
       ];
 
       // Паралельне завантаження всіх модулів

@@ -1,0 +1,3049 @@
+{
+    "bookingDetails": {
+        "title": "Детали урока",
+        "id": "ID: #{id}",
+        "invoice": "Счет",
+        "notFound": {
+            "title": "Бронирование не найдено",
+            "description": "Бронирование с указанным ID не существует."
+        },
+        "info": {
+            "title": "Информация об уроке",
+            "date": "Дата",
+            "time": "Время",
+            "duration": "{minutes} минут",
+            "type": "Тип урока",
+            "notes": "Примечания"
+        },
+        "status": {
+            "upcoming": "Предстоящий",
+            "inProgress": "В процессе",
+            "completed": "Завершено",
+            "cancelled": "Отменено",
+            "noShow": "Не явился"
+        },
+        "instructor": {
+            "title": "Инструктор",
+            "experience": "{years} опыта",
+            "sendMessage": "Отправить сообщение"
+        },
+        "vehicle": {
+            "title": "Транспортное средство",
+            "year": "Год {year}",
+            "transmission": {
+                "manual": "Механика",
+                "automatic": "Автомат"
+            },
+            "fuel": {
+                "petrol": "Бензин",
+                "diesel": "Дизель",
+                "electric": "Электро",
+                "hybrid": "Гибрид"
+            }
+        },
+        "location": {
+            "title": "Место встречи",
+            "openInMaps": "Открыть в картах"
+        },
+        "payment": {
+            "title": "Оплата",
+            "status": "Статус",
+            "paid": "Оплачено",
+            "unpaid": "Не оплачено",
+            "method": "Метод",
+            "credits": "Кредиты ({count})",
+            "online": "Онлайн",
+            "cash": "Наличные",
+            "amount": "Сумма",
+            "payNow": "Оплатить сейчас",
+            "currency": "{amount} грн"
+        },
+        "actions": {
+            "title": "Действия",
+            "reschedule": "Перенести урок",
+            "cancel": "Отменить урок"
+        },
+        "cancelDialog": {
+            "title": "Отменить урок",
+            "description": "Вы уверены, что хотите отменить этот урок? Если вы отмените менее чем за 24 часа до начала, кредиты не будут возвращены.",
+            "reasonLabel": "Причина отмены (необязательно)",
+            "reasonPlaceholder": "Укажите причину отмены...",
+            "keep": "Нет, оставить",
+            "confirm": "Да, отменить",
+            "cancelling": "Отмена..."
+        },
+        "toast": {
+            "cancelled": "Урок отменен",
+            "cancelledDescription": "Ваш урок успешно отменен."
+        },
+        "alert": {
+            "cancellationInfo": "Вы можете отменить или перенести урок за 24 часа до его начала без потери кредитов."
+        },
+        "lessonTypes": {
+            "standard": "Стандартное вождение",
+            "highway": "Автомагистраль",
+            "city": "Городское вождение",
+            "parking": "Парковка",
+            "exam": "Подготовка к экзамену"
+        }
+    },
+    "bookingNew": {
+        "highway": {
+            "name": "Автомагистраль",
+            "description": "Обучение вождению на высоких скоростях"
+        },
+        "parking": {
+            "name": "Парковка",
+            "description": "Параллельная и перпендикулярная парковка"
+        },
+        "night": {
+            "name": "Ночное вождение",
+            "description": "Вождение в условиях ограниченной видимости"
+        },
+        "examPrep": {
+            "name": "Подготовка к экзамену",
+            "description": "Симуляция государственного экзамена"
+        },
+        "duration": "{minutes} мин",
+        "credit": "{count, plural, one {кредит} few {кредита} many {кредитов} other {кредитов}}",
+        "or": "или",
+        "currency": "{amount} грн",
+        "title": "Забронировать урок вождения",
+        "subtitle": "Выберите подходящее время и инструктора",
+        "steps": {
+            "lessonType": "Тип урока",
+            "instructor": "Инструктор",
+            "dateTime": "Дата и время",
+            "vehicleLocation": "Авто и место",
+            "confirmation": "Подтверждение"
+        },
+        "lessonTypes": {
+            "title": "Выберите тип урока",
+            "recommended": "Рекомендовано",
+            "standard": {
+                "name": "Стандартное вождение",
+                "description": "Базовый урок вождения в городе"
+            },
+            "highway": {
+                "name": "Автомагистраль",
+                "description": "Обучение вождению на высоких скоростях"
+            },
+            "parking": {
+                "name": "Парковка",
+                "description": "Параллельная и перпендикулярная парковка"
+            },
+            "night": {
+                "name": "Ночное вождение",
+                "description": "Вождение в условиях ограниченной видимости"
+            },
+            "examPrep": {
+                "name": "Подготовка к экзамену",
+                "description": "Симуляция государственного экзамена"
+            },
+            "duration": "{minutes} мин",
+            "credit": "{count, plural, one {кредит} few {кредита} many {кредитов} other {кредитов}}",
+            "or": "или",
+            "currency": "{amount} грн"
+        },
+        "instructor": {
+            "title": "Выберите инструктора",
+            "searchPlaceholder": "Поиск инструктора...",
+            "experience": "Опыт",
+            "successRate": "Успешность",
+            "specializations": "Специализации",
+            "nextAvailable": "Ближайшее время",
+            "reviews": "{count} отзывов",
+            "completedLessons": "Проведенных уроков",
+            "today": "Сегодня",
+            "tomorrow": "Завтра",
+            "years": "{count} лет",
+            "exams": "Экзамены",
+            "nightDriving": "Ночное вождение",
+            "highways": "Автомагистрали",
+            "parking": "Парковка",
+            "maneuvers": "Маневры",
+            "city": "Город"
+        },
+        "dateTime": {
+            "title": "Выберите дату и время",
+            "months": [
+                "Январь",
+                "Февраль",
+                "Март",
+                "Апрель",
+                "Май",
+                "Июнь",
+                "Июль",
+                "Август",
+                "Сентябрь",
+                "Октябрь",
+                "Ноябрь",
+                "Декабрь"
+            ],
+            "weekDays": [
+                "Пн",
+                "Вт",
+                "Ср",
+                "Чт",
+                "Пт",
+                "Сб",
+                "Вс"
+            ],
+            "noSlots": "Нет свободных",
+            "moreSlots": "+{count} еще",
+            "selectInstructor": "Выберите инструктора",
+            "sunday": "Воскресенье",
+            "unavailable": "Недоступно",
+            "selected": "Выбрано",
+            "available": "Доступно",
+            "availableHours": "Доступные часы",
+            "hours": "{count} часа",
+            "noSlotsForDay": "Нет доступных временных интервалов в этот день",
+            "selectInstructorFirst": "Сначала выберите инструктора, чтобы увидеть доступные интервалы",
+            "legendAvailable": "Доступно",
+            "legendSelected": "Выбрано",
+            "legendUnavailable": "Недоступно"
+        },
+        "vehicle": {
+            "title": "Доступные автомобили",
+            "transmission": {
+                "manual": "Механика",
+                "automatic": "Автомат"
+            },
+            "fuel": {
+                "petrol": "Бензин",
+                "diesel": "Дизель",
+                "electric": "Электро",
+                "hybrid": "Гибрид"
+            },
+            "features": {
+                "abs": "ABS",
+                "esp": "ESP",
+                "airCondition": "Кондиционер",
+                "parkingSensors": "Датчики парковки",
+                "rearCamera": "Камера заднего вида"
+            }
+        },
+        "location": {
+            "title": "Место начала",
+            "distance": "{distance} км"
+        },
+        "summary": {
+            "title": "Итог бронирования",
+            "lessonType": "Тип урока",
+            "instructor": "Инструктор",
+            "dateTime": "Дата и время",
+            "vehicle": "Автомобиль",
+            "location": "Место"
+        },
+        "payment": {
+            "title": "Метод оплаты",
+            "useCredits": "Использовать кредиты",
+            "creditsAvailable": "Доступно: {count} кредитов",
+            "creditsRequired": "{count} кредитов",
+            "payOnline": "Оплатить онлайн",
+            "paymentService": "Приват24"
+        },
+        "buttons": {
+            "back": "Назад",
+            "next": "Далее",
+            "confirm": "Подтвердить бронирование",
+            "confirming": "Подтверждение..."
+        },
+        "success": {
+            "title": "Бронирование подтверждено!",
+            "description": "Ваш урок успешно забронирован. Вы получите подтверждение на email.",
+            "date": "Дата",
+            "time": "Время",
+            "instructor": "Инструктор",
+            "redirecting": "Перенаправление к списку уроков..."
+        },
+        "alerts": {
+            "cancellationPolicy": "Вы можете отменить или перенести урок за 24 часа до его начала без потери кредитов."
+        }
+    },
+    "instructors": {
+        "schedule": {
+            "title": "Расписание инструкторов",
+            "subtitle": "Управление расписанием всех инструкторов",
+            "buttons": {
+                "print": "Печать",
+                "download": "Скачать",
+                "addLesson": "Добавить занятие",
+                "today": "Сегодня",
+                "showDetails": "Показать детали",
+                "edit": "Редактировать"
+            },
+            "stats": {
+                "totalLessons": "Всего занятий",
+                "confirmed": "Подтвержденные",
+                "pending": "Ожидающие",
+                "cancelled": "Отмененные",
+                "plannedHours": "Запланированные часы"
+            },
+            "viewModes": {
+                "week": "Неделя",
+                "day": "День",
+                "list": "Список"
+            },
+            "filters": {
+                "allInstructors": "Все инструкторы",
+                "allLocations": "Все локации"
+            },
+            "weekView": {
+                "weekNumber": "Неделя {number}",
+                "instructor": "Инструктор",
+                "id": "ID",
+                "free": "Свободно"
+            },
+            "dayView": {
+                "time": "Время"
+            },
+            "listView": {
+                "time": "Время",
+                "instructor": "Инструктор",
+                "student": "Ученик",
+                "lessonType": "Тип занятия",
+                "vehicle": "Автомобиль",
+                "location": "Локация",
+                "status": "Статус",
+                "actions": "Действия"
+            },
+            "lessonTypes": {
+                "practice": "Практика",
+                "track": "Площадка",
+                "city": "Город",
+                "parking": "Парковка",
+                "exam": "Экзамен",
+                "nightDriving": "Ночное вождение",
+                "highway": "Автострада"
+            },
+            "lessonStatus": {
+                "confirmed": "Подтверждено",
+                "pending": "Ожидает",
+                "cancelled": "Отменено"
+            },
+            "locations": {
+                "warsaw": "Варшава",
+                "trackKrakow": "Площадка Краков",
+                "trackGdansk": "Площадка Гданьск",
+                "examCenter": "Экзаменационный центр",
+                "meetingWarsaw": "Сбор: Варшава"
+            },
+            "weekDays": {
+                "monday": "Понедельник",
+                "tuesday": "Вторник",
+                "wednesday": "Среда",
+                "thursday": "Четверг",
+                "friday": "Пятница",
+                "saturday": "Суббота",
+                "sunday": "Воскресенье"
+            }
+        }
+    },
+    "bookingHistory": {
+        "title": "История уроков",
+        "subtitle": "Просматривайте свою историю поездок и прогресс",
+        "exportCSV": "Экспортировать CSV",
+        "statistics": {
+            "completedLessons": "Завершенные уроки",
+            "drivingHours": "Часы вождения",
+            "averageRating": "Средняя оценка",
+            "totalSpent": "Потрачено всего",
+            "currency": "{amount} грн"
+        },
+        "filters": {
+            "title": "Фильтры",
+            "searchPlaceholder": "Поиск по типу, инструктору или автомобилю...",
+            "status": {
+                "all": "Все",
+                "completed": "Завершенные",
+                "cancelled": "Отмененные",
+                "noShow": "Не явился"
+            }
+        },
+        "status": {
+            "completed": "Завершено",
+            "cancelled": "Отменено",
+            "noShow": "Не явился"
+        },
+        "lessonTypes": {
+            "standard": "Стандартное вождение",
+            "highway": "Автомагистраль",
+            "parking": "Парковка",
+            "night": "Ночное вождение",
+            "maneuvers": "Маневры",
+            "examPrep": "Подготовка к экзамену"
+        },
+        "table": {
+            "date": "Дата",
+            "type": "Тип",
+            "instructor": "Инструктор",
+            "vehicle": "Автомобиль",
+            "status": "Статус",
+            "rating": "Оценка",
+            "price": "Цена",
+            "actions": "Действия"
+        },
+        "duration": "{minutes} мин",
+        "noResults": "Не найдено уроков в истории",
+        "pagination": {
+            "previous": "Предыдущая",
+            "next": "Следующая"
+        }
+    },
+    "bookings": {
+        "title": "Мои уроки",
+        "subtitle": "Управляйте своими уроками вождения",
+        "bookLesson": "Забронировать урок",
+        "stats": {
+            "allLessons": "Все уроки",
+            "upcoming": "Предстоящие",
+            "completed": "Завершенные",
+            "drivingHours": "Часы вождения"
+        },
+        "filters": {
+            "title": "Фильтры",
+            "searchPlaceholder": "Поиск по инструктору или типу...",
+            "status": {
+                "label": "Статус",
+                "all": "Все",
+                "upcoming": "Предстоящие",
+                "completed": "Завершенные",
+                "cancelled": "Отмененные",
+                "noShow": "Не явился"
+            },
+            "period": {
+                "label": "Период",
+                "all": "Все",
+                "today": "Сегодня",
+                "week": "Эта неделя",
+                "month": "Этот месяц"
+            }
+        },
+        "status": {
+            "upcoming": "Предстоящий",
+            "completed": "Завершено",
+            "cancelled": "Отменено",
+            "noShow": "Не явился"
+        },
+        "payment": {
+            "unpaid": "Не оплачено",
+            "pay": "Оплатить",
+            "price": "Цена",
+            "currency": "{amount} грн"
+        },
+        "lessonTypes": {
+            "standard": "Стандартное вождение",
+            "parking": "Парковка",
+            "night": "Ночное вождение",
+            "highway": "Автомагистраль",
+            "maneuvers": "Маневры",
+            "examPrep": "Подготовка к экзамену"
+        },
+        "details": {
+            "instructor": "Инструктор",
+            "vehicle": "Автомобиль",
+            "location": "Локация"
+        },
+        "duration": "{minutes} мин",
+        "actions": {
+            "viewDetails": "Посмотреть детали",
+            "reschedule": "Перенести",
+            "cancel": "Отменить",
+            "downloadInvoice": "Скачать счет"
+        },
+        "empty": {
+            "noLessons": "Не найдено уроков",
+            "clearFilters": "Очистить фильтры"
+        },
+        "alert": {
+            "upcomingLessons": "У вас {count} предстоящих уроков. Помните о пунктуальности!"
+        }
+    },
+    "dashboard": {
+        "welcome": "Снова здравствуйте, {name}!",
+        "subtitle": "Ваш прогресс в обучении вождению",
+        "nextLesson": {
+            "title": "Следующий урок",
+            "timeRemaining": "Осталось",
+            "hours": "часов",
+            "details": "Детали",
+            "reschedule": "Перенести"
+        },
+        "stats": {
+            "credits": {
+                "title": "Кредиты",
+                "validUntil": "Действительны до {date}",
+                "buyMore": "Докупить кредиты"
+            },
+            "progress": {
+                "title": "Прогресс обучения",
+                "lessonsCompleted": "уроков завершено"
+            },
+            "examReadiness": {
+                "title": "Готовность к экзамену",
+                "almostReady": "Почти готовы!",
+                "checkDetails": "Проверить детали"
+            },
+            "nextSlot": {
+                "title": "Ближайшее свободное время",
+                "tomorrow": "Завтра",
+                "with": "с",
+                "book": "Забронировать"
+            }
+        },
+        "recentGrades": {
+            "title": "Последние оценки и отзывы",
+            "viewAll": "Просмотреть все оценки"
+        },
+        "quickActions": {
+            "title": "Быстрые действия",
+            "bookLesson": "Забронировать урок",
+            "viewSchedule": "Просмотреть расписание",
+            "studyMaterials": "Материалы для обучения",
+            "contactInstructor": "Связь с инструктором"
+        },
+        "notifications": {
+            "title": "Уведомления",
+            "lessonTomorrow": "Урок завтра в {time}",
+            "newMaterials": "Новые материалы для обучения",
+            "hoursAgo": "{count} ч. назад",
+            "dayAgo": "{count} день назад"
+        },
+        "weakPoints": {
+            "title": "Области для улучшения",
+            "practice": "Практиковать",
+            "improvementPlan": "План улучшения"
+        },
+        "achievements": {
+            "title": "Достижения",
+            "10lessons": "10 уроков",
+            "firstNightDrive": "Первая ночная поездка",
+            "parkingMaster": "Мастер парковки",
+            "viewAll": "Смотреть все"
+        },
+        "lessonTypes": {
+            "cityDriving": "Городское вождение",
+            "parking": "Парковка",
+            "nightDriving": "Ночное вождение",
+            "highway": "Автомагистраль",
+            "maneuvers": "Маневры"
+        },
+        "skills": {
+            "parallelParking": "Параллельная парковка",
+            "laneChange": "Смена полосы",
+            "roundabout": "Круговой перекресток",
+            "reverseParking": "Парковка задним ходом",
+            "multiLaneRoundabout": "Многополосный круговой перекресток"
+        },
+        "weather": {
+            "temperature": "{temp}°C"
+        },
+        "notificationTypes": {
+            "reminder": "Напоминание",
+            "info": "Информация"
+        }
+    },
+    "documentsUpload": {
+        "title": "Добавить документ",
+        "subtitle": "Загрузите новый документ в свой профиль",
+        "documentType": {
+            "title": "Тип документа",
+            "description": "Выберите тип документа, который хотите загрузить",
+            "types": {
+                "drivingLicense": {
+                    "label": "Водительское удостоверение",
+                    "description": "Скан или фото водительского удостоверения"
+                },
+                "id": {
+                    "label": "Паспорт",
+                    "description": "Скан или фото паспорта"
+                },
+                "medical": {
+                    "label": "Медицинская справка",
+                    "description": "Справка об отсутствии противопоказаний"
+                },
+                "certificate": {
+                    "label": "Сертификат",
+                    "description": "Сертификат об окончании курса"
+                },
+                "contract": {
+                    "label": "Договор",
+                    "description": "Договор на обучение"
+                },
+                "other": {
+                    "label": "Другое",
+                    "description": "Другой документ"
+                }
+            },
+            "required": "Обязательный"
+        },
+        "details": {
+            "title": "Детали документа",
+            "description": "Укажите информацию о документе",
+            "documentName": {
+                "label": "Название документа *",
+                "placeholder": "например, Водительское удостоверение"
+            },
+            "documentDescription": {
+                "label": "Описание (необязательно)",
+                "placeholder": "Дополнительная информация о документе..."
+            },
+            "expiryDate": {
+                "label": "Дата окончания срока действия"
+            }
+        },
+        "upload": {
+            "title": "Загрузка файлов",
+            "description": "Перетащите файлы или нажмите для выбора",
+            "dropzone": {
+                "dragActive": "Отпустите файлы здесь...",
+                "dragInactive": "Перетащите файлы или нажмите для выбора",
+                "supportedFormats": "Поддерживаемые форматы: PDF, JPG, PNG (макс. 10МБ)"
+            },
+            "selectedFiles": "Выбранные файлы ({count})",
+            "fileSize": {
+                "bytes": "{size} Б",
+                "kb": "{size} КБ",
+                "mb": "{size} МБ"
+            }
+        },
+        "buttons": {
+            "cancel": "Отменить",
+            "upload": "Загрузить документы",
+            "uploading": "Загрузка..."
+        },
+        "success": {
+            "title": "Документы загружены!",
+            "description": "Ваши документы загружены и ожидают проверки",
+            "redirecting": "Перенаправление к списку документов..."
+        },
+        "errors": {
+            "fileTooBig": "Файл {name} слишком большой (макс. 10МБ)",
+            "invalidFormat": "Файл {name} имеет неправильный формат",
+            "selectType": "Выберите тип документа",
+            "enterName": "Введите название документа",
+            "addFiles": "Добавьте по крайней мере один файл"
+        },
+        "toast": {
+            "error": "Ошибка",
+            "success": "Успех!",
+            "documentsUploaded": "Документы успешно загружены"
+        },
+        "info": {
+            "verification": "Загруженные документы будут проверены администрацией в течение 24 часов. Вы получите уведомление о статусе проверки."
+        }
+    },
+    "documents": {
+        "title": "Moje dokumenty",
+        "subtitle": "Zarządzaj swoimi dokumentami i certyfikatami",
+        "addDocument": "Dodaj dokument",
+        "stats": {
+            "allDocuments": "Wszystkie dokumenty",
+            "verified": "Zweryfikowane",
+            "expiring": "Wygasające",
+            "expired": "Przeterminowane",
+            "storageUsed": "Wykorzystana przestrzeń"
+        },
+        "types": {
+            "drivingLicense": "Prawo jazdy",
+            "id": "Dowód osobisty",
+            "medical": "Zaświadczenie lekarskie",
+            "invoice": "Faktura",
+            "contract": "Umowa",
+            "certificate": "Certyfikat",
+            "other": "Inne"
+        },
+        "categories": {
+            "personal": "Dokumenty osobiste",
+            "medical": "Dokumenty medyczne",
+            "financial": "Finanse",
+            "contracts": "Umowy",
+            "certificates": "Certyfikaty"
+        },
+        "status": {
+            "active": "Aktywny",
+            "expired": "Przeterminowany",
+            "pending": "Oczekujący",
+            "rejected": "Odrzucony"
+        },
+        "filters": {
+            "searchPlaceholder": "Szukaj dokumentów...",
+            "typeFilter": {
+                "label": "Typ dokumentu",
+                "all": "Wszystkie typy"
+            },
+            "statusFilter": {
+                "label": "Status",
+                "all": "Wszystkie",
+                "active": "Aktywne",
+                "expired": "Przeterminowane",
+                "pending": "Oczekujące",
+                "rejected": "Odrzucone"
+            }
+        },
+        "actions": {
+            "preview": "Podgląd",
+            "download": "Pobierz",
+            "share": "Udostępnij",
+            "delete": "Usuń"
+        },
+        "details": {
+            "verified": "Zweryfikowany",
+            "size": "Rozmiar",
+            "added": "Dodano",
+            "expires": "Wygasa"
+        },
+        "descriptions": {
+            "drivingLicense": "Prawo jazdy kat. B",
+            "id": "Dowód osobisty",
+            "medical": "Zaświadczenie o braku przeciwwskazań",
+            "invoice": "Faktura za pakiet {count} lekcji",
+            "contract": "Umowa na kurs prawa jazdy kat. B",
+            "certificate": "Certyfikat ukończenia części teoretycznej"
+        },
+        "deleteDialog": {
+            "title": "Usuń dokument",
+            "description": "Czy na pewno chcesz usunąć dokument \"{name}\"? Tej operacji nie można cofnąć.",
+            "cancel": "Anuluj",
+            "confirm": "Usuń dokument"
+        },
+        "toast": {
+            "documentDeleted": "Dokument usunięty",
+            "documentDeletedDescription": "Dokument został pomyślnie usunięty"
+        },
+        "alert": {
+            "expiringDocuments": "Masz {count} dokument(y), które wygasają w ciągu 30 dni. Pamiętaj, aby je odnowić."
+        },
+        "empty": {
+            "noDocuments": "Nie znaleziono dokumentów"
+        },
+        "fileSize": {
+            "kb": "{size} KB",
+            "mb": "{size} MB",
+            "limit": "/ {limit} MB"
+        }
+    },
+    "instructorProfile": {
+        "notFound": "Nie znaleziono instruktora",
+        "verified": "Zweryfikowany",
+        "experience": "{years} lat doświadczenia",
+        "reviews": "({count} opinii)",
+        "addToFavorites": "Dodaj do ulubionych",
+        "removeFromFavorites": "Usuń z ulubionych",
+        "bookLesson": "Zarezerwuj lekcję",
+        "about": {
+            "title": "O instruktorze",
+            "specializations": "Specjalizacje",
+            "languages": "Języki",
+            "categories": "Kategorie",
+            "achievements": "Osiągnięcia",
+            "instructorOfYear": "Instruktor roku {year}",
+            "safeDrivingCertificate": "Certyfikat bezpiecznej jazdy"
+        },
+        "stats": {
+            "title": "Statystyki",
+            "lessons": "Lekcji",
+            "students": "Kursantów",
+            "successRate": "Zdawalność",
+            "yearsWithUs": "Lat z nami",
+            "detailedRatings": "Szczegółowe oceny",
+            "punctuality": "Punktualność",
+            "teaching": "Nauczanie",
+            "communication": "Komunikacja",
+            "patience": "Cierpliwość"
+        },
+        "recentReviews": {
+            "title": "Ostatnie opinie",
+            "viewAllReviews": "Zobacz wszystkie opinie",
+            "examPreparation": "Przygotowanie do egzaminu",
+            "standardDriving": "Standardowa jazda",
+            "parking": "Parkowanie"
+        },
+        "info": {
+            "title": "Informacje",
+            "pricePerHour": "Cena za godzinę",
+            "currency": "{amount} zł",
+            "sendMessage": "Wyślij wiadomość"
+        },
+        "yourHistory": {
+            "title": "Twoja historia",
+            "completedLessons": "Ukończone lekcje",
+            "lastLesson": "Ostatnia lekcja",
+            "viewLessonHistory": "Zobacz historię lekcji"
+        },
+        "availability": {
+            "title": "Dostępność",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "unavailable": "Niedostępny",
+            "responseTime": "Czas odpowiedzi",
+            "usuallyWithinHour": "zazwyczaj w ciągu godziny"
+        },
+        "bio": {
+            "passionForTeaching": "Jestem profesjonalnym instruktorem nauki jazdy z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego. Moje podejście opiera się na budowaniu pewności siebie za kierownicą i nauczaniu bezpiecznych technik jazdy. Każdego studenta traktuję indywidualnie, dostosowując tempo i metodę nauki do jego potrzeb.",
+            "exams": "Egzaminy",
+            "nightDriving": "Jazda nocą",
+            "highways": "Autostrady",
+            "cityTraffic": "Ruch miejski",
+            "categoryB": "Kategoria B",
+            "categoryBAuto": "Kategoria B automat",
+            "polish": "Polski",
+            "english": "Angielski",
+            "ukrainian": "Ukraiński"
+        },
+        "reviewComments": {
+            "excellentInstructor": "Świetny instruktor! Cierpliwy i profesjonalny. Dzięki niemu zdałem egzamin za pierwszym razem.",
+            "greatContact": "Bardzo dobry kontakt, jasne tłumaczenia. Polecam każdemu!",
+            "professionalApproach": "Profesjonalne podejście, pomocne wskazówki. Nauczyłem się parkowania równoległego!"
+        }
+    },
+    "instructorFeedback": {
+        "title": "Oceń lekcję",
+        "subtitle": "Podziel się swoją opinią na temat lekcji",
+        "lessonNotFound": "Nie znaleziono lekcji",
+        "redirecting": "Przekierowywanie do historii lekcji...",
+        "lessonInfo": {
+            "title": "Informacje o lekcji"
+        },
+        "overallRating": {
+            "title": "Ogólna ocena",
+            "description": "Jak oceniasz swoją lekcję jazdy?",
+            "excellent": "Doskonale! 🎉",
+            "veryGood": "Bardzo dobrze! 👍",
+            "okay": "W porządku 👌",
+            "couldBeBetter": "Mogło być lepiej 😐",
+            "poor": "Słabo 😞"
+        },
+        "detailedRating": {
+            "title": "Szczegółowa ocena",
+            "description": "Oceń poszczególne aspekty lekcji",
+            "punctuality": "Punktualność",
+            "teachingSkills": "Umiejętności nauczania",
+            "communication": "Komunikacja",
+            "patience": "Cierpliwość"
+        },
+        "recommendation": {
+            "title": "Rekomendacja",
+            "description": "Czy poleciłbyś tego instruktora innym?",
+            "yes": "Tak, zdecydowanie polecam",
+            "no": "Nie, nie polecam"
+        },
+        "writtenFeedback": {
+            "title": "Twoja opinia",
+            "description": "Podziel się swoimi przemyśleniami (opcjonalnie)",
+            "commentLabel": "Komentarz",
+            "commentPlaceholder": "Co Ci się najbardziej podobało? Co można poprawić?",
+            "areasToImprove": "Obszary do poprawy",
+            "areasDescription": "Zaznacz obszary, które wymagają większej uwagi"
+        },
+        "improvements": {
+            "moreParking": "Więcej praktyki parkowania",
+            "moreCityDriving": "Więcej jazdy w ruchu miejskim",
+            "highwayDriving": "Nauka jazdy po autostradzie",
+            "defensiveDriving": "Techniki jazdy defensywnej",
+            "emergencyManeuvers": "Manewry awaryjne",
+            "difficultConditions": "Jazda w trudnych warunkach",
+            "moreTheory": "Więcej teorii",
+            "examPreparation": "Przygotowanie do egzaminu"
+        },
+        "buttons": {
+            "cancel": "Anuluj",
+            "submit": "Prześlij opinię",
+            "submitting": "Wysyłanie..."
+        },
+        "success": {
+            "title": "Dziękujemy za Twoją opinię!",
+            "description": "Twoja opinia pomoże nam poprawić jakość naszych usług"
+        },
+        "errors": {
+            "selectRating": "Proszę wybrać ogólną ocenę",
+            "selectRecommendation": "Proszę wskazać, czy polecasz instruktora"
+        },
+        "toast": {
+            "thankYou": "Dziękujemy za opinię!",
+            "helpImprove": "Twoja opinia pomoże nam ulepszyć nasze usługi",
+            "error": "Błąd"
+        },
+        "alert": {
+            "anonymous": "Twoja opinia jest anonimowa i pomoże nam poprawić jakość naszych usług. Instruktor otrzyma tylko konstruktywną informację zwrotną."
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda"
+        }
+    },
+    "instructorsList": {
+        "title": "Instruktorzy",
+        "subtitle": "Poznaj naszych instruktorów i wybierz najlepszego dla siebie",
+        "stats": {
+            "allInstructors": "Wszyscy instruktorzy",
+            "myInstructors": "Moi instruktorzy",
+            "favorites": "Ulubieni"
+        },
+        "tabs": {
+            "all": "Wszyscy",
+            "my": "Moi instruktorzy",
+            "favorites": "Ulubieni"
+        },
+        "filters": {
+            "title": "Filtry",
+            "searchPlaceholder": "Szukaj instruktora lub specjalizacji...",
+            "specialization": "Specjalizacja",
+            "allSpecializations": "Wszystkie",
+            "exams": "Egzaminy",
+            "parking": "Parkowanie",
+            "city": "Miasto",
+            "highways": "Autostrady",
+            "nightDriving": "Jazda nocą",
+            "beginners": "Początkujący"
+        },
+        "card": {
+            "experience": "Doświadczenie",
+            "successRate": "Zdawalność",
+            "pricePerHour": "Cena/godz",
+            "currency": "{amount} zł",
+            "yourLessons": "Twoje lekcje",
+            "lastLesson": "Ostatnia",
+            "nearestSlot": "Najbliższy termin",
+            "viewProfile": "Zobacz profil",
+            "moreSpecializations": "+{count}",
+            "years": "{count} lat"
+        },
+        "availability": {
+            "today": "Dziś {time}",
+            "tomorrow": "Jutro {time}",
+            "monday": "Poniedziałek {time}"
+        },
+        "bio": {
+            "professional": "Profesjonalny instruktor z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego.",
+            "patient": "Cierpliwy i uważny. Uczę bezpiecznej i pewnej jazdy w ruchu miejskim.",
+            "experienced": "Doświadczony instruktor z indywidualnym podejściem do każdego studenta."
+        },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski",
+            "ukrainian": "Ukraiński",
+            "german": "Niemiecki"
+        },
+        "categories": {
+            "b": "B",
+            "bAutomatic": "B automat",
+            "c": "C"
+        },
+        "noResults": {
+            "title": "Nie znaleziono instruktorów",
+            "clearFilters": "Wyczyść filtry"
+        }
+    },
+    "conversation": {
+        "role": "Instruktor",
+        "online": "Online",
+        "lastSeen": "Ostatnio widziany",
+        "typing": "pisze...",
+        "header": {
+            "mute": "Wycisz",
+            "star": "Oznacz gwiazdką",
+            "archive": "Archiwizuj",
+            "deleteConversation": "Usuń rozmowę",
+            "searchInConversation": "Szukaj w rozmowie"
+        },
+        "messageStatus": {
+            "sending": "Wysyłanie",
+            "sent": "Wysłano",
+            "delivered": "Dostarczono",
+            "read": "Przeczytano"
+        },
+        "dateLabels": {
+            "today": "Dziś",
+            "yesterday": "Wczoraj"
+        },
+        "attachments": {
+            "downloadFile": "Pobierz plik",
+            "sharedFiles": "Wspólne pliki",
+            "fileSize": "{size} MB",
+            "parkingInstructions": "Parkowanie_równoległe_instrukcja.pdf"
+        },
+        "lessonCard": {
+            "nextLesson": "Następna lekcja",
+            "viewDetails": "Zobacz szczegóły",
+            "cityDriving": "Jazda w ruchu miejskim"
+        },
+        "quickReplies": {
+            "ok": "Dobrze, dziękuję!",
+            "seeYou": "Do zobaczenia!",
+            "understood": "Zrozumiałem",
+            "canIReschedule": "Czy mogę przełożyć?",
+            "needHelp": "Potrzebuję pomocy",
+            "great": "Świetnie!"
+        },
+        "input": {
+            "placeholder": "Napisz wiadomość...",
+            "attachFile": "Załącz plik",
+            "emoji": "Emoji",
+            "voiceMessage": "Wiadomość głosowa",
+            "recording": "Nagrywanie...",
+            "stopRecording": "Zatrzymaj nagrywanie"
+        },
+        "info": {
+            "title": "Informacje",
+            "phone": "Telefon",
+            "email": "Email",
+            "upcomingLessons": "Nadchodzące lekcje"
+        },
+        "messages": {
+            "greeting": "Cześć! Jak poszła dzisiejsza lekcja?",
+            "progressResponse": "Cześć! Bardzo dobrze, czuję, że robię postępy w parkowaniu równoległym 😊",
+            "encouragement": "Świetnie! Naprawdę dziś poszło Ci o wiele lepiej niż ostatnio.",
+            "sendingMaterials": "Wysyłam Ci materiały do powtórzenia przed kolejną lekcją",
+            "thanksReview": "Dzięki! Na pewno przejrzę przed piątkiem",
+            "seeYouFriday": "Dobrze, do zobaczenia w piątek! 👍",
+            "greatJob": "Świetnie sobie dziś poradziłeś! Do zobaczenia na kolejnej lekcji."
+        },
+        "contextMenu": {
+            "reply": "Odpowiedz",
+            "edit": "Edytuj",
+            "copy": "Kopiuj",
+            "forward": "Przekaż dalej",
+            "delete": "Usuń"
+        }
+    },
+    "messagesList": {
+        "title": "Wiadomości",
+        "allRead": "Wszystkie przeczytane",
+        "unreadCount": "{count} nieprzeczytanych",
+        "newMessage": "Nowa wiadomość",
+        "stats": {
+            "activeConversations": "Aktywne rozmowy",
+            "unread": "Nieprzeczytane",
+            "onlineNow": "Online teraz",
+            "responseTime": "Czas odpowiedzi",
+            "minutes": "~15 min"
+        },
+        "announcements": {
+            "openingHoursChange": "Zmiana godzin otwarcia",
+            "openingHoursContent": "Od 1 września biuro będzie czynne w godzinach 8:00 - 18:00",
+            "packagePromotion": "Promocja na pakiety",
+            "packagePromotionContent": "Tylko do końca sierpnia - 15% zniżki na wszystkie pakiety!",
+            "important": "Ważne"
+        },
+        "conversations": {
+            "title": "Rozmowy",
+            "searchPlaceholder": "Szukaj wiadomości...",
+            "all": "Wszystkie",
+            "unread": "Nieprzeczytane",
+            "starred": "Oznaczone gwiazdką",
+            "archived": "Zarchiwizowane",
+            "groups": "Grupy"
+        },
+        "filters": {
+            "all": "Wszystkie",
+            "unread": "Nieprzeczytane",
+            "starred": "Oznaczone gwiazdką",
+            "archived": "Zarchiwizowane"
+        },
+        "roles": {
+            "instructor": "Instruktor",
+            "administration": "Administracja"
+        },
+        "conversationTypes": {
+            "direct": "Prywatna",
+            "group": "Grupowa",
+            "announcement": "Ogłoszenie"
+        },
+        "lastMessage": {
+            "greatJob": "Świetnie sobie dziś poradziłeś! Do zobaczenia na kolejnej lekcji.",
+            "rememberMaterials": "Pamiętaj o materiałach na jutro",
+            "whoGoingExam": "Michał: Kto idzie na egzamin w piątek?",
+            "invoiceSent": "Twoja faktura została wysłana na email",
+            "newOfficeHours": "📢 Nowe godziny pracy biura od września",
+            "canReschedule": "Możemy przełożyć lekcję na 16:00?"
+        },
+        "groupNames": {
+            "theoryGroup": "Grupa teoria - sierpień 2024",
+            "schoolAnnouncements": "Ogłoszenia szkoły",
+            "supportOffice": "Biuro obsługi"
+        },
+        "timeAgo": {
+            "minutes": "{count} min temu",
+            "hours": "{count} godz. temu",
+            "yesterday": "Wczoraj",
+            "days": "{count} dni temu"
+        },
+        "emptyState": {
+            "selectConversation": "Wybierz rozmowę",
+            "clickToView": "Kliknij na rozmowę z listy, aby zobaczyć wiadomości",
+            "openLastConversation": "Otwórz ostatnią rozmowę"
+        },
+        "quickActions": {
+            "title": "Szybkie akcje",
+            "starred": "Oznaczone gwiazdką",
+            "archive": "Archiwum",
+            "muted": "Wyciszone",
+            "trash": "Kosz"
+        }
+    },
+    "buyPackage": {
+        "title": "Wybierz pakiet lekcji",
+        "subtitle": "Oszczędź do 20% kupując pakiet zamiast pojedynczych lekcji",
+        "limitedOffer": "Oferta ograniczona!",
+        "limitedOfferText": "Kup dowolny pakiet do końca miesiąca i otrzymaj dodatkową lekcję GRATIS!",
+        "packages": {
+            "starter": {
+                "name": "Pakiet startowy",
+                "lessons": "lekcji",
+                "validityDays": "Ważny {days} dni",
+                "pricePerLesson": "{price} zł za lekcję"
+            },
+            "standard": {
+                "name": "Pakiet standardowy"
+            },
+            "premium": {
+                "name": "Pakiet premium"
+            },
+            "intensive": {
+                "name": "Pakiet intensywny"
+            },
+            "mostPopular": "Najpopularniejszy",
+            "recommended": "Polecany",
+            "saving": "Oszczędzasz {percent}%",
+            "selected": "Wybrano",
+            "select": "Wybierz",
+            "showMore": "Pokaż więcej ({count})"
+        },
+        "features": {
+            "lessons": "{count} lekcji jazdy",
+            "validity": "Ważność {days} dni",
+            "flexibleSchedule": "Elastyczny grafik",
+            "freeMaterials": "Darmowe materiały",
+            "priorityBooking": "Priorytetowa rezerwacja",
+            "weekendLessons": "Lekcje w weekendy",
+            "instructorChoice": "Wybór instruktora",
+            "freeExamSimulation": "Darmowa symulacja egzaminu",
+            "dailyLessonsPossible": "Możliwe codzienne lekcje",
+            "dedicatedInstructor": "Dedykowany instruktor",
+            "examSimulations": "2 symulacje egzaminu",
+            "passGuarantee": "Gwarancja zdania"
+        },
+        "additionalOptions": {
+            "title": "Dodatkowe opcje",
+            "description": "Spersonalizuj swój pakiet dodatkowymi usługami",
+            "weekend": {
+                "name": "Lekcje w weekend",
+                "description": "Możliwość jazdy w weekendy"
+            },
+            "night": {
+                "name": "Jazdy nocne",
+                "description": "Dodatkowe 2 lekcje nocą"
+            },
+            "highway": {
+                "name": "Jazda po autostradzie",
+                "description": "Dodatkowa lekcja na autostradzie"
+            },
+            "exam": {
+                "name": "Symulacja egzaminu",
+                "description": "Symulacja egzaminu państwowego"
+            }
+        },
+        "settings": {
+            "autoRenewal": "Automatyczne odnawianie",
+            "autoRenewalDesc": "Otrzymaj 5% zniżki na kolejny pakiet",
+            "giftMode": "Kupuję na prezent",
+            "giftModeDesc": "Wyślij pakiet jako prezent dla kogoś",
+            "discount": "-5%"
+        },
+        "payment": {
+            "title": "Metoda płatności",
+            "creditCard": "Karta kredytowa/debetowa",
+            "creditCardDesc": "Visa, Mastercard, American Express",
+            "blik": "BLIK",
+            "blikDesc": "Szybka płatność kodem BLIK",
+            "bankTransfer": "Przelew bankowy",
+            "bankTransferDesc": "Przelewy24",
+            "installments": "Raty 0%",
+            "installmentsDesc": "Rozdziel płatność na 3 miesiące",
+            "popular": "Popularne",
+            "noFee": "0% prowizji",
+            "securityNote": "Wszystkie płatności są bezpieczne i szyfrowane. Twoje dane są chronione zgodnie z najwyższymi standardami bezpieczeństwa."
+        },
+        "summary": {
+            "title": "Podsumowanie",
+            "autoRenewalDiscount": "Zniżka za auto-odnawianie",
+            "total": "Razem",
+            "savingVsSingle": "Oszczędzasz {amount} zł w porównaniu do pojedynczych lekcji",
+            "proceedToPayment": "Przejdź do płatności",
+            "securePayment": "Bezpieczna płatność",
+            "instantActivation": "Natychmiastowa aktywacja",
+            "joinStudents": "Dołącz do 5000+ zadowolonych kursantów"
+        },
+        "benefits": {
+            "title": "Dlaczego warto kupić pakiet?",
+            "saving": {
+                "title": "Oszczędność do 20%",
+                "description": "w porównaniu do pojedynczych lekcji"
+            },
+            "flexibility": {
+                "title": "Elastyczne terminy",
+                "description": "Rezerwuj kiedykolwiek"
+            },
+            "priority": {
+                "title": "Priorytet rezerwacji",
+                "description": "Pierwszy wybór terminów"
+            },
+            "guarantee": {
+                "title": "Gwarancja satysfakcji",
+                "description": "Albo zwrot pieniędzy"
+            }
+        },
+        "dialog": {
+            "title": "Finalizacja płatności",
+            "description": "Przekierujemy Cię do bezpiecznej bramki płatniczej",
+            "processing": "Przetwarzanie płatności...",
+            "dontClose": "Nie zamykaj tego okna",
+            "amountToPay": "Kwota do zapłaty",
+            "selectedPackage": "Wybrany pakiet",
+            "recipientData": "Dane odbiorcy prezentu",
+            "recipientEmail": "Email odbiorcy",
+            "message": "Wiadomość (opcjonalnie)",
+            "cancel": "Anuluj",
+            "payNow": "Zapłać teraz",
+            "processing2": "Przetwarzanie..."
+        },
+        "currency": "{amount} zł"
+    },
+    "invoice": {
+        "title": "Faktura",
+        "back": "Wstecz",
+        "downloadPDF": "Pobierz PDF",
+        "print": "Drukuj",
+        "share": "Udostępnij",
+        "sendByEmail": "Wyślij pocztą",
+        "scanCode": "Zeskanuj kod",
+        "status": {
+            "paid": "Opłacona",
+            "pending": "Oczekuje na płatność",
+            "overdue": "Przeterminowana"
+        },
+        "labels": {
+            "seller": "SPRZEDAWCA",
+            "buyer": "NABYWCA",
+            "issueDate": "Data wystawienia",
+            "dueDate": "Termin płatności",
+            "paymentDate": "Data płatności",
+            "paymentMethod": "Metoda płatności"
+        },
+        "company": {
+            "name": "Auto Szkoła DriveTime Sp. z o.o.",
+            "address": "ul. Puławska 145",
+            "city": "Warszawa",
+            "postalCode": "02-715",
+            "country": "Polska",
+            "nip": "NIP: PL5252525252",
+            "regon": "REGON: 123456789",
+            "bank": "mBank S.A.",
+            "accountLabel": "Dane do przelewu",
+            "transferTitle": "Tytuł przelewu"
+        },
+        "customer": {
+            "studentId": "ID Kursanta"
+        },
+        "paymentMethods": {
+            "creditCard": "Karta kredytowa",
+            "bankTransfer": "Przelew bankowy",
+            "blik": "BLIK",
+            "cash": "Gotówka"
+        },
+        "table": {
+            "number": "Nr",
+            "description": "Opis",
+            "quantity": "Ilość",
+            "unitPrice": "Cena jedn.",
+            "vat": "VAT",
+            "total": "Wartość",
+            "invoiceItems": "Pozycje faktury"
+        },
+        "items": {
+            "standardPackage": "Pakiet standardowy - 10 lekcji jazdy",
+            "weekendLessons": "Lekcje w weekendy - dodatkowo",
+            "studyMaterials": "Materiały szkoleniowe (PDF)"
+        },
+        "summary": {
+            "netValue": "Wartość netto",
+            "vat": "VAT (23%)",
+            "discount": "Zniżka",
+            "toPay": "Do zapłaty",
+            "paid": "Zapłacono",
+            "remaining": "Pozostało"
+        },
+        "notes": {
+            "thankYou": "Dziękujemy za wybór naszej szkoły jazdy. W razie pytań, prosimy o kontakt.",
+            "electronicInvoice": "Faktura wygenerowana elektronicznie i ważna bez podpisu.",
+            "contact": "W razie pytań prosimy o kontakt"
+        },
+        "invoicePaid": "Faktura opłacona",
+        "date": "Data",
+        "or": "lub"
+    },
+    "packages": {
+        "title": "Мои пакеты",
+        "subtitle": "Управляйте своими пакетами уроков",
+        "buyNewPackage": "Купить новый пакет",
+        "stats": {
+            "activeCredits": "Активные кредиты",
+            "from": "из",
+            "purchased": "купленных",
+            "used": "Использованные",
+            "averageUsage": "{percent}% в среднем",
+            "expired": "Просроченные",
+            "creditsLost": "кредиты потеряны",
+            "totalValue": "Общая стоимость",
+            "saving": "экономия {percent}%",
+            "currency": "{amount} грн"
+        },
+        "warning": {
+            "title": "Срок действия пакета скоро истекает!",
+            "description": "У вас есть пакет, срок действия которого истекает в течение ближайших 2 недель. Используйте оставшиеся кредиты или рассмотрите возможность продления."
+        },
+        "tabs": {
+            "active": "Активные",
+            "expired": "Просроченные",
+            "statistics": "Статистика"
+        },
+        "packageCard": {
+            "purchasedOn": "Куплено",
+            "validUntil": "Действителен до",
+            "active": "Активный",
+            "expiringIn": "Истекает через {days} дней",
+            "usedCredits": "Использованные кредиты",
+            "of": "из",
+            "remainingCredits": "Осталось {count} кредитов",
+            "percentUsed": "{percent}% использовано",
+            "recentLessons": "Последние уроки из этого пакета",
+            "viewAll": "Просмотреть все ({count})",
+            "useCredits": "Использовать кредиты",
+            "extend": "Продлить",
+            "completed": "Использован",
+            "expired": "Просрочен",
+            "creditsUsed": "Использовано {used} из {total} кредитов",
+            "creditsLost": "Потеряно {count} неиспользованных кредитов",
+            "buyAgain": "Купить снова"
+        },
+        "packageNames": {
+            "standard": "Стандартный пакет",
+            "weekend": "Выходной пакет",
+            "starter": "Стартовый пакет",
+            "intensive": "Интенсивный пакет"
+        },
+        "lessonTypes": {
+            "cityDriving": "Городское вождение",
+            "parking": "Парковка",
+            "nightDriving": "Ночное вождение",
+            "highway": "Автомагистраль",
+            "maneuvers": "Маневры"
+        },
+        "benefits": {
+            "flexibleSchedule": "Гибкий график",
+            "freeMaterials": "Бесплатные материалы",
+            "priorityBooking": "Приоритетное бронирование",
+            "weekends": "Выходные",
+            "flexibleHours": "Гибкие часы"
+        },
+        "empty": {
+            "noActivePackages": "У вас нет активных пакетов",
+            "buyFirstPackage": "Купить первый пакет"
+        },
+        "statistics": {
+            "packageUsage": "Использование пакетов",
+            "averageUsage": "Среднее использование",
+            "popularTime": "Самое популярное время",
+            "favoriteInstructor": "Любимый инструктор",
+            "avgTimeToUse": "Среднее время до использования",
+            "days": "дней",
+            "savings": "Экономия",
+            "savedAmount": "сэкономлено благодаря пакетам",
+            "standardPrice": "Стандартная цена",
+            "paid": "Оплачено",
+            "savingAmount": "Экономия",
+            "recommendations": "Рекомендации",
+            "recommendationText": "На основе вашего темпа обучения, рекомендуем пакет Premium 20 - позволит вам сэкономить 420 грн и обеспечит кредиты на следующие 2 месяца.",
+            "viewRecommended": "Просмотреть рекомендуемые пакеты",
+            "loyaltyProgram": "Программа лояльности",
+            "status": "Статус",
+            "silver": "Серебряный",
+            "gold": "Золотой",
+            "points": "баллов",
+            "pointsToNext": "Ещё {count} баллов до статуса {status} и {discount}% скидки на все пакеты",
+            "freeLesson": "У вас есть 1 бесплатный урок для использования"
+        },
+        "dialogs": {
+            "extend": {
+                "title": "Продлить пакет",
+                "description": "Продлить срок действия пакета \"{name}\" на следующие 30 дней всего за 99 грн.",
+                "info": "У вас {count} неиспользованных кредитов. Продление позволит вам сохранить все кредиты.",
+                "cancel": "Отменить",
+                "confirm": "Продлить за 99 грн"
+            },
+            "history": {
+                "title": "История использования пакета",
+                "description": "{name} - все уроки",
+                "close": "Закрыть",
+                "credit": "кредит"
+            }
+        }
+    },
+    "preferences": {
+        "title": "Настройки обучения",
+        "subtitle": "Адаптируйте процесс обучения под свои нужды",
+        "saveChanges": "Сохранить изменения",
+        "cancel": "Отменить",
+        "unsavedChanges": "У вас есть несохраненные изменения. Не забудьте сохранить перед выходом.",
+        "tabs": {
+            "learning": "Обучение",
+            "schedule": "Расписание",
+            "notifications": "Уведомления",
+            "goals": "Цели"
+        },
+        "learning": {
+            "timePreferences": "Временные предпочтения",
+            "whenPrefer": "Когда вы лучше всего учитесь?",
+            "preferredTime": "Предпочтительное время суток",
+            "morning": "Утро (6:00-12:00)",
+            "afternoon": "День (12:00-18:00)",
+            "evening": "Вечер (18:00-22:00)",
+            "lessonDuration": "Предпочтительная длительность урока",
+            "minutes": "{count} мин",
+            "intensity": "Интенсивность обучения",
+            "relaxed": "Спокойная (1 урок/неделя)",
+            "moderate": "Умеренная (2-3 урока/неделя)",
+            "intensive": "Интенсивная (4+ урока/неделя)",
+            "instructorVehicle": "Предпочтения по инструктору и авто",
+            "preferredInstructor": "Предпочтительный инструктор",
+            "any": "Любой",
+            "male": "Мужчина",
+            "female": "Женщина",
+            "specific": "Конкретный инструктор",
+            "preferredTransmission": "Предпочтительная коробка передач",
+            "manual": "Механическая",
+            "automatic": "Автоматическая",
+            "noPreference": "Без разницы",
+            "preferredLocation": "Предпочтительное место начала",
+            "cityCenter": "Центр - ул. Пулавская 145",
+            "mokotow": "Мокотув - ул. Вилановская 89",
+            "ursynow": "Урсынув - ал. КЭН 36",
+            "homePickup": "Забрать из дома",
+            "groupLessons": "Групповые занятия",
+            "groupLessonsDesc": "Хочу принимать участие в теоретических групповых занятиях"
+        },
+        "schedule": {
+            "weekAvailability": "Доступность в течение недели",
+            "selectDays": "Отметьте дни, когда вы можете посещать уроки",
+            "monday": "Понедельник",
+            "tuesday": "Вторник",
+            "wednesday": "Среда",
+            "thursday": "Четверг",
+            "friday": "Пятница",
+            "saturday": "Суббота",
+            "sunday": "Воскресенье",
+            "weekends": "Выходные",
+            "weekendsDesc": "Я доступен(а) также в выходные",
+            "unavailablePeriods": "Периоды недоступности",
+            "planVacations": "Запланируйте отпуска и перерывы в обучении",
+            "summerVacation": "Летний отпуск",
+            "active": "Активен",
+            "addUnavailable": "Добавить период недоступности"
+        },
+        "notifications": {
+            "channels": "Каналы связи",
+            "chooseHow": "Выберите, как вы хотите получать уведомления",
+            "email": "Email",
+            "emailDesc": "Важные уведомления и сводки",
+            "sms": "SMS",
+            "smsDesc": "Напоминания об уроках",
+            "push": "Push-уведомления",
+            "pushDesc": "Мгновенные уведомления в приложении",
+            "types": "Виды уведомлений",
+            "lessonReminders": "Напоминания об уроках",
+            "hours": "{count} ч.",
+            "cancellations": "Отмена и изменение расписания",
+            "lessonFeedback": "Отзывы после уроков",
+            "progressReports": "Отчеты о прогрессе",
+            "newsOffers": "Новости и специальные предложения",
+            "soundSettings": "Настройки звука",
+            "notificationSound": "Звук уведомлений",
+            "vibration": "Вибрация"
+        },
+        "goals": {
+            "learningGoal": "Цель обучения",
+            "defineGoals": "Определите свои цели и приоритеты в обучении вождению",
+            "plannedExamDate": "Планируемая дата экзамена",
+            "dateHelp": "На основе этой даты мы адаптируем интенсивность обучения",
+            "weeklyLessons": "Количество уроков в неделю",
+            "focusAreas": "Области для фокуса",
+            "chooseSkills": "Выберите навыки, которые вы хотите особенно практиковать",
+            "parking": "Парковка",
+            "parkingDesc": "Параллельная и перпендикулярная",
+            "highway": "Автомагистраль",
+            "highwayDesc": "Езда на высокой скорости",
+            "nightDriving": "Ночная езда",
+            "nightDrivingDesc": "В условиях ограниченной видимости",
+            "city": "Город",
+            "cityDesc": "Городское движение и перекрестки",
+            "maneuvers": "Маневры",
+            "maneuversDesc": "Развороты, задний ход",
+            "hills": "Подъемы",
+            "hillsDesc": "Трогание на подъеме",
+            "additionalTraining": "Дополнительное обучение",
+            "defensiveDriving": "Защитное вождение",
+            "defensiveDesc": "Техники безопасного вождения",
+            "ecoDriving": "Эко-вождение",
+            "ecoDesc": "Экономичное вождение"
+        }
+    },
+    "profile": {
+        "title": "Мой профиль",
+        "subtitle": "Управляйте своими данными и документами",
+        "preferences": "Настройки",
+        "editProfile": "Редактировать профиль",
+        "cancel": "Отменить",
+        "saveChanges": "Сохранить изменения",
+        "activeStudent": "Активный студент",
+        "stats": {
+            "courseProgress": "Прогресс курса",
+            "completedLessons": "Завершенных уроков",
+            "drivingHours": "Часов вождения"
+        },
+        "tabs": {
+            "overview": "Обзор",
+            "details": "Личные данные",
+            "documents": "Документы",
+            "achievements": "Достижения"
+        },
+        "overview": {
+            "courseInfo": "Информация о курсе",
+            "startDate": "Дата начала",
+            "plannedExam": "Планируемый экзамен",
+            "category": "Категория",
+            "pkkNumber": "Номер PKK",
+            "theoryExam": "Теоретический экзамен",
+            "passed": "Сдано",
+            "failed": "Не сдано",
+            "pending": "В ожидании",
+            "medicalCert": "Медицинская справка",
+            "validUntil": "Действительна до",
+            "current": "Актуальна",
+            "statistics": "Статистика",
+            "punctuality": "Пунктуальность",
+            "attendance": "Посещаемость",
+            "learningProgress": "Прогресс обучения",
+            "skillsImprovement": "Улучшение навыков"
+        },
+        "details": {
+            "personalData": "Личные данные",
+            "firstName": "Имя",
+            "lastName": "Фамилия",
+            "email": "Email",
+            "phone": "Телефон",
+            "birthDate": "Дата рождения",
+            "pkkNumber": "Номер PKK",
+            "address": "Адрес проживания",
+            "streetAndNumber": "Улица и номер",
+            "postalCode": "Почтовый индекс",
+            "city": "Город",
+            "emergencyContact": "Контакт для чрезвычайных ситуаций",
+            "contactName": "Имя и фамилия",
+            "relation": "Связь",
+            "wife": "Жена",
+            "husband": "Муж",
+            "mother": "Мать",
+            "father": "Отец",
+            "contactPhone": "Контактный телефон"
+        },
+        "documents": {
+            "title": "Документы",
+            "addDocument": "Добавить документ",
+            "uploadDate": "Загружено",
+            "verified": "Верифицировано",
+            "inVerification": "На проверке",
+            "uploaded": "Загружено",
+            "securityNote": "Все документы безопасно хранятся и доступны только для авторизованного персонала.",
+            "types": {
+                "id": "Паспорт",
+                "medical": "Медицинская справка",
+                "pkk": "PKK",
+                "other": "Другое"
+            },
+            "dialog": {
+                "title": "Добавить документ",
+                "description": "Загрузите необходимые документы для верификации",
+                "documentType": "Тип документа",
+                "selectType": "Выберите тип документа",
+                "file": "Файл",
+                "maxSize": "Максимальный размер: 10MB. Форматы: PDF, JPG, PNG",
+                "upload": "Загрузить"
+            }
+        },
+        "achievements": {
+            "title": "Достижения",
+            "unlockedCount": "Разблокировано {unlocked} из {total}",
+            "firstLesson": "Первый урок",
+            "lessons10": "10 уроков",
+            "theoryPassed": "Теория сдана",
+            "parkingMaster": "Мастер парковки",
+            "nightRider": "Ночной водитель"
+        }
+    },
+    "profileSettings": {
+        "title": "Настройки аккаунта",
+        "subtitle": "Управляйте своим аккаунтом и безопасностью",
+        "tabs": {
+            "account": "Аккаунт",
+            "security": "Безопасность",
+            "privacy": "Приватность",
+            "appearance": "Внешний вид",
+            "billing": "Платежи"
+        },
+        "account": {
+            "title": "Данные аккаунта",
+            "description": "Управляйте основной информацией о своем аккаунте",
+            "email": "Email",
+            "phone": "Телефон",
+            "username": "Имя пользователя",
+            "verified": "Подтверждено",
+            "verify": "Подтвердить",
+            "usernameHint": "Используется для входа и в URL профиля",
+            "accountCreated": "Аккаунт создан",
+            "lastLogin": "Последний вход",
+            "exportData": "Экспортировать данные",
+            "logout": "Выйти"
+        },
+        "dangerZone": {
+            "title": "Опасная зона",
+            "description": "Необратимые действия с аккаунтом",
+            "deleteAccount": "Удалить аккаунт",
+            "deleteWarning": "Удаление аккаунта является необратимым. Все ваши данные будут навсегда удалены."
+        },
+        "security": {
+            "passwordTitle": "Смена пароля",
+            "lastChange": "Последнее изменение: {date}",
+            "currentPassword": "Текущий пароль",
+            "newPassword": "Новый пароль",
+            "confirmPassword": "Подтвердите новый пароль",
+            "passwordStrength": "Сила пароля",
+            "changePassword": "Сменить пароль",
+            "passwordMismatch": "Пароли не совпадают",
+            "strength": {
+                "weak": "Слабый",
+                "medium": "Средний",
+                "strong": "Сильный"
+            },
+            "twoFactorTitle": "Двухфакторная аутентификация",
+            "twoFactorDescription": "Дополнительный уровень безопасности для вашего аккаунта",
+            "twoFactorEnabled": "2FA включено",
+            "twoFactorInfo": "Двухфакторная аутентификация значительно повышает безопасность вашего аккаунта.",
+            "enable2FA": "Включить двухфакторную аутентификацию",
+            "disable2FA": "Отключить 2FA",
+            "changeMethod": "Изменить метод",
+            "method": "Метод",
+            "active": "Активно",
+            "methods": {
+                "sms": "SMS",
+                "app": "Приложение"
+            },
+            "sessionsTitle": "Активные сессии",
+            "sessionsDescription": "Устройства, на которых вы вошли",
+            "lastUsed": "Последний раз использовалось",
+            "current": "Текущий",
+            "logout": "Выйти",
+            "logoutAll": "Выйти со всех устройств"
+        },
+        "privacy": {
+            "visibilityTitle": "Видимость профиля",
+            "visibilityDescription": "Контролируйте, кто может видеть вашу информацию",
+            "showProgress": "Показать прогресс обучения",
+            "showProgressDescription": "Инструкторы будут видеть вашу статистику",
+            "visibility": {
+                "everyone": "Все пользователи",
+                "instructors": "Только инструкторы и администрация",
+                "private": "Приватный (только я)"
+            },
+            "dataTitle": "Данные и аналитика",
+            "analytics": "Аналитика использования",
+            "analyticsDescription": "Помогите нам улучшить приложение",
+            "marketing": "Маркетинговые сообщения",
+            "marketingDescription": "Получать предложения и промоакции",
+            "sharePartners": "Поделиться с партнерами",
+            "sharePartnersDescription": "Только в образовательных целях",
+            "dataRetention": "Хранение данных",
+            "downloadData": "Загрузить мои данные (GDPR)",
+            "retention": {
+                "minimum": "Минимум (3 месяца)",
+                "default": "Стандартное (1 год)",
+                "extended": "Расширенное (3 года)"
+            }
+        },
+        "appearance": {
+            "themeTitle": "Тема",
+            "languageTitle": "Язык и регион",
+            "language": "Язык",
+            "dateFormat": "Формат даты",
+            "timeFormat": "Формат времени",
+            "time24h": "24-часовой",
+            "time12h": "12-часовой (AM/PM)",
+            "accessibilityTitle": "Доступность",
+            "fontSize": "Размер шрифта",
+            "fontSizeSmall": "Малый",
+            "fontSizeMedium": "Средний",
+            "fontSizeLarge": "Большой",
+            "reduceAnimations": "Уменьшение анимаций",
+            "reduceAnimationsDescription": "Для людей, чувствительных к движению"
+        },
+        "billing": {
+            "paymentTitle": "Метод оплаты",
+            "creditCard": "Кредитная/дебетовая карта",
+            "bankTransfer": "Банковский перевод",
+            "autoRenew": "Автоматическое продление",
+            "autoRenewDescription": "Продлевать пакеты автоматически",
+            "invoiceTitle": "Данные для счета",
+            "invoiceEmail": "Email для счетов",
+            "vatNumber": "ИНН (необязательно)",
+            "billingAddress": "Адрес для счетов",
+            "streetPlaceholder": "Улица и номер",
+            "postalCodePlaceholder": "Почтовый индекс",
+            "cityPlaceholder": "Город",
+            "countryPlaceholder": "Страна",
+            "saveBillingData": "Сохранить данные для счетов"
+        },
+        "languages": {
+            "polish": "Польский",
+            "english": "Английский",
+            "ukrainian": "Украинский",
+            "russian": "Русский"
+        },
+        "themes": {
+            "light": "Светлая",
+            "dark": "Темная",
+            "auto": "Автоматическая"
+        },
+        "deleteDialog": {
+            "title": "Вы уверены, что хотите удалить аккаунт?",
+            "description": "Эта операция необратима. Все ваши данные, история уроков и прогресс будут навсегда удалены.",
+            "warning": "Внимание!",
+            "consequence1": "Вы потеряете доступ ко всем материалам",
+            "consequence2": "Ваши бронирования будут отменены",
+            "consequence3": "Неиспользованные кредиты пропадут",
+            "consequence4": "Невозможно будет восстановить аккаунт",
+            "confirmationLabel": "Введите \"УДАЛИТЬ АККАУНТ\" для подтверждения",
+            "confirmationPlaceholder": "УДАЛИТЬ АККАУНТ",
+            "cancel": "Отменить",
+            "confirmDelete": "Удалить аккаунт навсегда"
+        },
+        "twoFactorDialog": {
+            "title": "Настройка двухфакторной аутентификации",
+            "description": "Выберите метод получения кодов подтверждения",
+            "sms": "SMS",
+            "smsDescription": "Получать коды на телефон",
+            "app": "Приложение",
+            "appDescription": "Используйте Google Authenticator или подобное",
+            "info": "После включения 2FA вам нужно будет вводить код при каждом входе.",
+            "cancel": "Отменить",
+            "enable": "Включить 2FA"
+        }
+    },
+    "achievements": {
+        "title": "Достижения",
+        "subtitle": "Получайте значки и баллы за свой прогресс",
+        "buttons": {
+            "share": "Поделиться"
+        },
+        "level": {
+            "title": "Уровень {level}",
+            "totalPoints": "Всего получено баллов: {points}",
+            "badge": "Ур {level}",
+            "progress": "Прогресс до уровня {nextLevel}",
+            "points": "баллов",
+            "pointsNeeded": "Получите {points} баллов, чтобы повысить уровень"
+        },
+        "stats": {
+            "unlocked": "Разблокировано",
+            "totalPoints": "Общие баллы",
+            "streak": "Серия дней",
+            "legendary": "Легендарные"
+        },
+        "categories": {
+            "all": "Все",
+            "skills": "Навыки",
+            "milestones": "Вехи",
+            "special": "Специальные",
+            "social": "Социальные"
+        },
+        "filters": {
+            "onlyUnlocked": "Только разблокированные"
+        },
+        "rarity": {
+            "common": "Обычные",
+            "rare": "Редкие",
+            "epic": "Эпические",
+            "legendary": "Легендарные"
+        },
+        "progress": {
+            "label": "Прогресс"
+        },
+        "points": "баллов",
+        "upcoming": {
+            "title": "Близко к разблокировке"
+        },
+        "items": {
+            "firstDrive": {
+                "title": "Первая поездка",
+                "description": "Завершите свой первый урок вождения"
+            },
+            "parkingMaster": {
+                "title": "Мастер парковки",
+                "description": "Выполните 5 идеальных параллельных парковок подряд"
+            },
+            "nightRider": {
+                "title": "Ночной водитель",
+                "description": "Завершите 3 урока ночного вождения"
+            },
+            "theorist": {
+                "title": "Теоретик",
+                "description": "Сдайте теоретический экзамен с первой попытки"
+            },
+            "roadMarathon": {
+                "title": "Дорожный марафон",
+                "description": "Проедьте в общей сложности 500 км во время уроков"
+            },
+            "perfectionist": {
+                "title": "Перфекционист",
+                "description": "Получите оценку 10/10 на 5 уроках подряд"
+            },
+            "speedDemon": {
+                "title": "Скоростной демон",
+                "description": "Завершите курс вождения по автомагистрали"
+            },
+            "helpingHand": {
+                "title": "Помогающая рука",
+                "description": "Порекомендуйте автошколу 3 друзьям"
+            },
+            "earlyBird": {
+                "title": "Ранняя пташка",
+                "description": "Завершите 10 уроков, начинающихся до 8:00"
+            },
+            "maneuverMaster": {
+                "title": "Мастер маневров",
+                "description": "Освойте все необходимые маневры на уровне 80%+"
+            },
+            "goldenWheel": {
+                "title": "Золотой руль",
+                "description": "Сдайте практический экзамен с первой попытки"
+            },
+            "regularStudent": {
+                "title": "Постоянный студент",
+                "description": "Не пропустите ни одного запланированного урока в течение 2 месяцев"
+            }
+        }
+    },
+    "examReadiness": {
+        "title": "Готовность к экзамену",
+        "subtitle": "Проверьте, готовы ли вы к государственному экзамену",
+        "buttons": {
+            "downloadReport": "Отчет PDF",
+            "examSimulation": "Симуляция экзамена"
+        },
+        "overallReadiness": {
+            "title": "Общая готовность",
+            "description": "На основе ваших результатов и прогресса"
+        },
+        "prediction": {
+            "title": "Прогноз готовности",
+            "expectedDate": "Ожидаемая дата",
+            "inDays": "Через {days} дней",
+            "recommendedLessons": "Рекомендуемые уроки",
+            "toFullReadiness": "До полной готовности"
+        },
+        "examTypes": {
+            "theory": "Теоретический экзамен",
+            "practical": "Практический экзамен"
+        },
+        "status": {
+            "passed": "Сдано",
+            "inPreparation": "В подготовке"
+        },
+        "requirements": {
+            "theoryTitle": "Теоретические требования",
+            "practicalTitle": "Практические требования",
+            "completed": "выполнено",
+            "mandatory": "Обязательно",
+            "theory": {
+                "courseCompleted": "Теоретический курс завершен",
+                "attendance": "Минимум 90% посещаемости",
+                "mockTest": "Пробный тест сдан (мин. 68/74 баллов)",
+                "allModules": "Все модули пройдены",
+                "examFee": "Оплата за экзамен"
+            },
+            "practical": {
+                "minHours": "Минимум 30 часов вождения",
+                "theoryPassed": "Теоретический экзамен сдан",
+                "allManeuvers": "Все маневры освоены",
+                "cityDriving": "Вождение в городском движении",
+                "outsideCity": "Вождение за городом",
+                "internalExam": "Внутренний экзамен сдан",
+                "examFee": "Оплата за экзамен"
+            }
+        },
+        "weakPoints": {
+            "title": "Области для улучшения",
+            "lessons": "{count} урока",
+            "turning": {
+                "skill": "Разворот",
+                "issue": "Слишком широкий радиус поворота",
+                "recommendation": "Практикуйтесь на меньшем пространстве"
+            },
+            "intersections": {
+                "skill": "Перекрестки",
+                "issue": "Колебания при принятии решений",
+                "recommendation": "Больше практики в часы пик"
+            },
+            "highway": {
+                "skill": "Вождение по автостраде",
+                "issue": "Неуверенность при смене полос",
+                "recommendation": "Дополнительный урок на автостраде"
+            }
+        },
+        "priority": {
+            "high": "Высокий приоритет",
+            "medium": "Средний приоритет",
+            "low": "Низкий приоритет"
+        },
+        "skills": {
+            "title": "Матрица навыков",
+            "required": "Необходимо",
+            "categories": {
+                "maneuvers": "Маневры",
+                "cityDriving": "Вождение в городе",
+                "drivingTechnique": "Техника вождения"
+            },
+            "parallelParking": "Параллельная парковка",
+            "perpendicularParking": "Перпендикулярная парковка",
+            "turning": "Разворот",
+            "hillStart": "Трогание на подъеме",
+            "intersections": "Перекрестки",
+            "rightOfWay": "Приоритет проезда",
+            "roadSigns": "Дорожные знаки",
+            "pedestrianCrossings": "Пешеходные переходы",
+            "smoothDriving": "Плавность вождения",
+            "mirrorUse": "Использование зеркал",
+            "gearChanging": "Смена передач",
+            "braking": "Торможение"
+        },
+        "recommendations": {
+            "title": "Рекомендации",
+            "completeManeuvers": {
+                "title": "Завершить необходимые маневры",
+                "description": "Вам не хватает 2 маневров до полного комплекта для экзамена",
+                "action": "Забронировать урок маневров"
+            },
+            "improveWeakPoints": {
+                "title": "Улучшить слабые места",
+                "description": "Разворот и перекрестки требуют больше практики",
+                "action": "Просмотреть план упражнений"
+            },
+            "internalExam": {
+                "title": "Зарегистрироваться на внутренний экзамен",
+                "description": "Сдача внутреннего экзамена повысит уверенность",
+                "action": "Проверить сроки"
+            }
+        },
+        "examHistory": {
+            "title": "История экзаменов",
+            "type": "Тип экзамена",
+            "date": "Дата",
+            "result": "Результат",
+            "score": "Баллы",
+            "theoryMock": "Теория - пробный",
+            "theoryState": "Теория - государственный",
+            "practicalInternal": "Практика - внутренний",
+            "passed": "Сдано",
+            "failed": "Не сдано"
+        },
+        "tips": {
+            "title": "Советы перед экзаменом",
+            "sleep": "Хорошо выспитесь перед экзаменом (минимум 8 часов сна)",
+            "breakfast": "Съешьте легкий завтрак, избегайте тяжелой пищи",
+            "arriveEarly": "Придите на 15 минут раньше, чтобы успокоиться",
+            "documents": "Возьмите с собой все необходимые документы",
+            "glasses": "Помните об очках/линзах, если они вам нужны",
+            "stayCalm": "Сохраняйте спокойствие и концентрацию во время экзамена"
+        },
+        "actions": {
+            "bookPreparationLesson": "Забронировать подготовительный урок",
+            "registerForExam": "Записаться на экзамен"
+        }
+    },
+    "skills": {
+        "title": "Подробные навыки",
+        "subtitle": "Анализ и прогресс в каждой категории",
+        "buttons": {
+            "exportReport": "Экспортировать отчет",
+            "showHistory": "Посмотреть историю",
+            "hideDetails": "Свернуть детали"
+        },
+        "stats": {
+            "averageScore": "Средний результат",
+            "monthlyProgress": "+5% в этом месяце",
+            "bestSkill": "Лучший навык",
+            "needsWork": "Требует улучшения",
+            "examReadiness": "Готовность к экзамену",
+            "successRate": "{rate}% успешности",
+            "skillsReady": "{ready}/{total} навыков готовы"
+        },
+        "categories": {
+            "all": "Все",
+            "maneuvers": "Маневры",
+            "cityDriving": "Вождение в городе",
+            "highways": "Автострады",
+            "theory": "Теория"
+        },
+        "filters": {
+            "sortBy": "Сортировать",
+            "byScore": "По результату",
+            "byProgress": "По прогрессу",
+            "byAttempts": "По попыткам"
+        },
+        "difficulty": {
+            "easy": "Легкий",
+            "medium": "Средний",
+            "hard": "Сложный"
+        },
+        "badges": {
+            "exam": "Экзамен"
+        },
+        "attempts": "{count} попыток",
+        "lastPracticed": "Последняя тренировка",
+        "items": {
+            "parallelParking": {
+                "name": "Параллельная парковка",
+                "notes": "Хороший контроль автомобиля, поработайте над оценкой расстояния"
+            },
+            "perpendicularParking": {
+                "name": "Перпендикулярная парковка",
+                "notes": "Очень хорошо, поддерживайте темп"
+            },
+            "trafficJams": {
+                "name": "Вождение в пробках",
+                "notes": "Держите большую дистанцию между автомобилями"
+            },
+            "highwayLaneChange": {
+                "name": "Смена полосы на автостраде",
+                "notes": "Помните о мертвых зонах в зеркалах"
+            },
+            "roadSigns": {
+                "name": "Дорожные знаки",
+                "notes": "Отличное знание, почти идеально"
+            },
+            "rightOfWay": {
+                "name": "Приоритет проезда",
+                "notes": "Хорошее знание правил"
+            },
+            "turning": {
+                "name": "Разворот",
+                "notes": "Требует больше практики, слишком широкая дуга"
+            },
+            "nightDriving": {
+                "name": "Ночное вождение",
+                "notes": "Улучшите использование дальнего света"
+            }
+        },
+        "charts": {
+            "skillHistory": "График истории навыка",
+            "comparison": "Сравнительный график"
+        },
+        "comparison": {
+            "title": "Сравнение с другими студентами"
+        }
+    },
+    "progress": {
+        "title": "Мой прогресс",
+        "subtitle": "Отслеживайте свои достижения и развитие навыков",
+        "overallProgress": {
+            "title": "Общий прогресс",
+            "monthlyIncrease": "+5% в этом месяце",
+            "drivingHours": "Часы вождения",
+            "hoursUnit": "ч",
+            "theoryCourse": "Теоретический курс",
+            "practicalSkills": "Практические навыки"
+        },
+        "stats": {
+            "completedLessons": {
+                "title": "Завершенные уроки",
+                "subtitle": "В этом месяце"
+            },
+            "averageScore": {
+                "title": "Средняя оценка",
+                "subtitle": "Из 10 баллов"
+            },
+            "improvement": {
+                "title": "Улучшение",
+                "subtitle": "С начала"
+            },
+            "ranking": {
+                "title": "Позиция в рейтинге",
+                "subtitle": "Среди студентов"
+            }
+        },
+        "skillCategories": {
+            "maneuvers": "Маневры",
+            "driving": "Вождение",
+            "theory": "Теория"
+        },
+        "skills": {
+            "parallelParking": "Параллельная парковка",
+            "perpendicularParking": "Перпендикулярная парковка",
+            "cityDriving": "Вождение в городе",
+            "highwayDriving": "Вождение по автостраде",
+            "roadSigns": "Дорожные знаки",
+            "rightOfWay": "Приоритет проезда",
+            "turning": "Разворот",
+            "roundabout": "Круговое движение"
+        },
+        "skillsSection": {
+            "title": "Навыки",
+            "viewDetails": "Посмотреть детали",
+            "topSkills": "Лучшие навыки"
+        },
+        "achievementsSection": {
+            "title": "Последние достижения",
+            "viewAll": "Посмотреть все",
+            "points": "баллов"
+        },
+        "achievements": {
+            "firstNightDrive": {
+                "title": "Первая ночная поездка",
+                "description": "Завершен первый урок вождения ночью"
+            },
+            "parkingMaster": {
+                "title": "Мастер парковки",
+                "description": "5 идеальных парковок подряд"
+            },
+            "tenLessons": {
+                "title": "10 уроков завершено",
+                "description": "Веха - 10 уроков"
+            }
+        },
+        "milestonesSection": {
+            "title": "Вехи"
+        },
+        "milestones": {
+            "firstLesson": "Первый урок",
+            "tenHours": "10 часов вождения",
+            "theoryPassed": "Теория сдана",
+            "twentyFiveHours": "25 часов вождения",
+            "internalExam": "Внутренний экзамен",
+            "stateExam": "Государственный экзамен"
+        },
+        "examReadiness": {
+            "title": "Готовность к экзамену",
+            "description": "На основе ваших результатов и прогресса",
+            "readiness": "Готовность",
+            "strengths": "Сильные стороны",
+            "strengthsList": "Теория, перпендикулярная парковка",
+            "toImprove": "Требует улучшения",
+            "improvementList": "Вождение по автостраде, разворот",
+            "recommendation": "Рекомендация",
+            "recommendationText": "Еще 5-7 практических уроков",
+            "viewAnalysis": "Проверить детальный анализ"
+        }
+    },
+    "availability": {
+        "title": "Доступные даты",
+        "subtitle": "Найдите идеальное время для вашего следующего урока",
+        "buttons": {
+            "quickBooking": "Быстрое бронирование",
+            "book": "Забронировать",
+            "taken": "Занято",
+            "showMore": "Показать больше дат"
+        },
+        "aiRecommendation": {
+            "title": "Рекомендация ИИ",
+            "message": "На основе вашего прогресса, рекомендуем урок парковки с Анной Ковальчик в пятницу в 9:00. Погода будет благоприятная, а движение на дорогах меньше."
+        },
+        "filters": {
+            "title": "Фильтры",
+            "dateRange": "Диапазон дат",
+            "instructor": "Инструктор",
+            "allInstructors": "Все инструкторы",
+            "location": "Локация",
+            "allLocations": "Все локации",
+            "timeOfDay": "Время суток",
+            "allDay": "Весь день",
+            "morning": "Утро (6:00-12:00)",
+            "afternoon": "День (12:00-18:00)",
+            "evening": "Вечер (18:00-22:00)",
+            "priceRange": "Диапазон цен",
+            "onlyDiscounts": "Только акции",
+            "onlyAvailable": "Только доступные",
+            "clearFilters": "Очистить фильтры"
+        },
+        "sort": {
+            "label": "Сортировать",
+            "byTime": "По времени",
+            "byPrice": "По цене",
+            "byRating": "По оценке",
+            "byDistance": "По расстоянию"
+        },
+        "viewMode": {
+            "grid": "Сетка",
+            "list": "Список"
+        },
+        "days": {
+            "thursday": "Четверг",
+            "friday": "Пятница"
+        },
+        "timeLabels": {
+            "morning": "Утро",
+            "forenoon": "До обеда",
+            "afternoon": "День",
+            "evening": "Вечер"
+        },
+        "weather": {
+            "sunny": "Солнечно",
+            "cloudy": "Облачно",
+            "rainy": "Дождь"
+        },
+        "weatherForecast": "Прогноз",
+        "availableSlots": "свободных дат",
+        "of": "из",
+        "slotsAvailable": "дат доступно",
+        "popularDay": "Популярный день",
+        "popularSlotWarning": "Популярная дата - бронируйте быстро!",
+        "currency": "грн"
+    },
+    "reschedule": {
+        "title": "Перенести урок",
+        "subtitle": "Выберите новую дату для вашего урока",
+        "warning": {
+            "title": "Внимание - оплата за перенос",
+            "description": "Перенос урока менее чем за 24 часа до его начала связан с оплатой в размере 50 грн. Осталось {hours} часов до урока."
+        },
+        "freeReschedule": {
+            "title": "Бесплатный перенос",
+            "description": "Вы можете перенести этот урок без дополнительных оплат. Осталось {hours} часов до урока."
+        },
+        "currentLesson": {
+            "title": "Текущая дата",
+            "lessonType": "Тип урока"
+        },
+        "policy": {
+            "title": "Политика переносов",
+            "free24h": "Бесплатный перенос до 24ч перед уроком",
+            "fee12to24h": "50 грн оплаты при переносе 12-24ч перед",
+            "fullFeeUnder12h": "Полная оплата при переносе <12ч перед"
+        },
+        "newSlot": {
+            "title": "Выберите новую дату",
+            "description": "Доступные даты с тем же инструктором"
+        },
+        "days": {
+            "monday": "Понедельник",
+            "tuesday": "Вторник",
+            "wednesday": "Среда",
+            "thursday": "Четверг",
+            "friday": "Пятница",
+            "saturday": "Суббота",
+            "sunday": "Воскресенье"
+        },
+        "weather": {
+            "sunny": "Солнечно",
+            "cloudy": "Облачно",
+            "rainy": "Дождь",
+            "none": "Нет прогноза"
+        },
+        "lessonTypes": {
+            "cityDriving": "Вождение в городе",
+            "highway": "Автомагистраль",
+            "parking": "Парковка",
+            "night": "Ночное вождение",
+            "maneuvers": "Маневры",
+            "examPrep": "Подготовка к экзамену"
+        },
+        "recommended": "Рекомендуемый",
+        "taken": "Занято",
+        "reasonLabel": "Причина переноса (необязательно)",
+        "reasons": {
+            "sick": "Болезнь",
+            "work": "Служебные обязанности",
+            "personal": "Личные дела",
+            "weather": "Плохие погодные условия",
+            "other": "Другая причина"
+        },
+        "buttons": {
+            "cancel": "Отменить",
+            "reschedule": "Перенести урок",
+            "processing": "Обработка...",
+            "confirmReschedule": "Подтвердить перенос"
+        },
+        "confirmDialog": {
+            "title": "Подтверждение переноса",
+            "description": "Вы уверены, что хотите перенести урок на выбранную дату?",
+            "oldSlot": "Старая дата",
+            "newSlot": "Новая дата",
+            "feeWarning": "За перенос будет взыскана оплата в размере 50 грн"
+        },
+        "otherInstructorsInfo": "Ищете дату с другим инструктором?",
+        "viewAllSlots": "Посмотреть все доступные даты"
+    },
+    "schedule": {
+        "title": "Календарь уроков",
+        "subtitle": "Управляйте своим расписанием вождения",
+        "buttons": {
+            "bookLesson": "Забронировать урок",
+            "export": "Экспортировать",
+            "share": "Поделиться"
+        },
+        "filters": {
+            "allInstructors": "Все инструкторы",
+            "showCancelled": "Показать отмененные",
+            "availableSlots": "Доступные даты"
+        },
+        "views": {
+            "month": "Месяц",
+            "week": "Неделя",
+            "list": "Список"
+        },
+        "weekDays": {
+            "mon": "Пн",
+            "tue": "Вт",
+            "wed": "Ср",
+            "thu": "Чт",
+            "fri": "Пт",
+            "sat": "Сб",
+            "sun": "Вс"
+        },
+        "months": {
+            "january": "Январь",
+            "february": "Февраль",
+            "march": "Март",
+            "april": "Апрель",
+            "may": "Май",
+            "june": "Июнь",
+            "july": "Июль",
+            "august": "Август",
+            "september": "Сентябрь",
+            "october": "Октябрь",
+            "november": "Ноябрь",
+            "december": "Декабрь"
+        },
+        "lessonTypes": {
+            "standard": "Стандартное вождение",
+            "highway": "Вождение по автостраде",
+            "parking": "Парковка",
+            "night": "Ночное вождение",
+            "exam_prep": "Пробный экзамен",
+            "maneuvers": "Маневры",
+            "city": "Городское вождение"
+        },
+        "statuses": {
+            "confirmed": "Подтверждено",
+            "pending": "Ожидает",
+            "cancelled": "Отменено",
+            "completed": "Завершено",
+            "in_progress": "В процессе"
+        },
+        "actions": {
+            "details": "Детали",
+            "reschedule": "Перенести",
+            "cancel": "Отменить"
+        },
+        "legend": {
+            "title": "Легенда"
+        },
+        "stats": {
+            "thisWeek": "Эта неделя",
+            "thisMonth": "Этот месяц",
+            "totalHours": "Часов всего",
+            "inThisMonth": "в этом месяце",
+            "nextLesson": "Следующий урок",
+            "lessons": "уроки",
+            "lessonsCount": "уроков"
+        },
+        "dialog": {
+            "title": "Детали урока",
+            "instructor": "Инструктор",
+            "date": "Дата",
+            "time": "Время",
+            "location": "Локация",
+            "vehicle": "Автомобиль",
+            "credits": "Кредиты",
+            "notes": "Заметки",
+            "close": "Закрыть",
+            "reschedule": "Перенести",
+            "cancel": "Отменить"
+        },
+        "credit": "кредит",
+        "more": "больше"
+    },
+    "faq": {
+        "title": "Часто задаваемые вопросы",
+        "subtitle": "Найдите ответы на самые распространенные вопросы",
+        "searchPlaceholder": "Искать вопрос...",
+        "wasHelpful": "Было ли это полезно?",
+        "seeAlso": "Смотри также: {count} связанных вопросов",
+        "noResults": "Не найдено вопросов, соответствующих вашим критериям",
+        "clearFilters": "Очистить фильтры",
+        "categories": {
+            "all": "Все",
+            "allDescription": "Все вопросы",
+            "bookings": "Бронирование",
+            "bookingsDescription": "Бронирование и расписание",
+            "payments": "Платежи",
+            "paymentsDescription": "Платежи и счета",
+            "vehicles": "Автомобили",
+            "vehiclesDescription": "Автомобили и оборудование",
+            "instructors": "Инструкторы",
+            "instructorsDescription": "Инструкторы и оценки",
+            "safety": "Безопасность",
+            "safetyDescription": "Безопасность и правила",
+            "account": "Аккаунт",
+            "accountDescription": "Настройки аккаунта"
+        },
+        "toast": {
+            "alreadyVoted": "Уже голосовали",
+            "alreadyVotedDescription": "Вы можете оценить каждый вопрос только один раз",
+            "thankYou": "Спасибо за отзыв",
+            "thankYouDescription": "Ваша оценка поможет нам улучшить FAQ"
+        },
+        "needHelp": {
+            "title": "Не нашли ответ?",
+            "description": "Наша команда поддержки готова вам помочь",
+            "createTicket": "Создать обращение",
+            "helpCenter": "Центр помощи"
+        }
+    },
+    "support": {
+        "tickets": {
+            "title": "Мои обращения",
+            "subtitle": "Управляйте своими обращениями в поддержку",
+            "newTicket": "Новое обращение",
+            "stats": {
+                "allTickets": "Все обращения",
+                "open": "Открытые",
+                "inProgress": "В работе",
+                "resolved": "Решенные"
+            },
+            "filters": {
+                "title": "Фильтры",
+                "searchPlaceholder": "Искать обращение...",
+                "status": {
+                    "all": "Все",
+                    "open": "Открытые",
+                    "inProgress": "В работе",
+                    "resolved": "Решенные",
+                    "closed": "Закрытые"
+                },
+                "priority": {
+                    "all": "Все",
+                    "low": "Низкий",
+                    "medium": "Средний",
+                    "high": "Высокий",
+                    "critical": "Критический"
+                }
+            },
+            "status": {
+                "open": "Открытое",
+                "inProgress": "В работе",
+                "resolved": "Решенное",
+                "closed": "Закрытое"
+            },
+            "priority": {
+                "low": "Низкий",
+                "medium": "Средний",
+                "high": "Высокий",
+                "critical": "Критический"
+            },
+            "ticketCard": {
+                "created": "Создано",
+                "lastReply": "Последний ответ",
+                "attachments": "{count} вложение(ий)",
+                "assignedTo": "Назначено"
+            },
+            "actions": {
+                "viewDetails": "Посмотреть детали",
+                "archive": "Архивировать"
+            },
+            "empty": {
+                "title": "У вас еще нет обращений",
+                "createFirst": "Создать первое обращение"
+            },
+            "newDialog": {
+                "title": "Новое обращение",
+                "description": "Опишите свою проблему, и наша команда поможет вам ее решить",
+                "subject": "Тема *",
+                "subjectPlaceholder": "Краткое описание проблемы",
+                "category": "Категория *",
+                "categoryPlaceholder": "Выберите категорию",
+                "categories": {
+                    "booking": "Бронирование",
+                    "payment": "Платежи",
+                    "instructor": "Инструкторы",
+                    "technical": "Технические проблемы",
+                    "account": "Аккаунт",
+                    "other": "Другое"
+                },
+                "priority": "Приоритет",
+                "message": "Описание проблемы *",
+                "messagePlaceholder": "Подробно опишите свою проблему...",
+                "cancel": "Отменить",
+                "create": "Создать обращение",
+                "creating": "Создание..."
+            },
+            "detailsDialog": {
+                "reply": "Ответить",
+                "replyPlaceholder": "Напишите ответ...",
+                "send": "Отправить",
+                "sending": "Отправка...",
+                "you": "Вы"
+            },
+            "toast": {
+                "error": "Ошибка",
+                "fillAllFields": "Заполните все обязательные поля",
+                "created": "Обращение создано",
+                "createdDescription": "Получите ответ в течение 24 часов",
+                "replySent": "Ответ отправлен",
+                "replyDescription": "Ваше сообщение добавлено к обращению"
+            },
+            "mockData": {
+                "bookingProblem": "Проблема с бронированием урока",
+                "bookingError": "Не могу забронировать урок на следующую неделю. Система показывает ошибку.",
+                "bookingReply": "Спасибо за обращение. Мы проверяем проблему и скоро ее решим.",
+                "paymentRefund": "Возврат оплаты",
+                "instructorChange": "Смена инструктора"
+            }
+        },
+        "title": "Центр поддержки",
+        "subtitle": "Как мы можем вам помочь? Найдите ответы или свяжитесь с нами",
+        "search": {
+            "placeholder": "Искать помощь... например, 'как отменить урок'"
+        },
+        "quickActions": {
+            "myTickets": {
+                "title": "Мои обращения",
+                "description": "Посмотреть статус ваших обращений"
+            },
+            "faq": {
+                "title": "FAQ",
+                "description": "Самые частые вопросы"
+            },
+            "knowledgeBase": {
+                "title": "База знаний",
+                "description": "Руководства и инструкции"
+            },
+            "liveChat": {
+                "title": "Онлайн-чат",
+                "description": "Поговорите с консультантом"
+            }
+        },
+        "quickForm": {
+            "title": "Быстрое обращение",
+            "description": "Опишите вашу проблему, и мы свяжемся с вами",
+            "categoryLabel": "Категория проблемы",
+            "categoryPlaceholder": "Выберите категорию",
+            "categories": {
+                "booking": "Проблема с бронированием",
+                "payment": "Проблема с оплатой",
+                "instructor": "Проблема с инструктором",
+                "technical": "Техническая проблема",
+                "account": "Проблема с аккаунтом",
+                "other": "Другое"
+            },
+            "messageLabel": "Описание проблемы",
+            "messagePlaceholder": "Подробно опишите вашу проблему...",
+            "submit": "Отправить обращение",
+            "submitting": "Отправка..."
+        },
+        "popularTopics": {
+            "title": "Популярные темы",
+            "description": "Самые просматриваемые категории помощи",
+            "bookings": "Бронирование",
+            "payments": "Платежи",
+            "vehicles": "Автомобили",
+            "instructors": "Инструкторы",
+            "safety": "Безопасность",
+            "account": "Аккаунт"
+        },
+        "contact": {
+            "title": "Контакт",
+            "description": "Выберите удобный способ связи",
+            "available": "Доступен",
+            "phone": {
+                "title": "Телефон",
+                "value": "+48 123 456 789",
+                "description": "Пн-Пт 8:00-20:00, Сб 9:00-15:00"
+            },
+            "email": {
+                "title": "Email",
+                "value": "pomoshch@avtoshkola.pl",
+                "description": "Отвечаем в течение 24 ч"
+            },
+            "chat": {
+                "title": "Чат",
+                "value": "Доступен",
+                "description": "Пн-Пт 8:00-20:00"
+            },
+            "whatsapp": {
+                "title": "WhatsApp",
+                "value": "+48 123 456 789",
+                "description": "Быстрые ответы"
+            }
+        },
+        "supportAgent": {
+            "title": "Нужна помощь?",
+            "description": "Наша команда доступна 7 дней в неделю",
+            "startChat": "Начать чат"
+        },
+        "emergency": {
+            "title": "Срочная проблема?",
+            "call": "Звоните"
+        },
+        "toast": {
+            "error": "Ошибка",
+            "enterMessage": "Введите ваше сообщение",
+            "selectCategory": "Выберите категорию проблемы",
+            "ticketSent": "Обращение отправлено",
+            "responseTime": "Получите ответ в течение 24 часов",
+            "chatStarted": "Чат запущен",
+            "consultantWillRespond": "Консультант ответит в ближайшее время"
+        }
+    },
+    "theoryClasses": {
+        "title": "Расписание теоретических занятий",
+        "subtitle": "Управляйте своим присутствием на занятиях",
+        "buttons": {
+            "exportCalendar": "Экспортировать в календарь",
+            "reminders": "Напоминания",
+            "signUp": "Записаться",
+            "materials": "Материалы",
+            "reschedule": "Договориться об отработке"
+        },
+        "stats": {
+            "attendance": "Посещаемость",
+            "attendanceCount": "{attended} из {total} занятий",
+            "upcoming": "Предстоящие",
+            "upcomingThisWeek": "На этой неделе",
+            "missed": "Пропущенные",
+            "missedToMakeUp": "К отработке",
+            "hours": "Часы",
+            "hoursCompleted": "Завершено"
+        },
+        "filters": {
+            "label": "Фильтры",
+            "all": "Все",
+            "types": {
+                "all": "Все",
+                "lecture": "Лекции",
+                "workshop": "Семинары",
+                "practice": "Практические",
+                "online": "Онлайн"
+            },
+            "statuses": {
+                "all": "Все",
+                "upcoming": "Предстоящие",
+                "completed": "Завершённые",
+                "missed": "Пропущенные",
+                "cancelled": "Отменённые"
+            }
+        },
+        "sections": {
+            "upcoming": "Предстоящие занятия",
+            "completed": "Завершённые занятия",
+            "missed": "Пропущенные занятия"
+        },
+        "status": {
+            "upcoming": "Предстоящее",
+            "completed": "Завершено",
+            "absent": "Отсутствует",
+            "missed": "Пропущено",
+            "cancelled": "Отменено"
+        },
+        "type": {
+            "lecture": "Лекция",
+            "workshop": "Семинар",
+            "practice": "Практические",
+            "online": "Онлайн"
+        },
+        "class": {
+            "online": "Онлайн",
+            "participants": "{current}/{max} участников",
+            "noSeats": "Нет мест",
+            "result": "Результат",
+            "score": "{score}%"
+        },
+        "warning": {
+            "title": "Внимание! У вас {count} пропущенных занятий",
+            "description": "Обязательное присутствие - минимум 90%. Свяжитесь с администрацией для согласования отработки."
+        },
+        "topics": {
+            "roadSigns": "Дорожные знаки - предписывающие и запрещающие",
+            "roadSignsDescription": "Обзор предписывающих и запрещающих знаков, примеры из практики",
+            "weatherConditions": "Вождение в различных погодных условиях",
+            "weatherConditionsDescription": "Техники вождения в дождь, снег и туман",
+            "vehicleConstruction": "Строение и обслуживание автомобиля",
+            "vehicleConstructionDescription": "Практические занятия в мастерской - контроль жидкостей, замена колеса",
+            "firstAid": "Первая помощь",
+            "firstAidDescription": "Основы оказания первой помощи при ДТП",
+            "trafficRules": "Правила дорожного движения",
+            "trafficRulesDescription": "Основные правила, приоритет проезда",
+            "warningRoadSigns": "Дорожные знаки - предупреждающие",
+            "warningRoadSignsDescription": "Знаки, предупреждающие об опасности",
+            "parkingManeuvers": "Маневры парковки",
+            "parkingManeuversDescription": "Практические упражнения по парковке",
+            "economicDriving": "Экономичное вождение",
+            "economicDrivingDescription": "Техники эко-вождения"
+        },
+        "instructor": {
+            "prefix": {
+                "mgr": "магистр",
+                "inz": "инж.",
+                "dr": "д-р"
+            }
+        },
+        "location": {
+            "room": "Аудитория",
+            "workshop": "Мастерская",
+            "maneuveringArea": "Площадка для маневрирования",
+            "online": "Онлайн"
+        }
+    },
+    "theoryMaterials": {
+        "title": "Учебные материалы",
+        "subtitle": "Документы, презентации и видеоматериалы",
+        "buttons": {
+            "myLibrary": "Моя библиотека",
+            "loadMore": "Загрузить больше материалов",
+            "viewAgain": "Просмотреть снова",
+            "open": "Открыть",
+            "watchAgain": "Просмотреть снова",
+            "continue": "Продолжить",
+            "start": "Начать",
+            "repeatQuiz": "Повторить тест",
+            "startQuiz": "Начать тест",
+            "download": "Скачать"
+        },
+        "search": {
+            "placeholder": "Искать материалы..."
+        },
+        "categories": {
+            "all": "Все",
+            "rules": "Правила движения",
+            "signs": "Дорожные знаки",
+            "safety": "Безопасность",
+            "mechanics": "Строение автомобиля"
+        },
+        "types": {
+            "all": "Все типы",
+            "pdf": "PDF",
+            "video": "Видео",
+            "presentation": "Презентации",
+            "quiz": "Тесты"
+        },
+        "badges": {
+            "new": "Новый",
+            "premium": "Премиум",
+            "pdf": "PDF",
+            "video": "Видео",
+            "presentation": "Презентация",
+            "quiz": "Тест"
+        },
+        "sections": {
+            "recentlyViewed": "Недавно просмотренные",
+            "recommended": "Рекомендованы для вас"
+        },
+        "metadata": {
+            "pages": "{count} страниц",
+            "views": "просмотров",
+            "progress": "Прогресс",
+            "yourScore": "Ваш результат"
+        },
+        "materials": {
+            "trafficCode": {
+                "title": "Кодекс дорожного движения - компендиум",
+                "description": "Полный сборник правил дорожного движения"
+            },
+            "warningSignsPresentation": {
+                "title": "Предупреждающие знаки - презентация",
+                "description": "Интерактивная презентация всех предупреждающих знаков"
+            },
+            "difficultConditions": {
+                "title": "Вождение в сложных условиях - видеокурс",
+                "description": "Техники вождения в дождь, снег и туман"
+            },
+            "priorityQuiz": {
+                "title": "Тест - Приоритет проезда",
+                "description": "30 вопросов для проверки знаний правил приоритета"
+            },
+            "engineConstruction": {
+                "title": "Строение двигателя - 3D анимация",
+                "description": "Анимированная презентация строения и работы двигателя"
+            },
+            "mandatoryProhibitorySignsPDF": {
+                "title": "Знаки предписывающие и запрещающие - PDF",
+                "description": "Детальное описание всех предписывающих и запрещающих знаков"
+            },
+            "firstAidGuide": {
+                "title": "Первая помощь - руководство",
+                "description": "Основы оказания первой помощи"
+            },
+            "parkingManeuversTutorial": {
+                "title": "Маневры парковки - учебник",
+                "description": "Шаг за шагом - все виды парковки"
+            }
+        }
+    },
+    "theoryTests": {
+        "title": "Теоретические тесты",
+        "subtitle": "Проверьте свои знания перед экзаменом",
+        "buttons": {
+            "quickTest": "Быстрый тест",
+            "startTest": "Начать тест",
+            "repeatTest": "Повторить тест",
+            "viewAll": "Просмотреть все"
+        },
+        "categories": {
+            "all": "Все",
+            "official": "Официальные",
+            "practice": "Тренировочные",
+            "exam": "Экзаменационные"
+        },
+        "difficulty": {
+            "all": "Все уровни",
+            "easy": "Легкий",
+            "medium": "Средний",
+            "hard": "Сложный"
+        },
+        "statistics": {
+            "title": "Статистика",
+            "attempts": "Попыток",
+            "passed": "Сдано",
+            "averageScore": "Средний результат",
+            "bestCategory": "Лучшая категория",
+            "weakestCategory": "Для улучшения",
+            "streak": "Серия сдач"
+        },
+        "filters": {
+            "category": "Категория",
+            "level": "Уровень"
+        },
+        "testInfo": {
+            "questions": "Вопросы",
+            "timeLimit": "Лимит времени",
+            "passingScore": "Проходной балл",
+            "min": "мин",
+            "points": "баллов",
+            "bestScore": "Лучший результат",
+            "attempts": "Попыток",
+            "lastAttempt": "Последняя"
+        },
+        "status": {
+            "passed": "Сдано",
+            "failed": "Не сдано",
+            "new": "Новый",
+            "locked": "Заблокирован"
+        },
+        "history": {
+            "title": "История тестов",
+            "columns": {
+                "test": "Тест",
+                "date": "Дата",
+                "score": "Результат",
+                "time": "Время",
+                "status": "Статус"
+            }
+        },
+        "tests": {
+            "examWORD1": {
+                "title": "Экзаменационный тест WORD #1"
+            },
+            "roadSignsComplete": {
+                "title": "Дорожные знаки - полный тест"
+            },
+            "rightOfWay": {
+                "title": "Приоритет проезда"
+            },
+            "examWORD2": {
+                "title": "Экзаменационный тест WORD #2"
+            },
+            "dangerousSituations": {
+                "title": "Опасные ситуации"
+            },
+            "trafficRules": {
+                "title": "Правила дорожного движения"
+            },
+            "vehicleBasics": {
+                "title": "Строение автомобиля - основы"
+            },
+            "fullExamPractice": {
+                "title": "Экзамен пробный - полный"
+            }
+        },
+        "unlockRequirement": "Завершите все тренировочные тесты",
+        "categoryNames": {
+            "roadSigns": "Дорожные знаки",
+            "priority": "Приоритет"
+        }
+    },
+    "theory": {
+        "title": "Теоретический курс",
+        "subtitle": "Подготовка к теоретическому экзамену",
+        "buttons": {
+            "practiceTests": "Пробные тесты",
+            "materials": "Материалы",
+            "viewAll": "Просмотреть все",
+            "allTests": "Все тесты",
+            "repeat": "Повторить",
+            "continue": "Продолжить",
+            "startNewTest": "Начать новый тест"
+        },
+        "progress": {
+            "courseProgress": "Прогресс курса",
+            "completedLessons": "Завершенные уроки",
+            "remaining": "Осталось {count} уроков",
+            "theoryHours": "Часы теории",
+            "requiredMinimum": "Обязательный минимум",
+            "averageScore": "Средний результат",
+            "fromTests": "Из контрольных тестов"
+        },
+        "categories": {
+            "all": "Все",
+            "rules": "Правила движения",
+            "signs": "Дорожные знаки",
+            "safety": "Безопасность",
+            "mechanics": "Строение автомобиля"
+        },
+        "modules": {
+            "basicRules": {
+                "title": "Основные правила движения",
+                "description": "Правила приоритета, ограничения скорости"
+            },
+            "warningSignsModule": {
+                "title": "Дорожные знаки - предупреждающие",
+                "description": "Знаки, предупреждающие об опасности"
+            },
+            "mandatoryProhibitorySigns": {
+                "title": "Дорожные знаки - предписывающие и запрещающие",
+                "description": "Знаки, предписывающие и запрещающие"
+            },
+            "maneuversParking": {
+                "title": "Маневры и парковка",
+                "description": "Правила выполнения маневров"
+            },
+            "drivingConditions": {
+                "title": "Вождение в различных условиях",
+                "description": "Вождение ночью, в дождь, зимой"
+            },
+            "firstAid": {
+                "title": "Первая помощь",
+                "description": "Основы оказания первой помощи"
+            },
+            "vehicleMaintenance": {
+                "title": "Строение и обслуживание автомобиля",
+                "description": "Базовые технические знания"
+            },
+            "documentsInsurance": {
+                "title": "Документы и страхование",
+                "description": "Необходимые документы, ОСАГО, КАСКО"
+            },
+            "duration": "{hours} ч.",
+            "lessons": "уроков"
+        },
+        "status": {
+            "completed": "Завершено",
+            "inProgress": "В процессе",
+            "locked": "Заблокирован"
+        },
+        "lessonProgress": "Прогресс уроков",
+        "testResult": "Результат теста",
+        "nextClass": "Следующие занятия",
+        "upcomingClasses": {
+            "title": "Предстоящие занятия",
+            "types": {
+                "lecture": "лекция",
+                "workshop": "семинар",
+                "practice": "практика"
+            }
+        },
+        "recentTests": {
+            "title": "Последние тесты",
+            "rulesTest": "Тест по правилам движения",
+            "warningSignsTest": "Тест по предупреждающим знакам",
+            "maneuversTest": "Тест по маневрам"
+        },
+        "studyTips": {
+            "title": "Советы для обучения",
+            "tip1": "Учитесь систематически - 30 минут каждый день лучше, чем 3 часа раз в неделю",
+            "tip2": "Регулярно решайте пробные тесты, чтобы отслеживать прогресс",
+            "tip3": "Уделите особое внимание дорожным знакам - это 30% вопросов на экзамене",
+            "tip4": "Экзамен требует минимум 68 баллов из 74 возможных"
+        }
+    },
+    "studentLayout": {
+        "portal": "Портал Студента",
+        "courseProgress": "Прогресс курса",
+        "lessons": "уроков",
+        "nextLesson": "Следующий урок",
+        "navigation": {
+            "dashboard": "Панель управления",
+            "myLessons": "Мои уроки",
+            "booking": "Бронирование",
+            "progress": "Прогресс",
+            "materials": "Материалы",
+            "payments": "Платежи",
+            "documents": "Документы",
+            "messages": "Сообщения",
+            "help": "Помощь",
+            "profile": "Профиль",
+            "settings": "Настройки"
+        },
+        "bottomNav": {
+            "home": "Главная",
+            "lessons": "Уроки",
+            "book": "Бронировать",
+            "progress": "Прогресс",
+            "menu": "Меню"
+        },
+        "userMenu": {
+            "myProgress": "Мой прогресс",
+            "logout": "Выйти"
+        },
+        "notifications": {
+            "title": "Уведомления",
+            "nextLesson": {
+                "title": "Следующий урок",
+                "message": "У вас запланирован урок завтра в 14:00"
+            },
+            "newMaterials": {
+                "title": "Новые материалы",
+                "message": "Добавлены новые материалы для обучения"
+            },
+            "paymentReminder": {
+                "title": "Напоминание об оплате",
+                "message": "Приближается срок оплаты за пакет"
+            },
+            "timeAgo": {
+                "minutes": "{count} мин назад",
+                "hours": "{count} ч. назад",
+                "days": "{count} дн. назад"
+            }
+        },
+        "languages": {
+            "pl": "Польский",
+            "uk": "Украинский",
+            "en": "Английский",
+            "ru": "Русский"
+        },
+        "role": "Студент"
+    }
+}

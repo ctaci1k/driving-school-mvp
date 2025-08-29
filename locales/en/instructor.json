@@ -1,0 +1,2828 @@
+{
+    "dashboard": {
+        "greeting": "Hello, {name}! 👋",
+        "dateFormat": "{date}",
+        "stats": {
+            "today": "Today",
+            "lessons": "Lessons",
+            "rating": "Rating",
+            "thisWeek": "This week",
+            "currency": "{amount} UAH",
+            "fromYesterday": "+{amount} UAH from yesterday",
+            "hours": "{count} h",
+            "lessonsCount": "{count} lessons"
+        },
+        "timeline": {
+            "title": "Today's Schedule",
+            "viewAll": "View all",
+            "inProgress": "In Progress",
+            "for": "In {time}",
+            "currentTime": "{time}"
+        },
+        "lesson": {
+            "practiceCity": "City Driving",
+            "practiceBeginner": "Beginner Practice",
+            "examPrep": "Exam Preparation",
+            "practiceRoute": "Route Practice",
+            "nightDriving": "Night Driving Practice",
+            "workedOnParking": "Worked on parking",
+            "firstLesson": "First lesson, basic skills",
+            "readyForExam": "Ready for exam"
+        },
+        "buttons": {
+            "call": "Call",
+            "route": "Route",
+            "track": "Track",
+            "finish": "Finish",
+            "viewDetails": "View details"
+        },
+        "earnings": {
+            "title": "Weekly Earnings",
+            "total": "Total",
+            "averagePerDay": "Average/day",
+            "bonuses": "Bonuses",
+            "bonus": "+{amount} UAH"
+        },
+        "students": {
+            "title": "Student Progress",
+            "allStudents": "All students",
+            "lessonsCount": "{count} lessons",
+            "exam": "Exam: {date}"
+        },
+        "achievements": {
+            "100Lessons": "100 Lessons",
+            "5StarsWeek": "5-Star Week",
+            "bestInstructor": "Best Instructor",
+            "daysAgo": "{days} day(s) ago",
+            "yesterday": "Yesterday",
+            "weekAgo": "A week ago"
+        },
+        "days": {
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri",
+            "sat": "Sat",
+            "sun": "Sun"
+        },
+        "time": {
+            "2h30min": "2h 30min",
+            "4h30min": "4h 30min",
+            "now": "Now"
+        }
+    },
+    "earnings": {
+        "details": {
+            "title": "Earnings Details",
+            "subtitle": "Detailed information about income and expenses",
+            "period": {
+                "week": "Week",
+                "month": "Month",
+                "quarter": "Quarter",
+                "year": "Year",
+                "february": "February 2024"
+            },
+            "summary": {
+                "grossIncome": "Gross Income",
+                "netIncome": "Net Income",
+                "deductions": "Deductions",
+                "bonuses": "Bonuses"
+            },
+            "tabs": {
+                "breakdown": "Breakdown",
+                "bonuses": "Bonuses",
+                "deductions": "Deductions",
+                "byStudents": "By Students",
+                "analytics": "Analytics"
+            },
+            "structure": {
+                "title": "Income Structure",
+                "baseIncome": "Base Income ({lessons} lessons)",
+                "overtime": "Overtime",
+                "bonuses": "Bonuses",
+                "additionalIncome": "Additional Income",
+                "totalGross": "Total (Gross):"
+            },
+            "lessonTypes": {
+                "title": "By Lesson Type",
+                "list": "List by type",
+                "practiceCity": "City Driving",
+                "practiceRoute": "Route Practice",
+                "examPrep": "Exam Preparation",
+                "practiceArea": "Practice Area",
+                "nightDriving": "Night Driving",
+                "lessons": "{count} lessons"
+            },
+            "bonusDetails": {
+                "title": "Bonus Details",
+                "quality": "Quality Bonus",
+                "qualityDesc": "4.9+ rating for the month",
+                "punctuality": "Punctuality Bonus",
+                "punctualityDesc": "100% of lessons on time",
+                "newStudents": "New Student Bonus",
+                "newStudentsDesc": "{count} new students",
+                "examSuccess": "Exam Success Bonus",
+                "examSuccessDesc": "{count} students passed their exams",
+                "received": "Received",
+                "pending": "Pending",
+                "info": "Bonuses are automatically paid out at the end of the month upon meeting the conditions"
+            },
+            "deductionDetails": {
+                "title": "Deductions and Taxes",
+                "platformFee": "Platform Fee",
+                "platformFeeDesc": "6% of gross income",
+                "taxes": "Taxes",
+                "taxesDesc": "Personal Income Tax 5% + Social Security Tax 1.5%",
+                "insurance": "Insurance",
+                "insuranceDesc": "Additional insurance",
+                "totalDeductions": "Total Deductions:"
+            },
+            "taxInfo": {
+                "title": "Tax Information",
+                "yearlyIncome": "Annual Income (forecast)",
+                "yearlyTax": "Taxes for the year",
+                "quarter": "Quarter",
+                "due": "by {date}",
+                "paid": "Paid {amount} UAH",
+                "pending": "Pending"
+            },
+            "studentEarnings": {
+                "title": "Earnings by Student",
+                "headers": {
+                    "student": "Student",
+                    "lessons": "Lessons",
+                    "amount": "Amount",
+                    "averagePrice": "Avg. Price",
+                    "status": "Status"
+                },
+                "active": "Active"
+            },
+            "analytics": {
+                "title": "Earnings Dynamics",
+                "daily": "Day",
+                "amount": "Amount"
+            },
+            "buttons": {
+                "export": "Export"
+            },
+            "currency": "{amount} UAH"
+        },
+        "history": {
+            "title": "Payment History",
+            "subtitle": "View all payments and transactions",
+            "buttons": {
+                "filter": "Filter",
+                "export": "Export",
+                "receipt": "Receipt"
+            },
+            "stats": {
+                "totalEarned": "Total earned",
+                "thisYear": "This year",
+                "lastMonth": "Last month",
+                "averageMonth": "Average/month"
+            },
+            "tabs": {
+                "payments": "Payments",
+                "transactions": "Transactions"
+            },
+            "search": {
+                "placeholder": "Search by period or number..."
+            },
+            "periods": {
+                "all": "All time",
+                "year": "This year",
+                "quarter": "Quarter",
+                "month": "Month",
+                "january": "January {year}",
+                "december": "December {year}",
+                "november": "November {year}",
+                "october": "October {year}"
+            },
+            "payments": {
+                "headers": {
+                    "date": "Date",
+                    "period": "Period",
+                    "amount": "Amount",
+                    "lessons": "Lessons",
+                    "bonuses": "Bonuses",
+                    "deductions": "Deductions",
+                    "toPay": "To Pay",
+                    "status": "Status",
+                    "actions": "Actions"
+                },
+                "method": "Bank Transfer",
+                "status": {
+                    "completed": "Paid",
+                    "pending": "Pending",
+                    "cancelled": "Cancelled"
+                },
+                "pagination": "Showing {from}-{to} of {total} entries"
+            },
+            "transactions": {
+                "headers": {
+                    "date": "Date",
+                    "type": "Type",
+                    "description": "Description",
+                    "amount": "Amount",
+                    "status": "Status"
+                },
+                "types": {
+                    "lesson": "Lesson",
+                    "bonus": "Bonus",
+                    "deduction": "Deduction",
+                    "other": "Other"
+                },
+                "descriptions": {
+                    "lesson": "Lesson - {student}",
+                    "qualityBonus": "Quality Bonus",
+                    "platformFee": "Platform Fee"
+                }
+            },
+            "currency": "{amount} UAH"
+        },
+        "main": {
+            "title": "My Earnings",
+            "subtitle": "Financial statistics and payments",
+            "periods": {
+                "week": "Week",
+                "month": "Month",
+                "quarter": "Quarter",
+                "year": "Year"
+            },
+            "buttons": {
+                "report": "Report",
+                "filter": "Filter",
+                "receipt": "Receipt"
+            },
+            "cards": {
+                "thisMonth": "This month",
+                "netIncome": "Net Income",
+                "lessons": "Lessons",
+                "bonuses": "Bonuses",
+                "hours": "{hours} hours",
+                "fromPrevious": "{value}% from previous",
+                "afterCommission": "After {percent}% commission",
+                "achievements": "+{count} achievements"
+            },
+            "goals": {
+                "title": "Goals and Achievements",
+                "monthly": "Monthly Goal",
+                "quarterly": "Quarterly Goal",
+                "yearly": "Yearly Goal",
+                "achieved": "Goal Achieved!",
+                "amount": "{current} UAH / {target} UAH"
+            },
+            "tabs": {
+                "overview": "Overview",
+                "details": "Details",
+                "bonuses": "Bonuses",
+                "payouts": "Payouts",
+                "analytics": "Analytics"
+            },
+            "charts": {
+                "dailyEarnings": "Daily Earnings",
+                "monthlyComparison": "Monthly Comparison",
+                "byLessonType": "Earnings by Lesson Type",
+                "february": "February {year}",
+                "months": {
+                    "november": "November",
+                    "december": "December",
+                    "january": "January",
+                    "february": "February"
+                }
+            },
+            "lessonTypes": {
+                "practiceCity": "City Driving",
+                "practiceRoute": "Route Practice",
+                "examPrep": "Exam Preparation",
+                "practiceArea": "Practice Area"
+            },
+            "transactions": {
+                "title": "Transaction Details",
+                "headers": {
+                    "date": "Date",
+                    "student": "Student",
+                    "type": "Type",
+                    "duration": "Duration",
+                    "rate": "Rate",
+                    "amount": "Amount",
+                    "commission": "Commission",
+                    "net": "Net",
+                    "status": "Status"
+                },
+                "status": {
+                    "paid": "Paid",
+                    "pending": "Pending"
+                },
+                "minutes": "{min} min"
+            },
+            "bonusSection": {
+                "active": "Active Bonuses",
+                "opportunities": "Bonus Opportunities",
+                "description": "Meet the conditions to receive additional bonuses",
+                "newStudents": "New Student Bonus",
+                "newStudentsDesc": "{count} new students in February",
+                "quality": "Quality Bonus",
+                "qualityDesc": "4.9+ rating for the month",
+                "productivity": "Productivity Bonus",
+                "productivityDesc": "Over 60 lessons in a month",
+                "lessons80": "Bonus for 80 lessons",
+                "lessons80Progress": "{current} of {target} lessons",
+                "exams5": "Bonus for 5 passed exams",
+                "exams5Progress": "{current} of {target} students passed",
+                "received": "Received",
+                "pending": "Pending",
+                "until": "Until {date}"
+            },
+            "payouts": {
+                "next": "Next Payout",
+                "plannedDate": "Planned Date",
+                "amountToPay": "Amount to Pay",
+                "method": "Payment Method",
+                "bankTransfer": "Bank Transfer",
+                "bank": "Bank",
+                "account": "Account",
+                "history": "Payment History",
+                "period": "Period",
+                "january2024": "January 2024",
+                "december2023": "December 2023",
+                "status": {
+                    "paid": "Paid"
+                }
+            },
+            "analytics": {
+                "averageEarnings": "Average Earnings",
+                "perLesson": "Per Lesson:",
+                "perHour": "Per Hour:",
+                "perDay": "Per Day:",
+                "productivity": "Productivity",
+                "lessonsPerDay": "Lessons/day:",
+                "hoursPerDay": "Hours/day:",
+                "utilization": "Utilization:",
+                "forecast": "Forecast",
+                "endOfMonth": "By end of month:",
+                "quarter": "Quarter:",
+                "yearForecast": "Year (forecast):",
+                "insights": "Insights and Recommendations",
+                "growthMessage": "Your earnings have grown by {percent}% compared to the previous month. Keep up the great work!",
+                "goalMessage": "You've almost reached your monthly goal! Only {amount} UAH ({lessons} lessons) left.",
+                "bestDaysMessage": "Your most profitable days are Saturday and Friday. Consider increasing your lesson count on these days."
+            },
+            "currency": "{amount} UAH"
+        }
+    },
+    "lessons": {
+        "checkIn": {
+            "title": "Lesson Start",
+            "subtitle": "Complete all checks before starting",
+            "buttons": {
+                "cancel": "Cancel",
+                "back": "Back",
+                "next": "Next",
+                "startLesson": "Start Lesson",
+                "starting": "Starting...",
+                "callStudent": "Call student",
+                "message": "Message",
+                "takePhoto": "Take photo",
+                "addDamagePhotos": "Add damage photos"
+            },
+            "student": {
+                "progress": "Progress",
+                "lessons": "Lessons: {count}",
+                "category": "Category"
+            },
+            "steps": {
+                "title": "Checklist",
+                "current": "Step {current} of {total}",
+                "documents": {
+                    "title": "Document Check",
+                    "description": "Check the student's documents",
+                    "important": "Important",
+                    "importantText": "Check for the presence and validity of all documents before starting the lesson",
+                    "required": "Required",
+                    "studentPresent": "Student present",
+                    "studentPresentDesc": "{name} has arrived for the lesson on time",
+                    "studentLicense": "Student's driver's license",
+                    "licenseNumber": "License number",
+                    "studentCard": "Driving school student card",
+                    "studentCardDesc": "For identification in the system",
+                    "medicalCert": "Medical certificate",
+                    "medicalCertDesc": "If necessary (first lesson or after illness)",
+                    "identityConfirmed": "Student's identity confirmed",
+                    "identityConfirmedDesc": "I confirm that this is {name}"
+                },
+                "vehicle": {
+                    "title": "Vehicle Inspection",
+                    "description": "External and internal inspection",
+                    "mileageStart": "Starting mileage (km)",
+                    "lastMileage": "Last: {mileage} km",
+                    "fuelLevel": "Fuel level",
+                    "selectLevel": "Select level",
+                    "fuelFull": "Full tank (100%)",
+                    "fuel3_4": "3/4 tank (75%)",
+                    "fuel1_2": "1/2 tank (50%)",
+                    "fuel1_4": "1/4 tank (25%)",
+                    "fuelReserve": "Reserve (<10%)",
+                    "exteriorCheck": "External check",
+                    "exteriorClean": "Body is clean, with no visible damage",
+                    "describeDamages": "Describe any issues or damage found...",
+                    "lightsWorking": "All lights and turn signals are working",
+                    "tiresOk": "Tires are in good condition, pressure is sufficient",
+                    "interiorCheck": "Internal check",
+                    "interiorClean": "Interior is clean and tidy",
+                    "fluidsOk": "Fluid levels (oil, coolant, washer fluid) are normal",
+                    "documentsPresent": "Vehicle documents are present",
+                    "emergencyKitPresent": "First aid kit, fire extinguisher, warning triangle are present",
+                    "issuesWarning": "Any issues found will be reported to the mechanic after the lesson"
+                },
+                "safety": {
+                    "title": "Safety",
+                    "description": "Safety systems check",
+                    "safetyFirst": "Safety first",
+                    "safetyFirstDesc": "Ensure all safety systems are working properly",
+                    "safetySystems": "Safety Systems",
+                    "seatbelts": "Seatbelts are working and can be fastened",
+                    "mirrors": "Mirrors are adjusted for the student",
+                    "brakes": "Brakes are checked (service and parking)",
+                    "handbrake": "Handbrake is working correctly",
+                    "horn": "Horn is working",
+                    "studentBriefing": "Student Briefing",
+                    "briefed": "Safety briefing has been conducted",
+                    "emergencyProcedures": "Emergency procedures have been explained",
+                    "phoneOnSilent": "Phones are switched to silent mode"
+                },
+                "photos": {
+                    "title": "Photo Documentation",
+                    "description": "Take photos of the vehicle's condition",
+                    "instruction": "Take photos to document the vehicle's condition (optional)",
+                    "front": "Front",
+                    "back": "Back",
+                    "left": "Left side",
+                    "right": "Right side",
+                    "interior": "Interior",
+                    "dashboard": "Dashboard",
+                    "damagesTitle": "Additional photos of damage (if any)"
+                },
+                "confirmation": {
+                    "title": "Confirmation",
+                    "description": "Start the lesson",
+                    "summary": "Check-in summary",
+                    "student": "Student:",
+                    "lessonType": "Lesson Type:",
+                    "practiceCity": "City Driving",
+                    "time": "Time:",
+                    "vehicle": "Vehicle:",
+                    "initialMileage": "Initial Mileage:",
+                    "fuel": "Fuel:",
+                    "notSpecified": "Not specified",
+                    "checkResults": "Check results",
+                    "documents": "Documents",
+                    "safety": "Safety",
+                    "additionalNotes": "Additional notes (optional)",
+                    "notesPlaceholder": "Any comments about the start of the lesson...",
+                    "agreement": "I confirm that all checks are correct",
+                    "agreementDesc": "The vehicle is ready for the driving lesson, and the student has been informed of safety rules",
+                    "gpsActive": "GPS active",
+                    "gpsUnavailable": "GPS unavailable",
+                    "online": "Online",
+                    "offline": "Offline",
+                    "coordinates": "Coordinates:"
+                }
+            },
+            "offlineMode": {
+                "title": "Offline Mode",
+                "description": "You are working in offline mode. Data will be saved locally and synced once you reconnect."
+            },
+            "minutes": "{duration} min"
+        },
+        "today": {
+            "title": "Today's Lessons",
+            "dateFormat": "{date}",
+            "stats": {
+                "completed": "Completed",
+                "distance": "Km",
+                "earnings": "Earnings",
+                "rating": "Rating",
+                "time": "Time",
+                "fuel": "Fuel",
+                "currency": "{amount} UAH"
+            },
+            "currentLesson": {
+                "title": "Current Lesson",
+                "inProgress": "IN PROGRESS",
+                "photos": "Photos",
+                "notes": "Notes",
+                "route": "Route",
+                "details": "Details"
+            },
+            "schedule": {
+                "title": "Today's Schedule",
+                "timeUntil": {
+                    "now": "Now",
+                    "hours": "{hours}h {minutes}min",
+                    "minutes": "{minutes}min"
+                },
+                "objectives": "{count} objectives",
+                "km": "{distance} km",
+                "start": "Start",
+                "details": "Details"
+            },
+            "lessonTypes": {
+                "practiceCity": "City Driving",
+                "practiceArea": "Practice Area",
+                "examPrep": "Exam Preparation",
+                "highway": "Highway Driving",
+                "difficult": "Difficult Conditions"
+            },
+            "objectives": {
+                "parallelParking": "Parallel parking",
+                "intersections": "Driving through intersections",
+                "starting": "Starting off",
+                "braking": "Braking",
+                "turns": "Turns",
+                "examRoute": "Exam route",
+                "emergencyBraking": "Emergency braking",
+                "highwayDriving": "Highway driving",
+                "overtaking": "Overtaking",
+                "keepingDistance": "Maintaining distance",
+                "trafficJams": "Driving in traffic jams",
+                "roundabout": "Roundabouts"
+            },
+            "locations": {
+                "cityCenter": "City Center",
+                "practiceArea": "Practice Area",
+                "drivingSchool": "DenisDrive",
+                "examRoute": "Exam Route"
+            },
+            "status": {
+                "completed": "Completed",
+                "inProgress": "In progress",
+                "upcoming": "Upcoming"
+            }
+        },
+        "list": {
+            "title": "My Lessons",
+            "subtitle": "Manage your driving lessons",
+            "buttons": {
+                "addLesson": "Add lesson",
+                "export": "Export"
+            },
+            "stats": {
+                "all": "All",
+                "completed": "Completed",
+                "earnings": "Earnings",
+                "rating": "Rating",
+                "distance": "Distance",
+                "unpaid": "Unpaid",
+                "km": "{distance} km",
+                "currency": "{amount} UAH"
+            },
+            "filters": {
+                "searchPlaceholder": "Search by last name or location...",
+                "allStatuses": "All statuses",
+                "allTypes": "All types",
+                "period": {
+                    "today": "Today",
+                    "week": "This week",
+                    "month": "This month",
+                    "all": "All"
+                }
+            },
+            "status": {
+                "completed": "Completed",
+                "scheduled": "Scheduled",
+                "cancelled": "Cancelled",
+                "noShow": "No-show"
+            },
+            "lessonTypes": {
+                "city": "City Driving",
+                "practiceArea": "Practice Area",
+                "examRoute": "Exam Route",
+                "internalExam": "Internal Exam"
+            },
+            "table": {
+                "title": "Lesson List",
+                "headers": {
+                    "status": "Status",
+                    "dateTime": "Date & Time",
+                    "student": "Student",
+                    "lessonType": "Lesson Type",
+                    "location": "Location",
+                    "vehicle": "Vehicle",
+                    "duration": "Duration",
+                    "price": "Price",
+                    "payment": "Payment",
+                    "rating": "Rating",
+                    "actions": "Actions"
+                },
+                "minutes": "{duration} min",
+                "paid": "Paid",
+                "toPay": "To pay"
+            }
+        }
+    },
+    "messages": {
+        "chat": {
+            "header": {
+                "online": "Online",
+                "lastSeen": "Last seen {time}",
+                "contactInfo": "Contact info",
+                "phone": "Phone",
+                "email": "Email",
+                "completedLessons": "Completed lessons",
+                "nextLesson": "Next lesson",
+                "searchPlaceholder": "Search in conversation..."
+            },
+            "input": {
+                "placeholder": "Write a message...",
+                "replyingTo": "Replying to:",
+                "voiceRecording": "Voice recording"
+            },
+            "messageStatus": {
+                "sending": "Sending",
+                "sent": "Sent",
+                "delivered": "Delivered",
+                "read": "Read",
+                "edited": "(edited)"
+            },
+            "messageActions": {
+                "reply": "Reply",
+                "edit": "Edit",
+                "copy": "Copy",
+                "star": "Star",
+                "forward": "Forward",
+                "delete": "Delete",
+                "download": "Download"
+            },
+            "typing": {
+                "indicator": "is typing..."
+            },
+            "timeFormat": {
+                "today": "{time}",
+                "yesterday": "Yesterday {time}",
+                "date": "{date} {time}"
+            },
+            "attachments": {
+                "file": "File",
+                "image": "Image",
+                "voice": "Voice message",
+                "location": "Location"
+            }
+        },
+        "main": {
+            "title": "Messages",
+            "subtitle": {
+                "unread": "{count} unread",
+                "allRead": "All read"
+            },
+            "newMessage": "New message",
+            "search": {
+                "placeholder": "Search message or person..."
+            },
+            "filters": {
+                "all": "All",
+                "unread": "Unread",
+                "groups": "Groups",
+                "pinned": "Pinned"
+            },
+            "conversationList": {
+                "title": "Conversations",
+                "you": "You:",
+                "members": "{count} members",
+                "timeAgo": "{time} ago"
+            },
+            "status": {
+                "online": "Online",
+                "away": "Away",
+                "offline": "Offline"
+            },
+            "actions": {
+                "pin": "Pin",
+                "unpin": "Unpin",
+                "mute": "Mute",
+                "unmute": "Unmute",
+                "markAsRead": "Mark as read",
+                "archive": "Archive",
+                "delete": "Delete"
+            },
+            "placeholder": {
+                "title": "Select a conversation",
+                "description": "Click on a conversation on the left to view messages",
+                "startNew": "Start a new conversation"
+            },
+            "quickReplies": {
+                "title": "Quick Replies",
+                "templates": {
+                    "confirm": "Yes, I confirm",
+                    "unavailable": "I can't, sorry",
+                    "meetingTime": "Let's meet at the agreed time",
+                    "callRequest": "Please call me",
+                    "thanks": "Thanks for the message"
+                }
+            },
+            "roles": {
+                "student": "Student",
+                "group": "Group",
+                "administration": "Administration"
+            }
+        }
+    },
+    "profile": {
+        "documents": {
+            "title": "My Documents",
+            "subtitle": "Manage your certificates and licenses",
+            "addDocument": "Add Document",
+            "alert": {
+                "title": "Documents Needing Attention",
+                "description": "You have {count} document(s) that are expiring soon. Please take care of their renewal."
+            },
+            "stats": {
+                "all": "All",
+                "active": "Active",
+                "expiring": "Expiring",
+                "verified": "Verified"
+            },
+            "search": {
+                "placeholder": "Search documents..."
+            },
+            "categories": {
+                "all": "All",
+                "required": "Required",
+                "additional": "Additional",
+                "employment": "Employment",
+                "insurance": "Insurance"
+            },
+            "table": {
+                "headers": {
+                    "document": "Document",
+                    "issuer": "Issuer",
+                    "number": "Number",
+                    "issueDate": "Issue Date",
+                    "expiryDate": "Valid Until",
+                    "status": "Status",
+                    "actions": "Actions"
+                },
+                "verified": "Verified",
+                "daysLeft": "in {days} days"
+            },
+            "status": {
+                "active": "Active",
+                "expiring": "Expiring Soon",
+                "expired": "Expired"
+            },
+            "actions": {
+                "preview": "Preview",
+                "download": "Download",
+                "share": "Share",
+                "edit": "Edit",
+                "delete": "Delete"
+            },
+            "upload": {
+                "title": "Add a New Document",
+                "description": "Upload your document and fill in the information",
+                "documentName": "Document Name",
+                "documentNamePlaceholder": "e.g., Instructor's License",
+                "documentType": "Document Type",
+                "types": {
+                    "license": "License",
+                    "certificate": "Certificate",
+                    "medical": "Medical Report",
+                    "contract": "Contract",
+                    "other": "Other"
+                },
+                "issueDate": "Issue Date",
+                "expiryDate": "Valid Until",
+                "cancel": "Cancel",
+                "save": "Save Document"
+            },
+            "documentTypes": {
+                "instructorLicense": "Instructor's License",
+                "drivingLicense": "Driving License Cat. B",
+                "medicalCertificate": "Medical Certificate",
+                "firstAidCertificate": "First Aid Certificate",
+                "trainingCourse": "Advanced Training Course",
+                "employmentContract": "Employment Contract",
+                "liabilityInsurance": "Liability Insurance"
+            },
+            "issuers": {
+                "ministry": "Ministry of Infrastructure",
+                "cityOffice": "City Council",
+                "medicalCenter": "Medical Center",
+                "redCross": "Red Cross",
+                "instructorsAssociation": "Instructors' Association",
+                "drivingSchool": "Kyiv Driving School",
+                "insuranceCompany": "Insurance Company"
+            }
+        },
+        "settings": {
+            "title": "Settings",
+            "subtitle": "Manage your settings and security",
+            "tabs": {
+                "notifications": "Notifications",
+                "privacy": "Privacy",
+                "display": "Display",
+                "security": "Security"
+            },
+            "notifications": {
+                "channels": {
+                    "title": "Notification Channels",
+                    "description": "Choose how you want to receive notifications",
+                    "email": {
+                        "label": "Email",
+                        "description": "Receive email notifications"
+                    },
+                    "sms": {
+                        "label": "SMS",
+                        "description": "Receive SMS notifications"
+                    },
+                    "push": {
+                        "label": "Push",
+                        "description": "In-app notifications"
+                    }
+                },
+                "types": {
+                    "title": "Notification Types",
+                    "description": "Choose what you want to be notified about",
+                    "newBooking": "New Bookings",
+                    "cancellation": "Cancellations",
+                    "reminder": "Lesson Reminders",
+                    "payment": "Payments",
+                    "messages": "Messages from students",
+                    "reviews": "New Reviews"
+                }
+            },
+            "privacy": {
+                "profile": {
+                    "title": "Profile Visibility",
+                    "description": "Control who can see your profile",
+                    "public": "Public - everyone can see",
+                    "students": "Students Only",
+                    "private": "Private - no one can see",
+                    "showPhone": "Show phone number",
+                    "showEmail": "Show email",
+                    "showRating": "Show rating",
+                    "showStatistics": "Show statistics"
+                },
+                "booking": {
+                    "title": "Booking Settings",
+                    "onlineBooking": {
+                        "label": "Online Booking",
+                        "description": "Students can book lessons online"
+                    },
+                    "requireApproval": {
+                        "label": "Require Approval",
+                        "description": "Manually approve each booking"
+                    },
+                    "minAdvance": "Min. Notice",
+                    "maxAdvance": "Max. Notice",
+                    "hours": "{count} hours",
+                    "days": "{count} days"
+                }
+            },
+            "display": {
+                "appearance": {
+                    "title": "Appearance",
+                    "theme": "Theme",
+                    "light": "Light",
+                    "dark": "Dark",
+                    "system": "System",
+                    "language": "Language",
+                    "dateFormat": "Date Format",
+                    "timeFormat": "Time Format",
+                    "24h": "24-hour",
+                    "12h": "12-hour"
+                }
+            },
+            "security": {
+                "status": {
+                    "secure": "Your account is secure",
+                    "lastPasswordChange": "Last password change: {date}"
+                },
+                "password": {
+                    "title": "Password",
+                    "changePassword": "Change Password",
+                    "currentPassword": "Current Password",
+                    "newPassword": "New Password",
+                    "confirmPassword": "Confirm New Password"
+                },
+                "twoFactor": {
+                    "title": "Two-Factor Authentication",
+                    "description": "An additional layer of protection for your account",
+                    "enabled": "2FA is enabled",
+                    "disabled": "2FA is disabled",
+                    "enabledDescription": "Your account is protected by 2FA",
+                    "disabledDescription": "Enable for better protection",
+                    "enable": "Enable",
+                    "disable": "Disable",
+                    "scanQR": "Scan the code with an authentication app",
+                    "verificationCode": "Verification Code"
+                },
+                "sessions": {
+                    "title": "Active Sessions",
+                    "description": "Currently authorized devices",
+                    "current": "Current",
+                    "endSession": "End",
+                    "endAllOther": "End all other sessions",
+                    "location": "{city} • {time}"
+                },
+                "account": {
+                    "title": "Account Actions",
+                    "downloadData": "Download Data",
+                    "deleteAccount": "Delete Account",
+                    "deleteWarning": {
+                        "title": "Delete Account",
+                        "description": "This action is irreversible. All data will be permanently deleted.",
+                        "warning": "Warning!",
+                        "consequences": "Deleting your account will result in:",
+                        "dataLoss": "Loss of all data",
+                        "bookingsCancelled": "Cancellation of all bookings",
+                        "historyDeleted": "Deletion of student history",
+                        "noRecovery": "No possibility of recovery",
+                        "confirmText": "Enter \"DELETE\" to confirm",
+                        "confirmPlaceholder": "DELETE"
+                    }
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Save",
+                    "confirm": "Confirm"
+                }
+            }
+        },
+        "main": {
+            "instructor": "Instructor",
+            "edit": "Edit",
+            "cancel": "Cancel",
+            "save": "Save",
+            "stats": {
+                "students": "Students",
+                "successRate": "Pass Rate",
+                "experience": "Experience",
+                "hours": "Hours",
+                "years": "{count} years"
+            },
+            "navigation": {
+                "documents": {
+                    "title": "Documents",
+                    "subtitle": "Certificates and licenses"
+                },
+                "settings": {
+                    "title": "Settings",
+                    "subtitle": "Settings and security"
+                }
+            },
+            "tabs": {
+                "overview": "Overview",
+                "personal": "Personal Info",
+                "professional": "Professional Info"
+            },
+            "performance": {
+                "title": "Performance over the last months",
+                "months": {
+                    "jan": "Jan",
+                    "feb": "Feb",
+                    "mar": "Mar",
+                    "apr": "Apr",
+                    "may": "May",
+                    "jun": "Jun",
+                    "jul": "Jul",
+                    "aug": "Aug",
+                    "sep": "Sep",
+                    "oct": "Oct",
+                    "nov": "Nov",
+                    "dec": "Dec"
+                }
+            },
+            "achievements": {
+                "title": "Latest Achievements",
+                "instructorOfYear": {
+                    "title": "Instructor of the Year",
+                    "description": "Best Instructor of 2023"
+                },
+                "graduates200": {
+                    "title": "200+ Graduates",
+                    "description": "Trained over 200 students"
+                },
+                "hours5000": {
+                    "title": "5000 Hours",
+                    "description": "Over 5000 hours of practice"
+                },
+                "rating49": {
+                    "title": "4.9+ Rating",
+                    "description": "Average rating above 4.9"
+                }
+            },
+            "personalInfo": {
+                "title": "Personal Information",
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "email": "Email",
+                "phone": "Phone",
+                "dateOfBirth": "Date of Birth",
+                "city": "City",
+                "address": "Address",
+                "postalCode": "Postal Code",
+                "bio": "About me"
+            },
+            "emergencyContact": {
+                "title": "Emergency Contact",
+                "name": "Full Name",
+                "phone": "Phone",
+                "relation": "Relationship"
+            },
+            "professionalInfo": {
+                "title": "Professional Information",
+                "licenseNumber": "License Number",
+                "validUntil": "Valid Until",
+                "workExperience": "Work Experience",
+                "employmentType": "Employment Type",
+                "employmentTypes": {
+                    "fullTime": "Full-Time",
+                    "partTime": "Part-Time",
+                    "contract": "Contract"
+                },
+                "categories": "Categories",
+                "specializations": "Specializations",
+                "languages": "Languages"
+            },
+            "specializations": {
+                "beginners": "Beginners",
+                "exam": "Exam",
+                "nightDriving": "Night Driving"
+            },
+            "languages": {
+                "ukrainian": "Ukrainian",
+                "polish": "Polish",
+                "english": "English"
+            }
+        }
+    },
+    "resources": {
+        "upload": {
+            "title": "Add Material",
+            "subtitle": "Share educational materials with students",
+            "uploadMethod": {
+                "title": "Upload Method",
+                "file": {
+                    "label": "Upload File",
+                    "description": "Upload a file from your device"
+                },
+                "link": {
+                    "label": "Provide a Link",
+                    "description": "YouTube, Google Drive, etc."
+                }
+            },
+            "fileUpload": {
+                "title": "Select a File",
+                "description": "Maximum size: 500 MB. Formats: PDF, DOC, PPT, XLS, MP4, JPG, PNG",
+                "dragAndDrop": "Drag and drop a file here or click to select",
+                "selectFile": "Select File",
+                "uploading": "Uploading..."
+            },
+            "linkInput": {
+                "title": "URL Address",
+                "description": "Provide a link to the material (YouTube, Google Drive, etc.)",
+                "placeholder": "https://..."
+            },
+            "details": {
+                "title": "Material Details",
+                "resourceTitle": "Title *",
+                "titlePlaceholder": "e.g., Road Rules 2024",
+                "description": "Description *",
+                "descriptionPlaceholder": "Describe the content of the material...",
+                "category": "Category *",
+                "selectCategory": "Select a category",
+                "tags": "Tags",
+                "targetAudience": "Target Audience"
+            },
+            "categories": {
+                "theory": "Theory",
+                "practice": "Practice",
+                "tests": "Tests",
+                "presentations": "Presentations",
+                "videos": "Educational Videos",
+                "documents": "Documents",
+                "additional": "Additional Materials"
+            },
+            "tags": {
+                "exam": "exam",
+                "theory": "theory",
+                "practice": "practice",
+                "parking": "parking",
+                "maneuvers": "maneuvers",
+                "roadSigns": "road signs",
+                "regulations": "regulations",
+                "firstAid": "first aid",
+                "safety": "safety",
+                "categoryB": "category B",
+                "practiceArea": "practice area",
+                "city": "city",
+                "route": "route"
+            },
+            "audiences": {
+                "beginners": "Beginners",
+                "intermediate": "Intermediate Level",
+                "advanced": "Advanced Level",
+                "exam": "Exam Prep",
+                "all": "All"
+            },
+            "settings": {
+                "title": "Availability Settings",
+                "public": {
+                    "label": "Public Material",
+                    "description": "All students will be able to see this material"
+                },
+                "allowDownload": {
+                    "label": "Allow Download",
+                    "description": "Students will be able to download the material"
+                },
+                "requireCompletion": {
+                    "label": "Required for Viewing",
+                    "description": "Mark as required for review"
+                },
+                "expiryDate": "Expiration Date (optional)"
+            },
+            "additionalNotes": {
+                "title": "Additional Notes",
+                "placeholder": "Instructions for students, tips, etc..."
+            },
+            "info": "Once added, the material will be immediately available to students according to the selected settings.",
+            "buttons": {
+                "cancel": "Cancel",
+                "preview": "Preview",
+                "save": "Save Material",
+                "uploading": "Uploading..."
+            }
+        },
+        "main": {
+            "title": "Learning Materials",
+            "subtitle": "Manage materials for students",
+            "addMaterial": "Add Material",
+            "stats": {
+                "materials": "Materials",
+                "downloads": "Downloads",
+                "views": "Views",
+                "rating": "Rating",
+                "size": "Size",
+                "popular": "Popular"
+            },
+            "search": {
+                "placeholder": "Search materials..."
+            },
+            "categories": {
+                "all": "All",
+                "theory": "Theory",
+                "practice": "Practice",
+                "tests": "Tests",
+                "additional": "Additional"
+            },
+            "sort": {
+                "date": "Newest",
+                "downloads": "Most Popular",
+                "rating": "Top Rated",
+                "name": "By Name"
+            },
+            "actions": {
+                "preview": "Preview",
+                "download": "Download",
+                "share": "Share",
+                "edit": "Edit",
+                "delete": "Delete"
+            },
+            "recentActivity": {
+                "title": "Recent Activity",
+                "download": "downloaded",
+                "view": "viewed",
+                "rate": "rated",
+                "minutesAgo": "{count} mins ago",
+                "hoursAgo": "{count} hrs ago"
+            },
+            "storage": {
+                "title": "Storage Usage",
+                "used": "Used",
+                "documents": "Documents",
+                "videos": "Videos",
+                "presentations": "Presentations",
+                "images": "Images"
+            },
+            "tip": {
+                "title": "Tip:",
+                "description": "Regularly update materials to ensure students have access to the latest information."
+            },
+            "resourceTypes": {
+                "pdf": "PDF Document",
+                "video": "Video",
+                "presentation": "Presentation",
+                "image": "Image",
+                "file": "File"
+            }
+        }
+    },
+    "schedule": {
+        "calendar": {
+            "tab": {
+                "loading": "Loading calendar...",
+                "filters": {
+                    "title": "Filters",
+                    "status": {
+                        "label": "Status",
+                        "available": "Available",
+                        "reserved": "Reserved",
+                        "blocked": "Blocked",
+                        "completed": "Completed",
+                        "cancelled": "Cancelled"
+                    },
+                    "lessonType": {
+                        "label": "Lesson type",
+                        "all": "All",
+                        "driving": "City driving",
+                        "practiceArea": "Practice area",
+                        "theory": "Theory",
+                        "exam": "Exam"
+                    },
+                    "buttons": {
+                        "clear": "Clear",
+                        "apply": "Apply"
+                    }
+                },
+                "stats": {
+                    "total": "Total",
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked"
+                },
+                "actions": {
+                    "workingHours": "Working Hours",
+                    "filters": "Filters",
+                    "export": "Export"
+                },
+                "alerts": {
+                    "noSlots": {
+                        "title": "No slots in this period",
+                        "description": "Slots are generated automatically based on working hours. Click the \"Working Hours\" button to set up availability."
+                    }
+                },
+                "confirmDelete": "Are you sure you want to delete this slot?",
+                "export": {
+                    "filename": "schedule_{date}.csv",
+                    "headers": {
+                        "date": "Date",
+                        "start": "Start",
+                        "end": "End",
+                        "status": "Status",
+                        "student": "Student",
+                        "location": "Location"
+                    },
+                    "error": "Export error"
+                },
+                "errors": {
+                    "updateSlot": "Slot update error",
+                    "deleteSlot": "Slot deletion error"
+                }
+            },
+            "dayView": {
+                "previousDay": "Previous day",
+                "nextDay": "Next day",
+                "today": "Today",
+                "generateSlots": "Generate slots",
+                "dayOff": "Day off",
+                "stats": {
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked",
+                    "total": "Total",
+                    "slots": "slots"
+                },
+                "timeline": {
+                    "currentTime": "Current time"
+                }
+            },
+            "loading": "Loading calendar...",
+            "filters": {
+                "title": "Filters",
+                "status": {
+                    "label": "Status",
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled"
+                },
+                "lessonType": {
+                    "label": "Lesson type",
+                    "all": "All",
+                    "city": "City driving",
+                    "practiceArea": "Practice area",
+                    "theory": "Theory",
+                    "exam": "Exam"
+                },
+                "clear": "Clear",
+                "apply": "Apply"
+            },
+            "stats": {
+                "total": "Total",
+                "available": "Available",
+                "reserved": "Reserved",
+                "blocked": "Blocked"
+            },
+            "actions": {
+                "workingHours": "Working Hours",
+                "filters": "Filters",
+                "export": "Export"
+            },
+            "alerts": {
+                "noSlots": {
+                    "title": "No slots in this period",
+                    "description": "Slots are generated automatically based on working hours. Click the \"Working Hours\" button to set up availability."
+                }
+            },
+            "views": {
+                "day": "Day",
+                "week": "Week",
+                "month": "Month",
+                "list": "List",
+                "listComingSoon": "List view coming soon"
+            },
+            "confirmDelete": "Are you sure you want to delete this slot?",
+            "export": {
+                "filename": "schedule_{date}.csv",
+                "headers": {
+                    "date": "Date",
+                    "start": "Start",
+                    "end": "End",
+                    "status": "Status",
+                    "student": "Student",
+                    "location": "Location"
+                }
+            },
+            "monthView": {
+                "navigation": {
+                    "previousMonth": "Previous month",
+                    "nextMonth": "Next month",
+                    "currentMonth": "Current month"
+                },
+                "weekDays": {
+                    "mon": "Mon",
+                    "tue": "Tue",
+                    "wed": "Wed",
+                    "thu": "Thu",
+                    "fri": "Fri",
+                    "sat": "Sat",
+                    "sun": "Sun"
+                },
+                "dayCell": {
+                    "noSlots": "No slots",
+                    "moreSlots": "+{count} more",
+                    "available": "{count} available",
+                    "reserved": "{count} reserved",
+                    "blocked": "{count} blocked"
+                },
+                "stats": {
+                    "title": "Slots",
+                    "total": "Slots: {count}",
+                    "available": "Available: {count}",
+                    "reserved": "Reserved: {count}"
+                },
+                "footer": {
+                    "week": "Week {number}",
+                    "weekPlaceholder": "Week —",
+                    "legend": {
+                        "today": "Today",
+                        "weekend": "Weekend",
+                        "workingHours": "Working Hours",
+                        "noSlotsWarning": "Slots are automatically generated when saving working hours"
+                    }
+                }
+            },
+            "slotCard": {
+                "status": {
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled",
+                    "noShow": "No-show",
+                    "inProgress": "In progress"
+                },
+                "lessonTypes": {
+                    "driving": "Driving",
+                    "practiceArea": "Practice area",
+                    "theory": "Theory",
+                    "exam": "Exam"
+                },
+                "payment": {
+                    "unpaid": "Unpaid",
+                    "partial": "Partial"
+                },
+                "actions": {
+                    "edit": "Edit",
+                    "delete": "Delete"
+                },
+                "aria": {
+                    "editSlot": "Edit slot",
+                    "deleteSlot": "Delete slot"
+                }
+            },
+            "weekView": {
+                "navigation": {
+                    "previousWeek": "Previous week",
+                    "nextWeek": "Next week",
+                    "currentWeek": "Current week"
+                },
+                "dayHeader": {
+                    "slots": {
+                        "one": "slot",
+                        "few": "slots",
+                        "many": "slots"
+                    }
+                },
+                "slot": {
+                    "free": "Free"
+                },
+                "lessonTypes": {
+                    "driving": "Driving",
+                    "practiceArea": "Practice area",
+                    "theory": "Theory",
+                    "exam": "Exam"
+                },
+                "legend": {
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked",
+                    "cancelled": "Cancelled",
+                    "noShow": "No-show"
+                }
+            }
+        },
+        "modals": {
+            "exception": {
+                "title": {
+                    "create": "Add exception",
+                    "edit": "Edit exception"
+                },
+                "subtitle": "Block selected days in the schedule",
+                "types": {
+                    "label": "Exception type",
+                    "vacation": {
+                        "label": "Vacation",
+                        "description": "Planned vacation"
+                    },
+                    "sickness": {
+                        "label": "Sick leave",
+                        "description": "Absence due to illness"
+                    },
+                    "holiday": {
+                        "label": "Holiday",
+                        "description": "Public and non-working holidays"
+                    },
+                    "training": {
+                        "label": "Training",
+                        "description": "Courses and professional training"
+                    },
+                    "other": {
+                        "label": "Other",
+                        "description": "Other reasons for absence"
+                    }
+                },
+                "holidays": {
+                    "label": "Quick holiday selection",
+                    "placeholder": "Select a holiday...",
+                    "newYear": "New Year",
+                    "epiphany": "Epiphany",
+                    "labourDay": "Labour Day",
+                    "constitutionDay": "Constitution Day",
+                    "assumptionDay": "Assumption of the Blessed Virgin Mary",
+                    "allSaintsDay": "All Saints' Day",
+                    "independenceDay": "Independence Day",
+                    "christmas": "Christmas",
+                    "christmasSecond": "Second Day of Christmas"
+                },
+                "dates": {
+                    "startDate": "Start date",
+                    "endDate": "End date"
+                },
+                "description": {
+                    "label": "Description (optional)",
+                    "placeholder": "Add exception details..."
+                },
+                "recurring": {
+                    "label": "Recurring exception",
+                    "description": "Repeat this exception automatically",
+                    "yearly": "Yearly",
+                    "monthly": "Monthly"
+                },
+                "blockSlots": {
+                    "label": "Block slots",
+                    "description": "Automatically block all slots in this period"
+                },
+                "impact": {
+                    "title": "Schedule impact",
+                    "totalDays": "Number of days",
+                    "workDays": "Workdays",
+                    "reservedSlots": "Reserved slots",
+                    "availableSlots": "Available slots",
+                    "warning": "Warning: {count} reserved slots require contact with students!"
+                },
+                "preview": {
+                    "show": "Show slots to block ({count})",
+                    "hide": "Hide slots to block ({count})"
+                },
+                "status": {
+                    "reserved": "reserved",
+                    "available": "available"
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Add exception",
+                    "saveChanges": "Save changes",
+                    "saving": "Saving..."
+                }
+            },
+            "slotEdit": {
+                "title": {
+                    "create": "New slot",
+                    "edit": "Edit slot"
+                },
+                "tabs": {
+                    "details": "Details",
+                    "student": "Student",
+                    "payment": "Payment",
+                    "notes": "Notes"
+                },
+                "status": {
+                    "label": "Status",
+                    "available": "Available",
+                    "reserved": "Reserved",
+                    "blocked": "Blocked",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled",
+                    "noShow": "No-show",
+                    "inProgress": "In progress"
+                },
+                "lessonType": {
+                    "label": "Lesson type",
+                    "driving": "City driving",
+                    "practiceArea": "Practice area",
+                    "theory": "Theory lessons",
+                    "exam": "Exam"
+                },
+                "dateTime": {
+                    "date": "Date",
+                    "startTime": "Start time",
+                    "endTime": "End time"
+                },
+                "location": {
+                    "label": "Location",
+                    "placeholder": "Select location..."
+                },
+                "student": {
+                    "search": "Search student",
+                    "searchPlaceholder": "Enter name or surname...",
+                    "selected": "Selected student",
+                    "package": "Package",
+                    "completedLessons": "Completed lessons",
+                    "lessons": "lessons"
+                },
+                "payment": {
+                    "status": {
+                        "label": "Payment status",
+                        "paid": "Paid",
+                        "unpaid": "Unpaid",
+                        "partial": "Partially paid"
+                    },
+                    "method": {
+                        "label": "Payment method",
+                        "cash": "Cash",
+                        "transfer": "Transfer",
+                        "card": "Card"
+                    },
+                    "amount": "Amount (UAH)",
+                    "lessonPrice": "Lesson price",
+                    "toPay": "To pay",
+                    "currency": "{amount} UAH"
+                },
+                "notes": {
+                    "label": "Lesson notes",
+                    "placeholder": "Add notes, remarks, lesson plan...",
+                    "cancelReason": "Cancellation reason",
+                    "tips": {
+                        "title": "Tips:",
+                        "tip1": "Record important information about the student's progress",
+                        "tip2": "Jot down items to repeat in next lessons",
+                        "tip3": "Add remarks about the location or road conditions"
+                    }
+                },
+                "delete": {
+                    "title": "Delete slot",
+                    "confirm": "Are you sure you want to delete this slot? This operation cannot be undone.",
+                    "deleting": "Deleting..."
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Save changes",
+                    "create": "Create slot",
+                    "delete": "Delete",
+                    "saving": "Saving..."
+                }
+            },
+            "template": {
+                "title": {
+                    "list": "Schedule templates",
+                    "create": "New template",
+                    "edit": "Edit template"
+                },
+                "subtitle": {
+                    "list": "Manage saved working hours templates",
+                    "create": "Create a new schedule template",
+                    "edit": "Edit an existing template"
+                },
+                "buttons": {
+                    "newTemplate": "New template",
+                    "import": "Import",
+                    "use": "Use",
+                    "apply": "Apply template",
+                    "edit": "Edit",
+                    "export": "Export",
+                    "delete": "Delete",
+                    "close": "Close",
+                    "back": "Back",
+                    "save": "Create template",
+                    "saveChanges": "Save changes",
+                    "saving": "Saving...",
+                    "deleting": "Deleting...",
+                    "cancel": "Cancel"
+                },
+                "sections": {
+                    "presetTemplates": "Preset templates",
+                    "userTemplates": "Your templates"
+                },
+                "form": {
+                    "name": "Template name",
+                    "namePlaceholder": "e.g., Summer schedule",
+                    "description": "Description (optional)",
+                    "descriptionPlaceholder": "Brief template description...",
+                    "setDefault": "Set as default",
+                    "setDefaultDescription": "This template will be automatically used for new weeks"
+                },
+                "workingHours": {
+                    "title": "Working hours in template",
+                    "editHours": "Edit hours",
+                    "free": "Free",
+                    "summary": "Summary",
+                    "days": "{count} days",
+                    "hoursPerWeek": "{hours}h/week"
+                },
+                "stats": {
+                    "workDays": "{count} days",
+                    "weeklyHours": "{hours}h/week",
+                    "totalSlots": "{count} slots",
+                    "avgHoursPerDay": "{hours}h/day",
+                    "created": "Created: {date}"
+                },
+                "labels": {
+                    "default": "Default"
+                },
+                "deleteConfirm": {
+                    "message": "Are you sure you want to delete this template?",
+                    "confirm": "Delete"
+                },
+                "empty": {
+                    "title": "No saved templates",
+                    "description": "Create your first schedule template"
+                },
+                "imported": "(imported)"
+            },
+            "workingHours": {
+                "title": "Working Hours",
+                "subtitle": "Set up your availability hours",
+                "days": {
+                    "monday": "Monday",
+                    "tuesday": "Tuesday",
+                    "wednesday": "Wednesday",
+                    "thursday": "Thursday",
+                    "friday": "Friday",
+                    "saturday": "Saturday",
+                    "sunday": "Sunday"
+                },
+                "intervals": {
+                    "title": "Time intervals",
+                    "add": "Add interval",
+                    "empty": "No intervals",
+                    "emptyDescription": "Add an interval to define working hours",
+                    "count": "{count} intervals"
+                },
+                "settings": {
+                    "workOnDay": "I work on {day}",
+                    "copyToOthers": "Copy to other days",
+                    "defaultLessonDuration": "Default lesson duration",
+                    "breakBetweenLessons": "Break between lessons"
+                },
+                "durations": {
+                    "slot": {
+                        "60": "1 hour",
+                        "90": "1.5 hours",
+                        "120": "2 hours",
+                        "150": "2.5 hours",
+                        "180": "3 hours"
+                    },
+                    "break": {
+                        "0": "No break",
+                        "15": "15 minutes",
+                        "30": "30 minutes",
+                        "45": "45 minutes",
+                        "60": "1 hour"
+                    }
+                },
+                "preview": {
+                    "title": "Preview of generated slots",
+                    "format": "{start} - {end}: {count} slots of {duration} min",
+                    "withBreak": "(with {break} min break)"
+                },
+                "validation": {
+                    "endAfterStart": "End time must be after start time",
+                    "workingHours": "Working hours must be between 6:00 and 22:00",
+                    "overlapping": "Intervals cannot overlap"
+                },
+                "warnings": {
+                    "blockedDay": {
+                        "title": "This day has reserved lessons",
+                        "description": "Working hours for this day cannot be changed while reservations exist."
+                    },
+                    "blockedDays": {
+                        "title": "Warning: Days with reservations",
+                        "description": "The following days have reserved lessons and their working hours will not be changed:",
+                        "reservations": "{count} reservations",
+                        "continueMessage": "Changes will be applied only to days without reservations. Continue?",
+                        "continue": "Continue"
+                    },
+                    "daysWithReservations": "{count} days with reservations"
+                },
+                "success": {
+                    "saved": "Working hours updated. Slots will be generated automatically.",
+                    "copiedAll": "Hours copied to other days",
+                    "copiedLimited": "Copied with limitations",
+                    "skippedDays": "Skipped {count} days with reservations",
+                    "savedWithLimitations": "Saved with limitations",
+                    "skippedDaysDetail": "Skipped days with reservations:",
+                    "slotsNote": "Slots will be generated automatically for days without reservations."
+                },
+                "errors": {
+                    "validationErrors": "Fix validation errors before saving",
+                    "saveFailed": "Failed to save working hours"
+                },
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Save changes",
+                    "saving": "Saving..."
+                }
+            }
+        },
+        "shared": {
+            "actionButtons": {
+                "actions": "Actions",
+                "export": "Export",
+                "import": "Import",
+                "refresh": "Refresh",
+                "exportSchedule": "Export schedule",
+                "importSchedule": "Import schedule",
+                "refreshData": "Refresh data",
+                "success": {
+                    "exported": "Schedule exported",
+                    "imported": "Schedule imported",
+                    "refreshed": "Data refreshed"
+                },
+                "errors": {
+                    "exportFailed": "Failed to export schedule",
+                    "invalidFile": "Invalid file format",
+                    "refreshFailed": "Failed to refresh data"
+                },
+                "tooltips": {
+                    "export": "Export",
+                    "import": "Import",
+                    "refresh": "Refresh"
+                }
+            },
+            "quickStats": {
+                "cards": {
+                    "todayLessons": {
+                        "title": "Today's lessons",
+                        "subtitle": "{count} reserved"
+                    },
+                    "occupancy": {
+                        "title": "Occupancy",
+                        "subtitle": "{count} free slots"
+                    },
+                    "monthlyIncome": {
+                        "title": "Monthly income",
+                        "subtitle": "{count} completed",
+                        "currency": "{amount} UAH"
+                    },
+                    "pendingRequests": {
+                        "title": "Pending requests",
+                        "subtitle": {
+                            "hasRequests": "Needs attention",
+                            "noRequests": "All reviewed"
+                        }
+                    }
+                },
+                "mobile": {
+                    "today": "Today",
+                    "lessons": "lessons",
+                    "occupancy": "Occupancy",
+                    "reservations": "reservations",
+                    "month": "Month",
+                    "currency": "UAH",
+                    "requests": "Requests",
+                    "pending": "pending"
+                },
+                "moreStats": {
+                    "title": "More stats",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled",
+                    "noShow": "No-shows",
+                    "efficiency": "Efficiency"
+                },
+                "weekly": {
+                    "summary": "Weekly summary:",
+                    "workHours": "{hours} working hours",
+                    "completedLessons": "{count} completed lessons",
+                    "occupancyRate": "{rate}% occupancy"
+                }
+            },
+            "searchBar": {
+                "placeholder": "Search for a student, location, date...",
+                "clear": "Clear",
+                "advancedFilters": "Advanced filters",
+                "suggestionTypes": {
+                    "student": "student",
+                    "location": "location",
+                    "date": "date"
+                },
+                "noResults": "No results for \"{query}\"",
+                "tryOtherKeywords": "Try other keywords",
+                "shortcuts": {
+                    "navigation": "navigation",
+                    "select": "select",
+                    "close": "close"
+                },
+                "dateLabels": {
+                    "today": "Today",
+                    "tomorrow": "Tomorrow"
+                }
+            }
+        },
+        "requests": {
+            "title": "Cancellation requests",
+            "subtitle": "Manage student lesson cancellation requests",
+            "status": {
+                "pending": "Pending",
+                "approved": "Approved",
+                "rejected": "Rejected",
+                "label": {
+                    "pending": "Pending",
+                    "approved": "Approved",
+                    "rejected": "Rejected"
+                }
+            },
+            "requestCard": {
+                "requestFrom": "Request from:",
+                "urgentWarning": "Lesson in {hours} hours!",
+                "lessonDate": "Lesson date",
+                "time": "Time",
+                "location": "Location",
+                "payment": "Payment",
+                "refund": "(refund: {amount} UAH)",
+                "cancellationReason": "Cancellation reason:",
+                "comment": "Comment:",
+                "processedBy": "Processed by: {name} • {date}",
+                "viewDetails": "View details"
+            },
+            "actions": {
+                "approve": "Approve",
+                "reject": "Reject",
+                "viewDetails": "View details"
+            },
+            "stats": {
+                "all": "All",
+                "pending": "Pending",
+                "approved": "Approved",
+                "rejected": "Rejected",
+                "urgentRequests": {
+                    "singular": "urgent request",
+                    "plural": "urgent requests"
+                }
+            },
+            "filters": {
+                "all": "All",
+                "pending": "Pending",
+                "approved": "Approved",
+                "rejected": "Rejected",
+                "sortBy": "Sort by:",
+                "byUrgency": "By urgency",
+                "byDate": "By date"
+            },
+            "processModal": {
+                "approveTitle": "Approve request",
+                "rejectTitle": "Reject request",
+                "student": "Student:",
+                "lessonTime": "Slot:",
+                "refundAmount": "Refund amount",
+                "from": "from {amount} UAH",
+                "comment": "Comment",
+                "commentRequired": "(required)",
+                "commentPlaceholder": {
+                    "approve": "Additional comment...",
+                    "reject": "State the reason for rejecting the request..."
+                },
+                "confirmApprove": "Approve cancellation",
+                "confirmReject": "Reject request",
+                "cancel": "Cancel"
+            },
+            "detailsModal": {
+                "title": "Request details",
+                "studentData": "Student data",
+                "fullName": "Full name:",
+                "phone": "Phone:",
+                "email": "Email:",
+                "history": "History",
+                "submittedAt": "Submitted:",
+                "processedAt": "Processed:",
+                "close": "Close"
+            },
+            "empty": {
+                "title": "No requests",
+                "filtered": "No requests matching the selected criteria",
+                "none": "There are no lesson cancellation requests"
+            },
+            "currency": "{amount} UAH"
+        },
+        "stats": {
+            "title": "Statistics & Reports",
+            "subtitle": "Analysis of results and performance",
+            "periods": {
+                "week": "Week",
+                "month": "Month",
+                "year": "Year",
+                "weeklyStats": "Weekly stats",
+                "monthFormat": "{month} {year}",
+                "yearFormat": "Year {year}"
+            },
+            "downloadReport": "Download report",
+            "metrics": {
+                "completedLessons": "Completed lessons",
+                "completedSubtitle": "out of {total} planned",
+                "revenue": "Revenue",
+                "revenueSubtitle": "avg. {average} UAH/lesson",
+                "occupancy": "Occupancy",
+                "occupancySubtitle": "{completed}/{total}",
+                "cancellations": "Cancellations",
+                "cancellationsSubtitle": "{rate}% of all",
+                "currency": "{amount} UAH"
+            },
+            "charts": {
+                "slotDistribution": "Slot distribution",
+                "weeklyActivity": "Lessons throughout the week",
+                "hourlyDistribution": "Hourly distribution"
+            },
+            "slotStatus": {
+                "completed": "Completed",
+                "reserved": "Reserved",
+                "available": "Available",
+                "cancelled": "Cancelled",
+                "noShow": "No-shows"
+            },
+            "weekDays": {
+                "mon": "Mon",
+                "tue": "Tue",
+                "wed": "Wed",
+                "thu": "Thu",
+                "fri": "Fri",
+                "sat": "Sat",
+                "sun": "Sun"
+            },
+            "rankings": {
+                "topStudents": "Top students",
+                "popularHours": "Most popular hours",
+                "lessonsLabel": "lessons",
+                "revenueInfo": "{amount} UAH revenue",
+                "hourFormat": "Hour {hour}:00",
+                "percentOfAll": "{percent}% of all"
+            },
+            "detailedStats": {
+                "title": "Detailed statistics",
+                "dailyAverage": "Average per day:",
+                "totalTime": "Total time:",
+                "hours": "{hours} hours",
+                "dailyRevenue": "Average daily revenue:",
+                "cancellationRate": "Cancellation rate:",
+                "absences": "No-shows:",
+                "freeSlots": "Free slots:"
+            },
+            "optimizationTips": {
+                "title": "Optimization tips",
+                "lowOccupancy": "• Your occupancy is {rate}%. Consider promotions or flexible scheduling.",
+                "highCancellations": "• High cancellation rate ({rate}%). Check the reasons for drop-offs.",
+                "lowDailyAverage": "• Low daily average ({count} lessons). You can increase availability."
+            },
+            "report": {
+                "period": "Period",
+                "date": "Date",
+                "statistics": "Statistics",
+                "allSlots": "All slots",
+                "completedLessons": "Completed lessons",
+                "cancelled": "Cancelled",
+                "absences": "No-shows",
+                "revenue": "Revenue",
+                "occupancy": "Occupancy",
+                "dailyAverage": "Daily average",
+                "topStudents": "Top students",
+                "fullName": "Full name",
+                "lessonCount": "Lesson count"
+            }
+        },
+        "templates": {
+            "title": "Schedule templates",
+            "subtitle": "Manage working hour templates and apply them quickly",
+            "buttons": {
+                "newTemplate": "New template",
+                "export": "Export templates",
+                "import": "Import templates",
+                "apply": "Apply",
+                "edit": "Edit",
+                "duplicate": "Duplicate",
+                "setAsDefault": "Set as default",
+                "delete": "Delete",
+                "cancel": "Cancel",
+                "saveChanges": "Save changes",
+                "createTemplate": "Create template"
+            },
+            "filters": {
+                "all": "All",
+                "default": "Default",
+                "custom": "Custom",
+                "count": "({count})"
+            },
+            "card": {
+                "workDays": "work days",
+                "weekly": "per week",
+                "slotsPerDay": "slots/day",
+                "workingDays": "Working days:",
+                "createdAt": "Created at:",
+                "monday": "Mon",
+                "tuesday": "Tue",
+                "wednesday": "Wed",
+                "thursday": "Thu",
+                "friday": "Fri",
+                "saturday": "Sat",
+                "sunday": "Sun"
+            },
+            "form": {
+                "editTitle": "Edit template",
+                "newTitle": "New template",
+                "templateName": "Template name",
+                "templateNamePlaceholder": "e.g., Standard work week",
+                "description": "Description (optional)",
+                "descriptionPlaceholder": "Short description of the template...",
+                "workingHours": "Working hours",
+                "setAsDefault": "Set as default template",
+                "minutes": "{minutes} min",
+                "days": {
+                    "monday": "monday",
+                    "tuesday": "tuesday",
+                    "wednesday": "wednesday",
+                    "thursday": "thursday",
+                    "friday": "friday",
+                    "saturday": "saturday",
+                    "sunday": "sunday"
+                }
+            },
+            "empty": {
+                "title": "No templates",
+                "description": "Create your first schedule template to quickly apply working hours",
+                "createButton": "Create template"
+            },
+            "confirmDelete": "Are you sure you want to delete this template?",
+            "export": {
+                "filename": "schedule_templates_{date}.json"
+            },
+            "import": {
+                "error": "Import error"
+            }
+        },
+        "errorBoundary": {
+            "title": "Oops! Something went wrong",
+            "description": "An unexpected error occurred. We apologize for the inconvenience.",
+            "actions": {
+                "reload": "Reload page",
+                "goHome": "Go back to dashboard"
+            },
+            "technicalDetails": "Technical details",
+            "support": {
+                "contact": "Contact technical support",
+                "email": "support@avtoschool.ua"
+            }
+        },
+        "provider": {
+            "toast": {
+                "success": "Success",
+                "error": "Error",
+                "slot": {
+                    "updated": "Slot updated",
+                    "deleted": "Slot deleted",
+                    "created": "New slot created",
+                    "updateError": "Failed to update slot",
+                    "deleteError": "Failed to delete slot",
+                    "createError": "Failed to create slot"
+                },
+                "workingHours": {
+                    "updated": "Working hours updated",
+                    "updateError": "Failed to update working hours"
+                },
+                "template": {
+                    "created": "Template created",
+                    "updated": "Template updated",
+                    "deleted": "Template deleted",
+                    "applied": "Template applied",
+                    "createError": "Failed to create template",
+                    "updateError": "Failed to update template",
+                    "deleteError": "Failed to delete template",
+                    "applyError": "Failed to apply template"
+                },
+                "schedule": {
+                    "imported": "Schedule imported",
+                    "importError": "Invalid data format"
+                },
+                "slots": {
+                    "generateTitle": "Slot generation complete",
+                    "generateDescription": "Generated slots for {generated} days.",
+                    "protectedDays": "Skipped {protected} days with bookings:",
+                    "moreSkipped": "and {count} more...",
+                    "generateSuccess": "Generated {slots} new slots for {days} days",
+                    "generateError": "Failed to generate slots"
+                },
+                "dataLoadError": "Data loading error"
+            },
+            "weekDays": {
+                "monday": "monday",
+                "tuesday": "tuesday",
+                "wednesday": "wednesday",
+                "thursday": "thursday",
+                "friday": "friday",
+                "saturday": "saturday",
+                "sunday": "sunday"
+            }
+        }
+    },
+    "students": {
+        "profile": {
+            "title": "Student Profile",
+            "back": "Back",
+            "edit": "Edit",
+            "cancel": "Cancel",
+            "save": "Save",
+            "status": {
+                "active": "Active",
+                "inactive": "Inactive",
+                "category": "Category",
+                "theoryPassed": "Theory Passed"
+            },
+            "metrics": {
+                "progress": "Progress",
+                "lessons": "Lessons",
+                "practiceHours": "Practice Hours",
+                "rating": "Rating"
+            },
+            "tabs": {
+                "info": "Info",
+                "lessons": "Lessons",
+                "payments": "Payments",
+                "exams": "Exams",
+                "notes": "Notes"
+            },
+            "info": {
+                "contactTitle": "Contact Information",
+                "phone": "Phone",
+                "email": "Email",
+                "dateOfBirth": "Date of Birth",
+                "address": "Address",
+                "emergencyContact": "Emergency Contact",
+                "emergencyPhone": "Emergency Phone",
+                "learningTitle": "Learning Information",
+                "enrollmentDate": "Enrollment Date",
+                "packageType": "Package Type",
+                "strongPoints": "Strong Points",
+                "weakPoints": "Areas to improve"
+            },
+            "lessons": {
+                "title": "Lesson History",
+                "type": "Lesson Type",
+                "completed": "Completed",
+                "scheduled": "Scheduled",
+                "missed": "Missed",
+                "practiceTypes": {
+                    "city": "Practice - City",
+                    "examPrep": "Exam Prep"
+                }
+            },
+            "payments": {
+                "title": "Payment Information",
+                "totalCost": "Total Cost",
+                "paid": "Paid",
+                "balance": "Balance Due",
+                "nextPayment": "Next Payment",
+                "paymentHistory": "Payment History",
+                "description": "Description",
+                "method": "Payment Method",
+                "status": {
+                    "completed": "Paid",
+                    "pending": "Pending"
+                },
+                "methods": {
+                    "card": "Card",
+                    "cash": "Cash",
+                    "transfer": "Transfer"
+                },
+                "nextPaymentAlert": "Next payment of {amount} UAH due by {date}"
+            },
+            "exams": {
+                "title": "Exams",
+                "theoryExam": "Theory Exam",
+                "practiceExam": "Practical Exam",
+                "date": "Date",
+                "plannedDate": "Planned Date",
+                "attempts": "Attempts",
+                "status": {
+                    "passed": "Passed",
+                    "failed": "Failed",
+                    "scheduled": "Scheduled"
+                }
+            },
+            "notes": {
+                "title": "Instructor Notes",
+                "placeholder": "Add notes about the student..."
+            },
+            "currency": "UAH"
+        },
+        "main": {
+            "title": "My Students",
+            "subtitle": "Manage and track student progress",
+            "addStudent": "Add Student",
+            "stats": {
+                "total": "Total",
+                "active": "Active",
+                "progress": "Progress",
+                "exams": "Exams",
+                "hours": "Hours",
+                "rating": "Rating"
+            },
+            "search": {
+                "placeholder": "Search by name, email or phone..."
+            },
+            "filters": {
+                "all": "All Students",
+                "active": "Active",
+                "paused": "Paused",
+                "completed": "Completed",
+                "sortBy": {
+                    "name": "By Name",
+                    "progress": "By Progress",
+                    "lessons": "By Lessons",
+                    "rating": "By Rating"
+                }
+            },
+            "tabs": {
+                "cards": "Cards",
+                "list": "List"
+            },
+            "card": {
+                "category": "Category {category}",
+                "overallProgress": "Overall Progress",
+                "lessons": "Lessons",
+                "lessonsCount": "{completed}/{total}",
+                "rating": "Rating",
+                "status": {
+                    "active": "Active",
+                    "paused": "Paused"
+                },
+                "payment": {
+                    "overdue": "Payment Overdue"
+                },
+                "exam": "Exam: {date}",
+                "nextLesson": {
+                    "title": "Next Lesson",
+                    "dateTime": "{dateTime}"
+                },
+                "actions": {
+                    "details": "Details",
+                    "progress": "Progress",
+                    "more": "Actions"
+                }
+            },
+            "dropdown": {
+                "label": "Actions",
+                "profile": "Profile",
+                "progress": "Progress",
+                "report": "Report",
+                "call": "Call",
+                "message": "Message"
+            },
+            "table": {
+                "headers": {
+                    "student": "Student",
+                    "progress": "Progress",
+                    "lessons": "Lessons",
+                    "nextLesson": "Next",
+                    "status": "Status",
+                    "actions": "Actions"
+                },
+                "lessonsFrom": "{completed} of {total}",
+                "noNextLesson": "-"
+            },
+            "quickActions": {
+                "title": "Quick Actions",
+                "generateReport": "Generate Report",
+                "exportData": "Export Data",
+                "bulkMessage": "Bulk Message",
+                "scheduleLessons": "Schedule Lessons"
+            }
+        }
+    },
+    "vehicle": {
+        "inspection": {
+            "title": "Vehicle Inspection",
+            "vehicleInfo": "{model} • {number} • {mileage} km",
+            "buttons": {
+                "history": "History",
+                "save": "Save",
+                "back": "Back",
+                "next": "Next",
+                "finishInspection": "Finish Inspection"
+            },
+            "progress": {
+                "title": "Inspection Progress",
+                "steps": "{current} of {total}"
+            },
+            "steps": {
+                "exterior": "Exterior",
+                "interior": "Interior",
+                "engine": "Engine",
+                "safety": "Safety",
+                "documents": "Documents"
+            },
+            "exterior": {
+                "title": "Exterior Inspection",
+                "subtitle": "Check the exterior condition of the vehicle",
+                "bodyCondition": {
+                    "label": "Body Condition",
+                    "good": "Good - No damage",
+                    "minor": "Minor scratches",
+                    "major": "Significant damage"
+                },
+                "components": {
+                    "label": "Component Check",
+                    "windowsClean": "Windows clean and free of cracks",
+                    "lightsWorking": "All lights working (low/high beam/turn signals/brake lights)",
+                    "mirrorsClean": "Mirrors clean and adjusted",
+                    "tirePressure": "Tire pressure is correct"
+                },
+                "tiresCondition": {
+                    "label": "Tires Condition",
+                    "good": "Good tread (more than 4mm)",
+                    "worn": "Worn (2-4mm)",
+                    "replace": "Needs replacement (less than 2mm)"
+                }
+            },
+            "interior": {
+                "title": "Interior Inspection",
+                "subtitle": "Check the condition and cleanliness of the interior",
+                "components": {
+                    "label": "Component Check",
+                    "seatbeltsWorking": "Seatbelts are working correctly",
+                    "dashboardClean": "Dashboard is clean",
+                    "controlsWorking": "All buttons and switches are working",
+                    "acHeatingWorking": "AC/Heating is working"
+                },
+                "cleanlinessLevel": {
+                    "label": "Cleanliness Level",
+                    "clean": "Clean",
+                    "acceptable": "Acceptable",
+                    "dirty": "Needs cleaning"
+                }
+            },
+            "engine": {
+                "title": "Engine Check",
+                "subtitle": "Check fluid levels and engine condition",
+                "warning": {
+                    "title": "Attention!",
+                    "description": "Only check the engine when it's turned off and cool"
+                },
+                "oilLevel": {
+                    "label": "Oil Level",
+                    "normal": "Normal",
+                    "low": "Low",
+                    "critical": "Critically Low"
+                },
+                "coolantLevel": {
+                    "label": "Coolant Level",
+                    "normal": "Normal",
+                    "low": "Low",
+                    "critical": "Critically Low"
+                },
+                "components": {
+                    "windshieldFluid": "Sufficient windshield washer fluid",
+                    "noLeaks": "No fluid leaks"
+                }
+            },
+            "safety": {
+                "title": "Safety Check",
+                "subtitle": "Check all safety systems",
+                "components": {
+                    "brakeTest": "Brakes are working effectively",
+                    "emergencyBrake": "Handbrake holds the vehicle",
+                    "hornWorking": "Horn is working",
+                    "firstAidKit": "First aid kit is present and stocked",
+                    "fireExtinguisher": "Fire extinguisher is present and not expired",
+                    "warningTriangle": "Warning triangle is present"
+                }
+            },
+            "documents": {
+                "title": "Document Check",
+                "subtitle": "Ensure all necessary documents are present",
+                "items": {
+                    "registration": "Registration certificate",
+                    "insurance": "Insurance policy (valid)",
+                    "inspection": "Technical inspection (valid)",
+                    "driverLicense": "Driver's license"
+                }
+            },
+            "notes": {
+                "title": "Additional Notes",
+                "placeholder": "Add any additional observations or issues..."
+            },
+            "previousInspections": {
+                "title": "Previous Inspections",
+                "type": {
+                    "daily": "Daily"
+                },
+                "issues": "{count} issues",
+                "status": {
+                    "passed": "Passed",
+                    "warning": "With warnings",
+                    "failed": "Failed"
+                }
+            }
+        },
+        "reportIssue": {
+            "title": "Report an Issue",
+            "vehicleInfo": "{make} {model} • {registrationNumber}",
+            "buttons": {
+                "back": "Back",
+                "cancel": "Cancel",
+                "submit": "Report Issue",
+                "submitting": "Submitting...",
+                "addPhoto": "Add"
+            },
+            "alerts": {
+                "critical": {
+                    "title": "Critical Issue!",
+                    "description": "Reporting this will automatically take the vehicle out of service until repaired."
+                }
+            },
+            "form": {
+                "title": "Issue Details",
+                "subtitle": "Describe the issue in detail so the mechanic can fix it quickly",
+                "category": {
+                    "label": "Issue Category *",
+                    "placeholder": "Select a category",
+                    "options": {
+                        "engine": "Engine",
+                        "transmission": "Transmission",
+                        "brakes": "Brakes",
+                        "suspension": "Suspension",
+                        "electrical": "Electrical",
+                        "lights": "Lights",
+                        "tires": "Tires",
+                        "interior": "Interior",
+                        "exterior": "Exterior",
+                        "fluids": "Fluids",
+                        "other": "Other"
+                    }
+                },
+                "severity": {
+                    "label": "Severity Level *",
+                    "levels": {
+                        "low": {
+                            "label": "Low",
+                            "description": "Can continue to operate"
+                        },
+                        "medium": {
+                            "label": "Medium",
+                            "description": "Needs attention soon"
+                        },
+                        "high": {
+                            "label": "High",
+                            "description": "Needs immediate attention"
+                        },
+                        "critical": {
+                            "label": "Critical",
+                            "description": "Vehicle cannot be used"
+                        }
+                    }
+                },
+                "description": {
+                    "label": "Issue Description *",
+                    "placeholder": "Describe the issue in detail...",
+                    "quickOptions": "Quick Options:",
+                    "commonIssues": {
+                        "strangeSound": "Strange sound while driving",
+                        "steeringVibration": "Steering wheel vibration",
+                        "startingDifficulty": "Difficulty starting",
+                        "fluidLeak": "Fluid leak",
+                        "brakingProblems": "Braking issues",
+                        "lightsNotWorking": "Lights not working properly"
+                    }
+                },
+                "when": {
+                    "label": "When did the issue start"
+                },
+                "location": {
+                    "label": "Location",
+                    "placeholder": "e.g., Main Street 15, Kyiv"
+                },
+                "mileage": {
+                    "label": "Current Mileage (km) *",
+                    "lastKnown": "Last known: {mileage} km"
+                },
+                "checkboxes": {
+                    "affectsOperation": {
+                        "label": "Issue affects safe operation",
+                        "description": "Vehicle may be a safety hazard"
+                    },
+                    "needsImmediate": {
+                        "label": "Needs immediate attention",
+                        "description": "Mechanic should check as soon as possible"
+                    }
+                },
+                "images": {
+                    "label": "Photos of the issue",
+                    "maxFiles": "Max 6 photos. Photos will help the mechanic identify the issue faster."
+                },
+                "additionalNotes": {
+                    "label": "Additional Notes (optional)",
+                    "placeholder": "Other important information..."
+                }
+            },
+            "info": {
+                "title": "What happens after you report?",
+                "steps": {
+                    "notification": "The mechanic receives a notification",
+                    "analysis": "The issue is analyzed and prioritized",
+                    "feedback": "You will be informed about the planned repair",
+                    "critical": "In case of a critical issue, the vehicle is locked"
+                }
+            }
+        },
+        "main": {
+            "title": "My Vehicle",
+            "vehicleInfo": "{make} {model} • {registrationNumber}",
+            "buttons": {
+                "report": "Report",
+                "reportIssue": "Report an Issue",
+                "update": "Update",
+                "confirmCheck": "Confirm Check"
+            },
+            "overview": {
+                "title": "Vehicle Information",
+                "make": "Make/Model",
+                "year": "Year",
+                "transmission": "Transmission",
+                "transmissionTypes": {
+                    "manual": "Manual",
+                    "automatic": "Automatic"
+                },
+                "fuel": "Fuel",
+                "fuelTypes": {
+                    "gasoline": "Gasoline",
+                    "diesel": "Diesel",
+                    "electric": "Electric",
+                    "hybrid": "Hybrid"
+                },
+                "color": "Color",
+                "engineSize": "Engine Size",
+                "vin": "VIN",
+                "status": "Status",
+                "statusActive": "Active"
+            },
+            "mileage": {
+                "title": "Mileage",
+                "km": "km",
+                "today": "+{km} km today",
+                "updateLabel": "Update Mileage",
+                "placeholder": "New mileage"
+            },
+            "fuel": {
+                "title": "Fuel",
+                "lowLevel": "Low Fuel Level!",
+                "consumption": "Consumption",
+                "average": "{value} L/100km (average)"
+            },
+            "health": {
+                "title": "Vehicle Health",
+                "engine": "Engine",
+                "brakes": "Brakes",
+                "tires": "Tires"
+            },
+            "maintenance": {
+                "title": "Upcoming Maintenance",
+                "periodicInspection": "Periodic Inspection",
+                "inKmOrDate": "In {km} km or by {date}",
+                "oilChange": "Oil Change",
+                "tireRotation": "Tire Rotation",
+                "inKm": "In {km} km"
+            },
+            "documents": {
+                "title": "Documents",
+                "insurance": "Insurance",
+                "technicalInspection": "Technical Inspection",
+                "registration": "Registration",
+                "validUntil": "Valid until {date}",
+                "valid": "Valid",
+                "validFemale": "Valid"
+            },
+            "tabs": {
+                "checklist": "Daily Checklist",
+                "history": "History",
+                "statistics": "Statistics",
+                "maintenance": "Maintenance"
+            },
+            "dailyChecklist": {
+                "title": "Daily Checklist",
+                "subtitle": "Check all items before starting your work",
+                "items": {
+                    "exteriorInspection": "Exterior body inspection",
+                    "interiorCleanliness": "Interior cleanliness",
+                    "lightsCheck": "Check all lights",
+                    "tiresCheck": "Tires condition and pressure",
+                    "fluidsCheck": "Fluid levels",
+                    "brakesTest": "Brake test",
+                    "documentsPresent": "Documents present",
+                    "firstAidKit": "First aid kit",
+                    "fireExtinguisher": "Fire extinguisher",
+                    "warningTriangle": "Warning triangle"
+                }
+            },
+            "history": {
+                "mileageHistory": "Mileage History",
+                "dailyMileage": "Daily Mileage (km)",
+                "recentIssues": "Recent Issues",
+                "severityLow": "Low",
+                "severityMedium": "Medium",
+                "severityHigh": "High",
+                "resolved": "Resolved",
+                "active": "Active",
+                "resolvedOn": "Resolved on {date}"
+            },
+            "statistics": {
+                "fuelConsumption": "Fuel Consumption",
+                "averageConsumption": "Average Consumption",
+                "fuelCosts": "Fuel Costs",
+                "perMonth": "/mo.",
+                "vehicleUsage": "Vehicle Usage",
+                "averageMileagePerDay": "Avg. mileage/day",
+                "workHoursPerDay": "Work hours/day",
+                "utilization": "Utilization",
+                "hours": "h.",
+                "thisMonth": "This month:",
+                "thisYear": "This year:",
+                "projectedMileage": "Projected Mileage",
+                "inMonth": "In a month",
+                "inQuarter": "In a quarter",
+                "inYear": "In a year"
+            },
+            "maintenanceHistory": {
+                "title": "Maintenance History",
+                "periodicInspection": "Periodic Inspection",
+                "tireChange": "Tire Change",
+                "items": {
+                    "oilChange": "Oil Change",
+                    "filterChange": "Filter Change",
+                    "brakeCheck": "Brake Check",
+                    "winterTires": "Winter Tires (4 pcs.)"
+                },
+                "currency": "{amount} UAH"
+            },
+            "recommendations": {
+                "title": "Maintenance Recommendations",
+                "based": "Based on mileage and maintenance history, we recommend:",
+                "checkBrakePads": "Check brake pads",
+                "brakeWear": "Brake condition has dropped to 75%",
+                "planTireChange": "Plan tire change",
+                "tireWear": "Tire wear has reached 70%",
+                "airFilterChange": "Air filter change",
+                "recommendedIn": "Recommended in {km} km"
+            }
+        }
+    },
+    "layout": {
+        "logo": {
+            "title": "DenisDrive",
+            "subtitle": "Instructor Portal"
+        },
+        "navigation": {
+            "dashboard": "Dashboard",
+            "schedule": "Schedule",
+            "lessons": "Lessons",
+            "todayLessons": "Today's",
+            "students": "Students",
+            "earnings": "Earnings",
+            "vehicle": "Vehicle",
+            "messages": "Messages",
+            "resources": "Resources",
+            "profile": "Profile",
+            "settings": "Settings"
+        },
+        "bottomNav": {
+            "dashboard": "Home",
+            "today": "Today",
+            "lessons": "Lessons",
+            "students": "Students",
+            "menu": "Menu"
+        },
+        "userStats": {
+            "rating": "Rating",
+            "role": "Instructor",
+            "today": "Today",
+            "lessons": "{completed}/{total} lessons",
+            "nextLesson": "Next Lesson"
+        },
+        "breadcrumbs": {
+            "dashboard": "Dashboard",
+            "schedule": "Schedule",
+            "availability": "Availability",
+            "exceptions": "Exceptions",
+            "lessons": "Lessons",
+            "today": "Today's",
+            "checkIn": "Check-in",
+            "students": "Students",
+            "progress": "Progress",
+            "feedback": "Feedback",
+            "earnings": "Earnings",
+            "history": "History",
+            "details": "Details",
+            "vehicle": "Vehicle",
+            "inspection": "Inspection",
+            "reportIssue": "Report an Issue",
+            "messages": "Messages",
+            "resources": "Resources",
+            "upload": "Upload Resource",
+            "profile": "Profile",
+            "documents": "Documents",
+            "settings": "Settings"
+        },
+        "languages": {
+            "pl": "Polish",
+            "uk": "Ukrainian",
+            "en": "English",
+            "ru": "Russian"
+        },
+        "search": {
+            "placeholder": "Search..."
+        },
+        "notifications": {
+            "title": "Notifications",
+            "markAllRead": "Mark all as read",
+            "noNotifications": "No notifications",
+            "viewAll": "View all",
+            "timeAgo": {
+                "minutes": "{count}m ago",
+                "hours": "{count}h ago",
+                "days": "{count}d ago"
+            },
+            "types": {
+                "newLesson": "New Lesson",
+                "reminder": "Reminder",
+                "congratulations": "Congratulations!"
+            },
+            "messages": {
+                "lessonBooked": "{name} booked a lesson for tomorrow",
+                "lessonReminder": "Next lesson in 30 minutes",
+                "studentPassed": "Your student passed their exam"
+            }
+        },
+        "userMenu": {
+            "profile": "View Profile",
+            "settings": "Settings",
+            "help": "Help & Support",
+            "darkMode": "Dark Mode",
+            "lightMode": "Light Mode",
+            "logout": "Log Out"
+        },
+        "quickActions": {
+            "settings": "Settings"
+        },
+        "logout": {
+            "button": "Log Out"
+        }
+    }
+}

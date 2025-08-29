@@ -54,8 +54,8 @@ export default function StudentLayout({ children, params }: StudentLayoutProps) 
 
   const navigation = [
     { name: t('navigation.dashboard'), href: `/${params.locale}/student/dashboard`, icon: LayoutDashboard },
-    { name: t('navigation.myLessons'), href: `/${params.locale}/student/lessons`, icon: Calendar },
-    { name: t('navigation.booking'), href: `/${params.locale}/student/bookings`, icon: Clock },
+    { name: t('navigation.myLessons'), href: `/${params.locale}/student/bookings`, icon: Calendar },
+    { name: t('navigation.booking'), href: `/${params.locale}/student/bookings/book`, icon: Clock },
     { name: t('navigation.progress'), href: `/${params.locale}/student/progress`, icon: Target },
     { name: t('navigation.materials'), href: `/${params.locale}/student/materials`, icon: BookOpen },
     { name: t('navigation.payments'), href: `/${params.locale}/student/payments`, icon: CreditCard },

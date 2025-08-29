@@ -1,0 +1,3049 @@
+{
+    "bookingDetails": {
+        "title": "Szczegóły lekcji",
+        "id": "ID: #{id}",
+        "invoice": "Faktura",
+        "notFound": {
+            "title": "Nie znaleziono rezerwacji",
+            "description": "Rezerwacja o podanym ID nie istnieje."
+        },
+        "info": {
+            "title": "Informacje o lekcji",
+            "date": "Data",
+            "time": "Godzina",
+            "duration": "{minutes} minut",
+            "type": "Typ lekcji",
+            "notes": "Uwagi"
+        },
+        "status": {
+            "upcoming": "Nadchodząca",
+            "inProgress": "W trakcie",
+            "completed": "Zakończona",
+            "cancelled": "Anulowana",
+            "noShow": "Nieobecność"
+        },
+        "instructor": {
+            "title": "Instruktor",
+            "experience": "{years} doświadczenia",
+            "sendMessage": "Wyślij wiadomość"
+        },
+        "vehicle": {
+            "title": "Pojazd",
+            "year": "Rok {year}",
+            "transmission": {
+                "manual": "Manualna",
+                "automatic": "Automatyczna"
+            },
+            "fuel": {
+                "petrol": "Benzyna",
+                "diesel": "Diesel",
+                "electric": "Elektryczny",
+                "hybrid": "Hybryda"
+            }
+        },
+        "location": {
+            "title": "Miejsce spotkania",
+            "openInMaps": "Otwórz w mapach"
+        },
+        "payment": {
+            "title": "Płatność",
+            "status": "Status",
+            "paid": "Opłacona",
+            "unpaid": "Nieopłacona",
+            "method": "Metoda",
+            "credits": "Kredyty ({count})",
+            "online": "Online",
+            "cash": "Gotówka",
+            "amount": "Kwota",
+            "payNow": "Zapłać teraz",
+            "currency": "{amount} UAH"
+        },
+        "actions": {
+            "title": "Działania",
+            "reschedule": "Przełóż lekcję",
+            "cancel": "Anuluj lekcję"
+        },
+        "cancelDialog": {
+            "title": "Anuluj lekcję",
+            "description": "Czy na pewno chcesz anulować tę lekcję? Jeśli anulujesz na mniej niż 24 godziny przed rozpoczęciem, kredyty nie zostaną zwrócone.",
+            "reasonLabel": "Powód anulowania (opcjonalnie)",
+            "reasonPlaceholder": "Wpisz powód anulowania...",
+            "keep": "Nie, pozostaw",
+            "confirm": "Tak, anuluj",
+            "cancelling": "Anulowanie..."
+        },
+        "toast": {
+            "cancelled": "Lekcja anulowana",
+            "cancelledDescription": "Twoja lekcja została pomyślnie anulowana."
+        },
+        "alert": {
+            "cancellationInfo": "Możesz anulować lub przełożyć lekcję do 24 godzin przed jej rozpoczęciem bez utraty kredytów."
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda",
+            "highway": "Autostrada",
+            "city": "Jazda po mieście",
+            "parking": "Parkowanie",
+            "exam": "Przygotowanie do egzaminu"
+        }
+    },
+    "bookingNew": {
+        "highway": {
+            "name": "Autostrada",
+            "description": "Nauka jazdy z wysokimi prędkościami"
+        },
+        "parking": {
+            "name": "Parkowanie",
+            "description": "Parkowanie równoległe i prostopadłe"
+        },
+        "night": {
+            "name": "Jazda nocna",
+            "description": "Jazda w warunkach ograniczonej widoczności"
+        },
+        "examPrep": {
+            "name": "Przygotowanie do egzaminu",
+            "description": "Symulacja egzaminu państwowego"
+        },
+        "duration": "{minutes} min",
+        "credit": "{count, plural, =1 {kredyt} few {kredyty} many {kredytów} other {kredytów}}",
+        "or": "lub",
+        "currency": "{amount} UAH",
+        "title": "Zarezerwuj lekcję jazdy",
+        "subtitle": "Wybierz odpowiednią godzinę i instruktora",
+        "steps": {
+            "lessonType": "Typ lekcji",
+            "instructor": "Instruktor",
+            "dateTime": "Data i godzina",
+            "vehicleLocation": "Samochód i miejsce",
+            "confirmation": "Potwierdzenie"
+        },
+        "lessonTypes": {
+            "title": "Wybierz typ lekcji",
+            "recommended": "Polecane",
+            "standard": {
+                "name": "Standardowa jazda",
+                "description": "Podstawowa lekcja jazdy po mieście"
+            },
+            "highway": {
+                "name": "Autostrada",
+                "description": "Nauka jazdy z wysokimi prędkościami"
+            },
+            "parking": {
+                "name": "Parkowanie",
+                "description": "Parkowanie równoległe i prostopadłe"
+            },
+            "night": {
+                "name": "Jazda nocna",
+                "description": "Jazda w warunkach ograniczonej widoczności"
+            },
+            "examPrep": {
+                "name": "Przygotowanie do egzaminu",
+                "description": "Symulacja egzaminu państwowego"
+            },
+            "duration": "{minutes} min",
+            "credit": "{count, plural, =1 {kredyt} few {kredyty} many {kredytów} other {kredytów}}",
+            "or": "lub",
+            "currency": "{amount} UAH"
+        },
+        "instructor": {
+            "title": "Wybierz instruktora",
+            "searchPlaceholder": "Szukaj instruktora...",
+            "experience": "Doświadczenie",
+            "successRate": "Skuteczność",
+            "specializations": "Specjalizacje",
+            "nextAvailable": "Najbliższy termin",
+            "reviews": "{count} opinii",
+            "completedLessons": "Ukończonych lekcji",
+            "today": "Dziś",
+            "tomorrow": "Jutro",
+            "years": "{count} lat",
+            "exams": "Egzaminy",
+            "nightDriving": "Jazda nocna",
+            "highways": "Autostrady",
+            "parking": "Parkowanie",
+            "maneuvers": "Manewry",
+            "city": "Miasto"
+        },
+        "dateTime": {
+            "title": "Wybierz datę i godzinę",
+            "months": [
+                "Styczeń",
+                "Luty",
+                "Marzec",
+                "Kwiecień",
+                "Maj",
+                "Czerwiec",
+                "Lipiec",
+                "Sierpień",
+                "Wrzesień",
+                "Październik",
+                "Listopad",
+                "Grudzień"
+            ],
+            "weekDays": [
+                "Pn",
+                "Wt",
+                "Śr",
+                "Cz",
+                "Pt",
+                "Sb",
+                "Nd"
+            ],
+            "noSlots": "Brak wolnych",
+            "moreSlots": "+{count} więcej",
+            "selectInstructor": "Wybierz instruktora",
+            "sunday": "Niedziela",
+            "unavailable": "Niedostępne",
+            "selected": "Wybrane",
+            "available": "Dostępne",
+            "availableHours": "Dostępne godziny",
+            "hours": "{count} godzin",
+            "noSlotsForDay": "Brak dostępnych terminów w tym dniu",
+            "selectInstructorFirst": "Najpierw wybierz instruktora, aby zobaczyć dostępne terminy",
+            "legendAvailable": "Dostępne",
+            "legendSelected": "Wybrane",
+            "legendUnavailable": "Niedostępne"
+        },
+        "vehicle": {
+            "title": "Dostępne samochody",
+            "transmission": {
+                "manual": "Manualna",
+                "automatic": "Automatyczna"
+            },
+            "fuel": {
+                "petrol": "Benzyna",
+                "diesel": "Diesel",
+                "electric": "Elektryczny",
+                "hybrid": "Hybryda"
+            },
+            "features": {
+                "abs": "ABS",
+                "esp": "ESP",
+                "airCondition": "Klimatyzacja",
+                "parkingSensors": "Czujniki parkowania",
+                "rearCamera": "Kamera cofania"
+            }
+        },
+        "location": {
+            "title": "Miejsce rozpoczęcia",
+            "distance": "{distance} km"
+        },
+        "summary": {
+            "title": "Podsumowanie rezerwacji",
+            "lessonType": "Typ lekcji",
+            "instructor": "Instruktor",
+            "dateTime": "Data i godzina",
+            "vehicle": "Samochód",
+            "location": "Miejsce"
+        },
+        "payment": {
+            "title": "Metoda płatności",
+            "useCredits": "Użyj kredytów",
+            "creditsAvailable": "Dostępne: {count} kredytów",
+            "creditsRequired": "{count} kredyty",
+            "payOnline": "Zapłać online",
+            "paymentService": "Privat24"
+        },
+        "buttons": {
+            "back": "Wstecz",
+            "next": "Dalej",
+            "confirm": "Potwierdź rezerwację",
+            "confirming": "Potwierdzanie..."
+        },
+        "success": {
+            "title": "Rezerwacja potwierdzona!",
+            "description": "Twoja lekcja została pomyślnie zarezerwowana. Otrzymasz potwierdzenie e-mailem.",
+            "date": "Data",
+            "time": "Godzina",
+            "instructor": "Instruktor",
+            "redirecting": "Przekierowywanie do listy lekcji..."
+        },
+        "alerts": {
+            "cancellationPolicy": "Możesz anulować lub przełożyć lekcję do 24 godzin przed jej rozpoczęciem bez utraty kredytów."
+        }
+    },
+    "instructors": {
+        "schedule": {
+            "title": "Harmonogram instruktorów",
+            "subtitle": "Zarządzanie harmonogramem wszystkich instruktorów",
+            "buttons": {
+                "print": "Drukuj",
+                "download": "Pobierz",
+                "addLesson": "Dodaj zajęcia",
+                "today": "Dziś",
+                "showDetails": "Pokaż szczegóły",
+                "edit": "Edytuj"
+            },
+            "stats": {
+                "totalLessons": "Wszystkie zajęcia",
+                "confirmed": "Potwierdzone",
+                "pending": "Oczekujące",
+                "cancelled": "Anulowane",
+                "plannedHours": "Zaplanowane godziny"
+            },
+            "viewModes": {
+                "week": "Tydzień",
+                "day": "Dzień",
+                "list": "Lista"
+            },
+            "filters": {
+                "allInstructors": "Wszyscy instruktorzy",
+                "allLocations": "Wszystkie lokalizacje"
+            },
+            "weekView": {
+                "weekNumber": "Tydzień {number}",
+                "instructor": "Instruktor",
+                "id": "ID",
+                "free": "Wolne"
+            },
+            "dayView": {
+                "time": "Godzina"
+            },
+            "listView": {
+                "time": "Godzina",
+                "instructor": "Instruktor",
+                "student": "Uczeń",
+                "lessonType": "Typ zajęć",
+                "vehicle": "Samochód",
+                "location": "Lokalizacja",
+                "status": "Status",
+                "actions": "Działania"
+            },
+            "lessonTypes": {
+                "practice": "Praktyka",
+                "track": "Plac manewrowy",
+                "city": "Miasto",
+                "parking": "Parkowanie",
+                "exam": "Egzamin",
+                "nightDriving": "Jazda nocna",
+                "highway": "Autostrada"
+            },
+            "lessonStatus": {
+                "confirmed": "Potwierdzono",
+                "pending": "Oczekuje",
+                "cancelled": "Anulowano"
+            },
+            "locations": {
+                "warsaw": "Warszawa",
+                "trackKrakow": "Plac manewrowy Kraków",
+                "trackGdansk": "Plac manewrowy Gdańsk",
+                "examCenter": "Centrum egzaminacyjne",
+                "meetingWarsaw": "Miejsce spotkania: Warszawa"
+            },
+            "weekDays": {
+                "monday": "Poniedziałek",
+                "tuesday": "Wtorek",
+                "wednesday": "Środa",
+                "thursday": "Czwartek",
+                "friday": "Piątek",
+                "saturday": "Sobota",
+                "sunday": "Niedziela"
+            }
+        }
+    },
+    "bookingHistory": {
+        "title": "Historia lekcji",
+        "subtitle": "Przeglądaj historię swoich jazd i postępy",
+        "exportCSV": "Eksportuj do CSV",
+        "statistics": {
+            "completedLessons": "Ukończone lekcje",
+            "drivingHours": "Godziny jazdy",
+            "averageRating": "Średnia ocena",
+            "totalSpent": "Łącznie wydano",
+            "currency": "{amount} UAH"
+        },
+        "filters": {
+            "title": "Filtry",
+            "searchPlaceholder": "Szukaj po typie, instruktorze lub samochodzie...",
+            "status": {
+                "all": "Wszystkie",
+                "completed": "Ukończone",
+                "cancelled": "Anulowane",
+                "noShow": "Nieobecność"
+            }
+        },
+        "status": {
+            "completed": "Zakończona",
+            "cancelled": "Anulowana",
+            "noShow": "Nieobecność"
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda",
+            "highway": "Autostrada",
+            "parking": "Parkowanie",
+            "night": "Jazda nocna",
+            "maneuvers": "Manewry",
+            "examPrep": "Przygotowanie do egzaminu"
+        },
+        "table": {
+            "date": "Data",
+            "type": "Typ",
+            "instructor": "Instruktor",
+            "vehicle": "Samochód",
+            "status": "Status",
+            "rating": "Ocena",
+            "price": "Cena",
+            "actions": "Działania"
+        },
+        "duration": "{minutes} min",
+        "noResults": "Nie znaleziono lekcji w historii",
+        "pagination": {
+            "previous": "Poprzednia",
+            "next": "Następna"
+        }
+    },
+    "bookings": {
+        "title": "Moje lekcje",
+        "subtitle": "Zarządzaj swoimi lekcjami jazdy",
+        "bookLesson": "Zarezerwuj lekcję",
+        "stats": {
+            "allLessons": "Wszystkie lekcje",
+            "upcoming": "Nadchodzące",
+            "completed": "Zakończone",
+            "drivingHours": "Godziny jazdy"
+        },
+        "filters": {
+            "title": "Filtry",
+            "searchPlaceholder": "Szukaj po instruktorze lub typie...",
+            "status": {
+                "label": "Status",
+                "all": "Wszystkie",
+                "upcoming": "Nadchodzące",
+                "completed": "Zakończone",
+                "cancelled": "Anulowane",
+                "noShow": "Nieobecność"
+            },
+            "period": {
+                "label": "Okres",
+                "all": "Wszystkie",
+                "today": "Dziś",
+                "week": "Ten tydzień",
+                "month": "Ten miesiąc"
+            }
+        },
+        "status": {
+            "upcoming": "Nadchodząca",
+            "completed": "Zakończona",
+            "cancelled": "Anulowana",
+            "noShow": "Nieobecność"
+        },
+        "payment": {
+            "unpaid": "Nieopłacona",
+            "pay": "Zapłać",
+            "price": "Cena",
+            "currency": "{amount} UAH"
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda",
+            "parking": "Parkowanie",
+            "night": "Jazda nocna",
+            "highway": "Autostrada",
+            "maneuvers": "Manewry",
+            "examPrep": "Przygotowanie do egzaminu"
+        },
+        "details": {
+            "instructor": "Instruktor",
+            "vehicle": "Samochód",
+            "location": "Lokalizacja"
+        },
+        "duration": "{minutes} min",
+        "actions": {
+            "viewDetails": "Zobacz szczegóły",
+            "reschedule": "Przełóż",
+            "cancel": "Anuluj",
+            "downloadInvoice": "Pobierz fakturę"
+        },
+        "empty": {
+            "noLessons": "Nie znaleziono lekcji",
+            "clearFilters": "Wyczyść filtry"
+        },
+        "alert": {
+            "upcomingLessons": "Masz {count} nadchodzące lekcje. Pamiętaj o punktualności!"
+        }
+    },
+    "dashboard": {
+        "welcome": "Witaj ponownie, {name}!",
+        "subtitle": "Twój postęp w nauce jazdy",
+        "nextLesson": {
+            "title": "Następna lekcja",
+            "timeRemaining": "Pozostało",
+            "hours": "godzin",
+            "details": "Szczegóły",
+            "reschedule": "Przełóż"
+        },
+        "stats": {
+            "credits": {
+                "title": "Kredyty",
+                "validUntil": "Ważne do {date}",
+                "buyMore": "Kup więcej kredytów"
+            },
+            "progress": {
+                "title": "Postęp w nauce",
+                "lessonsCompleted": "ukończonych lekcji"
+            },
+            "examReadiness": {
+                "title": "Gotowość do egzaminu",
+                "almostReady": "Prawie gotowy!",
+                "checkDetails": "Sprawdź szczegóły"
+            },
+            "nextSlot": {
+                "title": "Najbliższy wolny termin",
+                "tomorrow": "Jutro",
+                "with": "z",
+                "book": "Rezerwuj"
+            }
+        },
+        "recentGrades": {
+            "title": "Ostatnie oceny i opinie",
+            "viewAll": "Zobacz wszystkie oceny"
+        },
+        "quickActions": {
+            "title": "Szybkie działania",
+            "bookLesson": "Zarezerwuj lekcję",
+            "viewSchedule": "Zobacz harmonogram",
+            "studyMaterials": "Materiały do nauki",
+            "contactInstructor": "Kontakt z instruktorem"
+        },
+        "notifications": {
+            "title": "Powiadomienia",
+            "lessonTomorrow": "Lekcja jutro o {time}",
+            "newMaterials": "Nowe materiały do nauki",
+            "hoursAgo": "{count} godz. temu",
+            "dayAgo": "{count} dzień temu"
+        },
+        "weakPoints": {
+            "title": "Obszary do poprawy",
+            "practice": "Ćwicz",
+            "improvementPlan": "Plan poprawy"
+        },
+        "achievements": {
+            "title": "Osiągnięcia",
+            "10lessons": "10 lekcji",
+            "firstNightDrive": "Pierwsza jazda nocna",
+            "parkingMaster": "Mistrz parkowania",
+            "viewAll": "Zobacz wszystkie"
+        },
+        "lessonTypes": {
+            "cityDriving": "Jazda po mieście",
+            "parking": "Parkowanie",
+            "nightDriving": "Jazda nocna",
+            "highway": "Autostrada",
+            "maneuvers": "Manewry"
+        },
+        "skills": {
+            "parallelParking": "Parkowanie równoległe",
+            "laneChange": "Zmiana pasa ruchu",
+            "roundabout": "Rondo",
+            "reverseParking": "Parkowanie tyłem",
+            "multiLaneRoundabout": "Rondo wielopasowe"
+        },
+        "weather": {
+            "temperature": "{temp}°C"
+        },
+        "notificationTypes": {
+            "reminder": "Przypomnienie",
+            "info": "Informacja"
+        }
+    },
+    "documentsUpload": {
+        "title": "Dodaj dokument",
+        "subtitle": "Prześlij nowy dokument do swojego profilu",
+        "documentType": {
+            "title": "Typ dokumentu",
+            "description": "Wybierz typ dokumentu, który chcesz przesłać",
+            "types": {
+                "drivingLicense": {
+                    "label": "Prawo jazdy",
+                    "description": "Skan lub zdjęcie prawa jazdy"
+                },
+                "id": {
+                    "label": "Dowód osobisty",
+                    "description": "Skan lub zdjęcie dowodu osobistego"
+                },
+                "medical": {
+                    "label": "Zaświadczenie lekarskie",
+                    "description": "Zaświadczenie o braku przeciwwskazań"
+                },
+                "certificate": {
+                    "label": "Certyfikat",
+                    "description": "Certyfikat ukończenia kursu"
+                },
+                "contract": {
+                    "label": "Umowa",
+                    "description": "Umowa o naukę"
+                },
+                "other": {
+                    "label": "Inne",
+                    "description": "Inny dokument"
+                }
+            },
+            "required": "Wymagane"
+        },
+        "details": {
+            "title": "Szczegóły dokumentu",
+            "description": "Podaj informacje o dokumencie",
+            "documentName": {
+                "label": "Nazwa dokumentu *",
+                "placeholder": "np. Prawo jazdy"
+            },
+            "documentDescription": {
+                "label": "Opis (opcjonalnie)",
+                "placeholder": "Dodatkowe informacje o dokumencie..."
+            },
+            "expiryDate": {
+                "label": "Data ważności"
+            }
+        },
+        "upload": {
+            "title": "Przesyłanie plików",
+            "description": "Przeciągnij pliki lub kliknij, aby wybrać",
+            "dropzone": {
+                "dragActive": "Upuść pliki tutaj...",
+                "dragInactive": "Przeciągnij pliki lub kliknij, aby wybrać",
+                "supportedFormats": "Obsługiwane formaty: PDF, JPG, PNG (maks. 10MB)"
+            },
+            "selectedFiles": "Wybrane pliki ({count})",
+            "fileSize": {
+                "bytes": "{size} B",
+                "kb": "{size} KB",
+                "mb": "{size} MB"
+            }
+        },
+        "buttons": {
+            "cancel": "Anuluj",
+            "upload": "Prześlij dokumenty",
+            "uploading": "Przesyłanie..."
+        },
+        "success": {
+            "title": "Dokumenty przesłane!",
+            "description": "Twoje dokumenty zostały przesłane i czekają na weryfikację",
+            "redirecting": "Przekierowywanie do listy dokumentów..."
+        },
+        "errors": {
+            "fileTooBig": "Plik {name} jest za duży (maks. 10MB)",
+            "invalidFormat": "Plik {name} ma nieprawidłowy format",
+            "selectType": "Wybierz typ dokumentu",
+            "enterName": "Wpisz nazwę dokumentu",
+            "addFiles": "Dodaj przynajmniej jeden plik"
+        },
+        "toast": {
+            "error": "Błąd",
+            "success": "Sukces!",
+            "documentsUploaded": "Dokumenty pomyślnie przesłano"
+        },
+        "info": {
+            "verification": "Przesłane dokumenty zostaną zweryfikowane przez administrację w ciągu 24 godzin. Otrzymasz powiadomienie o statusie weryfikacji."
+        }
+    },
+    "documents": {
+        "title": "Moje dokumenty",
+        "subtitle": "Zarządzaj swoimi dokumentami i certyfikatami",
+        "addDocument": "Dodaj dokument",
+        "stats": {
+            "allDocuments": "Wszystkie dokumenty",
+            "verified": "Zweryfikowane",
+            "expiring": "Wygasające",
+            "expired": "Przeterminowane",
+            "storageUsed": "Wykorzystana przestrzeń"
+        },
+        "types": {
+            "drivingLicense": "Prawo jazdy",
+            "id": "Dowód osobisty",
+            "medical": "Zaświadczenie lekarskie",
+            "invoice": "Faktura",
+            "contract": "Umowa",
+            "certificate": "Certyfikat",
+            "other": "Inne"
+        },
+        "categories": {
+            "personal": "Dokumenty osobiste",
+            "medical": "Dokumenty medyczne",
+            "financial": "Finanse",
+            "contracts": "Umowy",
+            "certificates": "Certyfikaty"
+        },
+        "status": {
+            "active": "Aktywny",
+            "expired": "Przeterminowany",
+            "pending": "Oczekujący",
+            "rejected": "Odrzucony"
+        },
+        "filters": {
+            "searchPlaceholder": "Szukaj dokumentów...",
+            "typeFilter": {
+                "label": "Typ dokumentu",
+                "all": "Wszystkie typy"
+            },
+            "statusFilter": {
+                "label": "Status",
+                "all": "Wszystkie",
+                "active": "Aktywne",
+                "expired": "Przeterminowane",
+                "pending": "Oczekujące",
+                "rejected": "Odrzucone"
+            }
+        },
+        "actions": {
+            "preview": "Podgląd",
+            "download": "Pobierz",
+            "share": "Udostępnij",
+            "delete": "Usuń"
+        },
+        "details": {
+            "verified": "Zweryfikowany",
+            "size": "Rozmiar",
+            "added": "Dodano",
+            "expires": "Wygasa"
+        },
+        "descriptions": {
+            "drivingLicense": "Prawo jazdy kat. B",
+            "id": "Dowód osobisty",
+            "medical": "Zaświadczenie o braku przeciwwskazań",
+            "invoice": "Faktura za pakiet {count} lekcji",
+            "contract": "Umowa na kurs prawa jazdy kat. B",
+            "certificate": "Certyfikat ukończenia części teoretycznej"
+        },
+        "deleteDialog": {
+            "title": "Usuń dokument",
+            "description": "Czy na pewno chcesz usunąć dokument \"{name}\"? Tej operacji nie można cofnąć.",
+            "cancel": "Anuluj",
+            "confirm": "Usuń dokument"
+        },
+        "toast": {
+            "documentDeleted": "Dokument usunięty",
+            "documentDeletedDescription": "Dokument został pomyślnie usunięty"
+        },
+        "alert": {
+            "expiringDocuments": "Masz {count} dokument(y), które wygasają w ciągu 30 dni. Pamiętaj, aby je odnowić."
+        },
+        "empty": {
+            "noDocuments": "Nie znaleziono dokumentów"
+        },
+        "fileSize": {
+            "kb": "{size} KB",
+            "mb": "{size} MB",
+            "limit": "/ {limit} MB"
+        }
+    },
+    "instructorProfile": {
+        "notFound": "Nie znaleziono instruktora",
+        "verified": "Zweryfikowany",
+        "experience": "{years} lat doświadczenia",
+        "reviews": "({count} opinii)",
+        "addToFavorites": "Dodaj do ulubionych",
+        "removeFromFavorites": "Usuń z ulubionych",
+        "bookLesson": "Zarezerwuj lekcję",
+        "about": {
+            "title": "O instruktorze",
+            "specializations": "Specjalizacje",
+            "languages": "Języki",
+            "categories": "Kategorie",
+            "achievements": "Osiągnięcia",
+            "instructorOfYear": "Instruktor roku {year}",
+            "safeDrivingCertificate": "Certyfikat bezpiecznej jazdy"
+        },
+        "stats": {
+            "title": "Statystyki",
+            "lessons": "Lekcji",
+            "students": "Kursantów",
+            "successRate": "Zdawalność",
+            "yearsWithUs": "Lat z nami",
+            "detailedRatings": "Szczegółowe oceny",
+            "punctuality": "Punktualność",
+            "teaching": "Nauczanie",
+            "communication": "Komunikacja",
+            "patience": "Cierpliwość"
+        },
+        "recentReviews": {
+            "title": "Ostatnie opinie",
+            "viewAllReviews": "Zobacz wszystkie opinie",
+            "examPreparation": "Przygotowanie do egzaminu",
+            "standardDriving": "Standardowa jazda",
+            "parking": "Parkowanie"
+        },
+        "info": {
+            "title": "Informacje",
+            "pricePerHour": "Cena za godzinę",
+            "currency": "{amount} zł",
+            "sendMessage": "Wyślij wiadomość"
+        },
+        "yourHistory": {
+            "title": "Twoja historia",
+            "completedLessons": "Ukończone lekcje",
+            "lastLesson": "Ostatnia lekcja",
+            "viewLessonHistory": "Zobacz historię lekcji"
+        },
+        "availability": {
+            "title": "Dostępność",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "unavailable": "Niedostępny",
+            "responseTime": "Czas odpowiedzi",
+            "usuallyWithinHour": "zazwyczaj w ciągu godziny"
+        },
+        "bio": {
+            "passionForTeaching": "Jestem profesjonalnym instruktorem nauki jazdy z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego. Moje podejście opiera się na budowaniu pewności siebie za kierownicą i nauczaniu bezpiecznych technik jazdy. Każdego studenta traktuję indywidualnie, dostosowując tempo i metodę nauki do jego potrzeb.",
+            "exams": "Egzaminy",
+            "nightDriving": "Jazda nocą",
+            "highways": "Autostrady",
+            "cityTraffic": "Ruch miejski",
+            "categoryB": "Kategoria B",
+            "categoryBAuto": "Kategoria B automat",
+            "polish": "Polski",
+            "english": "Angielski",
+            "ukrainian": "Ukraiński"
+        },
+        "reviewComments": {
+            "excellentInstructor": "Świetny instruktor! Cierpliwy i profesjonalny. Dzięki niemu zdałem egzamin za pierwszym razem.",
+            "greatContact": "Bardzo dobry kontakt, jasne tłumaczenia. Polecam każdemu!",
+            "professionalApproach": "Profesjonalne podejście, pomocne wskazówki. Nauczyłem się parkowania równoległego!"
+        }
+    },
+    "instructorFeedback": {
+        "title": "Oceń lekcję",
+        "subtitle": "Podziel się swoją opinią na temat lekcji",
+        "lessonNotFound": "Nie znaleziono lekcji",
+        "redirecting": "Przekierowywanie do historii lekcji...",
+        "lessonInfo": {
+            "title": "Informacje o lekcji"
+        },
+        "overallRating": {
+            "title": "Ogólna ocena",
+            "description": "Jak oceniasz swoją lekcję jazdy?",
+            "excellent": "Doskonale! 🎉",
+            "veryGood": "Bardzo dobrze! 👍",
+            "okay": "W porządku 👌",
+            "couldBeBetter": "Mogło być lepiej 😐",
+            "poor": "Słabo 😞"
+        },
+        "detailedRating": {
+            "title": "Szczegółowa ocena",
+            "description": "Oceń poszczególne aspekty lekcji",
+            "punctuality": "Punktualność",
+            "teachingSkills": "Umiejętności nauczania",
+            "communication": "Komunikacja",
+            "patience": "Cierpliwość"
+        },
+        "recommendation": {
+            "title": "Rekomendacja",
+            "description": "Czy poleciłbyś tego instruktora innym?",
+            "yes": "Tak, zdecydowanie polecam",
+            "no": "Nie, nie polecam"
+        },
+        "writtenFeedback": {
+            "title": "Twoja opinia",
+            "description": "Podziel się swoimi przemyśleniami (opcjonalnie)",
+            "commentLabel": "Komentarz",
+            "commentPlaceholder": "Co Ci się najbardziej podobało? Co można poprawić?",
+            "areasToImprove": "Obszary do poprawy",
+            "areasDescription": "Zaznacz obszary, które wymagają większej uwagi"
+        },
+        "improvements": {
+            "moreParking": "Więcej praktyki parkowania",
+            "moreCityDriving": "Więcej jazdy w ruchu miejskim",
+            "highwayDriving": "Nauka jazdy po autostradzie",
+            "defensiveDriving": "Techniki jazdy defensywnej",
+            "emergencyManeuvers": "Manewry awaryjne",
+            "difficultConditions": "Jazda w trudnych warunkach",
+            "moreTheory": "Więcej teorii",
+            "examPreparation": "Przygotowanie do egzaminu"
+        },
+        "buttons": {
+            "cancel": "Anuluj",
+            "submit": "Prześlij opinię",
+            "submitting": "Wysyłanie..."
+        },
+        "success": {
+            "title": "Dziękujemy za Twoją opinię!",
+            "description": "Twoja opinia pomoże nam poprawić jakość naszych usług"
+        },
+        "errors": {
+            "selectRating": "Proszę wybrać ogólną ocenę",
+            "selectRecommendation": "Proszę wskazać, czy polecasz instruktora"
+        },
+        "toast": {
+            "thankYou": "Dziękujemy za opinię!",
+            "helpImprove": "Twoja opinia pomoże nam ulepszyć nasze usługi",
+            "error": "Błąd"
+        },
+        "alert": {
+            "anonymous": "Twoja opinia jest anonimowa i pomoże nam poprawić jakość naszych usług. Instruktor otrzyma tylko konstruktywną informację zwrotną."
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda"
+        }
+    },
+    "instructorsList": {
+        "title": "Instruktorzy",
+        "subtitle": "Poznaj naszych instruktorów i wybierz najlepszego dla siebie",
+        "stats": {
+            "allInstructors": "Wszyscy instruktorzy",
+            "myInstructors": "Moi instruktorzy",
+            "favorites": "Ulubieni"
+        },
+        "tabs": {
+            "all": "Wszyscy",
+            "my": "Moi instruktorzy",
+            "favorites": "Ulubieni"
+        },
+        "filters": {
+            "title": "Filtry",
+            "searchPlaceholder": "Szukaj instruktora lub specjalizacji...",
+            "specialization": "Specjalizacja",
+            "allSpecializations": "Wszystkie",
+            "exams": "Egzaminy",
+            "parking": "Parkowanie",
+            "city": "Miasto",
+            "highways": "Autostrady",
+            "nightDriving": "Jazda nocą",
+            "beginners": "Początkujący"
+        },
+        "card": {
+            "experience": "Doświadczenie",
+            "successRate": "Zdawalność",
+            "pricePerHour": "Cena/godz",
+            "currency": "{amount} zł",
+            "yourLessons": "Twoje lekcje",
+            "lastLesson": "Ostatnia",
+            "nearestSlot": "Najbliższy termin",
+            "viewProfile": "Zobacz profil",
+            "moreSpecializations": "+{count}",
+            "years": "{count} lat"
+        },
+        "availability": {
+            "today": "Dziś {time}",
+            "tomorrow": "Jutro {time}",
+            "monday": "Poniedziałek {time}"
+        },
+        "bio": {
+            "professional": "Profesjonalny instruktor z pasją do nauczania. Specjalizuję się w przygotowaniu do egzaminu państwowego.",
+            "patient": "Cierpliwy i uważny. Uczę bezpiecznej i pewnej jazdy w ruchu miejskim.",
+            "experienced": "Doświadczony instruktor z indywidualnym podejściem do każdego studenta."
+        },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski",
+            "ukrainian": "Ukraiński",
+            "german": "Niemiecki"
+        },
+        "categories": {
+            "b": "B",
+            "bAutomatic": "B automat",
+            "c": "C"
+        },
+        "noResults": {
+            "title": "Nie znaleziono instruktorów",
+            "clearFilters": "Wyczyść filtry"
+        }
+    },
+    "conversation": {
+        "role": "Instruktor",
+        "online": "Online",
+        "lastSeen": "Ostatnio widziany",
+        "typing": "pisze...",
+        "header": {
+            "mute": "Wycisz",
+            "star": "Oznacz gwiazdką",
+            "archive": "Archiwizuj",
+            "deleteConversation": "Usuń rozmowę",
+            "searchInConversation": "Szukaj w rozmowie"
+        },
+        "messageStatus": {
+            "sending": "Wysyłanie",
+            "sent": "Wysłano",
+            "delivered": "Dostarczono",
+            "read": "Przeczytano"
+        },
+        "dateLabels": {
+            "today": "Dziś",
+            "yesterday": "Wczoraj"
+        },
+        "attachments": {
+            "downloadFile": "Pobierz plik",
+            "sharedFiles": "Wspólne pliki",
+            "fileSize": "{size} MB",
+            "parkingInstructions": "Parkowanie_równoległe_instrukcja.pdf"
+        },
+        "lessonCard": {
+            "nextLesson": "Następna lekcja",
+            "viewDetails": "Zobacz szczegóły",
+            "cityDriving": "Jazda w ruchu miejskim"
+        },
+        "quickReplies": {
+            "ok": "Dobrze, dziękuję!",
+            "seeYou": "Do zobaczenia!",
+            "understood": "Zrozumiałem",
+            "canIReschedule": "Czy mogę przełożyć?",
+            "needHelp": "Potrzebuję pomocy",
+            "great": "Świetnie!"
+        },
+        "input": {
+            "placeholder": "Napisz wiadomość...",
+            "attachFile": "Załącz plik",
+            "emoji": "Emoji",
+            "voiceMessage": "Wiadomość głosowa",
+            "recording": "Nagrywanie...",
+            "stopRecording": "Zatrzymaj nagrywanie"
+        },
+        "info": {
+            "title": "Informacje",
+            "phone": "Telefon",
+            "email": "Email",
+            "upcomingLessons": "Nadchodzące lekcje"
+        },
+        "messages": {
+            "greeting": "Cześć! Jak poszła dzisiejsza lekcja?",
+            "progressResponse": "Cześć! Bardzo dobrze, czuję, że robię postępy w parkowaniu równoległym 😊",
+            "encouragement": "Świetnie! Naprawdę dziś poszło Ci o wiele lepiej niż ostatnio.",
+            "sendingMaterials": "Wysyłam Ci materiały do powtórzenia przed kolejną lekcją",
+            "thanksReview": "Dzięki! Na pewno przejrzę przed piątkiem",
+            "seeYouFriday": "Dobrze, do zobaczenia w piątek! 👍",
+            "greatJob": "Świetnie sobie dziś poradziłeś! Do zobaczenia na kolejnej lekcji."
+        },
+        "contextMenu": {
+            "reply": "Odpowiedz",
+            "edit": "Edytuj",
+            "copy": "Kopiuj",
+            "forward": "Przekaż dalej",
+            "delete": "Usuń"
+        }
+    },
+    "messagesList": {
+        "title": "Wiadomości",
+        "allRead": "Wszystkie przeczytane",
+        "unreadCount": "{count} nieprzeczytanych",
+        "newMessage": "Nowa wiadomość",
+        "stats": {
+            "activeConversations": "Aktywne rozmowy",
+            "unread": "Nieprzeczytane",
+            "onlineNow": "Online teraz",
+            "responseTime": "Czas odpowiedzi",
+            "minutes": "~15 min"
+        },
+        "announcements": {
+            "openingHoursChange": "Zmiana godzin otwarcia",
+            "openingHoursContent": "Od 1 września biuro będzie czynne w godzinach 8:00 - 18:00",
+            "packagePromotion": "Promocja na pakiety",
+            "packagePromotionContent": "Tylko do końca sierpnia - 15% zniżki na wszystkie pakiety!",
+            "important": "Ważne"
+        },
+        "conversations": {
+            "title": "Rozmowy",
+            "searchPlaceholder": "Szukaj wiadomości...",
+            "all": "Wszystkie",
+            "unread": "Nieprzeczytane",
+            "starred": "Oznaczone gwiazdką",
+            "archived": "Zarchiwizowane",
+            "groups": "Grupy"
+        },
+        "filters": {
+            "all": "Wszystkie",
+            "unread": "Nieprzeczytane",
+            "starred": "Oznaczone gwiazdką",
+            "archived": "Zarchiwizowane"
+        },
+        "roles": {
+            "instructor": "Instruktor",
+            "administration": "Administracja"
+        },
+        "conversationTypes": {
+            "direct": "Prywatna",
+            "group": "Grupowa",
+            "announcement": "Ogłoszenie"
+        },
+        "lastMessage": {
+            "greatJob": "Świetnie sobie dziś poradziłeś! Do zobaczenia na kolejnej lekcji.",
+            "rememberMaterials": "Pamiętaj o materiałach na jutro",
+            "whoGoingExam": "Michał: Kto idzie na egzamin w piątek?",
+            "invoiceSent": "Twoja faktura została wysłana na email",
+            "newOfficeHours": "📢 Nowe godziny pracy biura od września",
+            "canReschedule": "Możemy przełożyć lekcję na 16:00?"
+        },
+        "groupNames": {
+            "theoryGroup": "Grupa teoria - sierpień 2024",
+            "schoolAnnouncements": "Ogłoszenia szkoły",
+            "supportOffice": "Biuro obsługi"
+        },
+        "timeAgo": {
+            "minutes": "{count} min temu",
+            "hours": "{count} godz. temu",
+            "yesterday": "Wczoraj",
+            "days": "{count} dni temu"
+        },
+        "emptyState": {
+            "selectConversation": "Wybierz rozmowę",
+            "clickToView": "Kliknij na rozmowę z listy, aby zobaczyć wiadomości",
+            "openLastConversation": "Otwórz ostatnią rozmowę"
+        },
+        "quickActions": {
+            "title": "Szybkie akcje",
+            "starred": "Oznaczone gwiazdką",
+            "archive": "Archiwum",
+            "muted": "Wyciszone",
+            "trash": "Kosz"
+        }
+    },
+    "buyPackage": {
+        "title": "Wybierz pakiet lekcji",
+        "subtitle": "Oszczędź do 20% kupując pakiet zamiast pojedynczych lekcji",
+        "limitedOffer": "Oferta ograniczona!",
+        "limitedOfferText": "Kup dowolny pakiet do końca miesiąca i otrzymaj dodatkową lekcję GRATIS!",
+        "packages": {
+            "starter": {
+                "name": "Pakiet startowy",
+                "lessons": "lekcji",
+                "validityDays": "Ważny {days} dni",
+                "pricePerLesson": "{price} zł za lekcję"
+            },
+            "standard": {
+                "name": "Pakiet standardowy"
+            },
+            "premium": {
+                "name": "Pakiet premium"
+            },
+            "intensive": {
+                "name": "Pakiet intensywny"
+            },
+            "mostPopular": "Najpopularniejszy",
+            "recommended": "Polecany",
+            "saving": "Oszczędzasz {percent}%",
+            "selected": "Wybrano",
+            "select": "Wybierz",
+            "showMore": "Pokaż więcej ({count})"
+        },
+        "features": {
+            "lessons": "{count} lekcji jazdy",
+            "validity": "Ważność {days} dni",
+            "flexibleSchedule": "Elastyczny grafik",
+            "freeMaterials": "Darmowe materiały",
+            "priorityBooking": "Priorytetowa rezerwacja",
+            "weekendLessons": "Lekcje w weekendy",
+            "instructorChoice": "Wybór instruktora",
+            "freeExamSimulation": "Darmowa symulacja egzaminu",
+            "dailyLessonsPossible": "Możliwe codzienne lekcje",
+            "dedicatedInstructor": "Dedykowany instruktor",
+            "examSimulations": "2 symulacje egzaminu",
+            "passGuarantee": "Gwarancja zdania"
+        },
+        "additionalOptions": {
+            "title": "Dodatkowe opcje",
+            "description": "Spersonalizuj swój pakiet dodatkowymi usługami",
+            "weekend": {
+                "name": "Lekcje w weekend",
+                "description": "Możliwość jazdy w weekendy"
+            },
+            "night": {
+                "name": "Jazdy nocne",
+                "description": "Dodatkowe 2 lekcje nocą"
+            },
+            "highway": {
+                "name": "Jazda po autostradzie",
+                "description": "Dodatkowa lekcja na autostradzie"
+            },
+            "exam": {
+                "name": "Symulacja egzaminu",
+                "description": "Symulacja egzaminu państwowego"
+            }
+        },
+        "settings": {
+            "autoRenewal": "Automatyczne odnawianie",
+            "autoRenewalDesc": "Otrzymaj 5% zniżki na kolejny pakiet",
+            "giftMode": "Kupuję na prezent",
+            "giftModeDesc": "Wyślij pakiet jako prezent dla kogoś",
+            "discount": "-5%"
+        },
+        "payment": {
+            "title": "Metoda płatności",
+            "creditCard": "Karta kredytowa/debetowa",
+            "creditCardDesc": "Visa, Mastercard, American Express",
+            "blik": "BLIK",
+            "blikDesc": "Szybka płatność kodem BLIK",
+            "bankTransfer": "Przelew bankowy",
+            "bankTransferDesc": "Przelewy24",
+            "installments": "Raty 0%",
+            "installmentsDesc": "Rozdziel płatność na 3 miesiące",
+            "popular": "Popularne",
+            "noFee": "0% prowizji",
+            "securityNote": "Wszystkie płatności są bezpieczne i szyfrowane. Twoje dane są chronione zgodnie z najwyższymi standardami bezpieczeństwa."
+        },
+        "summary": {
+            "title": "Podsumowanie",
+            "autoRenewalDiscount": "Zniżka za auto-odnawianie",
+            "total": "Razem",
+            "savingVsSingle": "Oszczędzasz {amount} zł w porównaniu do pojedynczych lekcji",
+            "proceedToPayment": "Przejdź do płatności",
+            "securePayment": "Bezpieczna płatność",
+            "instantActivation": "Natychmiastowa aktywacja",
+            "joinStudents": "Dołącz do 5000+ zadowolonych kursantów"
+        },
+        "benefits": {
+            "title": "Dlaczego warto kupić pakiet?",
+            "saving": {
+                "title": "Oszczędność do 20%",
+                "description": "w porównaniu do pojedynczych lekcji"
+            },
+            "flexibility": {
+                "title": "Elastyczne terminy",
+                "description": "Rezerwuj kiedykolwiek"
+            },
+            "priority": {
+                "title": "Priorytet rezerwacji",
+                "description": "Pierwszy wybór terminów"
+            },
+            "guarantee": {
+                "title": "Gwarancja satysfakcji",
+                "description": "Albo zwrot pieniędzy"
+            }
+        },
+        "dialog": {
+            "title": "Finalizacja płatności",
+            "description": "Przekierujemy Cię do bezpiecznej bramki płatniczej",
+            "processing": "Przetwarzanie płatności...",
+            "dontClose": "Nie zamykaj tego okna",
+            "amountToPay": "Kwota do zapłaty",
+            "selectedPackage": "Wybrany pakiet",
+            "recipientData": "Dane odbiorcy prezentu",
+            "recipientEmail": "Email odbiorcy",
+            "message": "Wiadomość (opcjonalnie)",
+            "cancel": "Anuluj",
+            "payNow": "Zapłać teraz",
+            "processing2": "Przetwarzanie..."
+        },
+        "currency": "{amount} zł"
+    },
+    "invoice": {
+        "title": "Faktura",
+        "back": "Wstecz",
+        "downloadPDF": "Pobierz PDF",
+        "print": "Drukuj",
+        "share": "Udostępnij",
+        "sendByEmail": "Wyślij pocztą",
+        "scanCode": "Zeskanuj kod",
+        "status": {
+            "paid": "Opłacona",
+            "pending": "Oczekuje na płatność",
+            "overdue": "Przeterminowana"
+        },
+        "labels": {
+            "seller": "SPRZEDAWCA",
+            "buyer": "NABYWCA",
+            "issueDate": "Data wystawienia",
+            "dueDate": "Termin płatności",
+            "paymentDate": "Data płatności",
+            "paymentMethod": "Metoda płatności"
+        },
+        "company": {
+            "name": "Auto Szkoła DriveTime Sp. z o.o.",
+            "address": "ul. Puławska 145",
+            "city": "Warszawa",
+            "postalCode": "02-715",
+            "country": "Polska",
+            "nip": "NIP: PL5252525252",
+            "regon": "REGON: 123456789",
+            "bank": "mBank S.A.",
+            "accountLabel": "Dane do przelewu",
+            "transferTitle": "Tytuł przelewu"
+        },
+        "customer": {
+            "studentId": "ID Kursanta"
+        },
+        "paymentMethods": {
+            "creditCard": "Karta kredytowa",
+            "bankTransfer": "Przelew bankowy",
+            "blik": "BLIK",
+            "cash": "Gotówka"
+        },
+        "table": {
+            "number": "Nr",
+            "description": "Opis",
+            "quantity": "Ilość",
+            "unitPrice": "Cena jedn.",
+            "vat": "VAT",
+            "total": "Wartość",
+            "invoiceItems": "Pozycje faktury"
+        },
+        "items": {
+            "standardPackage": "Pakiet standardowy - 10 lekcji jazdy",
+            "weekendLessons": "Lekcje w weekendy - dodatkowo",
+            "studyMaterials": "Materiały szkoleniowe (PDF)"
+        },
+        "summary": {
+            "netValue": "Wartość netto",
+            "vat": "VAT (23%)",
+            "discount": "Zniżka",
+            "toPay": "Do zapłaty",
+            "paid": "Zapłacono",
+            "remaining": "Pozostało"
+        },
+        "notes": {
+            "thankYou": "Dziękujemy za wybór naszej szkoły jazdy. W razie pytań, prosimy o kontakt.",
+            "electronicInvoice": "Faktura wygenerowana elektronicznie i ważna bez podpisu.",
+            "contact": "W razie pytań prosimy o kontakt"
+        },
+        "invoicePaid": "Faktura opłacona",
+        "date": "Data",
+        "or": "lub"
+    },
+    "packages": {
+        "title": "Moje pakiety",
+        "subtitle": "Zarządzaj swoimi pakietami lekcji",
+        "buyNewPackage": "Kup nowy pakiet",
+        "stats": {
+            "activeCredits": "Aktywne kredyty",
+            "from": "z",
+            "purchased": "zakupionych",
+            "used": "Wykorzystane",
+            "averageUsage": "{percent}% średnio",
+            "expired": "Przedawnione",
+            "creditsLost": "stracone kredyty",
+            "totalValue": "Wartość całkowita",
+            "saving": "oszczędność {percent}%",
+            "currency": "{amount} UAH"
+        },
+        "warning": {
+            "title": "Pakiet wkrótce wygasa!",
+            "description": "Masz pakiet, którego ważność wygasa w ciągu najbliższych 2 tygodni. Wykorzystaj pozostałe kredyty lub rozważ przedłużenie."
+        },
+        "tabs": {
+            "active": "Aktywne",
+            "expired": "Przedawnione",
+            "statistics": "Statystyki"
+        },
+        "packageCard": {
+            "purchasedOn": "Zakupiono",
+            "validUntil": "Ważny do",
+            "active": "Aktywny",
+            "expiringIn": "Wygasa za {days} dni",
+            "usedCredits": "Wykorzystane kredyty",
+            "of": "z",
+            "remainingCredits": "Pozostało {count} kredytów",
+            "percentUsed": "{percent}% wykorzystano",
+            "recentLessons": "Ostatnie lekcje z tego pakietu",
+            "viewAll": "Zobacz wszystkie ({count})",
+            "useCredits": "Wykorzystaj kredyty",
+            "extend": "Przedłuż",
+            "completed": "Wykorzystany",
+            "expired": "Przedawniony",
+            "creditsUsed": "Wykorzystano {used} z {total} kredytów",
+            "creditsLost": "Stracono {count} niewykorzystanych kredytów",
+            "buyAgain": "Kup ponownie"
+        },
+        "packageNames": {
+            "standard": "Pakiet standardowy",
+            "weekend": "Pakiet weekendowy",
+            "starter": "Pakiet startowy",
+            "intensive": "Pakiet intensywny"
+        },
+        "lessonTypes": {
+            "cityDriving": "Jazda po mieście",
+            "parking": "Parkowanie",
+            "nightDriving": "Jazda nocna",
+            "highway": "Autostrada",
+            "maneuvers": "Manewry"
+        },
+        "benefits": {
+            "flexibleSchedule": "Elastyczny grafik",
+            "freeMaterials": "Bezpłatne materiały",
+            "priorityBooking": "Priorytetowa rezerwacja",
+            "weekends": "Weekendy",
+            "flexibleHours": "Elastyczne godziny"
+        },
+        "empty": {
+            "noActivePackages": "Nie masz aktywnych pakietów",
+            "buyFirstPackage": "Kup pierwszy pakiet"
+        },
+        "statistics": {
+            "packageUsage": "Wykorzystanie pakietów",
+            "averageUsage": "Średnie wykorzystanie",
+            "popularTime": "Najpopularniejsza pora",
+            "favoriteInstructor": "Ulubiony instruktor",
+            "avgTimeToUse": "Średni czas do wykorzystania",
+            "days": "dni",
+            "savings": "Oszczędności",
+            "savedAmount": "zaoszczędzono dzięki pakietom",
+            "standardPrice": "Standardowa cena",
+            "paid": "Zapłacono",
+            "savingAmount": "Oszczędność",
+            "recommendations": "Rekomendacje",
+            "recommendationText": "Na podstawie Twojego tempa nauki, polecamy pakiet Premium 20 - pozwoli Ci zaoszczędzić 420 UAH i zapewni kredyty na kolejne 2 miesiące.",
+            "viewRecommended": "Zobacz polecane pakiety",
+            "loyaltyProgram": "Program lojalnościowy",
+            "status": "Status",
+            "silver": "Srebrny",
+            "gold": "Złoty",
+            "points": "punktów",
+            "pointsToNext": "Jeszcze {count} punktów do statusu {status} i {discount}% zniżki na wszystkie pakiety",
+            "freeLesson": "Masz 1 darmową lekcję do wykorzystania"
+        },
+        "dialogs": {
+            "extend": {
+                "title": "Przedłuż pakiet",
+                "description": "Przedłuż ważność pakietu \"{name}\" o kolejne 30 dni za jedyne 99 UAH.",
+                "info": "Masz {count} niewykorzystanych kredytów. Przedłużenie pozwoli Ci zachować wszystkie kredyty.",
+                "cancel": "Anuluj",
+                "confirm": "Przedłuż za 99 UAH"
+            },
+            "history": {
+                "title": "Historia wykorzystania pakietu",
+                "description": "{name} - wszystkie lekcje",
+                "close": "Zamknij",
+                "credit": "kredyt"
+            }
+        }
+    },
+    "preferences": {
+        "title": "Ustawienia nauki",
+        "subtitle": "Dostosuj proces nauki do swoich potrzeb",
+        "saveChanges": "Zapisz zmiany",
+        "cancel": "Anuluj",
+        "unsavedChanges": "Masz niezapisane zmiany. Nie zapomnij zapisać przed wyjściem.",
+        "tabs": {
+            "learning": "Nauka",
+            "schedule": "Harmonogram",
+            "notifications": "Powiadomienia",
+            "goals": "Cele"
+        },
+        "learning": {
+            "timePreferences": "Preferencje czasowe",
+            "whenPrefer": "Kiedy uczysz się najlepiej?",
+            "preferredTime": "Preferowana pora dnia",
+            "morning": "Rano (6:00-12:00)",
+            "afternoon": "Popołudnie (12:00-18:00)",
+            "evening": "Wieczór (18:00-22:00)",
+            "lessonDuration": "Preferowany czas trwania lekcji",
+            "minutes": "{count} min",
+            "intensity": "Intensywność nauki",
+            "relaxed": "Spokojna (1 lekcja/tydzień)",
+            "moderate": "Umiarkowana (2-3 lekcje/tydzień)",
+            "intensive": "Intensywna (4+ lekcje/tydzień)",
+            "instructorVehicle": "Preferencje instruktora i samochodu",
+            "preferredInstructor": "Preferowany instruktor",
+            "any": "Dowolny",
+            "male": "Mężczyzna",
+            "female": "Kobieta",
+            "specific": "Konkretny instruktor",
+            "preferredTransmission": "Preferowana skrzynia biegów",
+            "manual": "Manualna",
+            "automatic": "Automatyczna",
+            "noPreference": "Bez różnicy",
+            "preferredLocation": "Preferowane miejsce rozpoczęcia",
+            "cityCenter": "Centrum - ul. Puławska 145",
+            "mokotow": "Mokotów - ul. Wilanowska 89",
+            "ursynow": "Ursynów - al. KEN 36",
+            "homePickup": "Odbiór z domu",
+            "groupLessons": "Zajęcia grupowe",
+            "groupLessonsDesc": "Chcę uczestniczyć w teoretycznych zajęciach grupowych"
+        },
+        "schedule": {
+            "weekAvailability": "Dostępność w ciągu tygodnia",
+            "selectDays": "Zaznacz dni, w które możesz uczestniczyć w lekcjach",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "weekends": "Weekendy",
+            "weekendsDesc": "Jestem dostępny(a) również w weekendy",
+            "unavailablePeriods": "Okresy niedostępności",
+            "planVacations": "Zaplanuj wakacje i przerwy w nauce",
+            "summerVacation": "Wakacje letnie",
+            "active": "Aktywny",
+            "addUnavailable": "Dodaj okres niedostępności"
+        },
+        "notifications": {
+            "channels": "Kanały komunikacji",
+            "chooseHow": "Wybierz, jak chcesz otrzymywać powiadomienia",
+            "email": "Email",
+            "emailDesc": "Ważne powiadomienia i podsumowania",
+            "sms": "SMS",
+            "smsDesc": "Przypomnienia o lekcjach",
+            "push": "Powiadomienia Push",
+            "pushDesc": "Natychmiastowe powiadomienia w aplikacji",
+            "types": "Rodzaje powiadomień",
+            "lessonReminders": "Przypomnienia o lekcjach",
+            "hours": "{count} godz.",
+            "cancellations": "Anulacje i zmiany terminów",
+            "lessonFeedback": "Opinie po lekcjach",
+            "progressReports": "Raporty postępów",
+            "newsOffers": "Wiadomości i oferty specjalne",
+            "soundSettings": "Ustawienia dźwięku",
+            "notificationSound": "Dźwięk powiadomień",
+            "vibration": "Wibracje"
+        },
+        "goals": {
+            "learningGoal": "Cel nauki",
+            "defineGoals": "Określ swoje cele i priorytety w nauce jazdy",
+            "plannedExamDate": "Planowana data egzaminu",
+            "dateHelp": "Na podstawie tej daty dostosujemy intensywność nauki",
+            "weeklyLessons": "Liczba lekcji w tygodniu",
+            "focusAreas": "Obszary do skupienia",
+            "chooseSkills": "Wybierz umiejętności, które chcesz szczególnie ćwiczyć",
+            "parking": "Parkowanie",
+            "parkingDesc": "Równoległe i prostopadłe",
+            "highway": "Autostrada",
+            "highwayDesc": "Jazda z dużą prędkością",
+            "nightDriving": "Jazda nocna",
+            "nightDrivingDesc": "W warunkach ograniczonej widoczności",
+            "city": "Miasto",
+            "cityDesc": "Ruch miejski i skrzyżowania",
+            "maneuvers": "Manewry",
+            "maneuversDesc": "Zawracanie, cofanie",
+            "hills": "Wzniesienia",
+            "hillsDesc": "Ruszanie pod górkę",
+            "additionalTraining": "Dodatkowe szkolenia",
+            "defensiveDriving": "Jazda defensywna",
+            "defensiveDesc": "Techniki bezpiecznej jazdy",
+            "ecoDriving": "Eco-driving",
+            "ecoDesc": "Jazda ekonomiczna"
+        }
+    },
+    "profile": {
+        "title": "Mój profil",
+        "subtitle": "Zarządzaj swoimi danymi i dokumentami",
+        "preferences": "Ustawienia",
+        "editProfile": "Edytuj profil",
+        "cancel": "Anuluj",
+        "saveChanges": "Zapisz zmiany",
+        "activeStudent": "Aktywny student",
+        "stats": {
+            "courseProgress": "Postęp kursu",
+            "completedLessons": "Ukończonych lekcji",
+            "drivingHours": "Godzin jazdy"
+        },
+        "tabs": {
+            "overview": "Przegląd",
+            "details": "Dane osobowe",
+            "documents": "Dokumenty",
+            "achievements": "Osiągnięcia"
+        },
+        "overview": {
+            "courseInfo": "Informacje o kursie",
+            "startDate": "Data rozpoczęcia",
+            "plannedExam": "Planowany egzamin",
+            "category": "Kategoria",
+            "pkkNumber": "Numer PKK",
+            "theoryExam": "Egzamin teoretyczny",
+            "passed": "Zaliczone",
+            "failed": "Niezdane",
+            "pending": "W oczekiwaniu",
+            "medicalCert": "Zaświadczenie lekarskie",
+            "validUntil": "Ważne do",
+            "current": "Aktualne",
+            "statistics": "Statystyki",
+            "punctuality": "Punktualność",
+            "attendance": "Frekwencja",
+            "learningProgress": "Postęp nauki",
+            "skillsImprovement": "Poprawa umiejętności"
+        },
+        "details": {
+            "personalData": "Dane osobowe",
+            "firstName": "Imię",
+            "lastName": "Nazwisko",
+            "email": "Email",
+            "phone": "Telefon",
+            "birthDate": "Data urodzenia",
+            "pkkNumber": "Numer PKK",
+            "address": "Adres zamieszkania",
+            "streetAndNumber": "Ulica i numer",
+            "postalCode": "Kod pocztowy",
+            "city": "Miasto",
+            "emergencyContact": "Kontakt w nagłych wypadkach",
+            "contactName": "Imię i nazwisko",
+            "relation": "Pokrewieństwo",
+            "wife": "Żona",
+            "husband": "Mąż",
+            "mother": "Matka",
+            "father": "Ojciec",
+            "contactPhone": "Telefon kontaktowy"
+        },
+        "documents": {
+            "title": "Dokumenty",
+            "addDocument": "Dodaj dokument",
+            "uploadDate": "Przesłano",
+            "verified": "Zweryfikowano",
+            "inVerification": "W trakcie weryfikacji",
+            "uploaded": "Przesłano",
+            "securityNote": "Wszystkie dokumenty są bezpiecznie przechowywane i dostępne tylko dla upoważnionego personelu.",
+            "types": {
+                "id": "Dowód osobisty",
+                "medical": "Zaświadczenie lekarskie",
+                "pkk": "PKK",
+                "other": "Inne"
+            },
+            "dialog": {
+                "title": "Dodaj dokument",
+                "description": "Prześlij wymagane dokumenty do weryfikacji",
+                "documentType": "Typ dokumentu",
+                "selectType": "Wybierz typ dokumentu",
+                "file": "Plik",
+                "maxSize": "Maksymalny rozmiar: 10MB. Formaty: PDF, JPG, PNG",
+                "upload": "Prześlij"
+            }
+        },
+        "achievements": {
+            "title": "Osiągnięcia",
+            "unlockedCount": "Odblokowano {unlocked} z {total}",
+            "firstLesson": "Pierwsza lekcja",
+            "lessons10": "10 lekcji",
+            "theoryPassed": "Teoria zaliczona",
+            "parkingMaster": "Mistrz parkowania",
+            "nightRider": "Nocny kierowca"
+        }
+    },
+    "profileSettings": {
+        "title": "Ustawienia konta",
+        "subtitle": "Zarządzaj swoim kontem i bezpieczeństwem",
+        "tabs": {
+            "account": "Konto",
+            "security": "Bezpieczeństwo",
+            "privacy": "Prywatność",
+            "appearance": "Wygląd",
+            "billing": "Płatności"
+        },
+        "account": {
+            "title": "Dane konta",
+            "description": "Zarządzaj podstawowymi informacjami o swoim koncie",
+            "email": "Email",
+            "phone": "Telefon",
+            "username": "Nazwa użytkownika",
+            "verified": "Zweryfikowano",
+            "verify": "Zweryfikuj",
+            "usernameHint": "Używana do logowania i w URL profilu",
+            "accountCreated": "Konto utworzono",
+            "lastLogin": "Ostatnie logowanie",
+            "exportData": "Eksportuj dane",
+            "logout": "Wyloguj"
+        },
+        "dangerZone": {
+            "title": "Strefa niebezpieczna",
+            "description": "Nieodwracalne działania na koncie",
+            "deleteAccount": "Usuń konto",
+            "deleteWarning": "Usunięcie konta jest nieodwracalne. Wszystkie Twoje dane zostaną trwale usunięte."
+        },
+        "security": {
+            "passwordTitle": "Zmiana hasła",
+            "lastChange": "Ostatnia zmiana: {date}",
+            "currentPassword": "Aktualne hasło",
+            "newPassword": "Nowe hasło",
+            "confirmPassword": "Potwierdź nowe hasło",
+            "passwordStrength": "Siła hasła",
+            "changePassword": "Zmień hasło",
+            "passwordMismatch": "Hasła nie pasują do siebie",
+            "strength": {
+                "weak": "Słabe",
+                "medium": "Średnie",
+                "strong": "Silne"
+            },
+            "twoFactorTitle": "Uwierzytelnianie dwuskładnikowe",
+            "twoFactorDescription": "Dodatkowy poziom bezpieczeństwa dla Twojego konta",
+            "twoFactorEnabled": "2FA włączone",
+            "twoFactorInfo": "Uwierzytelnianie dwuskładnikowe znacznie zwiększa bezpieczeństwo Twojego konta.",
+            "enable2FA": "Włącz uwierzytelnianie dwuskładnikowe",
+            "disable2FA": "Wyłącz 2FA",
+            "changeMethod": "Zmień metodę",
+            "method": "Metoda",
+            "active": "Aktywna",
+            "methods": {
+                "sms": "SMS",
+                "app": "Aplikacja"
+            },
+            "sessionsTitle": "Aktywne sesje",
+            "sessionsDescription": "Urządzenia, na których jesteś zalogowany",
+            "lastUsed": "Ostatnio używane",
+            "current": "Obecna",
+            "logout": "Wyloguj",
+            "logoutAll": "Wyloguj ze wszystkich urządzeń"
+        },
+        "privacy": {
+            "visibilityTitle": "Widoczność profilu",
+            "visibilityDescription": "Kontroluj, kto może widzieć Twoje informacje",
+            "showProgress": "Pokaż postęp nauki",
+            "showProgressDescription": "Instruktorzy będą widzieć Twoje statystyki",
+            "visibility": {
+                "everyone": "Wszyscy użytkownicy",
+                "instructors": "Tylko instruktorzy i administracja",
+                "private": "Prywatny (tylko ja)"
+            },
+            "dataTitle": "Dane i analityka",
+            "analytics": "Analityka użytkowania",
+            "analyticsDescription": "Pomóż nam ulepszać aplikację",
+            "marketing": "Wiadomości marketingowe",
+            "marketingDescription": "Otrzymuj oferty i promocje",
+            "sharePartners": "Udostępnij partnerom",
+            "sharePartnersDescription": "Tylko w celach edukacyjnych",
+            "dataRetention": "Przechowywanie danych",
+            "downloadData": "Pobierz moje dane (RODO)",
+            "retention": {
+                "minimum": "Minimum (3 miesiące)",
+                "default": "Standardowe (1 rok)",
+                "extended": "Rozszerzone (3 lata)"
+            }
+        },
+        "appearance": {
+            "themeTitle": "Motyw",
+            "languageTitle": "Język i region",
+            "language": "Język",
+            "dateFormat": "Format daty",
+            "timeFormat": "Format czasu",
+            "time24h": "24-godzinny",
+            "time12h": "12-godzinny (AM/PM)",
+            "accessibilityTitle": "Dostępność",
+            "fontSize": "Rozmiar czcionki",
+            "fontSizeSmall": "Mały",
+            "fontSizeMedium": "Średni",
+            "fontSizeLarge": "Duży",
+            "reduceAnimations": "Zmniejszenie animacji",
+            "reduceAnimationsDescription": "Dla osób wrażliwych na ruch"
+        },
+        "billing": {
+            "paymentTitle": "Metoda płatności",
+            "creditCard": "Karta kredytowa/debetowa",
+            "bankTransfer": "Przelew bankowy",
+            "autoRenew": "Automatyczne odnawianie",
+            "autoRenewDescription": "Odnawiaj pakiety automatycznie",
+            "invoiceTitle": "Dane do faktury",
+            "invoiceEmail": "Email do faktur",
+            "vatNumber": "Numer NIP (opcjonalnie)",
+            "billingAddress": "Adres do faktur",
+            "streetPlaceholder": "Ulica i numer",
+            "postalCodePlaceholder": "Kod pocztowy",
+            "cityPlaceholder": "Miasto",
+            "countryPlaceholder": "Kraj",
+            "saveBillingData": "Zapisz dane do faktur"
+        },
+        "languages": {
+            "polish": "Polski",
+            "english": "Angielski",
+            "ukrainian": "Ukraiński",
+            "russian": "Rosyjski"
+        },
+        "themes": {
+            "light": "Jasny",
+            "dark": "Ciemny",
+            "auto": "Automatyczny"
+        },
+        "deleteDialog": {
+            "title": "Czy na pewno chcesz usunąć konto?",
+            "description": "Ta operacja jest nieodwracalna. Wszystkie Twoje dane, historia lekcji i postępy zostaną trwale usunięte.",
+            "warning": "Uwaga!",
+            "consequence1": "Stracisz dostęp do wszystkich materiałów",
+            "consequence2": "Twoje rezerwacje zostaną anulowane",
+            "consequence3": "Niewykorzystane kredyty przepadną",
+            "consequence4": "Nie będzie można przywrócić konta",
+            "confirmationLabel": "Wpisz \"USUŃ KONTO\" w celu potwierdzenia",
+            "confirmationPlaceholder": "USUŃ KONTO",
+            "cancel": "Anuluj",
+            "confirmDelete": "Usuń konto na zawsze"
+        },
+        "twoFactorDialog": {
+            "title": "Ustawienia uwierzytelniania dwuskładnikowego",
+            "description": "Wybierz metodę otrzymywania kodów weryfikacyjnych",
+            "sms": "SMS",
+            "smsDescription": "Otrzymuj kody na telefon",
+            "app": "Aplikacja",
+            "appDescription": "Użyj Google Authenticator lub podobnej",
+            "info": "Po włączeniu 2FA, będziesz musiał podawać kod przy każdym logowaniu.",
+            "cancel": "Anuluj",
+            "enable": "Włącz 2FA"
+        }
+    },
+    "achievements": {
+        "title": "Osiągnięcia",
+        "subtitle": "Zdobywaj odznaki i punkty za swoje postępy",
+        "buttons": {
+            "share": "Udostępnij"
+        },
+        "level": {
+            "title": "Poziom {level}",
+            "totalPoints": "Łącznie zdobyte punkty: {points}",
+            "badge": "Poz {level}",
+            "progress": "Postęp do poziomu {nextLevel}",
+            "points": "punktów",
+            "pointsNeeded": "Zdobądź {points} punktów, aby awansować"
+        },
+        "stats": {
+            "unlocked": "Odblokowano",
+            "totalPoints": "Łączne punkty",
+            "streak": "Seria dni",
+            "legendary": "Legendarne"
+        },
+        "categories": {
+            "all": "Wszystkie",
+            "skills": "Umiejętności",
+            "milestones": "Kamienie milowe",
+            "special": "Specjalne",
+            "social": "Społecznościowe"
+        },
+        "filters": {
+            "onlyUnlocked": "Tylko odblokowane"
+        },
+        "rarity": {
+            "common": "Zwykłe",
+            "rare": "Rzadkie",
+            "epic": "Epickie",
+            "legendary": "Legendarne"
+        },
+        "progress": {
+            "label": "Postęp"
+        },
+        "points": "punktów",
+        "upcoming": {
+            "title": "Blisko odblokowania"
+        },
+        "items": {
+            "firstDrive": {
+                "title": "Pierwsza jazda",
+                "description": "Ukończ swoją pierwszą lekcję jazdy"
+            },
+            "parkingMaster": {
+                "title": "Mistrz parkowania",
+                "description": "Wykonaj 5 idealnych parkowań równoległych z rzędu"
+            },
+            "nightRider": {
+                "title": "Nocny kierowca",
+                "description": "Ukończ 3 lekcje jazdy nocnej"
+            },
+            "theorist": {
+                "title": "Teoretyk",
+                "description": "Zalicz egzamin teoretyczny za pierwszym podejściem"
+            },
+            "roadMarathon": {
+                "title": "Maraton drogowy",
+                "description": "Przejedź łącznie 500 km podczas lekcji"
+            },
+            "perfectionist": {
+                "title": "Perfekcjonista",
+                "description": "Otrzymaj ocenę 10/10 na 5 lekcjach z rzędu"
+            },
+            "speedDemon": {
+                "title": "Szybki demon",
+                "description": "Ukończ kurs jazdy autostradą"
+            },
+            "helpingHand": {
+                "title": "Pomocna dłoń",
+                "description": "Poleć szkołę jazdy 3 znajomym"
+            },
+            "earlyBird": {
+                "title": "Ranny ptaszek",
+                "description": "Ukończ 10 lekcji rozpoczynających się przed 8:00"
+            },
+            "maneuverMaster": {
+                "title": "Mistrz manewrów",
+                "description": "Opanuj wszystkie wymagane manewry na poziomie 80%+"
+            },
+            "goldenWheel": {
+                "title": "Złota kierownica",
+                "description": "Zalicz egzamin praktyczny za pierwszym podejściem"
+            },
+            "regularStudent": {
+                "title": "Regularny student",
+                "description": "Nie opuść żadnej zaplanowanej lekcji przez 2 miesiące"
+            }
+        }
+    },
+    "examReadiness": {
+        "title": "Gotowość do egzaminu",
+        "subtitle": "Sprawdź, czy jesteś gotowy do egzaminu państwowego",
+        "buttons": {
+            "downloadReport": "Raport PDF",
+            "examSimulation": "Symulacja egzaminu"
+        },
+        "overallReadiness": {
+            "title": "Ogólna gotowość",
+            "description": "Na podstawie Twoich wyników i postępów"
+        },
+        "prediction": {
+            "title": "Prognoza gotowości",
+            "expectedDate": "Oczekiwana data",
+            "inDays": "Za {days} dni",
+            "recommendedLessons": "Polecane lekcje",
+            "toFullReadiness": "Do pełnej gotowości"
+        },
+        "examTypes": {
+            "theory": "Egzamin teoretyczny",
+            "practical": "Egzamin praktyczny"
+        },
+        "status": {
+            "passed": "Zaliczone",
+            "inPreparation": "W trakcie przygotowań"
+        },
+        "requirements": {
+            "theoryTitle": "Wymagania teoretyczne",
+            "practicalTitle": "Wymagania praktyczne",
+            "completed": "ukończone",
+            "mandatory": "Obowiązkowo",
+            "theory": {
+                "courseCompleted": "Kurs teoretyczny ukończony",
+                "attendance": "Minimum 90% frekwencji",
+                "mockTest": "Test próbny zdany (min. 68/74 pkt)",
+                "allModules": "Wszystkie moduły zaliczone",
+                "examFee": "Opłata za egzamin"
+            },
+            "practical": {
+                "minHours": "Minimum 30 godzin jazdy",
+                "theoryPassed": "Egzamin teoretyczny zaliczony",
+                "allManeuvers": "Wszystkie manewry opanowane",
+                "cityDriving": "Jazda w ruchu miejskim",
+                "outsideCity": "Jazda poza miastem",
+                "internalExam": "Egzamin wewnętrzny zaliczony",
+                "examFee": "Opłata za egzamin"
+            }
+        },
+        "weakPoints": {
+            "title": "Obszary do poprawy",
+            "lessons": "{count} lekcje",
+            "turning": {
+                "skill": "Zawracanie",
+                "issue": "Zbyt szeroki promień skrętu",
+                "recommendation": "Ćwicz na mniejszej przestrzeni"
+            },
+            "intersections": {
+                "skill": "Skrzyżowania",
+                "issue": "Wahanie w podejmowaniu decyzji",
+                "recommendation": "Więcej praktyki w godzinach szczytu"
+            },
+            "highway": {
+                "skill": "Jazda autostradą",
+                "issue": "Brak pewności przy zmianie pasów",
+                "recommendation": "Dodatkowa lekcja na autostradzie"
+            }
+        },
+        "priority": {
+            "high": "Wysoki priorytet",
+            "medium": "Średni priorytet",
+            "low": "Niski priorytet"
+        },
+        "skills": {
+            "title": "Matryca umiejętności",
+            "required": "Wymagane",
+            "categories": {
+                "maneuvers": "Manewry",
+                "cityDriving": "Jazda w mieście",
+                "drivingTechnique": "Technika jazdy"
+            },
+            "parallelParking": "Parkowanie równoległe",
+            "perpendicularParking": "Parkowanie prostopadłe",
+            "turning": "Zawracanie",
+            "hillStart": "Ruszanie na wzniesieniu",
+            "intersections": "Skrzyżowania",
+            "rightOfWay": "Pierwszeństwo przejazdu",
+            "roadSigns": "Znaki drogowe",
+            "pedestrianCrossings": "Przejścia dla pieszych",
+            "smoothDriving": "Płynność jazdy",
+            "mirrorUse": "Korzystanie z lusterek",
+            "gearChanging": "Zmiana biegów",
+            "braking": "Hamowanie"
+        },
+        "recommendations": {
+            "title": "Rekomendacje",
+            "completeManeuvers": {
+                "title": "Ukończ wymagane manewry",
+                "description": "Brakuje Ci 2 manewrów do pełnego kompletu do egzaminu",
+                "action": "Zarezerwuj lekcję manewrów"
+            },
+            "improveWeakPoints": {
+                "title": "Popraw słabe punkty",
+                "description": "Zawracanie i skrzyżowania wymagają więcej praktyki",
+                "action": "Przejrzyj plan ćwiczeń"
+            },
+            "internalExam": {
+                "title": "Zarejestruj się na egzamin wewnętrzny",
+                "description": "Zdanie egzaminu wewnętrznego zwiększy Twoją pewność siebie",
+                "action": "Sprawdź terminy"
+            }
+        },
+        "examHistory": {
+            "title": "Historia egzaminów",
+            "type": "Typ egzaminu",
+            "date": "Data",
+            "result": "Wynik",
+            "score": "Punkty",
+            "theoryMock": "Teoria - próbny",
+            "theoryState": "Teoria - państwowy",
+            "practicalInternal": "Praktyka - wewnętrzny",
+            "passed": "Zaliczone",
+            "failed": "Niezdane"
+        },
+        "tips": {
+            "title": "Wskazówki przed egzaminem",
+            "sleep": "Wyśpij się dobrze przed egzaminem (minimum 8 godzin snu)",
+            "breakfast": "Zjedz lekkie śniadanie, unikaj ciężkiego jedzenia",
+            "arriveEarly": "Przyjdź 15 minut wcześniej, aby się uspokoić",
+            "documents": "Zabierz ze sobą wszystkie niezbędne dokumenty",
+            "glasses": "Pamiętaj o okularach/soczewkach, jeśli ich potrzebujesz",
+            "stayCalm": "Zachowaj spokój i koncentrację podczas egzaminu"
+        },
+        "actions": {
+            "bookPreparationLesson": "Zarezerwuj lekcję przygotowawczą",
+            "registerForExam": "Zapisz się na egzamin"
+        }
+    },
+    "skills": {
+        "title": "Szczegółowe umiejętności",
+        "subtitle": "Analiza i postępy w każdej kategorii",
+        "buttons": {
+            "exportReport": "Eksportuj raport",
+            "showHistory": "Pokaż historię",
+            "hideDetails": "Zwiń szczegóły"
+        },
+        "stats": {
+            "averageScore": "Średni wynik",
+            "monthlyProgress": "+5% w tym miesiącu",
+            "bestSkill": "Najlepsza umiejętność",
+            "needsWork": "Wymaga poprawy",
+            "examReadiness": "Gotowość do egzaminu",
+            "successRate": "{rate}% zdawalności",
+            "skillsReady": "{ready}/{total} umiejętności gotowych"
+        },
+        "categories": {
+            "all": "Wszystkie",
+            "maneuvers": "Manewry",
+            "cityDriving": "Jazda po mieście",
+            "highways": "Autostrady",
+            "theory": "Teoria"
+        },
+        "filters": {
+            "sortBy": "Sortuj",
+            "byScore": "Według wyniku",
+            "byProgress": "Według postępu",
+            "byAttempts": "Według prób"
+        },
+        "difficulty": {
+            "easy": "Łatwy",
+            "medium": "Średni",
+            "hard": "Trudny"
+        },
+        "badges": {
+            "exam": "Egzamin"
+        },
+        "attempts": "{count} prób",
+        "lastPracticed": "Ostatni trening",
+        "items": {
+            "parallelParking": {
+                "name": "Parkowanie równoległe",
+                "notes": "Dobra kontrola nad samochodem, popracuj nad oceną odległości"
+            },
+            "perpendicularParking": {
+                "name": "Parkowanie prostopadłe",
+                "notes": "Bardzo dobrze, utrzymuj tempo"
+            },
+            "trafficJams": {
+                "name": "Jazda w korkach",
+                "notes": "Utrzymuj większy dystans między samochodami"
+            },
+            "highwayLaneChange": {
+                "name": "Zmiana pasa na autostradzie",
+                "notes": "Pamiętaj o martwych strefach w lusterkach"
+            },
+            "roadSigns": {
+                "name": "Znaki drogowe",
+                "notes": "Świetna znajomość, prawie idealnie"
+            },
+            "rightOfWay": {
+                "name": "Pierwszeństwo przejazdu",
+                "notes": "Dobra znajomość przepisów"
+            },
+            "turning": {
+                "name": "Zawracanie",
+                "notes": "Wymaga więcej praktyki, zbyt szeroki łuk"
+            },
+            "nightDriving": {
+                "name": "Jazda w nocy",
+                "notes": "Popraw użycie świateł drogowych"
+            }
+        },
+        "charts": {
+            "skillHistory": "Wykres historii umiejętności",
+            "comparison": "Wykres porównawczy"
+        },
+        "comparison": {
+            "title": "Porównanie z innymi studentami"
+        }
+    },
+    "progress": {
+        "title": "Mój postęp",
+        "subtitle": "Śledź swoje osiągnięcia i rozwój umiejętności",
+        "overallProgress": {
+            "title": "Ogólny postęp",
+            "monthlyIncrease": "+5% w tym miesiącu",
+            "drivingHours": "Godziny jazdy",
+            "hoursUnit": "h",
+            "theoryCourse": "Kurs teoretyczny",
+            "practicalSkills": "Umiejętności praktyczne"
+        },
+        "stats": {
+            "completedLessons": {
+                "title": "Ukończone lekcje",
+                "subtitle": "W tym miesiącu"
+            },
+            "averageScore": {
+                "title": "Średnia ocena",
+                "subtitle": "Z 10 punktów"
+            },
+            "improvement": {
+                "title": "Poprawa",
+                "subtitle": "Od początku"
+            },
+            "ranking": {
+                "title": "Pozycja w rankingu",
+                "subtitle": "Wśród studentów"
+            }
+        },
+        "skillCategories": {
+            "maneuvers": "Manewry",
+            "driving": "Jazda",
+            "theory": "Teoria"
+        },
+        "skills": {
+            "parallelParking": "Parkowanie równoległe",
+            "perpendicularParking": "Parkowanie prostopadłe",
+            "cityDriving": "Jazda po mieście",
+            "highwayDriving": "Jazda autostradą",
+            "roadSigns": "Znaki drogowe",
+            "rightOfWay": "Pierwszeństwo przejazdu",
+            "turning": "Zawracanie",
+            "roundabout": "Ruch okrężny"
+        },
+        "skillsSection": {
+            "title": "Umiejętności",
+            "viewDetails": "Zobacz szczegóły",
+            "topSkills": "Najlepsze umiejętności"
+        },
+        "achievementsSection": {
+            "title": "Ostatnie osiągnięcia",
+            "viewAll": "Zobacz wszystkie",
+            "points": "punktów"
+        },
+        "achievements": {
+            "firstNightDrive": {
+                "title": "Pierwsza nocna jazda",
+                "description": "Ukończono pierwszą lekcję jazdy w nocy"
+            },
+            "parkingMaster": {
+                "title": "Mistrz parkowania",
+                "description": "5 idealnych parkowań z rzędu"
+            },
+            "tenLessons": {
+                "title": "10 lekcji ukończonych",
+                "description": "Kamień milowy - 10 lekcji"
+            }
+        },
+        "milestonesSection": {
+            "title": "Kamienie milowe"
+        },
+        "milestones": {
+            "firstLesson": "Pierwsza lekcja",
+            "tenHours": "10 godzin jazdy",
+            "theoryPassed": "Teoria zdana",
+            "twentyFiveHours": "25 godzin jazdy",
+            "internalExam": "Egzamin wewnętrzny",
+            "stateExam": "Egzamin państwowy"
+        },
+        "examReadiness": {
+            "title": "Gotowość do egzaminu",
+            "description": "Na podstawie Twoich wyników i postępu",
+            "readiness": "Gotowość",
+            "strengths": "Mocne strony",
+            "strengthsList": "Teoria, parkowanie prostopadłe",
+            "toImprove": "Wymaga poprawy",
+            "improvementList": "Jazda autostradą, zawracanie",
+            "recommendation": "Rekomendacja",
+            "recommendationText": "Jeszcze 5-7 lekcji praktycznych",
+            "viewAnalysis": "Sprawdź szczegółową analizę"
+        }
+    },
+    "availability": {
+        "title": "Dostępne terminy",
+        "subtitle": "Znajdź idealny czas na następną lekcję",
+        "buttons": {
+            "quickBooking": "Szybka rezerwacja",
+            "book": "Zarezerwuj",
+            "taken": "Zajęte",
+            "showMore": "Pokaż więcej terminów"
+        },
+        "aiRecommendation": {
+            "title": "Rekomendacja AI",
+            "message": "Na podstawie Twojego postępu zalecamy lekcję parkowania z Anną Kowalczyk w piątek o 9:00. Pogoda będzie sprzyjająca, a ruch na drogach mniejszy."
+        },
+        "filters": {
+            "title": "Filtry",
+            "dateRange": "Zakres dat",
+            "instructor": "Instruktor",
+            "allInstructors": "Wszyscy instruktorzy",
+            "location": "Lokalizacja",
+            "allLocations": "Wszystkie lokalizacje",
+            "timeOfDay": "Pora dnia",
+            "allDay": "Cały dzień",
+            "morning": "Rano (6:00-12:00)",
+            "afternoon": "Popołudnie (12:00-18:00)",
+            "evening": "Wieczór (18:00-22:00)",
+            "priceRange": "Zakres cen",
+            "onlyDiscounts": "Tylko promocje",
+            "onlyAvailable": "Tylko dostępne",
+            "clearFilters": "Wyczyść filtry"
+        },
+        "sort": {
+            "label": "Sortuj",
+            "byTime": "Według czasu",
+            "byPrice": "Według ceny",
+            "byRating": "Według oceny",
+            "byDistance": "Według odległości"
+        },
+        "viewMode": {
+            "grid": "Siatka",
+            "list": "Lista"
+        },
+        "days": {
+            "thursday": "Czwartek",
+            "friday": "Piątek"
+        },
+        "timeLabels": {
+            "morning": "Rano",
+            "forenoon": "Przed południem",
+            "afternoon": "Popołudnie",
+            "evening": "Wieczór"
+        },
+        "weather": {
+            "sunny": "Słonecznie",
+            "cloudy": "Pochmurno",
+            "rainy": "Deszczowo"
+        },
+        "weatherForecast": "Prognoza",
+        "availableSlots": "wolnych terminów",
+        "of": "z",
+        "slotsAvailable": "terminów dostępnych",
+        "popularDay": "Popularny dzień",
+        "popularSlotWarning": "Popularny termin - rezerwuj szybko!",
+        "currency": "PLN"
+    },
+    "reschedule": {
+        "title": "Przełóż lekcję",
+        "subtitle": "Wybierz nowy termin dla swojej lekcji",
+        "warning": {
+            "title": "Uwaga - opłata za przełożenie",
+            "description": "Przełożenie lekcji na mniej niż 24 godziny przed jej rozpoczęciem wiąże się z opłatą w wysokości 50 zł. Zostało {hours} godzin do lekcji."
+        },
+        "freeReschedule": {
+            "title": "Bezpłatne przełożenie",
+            "description": "Możesz przełożyć tę lekcję bez dodatkowych opłat. Zostało {hours} godzin do lekcji."
+        },
+        "currentLesson": {
+            "title": "Obecny termin",
+            "lessonType": "Typ lekcji"
+        },
+        "policy": {
+            "title": "Polityka przekładania",
+            "free24h": "Bezpłatne przełożenie do 24h przed lekcją",
+            "fee12to24h": "50 zł opłaty przy przełożeniu 12-24h przed",
+            "fullFeeUnder12h": "Pełna opłata przy przełożeniu <12h przed"
+        },
+        "newSlot": {
+            "title": "Wybierz nowy termin",
+            "description": "Dostępne terminy z tym samym instruktorem"
+        },
+        "days": {
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela"
+        },
+        "weather": {
+            "sunny": "Słonecznie",
+            "cloudy": "Pochmurno",
+            "rainy": "Deszczowo",
+            "none": "Brak prognozy"
+        },
+        "lessonTypes": {
+            "cityDriving": "Jazda po mieście",
+            "highway": "Autostrada",
+            "parking": "Parkowanie",
+            "night": "Jazda w nocy",
+            "maneuvers": "Manewry",
+            "examPrep": "Przygotowanie do egzaminu"
+        },
+        "recommended": "Rekomendowany",
+        "taken": "Zajęte",
+        "reasonLabel": "Przyczyna przełożenia (opcjonalnie)",
+        "reasons": {
+            "sick": "Choroba",
+            "work": "Obowiązki służbowe",
+            "personal": "Sprawy osobiste",
+            "weather": "Złe warunki pogodowe",
+            "other": "Inna przyczyna"
+        },
+        "buttons": {
+            "cancel": "Anuluj",
+            "reschedule": "Przełóż lekcję",
+            "processing": "Przetwarzanie...",
+            "confirmReschedule": "Potwierdź przełożenie"
+        },
+        "confirmDialog": {
+            "title": "Potwierdzenie przełożenia",
+            "description": "Czy na pewno chcesz przełożyć lekcję na wybrany termin?",
+            "oldSlot": "Stary termin",
+            "newSlot": "Nowy termin",
+            "feeWarning": "Za przełożenie zostanie naliczona opłata w wysokości 50 zł"
+        },
+        "otherInstructorsInfo": "Szukasz terminu z innym instruktorem?",
+        "viewAllSlots": "Zobacz wszystkie dostępne terminy"
+    },
+    "schedule": {
+        "title": "Kalendarz lekcji",
+        "subtitle": "Zarządzaj swoim harmonogramem jazdy",
+        "buttons": {
+            "bookLesson": "Zarezerwuj lekcję",
+            "export": "Eksportuj",
+            "share": "Udostępnij"
+        },
+        "filters": {
+            "allInstructors": "Wszyscy instruktorzy",
+            "showCancelled": "Pokaż anulowane",
+            "availableSlots": "Dostępne terminy"
+        },
+        "views": {
+            "month": "Miesiąc",
+            "week": "Tydzień",
+            "list": "Lista"
+        },
+        "weekDays": {
+            "mon": "Pon",
+            "tue": "Wt",
+            "wed": "Śr",
+            "thu": "Czw",
+            "fri": "Pt",
+            "sat": "Sob",
+            "sun": "Nd"
+        },
+        "months": {
+            "january": "Styczeń",
+            "february": "Luty",
+            "march": "Marzec",
+            "april": "Kwiecień",
+            "may": "Maj",
+            "june": "Czerwiec",
+            "july": "Lipiec",
+            "august": "Sierpień",
+            "september": "Wrzesień",
+            "october": "Październik",
+            "november": "Listopad",
+            "december": "Grudzień"
+        },
+        "lessonTypes": {
+            "standard": "Standardowa jazda",
+            "highway": "Jazda autostradą",
+            "parking": "Parkowanie",
+            "night": "Jazda w nocy",
+            "exam_prep": "Egzamin próbny",
+            "maneuvers": "Manewry",
+            "city": "Jazda po mieście"
+        },
+        "statuses": {
+            "confirmed": "Potwierdzone",
+            "pending": "Oczekujące",
+            "cancelled": "Anulowane",
+            "completed": "Zakończone",
+            "in_progress": "W trakcie"
+        },
+        "actions": {
+            "details": "Szczegóły",
+            "reschedule": "Przełóż",
+            "cancel": "Anuluj"
+        },
+        "legend": {
+            "title": "Legenda"
+        },
+        "stats": {
+            "thisWeek": "W tym tygodniu",
+            "thisMonth": "W tym miesiącu",
+            "totalHours": "Godzin łącznie",
+            "inThisMonth": "w tym miesiącu",
+            "nextLesson": "Następna lekcja",
+            "lessons": "lekcje",
+            "lessonsCount": "lekcji"
+        },
+        "dialog": {
+            "title": "Szczegóły lekcji",
+            "instructor": "Instruktor",
+            "date": "Data",
+            "time": "Godzina",
+            "location": "Lokalizacja",
+            "vehicle": "Pojazd",
+            "credits": "Kredyty",
+            "notes": "Notatki",
+            "close": "Zamknij",
+            "reschedule": "Przełóż",
+            "cancel": "Anuluj"
+        },
+        "credit": "kredyt",
+        "more": "więcej"
+    },
+    "faq": {
+        "title": "Najczęściej zadawane pytania",
+        "subtitle": "Znajdź odpowiedzi na najczęstsze pytania",
+        "searchPlaceholder": "Szukaj pytań...",
+        "wasHelpful": "Czy to było pomocne?",
+        "seeAlso": "Zobacz także: {count} powiązanych pytań",
+        "noResults": "Nie znaleziono pytań pasujących do Twoich kryteriów",
+        "clearFilters": "Wyczyść filtry",
+        "categories": {
+            "all": "Wszystkie",
+            "allDescription": "Wszystkie pytania",
+            "bookings": "Rezerwacje",
+            "bookingsDescription": "Rezerwacje i harmonogram",
+            "payments": "Płatności",
+            "paymentsDescription": "Płatności i faktury",
+            "vehicles": "Pojazdy",
+            "vehiclesDescription": "Pojazdy i sprzęt",
+            "instructors": "Instruktorzy",
+            "instructorsDescription": "Instruktorzy i oceny",
+            "safety": "Bezpieczeństwo",
+            "safetyDescription": "Bezpieczeństwo i przepisy",
+            "account": "Konto",
+            "accountDescription": "Ustawienia konta"
+        },
+        "toast": {
+            "alreadyVoted": "Już głosowałeś",
+            "alreadyVotedDescription": "Możesz ocenić każde pytanie tylko raz",
+            "thankYou": "Dziękujemy za opinię",
+            "thankYouDescription": "Twoja ocena pomoże nam ulepszyć FAQ"
+        },
+        "needHelp": {
+            "title": "Nie znalazłeś odpowiedzi?",
+            "description": "Nasz zespół wsparcia jest gotowy, by Ci pomóc",
+            "createTicket": "Stwórz zgłoszenie",
+            "helpCenter": "Centrum pomocy"
+        }
+    },
+    "support": {
+        "tickets": {
+            "title": "Moje zgłoszenia",
+            "subtitle": "Zarządzaj swoimi zgłoszeniami do wsparcia",
+            "newTicket": "Nowe zgłoszenie",
+            "stats": {
+                "allTickets": "Wszystkie zgłoszenia",
+                "open": "Otwarte",
+                "inProgress": "W trakcie",
+                "resolved": "Rozwiązane"
+            },
+            "filters": {
+                "title": "Filtry",
+                "searchPlaceholder": "Szukaj zgłoszenia...",
+                "status": {
+                    "all": "Wszystkie",
+                    "open": "Otwarte",
+                    "inProgress": "W trakcie",
+                    "resolved": "Rozwiązane",
+                    "closed": "Zamknięte"
+                },
+                "priority": {
+                    "all": "Wszystkie",
+                    "low": "Niski",
+                    "medium": "Średni",
+                    "high": "Wysoki",
+                    "critical": "Krytyczny"
+                }
+            },
+            "status": {
+                "open": "Otwarte",
+                "inProgress": "W trakcie",
+                "resolved": "Rozwiązane",
+                "closed": "Zamknięte"
+            },
+            "priority": {
+                "low": "Niski",
+                "medium": "Średni",
+                "high": "Wysoki",
+                "critical": "Krytyczny"
+            },
+            "ticketCard": {
+                "created": "Utworzono",
+                "lastReply": "Ostatnia odpowiedź",
+                "attachments": "{count} załącznik(ów)",
+                "assignedTo": "Przypisano do"
+            },
+            "actions": {
+                "viewDetails": "Zobacz szczegóły",
+                "archive": "Archiwizuj"
+            },
+            "empty": {
+                "title": "Nie masz jeszcze żadnych zgłoszeń",
+                "createFirst": "Stwórz pierwsze zgłoszenie"
+            },
+            "newDialog": {
+                "title": "Nowe zgłoszenie",
+                "description": "Opisz swój problem, a nasz zespół pomoże Ci go rozwiązać",
+                "subject": "Temat *",
+                "subjectPlaceholder": "Krótki opis problemu",
+                "category": "Kategoria *",
+                "categoryPlaceholder": "Wybierz kategorię",
+                "categories": {
+                    "booking": "Rezerwacja",
+                    "payment": "Płatności",
+                    "instructor": "Instruktorzy",
+                    "technical": "Problemy techniczne",
+                    "account": "Konto",
+                    "other": "Inne"
+                },
+                "priority": "Priorytet",
+                "message": "Opis problemu *",
+                "messagePlaceholder": "Szczegółowo opisz swój problem...",
+                "cancel": "Anuluj",
+                "create": "Stwórz zgłoszenie",
+                "creating": "Tworzenie..."
+            },
+            "detailsDialog": {
+                "reply": "Odpowiedz",
+                "replyPlaceholder": "Napisz odpowiedź...",
+                "send": "Wyślij",
+                "sending": "Wysyłanie...",
+                "you": "Ty"
+            },
+            "toast": {
+                "error": "Błąd",
+                "fillAllFields": "Wypełnij wszystkie wymagane pola",
+                "created": "Zgłoszenie utworzone",
+                "createdDescription": "Otrzymasz odpowiedź w ciągu 24 godzin",
+                "replySent": "Odpowiedź wysłana",
+                "replyDescription": "Twoja wiadomość została dodana do zgłoszenia"
+            },
+            "mockData": {
+                "bookingProblem": "Problem z rezerwacją lekcji",
+                "bookingError": "Nie mogę zarezerwować lekcji na następny tydzień. System wyświetla błąd.",
+                "bookingReply": "Dziękujemy za zgłoszenie. Sprawdzamy problem i wkrótce go rozwiążemy.",
+                "paymentRefund": "Zwrot płatności",
+                "instructorChange": "Zmiana instruktora"
+            }
+        },
+        "title": "Centrum wsparcia",
+        "subtitle": "Jak możemy Ci pomóc? Znajdź odpowiedzi lub skontaktuj się z nami",
+        "search": {
+            "placeholder": "Szukaj pomocy... np. 'jak anulować lekcję'"
+        },
+        "quickActions": {
+            "myTickets": {
+                "title": "Moje zgłoszenia",
+                "description": "Zobacz status swoich zgłoszeń"
+            },
+            "faq": {
+                "title": "FAQ",
+                "description": "Najczęściej zadawane pytania"
+            },
+            "knowledgeBase": {
+                "title": "Baza wiedzy",
+                "description": "Poradniki i instrukcje"
+            },
+            "liveChat": {
+                "title": "Czat online",
+                "description": "Porozmawiaj z konsultantem"
+            }
+        },
+        "quickForm": {
+            "title": "Szybkie zgłoszenie",
+            "description": "Opisz swój problem, a skontaktujemy się z Tobą",
+            "categoryLabel": "Kategoria problemu",
+            "categoryPlaceholder": "Wybierz kategorię",
+            "categories": {
+                "booking": "Problem z rezerwacją",
+                "payment": "Problem z płatnością",
+                "instructor": "Problem z instruktorem",
+                "technical": "Problem techniczny",
+                "account": "Problem z kontem",
+                "other": "Inne"
+            },
+            "messageLabel": "Opis problemu",
+            "messagePlaceholder": "Szczegółowo opisz swój problem...",
+            "submit": "Wyślij zgłoszenie",
+            "submitting": "Wysyłanie..."
+        },
+        "popularTopics": {
+            "title": "Popularne tematy",
+            "description": "Najczęściej przeglądane kategorie pomocy",
+            "bookings": "Rezerwacje",
+            "payments": "Płatności",
+            "vehicles": "Pojazdy",
+            "instructors": "Instruktorzy",
+            "safety": "Bezpieczeństwo",
+            "account": "Konto"
+        },
+        "contact": {
+            "title": "Kontakt",
+            "description": "Wybierz dogodną formę kontaktu",
+            "available": "Dostępny",
+            "phone": {
+                "title": "Telefon",
+                "value": "+48 123 456 789",
+                "description": "Pn-Pt 8:00-20:00, Sob 9:00-15:00"
+            },
+            "email": {
+                "title": "Email",
+                "value": "pomoc@autoszkola.pl",
+                "description": "Odpowiadamy w ciągu 24h"
+            },
+            "chat": {
+                "title": "Czat",
+                "value": "Dostępny",
+                "description": "Pn-Pt 8:00-20:00"
+            },
+            "whatsapp": {
+                "title": "WhatsApp",
+                "value": "+48 123 456 789",
+                "description": "Szybkie odpowiedzi"
+            }
+        },
+        "supportAgent": {
+            "title": "Potrzebujesz pomocy?",
+            "description": "Nasz zespół jest dostępny 7 dni w tygodniu",
+            "startChat": "Rozpocznij czat"
+        },
+        "emergency": {
+            "title": "Pilny problem?",
+            "call": "Zadzwoń"
+        },
+        "toast": {
+            "error": "Błąd",
+            "enterMessage": "Wprowadź swoją wiadomość",
+            "selectCategory": "Wybierz kategorię problemu",
+            "ticketSent": "Zgłoszenie wysłane",
+            "responseTime": "Otrzymasz odpowiedź w ciągu 24 godzin",
+            "chatStarted": "Czat rozpoczęty",
+            "consultantWillRespond": "Konsultant wkrótce odpowie"
+        }
+    },
+    "theoryClasses": {
+        "title": "Harmonogram zajęć teoretycznych",
+        "subtitle": "Zarządzaj swoją obecnością na zajęciach",
+        "buttons": {
+            "exportCalendar": "Eksportuj do kalendarza",
+            "reminders": "Przypomnienia",
+            "signUp": "Zapisz się",
+            "materials": "Materiały",
+            "reschedule": "Umów się na odpracowanie"
+        },
+        "stats": {
+            "attendance": "Frekwencja",
+            "attendanceCount": "{attended} z {total} zajęć",
+            "upcoming": "Nadchodzące",
+            "upcomingThisWeek": "W tym tygodniu",
+            "missed": "Opuszczone",
+            "missedToMakeUp": "Do odpracowania",
+            "hours": "Godziny",
+            "hoursCompleted": "Ukończono"
+        },
+        "filters": {
+            "label": "Filtry",
+            "all": "Wszystkie",
+            "types": {
+                "all": "Wszystkie",
+                "lecture": "Wykłady",
+                "workshop": "Warsztaty",
+                "practice": "Zajęcia praktyczne",
+                "online": "Online"
+            },
+            "statuses": {
+                "all": "Wszystkie",
+                "upcoming": "Nadchodzące",
+                "completed": "Zakończone",
+                "missed": "Opuszczone",
+                "cancelled": "Anulowane"
+            }
+        },
+        "sections": {
+            "upcoming": "Nadchodzące zajęcia",
+            "completed": "Zakończone zajęcia",
+            "missed": "Opuszczone zajęcia"
+        },
+        "status": {
+            "upcoming": "Nadchodzące",
+            "completed": "Ukończone",
+            "absent": "Nieobecny",
+            "missed": "Opuszczone",
+            "cancelled": "Anulowane"
+        },
+        "type": {
+            "lecture": "Wykład",
+            "workshop": "Warsztat",
+            "practice": "Zajęcia praktyczne",
+            "online": "Online"
+        },
+        "class": {
+            "online": "Online",
+            "participants": "{current}/{max} uczestników",
+            "noSeats": "Brak miejsc",
+            "result": "Wynik",
+            "score": "{score}%"
+        },
+        "warning": {
+            "title": "Uwaga! Masz {count} opuszczonych zajęć",
+            "description": "Obecność obowiązkowa - minimum 90%. Skontaktuj się z administracją w celu ustalenia odpracowania."
+        },
+        "topics": {
+            "roadSigns": "Znaki drogowe - nakazu i zakazu",
+            "roadSignsDescription": "Omówienie znaków nakazu i zakazu, przykłady z praktyki",
+            "weatherConditions": "Jazda w różnych warunkach pogodowych",
+            "weatherConditionsDescription": "Techniki jazdy w deszczu, śniegu i we mgle",
+            "vehicleConstruction": "Budowa i obsługa pojazdu",
+            "vehicleConstructionDescription": "Zajęcia praktyczne w warsztacie - kontrola płynów, wymiana koła",
+            "firstAid": "Pierwsza pomoc",
+            "firstAidDescription": "Podstawy udzielania pierwszej pomocy w wypadku drogowym",
+            "trafficRules": "Przepisy ruchu drogowego",
+            "trafficRulesDescription": "Podstawowe przepisy, pierwszeństwo przejazdu",
+            "warningRoadSigns": "Znaki drogowe - ostrzegawcze",
+            "warningRoadSignsDescription": "Znaki ostrzegające o niebezpieczeństwie",
+            "parkingManeuvers": "Manewry parkowania",
+            "parkingManeuversDescription": "Ćwiczenia praktyczne z parkowania",
+            "economicDriving": "Jazda ekonomiczna",
+            "economicDrivingDescription": "Techniki eko-jazdy"
+        },
+        "instructor": {
+            "prefix": {
+                "mgr": "mgr",
+                "inz": "inż.",
+                "dr": "dr"
+            }
+        },
+        "location": {
+            "room": "Sala",
+            "workshop": "Warsztat",
+            "maneuveringArea": "Plac manewrowy",
+            "online": "Online"
+        }
+    },
+    "theoryMaterials": {
+        "title": "Materiały dydaktyczne",
+        "subtitle": "Dokumenty, prezentacje i materiały wideo",
+        "buttons": {
+            "myLibrary": "Moja biblioteka",
+            "loadMore": "Wczytaj więcej materiałów",
+            "viewAgain": "Przejrzyj ponownie",
+            "open": "Otwórz",
+            "watchAgain": "Obejrzyj ponownie",
+            "continue": "Kontynuuj",
+            "start": "Rozpocznij",
+            "repeatQuiz": "Powtórz test",
+            "startQuiz": "Rozpocznij test",
+            "download": "Pobierz"
+        },
+        "search": {
+            "placeholder": "Szukaj materiałów..."
+        },
+        "categories": {
+            "all": "Wszystkie",
+            "rules": "Przepisy ruchu",
+            "signs": "Znaki drogowe",
+            "safety": "Bezpieczeństwo",
+            "mechanics": "Budowa pojazdu"
+        },
+        "types": {
+            "all": "Wszystkie typy",
+            "pdf": "PDF",
+            "video": "Wideo",
+            "presentation": "Prezentacje",
+            "quiz": "Testy"
+        },
+        "badges": {
+            "new": "Nowość",
+            "premium": "Premium",
+            "pdf": "PDF",
+            "video": "Wideo",
+            "presentation": "Prezentacja",
+            "quiz": "Test"
+        },
+        "sections": {
+            "recentlyViewed": "Ostatnio przeglądane",
+            "recommended": "Rekomendowane dla ciebie"
+        },
+        "metadata": {
+            "pages": "{count} stron",
+            "views": "wyświetleń",
+            "progress": "Postęp",
+            "yourScore": "Twój wynik"
+        },
+        "materials": {
+            "trafficCode": {
+                "title": "Kodeks drogowy - kompendium",
+                "description": "Kompletny zbiór przepisów ruchu drogowego"
+            },
+            "warningSignsPresentation": {
+                "title": "Znaki ostrzegawcze - prezentacja",
+                "description": "Interaktywna prezentacja wszystkich znaków ostrzegawczych"
+            },
+            "difficultConditions": {
+                "title": "Jazda w trudnych warunkach - wideokurs",
+                "description": "Techniki jazdy w deszczu, śniegu i we mgle"
+            },
+            "priorityQuiz": {
+                "title": "Test - Pierwszeństwo przejazdu",
+                "description": "30 pytań sprawdzających znajomość zasad pierwszeństwa"
+            },
+            "engineConstruction": {
+                "title": "Budowa silnika - animacja 3D",
+                "description": "Animowana prezentacja budowy i działania silnika"
+            },
+            "mandatoryProhibitorySignsPDF": {
+                "title": "Znaki nakazu i zakazu - PDF",
+                "description": "Szczegółowy opis wszystkich znaków nakazu i zakazu"
+            },
+            "firstAidGuide": {
+                "title": "Pierwsza pomoc - poradnik",
+                "description": "Podstawy udzielania pierwszej pomocy"
+            },
+            "parkingManeuversTutorial": {
+                "title": "Manewry parkowania - podręcznik",
+                "description": "Krok po kroku - wszystkie rodzaje parkowania"
+            }
+        }
+    },
+    "theoryTests": {
+        "title": "Testy teoretyczne",
+        "subtitle": "Sprawdź swoją wiedzę przed egzaminem",
+        "buttons": {
+            "quickTest": "Szybki test",
+            "startTest": "Rozpocznij test",
+            "repeatTest": "Powtórz test",
+            "viewAll": "Przejrzyj wszystkie"
+        },
+        "categories": {
+            "all": "Wszystkie",
+            "official": "Oficjalne",
+            "practice": "Treningowe",
+            "exam": "Egzaminacyjne"
+        },
+        "difficulty": {
+            "all": "Wszystkie poziomy",
+            "easy": "Łatwy",
+            "medium": "Średni",
+            "hard": "Trudny"
+        },
+        "statistics": {
+            "title": "Statystyki",
+            "attempts": "Prób",
+            "passed": "Zaliczone",
+            "averageScore": "Średni wynik",
+            "bestCategory": "Najlepsza kategoria",
+            "weakestCategory": "Do poprawy",
+            "streak": "Seria zaliczeń"
+        },
+        "filters": {
+            "category": "Kategoria",
+            "level": "Poziom"
+        },
+        "testInfo": {
+            "questions": "Pytania",
+            "timeLimit": "Limit czasu",
+            "passingScore": "Próg zaliczenia",
+            "min": "min",
+            "points": "punktów",
+            "bestScore": "Najlepszy wynik",
+            "attempts": "Prób",
+            "lastAttempt": "Ostatnia"
+        },
+        "status": {
+            "passed": "Zaliczone",
+            "failed": "Niezaliczone",
+            "new": "Nowy",
+            "locked": "Zablokowany"
+        },
+        "history": {
+            "title": "Historia testów",
+            "columns": {
+                "test": "Test",
+                "date": "Data",
+                "score": "Wynik",
+                "time": "Czas",
+                "status": "Status"
+            }
+        },
+        "tests": {
+            "examWORD1": {
+                "title": "Test egzaminacyjny WORD #1"
+            },
+            "roadSignsComplete": {
+                "title": "Znaki drogowe - pełny test"
+            },
+            "rightOfWay": {
+                "title": "Pierwszeństwo przejazdu"
+            },
+            "examWORD2": {
+                "title": "Test egzaminacyjny WORD #2"
+            },
+            "dangerousSituations": {
+                "title": "Sytuacje niebezpieczne"
+            },
+            "trafficRules": {
+                "title": "Przepisy ruchu drogowego"
+            },
+            "vehicleBasics": {
+                "title": "Budowa pojazdu - podstawy"
+            },
+            "fullExamPractice": {
+                "title": "Egzamin próbny - pełny"
+            }
+        },
+        "unlockRequirement": "Ukończ wszystkie testy treningowe",
+        "categoryNames": {
+            "roadSigns": "Znaki drogowe",
+            "priority": "Pierwszeństwo"
+        }
+    },
+    "theory": {
+        "title": "Kurs teoretyczny",
+        "subtitle": "Przygotowanie do egzaminu teoretycznego",
+        "buttons": {
+            "practiceTests": "Testy próbne",
+            "materials": "Materiały",
+            "viewAll": "Przejrzyj wszystkie",
+            "allTests": "Wszystkie testy",
+            "repeat": "Powtórz",
+            "continue": "Kontynuuj",
+            "startNewTest": "Rozpocznij nowy test"
+        },
+        "progress": {
+            "courseProgress": "Postęp kursu",
+            "completedLessons": "Ukończone lekcje",
+            "remaining": "Pozostało {count} lekcji",
+            "theoryHours": "Godziny teorii",
+            "requiredMinimum": "Wymagane minimum",
+            "averageScore": "Średni wynik",
+            "fromTests": "Z testów kontrolnych"
+        },
+        "categories": {
+            "all": "Wszystkie",
+            "rules": "Przepisy ruchu",
+            "signs": "Znaki drogowe",
+            "safety": "Bezpieczeństwo",
+            "mechanics": "Budowa pojazdu"
+        },
+        "modules": {
+            "basicRules": {
+                "title": "Podstawowe przepisy ruchu",
+                "description": "Zasady pierwszeństwa, ograniczenia prędkości"
+            },
+            "warningSignsModule": {
+                "title": "Znaki drogowe - ostrzegawcze",
+                "description": "Znaki ostrzegające o niebezpieczeństwie"
+            },
+            "mandatoryProhibitorySigns": {
+                "title": "Znaki drogowe - nakazu i zakazu",
+                "description": "Znaki nakazujące i zakazujące"
+            },
+            "maneuversParking": {
+                "title": "Manewry i parkowanie",
+                "description": "Zasady wykonywania manewrów"
+            },
+            "drivingConditions": {
+                "title": "Jazda w różnych warunkach",
+                "description": "Jazda nocą, w deszczu, zimą"
+            },
+            "firstAid": {
+                "title": "Pierwsza pomoc",
+                "description": "Podstawy udzielania pierwszej pomocy"
+            },
+            "vehicleMaintenance": {
+                "title": "Budowa i obsługa pojazdu",
+                "description": "Podstawowa wiedza techniczna"
+            },
+            "documentsInsurance": {
+                "title": "Dokumenty i ubezpieczenia",
+                "description": "Wymagane dokumenty, OC, AC"
+            },
+            "duration": "{hours} godz.",
+            "lessons": "lekcji"
+        },
+        "status": {
+            "completed": "Ukończono",
+            "inProgress": "W trakcie",
+            "locked": "Zablokowany"
+        },
+        "lessonProgress": "Postęp lekcji",
+        "testResult": "Wynik testu",
+        "nextClass": "Następne zajęcia",
+        "upcomingClasses": {
+            "title": "Nadchodzące zajęcia",
+            "types": {
+                "lecture": "wykład",
+                "workshop": "warsztat",
+                "practice": "praktyka"
+            }
+        },
+        "recentTests": {
+            "title": "Ostatnie testy",
+            "rulesTest": "Test z przepisów ruchu",
+            "warningSignsTest": "Test ze znaków ostrzegawczych",
+            "maneuversTest": "Test z manewrów"
+        },
+        "studyTips": {
+            "title": "Wskazówki do nauki",
+            "tip1": "Ucz się systematycznie - 30 minut codziennie to lepiej niż 3 godziny raz w tygodniu",
+            "tip2": "Regularnie rozwiązuj testy próbne, aby śledzić postępy",
+            "tip3": "Zwróć szczególną uwagę na znaki drogowe - to 30% pytań na egzaminie",
+            "tip4": "Egzamin wymaga minimum 68 punktów z 74 możliwych"
+        }
+    },
+    "studentLayout": {
+        "portal": "Portal Studenta",
+        "courseProgress": "Postęp kursu",
+        "lessons": "lekcje",
+        "nextLesson": "Następna lekcja",
+        "navigation": {
+            "dashboard": "Panel główny",
+            "myLessons": "Moje lekcje",
+            "booking": "Rezerwacja",
+            "progress": "Postęp",
+            "materials": "Materiały",
+            "payments": "Płatności",
+            "documents": "Dokumenty",
+            "messages": "Wiadomości",
+            "help": "Pomoc",
+            "profile": "Profil",
+            "settings": "Ustawienia"
+        },
+        "bottomNav": {
+            "home": "Główna",
+            "lessons": "Lekcje",
+            "book": "Rezerwuj",
+            "progress": "Postęp",
+            "menu": "Menu"
+        },
+        "userMenu": {
+            "myProgress": "Mój postęp",
+            "logout": "Wyloguj"
+        },
+        "notifications": {
+            "title": "Powiadomienia",
+            "nextLesson": {
+                "title": "Następna lekcja",
+                "message": "Masz zaplanowaną lekcję jutro o 14:00"
+            },
+            "newMaterials": {
+                "title": "Nowe materiały",
+                "message": "Dodano nowe materiały do nauki"
+            },
+            "paymentReminder": {
+                "title": "Przypomnienie o płatności",
+                "message": "Zbliża się termin płatności za pakiet"
+            },
+            "timeAgo": {
+                "minutes": "{count} min temu",
+                "hours": "{count} godz. temu",
+                "days": "{count} dni temu"
+            }
+        },
+        "languages": {
+            "pl": "Polski",
+            "uk": "Ukraiński",
+            "en": "Angielski",
+            "ru": "Rosyjski"
+        },
+        "role": "Student"
+    }
+}

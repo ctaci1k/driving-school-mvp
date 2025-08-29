@@ -1,0 +1,72 @@
+{
+  "validation": {
+    "emailInvalid": "Invalid email address",
+    "passwordMin": "Password must be at least 8 characters long",
+    "passwordUppercase": "Password must contain at least one uppercase letter",
+    "passwordLowercase": "Password must contain at least one lowercase letter",
+    "passwordNumber": "Password must contain at least one number",
+    "passwordsDontMatch": "Passwords do not match",
+    "firstNameMin": "First name must be at least 2 characters long",
+    "lastNameMin": "Last name must be at least 2 characters long",
+    "phoneMin": "Phone number must be at least 9 digits long",
+    "mustAgreeToTerms": "You must agree to the terms of use"
+  },
+  "aria": {
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "toast": {
+    "googleComingSoon": "Google sign-in coming soon",
+    "facebookComingSoon": "Facebook sign-in coming soon"
+  },
+  "errors": {
+    "failedToSendEmail": "Failed to send recovery email",
+    "failedToResetPassword": "Failed to reset password"
+  },
+  "messages": {
+    "registrationSuccessButLoginFailed": "Registration successful, but login failed. Please log in manually"
+  },
+  "notFound": {
+    "title": "404",
+    "description": "Page not found",
+    "backToHome": "Back to home"
+  },
+  "error": {
+    "title": "Something went wrong!",
+    "tryAgain": "Try again"
+  },
+  "paymentReturn": {
+    "status": {
+      "checking": "Checking payment...",
+      "pending": "Payment is being processed",
+      "success": "Payment completed successfully!",
+      "failed": "Payment failed",
+      "error": "An error occurred"
+    },
+    "messages": {
+      "checking": "Please wait while we check your payment...",
+      "pending": "Your payment is being processed via Przelewy24. This may take a few minutes. You can refresh this page or check the status later.",
+      "successBooking": "Thank you for paying for the lesson. You will be redirected to your bookings shortly.",
+      "successPackage": "Thank you for purchasing the package. Credits have been added to your account.",
+      "successDefault": "Thank you for your payment. You will be redirected shortly.",
+      "failed": "The payment was canceled or declined. Please try again.",
+      "errorWithSession": "We are unable to check the payment status. Please try again later.",
+      "errorNoSession": "No payment information found."
+    },
+    "details": {
+      "paymentId": "Payment ID:",
+      "amount": "Amount:",
+      "description": "Description:",
+      "testPayment": "Test payment (development mode)"
+    },
+    "buttons": {
+      "goToDashboard": "Go to dashboard",
+      "back": "Back",
+      "mainDashboard": "Main dashboard",
+      "checkAgain": "Check again",
+      "returnLater": "Return later",
+      "backToDashboard": "Back to dashboard"
+    },
+    "checkingStatus": "Checking status... ({count}/30)"
+  }
+}
