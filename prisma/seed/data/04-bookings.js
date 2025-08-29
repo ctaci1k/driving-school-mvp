@@ -153,9 +153,9 @@ async function seedBookings(prisma, users, infrastructure) {
       await prisma.availabilitySlot.updateMany({
         where: {
           instructorId: booking.instructorId,
-          date: {
-            equals: new Date(booking.startTime).setHours(0, 0, 0, 0)
-          },
+date: {
+  equals: new Date(new Date(booking.startTime).setHours(0, 0, 0, 0))
+},
           startTime: {
             lte: booking.startTime
           },

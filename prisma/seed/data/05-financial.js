@@ -143,8 +143,7 @@ async function seedFinancial(prisma, users, bookings, packages) {
             email: student.email,
             phone: student.phone
           }
-        },
-        paymentId: payment.id
+        }
       }
     });
     result.invoices.push(invoice);

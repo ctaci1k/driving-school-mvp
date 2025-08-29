@@ -1,5 +1,5 @@
 // prisma/seed/data/01-users.js
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { faker } = require('@faker-js/faker');
 const { config } = require('../config.js');
 const { 
