@@ -620,7 +620,144 @@
                 "paid": "Zapłacono",
                 "toPay": "Do zapłaty"
             }
-        }
+        },
+        "detail": {
+            "dateTime": "Data i godzina",
+       "lessonTypes": {
+         "examPreparation": "Przygotowanie do egzaminu",
+         "finalPreparation": "Końcowe przygotowanie"
+       },
+       "locations": {
+         "practiceArea": "Plac manewrowy",
+         "examRoute": "Trasa egzaminacyjna"
+       },
+       "objectives": {
+         "title": "Cele lekcji",
+         "examRoute": "Trasa egzaminacyjna",
+         "emergencyBraking": "Hamowanie awaryjne",
+         "parallelParking": "Parkowanie równoległe",
+         "turningLimited": "Zawracanie w ograniczonej przestrzeni",
+         "completed": "Zrealizowane",
+         "partial": "Częściowo zrealizowane",
+         "additionalNotes": "Dodatkowe uwagi",
+         "notesPlaceholder": "Wprowadź dodatkowe uwagi..."
+       },
+       "performance": {
+         "title": "Ocena wykonania",
+         "overallRating": "Ocena ogólna",
+         "parkingConfidence": "Pewność parkowania",
+         "decisionSpeed": "Szybkość podejmowania decyzji",
+         "confidence": "Pewność siebie",
+         "technique": "Technika",
+         "rules": "Przepisy",
+         "safety": "Bezpieczeństwo",
+         "mistakes": "Błędy",
+         "mistakesCount": "Liczba błędów",
+         "needsImprovement": "Wymaga poprawy"
+       },
+       "buttons": {
+         "share": "Udostępnij",
+         "report": "Raport",
+         "edit": "Edytuj",
+         "call": "Zadzwoń",
+         "message": "Wiadomość",
+         "saveNotes": "Zapisz uwagi"
+       },
+       "student": {
+         "title": "Informacje o kursancie",
+         "id": "ID kursanta",
+         "joinedDate": "Data dołączenia",
+         "courseProgress": "Postęp kursu",
+         "lessonsCompleted": "Ukończone lekcje"
+       },
+       "lessonInfo": {
+         "title": "Szczegóły lekcji",
+         "type": "Typ",
+         "category": "Kategoria",
+         "categoryB": "Kategoria B",
+         "duration": "Czas trwania",
+         "minutes": "minut",
+         "location": "Lokalizacja",
+         "vehicle": "Pojazd",
+         "status": "Status",
+         "completed": "Zakończona"
+       },
+       "payment": {
+         "title": "Informacje o płatności",
+         "amount": "Kwota",
+         "paid": "Zapłacono",
+         "paymentMethod": "Metoda płatności",
+         "cash": "Gotówka",
+         "date": "Data płatności",
+         "confirmed": "Potwierdzona"
+       },
+       "tabs": {
+         "objectives": "Cele",
+         "performance": "Wykonanie",
+         "metrics": "Metryki",
+         "feedback": "Ocena"
+       },
+       "metrics": {
+         "title": "Metryki jazdy",
+         "km": "km",
+         "distance": "Dystans",
+         "kmh": "km/h",
+         "avgSpeed": "Średnia prędkość",
+         "maxSpeed": "Maksymalna prędkość",
+         "liters": "litrów",
+         "fuelUsed": "Zużyte paliwo",
+         "suddenBrakes": "Gwałtowne hamowania",
+         "sharpTurns": "Ostre zakręty"
+       },
+       "title": "Szczegóły lekcji",
+
+       "date": "Data",
+       "time": "Godzina",
+       "duration": "Czas trwania",
+       "vehicle": "Pojazd",
+       "location": "Lokalizacja",
+       "status": "Status",
+       "type": "Typ lekcji",
+       "notes": "Uwagi",
+       "instructorNotes": "Notatki instruktora",
+       "actions": "Akcje",
+       "edit": "Edytuj",
+       "cancel": "Anuluj",
+       "complete": "Zakończ",
+       "back": "Powrót",
+       "lessonCompleted": "Lekcja zakończona",
+       "lessonCancelled": "Lekcja anulowana",
+       "lessonScheduled": "Lekcja zaplanowana",
+       "practical": "Jazda praktyczna",
+       "theory": "Teoria",
+       "exam": "Egzamin",
+       "feedback": {
+                 "instructorTitle": "Ocena instruktora",
+         "instructorComment": "Komentarz instruktora",
+         "studentComment": "Komentarz kursanta",
+         "studentTitle": "Ocena kursanta",
+         "title": "Informacja zwrotna",
+         "rating": "Ocena",
+         "comments": "Komentarze",
+         "strengths": "Mocne strony",
+         "weaknesses": "Obszary do poprawy",
+         "progress": "Postęp",
+         "recommendations": "Zalecenia",
+         "save": "Zapisz ocenę",
+         "saved": "Ocena zapisana"
+       },
+       "nextLesson": {
+         "title": "Następna lekcja",
+         "info": "Informacje o następnej lekcji",
+         "date": "Data",
+         "time": "Godzina",
+         "type": "Typ",
+         "vehicle": "Pojazd",
+         "location": "Lokalizacja",
+         "noNextLesson": "Brak zaplanowanych lekcji",
+         "schedule": "Zaplanuj następną lekcję"
+       }
+     }
     },
     "messages": {
         "chat": {
@@ -1058,6 +1195,240 @@
             }
         }
     },
+ "settings": {
+     "title": "Ustawienia",
+     "subtitle": "Zarządzaj ustawieniami konta i preferencjami",
+     "tabs": {
+       "general": "Ogólne",
+       "profile": "Profil",
+       "notifications": "Powiadomienia",
+       "schedule": "Harmonogram",
+       "payment": "Płatności",
+       "security": "Bezpieczeństwo",
+       "preferences": "Preferencje",
+       "privacy": "Prywatność",
+       "appearance": "Wygląd"
+     },
+     "general": {
+       "title": "Ustawienia ogólne",
+       "language": "Język",
+       "timezone": "Strefa czasowa",
+       "dateFormat": "Format daty",
+       "timeFormat": "Format czasu",
+       "currency": "Waluta",
+       "theme": "Motyw",
+       "darkMode": "Tryb ciemny",
+       "lightMode": "Tryb jasny"
+     },
+     "profile": {
+       "title": "Profil instruktora",
+       "personalInfo": "Dane osobowe",
+       "firstName": "Imię",
+       "lastName": "Nazwisko",
+       "email": "Email",
+       "phone": "Telefon",
+       "birthDate": "Data urodzenia",
+       "address": "Adres",
+       "city": "Miasto",
+       "postalCode": "Kod pocztowy",
+       "bio": "O mnie",
+       "experience": "Doświadczenie",
+       "qualifications": "Kwalifikacje",
+       "licenseNumber": "Numer licencji",
+       "licenseExpiry": "Data ważności licencji",
+       "photo": "Zdjęcie profilowe",
+       "uploadPhoto": "Wgraj zdjęcie",
+       "changePhoto": "Zmień zdjęcie",
+       "removePhoto": "Usuń zdjęcie"
+     },
+     "notifications": {
+       "title": "Ustawienia powiadomień",
+       "email": {
+         "title": "Powiadomienia email",
+         "description": "Wybierz, które powiadomienia chcesz otrzymywać na email",
+         "newBooking": "Nowa rezerwacja",
+         "newBookingDesc": "Powiadom mnie o nowych rezerwacjach lekcji",
+         "cancellation": "Anulowanie lekcji",
+         "cancellationDesc": "Powiadom mnie gdy kursant anuluje lekcję",
+         "reminder": "Przypomnienia",
+         "reminderDesc": "Przypomnienia o nadchodzących lekcjach",
+         "payment": "Płatności",
+         "paymentDesc": "Powiadomienia o otrzymanych płatnościach",
+         "systemUpdates": "Aktualizacje systemowe",
+         "systemUpdatesDesc": "Informacje o aktualizacjach i nowościach"
+       },
+       "push": {
+         "title": "Powiadomienia push",
+         "description": "Powiadomienia w przeglądarce i aplikacji mobilnej"
+       },
+       "sms": {
+         "title": "Powiadomienia SMS",
+         "description": "Otrzymuj powiadomienia SMS na telefon",
+         "warning": "Mogą obowiązywać dodatkowe opłaty za SMS"
+       },
+       "newBooking": "Nowa rezerwacja",
+       "bookingCancellation": "Anulowanie rezerwacji",
+       "bookingReminder": "Przypomnienie o lekcji",
+       "paymentReceived": "Otrzymana płatność",
+       "studentMessage": "Wiadomość od kursanta",
+       "scheduleChange": "Zmiana w grafiku",
+       "examResults": "Wyniki egzaminu"
+     },
+     "schedule": {
+       "title": "Ustawienia harmonogramu",
+       "workingHours": "Godziny pracy",
+       "availability": "Dostępność",
+       "monday": "Poniedziałek",
+       "tuesday": "Wtorek",
+       "wednesday": "Środa",
+       "thursday": "Czwartek",
+       "friday": "Piątek",
+       "saturday": "Sobota",
+       "sunday": "Niedziela",
+       "startTime": "Godzina rozpoczęcia",
+       "endTime": "Godzina zakończenia",
+       "breakTime": "Przerwa",
+       "lessonDuration": "Czas trwania lekcji",
+       "bufferTime": "Czas między lekcjami",
+       "maxStudentsPerDay": "Maks. kursantów dziennie",
+       "autoAcceptBookings": "Automatyczna akceptacja rezerwacji",
+       "defaultDuration": "Domyślny czas lekcji",
+       "minutes": "minut",
+       "noBreak": "Bez przerwy",
+       "maxPerDay": "Maks. lekcji dziennie",
+       "lessons": "lekcji",
+       "autoConfirm": "Automatyczne potwierdzanie",
+       "autoConfirmDesc": "Automatycznie potwierdzaj nowe rezerwacje"
+     },
+     "payment": {
+       "title": "Ustawienia płatności",
+       "pricePerHour": "Cena za godzinę",
+       "paymentMethods": "Metody płatności",
+       "bankAccount": "Konto bankowe",
+       "accountNumber": "Numer konta",
+       "accountHolder": "Właściciel konta",
+       "bankName": "Nazwa banku",
+       "taxInfo": "Informacje podatkowe",
+       "nip": "NIP",
+       "invoicing": "Fakturowanie",
+       "autoInvoice": "Automatyczne faktury"
+     },
+     "security": {
+       "title": "Bezpieczeństwo",
+       "changePassword": "Zmień hasło",
+       "currentPassword": "Obecne hasło",
+       "newPassword": "Nowe hasło",
+       "confirmPassword": "Potwierdź hasło",
+       "twoFactorAuth": "Uwierzytelnianie dwuskładnikowe",
+       "enable2FA": "Włącz 2FA",
+       "disable2FA": "Wyłącz 2FA",
+       "loginHistory": "Historia logowań",
+       "activeSessions": "Aktywne sesje",
+       "password": {
+         "title": "Hasło",
+         "change": "Zmień hasło",
+         "modalTitle": "Zmień hasło",
+         "modalDescription": "Wprowadź obecne hasło i nowe hasło",
+         "current": "Obecne hasło",
+         "new": "Nowe hasło",
+         "confirm": "Potwierdź nowe hasło"
+       },
+       "twoFactor": {
+         "title": "Uwierzytelnianie dwuskładnikowe",
+         "status": "Status",
+         "disabled": "Wyłączone",
+         "enable": "Włącz 2FA"
+       },
+       "sessions": {
+         "title": "Sesje",
+         "sessionTimeout": "Automatyczne wylogowanie",
+         "sessionTimeoutDesc": "Wyloguj po okresie nieaktywności",
+         "trustedDevices": "Zaufane urządzenia",
+         "devicesConnected": "urządzeń połączonych",
+         "manageDevices": "Zarządzaj urządzeniami"
+       },
+       "dangerZone": {
+         "title": "Strefa niebezpieczna",
+         "warning": "Te akcje są nieodwracalne. Zachowaj ostrożność.",
+         "logoutAll": "Wyloguj ze wszystkich urządzeń",
+         "logoutAllConfirm": "Wylogować ze wszystkich urządzeń?",
+         "logoutAllDesc": "Zostaniesz wylogowany ze wszystkich sesji.",
+         "deleteAccount": "Usuń konto",
+         "deleteAccountConfirm": "Usunąć konto na zawsze?",
+         "deleteAccountDesc": "Ta akcja jest nieodwracalna. Wszystkie dane zostaną usunięte.",
+         "deleteAccountPlaceholder": "Wpisz DELETE aby potwierdzić",
+         "deleteForever": "Usuń na zawsze"
+       }
+     },
+     "privacy": {
+       "profile": {
+         "title": "Prywatność profilu",
+         "whoCanSee": "Kto może widzieć profil",
+         "public": "Publiczny",
+         "students": "Tylko kursanci",
+         "private": "Prywatny",
+         "showRating": "Pokaż ocenę",
+         "showRatingDesc": "Wyświetlaj średnią ocenę na profilu",
+         "showStatistics": "Pokaż statystyki",
+         "showStatisticsDesc": "Wyświetlaj liczbę przeprowadzonych lekcji",
+         "showSchedule": "Pokaż harmonogram",
+         "showScheduleDesc": "Udostępnij dostępne terminy publiczne"
+       },
+       "messages": {
+         "title": "Prywatność wiadomości",
+         "whoCanMessage": "Kto może wysyłać wiadomości",
+         "everyone": "Wszyscy",
+         "studentsOnly": "Tylko kursanci",
+         "contacts": "Kontakty",
+         "nobody": "Nikt"
+       },
+       "data": {
+         "title": "Dane i prywatność",
+         "shareLocation": "Udostępnij lokalizację",
+         "shareLocationDesc": "Pozwól na śledzenie lokalizacji podczas lekcji",
+         "dataCollection": "Zbieranie danych",
+         "dataCollectionDesc": "Zgoda na zbieranie danych do celów analitycznych",
+         "downloadData": "Pobierz swoje dane"
+       }
+     },
+     "appearance": {
+       "theme": {
+         "title": "Motyw",
+         "light": "Jasny",
+         "dark": "Ciemny",
+         "system": "Systemowy"
+       },
+       "language": {
+         "title": "Język",
+         "interface": "Język interfejsu",
+         "polish": "Polski",
+         "english": "Angielski",
+         "ukrainian": "Ukraiński"
+       },
+       "formats": {
+         "dateFormat": "Format daty",
+         "timeFormat": "Format czasu",
+         "24hour": "24-godzinny",
+         "12hour": "12-godzinny"
+       }
+     },
+     "buttons": {
+       "save": "Zapisz",
+       "cancel": "Anuluj",
+       "update": "Aktualizuj",
+       "delete": "Usuń",
+       "confirm": "Potwierdź",
+       "reset": "Resetuj",
+       "back": "Wstecz",
+       "logout": "Wyloguj"
+     },
+     "messages": {
+       "saveSuccess": "Ustawienia zostały zapisane",
+       "saveError": "Błąd podczas zapisywania ustawień",
+       "deleteConfirm": "Czy na pewno chcesz usunąć?",
+       "resetConfirm": "Czy na pewno chcesz zresetować ustawienia?"
+     }
+   },
     "resources": {
         "upload": {
             "title": "Dodaj materiał",
@@ -2172,7 +2543,36 @@
                 "saturday": "sobota",
                 "sunday": "niedziela"
             }
-        }
+        },
+    "main": {                "title": "Grafik",
+       "subtitle": "Zarządzaj swoim harmonogramem lekcji",
+       "buttons": {
+         "search": "Szukaj",
+         "workingHours": "Godziny pracy",
+         "exception": "Wyjątek",
+         "today": "Dzisiaj"
+
+       },
+       "stats": {
+         "allSlots": "Wszystkie terminy",
+         "reserved": "Zarezerwowane",
+         "hoursUnit": "godz.",
+         "weeklyHours": "Godziny tygodniowo",
+         "currency": "zł",
+         "monthlyIncome": "Miesięczny przychód"
+       },
+       "tabs": {
+         "calendar": "Kalendarz",
+         "templates": "Szablony",
+         "requests": "Prośby",
+         "statistics": "Statystyki"
+       },
+       "viewModes": {
+         "dayView": "Widok dnia",
+         "weekView": "Widok tygodnia",
+         "monthView": "Widok miesiąca"
+       }
+     }
     },
     "students": {
         "profile": {
@@ -2301,6 +2701,10 @@
                 "lessons": "Lekcje",
                 "lessonsCount": "{completed}/{total}",
                 "rating": "Ocena",
+                          "actions": {
+            "details": "Szczegóły",
+            "progress": "Postęp"
+          },
                 "status": {
                     "active": "Aktywny",
                     "paused": "Wstrzymany"

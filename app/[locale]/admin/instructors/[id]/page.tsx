@@ -1,3 +1,4 @@
+// app/[locale]/admin/instructors/[id]/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';

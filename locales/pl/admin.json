@@ -596,7 +596,9 @@
       },
       "instructorStatus": {
         "available": "Dostępny",
-        "busy": "Zajęty"
+        "busy": "Zajęty",
+                 "active": "Aktywny",
+         "inactive": "Nieaktywny"
       },
       "vehicleStatus": {
         "active": "Aktywny",
@@ -1815,7 +1817,16 @@
         "pl": "Polski",
         "en": "English",
         "uk": "Українська"
-      }
+      },
+             "fields": {
+         "schoolName": "Nazwa szkoły",
+         "email": "Adres e-mail",
+         "phone": "Telefon",
+         "website": "Strona internetowa",
+         "address": "Adres",
+         "timezone": "Strefa czasowa",
+         "language": "Język"
+       }
     },
     "notificationSettings": {
       "title": "Ustawienia powiadomień",
@@ -2089,7 +2100,20 @@
       "status": {
         "active": "Aktywny",
         "inactive": "Nieaktywny"
-      }
+      },
+       "card": {
+         "manager": "Kierownik"
+       },
+       "buttons": {
+         "edit": "Edytuj"
+       },
+       "actions": {
+         "label": "Akcje",
+         "viewSchedule": "Zobacz harmonogram",
+         "manageInstructors": "Zarządzaj instruktorami",
+         "manageVehicles": "Zarządzaj pojazdami",
+         "deleteBranch": "Usuń oddział"
+       }
     },
     "templates": {
       "title": "Szablony wiadomości",
