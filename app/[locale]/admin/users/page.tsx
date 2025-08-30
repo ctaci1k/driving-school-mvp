@@ -35,7 +35,7 @@ const generateMockUsers = () => {
   ];
 
   const cities = ['Warszawa', 'Kraków', 'Wrocław', 'Gdańsk', 'Poznań', 'Szczecin', 'Łódź', 'Lublin'];
-  const roles = ['STUDENT', 'INSTRUCTOR', 'ADMIN', 'MANAGER'];
+  const roles = ['student', 'instructor', 'admin', 'MANAGER'];
   const statuses = ['ACTIVE', 'INACTIVE', 'PENDING', 'SUSPENDED'];
 
   return Array.from({ length: 50 }, (_, i) => {
@@ -59,8 +59,8 @@ const generateMockUsers = () => {
       email,
       phone: `+48${phoneBase}`,
       avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${
-        role === 'ADMIN' ? '6366F1' : 
-        role === 'INSTRUCTOR' ? '10B981' : 
+        role === 'admin' ? '6366F1' : 
+        role === 'instructor' ? '10B981' : 
         role === 'MANAGER' ? 'F59E0B' : '3B82F6'
       }&color=fff`,
       role,
@@ -70,9 +70,9 @@ const generateMockUsers = () => {
       lastLogin: new Date(2024, 11, (i % 28) + 1),
       emailVerified: i % 5 !== 0, // 80% верифіковані
       phoneVerified: i % 3 !== 0, // ~66% верифіковані
-      completedLessons: role === 'STUDENT' ? ((i * 7) % 50) : null,
-      totalStudents: role === 'INSTRUCTOR' ? 20 + ((i * 11) % 80) : null,
-      rating: role === 'INSTRUCTOR' ? (4.0 + ((i % 10) / 10)).toFixed(1) : null
+      completedLessons: role === 'student' ? ((i * 7) % 50) : null,
+      totalStudents: role === 'instructor' ? 20 + ((i * 11) % 80) : null,
+      rating: role === 'instructor' ? (4.0 + ((i % 10) / 10)).toFixed(1) : null
     };
   });
 };
@@ -121,9 +121,9 @@ export default function AdminUsersPage() {
   // Статистика
   const stats = {
     total: users.length,
-    students: users.filter(u => u.role === 'STUDENT').length,
-    instructors: users.filter(u => u.role === 'INSTRUCTOR').length,
-    admins: users.filter(u => u.role === 'ADMIN').length,
+    students: users.filter(u => u.role === 'student').length,
+    instructors: users.filter(u => u.role === 'instructor').length,
+    admins: users.filter(u => u.role === 'admin').length,
     active: users.filter(u => u.status === 'ACTIVE').length,
     pending: users.filter(u => u.status === 'PENDING').length
   };
@@ -154,12 +154,12 @@ export default function AdminUsersPage() {
 
   const getRoleBadge = (role: string) => {
     const badges = {
-      ADMIN: { bg: 'bg-purple-100', text: 'text-purple-700', label: t('roles.admin') },
-      INSTRUCTOR: { bg: 'bg-green-100', text: 'text-green-700', label: t('roles.instructor') },
-      STUDENT: { bg: 'bg-blue-100', text: 'text-blue-700', label: t('roles.student') },
+      admin: { bg: 'bg-purple-100', text: 'text-purple-700', label: t('roles.admin') },
+      instructor: { bg: 'bg-green-100', text: 'text-green-700', label: t('roles.instructor') },
+      student: { bg: 'bg-blue-100', text: 'text-blue-700', label: t('roles.student') },
       MANAGER: { bg: 'bg-orange-100', text: 'text-orange-700', label: t('roles.manager') }
     };
-    return badges[role as keyof typeof badges] || badges.STUDENT;
+    return badges[role as keyof typeof badges] || badges.student;
   };
 
   const getStatusBadge = (status: string) => {
@@ -271,9 +271,9 @@ export default function AdminUsersPage() {
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">{t('filters.allRoles')}</option>
-              <option value="STUDENT">{t('filters.students')}</option>
-              <option value="INSTRUCTOR">{t('filters.instructors')}</option>
-              <option value="ADMIN">{t('filters.admins')}</option>
+              <option value="student">{t('filters.students')}</option>
+              <option value="instructor">{t('filters.instructors')}</option>
+              <option value="admin">{t('filters.admins')}</option>
               <option value="MANAGER">{t('filters.managers')}</option>
             </select>
             
@@ -481,7 +481,7 @@ export default function AdminUsersPage() {
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadge.bg} ${roleBadge.text}`}>
                           {roleBadge.label}
                         </span>
-                        {user.role === 'INSTRUCTOR' && user.rating && (
+                        {user.role === 'instructor' && user.rating && (
                           <p className="text-xs text-gray-500 mt-1">
                             {t('table.rating', { rating: user.rating })}
                           </p>

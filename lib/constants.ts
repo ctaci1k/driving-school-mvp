@@ -22,7 +22,7 @@ export const BOOKING_STATUS = {
 } as const
 
 export const USER_ROLES = {
-  STUDENT: 'STUDENT',
-  INSTRUCTOR: 'INSTRUCTOR',
-  ADMIN: 'ADMIN'
+  student: 'student',
+  instructor: 'instructor',
+  admin: 'admin'
 } as const

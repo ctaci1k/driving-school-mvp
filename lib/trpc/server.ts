@@ -87,7 +87,7 @@ const enforceUserIsAdmin = t.middleware(async ({ ctx, next }) => {
   
   const userRole = ctx.session.user.role as UserRole
   
-  if (userRole !== UserRole.ADMIN && userRole !== UserRole.BRANCH_MANAGER) {
+  if (userRole !== UserRole.admin && userRole !== UserRole.BRANCH_MANAGER) {
     throw new TRPCError({ 
       code: 'FORBIDDEN',
       message: 'Admin access required' 
@@ -117,8 +117,8 @@ const enforceUserIsInstructor = t.middleware(async ({ ctx, next }) => {
   
   const userRole = ctx.session.user.role as UserRole
   
-  if (userRole !== UserRole.INSTRUCTOR && 
-      userRole !== UserRole.ADMIN && 
+  if (userRole !== UserRole.instructor && 
+      userRole !== UserRole.admin && 
       userRole !== UserRole.BRANCH_MANAGER) {
     throw new TRPCError({ 
       code: 'FORBIDDEN',
@@ -150,7 +150,7 @@ const enforceUserIsDispatcher = t.middleware(async ({ ctx, next }) => {
   const userRole = ctx.session.user.role as UserRole
   
   if (userRole !== UserRole.DISPATCHER && 
-      userRole !== UserRole.ADMIN && 
+      userRole !== UserRole.admin && 
       userRole !== UserRole.BRANCH_MANAGER) {
     throw new TRPCError({ 
       code: 'FORBIDDEN',

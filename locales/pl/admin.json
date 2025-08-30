@@ -2685,6 +2685,8 @@
       "refresh": "Odśwież"
     },
     "stats": {
+      "reserved": "Zarezerwowany",
+      "inactive": "Nieaktywny",
       "total": "Wszystkich",
       "active": "Aktywne",
       "maintenance": "W serwisie",
@@ -2693,6 +2695,10 @@
       "documentsExpiring": "Dokumenty"
     },
     "filters": {
+      "active": "Aktywne",
+      "inService": "W serwisie",
+      "reserved": "Zarezerwowane",
+      "inactive": "Nieaktywne",
       "searchPlaceholder": "Szukaj po marce, modelu lub numerze...",
       "allStatuses": "Wszystkie statusy",
       "allTransmissions": "Wszystkie skrzynie",
@@ -2776,7 +2782,12 @@
       "BE": "B+E",
       "C": "C"
     },
-    "currency": "zł"
+    "currency": "zł",
+    "units": {
+      "km": "km",
+      "liters": "l",
+      "hours": "godz"
+    }
   },
   "schedule": {
     "main": {
@@ -2873,11 +2884,13 @@
       "settings": "Ustawienia"
     },
     "search": {
-      "placeholder": "Szukaj..."
+      "placeholder": "Szukaj...",
+      "button": "Szukaj"
     },
     "theme": {
       "light": "Jasny motyw",
-      "dark": "Ciemny motyw"
+      "dark": "Ciemny motyw",
+      "toggle": "Zmień motyw"
     },
     "notifications": {
       "label": "Powiadomienia",

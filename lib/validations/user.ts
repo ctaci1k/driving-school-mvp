@@ -13,7 +13,7 @@ export const userRegistrationSchema = z.object({
   lastName: z.string().min(2, 'Nazwisko jest wymagane'),
   phone: z.string()
     .regex(/^(\+48)?[\s-]?[0-9]{3}[\s-]?[0-9]{3}[\s-]?[0-9]{3}$/, 'Nieprawidłowy numer telefonu'),
-  role: z.enum(['STUDENT', 'INSTRUCTOR']).default('STUDENT'),
+  role: z.enum(['student', 'instructor']).default('student'),
   acceptTerms: z.boolean().refine(val => val === true, 'Musisz zaakceptować regulamin'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Hasła muszą być identyczne',

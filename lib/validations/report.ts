@@ -63,7 +63,7 @@ export const vehicleReportSchema = z.object({
 
 export const attendanceReportSchema = z.object({
   period: reportPeriodSchema,
-  groupBy: z.enum(['STUDENT', 'INSTRUCTOR', 'DAY', 'WEEK']).default('STUDENT'),
+  groupBy: z.enum(['student', 'instructor', 'DAY', 'WEEK']).default('student'),
   includeNoShows: z.boolean().default(true),
   includeCancellations: z.boolean().default(true),
   includeRescheduled: z.boolean().default(true),
@@ -99,8 +99,8 @@ export const dashboardMetricsSchema = z.object({
 export const exportReportSchema = z.object({
   type: z.enum(['PDF', 'EXCEL', 'CSV', 'JSON']),
   reportType: z.enum([
-    'STUDENT',
-    'INSTRUCTOR',
+    'student',
+    'instructor',
     'FINANCIAL',
     'VEHICLE',
     'ATTENDANCE',
@@ -331,7 +331,7 @@ export function generateReportSummary(
   const insights: string[] = []
   
   switch (reportType) {
-    case 'STUDENT':
+    case 'student':
       highlights.push(
         { label: 'Ukończone lekcje', value: data.completedLessons || 0 },
         { label: 'Frekwencja', value: `${data.attendanceRate || 0}%` },

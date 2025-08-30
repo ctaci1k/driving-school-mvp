@@ -43,7 +43,7 @@ prisma/
 - `email` - електронна пошта (унікальна)
 - `firstName`, `lastName` - ім'я та прізвище
 - `phone` - телефон
-- `role` - роль (STUDENT/INSTRUCTOR/ADMIN)
+- `role` - роль (student/instructor/admin)
 - `status` - статус (ACTIVE/INACTIVE/SUSPENDED)
 
 **Додаткові поля:**

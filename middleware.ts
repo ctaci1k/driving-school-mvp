@@ -97,16 +97,16 @@ export default async function middleware(req: NextRequest) {
   const role = (token as any)?.role as string | undefined;
 
   if (pathnameWithoutLocale.startsWith('/admin')) {
-    if (role !== 'ADMIN') return NextResponse.redirect(new URL(`/${locale}`, req.url));
+    if (role !== 'admin') return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
 
   if (pathnameWithoutLocale.startsWith('/instructor')) {
-    if (role !== 'INSTRUCTOR' && role !== 'ADMIN')
+    if (role !== 'instructor' && role !== 'admin')
       return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
 
   if (pathnameWithoutLocale.startsWith('/student')) {
-    if (role !== 'STUDENT' && role !== 'ADMIN')
+    if (role !== 'student' && role !== 'admin')
       return NextResponse.redirect(new URL(`/${locale}`, req.url));
   }
 

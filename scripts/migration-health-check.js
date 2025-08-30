@@ -180,7 +180,7 @@ async function testCriticalQueries() {
       test: async () => {
         const instructors = await prisma.user.findMany({
           where: {
-            role: 'INSTRUCTOR',
+            role: 'instructor',
             status: 'ACTIVE'
           }
         })

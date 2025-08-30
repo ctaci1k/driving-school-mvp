@@ -52,7 +52,7 @@ const registerSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number'),
   confirmPassword: z.string(),
-  role: z.enum(['STUDENT', 'INSTRUCTOR']),
+  role: z.enum(['student', 'instructor']),
   dateOfBirth: z.string().optional(),
   agreeToTerms: z.boolean().refine(val => val === true, {
     message: 'You must agree to the terms and conditions'
@@ -99,7 +99,7 @@ export default function RegisterPage() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      role: 'STUDENT',
+      role: 'student',
       agreeToTerms: false
     }
   })
@@ -240,20 +240,20 @@ export default function RegisterPage() {
               <Label>{t('accountType')}</Label>
               <Select
                 value={watchRole}
-                onValueChange={(value) => setValue('role', value as 'STUDENT' | 'INSTRUCTOR')}
+                onValueChange={(value) => setValue('role', value as 'student' | 'instructor')}
                 disabled={isLoading}
               >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="STUDENT">
+                  <SelectItem value="student">
                     <div className="flex items-center gap-2">
                       <UserPlus className="w-4 h-4" />
                       {t('student')}
                     </div>
                   </SelectItem>
-                  <SelectItem value="INSTRUCTOR">
+                  <SelectItem value="instructor">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4" />
                       {t('instructor')}
@@ -342,7 +342,7 @@ export default function RegisterPage() {
             </div>
             
             {/* Date of Birth (for students) */}
-            {watchRole === 'STUDENT' && (
+            {watchRole === 'student' && (
               <div className="space-y-2">
                 <Label htmlFor="dateOfBirth">{t('dateOfBirth')}</Label>
                 <div className="relative">

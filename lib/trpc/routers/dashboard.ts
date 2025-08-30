@@ -28,7 +28,7 @@ const user = await ctx.db.user.findUnique({
   }
 })
 
-      if (user?.role !== UserRole.STUDENT) {
+      if (user?.role !== UserRole.student) {
         throw new TRPCError({
           code: 'FORBIDDEN',
           message: 'Access denied. Student role required.'
@@ -169,7 +169,7 @@ ctx.db.studentProgress.findUnique({
         // 9. Available Instructors
         ctx.db.user.findMany({
           where: {
-            role: UserRole.INSTRUCTOR,
+            role: UserRole.instructor,
             status: 'ACTIVE',
             locationId: user?.locationId
           },

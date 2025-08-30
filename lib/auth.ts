@@ -33,7 +33,6 @@ export const authOptions: NextAuthOptions = {
 
         const user = await db.user.findUnique({ 
           where: { email },
-          include: { location: true } // Include location data
         });
         
         if (!user || !user.passwordHash) return null;
@@ -46,8 +45,6 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           name: `${user.firstName} ${user.lastName}`,
           role: user.role,
-          locationId: user.locationId,
-          locationName: user.location?.name,
         };
       },
     }),
@@ -59,8 +56,6 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = (user as any).role;
         token.email = user.email;
-        token.locationId = (user as any).locationId;
-        token.locationName = (user as any).locationName;
       }
       return token;
     },
@@ -70,8 +65,6 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.email = token.email as string;
-        session.user.locationId = token.locationId as string | null;
-        session.user.locationName = token.locationName as string | null;
       }
       return session;
     },

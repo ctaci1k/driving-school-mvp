@@ -111,9 +111,9 @@ const ENUMS = {
   },
 
   Role: {
-    STUDENT: 'student',
-    INSTRUCTOR: 'instructor',
-    ADMIN: 'admin'
+    student: 'student',
+    instructor: 'instructor',
+    admin: 'admin'
   },
 
   TicketCategory: {

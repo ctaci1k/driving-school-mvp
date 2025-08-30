@@ -47,9 +47,9 @@ async function seedUsers(prisma) {
   // 2. Create Instructors
   const instructorNames = [
     { firstName: 'Marek', lastName: 'Nowak' },
-    { firstName: 'Anna', lastName: 'Wiśniewska' },
-    { firstName: 'Tomasz', lastName: 'Wójcik' },
-    { firstName: 'Katarzyna', lastName: 'Kamińska' },
+    { firstName: 'Anna', lastName: 'Wisniewska' },
+    { firstName: 'Tomasz', lastName: 'Wojcik' },
+    { firstName: 'Katarzyna', lastName: 'Kaminska' },
     { firstName: 'Robert', lastName: 'Lewandowski' }
   ];
 
@@ -97,11 +97,11 @@ async function seedUsers(prisma) {
 
   // 3. Create Students
   const studentNames = [
-    { firstName: 'Jakub', lastName: 'Zieliński' },
-    { firstName: 'Magdalena', lastName: 'Szymańska' },
-    { firstName: 'Michał', lastName: 'Dąbrowski' },
+    { firstName: 'Jakub', lastName: 'Zielinski' },
+    { firstName: 'Magdalena', lastName: 'Szymanska' },
+    { firstName: 'Michal', lastName: 'Dąbrowski' },
     { firstName: 'Aleksandra', lastName: 'Mazur' },
-    { firstName: 'Paweł', lastName: 'Jankowski' }
+    { firstName: 'Pawel', lastName: 'Jankowski' }
   ];
 
   for (let i = 0; i < config.counts.students; i++) {

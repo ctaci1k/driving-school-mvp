@@ -75,7 +75,7 @@ export default function AdminNewUserPage() {
     street: '',
     city: 'Warszawa',
     postalCode: '',
-    role: 'STUDENT',
+    role: 'student',
     password: '',
     confirmPassword: '',
     sendWelcomeEmail: true,
@@ -169,8 +169,8 @@ export default function AdminNewUserPage() {
   };
 
   const getTotalSteps = () => {
-    if (formData.role === 'STUDENT') return 5;
-    if (formData.role === 'INSTRUCTOR') return 5;
+    if (formData.role === 'student') return 5;
+    if (formData.role === 'instructor') return 5;
     return 4;
   };
 
@@ -452,10 +452,10 @@ export default function AdminNewUserPage() {
               </label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
-                  { value: 'STUDENT', label: t('account.roles.student'), icon: User },
-                  { value: 'INSTRUCTOR', label: t('account.roles.instructor'), icon: GraduationCap },
+                  { value: 'student', label: t('account.roles.student'), icon: User },
+                  { value: 'instructor', label: t('account.roles.instructor'), icon: GraduationCap },
                   { value: 'MANAGER', label: t('account.roles.manager'), icon: Users },
-                  { value: 'ADMIN', label: t('account.roles.admin'), icon: Shield }
+                  { value: 'admin', label: t('account.roles.admin'), icon: Shield }
                 ].map(role => (
                   <button
                     key={role.value}
@@ -560,7 +560,7 @@ export default function AdminNewUserPage() {
         )}
 
         {/* Step 4: Role-specific Information (Student) */}
-        {step === 4 && formData.role === 'STUDENT' && (
+        {step === 4 && formData.role === 'student' && (
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-800">{t('studentInfo.title')}</h2>
 
@@ -629,7 +629,7 @@ export default function AdminNewUserPage() {
         )}
 
         {/* Step 4: Role-specific Information (Instructor) */}
-        {step === 4 && formData.role === 'INSTRUCTOR' && (
+        {step === 4 && formData.role === 'instructor' && (
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-gray-800">{t('instructorInfo.title')}</h2>
 
@@ -752,7 +752,7 @@ export default function AdminNewUserPage() {
                 </dl>
               </div>
 
-              {formData.role === 'STUDENT' && (
+              {formData.role === 'student' && (
                 <div>
                   <h3 className="font-medium text-gray-800 mb-2">{t('review.trainingInfo')}</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
@@ -766,7 +766,7 @@ export default function AdminNewUserPage() {
                 </div>
               )}
 
-              {formData.role === 'INSTRUCTOR' && (
+              {formData.role === 'instructor' && (
                 <div>
                   <h3 className="font-medium text-gray-800 mb-2">{t('review.professionalInfo')}</h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">

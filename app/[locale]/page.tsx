@@ -21,11 +21,11 @@ export default async function HomePage({ params: { locale } }: PageProps) {
   // Редиректи з правильними шляхами
   const role = session.user.role
   
-  if (role === 'ADMIN') {
+  if (role === 'admin') {
     redirect(`/${locale}/admin/dashboard`)
-  } else if (role === 'INSTRUCTOR') {
+  } else if (role === 'instructor') {
     redirect(`/${locale}/instructor/dashboard`)
-  } else if (role === 'STUDENT') {
+  } else if (role === 'student') {
     redirect(`/${locale}/student/dashboard`)
   } else {
     // Якщо роль невідома - на логін

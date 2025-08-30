@@ -11,8 +11,6 @@ declare module 'next-auth' {
       email: string
       name?: string | null
       image?: string | null
-      locationId?: string | null
-      locationName?: string | null
     } & DefaultSession['user']
   }
 
@@ -21,8 +19,6 @@ declare module 'next-auth' {
     role: UserRole | string
     email: string
     name?: string | null
-    locationId?: string | null
-    locationName?: string | null
   }
 }
 
@@ -31,7 +27,5 @@ declare module 'next-auth/jwt' {
     id: string
     role: UserRole | string
     email: string
-    locationId?: string | null
-    locationName?: string | null
   }
 }
